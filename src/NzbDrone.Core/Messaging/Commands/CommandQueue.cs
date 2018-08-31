@@ -151,7 +151,7 @@ namespace NzbDrone.Core.Messaging.Commands
                         // A command ready to execute
                         else
                         {
-                            localItem.StartedAt = DateTime.Now;
+                            localItem.StartedAt = DateTime.UtcNow;
                             localItem.Status = CommandStatus.Started;
 
                             item = localItem;

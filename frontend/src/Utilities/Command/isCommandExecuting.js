@@ -3,7 +3,7 @@ function isCommandExecuting(command) {
     return false;
   }
 
-  return command.state === 'queued' || command.state === 'started';
+  return command.status === 'queued' || command.status === 'started';
 }
 
 export default isCommandExecuting;

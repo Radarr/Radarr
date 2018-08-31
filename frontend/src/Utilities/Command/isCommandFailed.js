@@ -3,10 +3,10 @@ function isCommandFailed(command) {
     return false;
   }
 
-  return command.state === 'failed' ||
-         command.state === 'aborted' ||
-         command.state === 'cancelled' ||
-         command.state === 'orphaned';
+  return command.status === 'failed' ||
+         command.status === 'aborted' ||
+         command.status === 'cancelled' ||
+         command.status === 'orphaned';
 }
 
 export default isCommandFailed;

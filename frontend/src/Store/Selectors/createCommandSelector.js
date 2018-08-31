@@ -1,12 +1,12 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
+import { findCommand } from 'Utilities/Command';
 import createCommandsSelector from './createCommandsSelector';
 
 function createCommandSelector(name, contraints = {}) {
   return createSelector(
     createCommandsSelector(),
     (commands) => {
-      return _.some(commands, { name, ...contraints });
+      return !!findCommand(commands, { name, ...contraints });
     }
   );
 }

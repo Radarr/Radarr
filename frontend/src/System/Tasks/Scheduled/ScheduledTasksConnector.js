@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchTasks } from 'Store/Actions/systemActions';
-import Tasks from './Tasks';
+import ScheduledTasks from './ScheduledTasks';
 
 function createMapStateToProps() {
   return createSelector(
@@ -15,16 +15,16 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchTasks
+  dispatchFetchTasks: fetchTasks
 };
 
-class TasksConnector extends Component {
+class ScheduledTasksConnector extends Component {
 
   //
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchTasks();
+    this.props.dispatchFetchTasks();
   }
 
   //
@@ -32,15 +32,15 @@ class TasksConnector extends Component {
 
   render() {
     return (
-      <Tasks
+      <ScheduledTasks
         {...this.props}
       />
     );
   }
 }
 
-TasksConnector.propTypes = {
-  fetchTasks: PropTypes.func.isRequired
+ScheduledTasksConnector.propTypes = {
+  dispatchFetchTasks: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(TasksConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ScheduledTasksConnector);

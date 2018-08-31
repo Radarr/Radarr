@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findCommand } from 'Utilities/Command';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { fetchTask } from 'Store/Actions/systemActions';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import TaskRow from './TaskRow';
+import ScheduledTaskRow from './ScheduledTaskRow';
 
 function createMapStateToProps() {
   return createSelector(
@@ -15,10 +15,11 @@ function createMapStateToProps() {
     createCommandsSelector(),
     createUISettingsSelector(),
     (taskName, commands, uiSettings) => {
-      const isExecuting = !!findCommand(commands, { name: taskName });
+      const command = findCommand(commands, { name: taskName });
 
       return {
-        isExecuting,
+        isQueued: !!(command && command.state === 'queued'),
+        isExecuting: isCommandExecuting(command),
         showRelativeDates: uiSettings.showRelativeDates,
         shortDateFormat: uiSettings.shortDateFormat,
         longDateFormat: uiSettings.longDateFormat,
@@ -46,7 +47,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class TaskRowConnector extends Component {
+class ScheduledTaskRowConnector extends Component {
 
   //
   // Lifecycle
@@ -75,17 +76,17 @@ class TaskRowConnector extends Component {
     } = this.props;
 
     return (
-      <TaskRow
+      <ScheduledTaskRow
         {...otherProps}
       />
     );
   }
 }
 
-TaskRowConnector.propTypes = {
+ScheduledTaskRowConnector.propTypes = {
   id: PropTypes.number.isRequired,
   isExecuting: PropTypes.bool.isRequired,
   dispatchFetchTask: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(TaskRowConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(ScheduledTaskRowConnector);

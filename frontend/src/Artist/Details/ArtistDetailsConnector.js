@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findCommand } from 'Utilities/Command';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -43,13 +43,21 @@ function createMapStateToProps() {
 
       const previousArtist = sortedArtist[artistIndex - 1] || _.last(sortedArtist);
       const nextArtist = sortedArtist[artistIndex + 1] || _.first(sortedArtist);
-      const isArtistRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: artist.id });
-      const allArtistRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_ARTIST && !command.body.artistId);
+      const isArtistRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: artist.id }));
+      const artistRefreshingCommand = findCommand(commands, { name: commandNames.REFRESH_ARTIST });
+      const allArtistRefreshing = (
+        isCommandExecuting(artistRefreshingCommand) &&
+        !artistRefreshingCommand.body.artistId
+      );
       const isRefreshing = isArtistRefreshing || allArtistRefreshing;
-      const isSearching = !!findCommand(commands, { name: commandNames.ARTIST_SEARCH, artistId: artist.id });
-      const isRenamingFiles = !!findCommand(commands, { name: commandNames.RENAME_FILES, artistId: artist.id });
+      const isSearching = isCommandExecuting(findCommand(commands, { name: commandNames.ARTIST_SEARCH, artistId: artist.id }));
+      const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, artistId: artist.id }));
+
       const isRenamingArtistCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
-      const isRenamingArtist = !!(isRenamingArtistCommand && isRenamingArtistCommand.body.artistId.indexOf(artist.id) > -1);
+      const isRenamingArtist = (
+        isCommandExecuting(isRenamingArtistCommand) &&
+        isRenamingArtistCommand.body.artistId.indexOf(artist.id) > -1
+      );
 
       const isFetching = albums.isFetching || trackFiles.isFetching;
       const isPopulated = albums.isPopulated && trackFiles.isPopulated;

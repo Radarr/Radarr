@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { repopulatePage } from 'Utilities/pagePopulator';
 import titleCase from 'Utilities/String/titleCase';
-import { updateCommand, finishCommand } from 'Store/Actions/commandActions';
+import { fetchCommands, updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
@@ -58,16 +58,17 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  updateCommand,
-  finishCommand,
-  setAppValue,
-  setVersion,
-  update,
-  updateItem,
-  removeItem,
-  fetchHealth,
-  fetchQueue,
-  fetchQueueDetails
+  dispatchFetchCommands: fetchCommands,
+  dispatchUpdateCommand: updateCommand,
+  dispatchFinishCommand: finishCommand,
+  dispatchSetAppValue: setAppValue,
+  dispatchSetVersion: setVersion,
+  dispatchUpdate: update,
+  dispatchUpdateItem: updateItem,
+  dispatchRemoveItem: removeItem,
+  dispatchFetchHealth: fetchHealth,
+  dispatchFetchQueue: fetchQueue,
+  dispatchFetchQueueDetails: fetchQueueDetails
 };
 
 class SignalRConnector extends Component {
@@ -146,7 +147,7 @@ class SignalRConnector extends Component {
 
   handleCalendar = (body) => {
     if (body.action === 'updated') {
-      this.props.updateItem({
+      this.props.dispatchUpdateItem({
         section: 'calendar',
         updateOnly: true,
         ...body.resource
@@ -155,22 +156,27 @@ class SignalRConnector extends Component {
   }
 
   handleCommand = (body) => {
+    if (body.action === 'sync') {
+      this.props.dispatchFetchCommands();
+      return;
+    }
+
     const resource = body.resource;
-    const state = resource.state;
+    const status = resource.status;
 
     // Both sucessful and failed commands need to be
     // completed, otherwise they spin until they timeout.
 
-    if (state === 'completed' || state === 'failed') {
-      this.props.finishCommand(resource);
+    if (status === 'completed' || status === 'failed') {
+      this.props.dispatchFinishCommand(resource);
     } else {
-      this.props.updateCommand(resource);
+      this.props.dispatchUpdateCommand(resource);
     }
   }
 
   handleAlbum = (body) => {
     if (body.action === 'updated') {
-      this.props.updateItem({
+      this.props.dispatchUpdateItem({
         section: 'albums',
         updateOnly: true,
         ...body.resource
@@ -180,7 +186,7 @@ class SignalRConnector extends Component {
 
   handleTrack = (body) => {
     if (body.action === 'updated') {
-      this.props.updateItem({
+      this.props.dispatchUpdateItem({
         section: 'tracks',
         updateOnly: true,
         ...body.resource
@@ -192,14 +198,14 @@ class SignalRConnector extends Component {
     const section = 'trackFiles';
 
     if (body.action === 'updated') {
-      this.props.updateItem({ section, ...body.resource });
+      this.props.dispatchUpdateItem({ section, ...body.resource });
     } else if (body.action === 'deleted') {
-      this.props.removeItem({ section, id: body.resource.id });
+      this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
   }
 
   handleHealth = () => {
-    this.props.fetchHealth();
+    this.props.dispatchFetchHealth();
   }
 
   handleArtist = (body) => {
@@ -207,35 +213,35 @@ class SignalRConnector extends Component {
     const section = 'artist';
 
     if (action === 'updated') {
-      this.props.updateItem({ section, ...body.resource });
+      this.props.dispatchUpdateItem({ section, ...body.resource });
     } else if (action === 'deleted') {
-      this.props.removeItem({ section, id: body.resource.id });
+      this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
   }
 
   handleQueue = () => {
     if (this.props.isQueuePopulated) {
-      this.props.fetchQueue();
+      this.props.dispatchFetchQueue();
     }
   }
 
   handleQueueDetails = () => {
-    this.props.fetchQueueDetails();
+    this.props.dispatchFetchQueueDetails();
   }
 
   handleQueueStatus = (body) => {
-    this.props.update({ section: 'queue.status', data: body.resource });
+    this.props.dispatchUpdate({ section: 'queue.status', data: body.resource });
   }
 
   handleVersion = (body) => {
     const version = body.Version;
 
-    this.props.setVersion({ version });
+    this.props.dispatchSetVersion({ version });
   }
 
   handleWantedCutoff = (body) => {
     if (body.action === 'updated') {
-      this.props.updateItem({
+      this.props.dispatchUpdateItem({
         section: 'cutoffUnmet',
         updateOnly: true,
         ...body.resource
@@ -245,7 +251,7 @@ class SignalRConnector extends Component {
 
   handleWantedMissing = (body) => {
     if (body.action === 'updated') {
-      this.props.updateItem({
+      this.props.dispatchUpdateItem({
         section: 'missing',
         updateOnly: true,
         ...body.resource
@@ -268,14 +274,20 @@ class SignalRConnector extends Component {
       // Clear disconnected time
       this.disconnectedTime = null;
 
+      const {
+        dispatchFetchCommands,
+        dispatchSetAppValue
+      } = this.props;
+
       // Repopulate the page (if a repopulator is set) to ensure things
       // are in sync after reconnecting.
 
       if (this.props.isReconnecting || this.props.isDisconnected) {
+        dispatchFetchCommands();
         repopulatePage();
       }
 
-      this.props.setAppValue({
+      dispatchSetAppValue({
         isConnected: true,
         isReconnecting: false,
         isDisconnected: false,
@@ -305,7 +317,7 @@ class SignalRConnector extends Component {
       this.disconnectedTime = Math.floor(new Date().getTime() / 1000);
     }
 
-    this.props.setAppValue({
+    this.props.dispatchSetAppValue({
       isReconnecting: true
     });
   }
@@ -319,7 +331,7 @@ class SignalRConnector extends Component {
       this.disconnectedTime = Math.floor(new Date().getTime() / 1000);
     }
 
-    this.props.setAppValue({
+    this.props.dispatchSetAppValue({
       isConnected: false,
       isReconnecting: true,
       isDisconnected: isAppDisconnected(this.disconnectedTime)
@@ -340,16 +352,17 @@ SignalRConnector.propTypes = {
   isReconnecting: PropTypes.bool.isRequired,
   isDisconnected: PropTypes.bool.isRequired,
   isQueuePopulated: PropTypes.bool.isRequired,
-  updateCommand: PropTypes.func.isRequired,
-  finishCommand: PropTypes.func.isRequired,
-  setAppValue: PropTypes.func.isRequired,
-  setVersion: PropTypes.func.isRequired,
-  update: PropTypes.func.isRequired,
-  updateItem: PropTypes.func.isRequired,
-  removeItem: PropTypes.func.isRequired,
-  fetchHealth: PropTypes.func.isRequired,
-  fetchQueue: PropTypes.func.isRequired,
-  fetchQueueDetails: PropTypes.func.isRequired
+  dispatchFetchCommands: PropTypes.func.isRequired,
+  dispatchUpdateCommand: PropTypes.func.isRequired,
+  dispatchFinishCommand: PropTypes.func.isRequired,
+  dispatchSetAppValue: PropTypes.func.isRequired,
+  dispatchSetVersion: PropTypes.func.isRequired,
+  dispatchUpdate: PropTypes.func.isRequired,
+  dispatchUpdateItem: PropTypes.func.isRequired,
+  dispatchRemoveItem: PropTypes.func.isRequired,
+  dispatchFetchHealth: PropTypes.func.isRequired,
+  dispatchFetchQueue: PropTypes.func.isRequired,
+  dispatchFetchQueueDetails: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(SignalRConnector);

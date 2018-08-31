@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using Lidarr.Http.REST;
 
@@ -10,6 +11,7 @@ namespace Lidarr.Api.V1.Commands
     public class CommandResource : RestResource
     {
         public string Name { get; set; }
+        public string CommandName { get; set; }
         public string Message { get; set; }
         public Command Body { get; set; }
         public CommandPriority Priority { get; set; }
@@ -75,6 +77,7 @@ namespace Lidarr.Api.V1.Commands
                 Id = model.Id,
 
                 Name = model.Name,
+                CommandName = model.Name.SplitCamelCase(),
                 Message = model.Message,
                 Body = model.Body,
                 Priority = model.Priority,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findCommand } from 'Utilities/Command';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';

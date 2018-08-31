@@ -32,6 +32,7 @@ namespace Lidarr.Api.V1.Commands
             GetResourceById = GetCommand;
             CreateResource = StartCommand;
             GetResourceAll = GetStartedCommands;
+            DeleteResource = CancelCommand;
 
             PostValidator.RuleFor(c => c.Name).NotBlank();
 
@@ -62,7 +63,13 @@ namespace Lidarr.Api.V1.Commands
 
         private List<CommandResource> GetStartedCommands()
         {
-            return _commandQueueManager.GetStarted().ToResource();
+            return _commandQueueManager.All().ToResource();
+        }
+
+        private void CancelCommand(int id)
+        {
+            // TODO: Cancel the existing command
+            // Executing tasks should preferably exit gracefully 
         }
 
         public void Handle(CommandUpdatedEvent message)
@@ -75,6 +82,13 @@ namespace Lidarr.Api.V1.Commands
                 }
                 _debouncer.Execute();
             }
+
+            if (message.Command.Name == typeof(MessagingCleanupCommand).Name.Replace("Command", "") &&
+                message.Command.Status == CommandStatus.Completed)
+            {
+                BroadcastResourceChange(ModelAction.Sync);
+            }
+
         }
 
         private void SendUpdates()

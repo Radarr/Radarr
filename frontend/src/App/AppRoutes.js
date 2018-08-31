@@ -30,7 +30,7 @@ import TagSettings from 'Settings/Tags/TagSettings';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
 import UISettingsConnector from 'Settings/UI/UISettingsConnector';
 import Status from 'System/Status/Status';
-import TasksConnector from 'System/Tasks/TasksConnector';
+import Tasks from 'System/Tasks/Tasks';
 import BackupsConnector from 'System/Backup/BackupsConnector';
 import UpdatesConnector from 'System/Updates/UpdatesConnector';
 import LogsTableConnector from 'System/Events/LogsTableConnector';
@@ -218,7 +218,7 @@ function AppRoutes(props) {
 
       <Route
         path="/system/tasks"
-        component={TasksConnector}
+        component={Tasks}
       />
 
       <Route

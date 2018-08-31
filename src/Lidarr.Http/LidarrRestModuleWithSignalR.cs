@@ -46,20 +46,22 @@ namespace Lidarr.Http
             }
         }
 
-
         protected void BroadcastResourceChange(ModelAction action, TResource resource)
         {
-            var signalRMessage = new SignalRMessage
+            if (GetType().Namespace.Contains("V1"))
             {
-                Name = Resource,
-                Body = new ResourceChangeMessage<TResource>(resource, action),
-                Action = action
-            };
+                var signalRMessage = new SignalRMessage
+                {
+                    Name = Resource,
+                    Body = new ResourceChangeMessage<TResource>(resource, action),
+                    Action = action
+                };
 
-            _signalRBroadcaster.BroadcastMessage(signalRMessage);
+                _signalRBroadcaster.BroadcastMessage(signalRMessage);
+            }
         }
 
-     
+
         protected void BroadcastResourceChange(ModelAction action)
         {
             if (GetType().Namespace.Contains("V1"))

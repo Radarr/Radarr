@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import createCommandSelector from 'Store/Selectors/createCommandSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { setArtistEditorSort, setArtistEditorFilter, saveArtistEditor } from 'Store/Actions/artistEditorActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -15,7 +15,7 @@ function createMapStateToProps() {
     (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createClientSideCollectionSelector('artist', 'artistEditor'),
-    createCommandSelector(commandNames.RENAME_ARTIST),
+    createCommandExecutingSelector(commandNames.RENAME_ARTIST),
     (languageProfiles, metadataProfiles, artist, isOrganizingArtist) => {
       return {
         isOrganizingArtist,

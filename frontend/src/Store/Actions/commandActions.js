@@ -7,6 +7,7 @@ import { messageTypes } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import { showMessage, hideMessage } from './appActions';
 import { updateItem } from './baseActions';
 
@@ -35,6 +36,7 @@ export const defaultState = {
 
 export const FETCH_COMMANDS = 'commands/fetchCommands';
 export const EXECUTE_COMMAND = 'commands/executeCommand';
+export const CANCEL_COMMAND = 'commands/cancelCommand';
 export const ADD_COMMAND = 'commands/updateCommand';
 export const UPDATE_COMMAND = 'commands/finishCommand';
 export const FINISH_COMMAND = 'commands/addCommand';
@@ -45,6 +47,7 @@ export const REMOVE_COMMAND = 'commands/removeCommand';
 
 export const fetchCommands = createThunk(FETCH_COMMANDS);
 export const executeCommand = createThunk(EXECUTE_COMMAND);
+export const cancelCommand = createThunk(CANCEL_COMMAND);
 export const updateCommand = createThunk(UPDATE_COMMAND);
 export const finishCommand = createThunk(FINISH_COMMAND);
 export const addCommand = createAction(ADD_COMMAND);
@@ -60,7 +63,7 @@ function showCommandMessage(payload, dispatch) {
     trigger,
     message,
     body = {},
-    state
+    status
   } = payload;
 
   const {
@@ -75,10 +78,10 @@ function showCommandMessage(payload, dispatch) {
   let type = messageTypes.INFO;
   let hideAfter = 0;
 
-  if (state === 'completed') {
+  if (status === 'completed') {
     type = messageTypes.SUCCESS;
     hideAfter = 4;
-  } else if (state === 'failed') {
+  } else if (status === 'failed') {
     type = messageTypes.ERROR;
     hideAfter = trigger === 'manual' ? 10 : 4;
   }
@@ -95,8 +98,7 @@ function showCommandMessage(payload, dispatch) {
 function scheduleRemoveCommand(command, dispatch) {
   const {
     id,
-    status,
-    body
+    status
   } = command;
 
   if (status === 'queued') {
@@ -109,12 +111,6 @@ function scheduleRemoveCommand(command, dispatch) {
     clearTimeout(timeoutId);
   }
 
-  // 5 minute timeout for executing disk access commands and
-  // 30 seconds for all other commands.
-  const timeout = body.requiresDiskAccess && status === 'started' ?
-    60000 * 5 :
-    30000;
-
   removeCommandTimeoutIds[id] = setTimeout(() => {
     dispatch(batchActions([
       removeCommand({ section: 'commands', id }),
@@ -122,7 +118,7 @@ function scheduleRemoveCommand(command, dispatch) {
     ]));
 
     delete removeCommandTimeoutIds[id];
-  }, timeout);
+  }, 60000 * 5);
 }
 
 //
@@ -159,6 +155,8 @@ export const actionHandlers = handleThunks({
     });
   },
 
+  [CANCEL_COMMAND]: createRemoveItemHandler(section, '/command'),
+
   [UPDATE_COMMAND]: function(getState, payload, dispatch) {
     dispatch(updateItem({ section: 'commands', ...payload }));
 
@@ -178,7 +176,7 @@ export const actionHandlers = handleThunks({
       }
     });
 
-    dispatch(removeCommand({ section: 'commands', ...payload }));
+    scheduleRemoveCommand(payload, dispatch);
     showCommandMessage(payload, dispatch);
   }
 

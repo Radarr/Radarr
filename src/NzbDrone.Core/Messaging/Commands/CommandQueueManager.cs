@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Messaging.Commands
         CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified) where TCommand : Command;
         CommandModel Push(string commandName, DateTime? lastExecutionTime, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified);
         IEnumerable<CommandModel> Queue(CancellationToken cancellationToken);
+        List<CommandModel> All();
         CommandModel Get(int id);
         List<CommandModel> GetStarted();
         void SetMessage(CommandModel command, string message);
@@ -134,6 +135,12 @@ namespace NzbDrone.Core.Messaging.Commands
         public IEnumerable<CommandModel> Queue(CancellationToken cancellationToken)
         {
             return _commandQueue.GetConsumingEnumerable(cancellationToken);
+        }
+
+        public List<CommandModel> All()
+        {
+            _logger.Trace("Getting all commands");
+            return _commandQueue.All();
         }
 
         public CommandModel Get(int id)
