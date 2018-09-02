@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="\11da73b5" t="IncludeRecursive" />
+    <e p="\app" t="IncludeRecursive" />
+    <e p="C:\Users\Leonardo\.Rider2018.2\Config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\Leonardo\.Rider2018.2\System\extResources" t="IncludeRecursive" />
     <e p="E:\C++ Projects\Sonarr\_output" t="ExcludeRecursive">
       <e p="NzbDrone.Update" t="ExcludeRecursive" />
     </e>
@@ -10,7 +14,7 @@
       <e p=".nuget" t="Include">
         <e p="NuGet.exe" t="Include" />
       </e>
-      <e p="_ReSharper.Caches\ReSharperHost11.NzbDrone.00" t="ExcludeRecursive" />
+      <e p="_ReSharper.Caches\ReSharperHost182.NzbDrone.00" t="ExcludeRecursive" />
       <e p="Common" t="Include">
         <e p="CodeAnalysisDictionary.xml" t="Include" />
         <e p="CommonAssemblyInfo.cs" t="Include" />
@@ -2945,6 +2949,7 @@
             </e>
           </e>
           <e p="RenameMovieFileServiceFixture.cs" t="Include" />
+          <e p="UpdateMovieFileQualityServiceFixture.cs" t="Include" />
           <e p="UpgradeMediaFileServiceFixture.cs" t="Include" />
         </e>
         <e p="Messaging" t="Include">

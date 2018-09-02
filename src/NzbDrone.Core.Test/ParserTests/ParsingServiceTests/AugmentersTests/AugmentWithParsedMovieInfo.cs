@@ -90,5 +90,20 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             result.Quality.CustomFormats.Count.Should().Be(2);
             result.Quality.CustomFormats.Should().BeEquivalentTo(format2, format1);
         }
+
+        [Test]
+        public void should_use_folder_release_group()
+        {
+            var folderInfo = new ParsedMovieInfo
+            {
+                ReleaseGroup = "AwesomeGroup"
+            };
+
+            MovieInfo.ReleaseGroup = "";
+
+            var result = Subject.AugmentMovieInfo(MovieInfo, folderInfo);
+
+            result.ReleaseGroup.Should().BeEquivalentTo(folderInfo.ReleaseGroup);
+        }
     }
 }

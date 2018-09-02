@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RIDER_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file:///11da73b5" />
+    <content url="file:///app" />
+    <content url="file://$APPLICATION_CONFIG_DIR$/consoles/db" />
+    <content url="file://$USER_HOME$/.Rider2018.2/system/extResources" />
     <content url="file://$MODULE_DIR$/../../../Logo/1024.png" />
     <content url="file://$MODULE_DIR$/../../../Logo/64.png" />
     <content url="file://$MODULE_DIR$/../.." />

@@ -38,6 +38,11 @@ namespace NzbDrone.Core.Parser.Augmenters
                     movieInfo.Quality.CustomFormats = movieInfo.Quality.CustomFormats.Union(otherInfo.Quality.CustomFormats)
                         .Distinct().ToList();
                 }
+
+                if (otherInfo.ReleaseGroup.IsNotNullOrWhiteSpace() && movieInfo.ReleaseGroup.IsNullOrWhiteSpace())
+                {
+                    movieInfo.ReleaseGroup = otherInfo.ReleaseGroup;
+                }
             }
 
             return movieInfo;
