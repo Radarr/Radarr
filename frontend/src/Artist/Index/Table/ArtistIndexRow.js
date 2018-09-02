@@ -416,6 +416,8 @@ ArtistIndexRow.propTypes = {
 };
 
 ArtistIndexRow.defaultProps = {
+  genres: [],
+  tags: [],
   statistics: {
     albumCount: 0,
     trackCount: 0,
