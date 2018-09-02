@@ -70,6 +70,12 @@ export const defaultState = {
         isVisible: true
       },
       {
+        name: 'album.releaseDate',
+        label: 'Album Release Date',
+        isSortable: true,
+        isVisible: false
+      },
+      {
         name: 'quality',
         label: 'Quality',
         isSortable: true,

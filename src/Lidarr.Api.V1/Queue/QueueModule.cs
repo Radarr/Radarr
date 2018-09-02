@@ -104,6 +104,8 @@ namespace Lidarr.Api.V1.Queue
                     return q => q.Album;
                 case "album.title":
                     return q => q.Album.Title;
+                case "album.releaseDate":
+                    return q => q.Album.ReleaseDate;
                 case "quality":
                     return q => q.Quality;
                 case "progress":

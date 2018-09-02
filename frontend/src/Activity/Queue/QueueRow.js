@@ -5,6 +5,7 @@ import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
 import TableRow from 'Components/Table/TableRow';
+import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
@@ -161,6 +162,15 @@ class QueueRow extends Component {
                     disambiguation={album.disambiguation}
                   />
                 </TableRowCell>
+              );
+            }
+
+            if (name === 'album.releaseDate') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  date={album.releaseDate}
+                />
               );
             }
 
