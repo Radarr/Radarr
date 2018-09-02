@@ -68,8 +68,7 @@ namespace Lidarr.Api.V1.Commands
 
         private void CancelCommand(int id)
         {
-            // TODO: Cancel the existing command
-            // Executing tasks should preferably exit gracefully 
+            _commandQueueManager.Cancel(id);
         }
 
         public void Handle(CommandUpdatedEvent message)

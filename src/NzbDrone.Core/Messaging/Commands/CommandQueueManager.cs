@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Messaging.Commands
@@ -25,6 +27,7 @@ namespace NzbDrone.Core.Messaging.Commands
         void Complete(CommandModel command, string message);
         void Fail(CommandModel command, string message, Exception e);
         void Requeue();
+        void Cancel(int id);
         void CleanCommands();
     }
 
@@ -190,6 +193,14 @@ namespace NzbDrone.Core.Messaging.Commands
             foreach (var command in _repo.Queued())
             {
                 _commandQueue.Add(command);
+            }
+        }
+
+        public void Cancel(int id)
+        {
+            if (!_commandQueue.RemoveIfQueued(id))
+            {
+                throw new NzbDroneClientException(HttpStatusCode.Conflict, "Unable to cancel task");
             }
         }
 

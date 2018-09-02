@@ -71,6 +71,24 @@ namespace NzbDrone.Core.Messaging.Commands
             }
         }
 
+        public bool RemoveIfQueued(int id)
+        {
+            var rval = false;
+
+            lock (_mutex)
+            {
+                var command = _items.FirstOrDefault(q => q.Id == id);
+
+                if (command?.Status == CommandStatus.Queued)
+                {
+                    _items.Remove(command);
+                    rval = true;
+                }
+            }
+
+            return rval;
+        }
+
         public List<CommandModel> QueuedOrStarted()
         {
             return All().Where(q => q.Status == CommandStatus.Queued || q.Status == CommandStatus.Started)

@@ -176,6 +176,7 @@ export const actionHandlers = handleThunks({
       }
     });
 
+    dispatch(updateItem({ section: 'commands', ...payload }));
     scheduleRemoveCommand(payload, dispatch);
     showCommandMessage(payload, dispatch);
   }

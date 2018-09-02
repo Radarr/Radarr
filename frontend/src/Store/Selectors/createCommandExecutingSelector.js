@@ -6,7 +6,8 @@ function createCommandExecutingSelector(name, contraints = {}) {
   return createSelector(
     createCommandsSelector(),
     (commands) => {
-      return isCommandExecuting(findCommand(commands, { name, ...contraints }));
+      const command = findCommand(commands, { name, ...contraints });
+      return isCommandExecuting(command);
     }
   );
 }
