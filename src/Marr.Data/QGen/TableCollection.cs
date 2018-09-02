@@ -22,7 +22,7 @@ namespace Marr.Data.QGen
             if (this.Any(t => t.EntityType == table.EntityType))
             {
                 // Already exists -- don't add
-                return;
+                //return; This prevents joining on the same table!
             }
 
             // Create an alias (ex: "t0", "t1", "t2", etc...)
@@ -37,7 +37,7 @@ namespace Marr.Data.QGen
         }
 
         /// <summary>
-        /// Tries to find a table for a given member.  
+        /// Tries to find a table for a given member.
         /// </summary>
         public Table FindTable(Type declaringType)
         {

@@ -107,6 +107,8 @@ namespace NzbDrone.Core.History
             history.Data.Add("TvdbId", message.Movie.Release.TvdbId.ToString());
             history.Data.Add("TvRageId", message.Movie.Release.TvRageId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
+            history.Data.Add("IndexerFlags", message.Movie.Release.IndexerFlags.ToString());
+            history.Data.Add("IndexerId", message.Movie.Release.IndexerId.ToString());
 
             if (!message.Movie.ParsedMovieInfo.ReleaseHash.IsNullOrWhiteSpace())
             {
@@ -143,7 +145,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.DownloadFolderImported,
                 Date = DateTime.UtcNow,
                 Quality = message.MovieInfo.Quality,
-                SourceTitle = movie.Title,
+                SourceTitle = message.ImportedMovie.SceneName ?? Path.GetFileNameWithoutExtension(message.MovieInfo.Path),
                 DownloadId = downloadId,
                 MovieId = movie.Id,
             };

@@ -31,12 +31,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return Decision.Accept();
             }
 
-            var folderInfo = Parser.Parser.ParseMovieTitle(dirInfo.Name, false);
+            //TODO: Actually implement this!!!!
+            /*var folderInfo = Parser.Parser.ParseMovieTitle(dirInfo.Name, false);
 
             if (folderInfo == null)
             {
                 return Decision.Accept();
-            }
+            }*/
 
             return Decision.Accept();
         }

@@ -5,7 +5,7 @@ using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
-
+/*
     [TestFixture]
 	[Ignore("Series")]//Is this really necessary with movies? I dont think so
     public class PathParserFixture : CoreTest
@@ -40,4 +40,5 @@ namespace NzbDrone.Core.Test.ParserTests
             ExceptionVerification.IgnoreWarns();
         }
     }
+    */
 }

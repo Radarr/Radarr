@@ -10,13 +10,18 @@ namespace NzbDrone.Core.Test.MediaFiles
     [TestFixture]
     public class MediaFileRepositoryFixture : DbTest<MediaFileRepository, MovieFile>
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         [Test]
         public void get_files_by_series()
         {
             var files = Builder<MovieFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
-                .With(c => c.Quality =new QualityModel(Quality.Bluray720p))
+                .With(c => c.Quality =new QualityModel())
                 .Random(4)
                 .With(s => s.MovieId = 12)
                 .BuildListOfNew();

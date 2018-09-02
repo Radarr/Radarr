@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 .With(s => s.Title = "South Park")
                 .Build();
 
-            _episodeFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
+            _episodeFile = new MovieFile { Quality = new QualityModel(), ReleaseGroup = "SonarrTest" };
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameEpisodes = true;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Composition;
@@ -21,7 +22,7 @@ namespace NzbDrone.Core.Indexers
         public IndexerFactory(IIndexerStatusService indexerStatusService,
                               IIndexerRepository providerRepository,
                               IEnumerable<IIndexer> providers,
-                              IContainer container, 
+                              IContainer container,
                               IEventAggregator eventAggregator,
                               Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)
@@ -84,5 +85,7 @@ namespace NzbDrone.Core.Indexers
                 yield return indexer;
             }
         }
+
+
     }
 }

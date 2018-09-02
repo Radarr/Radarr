@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Download
         public override string Download(RemoteMovie remoteMovie)
         {
             var url = remoteMovie.Release.DownloadUrl;
-            var filename = CleanFileName(remoteMovie.Release.Title) + ".nzb";
+            var filename = FileNameBuilder.CleanFileName(remoteMovie.Release.Title) + ".nzb";
 
             byte[] nzbData;
 

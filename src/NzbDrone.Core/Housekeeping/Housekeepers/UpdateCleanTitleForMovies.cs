@@ -15,13 +15,13 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var movies = _movieRepository.All().ToList();
+            /*var movies = _movieRepository.All().ToList();
 
             movies.ForEach(m =>
             {
                 m.CleanTitle = m.CleanTitle.CleanSeriesTitle();
                 _movieRepository.Update(m);
-            });
+            });*/
         }
     }
 }

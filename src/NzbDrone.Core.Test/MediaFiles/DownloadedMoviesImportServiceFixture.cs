@@ -14,6 +14,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FluentAssertions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -28,6 +29,9 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
+            ParseMovieTitle();
+            //UseRealParsingService();
+
             Mocker.GetMock<IDiskScanService>().Setup(c => c.GetVideoFiles(It.IsAny<string>(), It.IsAny<bool>()))
                   .Returns(_videoFiles);
 
@@ -40,6 +44,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IImportApprovedMovie>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
+
         }
 
         private void GivenValidMovie()

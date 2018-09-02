@@ -28,5 +28,19 @@ namespace NzbDrone.Common.Extensions
         {
             collection.Add(new KeyValuePair<TKey, TValue>(key, value));
         }
+
+        public static IDictionary<TNewKey, TNewValue> SelectDictionary<TKey, TValue, TNewKey, TNewValue>(this IDictionary<TKey, TValue> dictionary,
+            Func<KeyValuePair<TKey, TValue>, ValueTuple<TNewKey, TNewValue>> selection)
+        {
+            return dictionary.Select(selection).ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        public static IDictionary<TNewKey, TNewValue> SelectDictionary<TKey, TValue, TNewKey, TNewValue>(
+            this IDictionary<TKey, TValue> dictionary,
+            Func<KeyValuePair<TKey, TValue>, TNewKey> keySelector,
+            Func<KeyValuePair<TKey, TValue>, TNewValue> valueSelector)
+        {
+            return dictionary.SelectDictionary(p => { return (keySelector(p), valueSelector(p)); });
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -41,9 +42,15 @@ namespace NzbDrone.Core.DecisionEngine
 
         public bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
         {
-            var compare = new QualityModelComparer(profile).Compare(currentQuality.Quality, profile.Cutoff);
+            var comparer = new QualityModelComparer(profile);
+            var compare = comparer.Compare(currentQuality.Quality, profile.Cutoff);
 
             if (compare < 0)
+            {
+                return true;
+            }
+
+            if (comparer.Compare(currentQuality.CustomFormats, profile.FormatCutoff) < 0)
             {
                 return true;
             }
@@ -52,7 +59,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 return true;
             }
-            
+
             return false;
 
         }

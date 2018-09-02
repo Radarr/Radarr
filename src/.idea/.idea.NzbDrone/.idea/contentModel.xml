@@ -728,6 +728,9 @@
         <e p="ProviderModuleBase.cs" t="Include" />
         <e p="ProviderResource.cs" t="Include" />
         <e p="Qualities" t="Include">
+          <e p="CustomFormatModule.cs" t="Include" />
+          <e p="CustomFormatResource.cs" t="Include" />
+          <e p="FormatTagMatchResultResource.cs" t="Include" />
           <e p="QualityDefinitionModule.cs" t="Include" />
           <e p="QualityDefinitionResource.cs" t="Include" />
         </e>
@@ -1161,12 +1164,20 @@
           <e p="InvalidConfigFileException.cs" t="Include" />
           <e p="ResetApiKeyCommand.cs" t="Include" />
         </e>
+        <e p="CustomFormats" t="Include">
+          <e p="CustomFormat.cs" t="Include" />
+          <e p="CustomFormatRepository.cs" t="Include" />
+          <e p="CustomFormatService.cs" t="Include" />
+          <e p="FormatTag.cs" t="Include" />
+          <e p="FormatTagMatchResult.cs" t="Include" />
+        </e>
         <e p="Datastore" t="Include">
           <e p="BasicRepository.cs" t="Include" />
           <e p="ConnectionStringFactory.cs" t="Include" />
           <e p="Converters" t="Include">
             <e p="BooleanIntConverter.cs" t="Include" />
             <e p="CommandConverter.cs" t="Include" />
+            <e p="CustomFormatIntConverter.cs" t="Include" />
             <e p="DoubleConverter.cs" t="Include" />
             <e p="EmbeddedDocumentConverter.cs" t="Include" />
             <e p="EnumIntConverter.cs" t="Include" />
@@ -1175,6 +1186,7 @@
             <e p="OsPathConverter.cs" t="Include" />
             <e p="ProviderSettingConverter.cs" t="Include" />
             <e p="QualityIntConverter.cs" t="Include" />
+            <e p="QualityTagStringConverter.cs" t="Include" />
             <e p="TimeSpanConverter.cs" t="Include" />
             <e p="UtcConverter.cs" t="Include" />
           </e>
@@ -1336,6 +1348,7 @@
             <e p="144_add_cookies_to_indexer_status.cs" t="Include" />
             <e p="145_banner_to_fanart.cs" t="Include" />
             <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
+            <e p="147_add_custom_formats.cs" t="Include" />
             <e p="148_remove_extra_naming_config.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
@@ -2357,6 +2370,14 @@
         </e>
         <e p="packages.config" t="Include" />
         <e p="Parser" t="Include">
+          <e p="Augmenters" t="Include">
+            <e p="AugmentWithAdditionalFormats.cs" t="Include" />
+            <e p="AugmentWithFileSize.cs" t="Include" />
+            <e p="AugmentWithHistory.cs" t="Include" />
+            <e p="AugmentWithMediaInfo.cs" t="Include" />
+            <e p="AugmentWithReleaseInfo.cs" t="Include" />
+            <e p="IAugmentParsedMovieInfo.cs" t="Include" />
+          </e>
           <e p="InvalidDateException.cs" t="Include" />
           <e p="IsoLanguage.cs" t="Include" />
           <e p="IsoLanguages.cs" t="Include" />
@@ -2392,6 +2413,7 @@
             <e p="DelayProfileTagInUseValidator.cs" t="Include" />
           </e>
           <e p="Profile.cs" t="Include" />
+          <e p="ProfileFormatItem.cs" t="Include" />
           <e p="ProfileInUseException.cs" t="Include" />
           <e p="ProfileQualityItem.cs" t="Include" />
           <e p="ProfileRepository.cs" t="Include" />
@@ -2526,6 +2548,10 @@
           <e p="ConfigCachingFixture.cs" t="Include" />
           <e p="ConfigServiceFixture.cs" t="Include" />
         </e>
+        <e p="CustomFormat" t="Include">
+          <e p="CustomFormatsFixture.cs" t="Include" />
+          <e p="QualityTagFixture.cs" t="Include" />
+        </e>
         <e p="Datastore" t="Include">
           <e p="BasicRepositoryFixture.cs" t="Include" />
           <e p="Converters" t="Include">
@@ -2550,6 +2576,7 @@
             <e p="099_extra_and_subtitle_filesFixture.cs" t="Include" />
             <e p="101_add_ultrahd_quality_in_profilesFixture.cs" t="Include" />
             <e p="103_fix_metadata_file_extensionsFixture.cs" t="Include" />
+            <e p="147_custom_formatsFixture.cs" t="Include" />
           </e>
           <e p="ObjectDatabaseFixture.cs" t="Include" />
           <e p="PagingSpecExtensionsTests" t="Include">
@@ -2901,6 +2928,7 @@
             <e p="SampleServiceFixture.cs" t="Include" />
             <e p="Specifications" t="Include">
               <e p="FreeSpaceSpecificationFixture.cs" t="Include" />
+              <e p="GrabbedReleaseQualityFixture.cs" t="Include" />
               <e p="MatchesFolderSpecificationFixture.cs" t="Include" />
               <e p="NotSampleSpecificationFixture.cs" t="Include" />
               <e p="NotUnpackingSpecificationFixture.cs" t="Include" />
@@ -2973,15 +3001,21 @@
         </e>
         <e p="packages.config" t="Include" />
         <e p="ParserTests" t="Include">
-          <e p="CrapParserFixture.cs" t="Include" />
           <e p="ExtendedQualityParserRegex.cs" t="Include" />
-          <e p="HashedReleaseFixture.cs" t="Include" />
           <e p="LanguageParserFixture.cs" t="Include" />
           <e p="NormalizeTitleFixture.cs" t="Include" />
           <e p="ParserFixture.cs" t="Include" />
           <e p="ParsingServiceTests" t="Include">
+            <e p="AugmentersTests" t="Include">
+              <e p="AugmentMovieInfoFixture.cs" t="Include" />
+              <e p="AugmentWithFileSizeFixture.cs" t="Include" />
+              <e p="AugmentWithHistoryFixture.cs" t="Include" />
+              <e p="AugmentWithMediaInfoFixture.cs" t="Include" />
+              <e p="AugmentWithReleaseInfoFixture.cs" t="Include" />
+            </e>
             <e p="GetMovieFixture.cs" t="Include" />
             <e p="MapFixture.cs" t="Include" />
+            <e p="ParseQualityDefinitionFixture.cs" t="Include" />
           </e>
           <e p="PathParserFixture.cs" t="Include" />
           <e p="QualityParserFixture.cs" t="Include" />
@@ -2990,8 +3024,6 @@
             <e p="RomanNumeralConversionFixture.cs" t="Include" />
           </e>
           <e p="SceneCheckerFixture.cs" t="Include" />
-          <e p="SeriesTitleInfoFixture.cs" t="Include" />
-          <e p="SingleEpisodeParserFixture.cs" t="Include" />
         </e>
         <e p="Profiles" t="Include">
           <e p="ProfileRepositoryFixture.cs" t="Include" />
@@ -3326,8 +3358,5 @@
       </e>
       <e p="WindowsServiceHelpers" t="Include" />
     </e>
-  </component>
-  <component name="RiderRiderContentModelStore">
-    <excludedPaths />
   </component>
 </project>

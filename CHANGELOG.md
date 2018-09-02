@@ -3,11 +3,44 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Ability to add custom formats, working similar to qualities. ([#2669](https://github.com/Radarr/Radarr/issues/2669)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Upgrade MediaInfo to 17.10 (Windows/macOS) [<a href="https://github.com/Mark McDowall">Mark McDowall</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) The ability to set the number of threads (NOT SUPPORTED!) to use for tasks using THREAD_LIMIT environment variable. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Adds unmonitored filter option in index and editor ([#2888](https://github.com/Radarr/Radarr/issues/2888)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Monitor Toggle on Movies Editor Page ([#2887](https://github.com/Radarr/Radarr/issues/2887)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
+
+### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Unnecessary housekeeping commands consuming a lot of memory. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Annoying [renamemoviesfolder] Completed popup for no reason. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Concurrent manual imports silently failing. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Files that cannot be parsed, kill bulk import. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Absolutely Required Format Tag modifier being ignored when multiple modifiers were present. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Error when valid movie file id is around, but movie file is not loaded. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Movies not being unmonitored when using clean library and lists. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Also scan media info when file is being imported (i.e. not an existing file) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Invalid qualities messing up the release module and other stuff. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Languages not showing up correctly. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Null exception due to resharper refactoring. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) No media info causing an error when importing files. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Saving IndexerSettings into DB which confuses the datamapper. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Not using correct info for determining state! [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- Create reaction.yml. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) .vtt files treated as subtitles ([#2885](https://github.com/Radarr/Radarr/issues/2885)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Debug log Series reference in QualityAllowedByProfile spec ([#2899](https://github.com/Radarr/Radarr/issues/2899)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Multiple UI Fixes and Additions ([#2894](https://github.com/Radarr/Radarr/issues/2894)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Multiline in table view on two lines ([#2870](https://github.com/Radarr/Radarr/issues/2870)) [<a href="https://github.com/hotio">hotio</a>]
+
+
+## v0.2.0.1120 (2018-05-27)
+
+### **New features**
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) AHD_Internal and G_Scene indexer flags. Also linked a wiki page with more information about indexer flags. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) indexer flags to the list of environmental variable for customs scripts (on grab) ([#2801](https://github.com/Radarr/Radarr/issues/2801)) [<a href="https://github.com/bobbintb">bobbintb</a>]
 - ![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) issue templates. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) AwesomeHD failing on an empty imdbid. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Rare timing issue on first-use causing duplicate naming config ([#2790](https://github.com/Radarr/Radarr/issues/2790)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Qbittorrent state and eta fixes ([#2789](https://github.com/Radarr/Radarr/issues/2789)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Purge alt titles on movie delete ([#2796](https://github.com/Radarr/Radarr/issues/2796)) [<a href="https://github.com/Qstick">Qstick</a>]

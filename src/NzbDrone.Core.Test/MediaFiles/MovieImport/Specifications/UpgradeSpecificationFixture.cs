@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void should_return_true_if_no_existing_episodeFile()
         {
             _localMovie.Movie.MovieFile = null;
-            _localMovie.Movie.MovieFileId = 0; 
+            _localMovie.Movie.MovieFileId = 0;
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
         }

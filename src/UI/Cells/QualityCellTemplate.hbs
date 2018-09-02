@@ -3,3 +3,10 @@
 {{else}}
     <span class="badge" title="{{#if hardcodedSubs}}Warning: {{hardcodedSubs}}{{/if}}">{{quality.name}}</span>
 {{/if_gt}}
+{{#if customFormats.length}}
+    <span class="badge badge-success format-badge" title="Custom Formats">
+        {{#each customFormats}}
+            {{name}}{{#unless @last}}, {{/unless}}
+        {{/each}}
+    </span>
+{{/if}}

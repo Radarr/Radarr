@@ -22,9 +22,9 @@ module.exports = Backgrid.Cell.extend({
 
         //var html = this.templateFunction(edition);
         if (cut) {
-          this.$el.html('<i class="icon-sonarr-form-cut"/ title="{0}">'.format(edition));
+          this.$el.html('<i class="icon-radarr-form-cut"/ title="{0}">'.format(edition));
         } else {
-          this.$el.html('<i class="icon-sonarr-form-special"/ title="{0}">'.format(edition));
+          this.$el.html('<i class="icon-radarr-form-special"/ title="{0}">'.format(edition));
         }
 
         /*this.$el.popover({

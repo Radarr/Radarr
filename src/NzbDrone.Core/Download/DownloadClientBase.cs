@@ -154,14 +154,6 @@ namespace NzbDrone.Core.Download
 
             return null;
         }
-
-        // proxy method to pass in our naming config
-        protected String CleanFileName(string name)
-        {
-            // get a fresh naming config each time, in case the user has made changes
-            NamingConfig namingConfig = _namingConfigService.GetConfig();
-            return FileNameBuilder.CleanFileName(name, namingConfig);
-        }
         
     }
 }

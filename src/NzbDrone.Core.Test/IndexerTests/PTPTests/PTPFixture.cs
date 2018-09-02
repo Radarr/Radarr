@@ -51,17 +51,17 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
 
             var first = torrents.First() as TorrentInfo;
 
-            first.Guid.Should().Be("PassThePopcorn-483521");
-            first.Title.Should().Be("The.Night.Of.S01.720p.HDTV.x264-BTN");
+            first.Guid.Should().Be("PassThePopcorn-452135");
+            first.Title.Should().Be("The.Night.Of.S01.BluRay.AAC2.0.x264-DEPTH");
             first.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
-            first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=483521&authkey=00000000000000000000000000000000&torrent_pass=00000000000000000000000000000000");
-            first.InfoUrl.Should().Be("https://passthepopcorn.me/torrents.php?id=148131&torrentid=483521");
+            first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=452135&authkey=00000000000000000000000000000000&torrent_pass=00000000000000000000000000000000");
+            first.InfoUrl.Should().Be("https://passthepopcorn.me/torrents.php?id=148131&torrentid=452135");
             //first.PublishDate.Should().Be(DateTime.Parse("2017-04-17T12:13:42+0000").ToUniversalTime()); stupid timezones
-            first.Size.Should().Be(9370933376);
+            first.Size.Should().Be(2466170624L);
             first.InfoHash.Should().BeNullOrEmpty();
             first.MagnetUrl.Should().BeNullOrEmpty();
-            first.Peers.Should().Be(3);
-            first.Seeders.Should().Be(1);
+            first.Peers.Should().Be(28);
+            first.Seeders.Should().Be(26);
 
             torrents.Any(t => t.IndexerFlags.HasFlag(IndexerFlags.G_Freeleech)).Should().Be(true);
         }

@@ -72,7 +72,7 @@ module.exports = Marionette.Layout.extend({
                 row        : Backgrid.Row,
                 columns    : this.columns,
                 collection : this.collection,
-                className  : 'table table-hover'
+                className  : 'table table-hover release-table'
             }));
         }
     }

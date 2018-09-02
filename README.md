@@ -30,6 +30,10 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 
 ## Support
 
+[![OpenCollective](https://opencollective.com/radarr/tiers/backer/badge.svg)](#backers)
+[![OpenCollective](https://opencollective.com/radarr/tiers/flexible-sponsor/badge.svg)](#flexible-sponsors)
+[![OpenCollective](https://opencollective.com/radarr/tiers/sponsor/badge.svg)](#sponsors)
+
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
 [![Feathub](https://img.shields.io/badge/feathub-requests-lightgrey.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
@@ -42,8 +46,9 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/pulls)
 [![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?maxAge=60&style=flat-square)](http://www.gnu.org/licenses/gpl.html)
 [![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
-[![Github Releases](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg?maxAge=60&style=flat-square)](https://github.com/Radar/Radarr/releases/latest)
+[![Github Releases](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/radarr.svg?maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr/)
+[![Changelog](https://img.shields.io/github/commit-activity/w/radarr/radarr.svg?style=flat-square)](/CHANGELOG.md#unreleased)
 
 | Service  | Master                      | Develop                      |
 |----------|:---------------------------:|:----------------------------:|
@@ -84,6 +89,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * And a beautiful UI
 * Importing Metadata such as trailers or subtitles
 * Adding metadata such as posters and information for Kodi and others to use
+* Advanced customization for profiles, such that Radarr will always download the copy you want
 
 ### Planned Features
 
@@ -100,7 +106,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 ### Requirements
 
-* [Visual Studio Community](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com)
+* [Visual Studio Community 2017](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
 
@@ -119,11 +125,11 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 * To build run `sh build.sh`
 
-**Note:** Windows users must have bash available to do this. [cmder](http://cmder.net/) which is a console emulator for windows has bash as part of it's default installation.
+**Note:** Windows users must have bash available to do this. If you installed git, you should have a git bash utility that works.
 
 ### Development
 
-* Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed
+* Open `NzbDrone.sln` in Visual Studio 2017 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
 * Make sure `NzbDrone.Console` is set as the startup project
 * Run `build.sh` before running
 
@@ -131,17 +137,27 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 This project would not be possible without the support by these amazing folks. [**Become a sponsor or backer**](https://opencollective.com/radarr) to help us out!
 
-[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3851)
+### Sponsors
 
----
+[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg)](https://opencollective.com/radarr/order/3851)
 
-[![Flexible Sponsors](https://opencollective.com/radarr/tiers/flexible-sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3856)
+### Flexible Sponsors
 
----
+[![Flexible Sponsors](https://opencollective.com/radarr/tiers/flexible-sponsor.svg?avatarHeight=54)](https://opencollective.com/radarr/order/3856)
 
-[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3850)
+### Backers
+
+[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=48)](https://opencollective.com/radarr/order/3850)
+
+### JetBrains
+
+Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrains](http://www.jetbrains.com/) for providing us with free licenses to their great tools
+* [<img src="/Logo/resharper.svg" alt="ReSharper" width="32"> ReSharper](http://www.jetbrains.com/resharper/)
+* [<img src="/Logo/webstorm.svg" alt="WebStorm" width="32"> WebStorm](http://www.jetbrains.com/webstorm/)
+* [<img src="/Logo/rider.svg" alt="Rider" width="32"> Rider](http://www.jetbrains.com/rider/)
+* [<img src="/Logo/dottrace.svg" alt="dotTrace" width="32"> dotTrace](http://www.jetbrains.com/dottrace/)
 
 ## License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2017
+* Copyright 2010-2018

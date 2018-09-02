@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+﻿﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using System.Data;
 using System.Linq;
@@ -59,6 +59,6 @@ namespace NzbDrone.Core.Datastore.Migration
                     }
                 }
             }
-        }        
+        }
     }
 }

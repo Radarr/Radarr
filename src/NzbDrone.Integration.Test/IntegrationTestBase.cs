@@ -63,9 +63,11 @@ namespace NzbDrone.Integration.Test
             new StartupContext();
 
             LogManager.Configuration = new LoggingConfiguration();
-            var consoleTarget = new ConsoleTarget { Layout = "${level}: ${message} ${exception}" };
+            var consoleTarget = new ConsoleTarget { Layout = "${level}: ${message} ${exception}", DetectConsoleAvailable = true};
             LogManager.Configuration.AddTarget(consoleTarget.GetType().Name, consoleTarget);
             LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, consoleTarget));
+
+            LogManager.ReconfigExistingLoggers();
         }
 
         public string TempDirectory { get; private set; }
@@ -200,13 +202,13 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public MovieResource EnsureMovie(string imdbId, string movieTitle, bool? monitored = null)
+        public MovieResource EnsureMovie(int tmdbid, string movieTitle, bool? monitored = null)
         {
-            var result = Movies.All().FirstOrDefault(v => v.ImdbId == imdbId);
+            var result = Movies.All().FirstOrDefault(v => v.TmdbId == tmdbid);
 
             if (result == null)
             {
-                var lookup = Movies.Lookup("imdb:" + imdbId);
+                var lookup = Movies.Lookup("tmdb:" + tmdbid);
                 var movie = lookup.First();
                 movie.ProfileId = 1;
                 movie.Path = Path.Combine(MovieRootFolder, movie.Title);
@@ -236,9 +238,9 @@ namespace NzbDrone.Integration.Test
             return result;
         }
 
-        public void EnsureNoMovie(string imdbId, string movieTitle)
+        public void EnsureNoMovie(int tmdbid, string movieTitle)
         {
-            var result = Movies.All().FirstOrDefault(v => v.ImdbId == imdbId);
+            var result = Movies.All().FirstOrDefault(v => v.TmdbId == tmdbid);
 
             if (result != null)
             {
@@ -259,7 +261,7 @@ namespace NzbDrone.Integration.Test
 
                 Commands.PostAndWait(new CommandResource { Name = "refreshmovie", Body = new RefreshMovieCommand(movie.Id) });
                 Commands.WaitAll();
-                
+
                 result = Movies.Get(movie.Id);
 
                 result.MovieFile.Should().NotBeNull();

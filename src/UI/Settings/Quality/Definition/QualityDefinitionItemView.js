@@ -22,7 +22,8 @@ var view = Marionette.ItemView.extend({
 		},
 
 		events : {
-				'slide .x-slider' : '_updateSize'
+				'slide .x-slider' : '_updateSize',
+                'blur .x-max-thirty' : '_changeMaxThirty'
 		},
 
 		initialize : function(options) {
@@ -76,18 +77,33 @@ var view = Marionette.ItemView.extend({
 
 				{
 						if (maxSize === 0 || maxSize === null) {
-								this.ui.thirtyMinuteMaxSize.html('Unlimited');
+								this.ui.thirtyMinuteMaxSize.val('Unlimited');
 								this.ui.sixtyMinuteMaxSize.html('Unlimited');
 						} else {
 								var maxBytes = maxSize * 1024 * 1024;
 								var maxThirty = FormatHelpers.bytes(maxBytes * 90, 2);
 								var maxSixty = FormatHelpers.bytes(maxBytes * 140, 2);
 
-								this.ui.thirtyMinuteMaxSize.html(maxThirty);
+								this.ui.thirtyMinuteMaxSize.val(maxThirty);
 								this.ui.sixtyMinuteMaxSize.html(maxSixty);
 						}
 				}
-		}
+		},
+
+        _changeMaxThirty : function() {
+		        var input = this.ui.thirtyMinuteMaxSize.val();
+		        var maxSize = parseFloat(input) || 0;
+		        var mbPerMinute = maxSize / 90 * 1024;
+		        if (mbPerMinute == 0)
+                {
+                    mbPerMinute = null;
+                }
+		        this.model.set("maxSize", mbPerMinute);
+		        var values = this.ui.sizeSlider.slider("option", "values");
+		        values[1] = mbPerMinute || this.slider.max;
+		        this.ui.sizeSlider.slider("option", "values", values);
+		        this._changeSize();
+        }
 });
 
 view = AsModelBoundView.call(view);

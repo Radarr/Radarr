@@ -5,6 +5,8 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -60,8 +62,27 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
             return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.Value.Items.FindIndex(v => v.Quality == remoteMovie.ParsedMovieInfo.Quality.Quality)),
+                       CompareCustomFormats(x, y),
                        CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
                        CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
+        }
+
+        private int CompareCustomFormats(DownloadDecision x, DownloadDecision y)
+        {
+            var left = x.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats.ToArray().ToList();
+            if (left.Count == 0)
+            {
+                left.Add(CustomFormat.None);
+            }
+            var right = y.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats;
+
+            var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile.Value);
+            var rightIndicies =  QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile.Value);
+
+            var leftTotal = leftIndicies.Sum();
+            var rightTotal = rightIndicies.Sum();
+
+            return leftTotal.CompareTo(rightTotal);
         }
 
         private int ComparePreferredWords(DownloadDecision x, DownloadDecision y)

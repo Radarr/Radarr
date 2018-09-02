@@ -33,8 +33,6 @@ module.exports = Marionette.Layout.extend({
         this.seasonNumber = options.seasonNumber;
 
         var viewOptions = {};
-        //viewOptions.seriesId = this.model.id;
-        //viewOptions.seasonNumber = this.seasonNumber;
         viewOptions.movieId = this.model.id;
 
         this.collection = new RenamePreviewCollection(viewOptions);
@@ -87,11 +85,11 @@ module.exports = Marionette.Layout.extend({
 
     _setCheckedState : function(checked) {
         if (checked) {
-            this.ui.checkboxIcon.addClass('icon-sonarr-checked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-unchecked');
+            this.ui.checkboxIcon.addClass('icon-radarr-checked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-unchecked');
         } else {
-            this.ui.checkboxIcon.addClass('icon-sonarr-unchecked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-checked');
+            this.ui.checkboxIcon.addClass('icon-radarr-unchecked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-checked');
         }
     },
 

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using NzbDrone.Api.REST;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Api.Qualities
@@ -6,16 +10,25 @@ namespace NzbDrone.Api.Qualities
     public class QualityDefinitionModule : NzbDroneRestModule<QualityDefinitionResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
+        private readonly IParsingService _parsingService;
 
-        public QualityDefinitionModule(IQualityDefinitionService qualityDefinitionService)
+        public QualityDefinitionModule(IQualityDefinitionService qualityDefinitionService, IParsingService parsingService)
         {
             _qualityDefinitionService = qualityDefinitionService;
+            _parsingService = parsingService;
 
             GetResourceAll = GetAll;
 
             GetResourceById = GetById;
 
             UpdateResource = Update;
+
+            CreateResource = Create;
+        }
+
+        private int Create(QualityDefinitionResource qualityDefinitionResource)
+        {
+            throw new BadRequestException("Not allowed!");
         }
 
         private void Update(QualityDefinitionResource resource)

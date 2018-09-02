@@ -13,7 +13,6 @@ using NzbDrone.Core.Movies;
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
     [TestFixture]
-	[Ignore("Series")]
     public class RemovePendingFixture : CoreTest<PendingReleaseService>
     {
         private List<PendingRelease> _pending;
@@ -35,13 +34,13 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                   .Setup(s => s.All())
                   .Returns( _pending);
 
-            /*Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
                   .Returns(_movie);
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetMovie(It.IsAny<string>()))
-                  .Returns(_movie);*/
+                  .Returns(_movie);
         }
 
         private void AddPending(int id, string title, int year)
@@ -49,7 +48,8 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _pending.Add(new PendingRelease
              {
                  Id = id,
-                 ParsedMovieInfo = new ParsedMovieInfo { MovieTitle = title, Year = year }
+                 ParsedMovieInfo = new ParsedMovieInfo { MovieTitle = title, Year = year },
+                 MovieId = _movie.Id,
              });
         }
 
@@ -58,14 +58,27 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             AddPending(id: 1, title: "Movie", year: 2001);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 1, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 1, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
             AssertRemoved(1);
         }
-        
+
         [Test]
+        public void should_not_remove_different_release()
+        {
+            AddPending(id: 1, title: "Movie", year: 2001);
+            AddPending(2, "Movie 2", 2001);
+
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 1, _movie.Id));
+
+            Subject.RemovePendingQueueItems(queueId);
+
+            AssertRemoved(1);
+        }
+
+        /*[Test]
         public void should_remove_multiple_releases_release()
         {
             AddPending(id: 1, title: "Movie", year: 2001);
@@ -73,7 +86,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 3, title: "Movie", year: 2003);
             AddPending(id: 4, title: "Movie", year: 2003);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 3, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 3, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -88,7 +101,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 3, title: "Movie", year: 2001);
             AddPending(id: 4, title: "Movie", year: 2001);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 1, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 1, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -103,7 +116,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 3, title: "Movie", year: 2001);
             AddPending(id: 4, title: "Movie", year: 2001);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 1, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 1, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -116,7 +129,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 1, title: "Movie", year: 2001);
             AddPending(id: 2, title: "Movie", year: 2001);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 1, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 1, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -129,13 +142,13 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 1, title: "Movie", year: 2001);
             AddPending(id: 2, title: "Movie", year: 2001);
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", 2, _movie.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", 2, _movie.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
             AssertRemoved(2);
-        }
-        
+        }*/
+
         private void AssertRemoved(params int[] ids)
         {
             Mocker.GetMock<IPendingReleaseRepository>().Verify(c => c.DeleteMany(It.Is<IEnumerable<int>>(s => s.SequenceEqual(ids))));

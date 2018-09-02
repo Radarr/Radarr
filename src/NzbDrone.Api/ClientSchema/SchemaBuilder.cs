@@ -41,7 +41,7 @@ namespace NzbDrone.Api.ClientSchema
                     };
 
                     var value = propertyInfo.GetValue(model, null);
-                    
+
                     if (propertyInfo.PropertyType.HasAttribute<FlagsAttribute>())
                     {
                         int intVal = (int)value;
@@ -50,7 +50,7 @@ namespace NzbDrone.Api.ClientSchema
                             .Where(f=> (f & intVal) == f)
                             .ToList();
                     }
-                    
+
                     if (value != null)
                     {
                         field.Value = value;
@@ -112,14 +112,14 @@ namespace NzbDrone.Api.ClientSchema
                     {
                         IEnumerable<int> value;
 
-                        if (field.Value.GetType() == typeof(JArray))
+                        if (field.Value?.GetType() == typeof(JArray))
                         {
                             value = ((JArray)field.Value).Select(s => s.Value<int>());
                         }
 
                         else
                         {
-                            value = field.Value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => Convert.ToInt32(s));
+                            value = field.Value?.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => Convert.ToInt32(s));
                         }
 
                         propertyInfo.SetValue(target, value, null);
@@ -141,7 +141,7 @@ namespace NzbDrone.Api.ClientSchema
 
                         propertyInfo.SetValue(target, value, null);
                     }
-                    
+
                     else if (propertyInfo.PropertyType.HasAttribute<FlagsAttribute>())
                     {
                         int value = field.Value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => Convert.ToInt32(s)).Sum();

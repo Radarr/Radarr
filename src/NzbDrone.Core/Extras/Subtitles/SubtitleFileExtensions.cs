@@ -24,7 +24,8 @@ namespace NzbDrone.Core.Extras.Subtitles
                                   ".txt",
                                   ".utf",
                                   ".utf8",
-                                  ".utf-8"
+                                  ".utf-8",
+                                  ".vtt"
                               };
         }
 

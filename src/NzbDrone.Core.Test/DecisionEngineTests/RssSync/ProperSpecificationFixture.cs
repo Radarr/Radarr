@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             var fakeSeries = Builder<Movie>.CreateNew()
                          .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p })
+                         .With(c => c.MovieFile = _firstFile)
                          .Build();
 
             _parseResultSingle = new RemoteMovie

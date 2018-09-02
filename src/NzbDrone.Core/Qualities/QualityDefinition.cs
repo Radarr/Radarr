@@ -1,6 +1,5 @@
 ﻿using NzbDrone.Core.Datastore;
 
-
 namespace NzbDrone.Core.Qualities
 {
     public class QualityDefinition : ModelBase

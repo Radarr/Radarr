@@ -13,7 +13,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _movie = EnsureMovie("tt0110912", "The Blacklist");
+            _movie = EnsureMovie(11, "The Blacklist");
 
             Blacklist.Post(new Api.Blacklist.BlacklistResource
             {
