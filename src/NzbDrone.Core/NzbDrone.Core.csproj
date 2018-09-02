@@ -188,6 +188,7 @@
     <Compile Include="Datastore\Migration\012_add_release_status.cs" />
     <Compile Include="Datastore\Migration\015_remove_fanzub.cs" />
     <Compile Include="Datastore\Migration\016_update_artist_history_indexes.cs" />
+    <Compile Include="Datastore\Migration\020_remove_pushalot.cs" />
     <Compile Include="Datastore\Migration\017_remove_nma.cs" />
     <Compile Include="Datastore\Migration\018_album_disambiguation.cs" />
     <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
@@ -795,8 +796,6 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchArtistComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
-    <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadata.cs" />
-    <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadataSettings.cs" />
     <Compile Include="Extras\Metadata\Consumers\Roksbox\RoksboxMetadata.cs" />
     <Compile Include="Extras\Metadata\Consumers\Roksbox\RoksboxMetadataSettings.cs" />
     <Compile Include="Extras\Metadata\Consumers\Wdtv\WdtvMetadata.cs" />
@@ -1019,11 +1018,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Notifications\Prowl\ProwlSettings.cs" />
-    <Compile Include="Notifications\Pushalot\Pushalot.cs" />
-    <Compile Include="Notifications\Pushalot\PushalotPriority.cs" />
-    <Compile Include="Notifications\Pushalot\PushalotProxy.cs" />
-    <Compile Include="Notifications\Pushalot\PushalotResponse.cs" />
-    <Compile Include="Notifications\Pushalot\PushalotSettings.cs" />
     <Compile Include="Notifications\PushBullet\PushBullet.cs" />
     <Compile Include="Notifications\PushBullet\PushBulletProxy.cs" />
     <Compile Include="Notifications\PushBullet\PushBulletSettings.cs" />
