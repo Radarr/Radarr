@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using NzbDrone.Integration.Test.Client;
@@ -104,7 +104,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void get_all_mediafiles()
         {
             var tempDir = GetTempDirectory("mediaDir");
-            File.WriteAllText(Path.Combine(tempDir, "somevideo.mkv"), "video");
+            File.WriteAllText(Path.Combine(tempDir, "somevideo.mp3"), "audio");
 
             var request = FileSystem.BuildRequest("mediafiles");
             request.Method = Method.GET;
@@ -117,7 +117,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.First().Should().ContainKey("relativePath");
             result.First().Should().ContainKey("name");
 
-            result.First()["name"].Should().Be("somevideo.mkv");
+            result.First()["name"].Should().Be("somevideo.mp3");
         }
     }
 }

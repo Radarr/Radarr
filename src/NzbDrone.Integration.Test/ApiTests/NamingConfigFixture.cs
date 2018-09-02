@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -26,7 +26,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             var config = NamingConfig.GetSingle();
             config.RenameTracks = false;
-            config.StandardTrackFormat = "{Artist Name} - {track:00} - {Album Title}";
+            config.StandardTrackFormat = "{Artist Name} - {Album Title} - {track:00} - {Track Title}";
 
             var result = NamingConfig.Put(config);
             result.RenameTracks.Should().BeFalse();
