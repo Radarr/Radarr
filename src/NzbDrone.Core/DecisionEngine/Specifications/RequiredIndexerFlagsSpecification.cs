@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Datastore;
@@ -25,34 +27,31 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         {
             var torrentInfo = subject.Release;
 
-            if (torrentInfo == null || torrentInfo.IndexerId == 0)
+
+            IIndexerSettings indexerSettings = null;
+            try {
+                indexerSettings = _indexerFactory.Get(subject.Release.IndexerId)?.Settings as IIndexerSettings;
+            }
+            catch (Exception e)
+            {
+                _logger.Debug("Indexer with id {0} does not exist, skipping required indexer flags specs.", subject.Release.IndexerId);
+            }
+
+            if (torrentInfo == null || indexerSettings == null)
             {
                 return Decision.Accept();
             }
 
-            IndexerDefinition indexer;
-            try
-            {
-                indexer = _indexerFactory.Get(torrentInfo.IndexerId);
-            }
-            catch (ModelNotFoundException)
-            {
-                _logger.Debug("Indexer with id {0} does not exist, skipping seeders check", torrentInfo.IndexerId);
-                return Decision.Accept();
-            }
-
-            var torrentIndexerSettings = indexer.Settings as ITorrentIndexerSettings;
-
-            if (torrentIndexerSettings != null)
+            if (indexerSettings is ITorrentIndexerSettings torrentIndexerSettings)
             {
                 var requiredFlags = torrentIndexerSettings.RequiredFlags;
                 var requiredFlag = (IndexerFlags) 0;
 
-                if (requiredFlags == null || requiredFlags.Count() == 0)
+                if (requiredFlags == null || !requiredFlags.Any())
                 {
                     return Decision.Accept();
                 }
-                
+
                 foreach (var flag in requiredFlags)
                 {
                     if (torrentInfo.IndexerFlags.HasFlag((IndexerFlags)flag))
@@ -61,7 +60,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                     }
                     requiredFlag |= (IndexerFlags)flag;
                 }
-                
+
                 _logger.Debug("None of the required indexer flags {0} where found. Found flags: {1}", requiredFlag, torrentInfo.IndexerFlags);
                 return Decision.Reject("None of the required indexer flags {0} where found. Found flags: {1}", requiredFlag, torrentInfo.IndexerFlags);
             }

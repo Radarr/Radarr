@@ -96,21 +96,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_when_episode_doesnt_match()
-        {
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
-                                                      .With(r => r.Movie = _movie)
-                                                      .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
-                                                                                       {
-                                                                                           Quality = new QualityModel(Quality.DVD)
-                                                                                       })
-                                                      .Build();
-
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
-        }
-
-        [Test]
         public void should_return_false_when_qualities_are_the_same()
         {
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()

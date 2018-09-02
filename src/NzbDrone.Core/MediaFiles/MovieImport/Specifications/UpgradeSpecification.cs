@@ -18,6 +18,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
+            var qualityComparer = new QualityModelComparer(localMovie.Movie.Profile);
+            if (localMovie.Movie.MovieFile != null && qualityComparer.Compare(localMovie.Movie.MovieFile.Quality, localMovie.Quality) > 0)
+            {
+                _logger.Debug("This file isn't an upgrade for all episodes. Skipping {0}", localMovie.Path);
+                return Decision.Reject("Not an upgrade for existing episode file(s)");
+            }
+
             return Decision.Accept();
         }
     }

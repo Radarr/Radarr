@@ -256,10 +256,10 @@ include_merge = False
 # )
 publish = stdout
 
-def write_to_file(content):
-  with open("CHANGELOG.md", "w+") as f:
-    for chunk in content:
-      f.write(chunk)
+#def write_to_file(content):
+#  with open("CHANGELOG.md", "w+") as f:
+#    for chunk in content:
+#      f.write(chunk)
 
 #publish = write_to_file
 

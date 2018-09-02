@@ -14,17 +14,17 @@ module.exports = NzbDroneCell.extend({
         var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
         if (status === 'released') {
-            this.$el.html('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
+            this.$el.html('<div class="released-banner"><i class="icon-radarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
             this._setStatusWeight(3);
         }
 
         if (status ==='inCinemas') {
-            this.$el.html('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
+            this.$el.html('<div class="cinemas-banner"><i class="icon-radarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
             this._setStatusWeight(2);
         }
 
         if (status === "announced") {
-            this.$el.html('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
+            this.$el.html('<div class="announced-banner"><i class="icon-radarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
             this._setStatusWeight(1);
         }
 

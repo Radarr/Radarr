@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Core.Parser
@@ -16,100 +18,118 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static Language ParseLanguage(string title)
+        public static List<Language> ParseLanguages(string title)
         {
             var lowerTitle = title.ToLower();
+            var languages = new List<Language>();
 
             if (lowerTitle.Contains("english"))
-                return Language.English;
+                languages.Add(Language.English);
 
             if (lowerTitle.Contains("french"))
-                return Language.French;
+                languages.Add(Language.French);
 
             if (lowerTitle.Contains("spanish"))
-                return Language.Spanish;
+                languages.Add( Language.Spanish);
 
             if (lowerTitle.Contains("danish"))
-                return Language.Danish;
+                languages.Add( Language.Danish);
 
             if (lowerTitle.Contains("dutch"))
-                return Language.Dutch;
+                languages.Add( Language.Dutch);
 
             if (lowerTitle.Contains("japanese"))
-                return Language.Japanese;
+                languages.Add( Language.Japanese);
 
             if (lowerTitle.Contains("cantonese"))
-                return Language.Cantonese;
+                languages.Add( Language.Cantonese);
 
             if (lowerTitle.Contains("mandarin"))
-                return Language.Mandarin;
+                languages.Add( Language.Mandarin);
 
             if (lowerTitle.Contains("korean"))
-                return Language.Korean;
+                languages.Add( Language.Korean);
 
             if (lowerTitle.Contains("russian"))
-                return Language.Russian;
+                languages.Add( Language.Russian);
 
             if (lowerTitle.Contains("polish"))
-                return Language.Polish;
+                languages.Add( Language.Polish);
 
             if (lowerTitle.Contains("vietnamese"))
-                return Language.Vietnamese;
+                languages.Add( Language.Vietnamese);
 
             if (lowerTitle.Contains("swedish"))
-                return Language.Swedish;
+                languages.Add( Language.Swedish);
 
             if (lowerTitle.Contains("norwegian"))
-                return Language.Norwegian;
+                languages.Add( Language.Norwegian);
 
             if (lowerTitle.Contains("nordic"))
-                return Language.Norwegian;
+                languages.Add( Language.Norwegian);
 
             if (lowerTitle.Contains("finnish"))
-                return Language.Finnish;
+                languages.Add( Language.Finnish);
 
             if (lowerTitle.Contains("turkish"))
-                return Language.Turkish;
+                languages.Add( Language.Turkish);
 
             if (lowerTitle.Contains("portuguese"))
-                return Language.Portuguese;
+                languages.Add( Language.Portuguese);
 
             if (lowerTitle.Contains("hungarian"))
-                return Language.Hungarian;
+                languages.Add( Language.Hungarian);
 
             if (lowerTitle.Contains("hebrew"))
-                return Language.Hebrew;
+                languages.Add( Language.Hebrew);
 
             var match = LanguageRegex.Match(title);
 
             if (match.Groups["italian"].Captures.Cast<Capture>().Any())
-                return Language.Italian;
+                languages.Add( Language.Italian);
 
             if (match.Groups["german"].Captures.Cast<Capture>().Any())
-                return Language.German;
+                languages.Add( Language.German);
 
             if (match.Groups["flemish"].Captures.Cast<Capture>().Any())
-                return Language.Flemish;
+                languages.Add( Language.Flemish);
 
             if (match.Groups["greek"].Captures.Cast<Capture>().Any())
-                return Language.Greek;
+                languages.Add( Language.Greek);
 
             if (match.Groups["french"].Success)
-                return Language.French;
+                languages.Add( Language.French);
 
             if (match.Groups["russian"].Success)
-                return Language.Russian;
+                languages.Add( Language.Russian);
 
             if (match.Groups["dutch"].Success)
-                return Language.Dutch;
+                languages.Add( Language.Dutch);
 
             if (match.Groups["hungarian"].Success)
-                return Language.Hungarian;
+                languages.Add( Language.Hungarian);
 
             if (match.Groups["hebrew"].Success)
-                return Language.Hebrew;
+                languages.Add( Language.Hebrew);
 
-            return Language.English;
+
+            return languages.DistinctBy(l => (int)l).ToList();
+        }
+
+        public static List<Language> EnhanceLanguages(string title, List<Language> languages)
+        {
+            if (title.ToLower().Contains("multi"))
+            {
+                //Let's add english language to multi release as a safe guard.
+                if (!languages.Contains(Language.English) && languages.Count < 2)
+                {
+                    languages.Add(Language.English);
+                }
+            }
+
+            if (!languages.Any()) languages.Add(Language.English);
+
+            return languages;
         }
 
         public static Language ParseSubtitleLanguage(string fileName)
@@ -135,7 +155,7 @@ namespace NzbDrone.Core.Parser
             {
                 Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);
             }
-            
+
             return Language.Unknown;
         }
     }

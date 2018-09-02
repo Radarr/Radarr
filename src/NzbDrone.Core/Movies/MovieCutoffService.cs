@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Movies
             //Get all items less than the cutoff
             foreach (var profile in profiles)
             {
-                var cutoffIndex = profile.Items.FindIndex(v => v.Quality == profile.Cutoff);
+                var cutoffIndex = profile.Items.FindIndex(v => v.Quality.Id == profile.Cutoff.Id);
                 var belowCutoff = profile.Items.Take(cutoffIndex).ToList();
 
                 if (belowCutoff.Any())

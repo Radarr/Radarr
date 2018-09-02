@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
             "Mission Impossible - no [HDTV-720p]")]
         public void CleanFileName(string name, string expectedName)
         {
-            FileNameBuilder.CleanFileName(name, NamingConfig.Default).Should().Be(expectedName);
+            FileNameBuilder.CleanFileName(name).Should().Be(expectedName);
         }
 
     }

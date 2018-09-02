@@ -32,13 +32,7 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
-        [Test]
-        public void should_not_include_extension_in_release_group()
-        {
-            const string path = @"C:\Test\Doctor.Who.2005.s01e01.internal.bdrip.x264-archivist.mkv";
-
-            Parser.Parser.ParseMovieTitle(path, false).ReleaseGroup.Should().Be("archivist");
-        }
+        
 
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV English", "SKGTV")]
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV_English", "SKGTV")]

@@ -12,7 +12,7 @@ namespace NzbDrone.Core.History
 
         public History()
         {
-            Data = new Dictionary<string, string>();
+            Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         public int MovieId { get; set; }

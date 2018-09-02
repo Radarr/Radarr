@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private Movie _movie;
         private List<MovieFile> _movieFiles;
-            
+
         [SetUp]
         public void Setup()
         {

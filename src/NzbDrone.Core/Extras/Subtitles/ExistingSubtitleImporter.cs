@@ -40,24 +40,18 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                 if (SubtitleFileExtensions.Extensions.Contains(extension))
                 {
-                    var localMovie = _parsingService.GetLocalMovie(possibleSubtitleFile, movie);
+                    var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(possibleSubtitleFile);
 
-                    if (localMovie == null)
+                    if (minimalInfo == null)
                     {
                         _logger.Debug("Unable to parse subtitle file: {0}", possibleSubtitleFile);
-                        continue;
-                    }
-
-                    if (localMovie.Movie == null)
-                    {
-                        _logger.Debug("Cannot find related movie for: {0}", possibleSubtitleFile);
                         continue;
                     }
 
                     var subtitleFile = new SubtitleFile
                                        {
                                            MovieId = movie.Id,
-                                           MovieFileId = localMovie.Movie.MovieFileId,
+                                           MovieFileId = movie.MovieFileId,
                                            RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
                                            Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
                                            Extension = extension

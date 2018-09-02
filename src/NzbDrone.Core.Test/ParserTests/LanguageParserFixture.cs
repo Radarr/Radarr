@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
@@ -11,13 +12,12 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         [TestCase("Castle.2009.S01E14.English.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.French.HDTV.XviD-LOL", Language.French)]
-        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French)]
+        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French, Language.English)]
         [TestCase("Everest.2015.FRENCH.VFQ.BDRiP.x264-CNF30", Language.French)]
-        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French)]
-        [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French)]
+        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French, Language.English)]
+        [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French, Language.English)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
-        [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.Italian.HDTV.XviD-LOL", Language.Italian)]
         [TestCase("Castle.2009.S01E14.Danish.HDTV.XviD-LOL", Language.Danish)]
         [TestCase("Castle.2009.S01E14.Dutch.HDTV.XviD-LOL", Language.Dutch)]
@@ -33,38 +33,30 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.Finnish.HDTV.XviD-LOL", Language.Finnish)]
         [TestCase("Castle.2009.S01E14.Turkish.HDTV.XviD-LOL", Language.Turkish)]
         [TestCase("Castle.2009.S01E14.Portuguese.HDTV.XviD-LOL", Language.Portuguese)]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL", Language.English)]
-        [TestCase("person.of.interest.1x19.ita.720p.bdmux.x264-novarip", Language.Italian)]
-        [TestCase("Salamander.S01E01.FLEMISH.HDTV.x264-BRiGAND", Language.Flemish)]
-        [TestCase("H.Polukatoikia.S03E13.Greek.PDTV.XviD-Ouzo", Language.Greek)]
         [TestCase("Burn.Notice.S04E15.Brotherly.Love.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP", Language.German)]
-        [TestCase("Ray Donovan - S01E01.720p.HDtv.x264-Evolve (NLsub)", Language.Dutch)]
-        [TestCase("Shield,.The.1x13.Tueurs.De.Flics.FR.DVDRip.XviD", Language.French)]
-        [TestCase("True.Detective.S01E01.1080p.WEB-DL.Rus.Eng.TVKlondike", Language.Russian)]
-        [TestCase("The.Trip.To.Italy.S02E01.720p.HDTV.x264-TLA", Language.English)]
         [TestCase("Revolution S01E03 No Quarter 2012 WEB-DL 720p Nordic-philipo mkv", Language.Norwegian)]
-        [TestCase("Extant.S01E01.VOSTFR.HDTV.x264-RiDERS", Language.French)]
         [TestCase("Constantine.2014.S01E01.WEBRiP.H264.AAC.5.1-NL.SUBS", Language.Dutch)]
-        [TestCase("Elementary - S02E16 - Kampfhaehne - mkv - by Videomann", Language.German)]
-        [TestCase("Two.Greedy.Italians.S01E01.The.Family.720p.HDTV.x264-FTP", Language.English)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUNDUB-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.ENG.HUN-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL", Language.Hungarian)]
-		[TestCase("The Danish Girl 2015", Language.English)]
         [TestCase("Passengers.2016.German.DL.AC3.Dubbed.1080p.WebHD.h264.iNTERNAL-PsO", Language.German)]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", Language.German)]
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
         [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
-        public void should_parse_language(string postTitle, Language language)
+        [TestCase("The Danish Girl 2015", Language.English)]
+        [TestCase("Nocturnal Animals (2016) MULTi VFQ English [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        public void should_parse_language(string postTitle, params Language[] languages)
         {
-            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
-			if (result == null)
-			{
-				Parser.Parser.ParseMovieTitle(postTitle, false).Language.Should().Be(language);
-				return;
-			}
-            result.Language.Should().Be(language);
+            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
+            var languageTitle = postTitle;
+            if (movieInfo != null)
+            {
+                languageTitle = movieInfo.SimpleReleaseTitle;
+            }
+            var result = LanguageParser.ParseLanguages(languageTitle);
+            result = LanguageParser.EnhanceLanguages(languageTitle, result);
+            result.Should().BeEquivalentTo(languages);
         }
 
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]

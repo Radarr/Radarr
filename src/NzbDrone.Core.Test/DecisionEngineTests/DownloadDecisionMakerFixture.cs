@@ -11,6 +11,8 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -32,6 +34,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
+            ParseMovieTitle();
+
             _pass1 = new Mock<IDecisionEngineSpecification>();
             _pass2 = new Mock<IDecisionEngineSpecification>();
             _pass3 = new Mock<IDecisionEngineSpecification>();
@@ -43,7 +47,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
             _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
             _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
-            
+
             _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail1"));
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail3"));
@@ -56,7 +60,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _mappingResult = new MappingResult {Movie = new Movie(), MappingResultType = MappingResultType.Success};
             _mappingResult.RemoteMovie = _remoteEpisode;
-            
+
 
             Mocker.GetMock<IParsingService>()
                   .Setup(c => c.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<SearchCriteriaBase>())).Returns(_mappingResult);

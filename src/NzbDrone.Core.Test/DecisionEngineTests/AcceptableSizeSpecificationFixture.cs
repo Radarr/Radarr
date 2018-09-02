@@ -9,6 +9,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -26,6 +27,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             movie = Builder<Movie>.CreateNew().Build();
 
+            qualityType = Builder<QualityDefinition>.CreateNew()
+                .With(q => q.MinSize = 2)
+                .With(q => q.MaxSize = 10)
+                .With(q => q.Quality = Quality.SDTV)
+                .Build();
+
             remoteMovie = new RemoteMovie
             {
                 Movie = movie,
@@ -38,11 +45,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Setup(v => v.Get(It.IsAny<Quality>()))
                 .Returns<Quality>(v => Quality.DefaultQualityDefinitions.First(c => c.Quality == v));
 
-            qualityType = Builder<QualityDefinition>.CreateNew()
-                .With(q => q.MinSize = 2)
-                .With(q => q.MaxSize = 10)
-                .With(q => q.Quality = Quality.SDTV)
-                .Build();
+
 
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.SDTV)).Returns(qualityType);
         }
@@ -107,6 +110,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(true);
             remoteMovie.Release.Size = 1105.Megabytes();
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(false);
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }

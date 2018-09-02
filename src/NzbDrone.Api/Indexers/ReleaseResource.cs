@@ -29,7 +29,7 @@ namespace NzbDrone.Api.Indexers
         public string Title { get; set; }
         public bool FullSeason { get; set; }
         public int SeasonNumber { get; set; }
-        public Language Language { get; set; }
+        public List<Language> Languages { get; set; }
         public int Year { get; set; }
         public string MovieTitle { get; set; }
         public int[] EpisodeNumbers { get; set; }
@@ -108,7 +108,7 @@ namespace NzbDrone.Api.Indexers
                 ReleaseGroup = parsedMovieInfo.ReleaseGroup,
                 ReleaseHash = parsedMovieInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                Language = parsedMovieInfo.Language,
+                Languages = parsedMovieInfo.Languages,
                 Year = parsedMovieInfo.Year,
                 MovieTitle = parsedMovieInfo.MovieTitle,
                 Approved = model.Approved,
@@ -133,7 +133,7 @@ namespace NzbDrone.Api.Indexers
                 Protocol = releaseInfo.DownloadProtocol,
                 IndexerFlags = torrentInfo.IndexerFlags.ToString().Split(new string[] { ", " }, StringSplitOptions.None),
                 Edition = parsedMovieInfo.Edition,
-                
+
                 //Special = parsedMovieInfo.Special,
             };
 

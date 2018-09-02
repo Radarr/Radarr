@@ -17,6 +17,11 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
     [TestFixture]
     public class TrackedDownloadServiceFixture : CoreTest<TrackedDownloadService>
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         private void GivenDownloadHistory()
         {
             Mocker.GetMock<IHistoryService>()
@@ -38,7 +43,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             var remoteEpisode = new RemoteMovie
             {
                 Movie = new Movie() { Id = 3 },
-           
+
                 ParsedMovieInfo = new ParsedMovieInfo()
                 {
                     MovieTitle = "A Movie",
@@ -49,6 +54,8 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.MovieTitle == "A Movie"), It.IsAny<string>(), null))
                   .Returns(new MappingResult{RemoteMovie = remoteEpisode});
+
+            ParseMovieTitle();
 
             var client = new DownloadClientDefinition()
             {
@@ -70,6 +77,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 			trackedDownload.RemoteMovie.Movie.Id.Should().Be(3);
         }
 
-        
+
     }
 }

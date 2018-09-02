@@ -10,7 +10,7 @@ module.exports = Backgrid.Cell.extend({
 
 		render : function() {
 				this.$el.empty();
-				this.$el.html('<i class="icon-sonarr-edit" title="Edit information about this file."></i>');
+				this.$el.html('<i class="icon-radarr-edit" title="Edit information about this file."></i>');
 
 				return this;
 		},

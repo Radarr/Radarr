@@ -10,6 +10,10 @@ namespace NzbDrone.Core.Test.HistoryTests
     [TestFixture]
     public class HistoryRepositoryFixture : DbTest<HistoryRepository, History.History>
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
 
         [Test]
         public void should_read_write_dictionary()

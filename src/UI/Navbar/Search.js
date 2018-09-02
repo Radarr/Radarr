@@ -6,13 +6,13 @@ var FullMovieCollection = require('../Movies/FullMovieCollection');
 require('typeahead');
 
 vent.on(vent.Hotkeys.NavbarSearch, function() {
-    $('.x-series-search').focus();
+    $('.x-movies-search').focus();
 });
 
 var substringMatcher = function() {
     return function findMatches (q, cb) {
-        var matches = _.select(FullMovieCollection.toJSON(), function(series) {
-            return series.title.toLowerCase().indexOf(q.toLowerCase()) > -1;
+        var matches = _.select(FullMovieCollection.toJSON(), function(movie) {
+            return movie.title.toLowerCase().indexOf(q.toLowerCase()) > -1;
         });
         cb(matches);    
     };
@@ -24,9 +24,9 @@ $.fn.bindSearch = function() {
         highlight : true,
         minLength : 1
     }, {
-        name       : 'series',
-        displayKey : function(series) {
-           return series.title + ' (' + series.year + ')';
+        name       : 'movie',
+        displayKey : function(movie) {
+           return movie.title + ' (' + movie.year + ')';
         },
         templates  : {
           empty : function(input) {
@@ -38,9 +38,9 @@ $.fn.bindSearch = function() {
         source     : substringMatcher()
     });
 
-    $(this).on('typeahead:selected typeahead:autocompleted', function(e, series) {
+    $(this).on('typeahead:selected typeahead:autocompleted', function(e, movie) {
         this.blur();
         $(this).val('');
-        Backbone.history.navigate('/movies/{0}'.format(series.titleSlug), { trigger : true });
+        Backbone.history.navigate('/movies/{0}'.format(movie.titleSlug), { trigger : true });
     });
 };

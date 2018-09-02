@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.REST;
+ using NzbDrone.Api.Qualities;
+ using NzbDrone.Api.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -13,12 +14,20 @@ namespace NzbDrone.Api.Profiles
         public Quality Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
+        public CustomFormatResource FormatCutoff { get; set; }
+        public List<ProfileFormatItemResource> FormatItems { get; set; }
         public Language Language { get; set; }
     }
 
     public class ProfileQualityItemResource : RestResource
     {
         public Quality Quality { get; set; }
+        public bool Allowed { get; set; }
+    }
+
+    public class ProfileFormatItemResource : RestResource
+    {
+        public CustomFormatResource Format { get; set; }
         public bool Allowed { get; set; }
     }
 
@@ -36,6 +45,8 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
+                FormatCutoff = model.FormatCutoff.ToResource(),
+                FormatItems = model.FormatItems.ConvertAll(ToResource),
                 Language = model.Language
             };
         }
@@ -50,7 +61,16 @@ namespace NzbDrone.Api.Profiles
                 Allowed = model.Allowed
             };
         }
-            
+
+        public static ProfileFormatItemResource ToResource(this ProfileFormatItem model)
+        {
+            return new ProfileFormatItemResource
+            {
+                Format = model.Format.ToResource(),
+                Allowed = model.Allowed
+            };
+        }
+
         public static Profile ToModel(this ProfileResource resource)
         {
             if (resource == null) return null;
@@ -63,6 +83,8 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = (Quality)resource.Cutoff.Id,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
+                FormatCutoff = resource.FormatCutoff.ToModel(),
+                FormatItems = resource.FormatItems.ConvertAll(ToModel),
                 Language = resource.Language
             };
         }
@@ -74,6 +96,15 @@ namespace NzbDrone.Api.Profiles
             return new ProfileQualityItem
             {
                 Quality = (Quality)resource.Quality.Id,
+                Allowed = resource.Allowed
+            };
+        }
+
+        public static ProfileFormatItem ToModel(this ProfileFormatItemResource resource)
+        {
+            return new ProfileFormatItem
+            {
+                Format = resource.Format.ToModel(),
                 Allowed = resource.Allowed
             };
         }

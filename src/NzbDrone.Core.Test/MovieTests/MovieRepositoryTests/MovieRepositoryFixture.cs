@@ -12,13 +12,19 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
 
     public class MovieRepositoryFixture : DbTest<MovieRepository, Movie>
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         [Test]
         public void should_lazyload_quality_profile()
         {
             var profile = new Profile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-
+                    FormatItems = CustomFormat.CustomFormatsFixture.GetDefaultFormatItems(),
+                    FormatCutoff = CustomFormats.CustomFormat.None,
                     Cutoff = Quality.Bluray1080p,
                     Name = "TestProfile"
                 };
@@ -33,8 +39,6 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
 
 
             StoredModel.Profile.Should().NotBeNull();
-
-
         }
     }
 }

@@ -44,24 +44,18 @@ namespace NzbDrone.Core.Extras.Others
                     continue;
                 }
 
-                var localMovie = _parsingService.GetLocalMovie(possibleExtraFile, movie);
+                var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(possibleExtraFile);
 
-                if (localMovie == null)
+                if (minimalInfo == null)
                 {
                     _logger.Debug("Unable to parse extra file: {0}", possibleExtraFile);
-                    continue;
-                }
-
-                if (localMovie.Movie == null)
-                {
-                    _logger.Debug("Cannot find related movie for: {0}", possibleExtraFile);
                     continue;
                 }
 
                 var extraFile = new OtherExtraFile
                 {
                     MovieId = movie.Id,
-                    MovieFileId = localMovie.Movie.MovieFileId,
+                    MovieFileId = movie.MovieFileId,
                     RelativePath = movie.Path.GetRelativePath(possibleExtraFile),
                     Extension = extension
                 };

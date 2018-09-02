@@ -5,39 +5,56 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Augmenters;
 
 namespace NzbDrone.Core.Parser
 {
     public interface IParsingService
     {
-        LocalMovie GetLocalMovie(string filename, Movie movie);
-        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
+        LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, List<object> helpers, bool sceneSource = false);
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
+        ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
+        ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers);
+        ParsedMovieInfo ParseMinimalMovieInfo(string path);
+        ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
+        List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
+        List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo);
     }
 
     public class ParsingService : IParsingService
     {
         private readonly IMovieService _movieService;
         private readonly IConfigService _config;
+        private readonly IQualityDefinitionService _qualityDefinitionService;
+        private readonly ICustomFormatService _formatService;
+        private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
- 
 
         public ParsingService(
                               IMovieService movieService,
                               IConfigService configService,
+                              IQualityDefinitionService qualityDefinitionService,
+                              ICustomFormatService formatService,
+                              IEnumerable<IAugmentParsedMovieInfo> augmenters,
                               Logger logger)
         {
             _movieService = movieService;
             _config = configService;
+            _qualityDefinitionService = qualityDefinitionService;
+            _formatService = formatService;
+            _augmenters = augmenters;
             _logger = logger;
 
             if (_arabicRomanNumeralMappings == null)
@@ -46,44 +63,159 @@ namespace NzbDrone.Core.Parser
             }
         }
 
-        public LocalMovie GetLocalMovie(string filename, Movie movie)
+        public ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers)
         {
-            return GetLocalMovie(filename, movie, null, false);
-        }
-
-        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
-        {
-            ParsedMovieInfo parsedMovieInfo;
-
-            if (folderInfo != null)
+            var result = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
+            if (result == null)
             {
-                parsedMovieInfo = folderInfo.JsonClone();
-                parsedMovieInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
-            }
-
-            else
-            {
-                parsedMovieInfo = Parser.ParseMoviePath(filename, _config.ParsingLeniency > 0);
-            }
-
-            if (parsedMovieInfo == null)
-            {
-                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
-                {
-                    _logger.Warn("Unable to parse movie info from path {0}", filename);
-                }
-
                 return null;
             }
+
+            result = EnhanceMinimalInfo(result, helpers);
+
+            return result;
+        }
+
+        private ParsedMovieInfo EnhanceMinimalInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
+        {
+            minimalInfo.Languages = LanguageParser.ParseLanguages(minimalInfo.SimpleReleaseTitle);
+            _logger.Debug("Language(s) parsed: {0}", string.Join(", ", minimalInfo.Languages.ToExtendedString()));
+
+            minimalInfo.Quality = QualityParser.ParseQuality(minimalInfo.SimpleReleaseTitle);
+
+            if (minimalInfo.Edition.IsNullOrWhiteSpace())
+            {
+                minimalInfo.Edition = Parser.ParseEdition(minimalInfo.SimpleReleaseTitle);
+            }
+
+            minimalInfo.ReleaseGroup = Parser.ParseReleaseGroup(minimalInfo.SimpleReleaseTitle);
+
+            minimalInfo.ImdbId = Parser.ParseImdbId(minimalInfo.SimpleReleaseTitle);
+
+            minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
+
+            // After the augmenters have done their job on languages we can do our static method as well.
+            minimalInfo.Languages =
+                LanguageParser.EnhanceLanguages(minimalInfo.SimpleReleaseTitle, minimalInfo.Languages);
+
+            minimalInfo.Quality.Quality = Quality.FindByInfo(minimalInfo.Quality.Source, minimalInfo.Quality.Resolution,
+                minimalInfo.Quality.Modifier);
+
+            minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
+
+            _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
+
+            return minimalInfo;
+        }
+
+        private ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
+        {
+            var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
+
+            foreach (var augmenter in augmenters)
+            {
+                minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
+                    helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
+            }
+
+            return minimalInfo;
+        }
+
+        public ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMovieInfo(fileInfo.Name, helpers);
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name, helpers);
+            }
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMovieInfo(fileInfo.Directory.Name + fileInfo.Extension, helpers);
+            }
+
+            return result;
+        }
+
+        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
+        {
+            var matches = MatchFormatTags(movieInfo);
+            var goodMatches = matches.Where(m => m.GoodMatch);
+            return goodMatches.Select(r => r.CustomFormat).ToList();
+        }
+
+        public List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo)
+        {
+            var formats = _formatService.All();
+
+            if (movieInfo.ExtraInfo.GetValueOrDefault("AdditionalFormats") is List<CustomFormat> additionalFormats)
+            {
+                formats.AddRange(additionalFormats);
+            }
+
+            var matches = new List<FormatTagMatchResult>();
+
+            foreach (var customFormat in formats)
+            {
+                var formatMatches = customFormat.FormatTags.GroupBy(t => t.TagType).Select(g =>
+                    new FormatTagMatchesGroup(g.Key, g.ToList().ToDictionary(t => t, t => t.DoesItMatch(movieInfo))));
+
+                var formatTagMatchesGroups = formatMatches.ToList();
+                matches.Add(new FormatTagMatchResult
+                {
+                    CustomFormat = customFormat,
+                    GroupMatches = formatTagMatchesGroups,
+                    GoodMatch = formatTagMatchesGroups.All(g => g.DidMatch)
+                });
+            }
+
+            return matches;
+        }
+
+        public LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, List<object> helpers, bool sceneSource = false)
+        {
+            var enhanced = EnhanceMinimalInfo(minimalInfo, helpers);
 
             return new LocalMovie
             {
                 Movie = movie,
-                Quality = parsedMovieInfo.Quality,
+                Quality = enhanced.Quality,
                 Path = filename,
-                ParsedMovieInfo = parsedMovieInfo,
-                ExistingFile = movie.Path.IsParentPath(filename)
+                ParsedMovieInfo = enhanced,
+                ExistingFile = movie.Path.IsParentPath(filename),
+                MediaInfo = helpers.FirstOrDefault(h => h?.GetType() == typeof(MediaInfoModel)) as MediaInfoModel
             };
+        }
+
+        public ParsedMovieInfo ParseMinimalMovieInfo(string file)
+        {
+            return Parser.ParseMovieTitle(file, _config.ParsingLeniency > 0);
+        }
+
+        public ParsedMovieInfo ParseMinimalPathMovieInfo(string path)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMinimalMovieInfo(fileInfo.Name);
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name);
+            }
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + fileInfo.Extension);
+            }
+
+            return result;
         }
 
         public Movie GetMovie(string title)
@@ -96,11 +228,6 @@ namespace NzbDrone.Core.Parser
             }
 
             var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-
-            if (movies == null)
-            {
-                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitleInfo.TitleWithoutYear, parsedMovieInfo.MovieTitleInfo.Year);
-            }
 
             if (movies == null)
             {
@@ -212,7 +339,7 @@ namespace NzbDrone.Core.Parser
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
             }
-            
+
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
                 movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
@@ -222,7 +349,7 @@ namespace NzbDrone.Core.Parser
                     return true;
                 }
             }
-            
+
             result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
             return false;
         }
@@ -279,7 +406,7 @@ namespace NzbDrone.Core.Parser
                 result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                 return false;
             }
-            
+
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
                 if (searchCriteria.Movie.CleanTitle.Contains(cleanTitle) ||
@@ -291,13 +418,13 @@ namespace NzbDrone.Core.Parser
                         result = new MappingResult {Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping};
                         return true;
                     }
-                    
+
                     if (parsedMovieInfo.Year < 1800)
                     {
                         result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
                         return true;
                     }
-                    
+
                     result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                     return false;
                 }
@@ -307,7 +434,7 @@ namespace NzbDrone.Core.Parser
 
             return false;
         }
-        
+
     }
 
 
@@ -342,9 +469,9 @@ namespace NzbDrone.Core.Parser
                 }
             }
         }
-        
+
         public RemoteMovie RemoteMovie;
-        public MappingResultType MappingResultType { get; set; } 
+        public MappingResultType MappingResultType { get; set; }
         public Movie Movie {
             get {
                 return RemoteMovie.Movie;
@@ -363,7 +490,7 @@ namespace NzbDrone.Core.Parser
                 };
             }
         }
-        
+
         public string ReleaseName { get; set; }
 
         public override string ToString() {
@@ -381,7 +508,7 @@ namespace NzbDrone.Core.Parser
             }
         }
     }
-    
+
     public enum MappingResultType
     {
         Unknown = -1,

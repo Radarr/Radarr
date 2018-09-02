@@ -49,14 +49,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             };
         }
 
-        private void WithFirstEpisodeUnmonitored()
+        private void WithMovieUnmonitored()
         {
-            _firstEpisode.Monitored = false;
-        }
-
-        private void WithSecondEpisodeUnmonitored()
-        {
-            _secondEpisode.Monitored = false;
+            _fakeSeries.Monitored = false;
         }
 
         [Test]
@@ -76,37 +71,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void only_episode_not_monitored_should_return_false()
         {
-            WithFirstEpisodeUnmonitored();
+            WithMovieUnmonitored();
             _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void both_episodes_not_monitored_should_return_false()
-        {
-            WithFirstEpisodeUnmonitored();
-            WithSecondEpisodeUnmonitored();
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void only_first_episode_not_monitored_should_return_false()
-        {
-            WithFirstEpisodeUnmonitored();
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void only_second_episode_not_monitored_should_return_false()
-        {
-            WithSecondEpisodeUnmonitored();
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_true_for_single_episode_search()
         {
             _fakeSeries.Monitored = false;
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria()).Accepted.Should().BeTrue();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria {UserInvokedSearch = true}).Accepted.Should().BeTrue();
         }
 
     }

@@ -58,10 +58,10 @@ namespace NzbDrone.Core.Indexers.Torznab
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
-        [FieldDefinition(7, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        [FieldDefinition(8, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        [FieldDefinition(9, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public override NzbDroneValidationResult Validate()

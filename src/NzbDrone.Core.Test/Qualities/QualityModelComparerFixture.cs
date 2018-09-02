@@ -1,7 +1,9 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.CustomFormat;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Qualities
@@ -11,6 +13,14 @@ namespace NzbDrone.Core.Test.Qualities
     {
         public QualityModelComparer Subject { get; set; }
 
+        private CustomFormats.CustomFormat _customFormat1;
+        private CustomFormats.CustomFormat _customFormat2;
+
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         private void GivenDefaultProfile()
         {
             Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities() });
@@ -19,6 +29,16 @@ namespace NzbDrone.Core.Test.Qualities
         private void GivenCustomProfile()
         {
             Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.Bluray720p, Quality.DVD) });
+        }
+
+        private void GivenDefaultProfileWithFormats()
+        {
+            _customFormat1 = new CustomFormats.CustomFormat("My Format 1", "L_ENGLISH"){Id=1};
+            _customFormat2 = new CustomFormats.CustomFormat("My Format 2", "L_FRENCH"){Id=2};
+
+            CustomFormatsFixture.GivenCustomFormats(CustomFormats.CustomFormat.None, _customFormat1, _customFormat2);
+
+            Subject = new QualityModelComparer(new Profile {Items = QualityFixture.GetDefaultQualities(), FormatItems = CustomFormatsFixture.GetSampleFormatItems()});
         }
 
         [Test]
@@ -67,6 +87,32 @@ namespace NzbDrone.Core.Test.Qualities
 
             var first = new QualityModel(Quality.DVD);
             var second = new QualityModel(Quality.Bluray720p);
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void should_be_lesser_when_first_quality_is_worse_format()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
+            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeLessThan(0);
+        }
+
+        [Test]
+        public void should_be_greater_when_first_quality_is_better_format()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
+            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
 
             var compare = Subject.Compare(first, second);
 

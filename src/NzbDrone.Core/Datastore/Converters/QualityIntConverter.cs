@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if (context.DbValue == DBNull.Value)
             {
-                return Quality.Unknown;
+                return null;
             }
 
             var val = Convert.ToInt32(context.DbValue);
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public object ToDB(object clrValue)
         {
-            if(clrValue == DBNull.Value) return 0;
+            if(clrValue == DBNull.Value) return null;
 
             if(clrValue as Quality == null)
             {

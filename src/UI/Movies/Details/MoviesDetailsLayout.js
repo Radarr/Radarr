@@ -186,15 +186,15 @@ module.exports = Marionette.Layout.extend({
 				var monitored = this.model.get('monitored');
 
 				this.ui.monitored.removeAttr('data-idle-icon');
-				this.ui.monitored.removeClass('fa-spin icon-sonarr-spinner');
+				this.ui.monitored.removeClass('fa-spin icon-radarr-spinner');
 
 				if (monitored) {
-						this.ui.monitored.addClass('icon-sonarr-monitored');
-						this.ui.monitored.removeClass('icon-sonarr-unmonitored');
+						this.ui.monitored.addClass('icon-radarr-monitored');
+						this.ui.monitored.removeClass('icon-radarr-unmonitored');
 						this.$el.removeClass('movie-not-monitored');
 				} else {
-						this.ui.monitored.addClass('icon-sonarr-unmonitored');
-						this.ui.monitored.removeClass('icon-sonarr-monitored');
+						this.ui.monitored.addClass('icon-radarr-unmonitored');
+						this.ui.monitored.removeClass('icon-radarr-monitored');
 						this.$el.addClass('movie-not-monitored');
 				}
 		},

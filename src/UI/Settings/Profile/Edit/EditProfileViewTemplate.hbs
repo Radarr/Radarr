@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="col-sm-1 help-inline">
-				<i class="icon-sonarr-form-info" title="Movies assigned this profile will be looked for with the selected language"/>
+				<i class="icon-radarr-form-info" title="Movies assigned this profile will be looked for with the selected language"/>
 		</div>
 </div>
 
@@ -31,7 +31,7 @@
 			<label class="col-sm-3 control-label">Preferred Tags</label>
 
 			<div class="col-sm-1 col-sm-push-5 help-inline">
-					<i class="icon-sonarr-form-info" title="When the release contains these tags it will be preferred. Case Insensitive." />
+					<i class="icon-radarr-form-info" title="When the release contains these tags it will be preferred. Case Insensitive." />
 			</div>
 
 			<div class="col-sm-5 col-sm-pull-1">
@@ -54,6 +54,24 @@
 		</div>
 
 		<div class="col-sm-1 help-inline">
-				<i class="icon-sonarr-form-info" title="Once this quality is reached Radarr will no longer upgrade movies"/>
+				<i class="icon-radarr-form-info" title="Once this quality is reached Radarr will no longer upgrade movies"/>
 		</div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">Custom Format Cutoff</label>
+
+    <div class="col-sm-5">
+        <select class="form-control x-cutoff" name="formatCutoff.id" validation-name="formatCutoff">
+            {{#eachReverse formatItems}}
+                {{#if allowed}}
+                    <option value="{{format.id}}">{{format.name}}</option>
+                {{/if}}
+            {{/eachReverse}}
+        </select>
+    </div>
+
+    <div class="col-sm-1 help-inline">
+        <i class="icon-radarr-form-info" title="Once this format is reached, Radarr will no longer upgrade movies."/>
+    </div>
 </div>

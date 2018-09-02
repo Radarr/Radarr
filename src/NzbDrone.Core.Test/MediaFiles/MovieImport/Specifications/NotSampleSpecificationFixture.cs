@@ -26,7 +26,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                                 {
                                     Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
                                     Movie = _movie,
-                                    Quality = new QualityModel(Quality.HDTV720p)
                                 };
         }
 

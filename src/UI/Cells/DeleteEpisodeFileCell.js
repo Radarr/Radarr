@@ -10,7 +10,7 @@ module.exports = Backgrid.Cell.extend({
 
     render : function() {
         this.$el.empty();
-        this.$el.html('<i class="icon-sonarr-delete" title="Delete episode file from disk"></i>');
+        this.$el.html('<i class="icon-radarr-delete" title="Delete episode file from disk"></i>');
 
         return this;
     },

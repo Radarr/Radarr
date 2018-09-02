@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -8,6 +10,11 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class ExtendedQualityParserRegex : CoreTest
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 0)]
         [TestCase("Gold.Rush.S04E05.Garnets.or.Gold.REAL.REAL.PROPER.HDTV.x264-W4F", 2)]
         [TestCase("Chuck.S03E17.REAL.PROPER.720p.HDTV.x264-ORENJI-RP", 1)]
@@ -58,7 +65,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Into the Inferno 2016 2160p Netflix WEBRip DD5 1 x264-Whatevs", 18)]
         public void should_parse_ultrahd_from_title(string title, int version)
         {
-            QualityParser.ParseQuality(title).Quality.Id.Should().Be(version);
+            var parsed = QualityParser.ParseQuality(title);
+            parsed.Resolution.Should().Be(Resolution.R2160P);
         }
     }
 }

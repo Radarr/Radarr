@@ -3,8 +3,8 @@ var Wreqr = require('./JsLibraries/backbone.wreqr');
 var vent = new Wreqr.EventAggregator();
 
 vent.Events = {
-		SeriesAdded        : 'series:added',
-		SeriesDeleted      : 'series:deleted',
+		MovieAdded         : 'movie:added',
+		MovieDeleted       : 'movie:deleted',
 		CommandComplete    : 'command:complete',
 		ServerUpdated      : 'server:updated',
 		EpisodeFileDeleted : 'episodefile:deleted'

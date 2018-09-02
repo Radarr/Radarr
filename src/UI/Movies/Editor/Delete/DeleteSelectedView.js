@@ -6,7 +6,7 @@ module.exports = Marionette.ItemView.extend({
     template : 'Movies/Editor/Delete/DeleteSelectedTemplate',
 
     events : {
-        'click .x-confirm-delete' : 'removeSeries',
+        'click .x-confirm-delete' : 'removeMovie',
         'change .x-delete-files'  : 'changeDeletedFiles'
     },
 
@@ -27,7 +27,7 @@ module.exports = Marionette.ItemView.extend({
         };
     },
 
-    removeSeries : function() {
+    removeMovie : function() {
         var self = this;
         var deleteFiles = this.ui.deleteFiles.prop('checked');
         var addExclusion = this.ui.addExclusion.prop('checked');
@@ -43,7 +43,7 @@ module.exports = Marionette.ItemView.extend({
         });
 
         proxy.save().done(function() {
-            //vent.trigger(vent.Events.SeriesDeleted, { series : self.model });
+            //vent.trigger(vent.Events.MovieDeleted, { series : self.model });
             vent.trigger(vent.Commands.CloseModalCommand);
         });
     },

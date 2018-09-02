@@ -52,12 +52,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         private IEnumerable<WatchFolderItem> GetDownloadItems(string watchFolder, Dictionary<string, WatchFolderItem> lastWatchItems, TimeSpan waitPeriod)
         {
-            // get a fresh naming config each time, in case the user has made changes
-            NamingConfig namingConfig = _namingConfigService.GetConfig();
-
+            // get a fresh naming config each time, in case the user has made changes            
             foreach (var folder in _diskProvider.GetDirectories(watchFolder))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder), namingConfig);
+                var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder));
 
                 var newWatchItem = new WatchFolderItem
                 {
@@ -93,7 +91,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             foreach (var videoFile in _diskScanService.GetVideoFiles(watchFolder, false))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(videoFile), namingConfig);
+                var title = FileNameBuilder.CleanFileName(Path.GetFileName(videoFile));
 
                 var newWatchItem = new WatchFolderItem
                 {

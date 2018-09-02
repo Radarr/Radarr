@@ -5,10 +5,10 @@
 @import "../Content/mixins";
 @import "../Content/variables";
 
-.series-title-cell {
+.movie-title-cell {
   .text-overflow();
 
-  max-width: 350px;
+  max-width: 322px;
 
   @media @sm {
     max-width: 250px
@@ -129,6 +129,18 @@ td.episode-status-cell, td.quality-cell, td.history-quality-cell, td.progress-ce
   }
 }
 
+td.quality-cell, td.history-quality-cell {
+  white-space: nowrap;
+}
+
+table.release-table {
+  td.quality-cell {
+    span.format-badge {
+      display: none;
+    }
+  }
+}
+
 .history-details-cell {
   .clickable();
   width: 10px;
@@ -166,9 +178,13 @@ td.episode-status-cell, td.quality-cell, td.history-quality-cell, td.progress-ce
   }
 }
 
-.series-actions-cell {
-  width     : 56px;
-  min-width : 56px;
+.movie-actions-cell {
+  width     : 84px;
+  min-width : 84px;
+
+  i {
+    .clickable();
+  }
 }
 
 .timeleft-cell {
@@ -207,10 +223,6 @@ td.delete-episode-file-cell {
   i {
     .clickable();
   }
-}
-
-.series-status-cell {
-  width: 16px;
 }
 
 .episode-number-cell {
@@ -274,5 +286,37 @@ td.delete-episode-file-cell {
     .clickable();
     margin-left  : 2px;
     margin-right : 2px;
+  }
+}
+
+td.matches-cell.sortable.renderable {
+  padding-top : 10px;
+  padding-bottom :  10px;
+
+  .label-large {
+    margin-left : 10px;
+    .label {
+      padding-bottom: 0px;
+    }
+    .label-warning {
+      padding-bottom: .07em;
+      padding-top: .15em;
+    }
+    .label-error {
+      padding-bottom : .07em;
+      padding-top : .15em;
+    }
+  }
+
+  .label {
+    margin-left: 5px;
+  }
+
+
+}
+
+td {
+  .format-badge {
+    margin-right: 10px;
   }
 }

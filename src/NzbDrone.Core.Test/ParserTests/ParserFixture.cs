@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
@@ -26,20 +27,8 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_remove_accents_from_title()
         {
             const string title = "Carniv\u00E0le";
-            
+
             title.CleanSeriesTitle().Should().Be("carnivale");
-        }
-
-        [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]
-        public void should_clean_up_invalid_path_characters(string postTitle)
-        {
-            Parser.Parser.ParseMovieTitle(postTitle, false);
-        }
-
-        [TestCase("[scnzbefnet][509103] 2.Broke.Girls.S03E18.720p.HDTV.X264-DIMENSION", "2 Broke Girls")]
-        public void should_remove_request_info_from_title(string postTitle, string title)
-        {
-            Parser.Parser.ParseMovieTitle(postTitle, false).MovieTitle.Should().Be(title);
         }
 
         //Note: This assumes extended language parser is activated
@@ -82,13 +71,6 @@ namespace NzbDrone.Core.Test.ParserTests
 			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
 		}
 
-		[TestCase("The Danish Girl 2015")]
-        [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
-		public void should_not_parse_language_in_movie_title(string postTitle)
-		{
-			Parser.Parser.ParseMovieTitle(postTitle, false).Language.Should().Be(Language.English);
-		}
-
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
         [TestCase("Star Wars Episode IV - A New Hope 1999 (Despecialized).mkv", "Despecialized")]
         [TestCase("Prometheus.2012.(Special.Edition.Remastered).[Bluray-1080p].mkv", "Special Edition Remastered")]
@@ -128,7 +110,12 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
-            Parser.Parser.ParseMovieTitle(postTitle, true).Edition.Should().Be(edition);
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            if (parsed.Edition.IsNullOrWhiteSpace())
+            {
+                parsed.Edition = Parser.Parser.ParseEdition(parsed.SimpleReleaseTitle);
+            }
+            parsed.Edition.Should().Be(edition);
         }
 
         [TestCase("The Lord of the Rings The Fellowship of the Ring (Extended Edition) 1080p BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]

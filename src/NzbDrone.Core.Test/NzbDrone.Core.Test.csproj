@@ -113,6 +113,8 @@
     <Compile Include="Blacklisting\BlacklistServiceFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
+    <Compile Include="CustomFormat\CustomFormatsFixture.cs" />
+    <Compile Include="CustomFormat\QualityTagFixture.cs" />
     <Compile Include="Datastore\BasicRepositoryFixture.cs" />
     <Compile Include="Datastore\Converters\ProviderSettingConverterFixture.cs" />
     <Compile Include="Datastore\DatabaseFixture.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Datastore\Migration\079_dedupe_tagsFixture.cs" />
     <Compile Include="Datastore\Migration\075_force_lib_updateFixture.cs" />
     <Compile Include="Datastore\Migration\090_update_kickass_urlFixture.cs" />
+    <Compile Include="Datastore\Migration\147_custom_formatsFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />
@@ -272,6 +275,7 @@
     <Compile Include="MediaFiles\MovieImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\SampleServiceFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\FreeSpaceSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualityFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\MatchesFolderSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\NotSampleSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\NotUnpackingSpecificationFixture.cs" />
@@ -289,6 +293,12 @@
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\GetMovieFolderFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentMovieInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithFileSizeFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithHistoryFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithMediaInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithReleaseInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\ParseQualityDefinitionFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
@@ -310,8 +320,6 @@
     <Compile Include="NotificationTests\Xbmc\OnDownloadFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\FileNameBuilderFixture.cs" />
     <Compile Include="ParserTests\ExtendedQualityParserRegex.cs" />
-    <Compile Include="ParserTests\CrapParserFixture.cs" />
-    <Compile Include="ParserTests\HashedReleaseFixture.cs" />
     <Compile Include="ParserTests\LanguageParserFixture.cs" />
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
@@ -320,8 +328,6 @@
     <Compile Include="ParserTests\PathParserFixture.cs" />
     <Compile Include="ParserTests\QualityParserFixture.cs" />
     <Compile Include="ParserTests\ReleaseGroupParserFixture.cs" />
-    <Compile Include="ParserTests\SeriesTitleInfoFixture.cs" />
-    <Compile Include="ParserTests\SingleEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\SceneCheckerFixture.cs" />
     <Compile Include="Profiles\ProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\ProfileServiceFixture.cs" />

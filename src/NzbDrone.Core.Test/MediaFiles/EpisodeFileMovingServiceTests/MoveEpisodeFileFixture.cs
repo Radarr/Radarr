@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
 
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.BuildFilePath(It.IsAny<Movie>(), It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(@"C:\Test\TV\Series\Season 01\File Name.avi".AsOsAgnostic());
+                  .Returns(@"C:\Test\TV\Series\File Name.avi".AsOsAgnostic());
 
             var rootFolder = @"C:\Test\TV\".AsOsAgnostic();
             Mocker.GetMock<IDiskProvider>()
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(s => s.PublishEvent<MovieFolderCreatedEvent>(It.Is<MovieFolderCreatedEvent>(p =>
-                      p.SeriesFolder.IsNotNullOrWhiteSpace())), Times.Once());
+                      p.MovieFolder.IsNotNullOrWhiteSpace())), Times.Once());
         }
 
         [Test]

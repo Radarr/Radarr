@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class UpgradeDiskSpecificationFixture : CoreTest<UpgradeDiskSpecification>
     {
         private UpgradeDiskSpecification _upgradeDisk;
-        
+
         private RemoteMovie _parseResultSingle;
         private MovieFile _firstFile;
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_episode_has_no_existing_file()
         {
-            _parseResultSingle.Movie.MovieFileId = 0;
+            _parseResultSingle.Movie.MovieFile = null;
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
 
