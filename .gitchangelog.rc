@@ -83,7 +83,7 @@ ignore_regexps = [
 ##
 section_regexps = [
     ('**New features**', [
-        r'^[aA]dded?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
+        r'^[aA]dded?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?(.*)$',
         r'^[uU]pdated?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[cC]hanged?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[nN]ew?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
@@ -259,7 +259,7 @@ include_merge = False
 def write_to_file(content):
   with open("CHANGELOG.md", "w+") as f:
     for chunk in content:
-      f.write(chunk.encode('utf-8'))
+      f.write(chunk)
 
 publish = write_to_file
 
