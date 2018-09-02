@@ -194,7 +194,7 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleTrackFile = (body) => {
+  handleTrackfile = (body) => {
     const section = 'trackFiles';
 
     if (body.action === 'updated') {
