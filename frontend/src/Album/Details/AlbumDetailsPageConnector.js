@@ -34,6 +34,10 @@ const mapDispatchToProps = {
 
 class AlbumDetailsPageConnector extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { hasMounted: false };
+  }
   //
   // Lifecycle
 
@@ -50,6 +54,7 @@ class AlbumDetailsPageConnector extends Component {
 
   populate = () => {
     const foreignAlbumId = this.props.foreignAlbumId;
+    this.setState({ hasMounted: true });
     this.props.fetchAlbums({ foreignAlbumId });
   }
 
@@ -75,7 +80,7 @@ class AlbumDetailsPageConnector extends Component {
       );
     }
 
-    if (isAlbumsFetching) {
+    if (isAlbumsFetching || !this.state.hasMounted) {
       return (
         <LoadingIndicator />
       );
@@ -87,7 +92,7 @@ class AlbumDetailsPageConnector extends Component {
       );
     }
 
-    if (!isAlbumsFetching && isAlbumsPopulated) {
+    if (!isAlbumsFetching && isAlbumsPopulated && this.state.hasMounted) {
       return (
         <AlbumDetailsConnector
           foreignAlbumId={foreignAlbumId}
