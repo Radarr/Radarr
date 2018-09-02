@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Notifications.Xbmc;
 
-namespace NzbDrone.Core.Notifications.Plex
+namespace NzbDrone.Core.Notifications.Plex.HomeTheater
 {
     public class PlexHomeTheater : NotificationBase<PlexHomeTheaterSettings>
     {
@@ -23,12 +23,12 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
+            Notify(ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
         }
 
         public override void OnDownload(TrackDownloadMessage message)
         {
-            Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
+            Notify(TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
         }
 
         public override ValidationResult Test()
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Notifications.Plex
             return new ValidationResult(failures);
         }
 
-        private void Notify(XbmcSettings settings, string header, string message)
+        private void Notify(string header, string message)
         {
             try
             {

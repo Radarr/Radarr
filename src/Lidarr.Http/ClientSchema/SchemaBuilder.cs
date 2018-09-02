@@ -90,7 +90,7 @@ namespace Lidarr.Http.ClientSchema
                     var fieldAttribute = property.Item2;
                     var field = new Field
                     {
-                        Name = prefix + propertyInfo.Name,
+                        Name = prefix + GetCamelCaseName(propertyInfo.Name),
                         Label = fieldAttribute.Label,
                         Unit = fieldAttribute.Unit,
                         HelpText = fieldAttribute.HelpText,
@@ -117,7 +117,7 @@ namespace Lidarr.Http.ClientSchema
                 }
                 else
                 {
-                    result.AddRange(GetFieldMapping(propertyInfo.PropertyType, propertyInfo.Name + ".", t => propertyInfo.GetValue(targetSelector(t), null)));
+                    result.AddRange(GetFieldMapping(propertyInfo.PropertyType, GetCamelCaseName(propertyInfo.Name) + ".", t => propertyInfo.GetValue(targetSelector(t), null)));
                 }
             }
 
@@ -207,6 +207,11 @@ namespace Lidarr.Http.ClientSchema
             {
                 return fieldValue => fieldValue;
             }
+        }
+
+        private static string GetCamelCaseName(string name)
+        {
+            return Char.ToLowerInvariant(name[0]) + name.Substring(1);
         }
     }
 }

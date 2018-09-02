@@ -60,6 +60,8 @@ namespace NzbDrone.Core.Configuration
         //Internal
         bool CleanupMetadataImages { get; set; }
 
+        string PlexClientIdentifier { get; }
+
         //MetadataSource
         string MetadataSource { get; set; }
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace NzbDrone.Core.Notifications.Plex.Models
+namespace NzbDrone.Core.Notifications.Plex.Server
 {
     public class PlexSectionLocation
     {

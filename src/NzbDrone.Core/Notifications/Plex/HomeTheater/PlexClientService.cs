@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Http;
 
-namespace NzbDrone.Core.Notifications.Plex
+namespace NzbDrone.Core.Notifications.Plex.HomeTheater
 {
     public interface IPlexClientService
     {
