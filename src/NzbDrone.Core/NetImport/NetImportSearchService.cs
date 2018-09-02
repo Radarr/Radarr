@@ -184,6 +184,8 @@ namespace NzbDrone.Core.NetImport
                 var moviesInLibrary = _movieService.GetAllMovies();
                 foreach (var movie in moviesInLibrary)
                 {
+                    _logger.Debug("working on local {0}", movie.Title);
+                    _logger.Trace("working on local {0}", movie.Title);
                     bool foundMatch = false;
                     foreach (var listedMovie in movies)
                     {
@@ -204,7 +206,7 @@ namespace NzbDrone.Core.NetImport
                                     _movieService.DeleteMovie(movie.Id, false, true);
                                     break;
                                 case "removeAndDelete":
-                                    _logger.Info("{0} was in your library and not found in your lists --> Removing from library and deleting files", movie);
+                                    _logger.Info("{0} was in your library and found in your lists --> Removing from library and deleting files", movie);
                                     _movieService.DeleteMovie(movie.Id, true, true);
                                     break;
                                 default:
@@ -215,7 +217,7 @@ namespace NzbDrone.Core.NetImport
                     }
                     if (!foundMatch)
                     {
-                        _logger.Debug("movie {0} not found in your defined trakt list", movie.Title);
+                        _logger.Debug("movie {0} not found in your defined list", movie.Title);
 
                     }
                     //wrong position
