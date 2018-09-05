@@ -1,3 +1,5 @@
+const lidarrGreen = '#00A65B';
+
 module.exports = {
   defaultColor: '#333',
   disabledColor: '#999',
@@ -9,18 +11,18 @@ module.exports = {
   successColor: '#27c24c',
   dangerColor: '#f05050',
   warningColor: '#ffa500',
-  infoColor: '#00A65B',
+  infoColor: lidarrGreen,
   purple: '#7a43b6',
   nzbdronePurple: '#7932ea',
   nzbdronePink: '#f43565',
-  sonarrBlue: '#00A65B',
+  lidarrGreen,
   helpTextColor: '#909293',
   gray: '#adadad',
   disabledInputColor: '#808080',
 
   // Theme Colors
 
-  themeBlue: '#00A65B',
+  themeBlue: lidarrGreen,
   themeRed: '#c4273c',
   themeDarkColor: '#353535',
   themeLightColor: '#1d563d',
