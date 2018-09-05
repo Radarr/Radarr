@@ -1,9 +1,8 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as systemActions from 'Store/Actions/systemActions';
 import * as commandNames from 'Commands/commandNames';
@@ -12,10 +11,8 @@ import LogsTable from './LogsTable';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.system.logs,
-    createCommandsSelector(),
-    (logs, commands) => {
-      const clearLogExecuting = _.some(commands, { name: commandNames.CLEAR_LOGS });
-
+    createCommandExecutingSelector(commandNames.CLEAR_LOGS),
+    (logs, clearLogExecuting) => {
       return {
         clearLogExecuting,
         ...logs

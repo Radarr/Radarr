@@ -1,10 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import combinePath from 'Utilities/String/combinePath';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { fetchLogFiles } from 'Store/Actions/systemActions';
 import * as commandNames from 'Commands/commandNames';
@@ -14,8 +13,8 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.system.logFiles,
     (state) => state.system.status.item,
-    createCommandsSelector(),
-    (logFiles, status, commands) => {
+    createCommandExecutingSelector(commandNames.DELETE_LOG_FILES),
+    (logFiles, status, deleteFilesExecuting) => {
       const {
         isFetching,
         items
@@ -25,8 +24,6 @@ function createMapStateToProps() {
         appData,
         isWindows
       } = status;
-
-      const deleteFilesExecuting = _.some(commands, { name: commandNames.DELETE_LOG_FILES });
 
       return {
         isFetching,

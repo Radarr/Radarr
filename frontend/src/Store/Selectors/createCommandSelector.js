@@ -6,7 +6,7 @@ function createCommandSelector(name, contraints = {}) {
   return createSelector(
     createCommandsSelector(),
     (commands) => {
-      return !!findCommand(commands, { name, ...contraints });
+      return findCommand(commands, { name, ...contraints });
     }
   );
 }

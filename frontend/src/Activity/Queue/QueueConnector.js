@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as queueActions from 'Store/Actions/queueActions';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
@@ -17,10 +17,8 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.albums,
     (state) => state.queue.paged,
-    createCommandsSelector(),
-    (albums, queue, commands) => {
-      const isCheckForFinishedDownloadExecuting = _.some(commands, { name: commandNames.CHECK_FOR_FINISHED_DOWNLOAD });
-
+    createCommandExecutingSelector(commandNames.CHECK_FOR_FINISHED_DOWNLOAD),
+    (albums, queue, isCheckForFinishedDownloadExecuting) => {
       return {
         isAlbumsFetching: albums.isFetching,
         isAlbumsPopulated: albums.isPopulated,

@@ -1,9 +1,8 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { fetchBackups, deleteBackup } from 'Store/Actions/systemActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -12,16 +11,14 @@ import Backups from './Backups';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.system.backups,
-    createCommandsSelector(),
-    (backups, commands) => {
+    createCommandExecutingSelector(commandNames.BACKUP),
+    (backups, backupExecuting) => {
       const {
         isFetching,
         isPopulated,
         error,
         items
       } = backups;
-
-      const backupExecuting = _.some(commands, { name: commandNames.BACKUP });
 
       return {
         isFetching,

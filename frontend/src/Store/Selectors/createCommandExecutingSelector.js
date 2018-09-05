@@ -1,12 +1,11 @@
 import { createSelector } from 'reselect';
-import { findCommand, isCommandExecuting } from 'Utilities/Command';
-import createCommandsSelector from './createCommandsSelector';
+import { isCommandExecuting } from 'Utilities/Command';
+import createCommandSelector from './createCommandSelector';
 
 function createCommandExecutingSelector(name, contraints = {}) {
   return createSelector(
-    createCommandsSelector(),
-    (commands) => {
-      const command = findCommand(commands, { name, ...contraints });
+    createCommandSelector(name, contraints),
+    (command) => {
       return isCommandExecuting(command);
     }
   );

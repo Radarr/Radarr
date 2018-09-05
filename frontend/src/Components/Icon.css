@@ -6,6 +6,10 @@
   color: inherit;
 }
 
+.info {
+  color: $infoColor;
+}
+
 .success {
   color: $successColor;
 }

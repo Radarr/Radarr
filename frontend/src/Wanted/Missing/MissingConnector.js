@@ -7,7 +7,7 @@ import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePo
 import getFilterValue from 'Utilities/Filter/getFilterValue';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import * as wantedActions from 'Store/Actions/wantedActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
@@ -17,9 +17,8 @@ import Missing from './Missing';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.wanted.missing,
-    createCommandsSelector(),
-    (missing, commands) => {
-      const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_ALBUM_SEARCH });
+    createCommandExecutingSelector(commandNames.MISSING_ALBUM_SEARCH),
+    (missing, isSearchingForMissingAlbums) => {
 
       return {
         isSearchingForMissingAlbums,

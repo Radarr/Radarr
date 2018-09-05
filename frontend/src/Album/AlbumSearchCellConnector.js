@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { isCommandExecuting } from 'Utilities/Command';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -13,14 +13,17 @@ function createMapStateToProps() {
     createArtistSelector(),
     createCommandsSelector(),
     (albumId, artist, commands) => {
-      const isSearching = _.some(commands, (command) => {
+      const isSearching = commands.some((command) => {
         const albumSearch = command.name === commandNames.ALBUM_SEARCH;
 
         if (!albumSearch) {
           return false;
         }
 
-        return command.body.albumIds.indexOf(albumId) > -1;
+        return (
+          isCommandExecuting(command) &&
+          command.body.albumIds.indexOf(albumId) > -1
+        );
       });
 
       return {

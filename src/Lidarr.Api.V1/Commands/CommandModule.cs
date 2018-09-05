@@ -79,15 +79,9 @@ namespace Lidarr.Api.V1.Commands
                 {
                     _pendingUpdates[message.Command.Id] = message.Command.ToResource();
                 }
+
                 _debouncer.Execute();
             }
-
-            if (message.Command.Name == typeof(MessagingCleanupCommand).Name.Replace("Command", "") &&
-                message.Command.Status == CommandStatus.Completed)
-            {
-                BroadcastResourceChange(ModelAction.Sync);
-            }
-
         }
 
         private void SendUpdates()
@@ -100,6 +94,12 @@ namespace Lidarr.Api.V1.Commands
                 foreach (var pendingUpdate in pendingUpdates)
                 {
                     BroadcastResourceChange(ModelAction.Updated, pendingUpdate);
+
+                    if (pendingUpdate.Name == typeof(MessagingCleanupCommand).Name.Replace("Command", "") &&
+                        pendingUpdate.Status == CommandStatus.Completed)
+                    {
+                        BroadcastResourceChange(ModelAction.Sync);
+                    }
                 }
             }
         }

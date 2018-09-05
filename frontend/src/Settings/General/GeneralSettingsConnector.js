@@ -1,10 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import { setGeneralSettingsValue, saveGeneralSettings, fetchGeneralSettings } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
@@ -19,11 +18,9 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
     createSettingsSectionSelector(SECTION),
-    createCommandsSelector(),
+    createCommandExecutingSelector(commandNames.RESET_API_KEY),
     createSystemStatusSelector(),
-    (advancedSettings, sectionSettings, commands, systemStatus) => {
-      const isResettingApiKey = _.some(commands, { name: commandNames.RESET_API_KEY });
-
+    (advancedSettings, sectionSettings, isResettingApiKey, systemStatus) => {
       return {
         advancedSettings,
         isResettingApiKey,

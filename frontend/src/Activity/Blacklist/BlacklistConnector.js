@@ -1,10 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import * as blacklistActions from 'Store/Actions/blacklistActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -13,10 +12,8 @@ import Blacklist from './Blacklist';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.blacklist,
-    createCommandsSelector(),
-    (blacklist, commands) => {
-      const isClearingBlacklistExecuting = _.some(commands, { name: commandNames.CLEAR_BLACKLIST });
-
+    createCommandExecutingSelector(commandNames.CLEAR_BLACKLIST),
+    (blacklist, isClearingBlacklistExecuting) => {
       return {
         isClearingBlacklistExecuting,
         ...blacklist
