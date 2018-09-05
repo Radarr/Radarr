@@ -2,6 +2,7 @@ import * as addArtist from './addArtistActions';
 import * as app from './appActions';
 import * as blacklist from './blacklistActions';
 import * as captcha from './captchaActions';
+import * as devices from './deviceActions';
 import * as calendar from './calendarActions';
 import * as commands from './commandActions';
 import * as albums from './albumActions';
@@ -34,6 +35,7 @@ export default [
   captcha,
   calendar,
   commands,
+  devices,
   albums,
   trackFiles,
   albumHistory,

@@ -54,7 +54,7 @@ class TagInput extends Component {
     return value.length >= this.props.minQueryLength;
   }
 
-  renderSuggestion({ name }, { query }) {
+  renderSuggestion({ name }) {
     return name;
   }
 
@@ -202,6 +202,8 @@ class TagInput extends Component {
 
   render() {
     const {
+      className,
+      inputClassName,
       placeholder,
       hasError,
       hasWarning
@@ -214,7 +216,7 @@ class TagInput extends Component {
     } = this.state;
 
     const inputProps = {
-      className: styles.input,
+      className: inputClassName,
       name,
       value,
       placeholder,
@@ -228,7 +230,7 @@ class TagInput extends Component {
 
     const theme = {
       container: classNames(
-        styles.inputContainer,
+        className,
         isFocused && styles.isFocused,
         hasError && styles.hasError,
         hasWarning && styles.hasWarning,
@@ -266,6 +268,8 @@ export const tagShape = {
 };
 
 TagInput.propTypes = {
+  className: PropTypes.string.isRequired,
+  inputClassName: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.shape(tagShape)).isRequired,
   tagList: PropTypes.arrayOf(PropTypes.shape(tagShape)).isRequired,
   allowNew: PropTypes.bool.isRequired,
@@ -281,6 +285,8 @@ TagInput.propTypes = {
 };
 
 TagInput.defaultProps = {
+  className: styles.inputContainer,
+  inputClassName: styles.input,
   allowNew: true,
   kind: kinds.INFO,
   placeholder: '',

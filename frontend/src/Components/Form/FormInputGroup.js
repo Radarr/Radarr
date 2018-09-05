@@ -4,6 +4,7 @@ import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
+import DeviceInputConnector from './DeviceInputConnector';
 import MonitorAlbumsSelectInput from './MonitorAlbumsSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
@@ -29,6 +30,9 @@ function getComponent(type) {
 
     case inputTypes.CHECK:
       return CheckInput;
+
+    case inputTypes.DEVICE:
+      return DeviceInputConnector;
 
     case inputTypes.MONITOR_ALBUMS_SELECT:
       return MonitorAlbumsSelectInput;

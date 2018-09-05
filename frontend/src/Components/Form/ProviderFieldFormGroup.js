@@ -12,6 +12,8 @@ function getType(type) {
       return inputTypes.CAPTCHA;
     case 'checkbox':
       return inputTypes.CHECK;
+    case 'device':
+      return inputTypes.DEVICE;
     case 'password':
       return inputTypes.PASSWORD;
     case 'number':
@@ -20,6 +22,8 @@ function getType(type) {
       return inputTypes.PATH;
     case 'select':
       return inputTypes.SELECT;
+    case 'tag':
+      return inputTypes.TEXT_TAG;
     case 'textbox':
       return inputTypes.TEXT;
     case 'oauth':

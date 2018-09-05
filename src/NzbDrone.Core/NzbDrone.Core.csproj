@@ -900,7 +900,10 @@
     <Compile Include="Notifications\Plex\HomeTheater\PlexClientService.cs" />
     <Compile Include="Notifications\Plex\Server\PlexServer.cs" />
     <Compile Include="Notifications\Plex\Server\PlexServerProxy.cs" />
+    <Compile Include="Notifications\PushBullet\PushBulletDevice.cs" />
+    <Compile Include="Notifications\PushBullet\PushBulletDevicesResponse.cs" />
     <Compile Include="Notifications\PushBullet\PushBulletException.cs" />
+    <Compile Include="Notifications\Pushover\PushoverProxy.cs" />
     <Compile Include="Notifications\Slack\Payloads\Attachment.cs" />
     <Compile Include="Notifications\Slack\Payloads\SlackPayload.cs" />
     <Compile Include="Notifications\Slack\Slack.cs" />
@@ -1027,7 +1030,6 @@
     <Compile Include="Notifications\Pushover\InvalidResponseException.cs" />
     <Compile Include="Notifications\Pushover\Pushover.cs" />
     <Compile Include="Notifications\Pushover\PushoverPriority.cs" />
-    <Compile Include="Notifications\Pushover\PushoverService.cs" />
     <Compile Include="Notifications\Pushover\PushoverSettings.cs" />
     <Compile Include="Notifications\Xbmc\XbmcJsonException.cs" />
     <Compile Include="Notifications\Xbmc\HttpApiProvider.cs" />
