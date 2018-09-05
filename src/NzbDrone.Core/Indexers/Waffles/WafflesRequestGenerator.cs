@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.Waffles
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests(MaxPages, string.Format("&q=artist:{0} album:{1}",searchCriteria.Artist.Name,searchCriteria.AlbumTitle)));
+            pageableRequests.Add(GetPagedRequests(MaxPages, string.Format("&q=artist:{0} album:{1}",searchCriteria.ArtistQuery,searchCriteria.AlbumQuery)));
 
             return pageableRequests;
         }
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Indexers.Waffles
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests(MaxPages, string.Format("&q=artist:{0}", searchCriteria.Artist.Name)));
+            pageableRequests.Add(GetPagedRequests(MaxPages, string.Format("&q=artist:{0}", searchCriteria.ArtistQuery)));
 
             return pageableRequests;
         }

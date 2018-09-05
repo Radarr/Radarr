@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Indexers.Headphones
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
                         string.Format("&q={0}",
                         NewsnabifyTitle(string.Format("{0} {1}",
-                                         searchCriteria.Artist.Name,
-                                         searchCriteria.AlbumTitle)))));
+                                         searchCriteria.ArtistQuery,
+                                         searchCriteria.AlbumQuery)))));
 
             return pageableRequests;
         }
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Indexers.Headphones
 
             pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
                     string.Format("&q={0}",
-                    NewsnabifyTitle(searchCriteria.Artist.Name))));
+                    NewsnabifyTitle(searchCriteria.ArtistQuery))));
 
             return pageableRequests;
         }

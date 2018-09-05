@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             var page = results.GetAllTiers().First().First();
 
-            page.Url.Query.Should().Contain("artist=Alien Ant Farm");
+            page.Url.Query.Should().Contain("artist=Alien%20Ant%20Farm");
             page.Url.Query.Should().Contain("album=TruANT");
         }
     }

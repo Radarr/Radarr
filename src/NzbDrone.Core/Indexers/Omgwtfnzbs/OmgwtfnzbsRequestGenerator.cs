@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
 
             pageableRequests.Add(GetPagedRequests(string.Format("{0}+{1}",
-                searchCriteria.Artist.Name,
-                searchCriteria.AlbumTitle)));
+                searchCriteria.ArtistQuery,
+                searchCriteria.AlbumQuery)));
 
 
             return pageableRequests;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
 
             pageableRequests.Add(GetPagedRequests(string.Format("{0}",
-                searchCriteria.Artist.Name)));
+                searchCriteria.ArtistQuery)));
 
 
             return pageableRequests;

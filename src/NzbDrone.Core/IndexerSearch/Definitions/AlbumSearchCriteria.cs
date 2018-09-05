@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace NzbDrone.Core.IndexerSearch.Definitions
 {
@@ -7,6 +7,8 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 
         public string AlbumTitle { get; set; }
         public int AlbumYear { get; set; }
+
+        public string AlbumQuery => GetQueryTitle(AlbumTitle);
 
         public override string ToString()
         {

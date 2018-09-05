@@ -71,8 +71,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 AddAudioPageableRequests(pageableRequests, searchCriteria,
                                          string.Format("&artist={0}&album={1}",
-                                         NewsnabifyTitle(searchCriteria.Artist.Name),
-                                         NewsnabifyTitle(searchCriteria.AlbumTitle)));
+                                         NewsnabifyTitle(searchCriteria.ArtistQuery),
+                                         NewsnabifyTitle(searchCriteria.AlbumQuery)));
             }
 
             if (SupportsSearch)
@@ -82,8 +82,8 @@ namespace NzbDrone.Core.Indexers.Newznab
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
                         string.Format("&q={0}",
                         NewsnabifyTitle(string.Format("{0} {1}",
-                                         searchCriteria.Artist.Name,
-                                         searchCriteria.AlbumTitle)))));
+                                         searchCriteria.ArtistQuery,
+                                         searchCriteria.AlbumQuery)))));
 
             }
 
