@@ -111,6 +111,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lidarr.Api.V1\Lidarr.Api.V1.csproj">
+      <Project>{7140ff1f-79be-492f-9188-b21a050bf708}</Project>
+      <Name>Lidarr.Api.V1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
       <Project>{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}</Project>
       <Name>NzbDrone.Common</Name>

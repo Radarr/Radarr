@@ -50,6 +50,7 @@ namespace Lidarr.Api.V1.Artist
                             IManageCommandQueue commandQueueManager,
                             IRootFolderService rootFolderService,
                             RootFolderValidator rootFolderValidator,
+                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
                             ArtistAncestorValidator artistAncestorValidator,
@@ -83,6 +84,7 @@ namespace Lidarr.Api.V1.Artist
                            .Cascade(CascadeMode.StopOnFirstFailure)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
+                           .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(artistPathValidator)
                            .SetValidator(artistAncestorValidator)
                            .SetValidator(systemFolderValidator)

@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { scrollDirections } from 'Helpers/Props';
+import { kinds, scrollDirections } from 'Helpers/Props';
+import Alert from 'Components/Alert';
 import Button from 'Components/Link/Button';
+import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
@@ -101,6 +103,7 @@ class FileBrowserModalContent extends Component {
       parent,
       directories,
       files,
+      isWindowsService,
       onModalClose,
       ...otherProps
     } = this.props;
@@ -119,6 +122,16 @@ class FileBrowserModalContent extends Component {
           className={styles.modalBody}
           scrollDirection={scrollDirections.NONE}
         >
+          {
+            isWindowsService &&
+              <Alert
+                className={styles.mappedDrivesWarning}
+                kind={kinds.WARNING}
+              >
+                Mapped network drives are not available when running as a Windows Service, see the <Link className={styles.faqLink} to="https://github.com/Lidarr/Lidarr/wiki/FAQ">FAQ</Link> for more information.
+              </Alert>
+          }
+
           <PathInput
             className={styles.pathInput}
             placeholder="Start typing or select a path below"
@@ -230,6 +243,7 @@ FileBrowserModalContent.propTypes = {
   currentPath: PropTypes.string.isRequired,
   directories: PropTypes.arrayOf(PropTypes.object).isRequired,
   files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isWindowsService: PropTypes.bool.isRequired,
   onFetchPaths: PropTypes.func.isRequired,
   onClearPaths: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchPaths, clearPaths } from 'Store/Actions/pathActions';
+import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import FileBrowserModalContent from './FileBrowserModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.paths,
-    (paths) => {
+    createSystemStatusSelector(),
+    (paths, systemStatus) => {
       const {
         isFetching,
         isPopulated,
@@ -32,7 +34,8 @@ function createMapStateToProps() {
         currentPath,
         directories,
         files,
-        paths: filteredPaths
+        paths: filteredPaths,
+        isWindowsService: true || systemStatus.isWindows && systemStatus.mode === 'service'
       };
     }
   );

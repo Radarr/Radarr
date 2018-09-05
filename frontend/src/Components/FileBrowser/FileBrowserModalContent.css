@@ -5,6 +5,18 @@
   flex-direction: column;
 }
 
+.mappedDrivesWarning {
+  composes: alert from 'Components/Alert.css';
+
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.faqLink {
+  color: $alertWarningColor;
+  font-weight: bold;
+}
+
 .pathInput {
   composes: pathInputWrapper from 'Components/Form/PathInput.css';
 

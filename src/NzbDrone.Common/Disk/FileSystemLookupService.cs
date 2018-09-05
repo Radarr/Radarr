@@ -15,6 +15,7 @@ namespace NzbDrone.Common.Disk
     public class FileSystemLookupService : IFileSystemLookupService
     {
         private readonly IDiskProvider _diskProvider;
+        private readonly IRuntimeInfo _runtimeInfo;
 
         private readonly HashSet<string> _setToRemove = new HashSet<string>
                                                         {
@@ -46,9 +47,10 @@ namespace NzbDrone.Common.Disk
                                                             "@eadir"
                                                         };
 
-        public FileSystemLookupService(IDiskProvider diskProvider)
+        public FileSystemLookupService(IDiskProvider diskProvider, IRuntimeInfo runtimeInfo)
         {
             _diskProvider = diskProvider;
+            _runtimeInfo = runtimeInfo;
         }
 
         public FileSystemResult LookupContents(string query, bool includeFiles, bool allowFoldersWithoutTrailingSlashes)
@@ -88,6 +90,16 @@ namespace NzbDrone.Common.Disk
         private List<FileSystemModel> GetDrives()
         {
             return _diskProvider.GetMounts()
+                                .Where(d =>
+                                {
+                                    // Fow Windows Services, exclude mapped network drives.
+                                    if (_runtimeInfo.IsWindowsService)
+                                    {
+                                        return d.DriveType != DriveType.Network;
+                                    }
+
+                                    return true;
+                                })
                                 .Select(d => new FileSystemModel
                                              {
                                                  Type = FileSystemEntityType.Drive,
