@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import isString from 'Utilities/String/isString';
 import split from 'Utilities/String/split';
 import TagInput from './TagInput';
 
@@ -11,8 +10,7 @@ function createMapStateToProps() {
   return createSelector(
     (state, { value }) => value,
     (tags) => {
-      const isArray = !isString(tags);
-      const tagsArray = isArray ? tags :split(tags);
+      const tagsArray = Array.isArray(tags) ? tags : split(tags);
 
       return {
         tags: tagsArray.reduce((result, tag) => {
@@ -25,7 +23,7 @@ function createMapStateToProps() {
 
           return result;
         }, []),
-        isArray
+        valueArray: tagsArray
       };
     }
   );
@@ -39,13 +37,20 @@ class TextTagInputConnector extends Component {
   onTagAdd = (tag) => {
     const {
       name,
-      value,
-      isArray,
+      valueArray,
       onChange
     } = this.props;
 
-    const newValue = isArray ? [...value] : split(value);
-    newValue.push(tag.name);
+    // Split and trim tags before adding them to the list, this will
+    // cleanse tags pasted in that had commas and spaces which leads
+    // to oddities with restrictions (as an example).
+
+    const newValue = [...valueArray];
+    const newTags = split(tag.name);
+
+    newTags.forEach((newTag) => {
+      newValue.push(newTag.trim());
+    });
 
     onChange({ name, value: newValue.join(',') });
   }
@@ -53,12 +58,11 @@ class TextTagInputConnector extends Component {
   onTagDelete = ({ index }) => {
     const {
       name,
-      value,
-      isArray,
+      valueArray,
       onChange
     } = this.props;
 
-    const newValue = isArray ? [...value] : split(value);
+    const newValue = [...valueArray];
     newValue.splice(index, 1);
 
     onChange({
@@ -84,7 +88,7 @@ class TextTagInputConnector extends Component {
 
 TextTagInputConnector.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+  valueArray: PropTypes.arrayOf(PropTypes.string).isRequired,
   isArray: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired
 };

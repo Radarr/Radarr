@@ -65,7 +65,9 @@ function keyboardShortcuts(WrappedComponent) {
     }
 
     stopCallback = (event, element, combo) => {
-      if (this._mousetrapBindings[combo].isGlobal) {
+      const binding = this._mousetrapBindings[combo];
+
+      if (!binding || binding.isGlobal) {        
         return false;
       }
 

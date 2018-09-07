@@ -10,6 +10,12 @@ function getRelativeDate(date, shortDateFormat, showRelativeDates, { timeFormat,
     return null;
   }
 
+  const isTodayDate = isToday(date);
+
+  if (isTodayDate && timeForToday && timeFormat) {
+    return formatTime(date, timeFormat, { includeMinuteZero: true, includeSeconds });
+  }
+
   if (!showRelativeDates) {
     return moment(date).format(shortDateFormat);
   }
@@ -18,11 +24,7 @@ function getRelativeDate(date, shortDateFormat, showRelativeDates, { timeFormat,
     return 'Yesterday';
   }
 
-  if (isToday(date)) {
-    if (timeForToday && timeFormat) {
-      return formatTime(date, timeFormat, { includeMinuteZero: true, includeSeconds });
-    }
-
+  if (isTodayDate) {
     return 'Today';
   }
 
