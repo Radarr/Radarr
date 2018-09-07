@@ -159,7 +159,7 @@ class TableOptionsModal extends Component {
 
                     <div>
                       <FormInputHelpText
-                        text="Choose which columns are isVisible and which order they appear in"
+                        text="Choose which columns are visible and which order they appear in"
                       />
 
                       <div className={styles.columns}>
