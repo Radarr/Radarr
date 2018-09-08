@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
                         string.Format("&q={0}",
-                        NewsnabifyTitle(string.Format("{0} {1}",
+                        NewsnabifyTitle(string.Format("{0}+{1}",
                                          searchCriteria.ArtistQuery,
                                          searchCriteria.AlbumQuery)))));
 
