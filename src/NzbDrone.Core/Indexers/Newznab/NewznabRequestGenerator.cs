@@ -70,9 +70,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             if (SupportsAudioSearch)
             {
                 AddAudioPageableRequests(pageableRequests, searchCriteria,
-                                         string.Format("&artist={0}&album={1}",
-                                         NewsnabifyTitle(searchCriteria.ArtistQuery),
-                                         NewsnabifyTitle(searchCriteria.AlbumQuery)));
+                    NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}&album={searchCriteria.AlbumQuery}"));
             }
 
             if (SupportsSearch)
@@ -80,11 +78,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 pageableRequests.AddTier();
 
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                        string.Format("&q={0}",
-                        NewsnabifyTitle(string.Format("{0}+{1}",
-                                         searchCriteria.ArtistQuery,
-                                         searchCriteria.AlbumQuery)))));
-
+                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
             }
 
             return pageableRequests;
@@ -94,13 +88,10 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-
-
             if (SupportsAudioSearch)
             {
                 AddAudioPageableRequests(pageableRequests, searchCriteria,
-                                         string.Format("&artist={0}",
-                                         NewsnabifyTitle(searchCriteria.Artist.Name)));
+                    NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}"));
             }
 
             if (SupportsSearch)
@@ -108,9 +99,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 pageableRequests.AddTier();
 
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                        string.Format("&q={0}",
-                        NewsnabifyTitle(searchCriteria.Artist.Name))));
-
+                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}")));
             }
 
             return pageableRequests;
@@ -118,11 +107,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private void AddAudioPageableRequests(IndexerPageableRequestChain chain, SearchCriteriaBase searchCriteria, string parameters)
         {
-                chain.AddTier();
+            chain.AddTier();
 
-                chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "music",
-                    string.Format("&q={0}",
-                    parameters)));
+            chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", $"&q={parameters}"));
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, IEnumerable<int> categories, string searchType, string parameters)
@@ -134,7 +121,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var categoriesQuery = string.Join(",", categories.Distinct());
 
-            var baseUrl = string.Format("{0}{1}?t={2}&cat={3}&extended=1{4}", Settings.BaseUrl.TrimEnd('/'), Settings.ApiPath.TrimEnd('/'), searchType, categoriesQuery, Settings.AdditionalParameters);
+            var baseUrl =
+                $"{Settings.BaseUrl.TrimEnd('/')}{Settings.ApiPath.TrimEnd('/')}?t={searchType}&cat={categoriesQuery}&extended=1{Settings.AdditionalParameters}";
 
             if (Settings.ApiKey.IsNotNullOrWhiteSpace())
             {
@@ -143,13 +131,14 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (PageSize == 0)
             {
-                yield return new IndexerRequest(string.Format("{0}{1}", baseUrl, parameters), HttpAccept.Rss);
+                yield return new IndexerRequest($"{baseUrl}{parameters}", HttpAccept.Rss);
             }
             else
             {
                 for (var page = 0; page < maxPages; page++)
                 {
-                    yield return new IndexerRequest(string.Format("{0}&offset={1}&limit={2}{3}", baseUrl, page * PageSize, PageSize, parameters), HttpAccept.Rss);
+                    yield return new IndexerRequest($"{baseUrl}&offset={page * PageSize}&limit={PageSize}{parameters}",
+                        HttpAccept.Rss);
                 }
             }
         }
