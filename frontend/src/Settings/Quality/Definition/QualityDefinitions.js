@@ -12,6 +12,7 @@ class QualityDefinitions extends Component {
 
   render() {
     const {
+      advancedSettings,
       items,
       ...otherProps
     } = this.props;
@@ -26,7 +27,9 @@ class QualityDefinitions extends Component {
             <div className={styles.quality}>Quality</div>
             <div className={styles.title}>Title</div>
             <div className={styles.sizeLimit}>Size Limit</div>
-            <div className={styles.kilobitsPerSecond}>Kilobits Per Second</div>
+            {advancedSettings &&
+              <div className={styles.kilobitsPerSecond}>Kilobits Per Second</div>
+            }
           </div>
 
           <div className={styles.definitions}>
@@ -54,6 +57,7 @@ class QualityDefinitions extends Component {
 }
 
 QualityDefinitions.propTypes = {
+  advancedSettings: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   defaultProfile: PropTypes.object,

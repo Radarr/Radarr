@@ -9,7 +9,8 @@ import QualityDefinitions from './QualityDefinitions';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.qualityDefinitions,
-    (qualityDefinitions) => {
+    (state) => state.settings.advancedSettings,
+    (qualityDefinitions, advancedSettings) => {
       const items = qualityDefinitions.items.map((item) => {
         const pendingChanges = qualityDefinitions.pendingChanges[item.id] || {};
 
@@ -17,6 +18,7 @@ function createMapStateToProps() {
       });
 
       return {
+        advancedSettings,
         ...qualityDefinitions,
         items,
         hasPendingChanges: !_.isEmpty(qualityDefinitions.pendingChanges)
