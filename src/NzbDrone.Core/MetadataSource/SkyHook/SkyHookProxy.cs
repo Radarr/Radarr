@@ -58,7 +58,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
-            var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "en";
+            var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
 
             var request = _movieBuilder.Create()
                .SetSegment("route", "movie")
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.ImdbId = resource.imdb_id;
             movie.Title = resource.title;
             movie.TitleSlug = Parser.Parser.ToUrlSlug(resource.title);
-            movie.CleanTitle = Parser.Parser.CleanSeriesTitle(resource.title);
+            movie.CleanTitle = resource.title.CleanSeriesTitle();
             movie.SortTitle = Parser.Parser.NormalizeTitle(resource.title);
             movie.Overview = resource.overview;
             movie.Website = resource.homepage;

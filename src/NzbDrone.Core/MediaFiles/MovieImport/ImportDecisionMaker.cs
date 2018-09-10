@@ -112,32 +112,35 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             try
             {
-                var minimalInfo = shouldUseFolderName
-                    ? folderInfo.JsonClone()
-                    : _parsingService.ParseMinimalPathMovieInfo(file);
+                ParsedMovieInfo modifiedFolderInfo = null;
+                if (folderInfo != null)
+                {
+                    modifiedFolderInfo = folderInfo.JsonClone();
+                    // We want the filename to be used for parsing quality, etc. even if we didn't get any movie info from there.
+                    modifiedFolderInfo.SimpleReleaseTitle = Path.GetFileName(file);
+                }
+
+                var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(file) ?? modifiedFolderInfo;
 
                 LocalMovie localMovie = null;
-                //var localMovie = _parsingService.GetLocalMovie(file, movie, shouldUseFolderName ? folderInfo : null, sceneSource);
 
                 if (minimalInfo != null)
                 {
                     //TODO: make it so media info doesn't ruin the import process of a new movie
-                    var mediaInfo = (_config.EnableMediaInfo || !movie.Path.IsParentPath(file)) ? _videoFileInfoReader.GetMediaInfo(file) : null;
+                    var mediaInfo = (_config.EnableMediaInfo || !movie.Path?.IsParentPath(file) == true) ? _videoFileInfoReader.GetMediaInfo(file) : null;
                     var size = _diskProvider.GetFileSize(file);
                     var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
-                    var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
+                    var firstHistoryItem = historyItems?.OrderByDescending(h => h.Date)?.FirstOrDefault();
                     var sizeMovie = new LocalMovie();
                     sizeMovie.Size = size;
-                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie}, sceneSource);
+                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie, folderInfo}, sceneSource);
                     localMovie.Quality = GetQuality(folderInfo, localMovie.Quality, movie);
                     localMovie.Size = size;
 
                     _logger.Debug("Size: {0}", localMovie.Size);
 
                     decision = GetDecision(localMovie, downloadClientItem);
-
                 }
-
                 else
                 {
                     localMovie = new LocalMovie();
@@ -201,38 +204,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return null;
         }
 
+        //TODO: Remove this method, since it is no longer needed.
         private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo)
         {
-            if (folderInfo == null)
-            {
-                return false;
-            }
-
-            //if (folderInfo.FullSeason)
-            //{
-            //    return false;
-            //}
-
-            return videoFiles.Count(file =>
-            {
-                var size = _diskProvider.GetFileSize(file);
-                var fileQuality = QualityParser.ParseQuality(file);
-                //var sample = null;//_detectSample.IsSample(movie, GetQuality(folderInfo, fileQuality, movie), file, size, folderInfo.IsPossibleSpecialEpisode); //Todo to this
-
-                return true;
-
-                //if (sample)
-                {
-                    return false;
-                }
-
-                if (SceneChecker.IsSceneTitle(Path.GetFileName(file)))
-                {
-                    return false;
-                }
-
-                return true;
-            }) == 1;
+            return false;
         }
 
         private QualityModel GetQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)

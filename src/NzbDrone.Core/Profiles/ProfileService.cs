@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Profiles
         Profile Add(Profile profile);
         void Update(Profile profile);
         void AddCustomFormat(CustomFormat format);
+        void DeleteCustomFormat(int formatId);
         void Delete(int id);
         List<Profile> All();
         Profile Get(int id);
@@ -60,6 +61,21 @@ namespace NzbDrone.Core.Profiles
                     Allowed = true,
                     Format = customFormat
                 });
+
+                Update(profile);
+            }
+        }
+
+        public void DeleteCustomFormat(int formatId)
+        {
+            var all = All();
+            foreach (var profile in all)
+            {
+                profile.FormatItems = profile.FormatItems.Where(c => c.Format.Id != formatId).ToList();
+                if (profile.FormatCutoff.Id == formatId)
+                {
+                    profile.FormatCutoff = CustomFormat.None;
+                }
 
                 Update(profile);
             }

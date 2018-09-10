@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
-namespace NzbDrone.Core.DecisionEngine.Specifications.Search
+namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public class RequiredIndexerFlagsSpecification : IDecisionEngineSpecification
     {

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Validators;
+using NzbDrone.Api.Qualities;
 
 namespace NzbDrone.Api.Validation
 {
@@ -40,6 +41,12 @@ namespace NzbDrone.Api.Validation
         public static IRuleBuilderOptions<T, int> IsValidNetImportSyncInterval<T>(this IRuleBuilder<T, int> ruleBuilder)
         {
             return ruleBuilder.SetValidator(new NetImportSyncIntervalValidator());
+        }
+
+        public static IRuleBuilderOptions<T, IEnumerable<TProp>> AreValidFormatTags<T, TProp>(
+            this IRuleBuilder<T, IEnumerable<TProp>> ruleBuilder)
+        {
+            return ruleBuilder.SetValidator(new FormatTagValidator());
         }
     }
 }

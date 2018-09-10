@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Parser;
 
@@ -17,7 +18,8 @@ namespace NzbDrone.Api.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedMovieInfo = Parser.ParseMovieTitle(title, false);
+            var parsedMovieInfo = _parsingService.ParseMovieInfo(title, new List<object>());
+
 
             if (parsedMovieInfo == null)
             {

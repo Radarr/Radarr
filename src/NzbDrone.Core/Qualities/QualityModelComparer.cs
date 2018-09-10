@@ -41,9 +41,7 @@ namespace NzbDrone.Core.Qualities
 
         public static List<int> GetIndicies(List<CustomFormat> formats, Profile profile)
         {
-            return formats.Count > 0
-                ? formats.Select(f => profile.FormatItems.FindIndex(v => Equals(v.Format, f))).ToList()
-                : new List<int> {profile.FormatItems.FindIndex(v => Equals(v.Format, CustomFormat.None))};
+            return formats.WithNone().Select(f => profile.FormatItems.FindIndex(v => Equals(v.Format, f))).ToList();
         }
 
         public int Compare(CustomFormat left, CustomFormat right)
@@ -56,10 +54,7 @@ namespace NzbDrone.Core.Qualities
 
         public int Compare(List<CustomFormat> left, CustomFormat right)
         {
-            if (left.Count == 0)
-            {
-                left.Add(CustomFormat.None);
-            }
+            left = left.WithNone();
 
             var leftIndicies = GetIndicies(left, _profile);
             var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));

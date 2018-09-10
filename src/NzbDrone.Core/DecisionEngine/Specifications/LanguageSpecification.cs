@@ -20,6 +20,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             var wantedLanguage = subject.Movie.Profile.Value.Language;
 
+            if (wantedLanguage == Language.Any)
+            {
+                _logger.Debug("Profile allows any language, accepting release.");
+                return Decision.Accept();
+            }
+
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages.ToExtendedString());
 
             if (!subject.ParsedMovieInfo.Languages.Contains(wantedLanguage))

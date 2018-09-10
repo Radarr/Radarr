@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
@@ -24,13 +25,16 @@ namespace NzbDrone.Core.Test.CustomFormat
         [TestCase("L_English", TagType.Language, Language.English)]
         [TestCase("L_germaN", TagType.Language, Language.German)]
         [TestCase("E_Director", TagType.Edition, "director")]
-        [TestCase("E_R_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex)]
-        [TestCase("E_RN_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex, TagModifier.Not)]
-        [TestCase("E_RNRE_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex, TagModifier.Not, TagModifier.AbsolutelyRequired)]
+        [TestCase("E_RX_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex)]
+        [TestCase("E_RXN_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex, TagModifier.Not)]
+        [TestCase("E_RXNRQ_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex, TagModifier.Not, TagModifier.AbsolutelyRequired)]
         [TestCase("C_Surround", TagType.Custom, "surround")]
-        [TestCase("C_RE_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired)]
-        [TestCase("C_REN_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired, TagModifier.Not)]
-        [TestCase("C_RENR_Surround|(5|7)(\\.1)?", TagType.Custom, "surround|(5|7)(\\.1)?", TagModifier.AbsolutelyRequired, TagModifier.Not, TagModifier.Regex)]
+        [TestCase("C_RQ_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired)]
+        [TestCase("C_RQN_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired, TagModifier.Not)]
+        [TestCase("C_RQNRX_Surround|(5|7)(\\.1)?", TagType.Custom, "surround|(5|7)(\\.1)?", TagModifier.AbsolutelyRequired, TagModifier.Not, TagModifier.Regex)]
+        [TestCase("G_10<>20", TagType.Size, new[] { 10737418240L, 21474836480L})]
+        [TestCase("G_15.55<>20", TagType.Size, new[] { 16696685363L, 21474836480L})]
+        [TestCase("G_15.55<>25.1908754", TagType.Size, new[] { 16696685363L, 27048496500L})]
         public void should_parse_tag_from_string(string raw, TagType type, object value, params TagModifier[] modifiers)
         {
             var parsed = new FormatTag(raw);
@@ -40,6 +44,10 @@ namespace NzbDrone.Core.Test.CustomFormat
                 modifier |= m;
             }
             parsed.TagType.Should().Be(type);
+            if (value is long[])
+            {
+                value = (((long[]) value)[0], ((long[]) value)[1]);
+            }
             if ((parsed.Value as Regex) != null)
             {
                 (parsed.Value as Regex).ToString().Should().Be((value as string));

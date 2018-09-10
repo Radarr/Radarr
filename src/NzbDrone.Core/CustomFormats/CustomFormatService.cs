@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Composition;
+using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 
@@ -17,6 +21,7 @@ namespace NzbDrone.Core.CustomFormats
         CustomFormat Insert(CustomFormat customFormat);
         List<CustomFormat> All();
         CustomFormat GetById(int id);
+        void Delete(int id);
     }
 
 
@@ -24,6 +29,10 @@ namespace NzbDrone.Core.CustomFormats
     {
         private readonly ICustomFormatRepository _formatRepository;
         private IProfileService _profileService;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly IBlacklistService _blacklistService;
+        private readonly IHistoryService _historyService;
+        private readonly IPendingReleaseService _pendingReleaseService;
 
         public IProfileService ProfileService
         {
@@ -45,12 +54,18 @@ namespace NzbDrone.Core.CustomFormats
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
         public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
-            IContainer container,
+            IContainer container, IHistoryService historyService,/*IMediaFileService mediaFileService, IBlacklistService blacklistService,
+            IHistoryService historyService, IPendingReleaseService pendingReleaseService,*/
             Logger logger)
         {
             _formatRepository = formatRepository;
             _container = container;
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
+            /*_mediaFileService = mediaFileService;
+            _blacklistService = blacklistService;
+            _historyService = historyService;
+            _pendingReleaseService = pendingReleaseService;*/
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -69,12 +84,82 @@ namespace NzbDrone.Core.CustomFormats
             }
             catch (Exception e)
             {
-                _logger.Error("Failure while trying to add the new custom format to all profiles.", e);
+                _logger.Error(e, "Failure while trying to add the new custom format to all profiles. Deleting again!");
                 _formatRepository.Delete(ret);
                 throw;
             }
             _cache.Clear();
             return ret;
+        }
+
+        public void Delete(int id)
+        {
+            _cache.Clear();
+            try
+            {
+                //First history:
+                var historyRepo = _container.Resolve<IHistoryRepository>();
+                DeleteInRepo(historyRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
+
+                //Then Blacklist:
+                var blacklistRepo = _container.Resolve<IBlacklistRepository>();
+                DeleteInRepo(blacklistRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
+
+                //Then MovieFiles:
+                var moviefileRepo = _container.Resolve<IMediaFileRepository>();
+                DeleteInRepo(moviefileRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
+
+                //Then Profiles
+                ProfileService.DeleteCustomFormat(id);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Failed to delete format with id {} from other repositories! Format will not be deleted!", id);
+                throw;
+            }
+
+            //Finally delete the format for real!
+            _formatRepository.Delete(id);
+
+            _cache.Clear();
+        }
+
+        private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository, Func<TModel, List<CustomFormat>> queryFunc,
+            Func<TModel, List<CustomFormat>, TModel> updateFunc, int customFormatId) where TModel : ModelBase, new()
+        {
+            var pagingSpec = new PagingSpec<TModel>
+            {
+                Page = 0,
+                PageSize = 2000
+            };
+            while (true)
+            {
+                var allItems = repository.GetPaged(pagingSpec);
+                var toUpdate = allItems.Records.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
+                {
+                    return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
+                });
+                repository.UpdateMany(toUpdate.ToList());
+
+                if (pagingSpec.Page * pagingSpec.PageSize >= allItems.TotalRecords)
+                {
+                    break;
+                }
+
+                pagingSpec.Page += 1;
+            }
         }
 
         private Dictionary<int, CustomFormat> AllDictionary()
