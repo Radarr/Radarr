@@ -127,7 +127,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 if (minimalInfo != null)
                 {
                     //TODO: make it so media info doesn't ruin the import process of a new movie
-                    var mediaInfo = (_config.EnableMediaInfo || !movie.Path.IsParentPath(file)) ? _videoFileInfoReader.GetMediaInfo(file) : null;
+                    var mediaInfo = (_config.EnableMediaInfo || !movie.Path?.IsParentPath(file) == true) ? _videoFileInfoReader.GetMediaInfo(file) : null;
                     var size = _diskProvider.GetFileSize(file);
                     var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
                     var firstHistoryItem = historyItems?.OrderByDescending(h => h.Date)?.FirstOrDefault();
