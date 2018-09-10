@@ -34,7 +34,7 @@ namespace NzbDrone.Core.CustomFormats
         {
             get
             {
-                return !(Matches.Any(m => m.Key.TagModifier == TagModifier.AbsolutelyRequired && m.Value == false) ||
+                return !(Matches.Any(m => m.Key.TagModifier.HasFlag(TagModifier.AbsolutelyRequired) && m.Value == false) ||
                        Matches.All(m => m.Value == false));
             }
         }
