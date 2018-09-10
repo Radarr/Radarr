@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Remoting.Messaging;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Composition;

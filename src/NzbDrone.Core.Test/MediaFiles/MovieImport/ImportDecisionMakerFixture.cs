@@ -14,7 +14,6 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
-using FizzWare.NBuilder.Implementation;
 using NzbDrone.Core.Download;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport
@@ -24,8 +23,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
     public class ImportDecisionMakerFixture : CoreTest<ImportDecisionMaker>
     {
         private List<string> _videoFiles;
-        private LocalMovie _localEpisode;
-        private Movie _series;
+        private LocalMovie _localMovie;
+        private Movie _movie;
         private QualityModel _quality;
         private ParsedMovieInfo _fileInfo;
 
@@ -56,15 +55,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
 
-            _series = Builder<Movie>.CreateNew()
+            _movie = Builder<Movie>.CreateNew()
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
             _quality = new QualityModel(Quality.DVD);
 
-            _localEpisode = new LocalMovie
+            _localMovie = new LocalMovie
             {
-                Movie = _series,
+                Movie = _movie,
                 Quality = _quality,
                 Path = @"C:\Test\Unsorted\The.Office.2018.DVDRip.XviD-OSiTV.avi"
             };
@@ -78,7 +77,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             Mocker.GetMock<IParsingService>()
                   .Setup(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()))
-                  .Returns(_localEpisode);
+                  .Returns(_localMovie);
 
             Mocker.GetMock<IParsingService>()
                 .Setup(c => c.ParseMinimalPathMovieInfo(It.IsAny<string>()))
@@ -109,12 +108,12 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             Subject.GetImportDecisions(_videoFiles, new Movie(), downloadClientItem, null, false);
 
-            _fail1.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
-            _fail2.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
-            _fail3.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
-            _pass1.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
-            _pass2.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
-            _pass3.Verify(c => c.IsSatisfiedBy(_localEpisode, downloadClientItem), Times.Once());
+            _fail1.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _fail2.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _fail3.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _pass1.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _pass2.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _pass3.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
         }
 
         [Test]
@@ -174,7 +173,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             GivenVideoFiles(_videoFiles);
 
-            Subject.GetImportDecisions(_videoFiles, _series);
+            Subject.GetImportDecisions(_videoFiles, _movie);
 
             Mocker.GetMock<IParsingService>()
                   .Verify(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()), Times.Exactly(_videoFiles.Count));
@@ -193,7 +192,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             var folderInfo = new ParsedMovieInfo {SimpleReleaseTitle = "A Movie Folder 2018", Quality = _quality};
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, null, folderInfo, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, folderInfo, true);
 
             var fileNames = _videoFiles.Select(System.IO.Path.GetFileName);
 
@@ -208,7 +207,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         public void should_use_file_quality_if_folder_quality_is_null()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
-            var result = Subject.GetImportDecisions(_videoFiles, _series);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie);
 
             result.Single().LocalMovie.Quality.Should().Be(_fileInfo.Quality);
         }
@@ -218,7 +217,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, null, new ParsedMovieInfo{Quality = new QualityModel(Quality.SDTV)}, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo{Quality = new QualityModel(Quality.SDTV)}, true);
 
             result.Single().LocalMovie.Quality.Should().Be(_fileInfo.Quality);
         }
@@ -229,13 +228,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             GivenSpecifications(_pass1, _pass2, _pass3);
             GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
 
-            _localEpisode.Path = _videoFiles.Single();
-            _localEpisode.Quality.QualitySource = QualitySource.Extension;
-            _localEpisode.Quality.Quality = Quality.HDTV720p;
+            _localMovie.Path = _videoFiles.Single();
+            _localMovie.Quality.QualitySource = QualitySource.Extension;
+            _localMovie.Quality.Quality = Quality.HDTV720p;
 
             var expectedQuality = new QualityModel(Quality.SDTV);
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
 
             result.Single().LocalMovie.Quality.Should().Be(expectedQuality);
         }
@@ -246,12 +245,12 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             GivenSpecifications(_pass1, _pass2, _pass3);
             GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
 
-            _localEpisode.Path = _videoFiles.Single();
-            _localEpisode.Quality.Quality = Quality.HDTV720p;
+            _localMovie.Path = _videoFiles.Single();
+            _localMovie.Quality.Quality = Quality.HDTV720p;
 
             var expectedQuality = new QualityModel(Quality.Bluray720p);
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
 
             result.Single().LocalMovie.Quality.Should().Be(expectedQuality);
         }
@@ -261,7 +260,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _series.Profile = new Profile
+            _movie.Profile = new Profile
                               {
                                   Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.Unknown)
                               };
@@ -269,7 +268,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             var folderQuality = new QualityModel(Quality.Unknown);
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, null, new ParsedMovieInfo { Quality = folderQuality}, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = folderQuality}, true);
 
             result.Single().LocalMovie.Quality.Should().Be(_quality);
         }
@@ -288,7 +287,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             GivenVideoFiles(_videoFiles);
 
-            Subject.GetImportDecisions(_videoFiles, _series).Should().HaveCount(1);
+            Subject.GetImportDecisions(_videoFiles, _movie).Should().HaveCount(1);
 
             ExceptionVerification.ExpectedErrors(1);
         }

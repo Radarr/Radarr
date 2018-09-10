@@ -117,7 +117,7 @@ namespace NzbDrone.Api.Qualities
             var model = resource.ToModel();
             model.Name = model.Name += " (New)";
 
-            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new List<object>{model});
+            var parsed = _parsingService.ParseMovieInfo(queryTitle, new List<object>{model});
             if (parsed == null)
             {
                 return null;

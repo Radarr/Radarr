@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Api.Movies;
-using NzbDrone.Api.Qualities;
-using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
 

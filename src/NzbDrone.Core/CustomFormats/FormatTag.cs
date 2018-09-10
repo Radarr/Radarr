@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,6 +32,7 @@ namespace NzbDrone.Core.CustomFormats
             ParseRawMatch(match);
         }
 
+        // This function is needed for json deserialization to work.
         private FormatTag()
         {
 
