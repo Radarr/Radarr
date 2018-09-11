@@ -31,8 +31,11 @@ module.exports = Marionette.Layout.extend({
         var qualities = _.map(this.profileSchemaCollection.first().get('items'), function (quality) {
             return quality.quality;
         });
+        var formats = _.map(this.profileSchemaCollection.first().get('formatItems'), function (format) {
+            return format.format;
+        });
 
-        this.selectQualityView = new SelectQualityView({ qualities: qualities });
+        this.selectQualityView = new SelectQualityView({ qualities: qualities, formats : formats });
         this.quality.show(this.selectQualityView);
     },
 

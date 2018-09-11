@@ -15,7 +15,7 @@
 				<select class="form-control" name="language">
 						{{#each languages}}
 								{{#unless_eq nameLower compare="unknown"}}
-										<option value="{{nameLower}}">{{name}}</option>
+										<option value="{{nameLower}}" {{#if_eq nameLower compare="any"}}class="advanced-setting"{{/if_eq}}>{{name}}</option>
 								{{/unless_eq}}
 						{{/each}}
 				</select>
@@ -58,7 +58,7 @@
 		</div>
 </div>
 
-<div class="form-group">
+<div class="form-group advanced-setting">
     <label class="col-sm-3 control-label">Custom Format Cutoff</label>
 
     <div class="col-sm-5">

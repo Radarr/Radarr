@@ -49,4 +49,20 @@ namespace NzbDrone.Core.CustomFormats
             return (Id != null ? Id.GetHashCode() : 0);
         }
     }
+
+    public static class CustomFormatExtensions
+    {
+        public static string ToExtendedString(this IEnumerable<CustomFormat> formats)
+        {
+            return string.Join(", ", formats.Select(f => f.ToString()));
+        }
+
+        public static List<CustomFormat> WithNone(this IEnumerable<CustomFormat> formats)
+        {
+            var list = formats.ToList();
+            if (list.Any()) return list;
+
+            return new List<CustomFormat>{CustomFormat.None};
+        }
+    }
 }

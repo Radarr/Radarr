@@ -113,7 +113,7 @@ $.fn.tagInput = function(options) {
 
         var input = $(this);
         var tagInput = null;
-        
+
         if (input[0].hasAttribute('tag-source')) {
 
             var listItems = JSON.parse(input.attr('tag-source'));
@@ -124,6 +124,7 @@ $.fn.tagInput = function(options) {
                 allowDuplicates: false,
                 itemValue: 'value',
                 itemText: 'name',
+                tagClass : input.attr('tag-class-name') || "label label-info",
                 typeaheadjs: {
                     displayKey: 'name',
                     source: substringMatcher(listItems, function (t) { return t.name; })

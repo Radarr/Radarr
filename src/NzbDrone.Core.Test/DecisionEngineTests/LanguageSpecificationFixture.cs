@@ -15,12 +15,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class LanguageSpecificationFixture : CoreTest
     {
-        private RemoteMovie _remoteEpisode;
+        private RemoteMovie _remoteMovie;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = new RemoteMovie
+            _remoteMovie = new RemoteMovie
             {
                 ParsedMovieInfo = new ParsedMovieInfo
                 {
@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithEnglishRelease()
         {
-            _remoteEpisode.ParsedMovieInfo.Languages = new List<Language> {Language.English};
+            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> {Language.English};
         }
 
         private void WithGermanRelease()
         {
-            _remoteEpisode.ParsedMovieInfo.Languages = new List<Language> {Language.German};
+            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> {Language.German};
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             WithEnglishRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -59,7 +59,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             WithGermanRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_if_allowed_language_any()
+        {
+            _remoteMovie.Movie.Profile = new LazyLoaded<Profile>(new Profile
+            {
+                Language = Language.Any
+            });
+
+            WithGermanRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+
+            WithEnglishRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
     }
 }

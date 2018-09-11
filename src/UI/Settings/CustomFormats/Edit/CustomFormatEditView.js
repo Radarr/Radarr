@@ -2,7 +2,7 @@
 var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
-//var DeleteView = require('../Delete/IndexerDeleteView');
+var DeleteView = require('../DeleteCustomFormatView');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
@@ -29,7 +29,7 @@ var view = Marionette.Layout.extend({
         testArea : '#x-test-region'
     },
 
-    //_deleteView : DeleteView,
+    _deleteView : DeleteView,
 
     initialize : function(options) {
         this.targetCollection = options.targetCollection;

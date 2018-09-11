@@ -1,13 +1,13 @@
 var vent = require('vent');
 var Marionette = require('marionette');
-var Qualities = require('../../../../Quality/QualityDefinitionCollection');
 var AsModelBoundView = require('../../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../../Mixins/AsEditModalView');
-require('../../../../Mixins/TagInput');
-require('../../../../Mixins/FileBrowser');
+var LoadingView = require('../../../../Shared/LoadingView');
+var ProfileSchemaCollection = require('../../../../Settings/Profile/ProfileSchemaCollection');
+var SelectQualityView = require('../../../../ManualImport/Quality/SelectQualityView');
 
-var view = Marionette.ItemView.extend({
+var view = Marionette.Layout.extend({
 		template : 'Movies/Files/Media/Edit/EditFileTemplate',
 
 		ui : {
@@ -16,34 +16,44 @@ var view = Marionette.ItemView.extend({
 				tags    : '.x-tags'
 		},
 
+        regions : {
+		    selectQuality : '#select-quality'
+        },
+
 		events : {
 
 		},
 
-		initialize : function() {
-			this.qualities = new Qualities();
-			var self = this;
-			this.listenTo(this.qualities, 'all', this._qualitiesUpdated);
-			this.qualities.fetch();
+        initialize : function() {
+            this.profileSchemaCollection = new ProfileSchemaCollection();
+            this.profileSchemaCollection.fetch();
 
-		},
+            this.listenTo(this.profileSchemaCollection, 'sync', this._showQuality);
+        },
 
-		onRender : function() {
-			this.ui.quality.val(this.model.get("quality").quality.id);
-		},
+        onRender : function() {
+            this.selectQuality.show(new LoadingView());
+        },
+
+        _showQuality : function () {
+            var qualities = _.map(this.profileSchemaCollection.first().get('items'), function (quality) {
+                return quality.quality;
+            });
+            var formats = _.map(this.profileSchemaCollection.first().get('formatItems'), function (format) {
+                return format.format;
+            });
+
+            var quality = this.model.get("quality");
+
+            this.selectQualityView = new SelectQualityView({ qualities: qualities, formats : formats, current : {
+                    formats : quality.customFormats, quality : quality.quality
+                }
+            });
+            this.selectQuality.show(this.selectQualityView);
+        },
 
 		_onBeforeSave : function() {
-				var qualityId = this.ui.quality.val();
-				var quality = this.qualities.find(function(m){return m.get("quality").id === parseInt(qualityId);}).get("quality");
-				var mQuality = this.model.get("quality");
-				mQuality.quality = quality;
-				this.model.set({ quality : mQuality });
-		},
-
-		_qualitiesUpdated : function() {
-				this.templateHelpers = {};
-				this.templateHelpers.qualities = this.qualities.toJSON();
-				this.render();
+				this.model.set({ quality : this.selectQualityView.selectedQuality() });
 		},
 
 		_onAfterSave : function() {

@@ -101,6 +101,9 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -141,11 +144,14 @@
     <Compile Include="Datastore\Migration\141_fix_duplicate_alt_titles.cs" />
     <Compile Include="Datastore\Migration\145_banner_to_fanart.cs" />
     <Compile Include="Datastore\Migration\144_add_cookies_to_indexer_status.cs" />
+    <Compile Include="Datastore\Migration\149_convert_regex_required_tags.cs" />
+    <Compile Include="DecisionEngine\Specifications\CustomFormatAllowedByProfileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcNfoDetector.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
+    <Compile Include="MediaFiles\Commands\UpdateMovieFileQualityCommand.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
@@ -157,6 +163,7 @@
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
     <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
+    <Compile Include="MediaFiles\UpdateMovieFileQualityService.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleRepository.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleService.cs" />
@@ -973,6 +980,7 @@
     <Compile Include="Parser\Augmenters\AugmentWithFileSize.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithHistory.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithMediaInfo.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithParsedMovieInfo.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithReleaseInfo.cs" />
     <Compile Include="Parser\Augmenters\IAugmentParsedMovieInfo.cs" />
     <Compile Include="Parser\IsoLanguage.cs" />

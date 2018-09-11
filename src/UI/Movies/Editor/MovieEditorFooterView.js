@@ -25,7 +25,8 @@ module.exports = Marionette.ItemView.extend({
     events : {
         'click .x-save'           : '_updateAndSave',
         'change .x-root-folder'   : '_rootFolderChanged',
-        'click .x-organize-files' : '_organizeFiles'
+        'click .x-organize-files' : '_organizeFiles',
+        'click .x-update-quality' : '_updateQuality'
     },
 
     templateHelpers : function() {

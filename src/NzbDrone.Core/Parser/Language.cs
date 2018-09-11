@@ -29,9 +29,10 @@ namespace NzbDrone.Core.Parser
         Korean = 21,
         Hungarian = 22,
         Hebrew = 23,
-        Czech = 24
+        Czech = 24,
+        Any = -1,
     }
-    
+
     public static class LanguageExtensions
     {
         public static string ToExtendedString(this IEnumerable<Language> languages)

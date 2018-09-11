@@ -15,6 +15,7 @@ namespace NzbDrone.Core.History
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
         List<History> FindDownloadHistory(int idMovieId, QualityModel quality);
+        List<History> FindByMovieId(int movieId);
         void DeleteForMovie(int movieId);
         History MostRecentForMovie(int movieId);
     }
@@ -55,6 +56,11 @@ namespace NzbDrone.Core.History
                  h.EventType == HistoryEventType.DownloadFailed ||
                  h.EventType == HistoryEventType.DownloadFolderImported)
                  ).ToList();
+        }
+
+        public List<History> FindByMovieId(int movieId)
+        {
+            return Query.Where(h => h.MovieId == movieId);
         }
 
         public void DeleteForMovie(int movieId)
