@@ -145,6 +145,7 @@
     <Compile Include="Datastore\Migration\145_banner_to_fanart.cs" />
     <Compile Include="Datastore\Migration\144_add_cookies_to_indexer_status.cs" />
     <Compile Include="Datastore\Migration\149_convert_regex_required_tags.cs" />
+    <Compile Include="Datastore\Migration\150_fix_format_tags_double_underscore.cs" />
     <Compile Include="DecisionEngine\Specifications\CustomFormatAllowedByProfileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />

@@ -140,6 +140,7 @@
     <Compile Include="Datastore\Migration\090_update_kickass_urlFixture.cs" />
     <Compile Include="Datastore\Migration\147_custom_formatsFixture.cs" />
     <Compile Include="Datastore\Migration\149_regex_required_tagsFixture.cs" />
+    <Compile Include="Datastore\Migration\150_fix_format_tags_double_underscoreFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />

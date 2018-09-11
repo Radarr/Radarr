@@ -28,7 +28,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 if (match.Groups["m_n"].Success) modifiers += "N";
                 if (match.Groups["m_r"].Success) modifiers += "RX";
                 if (match.Groups["m_re"].Success) modifiers += "RQ";
-                return $"{match.Groups["type"].Value}_{modifiers}_{match.Groups["value"].Value}";
+                if (modifiers != "") modifiers = "_" + modifiers;
+                return $"{match.Groups["type"].Value}{modifiers}_{match.Groups["value"].Value}";
             });
 
             updater.Commit();

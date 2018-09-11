@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         [TestCase("C_RE_RERN", "C_RQ_RERN")]
         [TestCase("E_NRER_Director", "E_NRXRQ_Director")]
         [TestCase("G_N_1000<>1000", "G_N_1000<>1000")]
+        [TestCase("G_1000<>1000", "G_1000<>1000")]
         public void should_correctly_convert_format_tag(string original, string converted)
         {
             var db = WithMigrationTestDb(c => { AddCustomFormat(c, "TestFormat", original); });

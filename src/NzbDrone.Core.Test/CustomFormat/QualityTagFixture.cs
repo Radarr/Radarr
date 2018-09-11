@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Test.CustomFormat
         [TestCase("G_10<>20", TagType.Size, new[] { 10737418240L, 21474836480L})]
         [TestCase("G_15.55<>20", TagType.Size, new[] { 16696685363L, 21474836480L})]
         [TestCase("G_15.55<>25.1908754", TagType.Size, new[] { 16696685363L, 27048496500L})]
+        [TestCase("R__1080", TagType.Resolution, Resolution.R1080P)]
         public void should_parse_tag_from_string(string raw, TagType type, object value, params TagModifier[] modifiers)
         {
             var parsed = new FormatTag(raw);
