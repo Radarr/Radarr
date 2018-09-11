@@ -7,7 +7,8 @@ vent.Events = {
 		MovieDeleted       : 'movie:deleted',
 		CommandComplete    : 'command:complete',
 		ServerUpdated      : 'server:updated',
-		EpisodeFileDeleted : 'episodefile:deleted'
+		EpisodeFileDeleted : 'episodefile:deleted',
+		CustomFormatsChanged : 'customformat:changed'
 };
 
 vent.Commands = {

@@ -48,6 +48,12 @@ namespace NzbDrone.Core.Datastore.Converters
             }
 
             var quality = (CustomFormat) clrValue;
+
+            if (CustomFormatService.AllCustomFormats?.ContainsKey(quality.Id) == false)
+            {
+                //throw new Exception("Attempted to save an unknown custom format! Make sure you do not have stale custom formats lying around!");
+            }
+            
             return quality.Id;
         }
 
