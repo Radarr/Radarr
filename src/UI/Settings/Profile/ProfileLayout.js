@@ -5,6 +5,8 @@ var DelayProfileLayout = require('./Delay/DelayProfileLayout');
 var DelayProfileCollection = require('./Delay/DelayProfileCollection');
 var LanguageCollection = require('./Language/LanguageCollection');
 
+var vent = require('vent');
+
 module.exports = Marionette.Layout.extend({
     template : 'Settings/Profile/ProfileLayoutTemplate',
 
@@ -16,6 +18,10 @@ module.exports = Marionette.Layout.extend({
     initialize : function(options) {
         this.settings = options.settings;
         ProfileCollection.fetch();
+
+        vent.on(vent.Events.CustomFormatsChanged, function(options) {
+            ProfileCollection.fetch();
+        });
 
         this.delayProfileCollection = new DelayProfileCollection();
         this.delayProfileCollection.fetch();
