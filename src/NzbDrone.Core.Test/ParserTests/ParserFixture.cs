@@ -124,5 +124,15 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             Parser.Parser.ParseMinimalMovieTitle(postTitle, foundTitle, 1290).Edition.Should().Be(edition);
         }
+
+        [TestCase("123", "tt0000123")]
+        [TestCase("1234567", "tt1234567")]
+        [TestCase("tt1234567", "tt1234567")]
+        [TestCase("tt12345678", "tt12345678")]
+        [TestCase("12345678", "tt12345678")]
+        public void should_normalize_imdbid(string imdbid, string normalized)
+        {
+            Parser.Parser.NormalizeImdbId(imdbid).Should().BeEquivalentTo(normalized);
+        }
     }
 }

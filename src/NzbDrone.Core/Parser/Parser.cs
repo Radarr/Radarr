@@ -352,7 +352,8 @@ namespace NzbDrone.Core.Parser
         {
             if (imdbId.Length > 2)
             {
-                return (imdbId.Substring(0,2) != "tt" ? $"tt{imdbId}" : imdbId);
+                imdbId = imdbId.Replace("tt", "").PadLeft(7, '0');
+                return $"tt{imdbId}";
             }
 
             return null;
