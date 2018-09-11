@@ -25,7 +25,7 @@ namespace NzbDrone.Api.Profiles
             {
                 var all = _formatService.All().Select(f => f.Id).ToList();
                 all.Add(CustomFormat.None.Id);
-                var ids = items.Select(i => i.Id);
+                var ids = items.Select(i => i.Format.Id);
 
                 return all.Except(ids).Empty();
             }).WithMessage("All Custom Formats and no extra ones need to be present inside your Profile! Try refreshing your browser.");
