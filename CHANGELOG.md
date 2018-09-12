@@ -3,6 +3,8 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Czech Language ([#2948](https://github.com/Radarr/Radarr/issues/2948)) [<a href="https://github.com/halali">halali</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Fallback to Bitrate_Nominal for MediaInfo ([#2886](https://github.com/Radarr/Radarr/issues/2886)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) All new custom formats 9000! (Rescan old files, delete formats, polish UI, etc. See discord for full changes): [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Upgrade MediaInfo to 17.10 (Windows/macOS) [<a href="https://github.com/Mark McDowall">Mark McDowall</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) The ability to set the number of threads (NOT SUPPORTED!) to use for tasks using THREAD_LIMIT environment variable. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
@@ -11,6 +13,11 @@
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Templates for custom format using wrong modifiers. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Profiles always failing validation. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) ImdbIds not being padded with zeroes, which messes up matching. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Issue with custom formats when profile was saved with non existing formats. Also you now don't have to refresh your browser for them to appear / disappear. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Migration would add double underscores for format tags without modifiers. Also fixed Radarr misparsing those tags and added migration to correct this. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - [WIP] Additions to custom formats, such as rescanning old files. ([#2949](https://github.com/Radarr/Radarr/issues/2949)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Unnecessary housekeeping commands consuming a lot of memory. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Annoying [renamemoviesfolder] Completed popup for no reason. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
