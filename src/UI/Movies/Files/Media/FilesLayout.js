@@ -106,7 +106,7 @@ module.exports = Marionette.Layout.extend({
 
 	_showGrid : function() {
 		if (this.filesCollection.length === 0) {
-			this.grid.show(new NoResultsView());
+            this.regionManager.get('grid').show(new NoResultsView());
 		}
 		else {
 			this.regionManager.get('grid').show(new Backgrid.Grid({

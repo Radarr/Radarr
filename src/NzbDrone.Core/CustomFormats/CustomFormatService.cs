@@ -191,18 +191,18 @@ namespace NzbDrone.Core.CustomFormats
                     {
                         "Easy", new List<CustomFormat>
                         {
-                            new CustomFormat("x264", "C_R_(x|h)264"),
-                            new CustomFormat("x265", "C_R_(((x|h)265)|(HEVC))"),
-                            new CustomFormat("Simple Hardcoded Subs", "C_R_subs?"),
+                            new CustomFormat("x264", "C_RX_(x|h)264"),
+                            new CustomFormat("x265", "C_RX_(((x|h)265)|(HEVC))"),
+                            new CustomFormat("Simple Hardcoded Subs", "C_RX_subs?"),
                             new CustomFormat("Multi Language", "L_English", "L_French")
                         }
                     },
                     {
                         "Intermediate", new List<CustomFormat>
                         {
-                            new CustomFormat("Hardcoded Subs", @"C_R_\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b"),
-                            new CustomFormat("Surround", @"C_R_\b((7|5).1)\b"),
-                            new CustomFormat("Preferred Words", @"C_R_\b(SPARKS|Framestor)\b"),
+                            new CustomFormat("Hardcoded Subs", @"C_RX_\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b"),
+                            new CustomFormat("Surround", @"C_RX_\b((7|5).1)\b"),
+                            new CustomFormat("Preferred Words", @"C_RX_\b(SPARKS|Framestor)\b"),
                             new CustomFormat("Scene", @"I_G_Scene"),
                             new CustomFormat("Internal Releases", @"I_HDB_Internal", @"I_AHD_Internal")
                         }
