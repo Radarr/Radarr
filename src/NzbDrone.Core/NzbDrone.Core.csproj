@@ -556,6 +556,14 @@
     <Compile Include="ImportLists\IProcessImportListResponse.cs" />
     <Compile Include="ImportLists\ImportListSyncService.cs" />
     <Compile Include="ImportLists\ImportListSyncCompleteEvent.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmTag.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmTagRequestGenerator.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmTagSettings.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmUser.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmApi.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmParser.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmUserRequestGenerator.cs" />
+    <Compile Include="ImportLists\LastFm\LastFmUserSettings.cs" />
     <Compile Include="ImportLists\LidarrLists\LidarrLists.cs" />
     <Compile Include="ImportLists\LidarrLists\LidarrListsApi.cs" />
     <Compile Include="ImportLists\LidarrLists\LidarrListsParser.cs" />
