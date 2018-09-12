@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Parser
@@ -29,6 +29,7 @@ namespace NzbDrone.Core.Parser
         Korean = 21,
         Hungarian = 22,
         Hebrew = 23,
+        Czech = 24,
         Any = -1,
     }
 
