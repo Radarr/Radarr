@@ -13,6 +13,7 @@ class OverlayScroller extends Component {
     super(props, context);
 
     this._scroller = null;
+    this._isScrolling = false;
   }
 
   componentDidUpdate(prevProps) {
@@ -20,7 +21,8 @@ class OverlayScroller extends Component {
       scrollTop
     } = this.props;
 
-    if (scrollTop != null && scrollTop !== prevProps.scrollTop) {
+    if (!this._isScrolling && scrollTop != null && scrollTop !== prevProps.scrollTop) {
+      debugger;
       this._scroller.scrollTop(scrollTop);
     }
   }
@@ -53,12 +55,21 @@ class OverlayScroller extends Component {
   //
   // Listers
 
+  onScrollStart = () => {
+    this._isScrolling = true;
+  }
+
+  onScrollStop = () => {
+    this._isScrolling = false;
+  }
+
   onScroll = (event) => {
     const {
       scrollTop,
       scrollLeft
     } = event.currentTarget;
 
+    this._isScrolling = true;
     const onScroll = this.props.onScroll;
 
     if (onScroll) {
@@ -84,6 +95,8 @@ class OverlayScroller extends Component {
         renderThumbHorizontal={this._renderThumb}
         renderThumbVertical={this._renderThumb}
         renderView={this._renderView}
+        onScrollStart={this.onScrollStart}
+        onScrollStop={this.onScrollStop}
         onScroll={this.onScroll}
       >
         {children}
