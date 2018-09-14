@@ -37,7 +37,7 @@ function ArtistMonitoringOptionsPopoverContent() {
 
       <DescriptionListItem
         title="None"
-        data="No albums will be monitored."
+        data="No albums will be monitored"
       />
     </DescriptionList>
   );
