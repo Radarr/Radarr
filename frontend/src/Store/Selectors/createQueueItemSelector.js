@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 function createQueueItemSelector() {
@@ -10,7 +9,7 @@ function createQueueItemSelector() {
         return null;
       }
 
-      return _.find(details.items, (item) => {
+      return details.items.find((item) => {
         return item.album.id === albumId;
       });
     }

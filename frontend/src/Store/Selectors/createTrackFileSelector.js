@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 function createTrackFileSelector() {
@@ -10,7 +9,7 @@ function createTrackFileSelector() {
         return null;
       }
 
-      return _.find(trackFiles.items, { id: trackFileId });
+      return trackFiles.items.find((trackFile) => trackFile.id === trackFileId);
     }
   );
 }
