@@ -97,4 +97,8 @@ FilterBuilderRowValue.propTypes = {
   onChange: PropTypes.func.isRequired
 };
 
+FilterBuilderRowValue.defaultProps = {
+  filterValue: []
+};
+
 export default FilterBuilderRowValue;
