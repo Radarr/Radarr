@@ -56,7 +56,7 @@ function createMapStateToProps() {
       const isRenamingArtistCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
       const isRenamingArtist = (
         isCommandExecuting(isRenamingArtistCommand) &&
-        isRenamingArtistCommand.body.artistId.indexOf(artist.id) > -1
+        isRenamingArtistCommand.body.artistIds.indexOf(artist.id) > -1
       );
 
       const isFetching = albums.isFetching || trackFiles.isFetching;
