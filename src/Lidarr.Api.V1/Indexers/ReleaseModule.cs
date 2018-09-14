@@ -11,6 +11,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Validation;
 using Lidarr.Http.Extensions;
 using HttpStatusCode = System.Net.HttpStatusCode;
 
@@ -46,6 +47,7 @@ namespace Lidarr.Api.V1.Indexers
             Post["/"] = x => DownloadRelease(this.Bind<ReleaseResource>());
 
             PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
+            PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             _remoteAlbumCache = cacheManager.GetCache<RemoteAlbum>(GetType(), "remoteAlbums");
