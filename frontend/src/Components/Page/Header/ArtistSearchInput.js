@@ -182,17 +182,15 @@ class ArtistSearchInput extends Component {
       });
     }
 
-    if (value.length >= 3) {
-      suggestionGroups.push({
-        title: 'Add New Artist',
-        suggestions: [
-          {
-            type: ADD_NEW_TYPE,
-            title: value
-          }
-        ]
-      });
-    }
+    suggestionGroups.push({
+      title: 'Add New Artist',
+      suggestions: [
+        {
+          type: ADD_NEW_TYPE,
+          title: value
+        }
+      ]
+    });
 
     const inputProps = {
       ref: this.setInputRef,
