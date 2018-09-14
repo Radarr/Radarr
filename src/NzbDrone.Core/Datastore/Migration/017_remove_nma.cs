@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("DELETE FROM Notifications WHERE Implementation = 'Notify My Android';");
+            Delete.FromTable("Notifications").Row(new { Implementation = "NotifyMyAndroid" });
         }
     }
 }
