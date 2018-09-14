@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.ImportLists.LastFm

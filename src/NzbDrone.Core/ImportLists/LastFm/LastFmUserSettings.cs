@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists.LastFm
         public string BaseUrl { get; set; }
         public string ApiKey { get; set; }
 
-        [FieldDefinition(0, Label = "Last.fm UserID", HelpText = "User to pull artists from, blank defaults to global top artists")]
+        [FieldDefinition(0, Label = "Last.fm UserID", HelpText = "Last.fm UserId to pull artists from")]
         public string UserId { get; set; }
 
         [FieldDefinition(1, Label = "Count", HelpText = "Number of results to pull from list (Max 1000)", Type = FieldType.Number)]
