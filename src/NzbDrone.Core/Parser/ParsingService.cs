@@ -8,7 +8,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
 using System;
-using System.Drawing.Text;
 
 namespace NzbDrone.Core.Parser
 {

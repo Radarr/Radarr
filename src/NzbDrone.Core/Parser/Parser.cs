@@ -722,7 +722,7 @@ namespace NzbDrone.Core.Parser
             result.ArtistTitle = artistName;
             result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistTitle);
 
-            Logger.Debug("Episode Parsed. {0}", result);
+            Logger.Debug("Track Parsed. {0}", result);
             return result;
         }
 
