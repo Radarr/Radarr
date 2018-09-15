@@ -8,7 +8,7 @@ function createSaveHandler(section, url) {
     dispatch(set({ section, isSaving: true }));
 
     const state = getSectionState(getState(), section, true);
-    const saveData = Object.assign({}, state.item, state.pendingChanges);
+    const saveData = Object.assign({}, state.item, state.pendingChanges, payload);
 
     const promise = $.ajax({
       url,
