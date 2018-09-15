@@ -25,3 +25,15 @@
   font-family: 'Ubuntu Mono';
   src: url('UbuntuMono-Regular.eot?#iefix') format('embedded-opentype'), url('UbuntuMono-Regular.woff') format('woff'), url('UbuntuMono-Regular.ttf') format('truetype');
 }
+
+/*
+ * text-security-disc
+ */
+
+@font-face {
+  font-weight: normal;
+  font-style: normal;
+  font-family: 'text-security-disc';
+  src: url('text-security-disc.woff') format('woff'), url('text-security-disc.ttf') format('truetype');
+}
+

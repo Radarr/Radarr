@@ -24,6 +24,10 @@ class TextInput extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.onDocumentMouseUp);
+
+    if (this._selectionTimeout) {
+      this._selectionTimeout = clearTimeout(this._selectionTimeout);
+    }
   }
 
   //
@@ -171,7 +175,7 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
-  className: styles.text,
+  className: styles.input,
   type: 'text',
   readOnly: false,
   autoFocus: false,

@@ -3,7 +3,7 @@
 }
 
 .numberInput {
-  composes: text from 'Components/Form/TextInput.css';
+  composes: input from 'Components/Form/TextInput.css';
 
   margin-right: 3px;
 }
