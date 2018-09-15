@@ -22,7 +22,6 @@ class OverlayScroller extends Component {
     } = this.props;
 
     if (!this._isScrolling && scrollTop != null && scrollTop !== prevProps.scrollTop) {
-      debugger;
       this._scroller.scrollTop(scrollTop);
     }
   }
