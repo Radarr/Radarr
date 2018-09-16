@@ -30,7 +30,7 @@ var view = Marionette.Layout.extend({
     initialize : function(options) {
         this.profileCollection = options.profileCollection;
         this.itemsCollection = new Backbone.Collection(_.toArray(this.model.get('items')).reverse());
-        this.netImportCollection = new NetImportCollection;
+        this.netImportCollection = new NetImportCollection();
         this.netImportCollection.fetch();
         this.formatItemsCollection = new Backbone.Collection(_.toArray(this.model.get('formatItems')).reverse());
         this.listenTo(FullMovieCollection, 'all', this._updateDisableStatus);

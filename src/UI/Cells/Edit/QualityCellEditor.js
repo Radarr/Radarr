@@ -23,7 +23,7 @@ module.exports = Backgrid.CellEditor.extend({
         promise.done(function() {
             var templateName = self.template;
             self.schema = profileSchemaCollection.first();
-            debugger;
+            //debugger;
 
             var selected = _.find(self.schema.get('items'), function(model) {
                 return model.quality.id === self.model.get(self.column.get('name')).quality.id;
