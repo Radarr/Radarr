@@ -1,18 +1,18 @@
-using System;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.IndexerSearch.Definitions
 {
     public class AlbumSearchCriteria : SearchCriteriaBase
     {
-
         public string AlbumTitle { get; set; }
         public int AlbumYear { get; set; }
+        public string Disambiguation { get; set; }
 
-        public string AlbumQuery => GetQueryTitle(AlbumTitle);
+        public string AlbumQuery => GetQueryTitle($"{AlbumTitle}{(Disambiguation.IsNullOrWhiteSpace() ? string.Empty : $"+{Disambiguation}")}");
 
         public override string ToString()
         {
-            return string.Format("[{0} - {1} ({2})]", Artist.Name, AlbumTitle, AlbumYear);
+            return $"[{Artist.Name} - {AlbumTitle}{(Disambiguation.IsNullOrWhiteSpace() ? string.Empty : $" ({Disambiguation})")} ({AlbumYear})]";
         }
     }
 }

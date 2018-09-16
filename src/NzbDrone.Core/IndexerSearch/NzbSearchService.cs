@@ -9,6 +9,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Music;
 
@@ -76,7 +77,12 @@ namespace NzbDrone.Core.IndexerSearch
             {
                 searchSpec.AlbumYear = album.ReleaseDate.Value.Year;
             }
-            
+
+            if (album.Disambiguation.IsNotNullOrWhiteSpace())
+            {
+                searchSpec.Disambiguation = album.Disambiguation;
+            }
+
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
