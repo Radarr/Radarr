@@ -1,6 +1,6 @@
 var path = require('path');
 var gulp = require('gulp');
-var print = require('gulp-print');
+var print = require('gulp-print').default;
 var cache = require('gulp-cached');
 var livereload = require('gulp-livereload');
 var paths = require('./helpers/paths.js');

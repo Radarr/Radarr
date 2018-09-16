@@ -39,7 +39,7 @@ class Link extends Component {
     let el = component;
 
     if (to) {
-      if (/\w+?:\/\//.test(to)) {
+      if ((/\w+?:\/\//).test(to)) {
         el = 'a';
         linkProps.href = to;
         linkProps.target = target || '_blank';

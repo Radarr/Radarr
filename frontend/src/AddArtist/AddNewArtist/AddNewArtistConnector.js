@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import queryString from 'query-string';
+import parseUrl from 'Utilities/String/parseUrl';
 import { lookupArtist, clearAddArtist } from 'Store/Actions/addArtistActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import AddNewArtist from './AddNewArtist';
@@ -12,10 +12,10 @@ function createMapStateToProps() {
     (state) => state.addArtist,
     (state) => state.routing.location,
     (addArtist, location) => {
-      const query = queryString.parse(location.search);
+      const { params } = parseUrl(location.search);
 
       return {
-        term: query.term,
+        term: params.term,
         ...addArtist
       };
     }

@@ -28,6 +28,8 @@ export default function parseUrl(url) {
   if (properties.search) {
     // Remove leading ? from querystring before parsing.
     properties.params = qs.parse(properties.search.substring(1));
+  } else {
+    properties.params = {};
   }
 
   return properties;

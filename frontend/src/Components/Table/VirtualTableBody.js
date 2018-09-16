@@ -1,48 +1,40 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Grid } from 'react-virtualized';
 import styles from './VirtualTableBody.css';
 
-class VirtualTableBody extends Grid {
+class VirtualTableBody extends Component {
 
   //
   // Render
 
   render() {
-    const {
-      autoContainerWidth,
-      containerStyle
-    } = this.props;
-
-    const { isScrolling } = this.state;
-
-    const totalColumnsWidth = this._columnSizeAndPositionManager.getTotalSize();
-    const totalRowsHeight = this._rowSizeAndPositionManager.getTotalSize();
-    const childrenToDisplay = this._childrenToDisplay;
-
-    if (childrenToDisplay.length > 0) {
-      return (
-        <div className={styles.tableBodyContainer}>
-          <div
-            style={{
-              width: autoContainerWidth ? 'auto' : totalColumnsWidth,
-              height: totalRowsHeight,
-              maxWidth: totalColumnsWidth,
-              maxHeight: totalRowsHeight,
-              overflow: 'hidden',
-              pointerEvents: isScrolling ? 'none' : '',
-              ...containerStyle
-            }}
-          >
-            {childrenToDisplay}
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div />
+      <Grid
+        {...this.props}
+        style={{
+          boxSizing: undefined,
+          direction: undefined,
+          height: undefined,
+          position: undefined,
+          willChange: undefined,
+          overflow: undefined,
+          width: undefined
+        }}
+        containerStyle={{
+          position: undefined
+        }}
+      />
     );
   }
 }
+
+VirtualTableBody.propTypes = {
+  className: PropTypes.string.isRequired
+};
+
+VirtualTableBody.defaultProps = {
+  className: styles.tableBodyContainer
+};
 
 export default VirtualTableBody;

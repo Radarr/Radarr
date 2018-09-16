@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 function getMonitoringOptions(monitor) {
   const monitoringOptions = {
     selectedOption: 0,
