@@ -7,6 +7,7 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Download.Clients.Nzbget;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Profiles;
 
@@ -180,6 +181,11 @@ namespace NzbDrone.Api.ClientSchema
 
             var options = from Enum e in Enum.GetValues(selectOptions)
                           select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
+
+            if (selectOptions == typeof(NzbgetPriority))
+            {
+                return options.OrderBy(o => o.Value).ToList();
+            }
 
             return options.OrderBy(o => o.Name).ToList();
         }
