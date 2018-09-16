@@ -1,11 +1,10 @@
 language: csharp
 solution: src/Lidarr.sln
-addons:
-  apt:
-    packages:
-      - nodejs
-#      - npm apparently not needed anymore.
+install:
+  - nvm install 8
+  - nvm use 8
 script:
+  - node --version
   - ./build.sh
   - chmod +x test.sh
   - ./test.sh Linux Unit
