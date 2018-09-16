@@ -25,7 +25,6 @@ module.exports = Backgrid.SelectCell.extend({
     },
 
     optionValues : function() {
-      //debugger;
       return _.map(ProfileCollection.models, function(model){
         return [model.get("name"), model.get("id")+""];
       });

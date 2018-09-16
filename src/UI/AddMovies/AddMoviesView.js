@@ -231,7 +231,6 @@ module.exports = Marionette.Layout.extend({
 			this.listsDropdown = new DiscoverableListDropdownView(DiscoverableListCollection.toJSON());
 			this.listsDropdown.render();
 			$("#list-dropdown").html(this.listsDropdown.$el.html());
-			//debugger;
 			//this.myRegion.show(new DiscoverableListDropdownView(DiscoverableListCollection.toJSON()));
 		},
 

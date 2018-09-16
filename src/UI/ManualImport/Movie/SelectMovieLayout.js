@@ -95,7 +95,6 @@ module.exports = Marionette.Layout.extend({
     },
 
     _onSelected : function (e) {
-        //debugger;
         this.trigger('manualimport:selected:movie', { model: e.model });
 
         vent.trigger(vent.Commands.CloseModal2Command);
