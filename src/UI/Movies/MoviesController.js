@@ -26,7 +26,6 @@ module.exports = NzbDroneController.extend({
 
 			if(FullMovieCollection.length > 0) {
 				this._renderMovieDetails(query);
-				//debugger;
 			} else {
 				var self = this;
 				$.getJSON(window.NzbDrone.ApiRoot + '/movie/titleslug/'+query, { }, function(data) {
@@ -34,7 +33,6 @@ module.exports = NzbDroneController.extend({
 						self._renderMovieDetails(query);
 					});
 				this.listenTo(FullMovieCollection, 'sync', function(model, options) {
-					//debugger;
 					this._renderMovieDetails(query);
 				});
 			}

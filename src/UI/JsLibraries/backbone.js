@@ -815,7 +815,7 @@
     sort: function(options) {
       if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
       options || (options = {});
-      //debugger;
+
       // Run sort based on type of `comparator`.
       if (_.isString(this.comparator) || this.comparator.length === 1) {
         this.models = this.sortBy(this.comparator, this);

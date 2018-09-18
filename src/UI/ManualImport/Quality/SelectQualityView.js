@@ -26,10 +26,10 @@ module.exports = Marionette.ItemView.extend({
     },
 
     onRender : function() {
-        if (this.current.formats != undefined) {
+        if (this.current.formats !== undefined) {
             this.ui.formats.val(this.current.formats.map(function(m) {return m.id;}).join(","));
         }
-        if (this.current.quality != undefined) {
+        if (this.current.quality !== undefined) {
             this.ui.select.val(this.current.quality.id);
         }
         this.ui.formats.tagInput();

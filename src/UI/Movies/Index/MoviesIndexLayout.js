@@ -145,7 +145,6 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
     	//this variable prevents us from showing the list before moviesCollection has been fetched the first time
         this.moviesCollection = MoviesCollection.clone();
-        //debugger;
         this.moviesCollection.bindSignalR();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
 		if (this.moviesCollection.state.pageSize !== pageSize) {
@@ -321,7 +320,6 @@ module.exports = Marionette.Layout.extend({
         };
 
             //this._showToolbar();
-            //debugger;
             var self = this;
             setTimeout(function(){self._showToolbar();}, 0); // jshint ignore:line
             //this._renderView();
@@ -397,7 +395,6 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showToolbar : function() {
-      //debugger;
         if (this.toolbar.currentView) {
             return;
         }

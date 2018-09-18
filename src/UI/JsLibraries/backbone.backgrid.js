@@ -2404,7 +2404,6 @@ var Body = Backgrid.Body = Backbone.View.extend({
      See [Backbone.Collection#comparator](http://backbonejs.org/#Collection-comparator)
   */
   sort: function (column, direction) {
-    //debugger;
     if (_.isString(column)) column = this.columns.findWhere({name: column});
 
     var collection = this.collection;

@@ -94,7 +94,7 @@ var view = Marionette.ItemView.extend({
 		        var input = this.ui.thirtyMinuteMaxSize.val();
 		        var maxSize = parseFloat(input) || 0;
 		        var mbPerMinute = maxSize / 90 * 1024;
-		        if (mbPerMinute == 0)
+		        if (mbPerMinute === 0)
                 {
                     mbPerMinute = null;
                 }
