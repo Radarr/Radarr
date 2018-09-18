@@ -49,7 +49,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
         public int OlderMoviePriority { get; set; }
 
-        [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]
+        [FieldDefinition(7, Label = "Add Paused", Type = FieldType.Checkbox)]
+        public bool AddPaused { get; set; }
+
+        [FieldDefinition(8, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 
         public NzbDroneValidationResult Validate()

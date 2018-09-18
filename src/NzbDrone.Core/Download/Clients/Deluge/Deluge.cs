@@ -42,8 +42,6 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 _proxy.SetLabel(actualHash, Settings.MovieCategory, Settings);
             }
 
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
-
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
             if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
@@ -63,8 +61,6 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             {
                 _proxy.SetLabel(actualHash, Settings.MovieCategory, Settings);
             }
-
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
