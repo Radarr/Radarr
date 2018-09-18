@@ -66,6 +66,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 //HD
                 { ".mkv", Source.WEBDL },
+                { ".mk3d", Source.WEBDL},
                 { ".ts", Source.TV },
                 { ".wtv", Source.TV },
 
@@ -77,6 +78,7 @@ namespace NzbDrone.Core.MediaFiles
             {
                 //HD
                 { ".mkv", Resolution.R720P },
+                { ".mk3d", Resolution.R720P },
                 { ".ts", Resolution.R720P },
                 { ".wtv", Resolution.R720P },
 
