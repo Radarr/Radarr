@@ -529,7 +529,7 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
         }
 
-        public static string NormalizeEpisodeTitle(string title)
+        public static string NormalizeTrackTitle(string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
             title = PunctuationRegex.Replace(title, " ");

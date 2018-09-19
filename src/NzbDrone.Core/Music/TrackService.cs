@@ -79,35 +79,25 @@ namespace NzbDrone.Core.Music
         public Track FindTrackByTitle(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
-            var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
+            var normalizedReleaseTitle = Parser.Parser.NormalizeTrackTitle(releaseTitle).Replace(".", " ");
             var tracks = _trackRepository.GetTracksByMedium(albumId, mediumNumber);
 
-            var matches = tracks.Select(
-                track => new
+            var matches = from track in tracks
+                //if we have a trackNumber use it
+                let trackNumCheck = (trackNumber == 0 || track.AbsoluteTrackNumber == trackNumber)
+                //if release title is longer than track title
+                let posReleaseTitle = normalizedReleaseTitle.IndexOf(Parser.Parser.NormalizeTrackTitle(track.Title), StringComparison.CurrentCultureIgnoreCase)
+                //if track title is longer than release title 
+                let posTrackTitle = Parser.Parser.NormalizeTrackTitle(track.Title).IndexOf(normalizedReleaseTitle, StringComparison.CurrentCultureIgnoreCase)
+                where track.Title.Length > 0 && trackNumCheck && (posReleaseTitle >= 0 || posTrackTitle >= 0)
+                orderby posReleaseTitle, posTrackTitle
+                select new
                 {
-                    Position = normalizedReleaseTitle.IndexOf(Parser.Parser.NormalizeEpisodeTitle(track.Title), StringComparison.CurrentCultureIgnoreCase),
-                    Length = Parser.Parser.NormalizeEpisodeTitle(track.Title).Length,
+                    NormalizedLength = Parser.Parser.NormalizeTrackTitle(track.Title).Length,
                     Track = track
-                });
+                };
 
-            if (trackNumber == 0)
-            {
-                matches =  matches.Where(e => e.Track.Title.Length > 0 && e.Position >= 0);
-            } else
-            {
-                matches = matches.Where(e => e.Track.Title.Length > 0 && e.Position >= 0 && e.Track.AbsoluteTrackNumber == trackNumber);
-            }
- 
-            matches.OrderBy(e => e.Position)
-                    .ThenByDescending(e => e.Length)
-                    .ToList();
-
-            if (matches.Any())
-            {
-                return matches.First().Track;
-            }
-
-            return null;
+            return matches.OrderByDescending(e => e.NormalizedLength).FirstOrDefault()?.Track;
         }
 
         public List<Track> TracksWithFiles(int artistId)
