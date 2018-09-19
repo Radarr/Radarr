@@ -1,4 +1,4 @@
-version: '0.3.1.{build}'
+version: '0.4.0.{build}'
 
 image: Visual Studio 2017
 
@@ -11,7 +11,7 @@ assembly_info:
 
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  nodejs_version: "6"
+  nodejs_version: "8"
 
 install:
   - git submodule update --init --recursive
