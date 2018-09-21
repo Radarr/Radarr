@@ -40,6 +40,9 @@ namespace NzbDrone.Core.Indexers.Rarbg
         [FieldDefinition(4)]
         public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
 
+        [FieldDefinition(5, Type = FieldType.Number, Label = "Early Download Limit", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Advanced = true)]
+        public int? EarlyReleaseLimit { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

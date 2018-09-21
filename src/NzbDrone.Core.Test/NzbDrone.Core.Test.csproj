@@ -150,6 +150,7 @@
     <Compile Include="DecisionEngineTests\Search\ArtistSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RawDiskSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\Search\TorrentSeedingSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\EarlyReleaseSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />

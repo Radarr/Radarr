@@ -59,10 +59,10 @@ namespace NzbDrone.Core.Indexers.Torznab
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
-        [FieldDefinition(5, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(6)]
+        [FieldDefinition(7)]
         public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
 
         public override NzbDroneValidationResult Validate()
