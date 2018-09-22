@@ -38,10 +38,7 @@ namespace NzbDrone.Core.Indexers.Headphones
                 pageableRequests.AddTier();
 
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                        string.Format("&q={0}",
-                        NewsnabifyTitle(string.Format("{0} {1}",
-                                         searchCriteria.ArtistQuery,
-                                         searchCriteria.AlbumQuery)))));
+                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
 
             return pageableRequests;
         }
@@ -53,8 +50,7 @@ namespace NzbDrone.Core.Indexers.Headphones
             pageableRequests.AddTier();
 
             pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                    string.Format("&q={0}",
-                    NewsnabifyTitle(searchCriteria.ArtistQuery))));
+                NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}")));
 
             return pageableRequests;
         }
@@ -68,7 +64,8 @@ namespace NzbDrone.Core.Indexers.Headphones
 
             var categoriesQuery = string.Join(",", categories.Distinct());
 
-            var baseUrl = string.Format("{0}{1}?t={2}&cat={3}&extended=1", Settings.BaseUrl.TrimEnd('/'), Settings.ApiPath.TrimEnd('/'), searchType, categoriesQuery);
+            var baseUrl =
+                $"{Settings.BaseUrl.TrimEnd('/')}{Settings.ApiPath.TrimEnd('/')}?t={searchType}&cat={categoriesQuery}&extended=1";
 
             if (Settings.ApiKey.IsNotNullOrWhiteSpace())
             {
@@ -86,7 +83,7 @@ namespace NzbDrone.Core.Indexers.Headphones
             {
                 for (var page = 0; page < maxPages; page++)
                 {
-                    var request = new IndexerRequest(string.Format("{0}&offset={1}&limit={2}{3}", baseUrl, page * PageSize, PageSize, parameters), HttpAccept.Rss);
+                    var request = new IndexerRequest($"{baseUrl}&offset={page * PageSize}&limit={PageSize}{parameters}", HttpAccept.Rss);
                     request.HttpRequest.AddBasicAuthentication(Settings.Username, Settings.Password);
 
                     yield return request;
