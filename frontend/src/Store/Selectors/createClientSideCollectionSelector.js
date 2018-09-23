@@ -94,12 +94,24 @@ function sort(items, state) {
   return _.orderBy(items, clauses, orders);
 }
 
+function createCustomFiltersSelector(type, alternateType) {
+  return createSelector(
+    (state) => state.customFilters.items,
+    (customFilters) => {
+      return customFilters.filter((customFilter) => {
+        return customFilter.type === type || customFilter.type === alternateType;
+      });
+    }
+  );
+}
+
 function createClientSideCollectionSelector(section, uiSection) {
   return createSelector(
     (state) => _.get(state, section),
     (state) => _.get(state, uiSection),
-    (sectionState, uiSectionState = {}) => {
-      const state = Object.assign({}, sectionState, uiSectionState);
+    createCustomFiltersSelector(section, uiSection),
+    (sectionState, uiSectionState = {}, customFilters) => {
+      const state = Object.assign({}, sectionState, uiSectionState, { customFilters });
 
       const filtered = filter(state.items, state);
       const sorted = sort(filtered, state);
@@ -107,6 +119,7 @@ function createClientSideCollectionSelector(section, uiSection) {
       return {
         ...sectionState,
         ...uiSectionState,
+        customFilters,
         items: sorted,
         totalItems: state.items.length
       };

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as artistIndexActions from 'Store/Actions/artistIndexActions';
+import { setArtistFilter } from 'Store/Actions/artistIndexActions';
 import FilterModal from 'Components/Filter/FilterModal';
 
 function createMapStateToProps() {
@@ -10,22 +10,15 @@ function createMapStateToProps() {
     (sectionItems, filterBuilderProps) => {
       return {
         sectionItems,
-        filterBuilderProps
+        filterBuilderProps,
+        customFilterType: 'artistIndex'
       };
     }
   );
 }
 
-function createMapDispatchToProps(dispatch, props) {
-  return {
-    onRemoveCustomFilterPress(payload) {
-      dispatch(artistIndexActions.removeArtistCustomFilter(payload));
-    },
+const mapDispatchToProps = {
+  dispatchSetFilter: setArtistFilter
+};
 
-    onSaveCustomFilterPress(payload) {
-      dispatch(artistIndexActions.saveArtistCustomFilter(payload));
-    }
-  };
-}
-
-export default connect(createMapStateToProps, createMapDispatchToProps)(FilterModal);
+export default connect(createMapStateToProps, mapDispatchToProps)(FilterModal);

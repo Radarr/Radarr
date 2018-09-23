@@ -273,7 +273,7 @@ ArtistEditor.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,

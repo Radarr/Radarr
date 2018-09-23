@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { inputTypes } from 'Helpers/Props';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import Button from 'Components/Link/Button';
+import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
@@ -32,6 +33,28 @@ class FilterBuilderModalContent extends Component {
       filters,
       labelErrors: []
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      id,
+      customFilters,
+      isSaving,
+      saveError,
+      dispatchSetFilter,
+      onModalClose
+    } = this.props;
+
+    if (prevProps.isSaving && !isSaving && !saveError) {
+      if (id) {
+        dispatchSetFilter({ selectedFilterKey: id });
+      } else {
+        const last = customFilters[customFilters.length -1];
+        dispatchSetFilter({ selectedFilterKey: last.id });
+      }
+
+      onModalClose();
+    }
   }
 
   //
@@ -70,9 +93,9 @@ class FilterBuilderModalContent extends Component {
 
   onSaveFilterPress = () => {
     const {
-      customFilterKey: key,
-      onSaveCustomFilterPress,
-      onModalClose
+      id,
+      customFilterType,
+      onSaveCustomFilterPress
     } = this.props;
 
     const {
@@ -92,8 +115,12 @@ class FilterBuilderModalContent extends Component {
       return;
     }
 
-    onSaveCustomFilterPress({ key, label, filters });
-    onModalClose();
+    onSaveCustomFilterPress({
+      id,
+      type: customFilterType,
+      label,
+      filters
+    });
   }
 
   //
@@ -103,6 +130,8 @@ class FilterBuilderModalContent extends Component {
     const {
       sectionItems,
       filterBuilderProps,
+      isSaving,
+      saveError,
       onModalClose
     } = this.props;
 
@@ -161,17 +190,17 @@ class FilterBuilderModalContent extends Component {
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            onPress={onModalClose}
-          >
+          <Button onPress={onModalClose}>
             Cancel
           </Button>
 
-          <Button
+          <SpinnerErrorButton
+            isSpinning={isSaving}
+            error={saveError}
             onPress={this.onSaveFilterPress}
           >
-            Apply
-          </Button>
+            Save
+          </SpinnerErrorButton>
         </ModalFooter>
       </ModalContent>
     );
@@ -179,13 +208,18 @@ class FilterBuilderModalContent extends Component {
 }
 
 FilterBuilderModalContent.propTypes = {
-  customFilterKey: PropTypes.string,
+  id: PropTypes.number,
   label: PropTypes.string.isRequired,
+  customFilterType: PropTypes.string.isRequired,
   sectionItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   filterBuilderProps: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onRemoveCustomFilterPress: PropTypes.func.isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isSaving: PropTypes.bool.isRequired,
+  saveError: PropTypes.object,
+  dispatchDeleteCustomFilter: PropTypes.func.isRequired,
   onSaveCustomFilterPress: PropTypes.func.isRequired,
+  dispatchSetFilter: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

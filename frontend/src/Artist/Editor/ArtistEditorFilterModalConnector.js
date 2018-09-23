@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as artistEditorActions from 'Store/Actions/artistEditorActions';
+import { setArtistEditorFilter } from 'Store/Actions/artistEditorActions';
 import FilterModal from 'Components/Filter/FilterModal';
 
 function createMapStateToProps() {
@@ -10,22 +10,15 @@ function createMapStateToProps() {
     (sectionItems, filterBuilderProps) => {
       return {
         sectionItems,
-        filterBuilderProps
+        filterBuilderProps,
+        customFilterType: 'artistEditor'
       };
     }
   );
 }
 
-function createMapDispatchToProps(dispatch, props) {
-  return {
-    onRemoveCustomFilterPress(payload) {
-      dispatch(artistEditorActions.removeArtistEditorCustomFilter(payload));
-    },
+const mapDispatchToProps = {
+  dispatchSetFilter: setArtistEditorFilter
+};
 
-    onSaveCustomFilterPress(payload) {
-      dispatch(artistEditorActions.saveArtistEditorCustomFilter(payload));
-    }
-  };
-}
-
-export default connect(createMapStateToProps, createMapDispatchToProps)(FilterModal);
+export default connect(createMapStateToProps, mapDispatchToProps)(FilterModal);

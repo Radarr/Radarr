@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Measure from 'react-measure';
 import dimensions from 'Styles/Variables/dimensions';
+import Measure from 'Components/Measure';
 import PageJumpBarItem from './PageJumpBarItem';
 import styles from './PageJumpBar.css';
 

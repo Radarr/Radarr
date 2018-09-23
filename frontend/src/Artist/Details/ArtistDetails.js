@@ -11,6 +11,7 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
+import Measure from 'Components/Measure';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';

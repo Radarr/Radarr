@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Measure from 'react-measure';
 import { align, icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
+import Measure from 'Components/Measure';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';

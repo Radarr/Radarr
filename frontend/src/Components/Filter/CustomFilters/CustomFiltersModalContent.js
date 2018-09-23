@@ -10,9 +10,13 @@ import styles from './CustomFiltersModalContent.css';
 
 function CustomFiltersModalContent(props) {
   const {
+    selectedFilterKey,
     customFilters,
+    isDeleting,
+    deleteError,
+    dispatchDeleteCustomFilter,
+    dispatchSetFilter,
     onAddCustomFilter,
-    onRemoveCustomFilterPress,
     onEditCustomFilter,
     onModalClose
   } = props;
@@ -29,10 +33,14 @@ function CustomFiltersModalContent(props) {
             return (
               <CustomFilter
                 key={index}
-                customFilterKey={customFilter.key}
+                id={customFilter.id}
                 label={customFilter.label}
                 filters={customFilter.filters}
-                onRemovePress={onRemoveCustomFilterPress}
+                selectedFilterKey={selectedFilterKey}
+                isDeleting={isDeleting}
+                deleteError={deleteError}
+                dispatchSetFilter={dispatchSetFilter}
+                dispatchDeleteCustomFilter={dispatchDeleteCustomFilter}
                 onEditPress={onEditCustomFilter}
               />
             );
@@ -58,9 +66,13 @@ function CustomFiltersModalContent(props) {
 }
 
 CustomFiltersModalContent.propTypes = {
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  deleteError: PropTypes.object,
+  dispatchDeleteCustomFilter: PropTypes.func.isRequired,
+  dispatchSetFilter: PropTypes.func.isRequired,
   onAddCustomFilter: PropTypes.func.isRequired,
-  onRemoveCustomFilterPress: PropTypes.func.isRequired,
   onEditCustomFilter: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

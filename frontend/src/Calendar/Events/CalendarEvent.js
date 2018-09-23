@@ -56,6 +56,10 @@ class CalendarEvent extends Component {
       colorImpairedMode
     } = this.props;
 
+    if (!artist) {
+      return null;
+    }
+
     const startTime = moment(releaseDate);
     // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);

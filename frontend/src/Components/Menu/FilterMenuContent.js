@@ -42,8 +42,8 @@ class FilterMenuContent extends Component {
           customFilters.map((filter) => {
             return (
               <FilterMenuItem
-                key={filter.key}
-                filterKey={filter.key}
+                key={filter.id}
+                filterKey={filter.id}
                 selectedFilterKey={selectedFilterKey}
                 onPress={onFilterSelect}
               >
@@ -70,7 +70,7 @@ class FilterMenuContent extends Component {
 }
 
 FilterMenuContent.propTypes = {
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   showCustomFilters: PropTypes.bool.isRequired,

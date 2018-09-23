@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
-import { sortDirections } from 'Helpers/Props';
+import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -29,7 +29,55 @@ export const defaultState = {
   selectedFilterKey: 'all',
   filters,
   filterPredicates,
-  customFilters: []
+
+  filterBuilderProps: [
+    {
+      name: 'monitored',
+      label: 'Monitored',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.ARTIST_STATUS
+    },
+    {
+      name: 'artistType',
+      label: 'Artist Type',
+      type: filterBuilderTypes.EXACT
+    },
+    {
+      name: 'qualityProfileId',
+      label: 'Quality Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.QUALITY_PROFILE
+    },
+    {
+      name: 'languageProfileId',
+      label: 'Language Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.LANGUAGE_PROFILE
+    },
+    {
+      name: 'metadataProfileId',
+      label: 'Metadata Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.METADATA_PROFILE
+    },
+    {
+      name: 'rootFolderPath',
+      label: 'Root Folder Path',
+      type: filterBuilderTypes.EXACT
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      type: filterBuilderTypes.ARRAY,
+      valueType: filterBuilderValueTypes.TAG
+    }
+  ]
 };
 
 export const persistState = [

@@ -9,7 +9,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import styles from './ArtistHistoryRow.css';
@@ -100,7 +100,7 @@ class ArtistHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell>
-          <EpisodeQuality
+          <TrackQuality
             quality={quality}
             isCutoffNotMet={qualityCutoffNotMet}
           />

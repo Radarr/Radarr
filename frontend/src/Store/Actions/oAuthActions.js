@@ -10,6 +10,7 @@ import createHandleActions from './Creators/createHandleActions';
 // Variables
 
 export const section = 'oAuth';
+const callbackUrl = `${window.location.origin}${window.Lidarr.urlBase}/oauth.html`;
 
 //
 // State
@@ -64,6 +65,19 @@ function showOAuthWindow(url) {
   return deferred.promise();
 }
 
+function executeIntermediateRequest(payload, ajaxOptions) {
+  return $.ajax(ajaxOptions).then((data) => {
+    return requestAction({
+      action: 'continueOAuth',
+      queryParams: {
+        ...data,
+        callbackUrl
+      },
+      ...payload
+    });
+  });
+}
+
 //
 // Action Handlers
 
@@ -72,7 +86,7 @@ export const actionHandlers = handleThunks({
   [START_OAUTH]: function(getState, payload, dispatch) {
     const actionPayload = {
       action: 'startOAuth',
-      queryParams: { callbackUrl: `${window.location.origin}${window.Lidarr.urlBase}/oauth.html` },
+      queryParams: { callbackUrl },
       ...payload
     };
 
@@ -85,7 +99,16 @@ export const actionHandlers = handleThunks({
     const promise = requestAction(actionPayload)
       .then((response) => {
         startResponse = response;
-        return showOAuthWindow(response.oauthUrl);
+
+        if (response.oauthUrl) {
+          return showOAuthWindow(response.oauthUrl);
+        }
+
+        return executeIntermediateRequest(payload, response).then((intermediateResponse) => {
+          startResponse = intermediateResponse;
+
+          return showOAuthWindow(intermediateResponse.oauthUrl);
+        });
       })
       .then((queryParams) => {
         return requestAction({

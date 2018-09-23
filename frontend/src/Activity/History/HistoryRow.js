@@ -7,7 +7,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
 import HistoryDetailsModal from './Details/HistoryDetailsModal';
@@ -142,7 +142,7 @@ class HistoryRow extends Component {
             if (name === 'quality') {
               return (
                 <TableRowCell key={name}>
-                  <EpisodeQuality
+                  <TrackQuality
                     quality={quality}
                     isCutoffMet={qualityCutoffNotMet}
                   />

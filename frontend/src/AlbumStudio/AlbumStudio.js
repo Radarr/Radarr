@@ -13,6 +13,7 @@ import FilterMenu from 'Components/Menu/FilterMenu';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
+import AlbumStudioFilterModalConnector from './AlbumStudioFilterModalConnector';
 import AlbumStudioRowConnector from './AlbumStudioRowConnector';
 import AlbumStudioFooter from './AlbumStudioFooter';
 
@@ -130,6 +131,7 @@ class AlbumStudio extends Component {
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
+              filterModalConnectorComponent={AlbumStudioFilterModalConnector}
               onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>
@@ -202,7 +204,7 @@ AlbumStudio.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,

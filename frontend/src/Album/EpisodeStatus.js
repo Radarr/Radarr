@@ -5,7 +5,7 @@ import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import ProgressBar from 'Components/ProgressBar';
 import QueueDetails from 'Activity/Queue/QueueDetails';
-import EpisodeQuality from './EpisodeQuality';
+import TrackQuality from './TrackQuality';
 import styles from './EpisodeStatus.css';
 
 function EpisodeStatus(props) {
@@ -63,7 +63,7 @@ function EpisodeStatus(props) {
 
     return (
       <div className={styles.center}>
-        <EpisodeQuality
+        <TrackQuality
           quality={quality}
           size={trackFile.size}
           isCutoffNotMet={isCutoffNotMet}

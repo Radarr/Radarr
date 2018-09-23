@@ -8,8 +8,11 @@ function ErrorPage(props) {
     version,
     isLocalStorageSupported,
     artistError,
+    customFiltersError,
     tagsError,
     qualityProfilesError,
+    languageProfilesError,
+    metadataProfilesError,
     uiSettingsError
   } = props;
 
@@ -19,10 +22,16 @@ function ErrorPage(props) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
   } else if (artistError) {
     errorMessage = getErrorMessage(artistError, 'Failed to load artist from API');
+  } else if (customFiltersError) {
+    errorMessage = getErrorMessage(customFiltersError, 'Failed to load custom filters from API');
   } else if (tagsError) {
-    errorMessage = getErrorMessage(artistError, 'Failed to load artist from API');
+    errorMessage = getErrorMessage(tagsError, 'Failed to load tags from API');
   } else if (qualityProfilesError) {
     errorMessage = getErrorMessage(qualityProfilesError, 'Failed to load quality profiles from API');
+  } else if (languageProfilesError) {
+    errorMessage = getErrorMessage(languageProfilesError, 'Failed to load language profiles from API');
+  } else if (metadataProfilesError) {
+    errorMessage = getErrorMessage(metadataProfilesError, 'Failed to load metadata profiles from API');
   } else if (uiSettingsError) {
     errorMessage = getErrorMessage(uiSettingsError, 'Failed to load UI settings from API');
   }
@@ -44,8 +53,11 @@ ErrorPage.propTypes = {
   version: PropTypes.string.isRequired,
   isLocalStorageSupported: PropTypes.bool.isRequired,
   artistError: PropTypes.object,
+  customFiltersError: PropTypes.object,
   tagsError: PropTypes.object,
   qualityProfilesError: PropTypes.object,
+  languageProfilesError: PropTypes.object,
+  metadataProfilesError: PropTypes.object,
   uiSettingsError: PropTypes.object
 };
 

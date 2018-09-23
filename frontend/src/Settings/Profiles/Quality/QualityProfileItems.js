@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Measure from 'react-measure';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
+import Measure from 'Components/Measure';
 import QualityProfileItemDragSource from './QualityProfileItemDragSource';
 import QualityProfileItemDragPreview from './QualityProfileItemDragPreview';
 import styles from './QualityProfileItems.css';

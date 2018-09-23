@@ -22,7 +22,7 @@ function getTooltip(title, quality, size) {
   return title;
 }
 
-function EpisodeQuality(props) {
+function TrackQuality(props) {
   const {
     className,
     title,
@@ -42,7 +42,7 @@ function EpisodeQuality(props) {
   );
 }
 
-EpisodeQuality.propTypes = {
+TrackQuality.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   quality: PropTypes.object.isRequired,
@@ -50,8 +50,8 @@ EpisodeQuality.propTypes = {
   isCutoffNotMet: PropTypes.bool
 };
 
-EpisodeQuality.defaultProps = {
+TrackQuality.defaultProps = {
   title: ''
 };
 
-export default EpisodeQuality;
+export default TrackQuality;

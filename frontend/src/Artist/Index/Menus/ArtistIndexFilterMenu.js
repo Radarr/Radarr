@@ -27,7 +27,7 @@ function ArtistIndexFilterMenu(props) {
 }
 
 ArtistIndexFilterMenu.propTypes = {
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDisabled: PropTypes.bool.isRequired,

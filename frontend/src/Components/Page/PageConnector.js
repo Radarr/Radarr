@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
+import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
 import { fetchArtist } from 'Store/Actions/artistActions';
 import { fetchTags } from 'Store/Actions/tagActions';
 import { fetchQualityProfiles, fetchLanguageProfiles, fetchMetadataProfiles, fetchUISettings, fetchImportLists } from 'Store/Actions/settingsActions';
@@ -30,13 +31,15 @@ function testLocalStorage() {
 function createMapStateToProps() {
   return createSelector(
     (state) => state.artist,
+    (state) => state.customFilters,
     (state) => state.tags,
     (state) => state.settings,
     (state) => state.app,
     createDimensionsSelector(),
-    (artist, tags, settings, app, dimensions) => {
+    (artist, customFilters, tags, settings, app, dimensions) => {
       const isPopulated = (
         artist.isPopulated &&
+        customFilters.isPopulated &&
         tags.isPopulated &&
         settings.qualityProfiles.isPopulated &&
         settings.languageProfiles.isPopulated &&
@@ -47,6 +50,7 @@ function createMapStateToProps() {
 
       const hasError = !!(
         artist.error ||
+        customFilters.error ||
         tags.error ||
         settings.qualityProfiles.error ||
         settings.languageProfiles.error ||
@@ -59,6 +63,7 @@ function createMapStateToProps() {
         isPopulated,
         hasError,
         artistError: artist.error,
+        customFiltersError: tags.error,
         tagsError: tags.error,
         qualityProfilesError: settings.qualityProfiles.error,
         languageProfilesError: settings.languageProfiles.error,
@@ -79,6 +84,9 @@ function createMapDispatchToProps(dispatch, props) {
   return {
     dispatchFetchArtist() {
       dispatch(fetchArtist());
+    },
+    dispatchFetchCustomFilters() {
+      dispatch(fetchCustomFilters());
     },
     dispatchFetchTags() {
       dispatch(fetchTags());
@@ -126,6 +134,7 @@ class PageConnector extends Component {
   componentDidMount() {
     if (!this.props.isPopulated) {
       this.props.dispatchFetchArtist();
+      this.props.dispatchFetchCustomFilters();
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguageProfiles();
@@ -190,6 +199,7 @@ PageConnector.propTypes = {
   hasError: PropTypes.bool.isRequired,
   isSidebarVisible: PropTypes.bool.isRequired,
   dispatchFetchArtist: PropTypes.func.isRequired,
+  dispatchFetchCustomFilters: PropTypes.func.isRequired,
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguageProfiles: PropTypes.func.isRequired,

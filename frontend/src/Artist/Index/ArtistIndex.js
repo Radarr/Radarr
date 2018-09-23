@@ -215,7 +215,7 @@ class ArtistIndex extends Component {
     } = this.state;
 
     const ViewComponent = getViewComponent(view);
-    const isLoaded = !error && isPopulated && !!items.length && contentBody;
+    const isLoaded = !!(!error && isPopulated && items.length && contentBody);
     const hasNoArtist = !totalItems;
 
     return (
@@ -382,7 +382,7 @@ ArtistIndex.propTypes = {
   error: PropTypes.object,
   totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,

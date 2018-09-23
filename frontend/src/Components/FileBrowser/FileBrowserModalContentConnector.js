@@ -35,7 +35,7 @@ function createMapStateToProps() {
         directories,
         files,
         paths: filteredPaths,
-        isWindowsService: true || systemStatus.isWindows && systemStatus.mode === 'service'
+        isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service'
       };
     }
   );

@@ -70,9 +70,15 @@ class TrackFileEditorModalContent extends Component {
   getSelectedIds = () => {
     const selectedIds = getSelectedIds(this.state.selectedState);
 
-    return _.uniq(_.map(selectedIds, (id) => {
-      return _.find(this.props.items, { id }).trackFileId;
-    }));
+    return selectedIds.reduce((acc, id) => {
+      const matchingItem = this.props.items.find((item) => item.id === id);
+
+      if (matchingItem && !acc.includes(matchingItem.trackFileID)) {
+        acc.push(matchingItem.trackFileID);
+      }
+
+      return acc;
+    }, []);
   }
 
   //

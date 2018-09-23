@@ -37,8 +37,8 @@ class FilterMenuItem extends Component {
 }
 
 FilterMenuItem.propTypes = {
-  filterKey: PropTypes.string.isRequired,
-  selectedFilterKey: PropTypes.string.isRequired,
+  filterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onPress: PropTypes.func.isRequired
 };
 

@@ -143,6 +143,9 @@
     <Compile Include="Configuration\IConfigService.cs" />
     <Compile Include="Configuration\InvalidConfigFileException.cs" />
     <Compile Include="Configuration\ResetApiKeyCommand.cs" />
+    <Compile Include="CustomFilters\CustomFilter.cs" />
+    <Compile Include="CustomFilters\CustomFilterRepository.cs" />
+    <Compile Include="CustomFilters\CustomFilterService.cs" />
     <Compile Include="Datastore\BasicRepository.cs" />
     <Compile Include="Datastore\ConnectionStringFactory.cs" />
     <Compile Include="Datastore\Converters\BooleanIntConverter.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="Datastore\Migration\017_remove_nma.cs" />
     <Compile Include="Datastore\Migration\018_album_disambiguation.cs" />
     <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
+    <Compile Include="Datastore\Migration\021_add_custom_filters.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -891,6 +895,7 @@
     <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaFolder.cs" />
     <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaFoldersResponse.cs" />
     <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaUpdateInfo.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvPinUrlResponse.cs" />
     <Compile Include="Notifications\Plex\Server\PlexIdentity.cs" />
     <Compile Include="Notifications\Plex\Server\PlexResponse.cs" />
     <Compile Include="Notifications\Plex\Server\PlexPreferences.cs" />

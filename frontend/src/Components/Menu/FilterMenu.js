@@ -42,6 +42,7 @@ class FilterMenu extends Component {
       customFilters,
       buttonComponent: ButtonComponent,
       filterModalConnectorComponent: FilterModalConnectorComponent,
+      filterModalConnectorComponentProps,
       onFilterSelect,
       ...otherProps
     } = this.props;
@@ -74,6 +75,7 @@ class FilterMenu extends Component {
         {
           showCustomFilters &&
             <FilterModalConnectorComponent
+              {...filterModalConnectorComponentProps}
               isOpen={this.state.isFilterModalOpen}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
@@ -90,11 +92,12 @@ class FilterMenu extends Component {
 FilterMenu.propTypes = {
   className: PropTypes.string,
   isDisabled: PropTypes.bool.isRequired,
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   buttonComponent: PropTypes.func.isRequired,
   filterModalConnectorComponent: PropTypes.func,
+  filterModalConnectorComponentProps: PropTypes.object,
   onFilterSelect: PropTypes.func.isRequired
 };
 

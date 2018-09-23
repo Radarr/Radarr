@@ -9,7 +9,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
@@ -248,7 +248,7 @@ class InteractiveImportRow extends Component {
 
           {
             !showQualityPlaceholder && !!quality &&
-              <EpisodeQuality
+              <TrackQuality
                 className={styles.label}
                 quality={quality}
               />

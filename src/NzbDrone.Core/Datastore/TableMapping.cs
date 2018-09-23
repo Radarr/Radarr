@@ -31,6 +31,7 @@ using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Authentication;
+using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
@@ -141,6 +142,8 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
             Mapper.Entity<DownloadClientStatus>().RegisterModel("DownloadClientStatus");
             Mapper.Entity<ImportListStatus>().RegisterModel("ImportListStatus");
+
+            Mapper.Entity<CustomFilter>().RegisterModel("CustomFilters");
         }
 
         private static void RegisterMappers()

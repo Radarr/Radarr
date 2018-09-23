@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Measure from 'react-measure';
 import { WindowScroller } from 'react-virtualized';
 import { scrollDirections } from 'Helpers/Props';
+import Measure from 'Components/Measure';
 import Scroller from 'Components/Scroller/Scroller';
 import VirtualTableBody from './VirtualTableBody';
 import styles from './VirtualTable.css';

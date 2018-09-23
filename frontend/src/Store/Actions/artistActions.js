@@ -103,6 +103,20 @@ export const filterPredicates = {
     const predicate = filterTypePredicates[type];
 
     return predicate(item.ratings.value * 10, filterValue);
+  },
+
+  albumCount: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const albumCount = item.statistics ? item.statistics.albumCount : 0;
+
+    return predicate(albumCount, filterValue);
+  },
+
+  sizeOnDisk: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const sizeOnDisk = item.statistics ? item.statistics.sizeOnDisk : 0;
+
+    return predicate(sizeOnDisk, filterValue);
   }
 };
 

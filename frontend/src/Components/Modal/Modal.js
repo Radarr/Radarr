@@ -6,6 +6,8 @@ import elementClass from 'element-class';
 import getUniqueElememtId from 'Utilities/getUniqueElementId';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import { sizes } from 'Helpers/Props';
+import ErrorBoundary from 'Components/Error/ErrorBoundary';
+import ModalError from './ModalError';
 import styles from './Modal.css';
 
 const openModals = [];
@@ -153,7 +155,8 @@ class Modal extends Component {
       backdropClassName,
       size,
       children,
-      isOpen
+      isOpen,
+      onModalClose
     } = this.props;
 
     if (!isOpen) {
@@ -177,7 +180,12 @@ class Modal extends Component {
             )}
             style={style}
           >
-            {children}
+            <ErrorBoundary
+              errorComponent={ModalError}
+              onModalClose={onModalClose}
+            >
+              {children}
+            </ErrorBoundary>
           </div>
         </div>
       </div>,

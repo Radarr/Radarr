@@ -39,6 +39,10 @@ class TagInput extends Component {
     this._autosuggestRef = null;
   }
 
+  componentWillUnmount() {
+    this.addTag.cancel();
+  }
+
   //
   // Control
 

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from 'Components/Modal/Modal';
-import InteractiveAlbumSearchModalContentConnector from './InteractiveAlbumSearchModalContentConnector';
+import InteractiveSearchModalContentConnector from './InteractiveSearchModalContentConnector';
 
-function InteractiveAlbumSearchModal(props) {
+function InteractiveSearchModal(props) {
   const {
     isOpen,
     onModalClose,
@@ -15,7 +15,7 @@ function InteractiveAlbumSearchModal(props) {
       isOpen={isOpen}
       onModalClose={onModalClose}
     >
-      <InteractiveAlbumSearchModalContentConnector
+      <InteractiveSearchModalContentConnector
         {...otherProps}
         onModalClose={onModalClose}
       />
@@ -23,9 +23,9 @@ function InteractiveAlbumSearchModal(props) {
   );
 }
 
-InteractiveAlbumSearchModal.propTypes = {
+InteractiveSearchModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default InteractiveAlbumSearchModal;
+export default InteractiveSearchModal;

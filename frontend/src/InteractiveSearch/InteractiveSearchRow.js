@@ -10,10 +10,10 @@ import Link from 'Components/Link/Link';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
-import styles from './InteractiveAlbumSearchRow.css';
+import styles from './InteractiveSearchRow.css';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
   if (isGrabbing) {
@@ -39,7 +39,7 @@ function getDownloadTooltip(isGrabbing, isGrabbed, grabError) {
   return 'Add to downloaded queue';
 }
 
-class InteractiveAlbumSearchRow extends Component {
+class InteractiveSearchRow extends Component {
 
   //
   // Listeners
@@ -120,7 +120,7 @@ class InteractiveAlbumSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.quality}>
-          <EpisodeQuality
+          <TrackQuality
             quality={quality}
           />
         </TableRowCell>
@@ -171,7 +171,7 @@ class InteractiveAlbumSearchRow extends Component {
   }
 }
 
-InteractiveAlbumSearchRow.propTypes = {
+InteractiveSearchRow.propTypes = {
   guid: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,
   age: PropTypes.number.isRequired,
@@ -196,9 +196,9 @@ InteractiveAlbumSearchRow.propTypes = {
   onGrabPress: PropTypes.func.isRequired
 };
 
-InteractiveAlbumSearchRow.defaultProps = {
+InteractiveSearchRow.defaultProps = {
   isGrabbing: false,
   isGrabbed: false
 };
 
-export default InteractiveAlbumSearchRow;
+export default InteractiveSearchRow;

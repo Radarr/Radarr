@@ -26,6 +26,10 @@ function MissingRow(props) {
     onSelectedChange
   } = props;
 
+  if (!artist) {
+    return null;
+  }
+
   return (
     <TableRow>
       <TableSelectCell

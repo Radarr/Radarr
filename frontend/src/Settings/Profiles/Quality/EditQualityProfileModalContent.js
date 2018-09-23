@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Measure from 'react-measure';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import Measure from 'Components/Measure';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';

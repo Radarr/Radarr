@@ -9,7 +9,7 @@ function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
     createTrackFileSelector(),
-    (artist, trackFile) => {
+    (artist = {}, trackFile) => {
       return {
         foreignArtistId: artist.foreignArtistId,
         artistMonitored: artist.monitored,

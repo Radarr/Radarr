@@ -2,29 +2,70 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import styles from './CustomFilter.css';
 
 class CustomFilter extends Component {
+
+  //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isDeleting: false
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      isDeleting,
+      deleteError
+    } = this.props;
+
+    if (prevProps.isDeleting && !isDeleting && this.state.isDeleting && deleteError) {
+      this.setState({ isDeleting: false });
+    }
+  }
+
+  componentWillUnmount() {
+    const {
+      id,
+      selectedFilterKey,
+      dispatchSetFilter
+    } = this.props;
+
+    // Assume that delete and then unmounting means the delete was successful.
+    // Moving this check to a ancestor would be more accurate, but would have
+    // more boilerplate.
+    if (this.state.isDeleting && id === selectedFilterKey) {
+      dispatchSetFilter({ selectedFilterKey: 'all' });
+    }
+  }
 
   //
   // Listeners
 
   onEditPress = () => {
     const {
-      customFilterKey,
+      id,
       onEditPress
     } = this.props;
 
-    onEditPress(customFilterKey);
+    onEditPress(id);
   }
 
   onRemovePress = () => {
     const {
-      customFilterKey,
-      onRemovePress
+      id,
+      dispatchDeleteCustomFilter
     } = this.props;
 
-    onRemovePress({ key: customFilterKey });
+    this.setState({ isDeleting: true }, () => {
+      dispatchDeleteCustomFilter({ id });
+    });
+
   }
 
   //
@@ -47,8 +88,9 @@ class CustomFilter extends Component {
             onPress={this.onEditPress}
           />
 
-          <IconButton
+          <SpinnerIconButton
             name={icons.REMOVE}
+            isSpinning={this.state.isDeleting}
             onPress={this.onRemovePress}
           />
         </div>
@@ -58,10 +100,14 @@ class CustomFilter extends Component {
 }
 
 CustomFilter.propTypes = {
-  customFilterKey: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  deleteError: PropTypes.object,
+  dispatchSetFilter: PropTypes.func.isRequired,
   onEditPress: PropTypes.func.isRequired,
-  onRemovePress: PropTypes.func.isRequired
+  dispatchDeleteCustomFilter: PropTypes.func.isRequired
 };
 
 export default CustomFilter;

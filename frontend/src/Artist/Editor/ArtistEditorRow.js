@@ -119,4 +119,8 @@ ArtistEditorRow.propTypes = {
   onSelectedChange: PropTypes.func.isRequired
 };
 
+ArtistEditorRow.defaultProps = {
+  tags: []
+};
+
 export default ArtistEditorRow;

@@ -20,13 +20,13 @@ function createRemoveItemHandler(section, url) {
 
     promise.done((data) => {
       dispatch(batchActions([
-        removeItem({ section, id }),
-
         set({
           section,
           isDeleting: false,
           deleteError: null
-        })
+        }),
+
+        removeItem({ section, id })
       ]));
     });
 

@@ -6,7 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
 import styles from './BlacklistRow.css';
@@ -103,7 +103,7 @@ class BlacklistRow extends Component {
                   key={name}
                   className={styles.quality}
                 >
-                  <EpisodeQuality
+                  <TrackQuality
                     quality={quality}
                   />
                 </TableRowCell>

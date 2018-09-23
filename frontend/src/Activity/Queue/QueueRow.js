@@ -10,7 +10,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import QueueStatusCell from './QueueStatusCell';
@@ -177,7 +177,7 @@ class QueueRow extends Component {
             if (name === 'quality') {
               return (
                 <TableRowCell key={name}>
-                  <EpisodeQuality
+                  <TrackQuality
                     quality={quality}
                   />
                 </TableRowCell>

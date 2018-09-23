@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Modal from 'Components/Modal/Modal';
 import FilterBuilderModalContentConnector from './Builder/FilterBuilderModalContentConnector';
-import CustomFiltersModalContent from './CustomFilters/CustomFiltersModalContent';
+import CustomFiltersModalContentConnector from './CustomFilters/CustomFiltersModalContentConnector';
 
 class FilterModal extends Component {
 
@@ -14,7 +14,7 @@ class FilterModal extends Component {
 
     this.state = {
       filterBuilder: !props.customFilters.length,
-      customFilterKey: null
+      id: null
     };
   }
 
@@ -27,17 +27,17 @@ class FilterModal extends Component {
     });
   }
 
-  onEditCustomFilter = (customFilterKey) => {
+  onEditCustomFilter = (id) => {
     this.setState({
       filterBuilder: true,
-      customFilterKey
+      id
     });
   }
 
   onModalClose = () => {
     this.setState({
       filterBuilder: false,
-      customFilterKey: null
+      id: null
     }, () => {
       this.props.onModalClose();
     });
@@ -54,7 +54,7 @@ class FilterModal extends Component {
 
     const {
       filterBuilder,
-      customFilterKey
+      id
     } = this.state;
 
     return (
@@ -66,10 +66,10 @@ class FilterModal extends Component {
           filterBuilder ?
             <FilterBuilderModalContentConnector
               {...otherProps}
-              customFilterKey={customFilterKey}
+              id={id}
               onModalClose={this.onModalClose}
             /> :
-            <CustomFiltersModalContent
+            <CustomFiltersModalContentConnector
               {...otherProps}
               onAddCustomFilter={this.onAddCustomFilter}
               onEditCustomFilter={this.onEditCustomFilter}

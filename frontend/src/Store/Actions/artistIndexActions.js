@@ -1,12 +1,10 @@
 import moment from 'moment';
 import { createAction } from 'redux-actions';
-import customFilterHandlers from 'Utilities/customFilterHandlers';
 import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
-import createCustomFilterReducers from './Creators/Reducers/createCustomFilterReducers';
 import createHandleActions from './Creators/createHandleActions';
 import { filters, filterPredicates } from './artistActions';
 
@@ -292,7 +290,8 @@ export const defaultState = {
     {
       name: 'sizeOnDisk',
       label: 'Size on Disk',
-      type: filterBuilderTypes.NUMBER
+      type: filterBuilderTypes.NUMBER,
+      valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'genres',
@@ -324,8 +323,7 @@ export const defaultState = {
       type: filterBuilderTypes.ARRAY,
       valueType: filterBuilderValueTypes.TAG
     }
-  ],
-  customFilters: []
+  ]
 };
 
 export const persistState = [
@@ -350,8 +348,6 @@ export const SET_ARTIST_TABLE_OPTION = 'artistIndex/setArtistTableOption';
 export const SET_ARTIST_POSTER_OPTION = 'artistIndex/setArtistPosterOption';
 export const SET_ARTIST_BANNER_OPTION = 'artistIndex/setArtistBannerOption';
 export const SET_ARTIST_OVERVIEW_OPTION = 'artistIndex/setArtistOverviewOption';
-export const REMOVE_ARTIST_CUSTOM_FILTER = 'artistIndex/removeArtistCustomFilter';
-export const SAVE_ARTIST_CUSTOM_FILTER = 'artistIndex/saveArtistCustomFilter';
 
 //
 // Action Creators
@@ -363,8 +359,7 @@ export const setArtistTableOption = createAction(SET_ARTIST_TABLE_OPTION);
 export const setArtistPosterOption = createAction(SET_ARTIST_POSTER_OPTION);
 export const setArtistBannerOption = createAction(SET_ARTIST_BANNER_OPTION);
 export const setArtistOverviewOption = createAction(SET_ARTIST_OVERVIEW_OPTION);
-export const removeArtistCustomFilter = createAction(REMOVE_ARTIST_CUSTOM_FILTER);
-export const saveArtistCustomFilter = createAction(SAVE_ARTIST_CUSTOM_FILTER);
+
 //
 // Reducers
 
@@ -413,11 +408,6 @@ export const reducers = createHandleActions({
         ...payload
       }
     };
-  },
-
-  ...createCustomFilterReducers(section, {
-    [customFilterHandlers.REMOVE]: REMOVE_ARTIST_CUSTOM_FILTER,
-    [customFilterHandlers.SAVE]: SAVE_ARTIST_CUSTOM_FILTER
-  })
+  }
 
 }, defaultState, section);

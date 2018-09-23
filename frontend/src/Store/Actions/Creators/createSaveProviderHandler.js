@@ -21,10 +21,11 @@ function createSaveProviderHandler(section, url, options = {}) {
 
     const {
       id,
-      queryParams = {}
+      queryParams = {},
+      ...otherPayload
     } = payload;
 
-    const saveData = getProviderState(payload, getState, section);
+    const saveData = getProviderState({ id, ...otherPayload }, getState, section);
 
     const ajaxOptions = {
       url: `${url}?${$.param(queryParams, true)}`,

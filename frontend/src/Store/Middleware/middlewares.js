@@ -1,15 +1,15 @@
 import { applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
-import sentryMiddleware from './sentryMiddleware';
+import createSentryMiddleware from './createSentryMiddleware';
 import persistState from './persistState';
 
 export default function(history) {
   const middlewares = [];
-  const ravenMiddleware = sentryMiddleware();
+  const sentryMiddleware = createSentryMiddleware();
 
-  if (ravenMiddleware) {
-    middlewares.push(ravenMiddleware);
+  if (sentryMiddleware) {
+    middlewares.push(sentryMiddleware);
   }
 
   middlewares.push(routerMiddleware(history));

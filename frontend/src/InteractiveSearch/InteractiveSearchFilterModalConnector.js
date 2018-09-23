@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as releaseActions from 'Store/Actions/releaseActions';
+import { setReleasesFilter } from 'Store/Actions/releaseActions';
 import FilterModal from 'Components/Filter/FilterModal';
 
 function createMapStateToProps() {
@@ -10,7 +10,8 @@ function createMapStateToProps() {
     (sectionItems, filterBuilderProps) => {
       return {
         sectionItems,
-        filterBuilderProps
+        filterBuilderProps,
+        customFilterType: 'releases'
       };
     }
   );
@@ -18,12 +19,10 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onRemoveCustomFilterPress(payload) {
-      dispatch(releaseActions.removeReleasesCustomFilter(payload));
-    },
+    dispatchSetFilter(payload) {
+      const action = setReleasesFilter;
 
-    onSaveCustomFilterPress(payload) {
-      dispatch(releaseActions.saveReleasesCustomFilter(payload));
+      dispatch(action(payload));
     }
   };
 }

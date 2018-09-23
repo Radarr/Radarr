@@ -1,11 +1,9 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
-import customFilterHandlers from 'Utilities/customFilterHandlers';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
-import createCustomFilterReducers from './Creators/Reducers/createCustomFilterReducers';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 
@@ -44,8 +42,6 @@ export const defaultState = {
       return releaseWeight;
     }
   },
-
-  selectedFilterKey: 'all',
 
   filters: [
     {
@@ -143,9 +139,7 @@ export const defaultState = {
       label: 'Rejections',
       type: filterBuilderTypes.NUMBER
     }
-  ],
-
-  customFilters: []
+  ]
 };
 
 export const persistState = [
@@ -163,9 +157,6 @@ export const CLEAR_RELEASES = 'releases/clearReleases';
 export const GRAB_RELEASE = 'releases/grabRelease';
 export const UPDATE_RELEASE = 'releases/updateRelease';
 export const SET_RELEASES_FILTER = 'releases/setReleasesFilter';
-export const ADD_RELEASES_CUSTOM_FILTER = 'releases/addReleasesCustomFilter';
-export const REMOVE_RELEASES_CUSTOM_FILTER = 'releases/removeReleasesCustomFilter';
-export const SAVE_RELEASES_CUSTOM_FILTER = 'releases/saveReleasesCustomFilter';
 
 //
 // Action Creators
@@ -177,9 +168,6 @@ export const clearReleases = createAction(CLEAR_RELEASES);
 export const grabRelease = createThunk(GRAB_RELEASE);
 export const updateRelease = createAction(UPDATE_RELEASE);
 export const setReleasesFilter = createAction(SET_RELEASES_FILTER);
-export const addReleasesCustomFilter = createAction(ADD_RELEASES_CUSTOM_FILTER);
-export const removeReleasesCustomFilter = createAction(REMOVE_RELEASES_CUSTOM_FILTER);
-export const saveReleasesCustomFilter = createAction(SAVE_RELEASES_CUSTOM_FILTER);
 
 //
 // Helpers
@@ -266,11 +254,6 @@ export const reducers = createHandleActions({
   },
 
   [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section),
-  [SET_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section),
-
-  ...createCustomFilterReducers(section, {
-    [customFilterHandlers.REMOVE]: REMOVE_RELEASES_CUSTOM_FILTER,
-    [customFilterHandlers.SAVE]: SAVE_RELEASES_CUSTOM_FILTER
-  })
+  [SET_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section)
 
 }, defaultState, section);

@@ -13,8 +13,8 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
-import InteractiveAlbumSearchRow from './InteractiveAlbumSearchRow';
-import styles from './InteractiveAlbumSearchModalContent.css';
+import InteractiveSearchRow from './InteractiveSearchRow';
+import styles from './InteractiveSearchModalContent.css';
 
 const columns = [
   {
@@ -75,7 +75,7 @@ const columns = [
   }
 ];
 
-class InteractiveAlbumSearchModalContent extends Component {
+class InteractiveSearchModalContent extends Component {
 
   //
   // Render
@@ -161,7 +161,7 @@ class InteractiveAlbumSearchModalContent extends Component {
                     {
                       items.map((item) => {
                         return (
-                          <InteractiveAlbumSearchRow
+                          <InteractiveSearchRow
                             key={item.guid}
                             {...item}
                             longDateFormat={longDateFormat}
@@ -195,7 +195,7 @@ class InteractiveAlbumSearchModalContent extends Component {
   }
 }
 
-InteractiveAlbumSearchModalContent.propTypes = {
+InteractiveSearchModalContent.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -203,7 +203,7 @@ InteractiveAlbumSearchModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
@@ -214,4 +214,4 @@ InteractiveAlbumSearchModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default InteractiveAlbumSearchModalContent;
+export default InteractiveSearchModalContent;

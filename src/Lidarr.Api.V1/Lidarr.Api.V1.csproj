@@ -97,6 +97,8 @@
     <Compile Include="Commands\CommandResource.cs" />
     <Compile Include="Config\MetadataProviderConfigModule.cs" />
     <Compile Include="Config\MetadataProviderConfigResource.cs" />
+    <Compile Include="CustomFilters\CustomFilterModule.cs" />
+    <Compile Include="CustomFilters\CustomFilterResource.cs" />
     <Compile Include="ImportLists\ImportListModule.cs" />
     <Compile Include="ImportLists\ImportListResource.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileModule.cs" />

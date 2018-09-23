@@ -62,13 +62,15 @@ class PathInput extends Component {
       event.preventDefault();
       const path = this.props.paths[0];
 
-      this.props.onChange({
-        name: this.props.name,
-        value: path.path
-      });
+      if (path) {
+        this.props.onChange({
+          name: this.props.name,
+          value: path.path
+        });
 
-      if (path.type !== 'file') {
-        this.props.onFetchPaths(path.path);
+        if (path.type !== 'file') {
+          this.props.onFetchPaths(path.path);
+        }
       }
     }
   }

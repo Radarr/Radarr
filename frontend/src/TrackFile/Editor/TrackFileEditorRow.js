@@ -5,7 +5,7 @@ import Label from 'Components/Label';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import EpisodeQuality from 'Album/EpisodeQuality';
+import TrackQuality from 'Album/TrackQuality';
 import styles from './TrackFileEditorRow';
 
 function TrackFileEditorRow(props) {
@@ -42,7 +42,7 @@ function TrackFileEditorRow(props) {
       </TableRowCell>
 
       <TableRowCell>
-        <EpisodeQuality
+        <TrackQuality
           quality={quality}
         />
       </TableRowCell>

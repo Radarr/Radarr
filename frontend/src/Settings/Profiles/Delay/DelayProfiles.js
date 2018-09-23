@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Measure from 'react-measure';
 import { icons } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
+import Measure from 'Components/Measure';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import DelayProfileDragSource from './DelayProfileDragSource';
 import DelayProfileDragPreview from './DelayProfileDragPreview';

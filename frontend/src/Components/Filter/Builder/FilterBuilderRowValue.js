@@ -1,10 +1,63 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, filterBuilderTypes } from 'Helpers/Props';
+import convertToBytes from 'Utilities/Number/convertToBytes';
+import formatBytes from 'Utilities/Number/formatBytes';
+import { kinds, filterBuilderTypes, filterBuilderValueTypes } from 'Helpers/Props';
 import TagInput, { tagShape } from 'Components/Form/TagInput';
 import FilterBuilderRowValueTag from './FilterBuilderRowValueTag';
 
 export const NAME = 'value';
+
+function getTagDisplayValue(value, selectedFilterBuilderProp) {
+  if (selectedFilterBuilderProp.valueType === filterBuilderValueTypes.BYTES) {
+    return formatBytes(value);
+  }
+
+  return value;
+}
+
+function getValue(input, selectedFilterBuilderProp) {
+  if (selectedFilterBuilderProp.valueType === filterBuilderValueTypes.BYTES) {
+    const match = input.match(/^(\d+)([kmgt](i?b)?)$/i);
+    if (match && match.length > 1) {
+      const [, value, unit] = input.match(/^(\d+)([kmgt](i?b)?)$/i);
+      switch (unit.toLowerCase()) {
+        case 'k':
+          return convertToBytes(value, 1, true);
+        case 'm':
+          return convertToBytes(value, 2, true);
+        case 'g':
+          return convertToBytes(value, 3, true);
+        case 't':
+          return convertToBytes(value, 4, true);
+        case 'kb':
+          return convertToBytes(value, 1, true);
+        case 'mb':
+          return convertToBytes(value, 2, true);
+        case 'gb':
+          return convertToBytes(value, 3, true);
+        case 'tb':
+          return convertToBytes(value, 4, true);
+        case 'kib':
+          return convertToBytes(value, 1, true);
+        case 'mib':
+          return convertToBytes(value, 2, true);
+        case 'gib':
+          return convertToBytes(value, 3, true);
+        case 'tib':
+          return convertToBytes(value, 4, true);
+        default:
+          return parseInt(value);
+      }
+    }
+  }
+
+  if (selectedFilterBuilderProp.type === filterBuilderTypes.NUMBER) {
+    return parseInt(input);
+  }
+
+  return input;
+}
 
 class FilterBuilderRowValue extends Component {
 
@@ -18,17 +71,15 @@ class FilterBuilderRowValue extends Component {
       onChange
     } = this.props;
 
-    let id = tag.id;
+    let value = tag.id;
 
-    if (id == null) {
-      id = selectedFilterBuilderProp.type === filterBuilderTypes.NUMBER ?
-        parseInt(tag.name) :
-        tag.name;
+    if (value == null) {
+      value = getValue(tag.name, selectedFilterBuilderProp);
     }
 
     onChange({
       name: NAME,
-      value: [...filterValue, id]
+      value: [...filterValue, value]
     });
   }
 
@@ -52,6 +103,7 @@ class FilterBuilderRowValue extends Component {
   render() {
     const {
       filterValue,
+      selectedFilterBuilderProp,
       tagList
     } = this.props;
 
@@ -68,7 +120,7 @@ class FilterBuilderRowValue extends Component {
       }
       return {
         id,
-        name: id
+        name: getTagDisplayValue(id, selectedFilterBuilderProp)
       };
     });
 

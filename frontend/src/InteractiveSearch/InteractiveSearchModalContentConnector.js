@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import InteractiveAlbumSearchModalContent from './InteractiveAlbumSearchModalContent';
+import InteractiveSearchModalContent from './InteractiveSearchModalContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -51,7 +51,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class InteractiveAlbumSearchModalContentConnector extends Component {
+class InteractiveSearchModalContentConnector extends Component {
 
   //
   // Lifecycle
@@ -81,18 +81,18 @@ class InteractiveAlbumSearchModalContentConnector extends Component {
     } = this.props;
 
     return (
-      <InteractiveAlbumSearchModalContent
+      <InteractiveSearchModalContent
         {...otherProps}
       />
     );
   }
 }
 
-InteractiveAlbumSearchModalContentConnector.propTypes = {
+InteractiveSearchModalContentConnector.propTypes = {
   albumId: PropTypes.number,
   dispatchFetchReleases: PropTypes.func.isRequired,
   dispatchClearReleases: PropTypes.func.isRequired,
   dispatchCancelFetchReleases: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveAlbumSearchModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchModalContentConnector);

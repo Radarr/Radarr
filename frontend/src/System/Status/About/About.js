@@ -4,6 +4,7 @@ import titleCase from 'Utilities/String/titleCase';
 import FieldSet from 'Components/FieldSet';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import StartTime from './StartTime';
 import styles from './About.css';
 
 class About extends Component {
@@ -19,7 +20,10 @@ class About extends Component {
       migrationVersion,
       appData,
       startupPath,
-      mode
+      mode,
+      startTime,
+      timeFormat,
+      longDateFormat
     } = this.props;
 
     return (
@@ -57,6 +61,17 @@ class About extends Component {
             title="Mode"
             data={titleCase(mode)}
           />
+
+          <DescriptionListItem
+            title="Uptime"
+            data={
+              <StartTime
+                startTime={startTime}
+                timeFormat={timeFormat}
+                longDateFormat={longDateFormat}
+              />
+            }
+          />
         </DescriptionList>
       </FieldSet>
     );
@@ -65,13 +80,16 @@ class About extends Component {
 }
 
 About.propTypes = {
-  version: PropTypes.string,
-  isMonoRuntime: PropTypes.bool,
-  runtimeVersion: PropTypes.string,
-  migrationVersion: PropTypes.number,
-  appData: PropTypes.string,
-  startupPath: PropTypes.string,
-  mode: PropTypes.string
+  version: PropTypes.string.isRequired,
+  isMonoRuntime: PropTypes.bool.isRequired,
+  runtimeVersion: PropTypes.string.isRequired,
+  migrationVersion: PropTypes.number.isRequired,
+  appData: PropTypes.string.isRequired,
+  startupPath: PropTypes.string.isRequired,
+  mode: PropTypes.string.isRequired,
+  startTime: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired
 };
 
 export default About;

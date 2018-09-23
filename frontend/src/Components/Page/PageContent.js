@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import DocumentTitle from 'react-document-title';
+import ErrorBoundary from 'Components/Error/ErrorBoundary';
+import PageContentError from './PageContentError';
 import styles from './PageContent.css';
 
 function PageContent(props) {
@@ -11,11 +13,13 @@ function PageContent(props) {
   } = props;
 
   return (
-    <DocumentTitle title={title ? `${title} - Lidarr` : 'Lidarr'}>
-      <div className={className}>
-        {children}
-      </div>
-    </DocumentTitle>
+    <ErrorBoundary errorComponent={PageContentError}>
+      <DocumentTitle title={title ? `${title} - Lidarr` : 'Lidarr'}>
+        <div className={className}>
+          {children}
+        </div>
+      </DocumentTitle>
+    </ErrorBoundary>
   );
 }
 

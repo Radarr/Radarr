@@ -1,4 +1,4 @@
-// will download and run sonarr (server) in a non-windows enviroment
+// will download and run lidarr (server) in a non-windows enviroment
 // you can use this if you don't care about the server code and just want to work
 // with the web code.
 
