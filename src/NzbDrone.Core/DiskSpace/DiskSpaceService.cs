@@ -22,6 +22,8 @@ namespace NzbDrone.Core.DiskSpace
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
+        private static readonly Regex _regexSpecialDrive = new Regex("^/var/lib/(docker|rancher|kubelet)(/|$)|^/(boot|etc)(/|$)|/docker(/var)?/aufs(/|$)", RegexOptions.Compiled);
+
         public DiskSpaceService(IMovieService movieService, IConfigService configService, IDiskProvider diskProvider, Logger logger)
         {
             _movieService = movieService;
@@ -59,7 +61,10 @@ namespace NzbDrone.Core.DiskSpace
 
         private IEnumerable<DiskSpace> GetFixedDisksFreeSpace()
         {
-            return GetDiskSpace(_diskProvider.GetMounts().Where(d => d.DriveType == DriveType.Fixed).Select(d => d.RootDirectory), true);
+            return GetDiskSpace(_diskProvider.GetMounts()
+                .Where(d => d.DriveType == DriveType.Fixed)
+                .Where(d => !_regexSpecialDrive.IsMatch(d.RootDirectory))
+                .Select(d => d.RootDirectory), true);
         }
 
         private IEnumerable<DiskSpace> GetDiskSpace(IEnumerable<string> paths, bool suppressWarnings = false)
