@@ -39,7 +39,7 @@ function createMapStateToProps() {
         return _.some(trackFiles.items, { id: track.trackFileId });
       });
 
-      const sorted = _.orderBy(filtered, ['albumId', 'trackNumber'], ['desc', 'asc']);
+      const sorted = _.orderBy(filtered, ['albumId', 'absoluteTrackNumber'], ['desc', 'asc']);
 
       const items = _.map(sorted, (track) => {
         const trackFile = _.find(trackFiles.items, { id: track.trackFileId });
