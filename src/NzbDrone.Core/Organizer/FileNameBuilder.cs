@@ -333,12 +333,12 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{IMDb Id}"] = m => $"{imdbId}";
         }
 
-        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile episodeFile)
+        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
-            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(episodeFile);
-            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(episodeFile);
+            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile);
+            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile);
             //tokenHandlers["{IMDb Id}"] = m =>
-            tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Radarr");
+            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
@@ -610,24 +610,24 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetOriginalTitle(MovieFile episodeFile)
+        private string GetOriginalTitle(MovieFile movieFile)
         {
-            if (episodeFile.SceneName.IsNullOrWhiteSpace())
+            if (movieFile.SceneName.IsNullOrWhiteSpace())
             {
-                return GetOriginalFileName(episodeFile);
+                return GetOriginalFileName(movieFile);
             }
 
-            return episodeFile.SceneName;
+            return movieFile.SceneName;
         }
 
-        private string GetOriginalFileName(MovieFile episodeFile)
+        private string GetOriginalFileName(MovieFile movieFile)
         {
-            if (episodeFile.RelativePath.IsNullOrWhiteSpace())
+            if (movieFile.RelativePath.IsNullOrWhiteSpace())
             {
-                return Path.GetFileNameWithoutExtension(episodeFile.Path);
+                return Path.GetFileNameWithoutExtension(movieFile.Path);
             }
 
-            return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
+            return Path.GetFileNameWithoutExtension(movieFile.RelativePath);
         }
     }
 
