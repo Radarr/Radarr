@@ -76,7 +76,7 @@ import {
   faSave as fasSave,
   faSearch as fasSearch,
   faSignal as fasSignal,
-  faSignoutAlt as fasSignoutAlt,
+  faSignOutAlt as fasSignOutAlt,
   faSitemap as fasSitemap,
   faSpinner as fasSpinner,
   faSort as fasSort,
@@ -146,7 +146,7 @@ export const HOUSEKEEPING = fasHome;
 export const INFO = fasInfoCircle;
 export const INTERACTIVE = fasUser;
 export const KEYBOARD = farKeyboard;
-export const LOGOUT = fasSignoutAlt;
+export const LOGOUT = fasSignOutAlt;
 export const MISSING = fasExclamationTriangle;
 export const MONITORED = fasBookmark;
 export const NETWORK = fasSignal;
