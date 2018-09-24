@@ -67,6 +67,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             Genres = "";
             Years = "";
             Limit = 100;
+            TraktAdditionalParameters = "";
         }
 
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
@@ -93,7 +94,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(7, Label = "Years", HelpText = "Filter movies by year or year range")]
         public string Years { get; set; }
 
-        [FieldDefinition(8, Label = "Limit", HelpText = "Limit the number of movies to get")]
+        [FieldDefinition(8, Label = "Limit", HelpText = "Limit the number of movies to get. Default: 100")]
         public int Limit { get; set; }
 
         [FieldDefinition(9, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]

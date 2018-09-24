@@ -112,11 +112,14 @@ namespace NzbDrone.Core.NetImport
 
 
         public void Execute(NetImportSyncCommand message)
+
         {
+
+
             //if there are no lists that are enabled for automatic import then dont do anything
             if((_netImportFactory.GetAvailableProviders()).Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
             {
-		        _logger.Info("No lists are enabled for auto-import.");
+                _logger.Info("No lists are enabled for auto-import.");
                 return;
             }
 
@@ -140,13 +143,13 @@ namespace NzbDrone.Core.NetImport
             //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
+
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
                 if (mapped != null && !_exclusionService.IsMovieExcluded(mapped.TmdbId))
                 {
                     //List<DownloadDecision> decisions;
                     mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
                     _movieService.AddMovie(mapped);
-
                     //// Search for movie
                     //try
                     //{
@@ -160,6 +163,7 @@ namespace NzbDrone.Core.NetImport
 
                     //var processed = _processDownloadDecisions.ProcessDecisions(decisions);
                     //downloadedCount += processed.Grabbed.Count;
+
                 }
                 else
                 {
@@ -181,16 +185,44 @@ namespace NzbDrone.Core.NetImport
                 var moviesInLibrary = _movieService.GetAllMovies();
                 foreach (var movie in moviesInLibrary)
                 {
+                    _logger.Debug("working on local {0}", movie.Title);
+                    _logger.Trace("working on local {0}", movie.Title);
                     bool foundMatch = false;
                     foreach (var listedMovie in movies)
                     {
                         if (movie.TmdbId == listedMovie.TmdbId)
                         {
                             foundMatch = true;
+                            switch (_configService.ListSyncLevel)
+                            {
+                                case "logOnly":
+                                    _logger.Info("{0} was in your library and found in your lists --> You might want to unmonitor or remove it", movie);
+                                    break;
+                                case "keepAndUnmonitor":
+                                    _logger.Info("{0} was in your library and found in your lists --> Keeping in library but Unmonitoring it", movie);
+                                    movie.Monitored = false;
+                                    break;
+                                case "removeAndKeep":
+                                    _logger.Info("{0} was in your library and found in your lists --> Removing from library (keeping files)", movie);
+                                    _movieService.DeleteMovie(movie.Id, false, true);
+                                    break;
+                                case "removeAndDelete":
+                                    _logger.Info("{0} was in your library and found in your lists --> Removing from library and deleting files", movie);
+                                    _movieService.DeleteMovie(movie.Id, true, true);
+                                    break;
+                                default:
+                                    break;
+                            }
                             break;
                         }
+                    }
+                    if (!foundMatch)
+                    {
+                        _logger.Debug("movie {0} not found in your defined list", movie.Title);
 
                     }
+                    //wrong position
+                    /*
                     if (!foundMatch)
                     {
                         switch (_configService.ListSyncLevel)
@@ -216,6 +248,7 @@ namespace NzbDrone.Core.NetImport
                                 break;
                         }
                     }
+                    */
                 }
             }
 
