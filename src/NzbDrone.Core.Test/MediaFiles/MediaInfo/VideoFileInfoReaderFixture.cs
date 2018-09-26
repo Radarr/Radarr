@@ -30,10 +30,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "H264_sample.mp4");
 
-            Subject.GetRunTime(path).Seconds.Should().Be(10);
-
+            Subject.GetRunTime(path).Value.Seconds.Should().Be(10);
         }
-
 
         [Test]
         public void get_info()
@@ -42,18 +40,23 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             var info = Subject.GetMediaInfo(path);
 
-
+            info.VideoCodec.Should().BeNull();
+            info.VideoFormat.Should().Be("AVC");
+            info.VideoCodecID.Should().Be("avc1");
+            info.VideoProfile.Should().Be("Baseline@L2.1");
+            info.VideoCodecLibrary.Should().Be("");
+            info.AudioFormat.Should().Be("AAC");
+            info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
+            info.AudioProfile.Should().Be("LC");
+            info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
-            info.AudioFormat.Should().Be("AAC");
             info.AudioLanguages.Should().Be("English");
-            info.AudioProfile.Should().Be("LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");
             info.Subtitles.Should().Be("");
             info.VideoBitrate.Should().Be(193329);
-            info.VideoCodec.Should().Be("AVC");
             info.VideoFps.Should().Be(24);
             info.Width.Should().Be(480);
 
@@ -73,20 +76,25 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             var info = Subject.GetMediaInfo(path);
 
+            info.VideoCodec.Should().BeNull();
+            info.VideoFormat.Should().Be("AVC");
+            info.VideoCodecID.Should().Be("avc1");
+            info.VideoProfile.Should().Be("Baseline@L2.1");
+            info.VideoCodecLibrary.Should().Be("");
+            info.AudioFormat.Should().Be("AAC");
+            info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
+            info.AudioProfile.Should().Be("LC");
+            info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
-            info.AudioFormat.Should().Be("AAC");
             info.AudioLanguages.Should().Be("English");
-            info.AudioProfile.Should().Be("LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");
             info.Subtitles.Should().Be("");
             info.VideoBitrate.Should().Be(193329);
-            info.VideoCodec.Should().Be("AVC");
             info.VideoFps.Should().Be(24);
             info.Width.Should().Be(480);
-
         }
 
         [Test]
@@ -100,23 +108,5 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             stream.Close();
         }
-
-		[Test]
-		[TestCase("/ Front: L R", 2.0)]
-		public void should_correctly_read_audio_channels(string ChannelPositions, decimal formattedChannels)
-		{
-			var info = new MediaInfoModel()
-			{
-				VideoCodec = "AVC",
-				AudioFormat = "DTS",
-				AudioLanguages = "English",
-				Subtitles = "English",
-				AudioChannels = 2,
-				AudioChannelPositions = ChannelPositions,
-				SchemaRevision = 3,
-			};
-
-			info.FormattedAudioChannels.Should().Be(formattedChannels);
-		}
     }
 }
