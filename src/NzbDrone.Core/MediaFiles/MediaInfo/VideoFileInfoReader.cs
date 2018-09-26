@@ -138,6 +138,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         AudioCodecID = mediaInfo.Get(StreamKind.Audio, 0, "CodecID"),
                         AudioProfile = audioProfile,
                         AudioCodecLibrary = mediaInfo.Get(StreamKind.Audio, 0, "Encoded_Library"),
+                        AudioAdditionalFeatures = mediaInfo.Get(StreamKind.Audio, 0, "Format_AdditionalFeatures"),
                         AudioBitrate = audioBitRate,
                         RunTime = GetBestRuntime(audioRuntime, videoRuntime, generalRuntime),
                         AudioStreamCount = streamCount,

@@ -21,6 +21,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string AudioFormat { get; set; }
         public string AudioCodecID { get; set; }
         public string AudioCodecLibrary { get; set; }
+        public string AudioAdditionalFeatures { get; set; }
         public int AudioBitrate { get; set; }
         public TimeSpan RunTime { get; set; }
         public int AudioStreamCount { get; set; }
