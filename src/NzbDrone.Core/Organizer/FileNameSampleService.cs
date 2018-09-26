@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Organizer
 
             var mediaInfo = new MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 VideoBitDepth = 8,
                 AudioFormat = "DTS",
                 AudioChannels = 6,
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Organizer
 
             var mediaInfoAnime = new MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 VideoBitDepth = 8,
                 AudioFormat = "DTS",
                 AudioChannels = 6,

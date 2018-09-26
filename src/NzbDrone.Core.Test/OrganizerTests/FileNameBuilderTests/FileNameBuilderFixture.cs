@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 AudioFormat = "DTS",
                 AudioLanguages = "English/Spanish",
                 Subtitles = "English/Spanish/Italian"
@@ -277,7 +277,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 AudioFormat = "DTS",
                 AudioLanguages = "English",
                 Subtitles = "English/Spanish/Italian"

@@ -305,7 +305,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public static string FormatVideoCodecLegacy(MediaInfoModel mediaInfo, string sceneName)
         {
-            var videoCodec = mediaInfo.VideoCodec;
+            var videoCodec = mediaInfo.VideoFormat;
 
             if (videoCodec.IsNullOrWhiteSpace())
             {
