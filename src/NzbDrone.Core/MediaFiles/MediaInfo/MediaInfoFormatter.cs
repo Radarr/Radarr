@@ -397,7 +397,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             try
             {
-                Logger.Debug("Formatiting audio channels using 'AudioChannelPositionsText', with a value of: '{0}'", audioChannelPositionsText);
+                Logger.Debug("Formatting audio channels using 'AudioChannelPositionsText', with a value of: '{0}'", audioChannelPositionsText);
 
                 return mediaInfo.AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? audioChannels - 1 + 0.1m : audioChannels;
             }
@@ -415,7 +415,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (mediaInfo.SchemaRevision >= 3)
             {
-                Logger.Debug("Formatiting audio channels using 'AudioChannels', with a value of: '{0}'", audioChannels);
+                Logger.Debug("Formatting audio channels using 'AudioChannels', with a value of: '{0}'", audioChannels);
 
                 return audioChannels;
             }
