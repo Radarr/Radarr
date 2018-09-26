@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "H264_sample.mp4");
 
-            Subject.GetRunTime(path).Value.Seconds.Should().Be(10);
+            Subject.GetRunTime(path).Seconds.Should().Be(10);
         }
 
         [Test]
