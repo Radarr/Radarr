@@ -43,6 +43,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             var audioCodecID = mediaInfo.AudioCodecID ?? string.Empty;
             var audioProfile = mediaInfo.AudioProfile ?? string.Empty;
             var audioCodecLibrary = mediaInfo.AudioCodecLibrary ?? string.Empty;
+            var audioAdditionalFeatures = mediaInfo.AudioAdditionalFeatures ?? string.Empty;
 
             if (audioFormat.IsNullOrWhiteSpace())
             {
@@ -71,6 +72,26 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (audioFormat.EqualsIgnoreCase("DTS"))
             {
+                if (audioAdditionalFeatures.StartsWithIgnoreCase("XLL"))
+                {
+                    if (audioAdditionalFeatures.EndsWithIgnoreCase("X"))
+                    {
+                        return "DTS-X";
+                    }
+
+                    return "DTS-HD MA";
+                }
+
+                if (audioAdditionalFeatures.EqualsIgnoreCase("ES"))
+                {
+                    return "DTS-ES";
+                }
+
+                if (audioAdditionalFeatures.EqualsIgnoreCase("XBR"))
+                {
+                    return "DTS-HD HRA";
+                }
+
                 return "DTS";
             }
 
@@ -107,8 +128,13 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "PCM";
             }
 
-            if (audioFormat.EqualsIgnoreCase("TrueHD"))
+            if (audioFormat.EqualsIgnoreCase("MLP FBA"))
             {
+                if (audioAdditionalFeatures == "16-ch")
+                {
+                    return "TrueHD Atmos";
+                }
+
                 return "TrueHD";
             }
 
