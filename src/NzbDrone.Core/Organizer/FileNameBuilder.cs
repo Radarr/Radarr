@@ -395,6 +395,9 @@ namespace NzbDrone.Core.Organizer
                             audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
                             string.Empty;
 
+
+            var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
+
             tokenHandlers["{MediaInfo Video}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoCodec}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoBitDepth}"] = m => videoBitDepth;
@@ -406,6 +409,8 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
 
             tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
+
+            tokenHandlers["{MediaInfo 3D}"] = m => mediaInfo3D;
 
             tokenHandlers["{MediaInfo Simple}"] = m => $"{videoCodec} {audioCodec}";
             tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
