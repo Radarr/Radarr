@@ -113,7 +113,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     int.TryParse(aBitRate, out audioBitRate);
                     int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "StreamCount"), out streamCount);
 
-
                     string audioChannelsStr = mediaInfo.Get(StreamKind.Audio, 0, "Channel(s)").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
 
                     var audioChannelPositions = mediaInfo.Get(StreamKind.Audio, 0, "ChannelPositions/String2");
@@ -131,6 +130,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         VideoBitrate = videoBitRate,
                         VideoBitDepth = videoBitDepth,
                         VideoMultiViewCount = videoMultiViewCount,
+                        VideoColourPrimaries = mediaInfo.Get(StreamKind.Video, 0, "colour_primaries"),
+                        VideoTransferCharacteristics = mediaInfo.Get(StreamKind.Video, 0, "transfer_characteristics"),
                         Height = height,
                         Width = width,
                         AudioFormat = mediaInfo.Get(StreamKind.Audio, 0, "Format"),

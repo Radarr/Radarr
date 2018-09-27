@@ -29,6 +29,8 @@ namespace NzbDrone.Core.Organizer
                 VideoFormat = "AVC",
                 VideoBitDepth = 8,
                 VideoMultiViewCount = 2,
+                VideoColourPrimaries = "BT.2020",
+                VideoTransferCharacteristics = "PQ",
                 AudioFormat = "DTS",
                 AudioChannels = 6,
                 AudioChannelPositions = "3/2/0.1",

@@ -398,6 +398,20 @@ namespace NzbDrone.Core.Organizer
 
             var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
 
+            var videoColourPrimaries = movieFile.MediaInfo.VideoColourPrimaries ?? string.Empty;
+            var videoTransferCharacteristics = movieFile.MediaInfo.VideoTransferCharacteristics ?? string.Empty;
+            var mediaInfoHDR = string.Empty;
+
+            if (movieFile.MediaInfo.VideoBitDepth >= 10 && !videoColourPrimaries.IsNullOrWhiteSpace() && !videoTransferCharacteristics.IsNullOrWhiteSpace())
+            {
+                string[] validTransferFunctions = new string[] { "PQ", "HLG" };
+
+                if (videoColourPrimaries.EqualsIgnoreCase("BT.2020") && validTransferFunctions.Any(videoTransferCharacteristics.Contains))
+                {
+                    mediaInfoHDR = "HDR";
+                }
+            }
+
             tokenHandlers["{MediaInfo Video}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoCodec}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoBitDepth}"] = m => videoBitDepth;
@@ -411,6 +425,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
 
             tokenHandlers["{MediaInfo 3D}"] = m => mediaInfo3D;
+            tokenHandlers["{MediaInfo HDR}"] = m => mediaInfoHDR;
 
             tokenHandlers["{MediaInfo Simple}"] = m => $"{videoCodec} {audioCodec}";
             tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";

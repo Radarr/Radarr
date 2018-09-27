@@ -16,6 +16,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public int VideoBitrate { get; set; }
         public int VideoBitDepth { get; set; }
         public int VideoMultiViewCount { get; set; }
+        public string VideoColourPrimaries { get; set; }
+        public string VideoTransferCharacteristics { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public string AudioFormat { get; set; }
