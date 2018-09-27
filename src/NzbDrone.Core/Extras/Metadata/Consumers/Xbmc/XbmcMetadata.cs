@@ -207,6 +207,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
             }
 
+            xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;
+            xmlResult += Environment.NewLine;
+
             var metadataFileName = GetMovieMetadataFilename(movieFile.RelativePath);
 
             if (Settings.UseMovieNfo)
