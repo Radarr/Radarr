@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Organizer
             var mediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "AVC",
-                VideoBitDepth = 8,
+                VideoBitDepth = 10,
                 VideoMultiViewCount = 2,
                 VideoColourPrimaries = "BT.2020",
                 VideoTransferCharacteristics = "PQ",
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Organizer
             var mediaInfoAnime = new MediaInfoModel()
             {
                 VideoFormat = "AVC",
-                VideoBitDepth = 8,
+                VideoBitDepth = 10,
                 VideoMultiViewCount = 2,
                 VideoColourPrimaries = "BT.2020",
                 VideoTransferCharacteristics = "PQ",
