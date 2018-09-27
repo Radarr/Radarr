@@ -314,6 +314,9 @@
     <Compile Include="OrganizerTests\CleanFixture.cs" />
     <Compile Include="MediaFiles\MediaFileServiceTests\FilterFixture.cs" />
     <Compile Include="MediaFiles\MediaFileTableCleanupServiceFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioChannelsFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatVideoCodecFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\VideoFileInfoReaderFixture.cs" />
     <Compile Include="MediaFiles\RenameMovieFileServiceFixture.cs" />
