@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                VideoCodec = videoCodec
+                VideoFormat = videoCodec
             };
 
             MediaInfoFormatter.FormatVideoCodec(mediaInfoModel, sceneName).Should().Be(expectedFormat);
