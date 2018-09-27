@@ -288,6 +288,44 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
+        public void should_format_mediainfo_3d_properly()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.3D}.{MediaInfo.Simple}";
+
+            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            {
+                VideoFormat = "AVC",
+                VideoMultiViewCount = 2,
+                AudioFormat = "DTS",
+                AudioLanguages = "English",
+                Subtitles = "English/Spanish/Italian"
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South.Park.3D.x264.DTS");
+        }
+
+        [Test]
+        public void should_format_mediainfo_hdr_properly()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.HDR}.{MediaInfo.Simple}";
+
+            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            {
+                VideoFormat = "AVC",
+                VideoBitDepth = 10,
+                VideoColourPrimaries = "BT.2020",
+                VideoTransferCharacteristics = "PQ",
+                AudioFormat = "DTS",
+                AudioLanguages = "English",
+                Subtitles = "English/Spanish/Italian"
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South.Park.HDR.x264.DTS");
+        }
+
+        [Test]
         public void should_remove_duplicate_non_word_characters()
         {
             _movie.Title = "Venture Bros.";
