@@ -121,16 +121,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                     string audioLanguages = mediaInfo.Get(StreamKind.General, 0, "Audio_Language_List");
 
-                    string videoProfile = mediaInfo.Get(StreamKind.Video, 0, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
-                    string audioProfile = mediaInfo.Get(StreamKind.Audio, 0, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
-
                     int.TryParse(audioChannelsStr, out audioChannels);
                     var mediaInfoModel = new MediaInfoModel
                     {
                         ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format"),
                         VideoFormat = mediaInfo.Get(StreamKind.Video, 0, "Format"),
                         VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
-                        VideoProfile = videoProfile,
                         VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, 0, "Encoded_Library"),
                         VideoBitrate = videoBitRate,
                         VideoBitDepth = videoBitDepth,
@@ -139,7 +135,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         Width = width,
                         AudioFormat = mediaInfo.Get(StreamKind.Audio, 0, "Format"),
                         AudioCodecID = mediaInfo.Get(StreamKind.Audio, 0, "CodecID"),
-                        AudioProfile = audioProfile,
                         AudioCodecLibrary = mediaInfo.Get(StreamKind.Audio, 0, "Encoded_Library"),
                         AudioAdditionalFeatures = mediaInfo.Get(StreamKind.Audio, 0, "Format_AdditionalFeatures"),
                         AudioBitrate = audioBitRate,

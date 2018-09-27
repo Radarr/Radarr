@@ -41,9 +41,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             var audioFormat = mediaInfo.AudioFormat;
             var audioCodecID = mediaInfo.AudioCodecID ?? string.Empty;
-            var audioProfile = mediaInfo.AudioProfile ?? string.Empty;
-            var audioCodecLibrary = mediaInfo.AudioCodecLibrary ?? string.Empty;
             var audioAdditionalFeatures = mediaInfo.AudioAdditionalFeatures ?? string.Empty;
+            var audioCodecLibrary = mediaInfo.AudioCodecLibrary ?? string.Empty;
 
             if (audioFormat.IsNullOrWhiteSpace())
             {
@@ -107,12 +106,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (audioFormat.EqualsIgnoreCase("MPEG Audio"))
             {
-                if (mediaInfo.AudioCodecID == "55" || mediaInfo.AudioCodecID == "A_MPEG/L3" || mediaInfo.AudioProfile == "Layer 3")
+                if (mediaInfo.AudioCodecID == "55" || mediaInfo.AudioCodecID == "A_MPEG/L3")
                 {
                     return "MP3";
                 }
 
-                if (mediaInfo.AudioCodecID == "A_MPEG/L2" || mediaInfo.AudioProfile == "Layer 2")
+                if (mediaInfo.AudioCodecID == "A_MPEG/L2")
                 {
                     return "MP2";
                 }
@@ -148,7 +147,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "WMA";
             }
 
-            Logger.Debug("Unknown audio format: '{0}' in '{1}'.", string.Join(", ", audioFormat, audioCodecID, audioProfile, audioCodecLibrary), sceneName);
+            Logger.Debug("Unknown audio format: '{0}' in '{1}'.", string.Join(", ", audioFormat, audioCodecID, audioAdditionalFeatures, audioCodecLibrary), sceneName);
 
             return audioFormat;
         }
@@ -177,7 +176,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "AAC";
             }
 
-            if (audioFormat.EqualsIgnoreCase("MPEG Audio") && mediaInfo.AudioProfile == "Layer 3")
+            if (audioFormat.EqualsIgnoreCase("MPEG Audio"))
             {
                 return "MP3";
             }
@@ -219,7 +218,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             var videoFormat = mediaInfo.VideoFormat;
             var videoCodecID = mediaInfo.VideoCodecID ?? string.Empty;
-            var videoProfile = mediaInfo.VideoProfile ?? string.Empty;
             var videoCodecLibrary = mediaInfo.VideoCodecLibrary ?? string.Empty;
 
             var result = videoFormat;
@@ -324,7 +322,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "XviD";
             }
 
-            Logger.Debug("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName);
+            Logger.Debug("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoCodecLibrary), sceneName);
 
             return result;
         }

@@ -12,7 +12,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string ContainerFormat { get; set; }
         public string VideoFormat { get; set; }
         public string VideoCodecID { get; set; }
-        public string VideoProfile { get; set; }
         public string VideoCodecLibrary { get; set; }
         public int VideoBitrate { get; set; }
         public int VideoBitDepth { get; set; }
@@ -29,7 +28,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public int AudioChannels { get; set; }
         public string AudioChannelPositions { get; set; }
         public string AudioChannelPositionsText { get; set; }
-        public string AudioProfile { get; set; }
         public decimal VideoFps { get; set; }
         public string AudioLanguages { get; set; }
         public string Subtitles { get; set; }
