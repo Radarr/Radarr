@@ -185,7 +185,7 @@ class Naming extends Component {
                   buttons={<FormInputButton onPress={this.onArtistFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
                   {...settings.artistFolderFormat}
-                  helpTexts={['Only used when adding a new artist', ...artistFolderFormatHelpTexts]}
+                  helpTexts={['Used when adding a new artist or moving an artist via the artist editor', ...artistFolderFormatHelpTexts]}
                   errors={[...artistFolderFormatErrors, ...settings.artistFolderFormat.errors]}
                 />
               </FormGroup>

@@ -73,8 +73,8 @@ class TrackFileEditorModalContent extends Component {
     return selectedIds.reduce((acc, id) => {
       const matchingItem = this.props.items.find((item) => item.id === id);
 
-      if (matchingItem && !acc.includes(matchingItem.trackFileID)) {
-        acc.push(matchingItem.trackFileID);
+      if (matchingItem && !acc.includes(matchingItem.trackFileId)) {
+        acc.push(matchingItem.trackFileId);
       }
 
       return acc;
