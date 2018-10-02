@@ -73,10 +73,7 @@ namespace Lidarr.Api.V1.Albums
             {
                 var artist = album.Artist ?? _artistService.GetArtist(album.ArtistId);
 
-                if (includeArtist)
-                {
-                    resource.Artist = artist.ToResource();
-                }
+                resource.Artist = artist.ToResource();
             }
 
             FetchAndLinkAlbumStatistics(resource);
@@ -99,14 +96,10 @@ namespace Lidarr.Api.V1.Albums
                     var artist = album.Artist ?? artistDict.GetValueOrDefault(albums[i].ArtistId) ?? _artistService.GetArtist(albums[i].ArtistId);
                     artistDict[artist.Id] = artist;
 
-                    if (includeArtist)
-                    {
-                        resource.Artist = artist.ToResource();
-                    }
+                    resource.Artist = artist.ToResource();
                 }
             }
-
-            var artistList = albums.DistinctBy(a => a.ArtistId).ToList();
+            
             var artistStats = _artistStatisticsService.ArtistStatistics();
             LinkArtistStatistics(result, artistStats);
 
@@ -129,7 +122,7 @@ namespace Lidarr.Api.V1.Albums
 
         private void LinkArtistStatistics(AlbumResource resource, ArtistStatistics artistStatistics)
         {
-            if (artistStatistics.AlbumStatistics != null)
+            if (artistStatistics?.AlbumStatistics != null)
             {
                 var dictAlbumStats = artistStatistics.AlbumStatistics.ToDictionary(v => v.AlbumId);
 
