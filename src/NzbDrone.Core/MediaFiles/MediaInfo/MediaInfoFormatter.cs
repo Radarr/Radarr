@@ -113,6 +113,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "MLP";
             }
 
+            if (audioFormat.Trim().EqualsIgnoreCase("Monkey's Audio"))
+            {
+                return "APE";
+            }
+
             if (audioFormat.Trim().EqualsIgnoreCase("mp3"))
             {
                 return "MP3";
@@ -149,6 +154,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             if (audioFormat.EqualsIgnoreCase("Vorbis"))
             {
                 return "Vorbis";
+            }
+
+            if (audioFormat.EqualsIgnoreCase("WavPack"))
+            {
+                return "WavPack";
             }
 
             if (audioFormat == "WMA")
