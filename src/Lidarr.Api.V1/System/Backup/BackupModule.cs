@@ -117,7 +117,8 @@ namespace Lidarr.Api.V1.System.Backup
 
         private string GetBackupPath(NzbDrone.Core.Backup.Backup backup)
         {
-            return Path.Combine(_backupService.GetBackupFolder(), backup.Type.ToString(), backup.Name);
+            return Path.Combine(_backupService.GetBackupFolder(backup.Type), backup.Name);
+
         }
 
         private int GetBackupId(NzbDrone.Core.Backup.Backup backup)
@@ -127,7 +128,7 @@ namespace Lidarr.Api.V1.System.Backup
 
         private NzbDrone.Core.Backup.Backup GetBackup(int id)
         {
-            return _backupService.GetBackups().SingleOrDefault(b => id == GetBackupId(b));
+            return _backupService.GetBackups().SingleOrDefault(b => GetBackupId(b) == id);
         }
     }
 }

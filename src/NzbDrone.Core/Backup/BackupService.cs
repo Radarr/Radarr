@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Backup
         List<Backup> GetBackups();
         void Restore(string backupFileName);
         string GetBackupFolder();
+        string GetBackupFolder(BackupType backupType);
     }
 
     public class BackupService : IBackupService, IExecute<BackupCommand>
@@ -165,7 +166,7 @@ namespace NzbDrone.Core.Backup
             return Path.Combine(_appFolderInfo.GetAppDataPath(), backupFolder);
         }
 
-        private string GetBackupFolder(BackupType backupType)
+        public string GetBackupFolder(BackupType backupType)
         {
             return Path.Combine(GetBackupFolder(), backupType.ToString().ToLower());
         }
