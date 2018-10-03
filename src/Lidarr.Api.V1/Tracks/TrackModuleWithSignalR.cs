@@ -50,8 +50,8 @@ namespace Lidarr.Api.V1.Tracks
 
         protected TrackResource GetTrack(int id)
         {
-            var episode = _trackService.GetTrack(id);
-            var resource = MapToResource(episode, true, true);
+            var track = _trackService.GetTrack(id);
+            var resource = MapToResource(track, true, true);
             return resource;
         }
 

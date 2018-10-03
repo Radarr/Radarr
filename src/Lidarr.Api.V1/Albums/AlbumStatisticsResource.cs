@@ -10,7 +10,7 @@ namespace Lidarr.Api.V1.Albums
         public int TotalTrackCount { get; set; }
         public long SizeOnDisk { get; set; }
 
-        public decimal PercentOfEpisodes
+        public decimal PercentOfTracks
         {
             get
             {
