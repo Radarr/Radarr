@@ -161,6 +161,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Minor Threat - Complete Discography [1989] [Anthology]", "Minor Threat", "Discography", true)]
         [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", "Captain", "Discography", true)]
         [TestCase("Coolio - Gangsta's Paradise (1995) (FLAC Lossless)", "Coolio", "Gangsta's Paradise")]
+        [TestCase("Brother Ali-2007-The Undisputed Truth-FTD", "Brother Ali", "The Undisputed Truth")]
+        [TestCase("Brother Ali-The Undisputed Truth-2007-FTD", "Brother Ali", "The Undisputed Truth")]
+
         // ruTracker
         [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill","From The Trees")]
         [TestCase("(Folk Rock / Pop) Aztec Two-Step - Naked - 2017, MP3, 320 kbps", "Aztec Two-Step", "Naked")]
@@ -172,6 +175,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "Discography", true)]
         [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "Discography", true)]
         [TestCase("Gorillaz - The now now - 2018 [FLAC]", "Gorillaz", "The now now")]
+
         //Regex Works on below, but ParseAlbumMatchCollection cleans the "..." and converts it to spaces
         [TestCase("Metallica - ...And Justice for All (1988) [FLAC Lossless]", "Metallica", "...And Justice for All")]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)

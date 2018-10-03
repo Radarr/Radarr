@@ -119,16 +119,15 @@ namespace NzbDrone.Core.Parser
             new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)(?:-.+?)(?<releaseyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Artist - Year - Album
-            // Hypen with no or more spaces between artist/album/year (must be before Artist-Album Year as that catches this case)
-            new Regex(@"^(?:(?<artist>.+?)\s*(?:-)+)\s*(?<releaseyear>\d{4})\s*(?:-+)\s*(?<album>.+)",
-                RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
             //Artist-Album Year
             //Hyphen no space between artist and album
-            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\b(?<releaseyear>\d{4})",
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?:(?<album>.+?)(?:-)+)(?<releaseyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+            //Artist - Year - Album
+            // Hypen with no or more spaces between artist/album/year
+            new Regex(@"^(?:(?<artist>.+?)(?:-))(?<releaseyear>\d{4})(?:-)(?<album>[^-]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
             
         };
 
