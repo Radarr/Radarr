@@ -196,6 +196,7 @@
     <Compile Include="Datastore\Migration\018_album_disambiguation.cs" />
     <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
     <Compile Include="Datastore\Migration\021_add_custom_filters.cs" />
+    <Compile Include="Datastore\Migration\022_import_list_tags.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />

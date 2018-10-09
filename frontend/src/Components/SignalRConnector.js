@@ -11,6 +11,7 @@ import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
+import { fetchTags, fetchTagDetails } from 'Store/Actions/tagActions';
 
 function getState(status) {
   switch (status) {
@@ -68,7 +69,9 @@ const mapDispatchToProps = {
   dispatchRemoveItem: removeItem,
   dispatchFetchHealth: fetchHealth,
   dispatchFetchQueue: fetchQueue,
-  dispatchFetchQueueDetails: fetchQueueDetails
+  dispatchFetchQueueDetails: fetchQueueDetails,
+  dispatchFetchTags: fetchTags,
+  dispatchFetchTagDetails: fetchTagDetails
 };
 
 class SignalRConnector extends Component {
@@ -263,6 +266,14 @@ class SignalRConnector extends Component {
     // No-op for now, we may want this later
   }
 
+  handleTag = (body) => {
+    if (body.action === 'sync') {
+      this.props.dispatchFetchTags();
+      this.props.dispatchFetchTagDetails();
+      return;
+    }
+  }
+
   //
   // Listeners
 
@@ -362,7 +373,9 @@ SignalRConnector.propTypes = {
   dispatchRemoveItem: PropTypes.func.isRequired,
   dispatchFetchHealth: PropTypes.func.isRequired,
   dispatchFetchQueue: PropTypes.func.isRequired,
-  dispatchFetchQueueDetails: PropTypes.func.isRequired
+  dispatchFetchQueueDetails: PropTypes.func.isRequired,
+  dispatchFetchTags: PropTypes.func.isRequired,
+  dispatchFetchTagDetails: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(SignalRConnector);

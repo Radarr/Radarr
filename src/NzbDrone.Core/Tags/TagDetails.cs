@@ -10,5 +10,6 @@ namespace NzbDrone.Core.Tags
         public List<int> NotificationIds { get; set; }
         public List<int> RestrictionIds { get; set; }
         public List<int> DelayProfileIds { get; set; }
+        public List<int> ImportListIds { get; set; }
     }
 }

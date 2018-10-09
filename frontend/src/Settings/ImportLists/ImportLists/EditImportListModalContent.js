@@ -44,6 +44,7 @@ function EditImportListModalContent(props) {
     qualityProfileId,
     languageProfileId,
     metadataProfileId,
+    tags,
     fields
   } = item;
 
@@ -148,6 +149,18 @@ function EditImportListModalContent(props) {
                   name="metadataProfileId"
                   helpText={'Metadata Profile list items should be added with'}
                   {...metadataProfileId}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Lidarr Tags</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.TAG}
+                  name="tags"
+                  helpText="Add artists from this list with these tags"
+                  {...tags}
                   onChange={onInputChange}
                 />
               </FormGroup>

@@ -25,6 +25,14 @@ function createMatchingDelayProfilesSelector() {
   );
 }
 
+function createMatchingImportListsSelector() {
+  return createSelector(
+    (state, { importListIds }) => importListIds,
+    (state) => state.settings.importLists.items,
+    findMatchingItems
+  );
+}
+
 function createMatchingNotificationsSelector() {
   return createSelector(
     (state, { notificationIds }) => notificationIds,
@@ -45,12 +53,14 @@ function createMapStateToProps() {
   return createSelector(
     createMatchingArtistSelector(),
     createMatchingDelayProfilesSelector(),
+    createMatchingImportListsSelector(),
     createMatchingNotificationsSelector(),
     createMatchingRestrictionsSelector(),
-    (artist, delayProfiles, notifications, restrictions) => {
+    (artist, delayProfiles, importLists, notifications, restrictions) => {
       return {
         artist,
         delayProfiles,
+        importLists,
         notifications,
         restrictions
       };
