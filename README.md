@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tpm5mj5milne88nc?svg=true)](https://ci.appveyor.com/project/lidarr/lidarr)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e6d014aee9542189b4abb0b1439980f)](https://www.codacy.com/app/Lidarr/Lidarr?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lidarr/Lidarr&amp;utm_campaign=Badge_Grade)
-![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/lidarr.svg)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/lidarr.svg)](https://github.com/lidarr/Lidarr/wiki/Docker)
 ![Github Downloads](https://img.shields.io/github/downloads/lidarr/lidarr/total.svg)
 [![Backers on Open Collective](https://opencollective.com/lidarr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/lidarr/sponsors/badge.svg)](#sponsors)
 
