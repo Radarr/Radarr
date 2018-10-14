@@ -101,120 +101,122 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
         {
-            if (!Settings.MovieMetadata)
-            {
-                return null;
-            }
-
-            _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
-
-            var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
-
+ 
             var xmlResult = string.Empty;
-
-            var sb = new StringBuilder();
-            var xws = new XmlWriterSettings();
-            xws.OmitXmlDeclaration = true;
-            xws.Indent = false;
-
-            using (var xw = XmlWriter.Create(sb, xws))
+            if (Settings.MovieMetadata)
             {
-                var doc = new XDocument();
-                var image = movie.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
+                _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+                var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
-                var details = new XElement("movie");
+                var sb = new StringBuilder();
+                var xws = new XmlWriterSettings();
+                xws.OmitXmlDeclaration = true;
+                xws.Indent = false;
 
-                details.Add(new XElement("title", movie.Title));
-
-                if (movie.Ratings != null && movie.Ratings.Votes > 0)
+                using (var xw = XmlWriter.Create(sb, xws))
                 {
-                    details.Add(new XElement("rating", movie.Ratings.Value));
-                }
+                    var doc = new XDocument();
+                    var image = movie.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
 
-                details.Add(new XElement("plot", movie.Overview));
-                details.Add(new XElement("id", movie.ImdbId));
-                details.Add(new XElement("year", movie.Year));
+                    var details = new XElement("movie");
 
-                if (movie.InCinemas.HasValue)
-                {
-                    details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));
-                }
+                    details.Add(new XElement("title", movie.Title));
 
-                foreach (var genre in movie.Genres)
-                {
-                    details.Add(new XElement("genre", genre));
-                }
-
-                details.Add(new XElement("studio", movie.Studio));
-
-                if (image == null)
-                {
-                    details.Add(new XElement("thumb"));
-                }
-
-                else
-                {
-                    details.Add(new XElement("thumb", image.Url));
-                }
-
-                details.Add(new XElement("watched", watched));
-
-                if (movieFile.MediaInfo != null)
-                {
-                    var fileInfo = new XElement("fileinfo");
-                    var streamDetails = new XElement("streamdetails");
-
-                    var video = new XElement("video");
-                    video.Add(new XElement("aspect", (float)movieFile.MediaInfo.Width / (float)movieFile.MediaInfo.Height));
-                    video.Add(new XElement("bitrate", movieFile.MediaInfo.VideoBitrate));
-                    video.Add(new XElement("codec", movieFile.MediaInfo.VideoCodec));
-                    video.Add(new XElement("framerate", movieFile.MediaInfo.VideoFps));
-                    video.Add(new XElement("height", movieFile.MediaInfo.Height));
-                    video.Add(new XElement("scantype", movieFile.MediaInfo.ScanType));
-                    video.Add(new XElement("width", movieFile.MediaInfo.Width));
-
-                    if (movieFile.MediaInfo.RunTime != null)
+                    if (movie.Ratings != null && movie.Ratings.Votes > 0)
                     {
-                        video.Add(new XElement("duration", movieFile.MediaInfo.RunTime.TotalMinutes));
-                        video.Add(new XElement("durationinseconds", movieFile.MediaInfo.RunTime.TotalSeconds));
+                        details.Add(new XElement("rating", movie.Ratings.Value));
                     }
 
-                    streamDetails.Add(video);
+                    details.Add(new XElement("plot", movie.Overview));
+                    details.Add(new XElement("id", movie.ImdbId));
+                    details.Add(new XElement("year", movie.Year));
 
-                    var audio = new XElement("audio");
-                    audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
-                    audio.Add(new XElement("channels", movieFile.MediaInfo.AudioChannels));
-                    audio.Add(new XElement("codec", GetAudioCodec(movieFile.MediaInfo.AudioFormat)));
-                    audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
-                    streamDetails.Add(audio);
-
-                    if (movieFile.MediaInfo.Subtitles != null && movieFile.MediaInfo.Subtitles.Length > 0)
+                    if (movie.InCinemas.HasValue)
                     {
-                        var subtitle = new XElement("subtitle");
-                        subtitle.Add(new XElement("language", movieFile.MediaInfo.Subtitles));
-                        streamDetails.Add(subtitle);
+                        details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));
                     }
 
-                    fileInfo.Add(streamDetails);
-                    details.Add(fileInfo);
+                    foreach (var genre in movie.Genres)
+                    {
+                        details.Add(new XElement("genre", genre));
+                    }
+
+                    details.Add(new XElement("studio", movie.Studio));
+
+                    if (image == null)
+                    {
+                        details.Add(new XElement("thumb"));
+                    }
+
+                    else
+                    {
+                        details.Add(new XElement("thumb", image.Url));
+                    }
+
+                    details.Add(new XElement("watched", watched));
+
+                    if (movieFile.MediaInfo != null)
+                    {
+                        var fileInfo = new XElement("fileinfo");
+                        var streamDetails = new XElement("streamdetails");
+
+                        var video = new XElement("video");
+                        video.Add(new XElement("aspect", (float)movieFile.MediaInfo.Width / (float)movieFile.MediaInfo.Height));
+                        video.Add(new XElement("bitrate", movieFile.MediaInfo.VideoBitrate));
+                        video.Add(new XElement("codec", movieFile.MediaInfo.VideoCodec));
+                        video.Add(new XElement("framerate", movieFile.MediaInfo.VideoFps));
+                        video.Add(new XElement("height", movieFile.MediaInfo.Height));
+                        video.Add(new XElement("scantype", movieFile.MediaInfo.ScanType));
+                        video.Add(new XElement("width", movieFile.MediaInfo.Width));
+
+                        if (movieFile.MediaInfo.RunTime != null)
+                        {
+                            video.Add(new XElement("duration", movieFile.MediaInfo.RunTime.TotalMinutes));
+                            video.Add(new XElement("durationinseconds", movieFile.MediaInfo.RunTime.TotalSeconds));
+                        }
+
+                        streamDetails.Add(video);
+
+                        var audio = new XElement("audio");
+                        audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
+                        audio.Add(new XElement("channels", movieFile.MediaInfo.AudioChannels));
+                        audio.Add(new XElement("codec", GetAudioCodec(movieFile.MediaInfo.AudioFormat)));
+                        audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
+                        streamDetails.Add(audio);
+
+                        if (movieFile.MediaInfo.Subtitles != null && movieFile.MediaInfo.Subtitles.Length > 0)
+                        {
+                            var subtitle = new XElement("subtitle");
+                            subtitle.Add(new XElement("language", movieFile.MediaInfo.Subtitles));
+                            streamDetails.Add(subtitle);
+                        }
+
+                        fileInfo.Add(streamDetails);
+                        details.Add(fileInfo);
+                    }
+
+                    doc.Add(details);
+                    doc.Save(xw);
+
+                    xmlResult += doc.ToString();
+                    xmlResult += Environment.NewLine;
+
                 }
+            }
+            if (Settings.MoviMetadataURL)
+            {
+                _logger.Debug("Generating Movie Metadata URL for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
 
-                doc.Add(details);
-                doc.Save(xw);
-
-                xmlResult += doc.ToString();
+                xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;
                 xmlResult += Environment.NewLine;
 
+                xmlResult += "https://www.imdb.com/title/" + movie.ImdbId;
+                xmlResult += Environment.NewLine;
             }
 
             var metadataFileName = GetMovieMetadataFilename(movieFile.RelativePath);
 
-            if (Settings.UseMovieNfo)
-            {
-                metadataFileName = "movie.nfo";
-            }
-
-            return new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
+            return xmlResult==string.Empty?null:new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
         public override List<ImageFileResult> MovieImages(Movie movie)
@@ -240,7 +242,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         private string GetMovieMetadataFilename(string movieFilePath)
         {
-            return Path.ChangeExtension(movieFilePath, "nfo");
+            if (Settings.UseMovieNfo)
+            {
+                return Path.Combine(Path.GetDirectoryName(movieFilePath), "movie.nfo");
+            }
+            else
+            {
+                return Path.ChangeExtension(movieFilePath, "nfo");
+            }
         }
 
         private string GetAudioCodec(string audioCodec)
