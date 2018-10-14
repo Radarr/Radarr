@@ -139,38 +139,27 @@ namespace NzbDrone.Core.MediaFiles
 		public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
 		{
 			var newFolder = _filenameBuilder.BuildMoviePath(movie);
-	        if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
-	        {
+            if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
+            {
+                if (!_configService.AutoRenameFolders)
+                {
+                    _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
+                    return;
+                }
 
-	            if (!_configService.AutoRenameFolders)
-	            {
-	                _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
-	                return;
-	            }
-
-	             _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+                _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
                 var oldFolder = movie.Path;
                 movie.Path = newFolder;
 
-	            _diskProvider.MoveFolder(oldFolder, movie.Path);
+                _diskProvider.MoveFolder(oldFolder, movie.Path);
+            }
 
-				if (false)
-				{
-					var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-					_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-					RenameFiles(movieFiles, movie, oldFolder);
-					_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
-				}
+			var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+			_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+			RenameFiles(movieFiles, movie, newFolder);
+			_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
 
-				_movieService.UpdateMovie(movie);
-
-                if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)
-                {
-                    _recycleBinProvider.DeleteFolder(oldFolder);
-                }
-
-
-			}
+			_movieService.UpdateMovie(movie);
 
             if (movie.PathState == MoviePathState.StaticOnce)
             {
