@@ -203,7 +203,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 }
             }
-            if (Settings.MoviMetadataURL)
+            if (Settings.MovieMetadataURL)
             {
                 _logger.Debug("Generating Movie Metadata URL for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
 
