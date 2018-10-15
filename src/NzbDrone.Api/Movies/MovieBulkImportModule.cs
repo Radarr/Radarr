@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Api.Movies
 {
@@ -34,12 +35,13 @@ namespace NzbDrone.Api.Movies
         private readonly IDiskScanService _diskScanService;
 		private readonly ICached<Core.Movies.Movie> _mappedMovies;
         private readonly IParsingService _parsingService;
+        private readonly IProfileService _profileService;
         private readonly IMovieService _movieService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService,
             IMakeImportDecision importDecisionMaker,
 		    IDiskScanService diskScanService, ICacheManager cacheManager,
-            IParsingService parsingService, IMovieService movieService)
+            IParsingService parsingService, IProfileService profileService, IMovieService movieService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
@@ -48,6 +50,7 @@ namespace NzbDrone.Api.Movies
             _diskScanService = diskScanService;
 			_mappedMovies = cacheManager.GetCache<Core.Movies.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
+            _profileService = profileService;
             _parsingService = parsingService;
             Get["/"] = x => Search();
         }
@@ -59,6 +62,8 @@ namespace NzbDrone.Api.Movies
             {
                 //Todo error handling
             }
+
+            Profile tempProfile = _profileService.All().First();
 
             RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id);
 
@@ -100,6 +105,7 @@ namespace NzbDrone.Api.Movies
 					{
 						Title = f.Name.Replace(".", " ").Replace("-", " "),
 						Path = f.Path,
+					    Profile = tempProfile
 					};
 				}
 				else
@@ -111,7 +117,8 @@ namespace NzbDrone.Api.Movies
 						Title = parsedTitle.MovieTitle,
 						Year = parsedTitle.Year,
 						ImdbId = parsedTitle.ImdbId,
-						Path = f.Path
+						Path = f.Path,
+					    Profile = tempProfile
 					};
 				}
 
