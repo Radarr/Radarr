@@ -3,6 +3,9 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) mk3d file format ([#2795](https://github.com/Radarr/Radarr/issues/2795)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) "Add Paused" option to Deluge and Transmission ([#3038](https://github.com/Radarr/Radarr/issues/3038)) [<a href="https://github.com/cookandy">cookandy</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) All-around small improvements ([#3032](https://github.com/Radarr/Radarr/issues/3032)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Czech Language ([#2948](https://github.com/Radarr/Radarr/issues/2948)) [<a href="https://github.com/halali">halali</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Fallback to Bitrate_Nominal for MediaInfo ([#2886](https://github.com/Radarr/Radarr/issues/2886)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) All new custom formats 9000! (Rescan old files, delete formats, polish UI, etc. See discord for full changes): [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
@@ -13,6 +16,11 @@
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MPEG-2 remuxes being detected as "Raw-HD" quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Allow directory to be parsed similar to past implementation ([#3057](https://github.com/Radarr/Radarr/issues/3057)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Class names on the 'add movies screen' ([#3047](https://github.com/Radarr/Radarr/issues/3047)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Use proper cursor for text and linked labels ([#3041](https://github.com/Radarr/Radarr/issues/3041)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Donate button requiring two clicks to actually work. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Templates for custom format using wrong modifiers. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Profiles always failing validation. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) ImdbIds not being padded with zeroes, which messes up matching. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
