@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Parser
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
         ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers);
-        ParsedMovieInfo ParseMinimalMovieInfo(string path);
+        ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
         List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
         List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo);
@@ -192,16 +192,16 @@ namespace NzbDrone.Core.Parser
             };
         }
 
-        public ParsedMovieInfo ParseMinimalMovieInfo(string file)
+        public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)
         {
-            return Parser.ParseMovieTitle(file, _config.ParsingLeniency > 0);
+            return Parser.ParseMovieTitle(file, _config.ParsingLeniency > 0, isDir);
         }
 
         public ParsedMovieInfo ParseMinimalPathMovieInfo(string path)
         {
             var fileInfo = new FileInfo(path);
 
-            var result = ParseMinimalMovieInfo(fileInfo.Name);
+            var result = ParseMinimalMovieInfo(fileInfo.Name, true);
 
             if (result == null)
             {
