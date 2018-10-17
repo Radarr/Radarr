@@ -28,6 +28,7 @@ namespace Lidarr.Api.V1
 
             Get["schema"] = x => GetTemplates();
             Post["test"] = x => Test(ReadResourceFromRequest(true));
+            Post["testall"] = x => TestAll();
             Post["action/{action}"] = x => RequestAction(x.action, ReadResourceFromRequest(true));
 
             GetResourceAll = GetAll;
@@ -142,6 +143,27 @@ namespace Lidarr.Api.V1
             Test(providerDefinition, true);
 
             return "{}";
+        }
+
+        private Response TestAll()
+        {
+            var providerDefinitions = _providerFactory.All()
+                .Where(c => c.Settings.Validate().IsValid && c.Enable)
+                .ToList();
+            var result = new List<ProviderTestAllResult>();
+
+            foreach (var definition in providerDefinitions)
+            {
+                var validationResult = _providerFactory.Test(definition);
+
+                result.Add(new ProviderTestAllResult
+                {
+                    Id = definition.Id,
+                    ValidationFailures = validationResult.Errors.ToList()
+                });
+            }
+
+            return result.AsResponse(result.Any(c => !c.IsValid) ? HttpStatusCode.BadRequest : HttpStatusCode.OK);
         }
 
         private Response RequestAction(string action, TProviderResource providerResource)

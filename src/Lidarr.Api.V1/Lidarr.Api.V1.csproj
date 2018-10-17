@@ -107,6 +107,7 @@
     <Compile Include="Profiles\Metadata\MetadataValidator.cs" />
     <Compile Include="Profiles\Quality\QualityCutoffValidator.cs" />
     <Compile Include="Profiles\Quality\QualityItemsValidator.cs" />
+    <Compile Include="ProviderTestAllResult.cs" />
     <Compile Include="TrackFiles\TrackFileListResource.cs" />
     <Compile Include="TrackFiles\MediaInfoResource.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
