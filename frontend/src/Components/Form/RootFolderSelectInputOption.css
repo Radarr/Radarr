@@ -15,6 +15,6 @@
 
 .freeSpace {
   margin-left: 15px;
-  color: $gray;
+  color: $darkGray;
   font-size: $smallFontSize;
 }

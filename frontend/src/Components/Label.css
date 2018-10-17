@@ -40,13 +40,13 @@
 }
 
 .inverse {
-  border-color: $gray;
-  background-color: $gray;
+  border-color: $lightGray;
+  background-color: $lightGray;
   color: $defaultColor;
 
   &.outline {
     background-color: $defaultColor !important;
-    color: $gray;
+    color: $lightGray;
   }
 }
 
