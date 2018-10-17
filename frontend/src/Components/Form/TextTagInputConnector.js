@@ -89,7 +89,6 @@ class TextTagInputConnector extends Component {
 TextTagInputConnector.propTypes = {
   name: PropTypes.string.isRequired,
   valueArray: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isArray: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired
 };
 
