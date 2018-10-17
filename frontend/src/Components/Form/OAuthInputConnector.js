@@ -48,11 +48,18 @@ class OAuthInputConnector extends Component {
 
   onPress = () => {
     const {
+      name,
       provider,
-      providerData
+      providerData,
+      section
     } = this.props;
 
-    this.props.startOAuth({ provider, providerData });
+    this.props.startOAuth({
+      name,
+      provider,
+      providerData,
+      section
+    });
   }
 
   //
@@ -69,9 +76,11 @@ class OAuthInputConnector extends Component {
 }
 
 OAuthInputConnector.propTypes = {
+  name: PropTypes.string.isRequired,
   result: PropTypes.object,
   provider: PropTypes.string.isRequired,
   providerData: PropTypes.object.isRequired,
+  section: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   startOAuth: PropTypes.func.isRequired,
   resetOAuth: PropTypes.func.isRequired

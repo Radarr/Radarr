@@ -184,6 +184,7 @@ function EditNotificationModalContent(props) {
                       advancedSettings={advancedSettings}
                       provider="notification"
                       providerData={item}
+                      section="settings.notifications"
                       {...field}
                       onChange={onFieldChange}
                     />

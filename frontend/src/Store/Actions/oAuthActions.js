@@ -1,9 +1,11 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
+import { batchActions } from 'redux-batched-actions';
 import requestAction from 'Utilities/requestAction';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import { createThunk, handleThunks } from 'Store/thunks';
+import { set } from 'Store/Actions/baseActions';
 import createHandleActions from './Creators/createHandleActions';
 
 //
@@ -38,11 +40,31 @@ export const resetOAuth = createAction(RESET_OAUTH);
 //
 // Helpers
 
-function showOAuthWindow(url) {
+function showOAuthWindow(url, payload) {
   const deferred = $.Deferred();
   const selfWindow = window;
 
-  window.open(url);
+  const newWindow = window.open(url);
+
+  if (
+    !newWindow ||
+    newWindow.closed ||
+    typeof newWindow.closed == 'undefined'
+  ) {
+
+    // A fake validation error to mimic a 400 response from the API.
+    const error = {
+      status: 400,
+      responseJSON: [
+        {
+          propertyName: payload.name,
+          errorMessage: 'Pop-ups are being blocked by your browser'
+        }
+      ]
+    };
+
+    return deferred.reject(error).promise();
+  }
 
   selfWindow.onCompleteOauth = function(query, onComplete) {
     delete selfWindow.onCompleteOauth;
@@ -84,10 +106,16 @@ function executeIntermediateRequest(payload, ajaxOptions) {
 export const actionHandlers = handleThunks({
 
   [START_OAUTH]: function(getState, payload, dispatch) {
+    const {
+      name,
+      section: actionSection,
+      ...otherPayload
+    } = payload;
+
     const actionPayload = {
       action: 'startOAuth',
       queryParams: { callbackUrl },
-      ...payload
+      ...otherPayload
     };
 
     dispatch(setOAuthValue({
@@ -101,13 +129,13 @@ export const actionHandlers = handleThunks({
         startResponse = response;
 
         if (response.oauthUrl) {
-          return showOAuthWindow(response.oauthUrl);
+          return showOAuthWindow(response.oauthUrl, payload);
         }
 
-        return executeIntermediateRequest(payload, response).then((intermediateResponse) => {
+        return executeIntermediateRequest(otherPayload, response).then((intermediateResponse) => {
           startResponse = intermediateResponse;
 
-          return showOAuthWindow(intermediateResponse.oauthUrl);
+          return showOAuthWindow(intermediateResponse.oauthUrl, payload);
         });
       })
       .then((queryParams) => {
@@ -117,7 +145,7 @@ export const actionHandlers = handleThunks({
             ...startResponse,
             ...queryParams
           },
-          ...payload
+          ...otherPayload
         });
       })
       .then((response) => {
@@ -128,12 +156,32 @@ export const actionHandlers = handleThunks({
         }));
       });
 
-    promise.fail((xhr) => {
-      dispatch(setOAuthValue({
-        authorizing: false,
-        result: null,
-        error: xhr
+    promise.done(() => {
+      // Clear any previously set save error.
+      dispatch(set({
+        section: actionSection,
+        saveError: null
       }));
+    });
+
+    promise.fail((xhr) => {
+      const actions = [
+        setOAuthValue({
+          authorizing: false,
+          result: null,
+          error: xhr
+        })
+      ];
+
+      if (xhr.status === 400) {
+        // Set a save error so the UI can display validation errors to the user.
+        actions.splice(0, 0, set({
+          section: actionSection,
+          saveError: xhr
+        }));
+      }
+
+      dispatch(batchActions(actions));
     });
   }
 
