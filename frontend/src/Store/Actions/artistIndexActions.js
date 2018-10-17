@@ -6,7 +6,7 @@ import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptio
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createHandleActions from './Creators/createHandleActions';
-import { filters, filterPredicates } from './artistActions';
+import { filters, filterPredicates, sortPredicates } from './artistActions';
 
 //
 // Variables
@@ -56,6 +56,7 @@ export const defaultState = {
     {
       name: 'status',
       columnLabel: 'Status',
+      isSortable: true,
       isVisible: true,
       isModifiable: false
     },
@@ -166,6 +167,8 @@ export const defaultState = {
   ],
 
   sortPredicates: {
+    ...sortPredicates,
+
     trackProgress: function(item) {
       const { statistics = {} } = item;
 
