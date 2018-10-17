@@ -9,7 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DiskSpace;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DiskSpace
@@ -17,15 +17,15 @@ namespace NzbDrone.Core.Test.DiskSpace
     [TestFixture]
     public class DiskSpaceServiceFixture : CoreTest<DiskSpaceService>
     {
-        private string _seriesFolder;
-        private string _seriesFolder2;
+        private string _moviesFolder;
+        private string _moviesFolder2;
         private string _droneFactoryFolder;
 
         [SetUp]
         public void SetUp()
         {
-            _seriesFolder = @"G:\fasdlfsdf\series".AsOsAgnostic();
-            _seriesFolder2 = @"G:\fasdlfsdf\series2".AsOsAgnostic();
+            _moviesFolder = @"G:\fasdlfsdf\movies".AsOsAgnostic();
+            _moviesFolder2 = @"G:\fasdlfsdf\movies2".AsOsAgnostic();
             _droneFactoryFolder = @"G:\dronefactory".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
@@ -44,14 +44,14 @@ namespace NzbDrone.Core.Test.DiskSpace
                   .Setup(v => v.GetTotalSize(It.IsAny<string>()))
                   .Returns(0);
 
-            GivenSeries();
+            GivenMovies();
         }
 
-        private void GivenSeries(params Series[] series)
+        private void GivenMovies(params Movie[] movies)
         {
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(v => v.GetAllSeries())
-                  .Returns(series.ToList());
+            Mocker.GetMock<IMovieService>()
+                  .Setup(v => v.GetAllMovies())
+                  .Returns(movies.ToList());
         }
 
         private void GivenExistingFolder(string folder)
@@ -62,11 +62,11 @@ namespace NzbDrone.Core.Test.DiskSpace
         }
 
         [Test]
-        public void should_check_diskspace_for_series_folders()
+        public void should_check_diskspace_for_movies_folders()
         {
-            GivenSeries(new Series { Path = _seriesFolder });
+            GivenMovies(new Movie { Path = _moviesFolder });
 
-            GivenExistingFolder(_seriesFolder);
+            GivenExistingFolder(_moviesFolder);
 
             var freeSpace = Subject.GetFreeSpace();
 
@@ -76,10 +76,10 @@ namespace NzbDrone.Core.Test.DiskSpace
         [Test]
         public void should_check_diskspace_for_same_root_folder_only_once()
         {
-            GivenSeries(new Series { Path = _seriesFolder }, new Series { Path = _seriesFolder2 });
+            GivenMovies(new Movie { Path = _moviesFolder }, new Movie { Path = _moviesFolder2 });
 
-            GivenExistingFolder(_seriesFolder);
-            GivenExistingFolder(_seriesFolder2);
+            GivenExistingFolder(_moviesFolder);
+            GivenExistingFolder(_moviesFolder2);
 
             var freeSpace = Subject.GetFreeSpace();
 
@@ -90,9 +90,9 @@ namespace NzbDrone.Core.Test.DiskSpace
         }
 
         [Test]
-        public void should_not_check_diskspace_for_missing_series_folders()
+        public void should_not_check_diskspace_for_missing_movies_folders()
         {
-            GivenSeries(new Series { Path = _seriesFolder });
+            GivenMovies(new Movie { Path = _moviesFolder });
 
             var freeSpace = Subject.GetFreeSpace();
 
