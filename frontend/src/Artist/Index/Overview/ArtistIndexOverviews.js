@@ -167,6 +167,7 @@ class ArtistIndexOverviews extends Component {
       overviewOptions,
       showRelativeDates,
       shortDateFormat,
+      longDateFormat,
       timeFormat,
       isSmallScreen
     } = this.props;
@@ -194,6 +195,7 @@ class ArtistIndexOverviews extends Component {
         overviewOptions={overviewOptions}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
         timeFormat={timeFormat}
         isSmallScreen={isSmallScreen}
         style={style}
@@ -278,6 +280,7 @@ ArtistIndexOverviews.propTypes = {
   contentBody: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onRender: PropTypes.func.isRequired,

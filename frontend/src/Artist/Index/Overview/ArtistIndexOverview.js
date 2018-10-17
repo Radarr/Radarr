@@ -86,6 +86,7 @@ class ArtistIndexOverview extends Component {
       overviewOptions,
       showRelativeDates,
       shortDateFormat,
+      longDateFormat,
       timeFormat,
       rowHeight,
       isSmallScreen,
@@ -203,6 +204,7 @@ class ArtistIndexOverview extends Component {
                 qualityProfile={qualityProfile}
                 showRelativeDates={showRelativeDates}
                 shortDateFormat={shortDateFormat}
+                longDateFormat={longDateFormat}
                 timeFormat={timeFormat}
                 {...overviewOptions}
                 {...otherProps}
@@ -246,6 +248,7 @@ ArtistIndexOverview.propTypes = {
   overviewOptions: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,

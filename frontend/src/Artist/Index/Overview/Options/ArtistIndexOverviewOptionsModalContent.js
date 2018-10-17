@@ -31,7 +31,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       size: props.size,
       showMonitored: props.showMonitored,
       showQualityProfile: props.showQualityProfile,
-      showPreviousAiring: props.showPreviousAiring,
+      showLastAlbum: props.showLastAlbum,
       showAdded: props.showAdded,
       showAlbumCount: props.showAlbumCount,
       showPath: props.showPath,
@@ -45,7 +45,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       size,
       showMonitored,
       showQualityProfile,
-      showPreviousAiring,
+      showLastAlbum,
       showAdded,
       showAlbumCount,
       showPath,
@@ -70,8 +70,8 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       state.showQualityProfile = showQualityProfile;
     }
 
-    if (showPreviousAiring !== prevProps.showPreviousAiring) {
-      state.showPreviousAiring = showPreviousAiring;
+    if (showLastAlbum !== prevProps.showLastAlbum) {
+      state.showLastAlbum = showLastAlbum;
     }
 
     if (showAdded !== prevProps.showAdded) {
@@ -119,7 +119,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       size,
       showMonitored,
       showQualityProfile,
-      showPreviousAiring,
+      showLastAlbum,
       showAdded,
       showAlbumCount,
       showPath,
@@ -182,12 +182,12 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Previous Airing</FormLabel>
+              <FormLabel>Show Last Album</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="showPreviousAiring"
-                value={showPreviousAiring}
+                name="showLastAlbum"
+                value={showLastAlbum}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
@@ -254,7 +254,7 @@ ArtistIndexOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
-  showPreviousAiring: PropTypes.bool.isRequired,
+  showLastAlbum: PropTypes.bool.isRequired,
   showAdded: PropTypes.bool.isRequired,
   showAlbumCount: PropTypes.bool.isRequired,
   showPath: PropTypes.bool.isRequired,

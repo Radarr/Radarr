@@ -1,6 +1,6 @@
-/* eslint max-params: 0 */
 import PropTypes from 'prop-types';
 import React from 'react';
+import formatDateTime from 'Utilities/Date/formatDateTime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
@@ -21,6 +21,11 @@ const rows = [
     name: 'qualityProfileId',
     showProp: 'showQualityProfile',
     valueProp: 'qualityProfileId'
+  },
+  {
+    name: 'lastAlbum',
+    showProp: 'showLastAlbum',
+    valueProp: 'lastAlbum'
   },
   {
     name: 'added',
@@ -73,22 +78,46 @@ function getInfoRowProps(row, props) {
 
   if (name === 'qualityProfileId') {
     return {
-      title: 'Quality PROFILE',
+      title: 'Quality Profile',
       iconName: icons.PROFILE,
       label: props.qualityProfile.name
+    };
+  }
+
+  if (name === 'lastAlbum') {
+    const {
+      lastAlbum,
+      showRelativeDates,
+      shortDateFormat,
+      timeFormat
+    } = props;
+
+    return {
+      title: `Last Album: ${lastAlbum.title}`,
+      iconName: icons.CALENDAR,
+      label: getRelativeDate(
+        lastAlbum.releaseDate,
+        shortDateFormat,
+        showRelativeDates,
+        {
+          timeFormat,
+          timeForToday: true
+        }
+      )
     };
   }
 
   if (name === 'added') {
     const {
       added,
-      shortDateFormat,
       showRelativeDates,
+      shortDateFormat,
+      longDateFormat,
       timeFormat
     } = props;
 
     return {
-      title: 'Added',
+      title: `Added: ${formatDateTime(added, longDateFormat, timeFormat)}`,
       iconName: icons.ADD,
       label: getRelativeDate(
         added,
@@ -142,6 +171,7 @@ function ArtistIndexOverviewInfo(props) {
     nextAiring,
     showRelativeDates,
     shortDateFormat,
+    longDateFormat,
     timeFormat
   } = props;
 
@@ -154,7 +184,7 @@ function ArtistIndexOverviewInfo(props) {
       {
         !!nextAiring &&
         <ArtistIndexOverviewInfoRow
-          title={nextAiring}
+          title={formatDateTime(nextAiring, longDateFormat, timeFormat)}
           iconName={icons.SCHEDULED}
           label={getRelativeDate(
             nextAiring,
@@ -196,7 +226,6 @@ function ArtistIndexOverviewInfo(props) {
 
 ArtistIndexOverviewInfo.propTypes = {
   height: PropTypes.number.isRequired,
-  showNetwork: PropTypes.bool.isRequired,
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   showAdded: PropTypes.bool.isRequired,
@@ -206,7 +235,7 @@ ArtistIndexOverviewInfo.propTypes = {
   monitored: PropTypes.bool.isRequired,
   nextAiring: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
-  previousAiring: PropTypes.string,
+  lastAlbum: PropTypes.object,
   added: PropTypes.string,
   albumCount: PropTypes.number.isRequired,
   path: PropTypes.string.isRequired,
@@ -214,6 +243,7 @@ ArtistIndexOverviewInfo.propTypes = {
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired
 };
 
