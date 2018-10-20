@@ -268,8 +268,6 @@ namespace NzbDrone.Mono.Disk
             }
 
             return g.gr_gid;
-
-
         }
     }
 }
