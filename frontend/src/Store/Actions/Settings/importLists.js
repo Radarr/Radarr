@@ -7,6 +7,7 @@ import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
 import createSaveProviderHandler, { createCancelSaveProviderHandler } from 'Store/Actions/Creators/createSaveProviderHandler';
 import createTestProviderHandler, { createCancelTestProviderHandler } from 'Store/Actions/Creators/createTestProviderHandler';
+import createTestAllProvidersHandler from 'Store/Actions/Creators/createTestAllProvidersHandler';
 import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHandler';
 
 //
@@ -27,6 +28,7 @@ export const CANCEL_SAVE_IMPORT_LIST = 'settings/importlists/cancelSaveImportLis
 export const DELETE_IMPORT_LIST = 'settings/importlists/deleteImportList';
 export const TEST_IMPORT_LIST = 'settings/importlists/testImportList';
 export const CANCEL_TEST_IMPORT_LIST = 'settings/importlists/cancelTestImportList';
+export const TEST_ALL_IMPORT_LISTS = 'settings/importlists/testAllImportLists';
 
 //
 // Action Creators
@@ -40,6 +42,7 @@ export const cancelSaveImportList = createThunk(CANCEL_SAVE_IMPORT_LIST);
 export const deleteImportList = createThunk(DELETE_IMPORT_LIST);
 export const testImportList = createThunk(TEST_IMPORT_LIST);
 export const cancelTestImportList = createThunk(CANCEL_TEST_IMPORT_LIST);
+export const testAllImportLists = createThunk(TEST_ALL_IMPORT_LISTS);
 
 export const setImportListValue = createAction(SET_IMPORT_LIST_VALUE, (payload) => {
   return {
@@ -75,6 +78,7 @@ export default {
     isSaving: false,
     saveError: null,
     isTesting: false,
+    isTestingAll: false,
     items: [],
     pendingChanges: {}
   },
@@ -90,7 +94,8 @@ export default {
     [CANCEL_SAVE_IMPORT_LIST]: createCancelSaveProviderHandler(section),
     [DELETE_IMPORT_LIST]: createRemoveItemHandler(section, '/importlist'),
     [TEST_IMPORT_LIST]: createTestProviderHandler(section, '/importlist'),
-    [CANCEL_TEST_IMPORT_LIST]: createCancelTestProviderHandler(section)
+    [CANCEL_TEST_IMPORT_LIST]: createCancelTestProviderHandler(section),
+    [TEST_ALL_IMPORT_LISTS]: createTestAllProvidersHandler(section, '/importlist')
   },
 
   //

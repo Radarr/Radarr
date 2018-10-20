@@ -29,6 +29,7 @@ import {
   faBars as fasBars,
   faBolt as fasBolt,
   faBookmark as fasBookmark,
+  faBookReader as fasBookReader,
   faBug as fasBug,
   faCalendarAlt as fasCalendarAlt,
   faCaretDown as fasCaretDown,
@@ -92,6 +93,7 @@ import {
   faTimes as fasTimes,
   faTimesCircle as fasTimesCircle,
   faUser as fasUser,
+  faVial as fasVial,
   faWrench as fasWrench
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -188,6 +190,7 @@ export const SUBTRACT = fasMinus;
 export const SYSTEM = fasLaptop;
 export const TAGS = fasTags;
 export const TBA = fasQuestionCircle;
+export const TEST = fasVial;
 export const UNGROUP = farObjectUngroup;
 export const UNKNOWN = fasQuestion;
 export const UNMONITORED = farBookmark;
@@ -195,3 +198,4 @@ export const UPDATE = fasRetweet;
 export const UNSAVED_SETTING = farDotCircle;
 export const VIEW = fasEye;
 export const WARNING = fasExclamationTriangle;
+export const WIKI = fasBookReader;

@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import ImportListsConnector from './ImportLists/ImportListsConnector';
 
@@ -38,10 +42,33 @@ class ImportListSettings extends Component {
   // Render
 
   render() {
+    const {
+      isTestingAll,
+      dispatchTestAllImportLists
+    } = this.props;
+
+    const {
+      isSaving,
+      hasPendingChanges
+    } = this.state;
+
     return (
       <PageContent title="Import List Settings">
         <SettingsToolbarConnector
-          hasPendingChanges={this.state.hasPendingChanges}
+          isSaving={isSaving}
+          hasPendingChanges={hasPendingChanges}
+          additionalButtons={
+            <Fragment>
+              <PageToolbarSeparator />
+
+              <PageToolbarButton
+                label="Test All Lists"
+                iconName={icons.TEST}
+                isSpinning={isTestingAll}
+                onPress={dispatchTestAllImportLists}
+              />
+            </Fragment>
+          }
           onSavePress={this.onSavePress}
         />
 
@@ -52,5 +79,10 @@ class ImportListSettings extends Component {
     );
   }
 }
+
+ImportListSettings.propTypes = {
+  isTestingAll: PropTypes.bool.isRequired,
+  dispatchTestAllImportLists: PropTypes.func.isRequired
+};
 
 export default ImportListSettings;

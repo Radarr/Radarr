@@ -7,6 +7,7 @@ import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
 import createSaveProviderHandler, { createCancelSaveProviderHandler } from 'Store/Actions/Creators/createSaveProviderHandler';
 import createTestProviderHandler, { createCancelTestProviderHandler } from 'Store/Actions/Creators/createTestProviderHandler';
+import createTestAllProvidersHandler from 'Store/Actions/Creators/createTestAllProvidersHandler';
 import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHandler';
 
 //
@@ -27,6 +28,7 @@ export const CANCEL_SAVE_DOWNLOAD_CLIENT = 'settings/downloadClients/cancelSaveD
 export const DELETE_DOWNLOAD_CLIENT = 'settings/downloadClients/deleteDownloadClient';
 export const TEST_DOWNLOAD_CLIENT = 'settings/downloadClients/testDownloadClient';
 export const CANCEL_TEST_DOWNLOAD_CLIENT = 'settings/downloadClients/cancelTestDownloadClient';
+export const TEST_ALL_DOWNLOAD_CLIENTS = 'settings/downloadClients/testAllDownloadClients';
 
 //
 // Action Creators
@@ -40,6 +42,7 @@ export const cancelSaveDownloadClient = createThunk(CANCEL_SAVE_DOWNLOAD_CLIENT)
 export const deleteDownloadClient = createThunk(DELETE_DOWNLOAD_CLIENT);
 export const testDownloadClient = createThunk(TEST_DOWNLOAD_CLIENT);
 export const cancelTestDownloadClient = createThunk(CANCEL_TEST_DOWNLOAD_CLIENT);
+export const testAllDownloadClients = createThunk(TEST_ALL_DOWNLOAD_CLIENTS);
 
 export const setDownloadClientValue = createAction(SET_DOWNLOAD_CLIENT_VALUE, (payload) => {
   return {
@@ -75,6 +78,7 @@ export default {
     isSaving: false,
     saveError: null,
     isTesting: false,
+    isTestingAll: false,
     items: [],
     pendingChanges: {}
   },
@@ -90,7 +94,8 @@ export default {
     [CANCEL_SAVE_DOWNLOAD_CLIENT]: createCancelSaveProviderHandler(section),
     [DELETE_DOWNLOAD_CLIENT]: createRemoveItemHandler(section, '/downloadclient'),
     [TEST_DOWNLOAD_CLIENT]: createTestProviderHandler(section, '/downloadclient'),
-    [CANCEL_TEST_DOWNLOAD_CLIENT]: createCancelTestProviderHandler(section)
+    [CANCEL_TEST_DOWNLOAD_CLIENT]: createCancelTestProviderHandler(section),
+    [TEST_ALL_DOWNLOAD_CLIENTS]: createTestAllProvidersHandler(section, '/downloadclient')
   },
 
   //

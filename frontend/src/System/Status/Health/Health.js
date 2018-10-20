@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import titleCase from 'Utilities/String/titleCase';
 import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
-import Link from 'Components/Link/Link';
+import IconButton from 'Components/Link/IconButton';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FieldSet from 'Components/FieldSet';
 import Table from 'Components/Table/Table';
@@ -18,33 +19,65 @@ function getInternalLink(source) {
     case 'IndexerSearchCheck':
     case 'IndexerStatusCheck':
       return (
-        <Link to="/settings/indexers">
-          Settings
-        </Link>
+        <IconButton
+          name={icons.SETTINGS}
+          title="Settings"
+          to="/settings/indexers"
+        />
       );
     case 'DownloadClientCheck':
     case 'ImportMechanismCheck':
       return (
-        <Link to="/settings/downloadclients">
-          Settings
-        </Link>
+        <IconButton
+          name={icons.SETTINGS}
+          title="Settings"
+          to="/settings/downloadclients"
+        />
       );
     case 'RootFolderCheck':
       return (
-        <div>
-          <Link to="/artisteditor">
-            Artist Editor
-          </Link>
-        </div>
+        <IconButton
+          name={icons.ARTIST}
+          title="Artist Editor"
+          to="/artisteditor"
+        />
       );
     case 'UpdateCheck':
       return (
-        <Link to="/system/updates">
-          Updates
-        </Link>
+        <IconButton
+          name={icons.UPDATE}
+          title="Updates"
+          to="/system/updates"
+        />
       );
     default:
       return;
+  }
+}
+
+function getTestLink(source, props) {
+  switch (source) {
+    case 'IndexerStatusCheck':
+      return (
+        <SpinnerIconButton
+          name={icons.TEST}
+          title="Test All"
+          isSpinning={props.isTestingAllIndexers}
+          onPress={props.dispatchTestAllIndexers}
+        />
+      );
+    case 'DownloadClientCheck':
+      return (
+        <SpinnerIconButton
+          name={icons.TEST}
+          title="Test All"
+          isSpinning={props.isTestingAllDownloadClients}
+          onPress={props.dispatchTestAllDownloadClients}
+        />
+      );
+
+    default:
+      break;
   }
 }
 
@@ -60,12 +93,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'wikiLink',
-    label: 'Wiki',
-    isVisible: true
-  },
-  {
-    name: 'internalLink',
+    name: 'actions',
+    label: 'Actions',
     isVisible: true
   }
 ];
@@ -121,6 +150,7 @@ class Health extends Component {
                 {
                   items.map((item) => {
                     const internalLink = getInternalLink(item.source);
+                    const testLink = getTestLink(item.source, this.props);
 
                     return (
                       <TableRow key={`health${item.message}`}>
@@ -135,17 +165,19 @@ class Health extends Component {
                         <TableRowCell>{item.message}</TableRowCell>
 
                         <TableRowCell>
-                          <Link
+                          <IconButton
+                            name={icons.WIKI}
                             to={item.wikiUrl}
                             title="Read the Wiki for more information"
-                          >
-                            Wiki
-                          </Link>
-                        </TableRowCell>
+                          />
 
-                        <TableRowCell>
                           {
                             internalLink
+                          }
+
+                          {
+                            !!testLink &&
+                              testLink
                           }
                         </TableRowCell>
                       </TableRow>
@@ -164,7 +196,11 @@ class Health extends Component {
 Health.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
+  isTestingAllDownloadClients: PropTypes.bool.isRequired,
+  isTestingAllIndexers: PropTypes.bool.isRequired,
+  dispatchTestAllDownloadClients: PropTypes.func.isRequired,
+  dispatchTestAllIndexers: PropTypes.func.isRequired
 };
 
 export default Health;

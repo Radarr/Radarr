@@ -1,6 +1,7 @@
 .button {
   composes: link from 'Components/Link/Link.css';
 
+  display: inline-block;
   margin: 0 2px;
   width: 22px;
   border-radius: 4px;

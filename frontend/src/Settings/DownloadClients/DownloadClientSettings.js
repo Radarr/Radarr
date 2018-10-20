@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import DownloadClientsConnector from './DownloadClients/DownloadClientsConnector';
 import DownloadClientOptionsConnector from './Options/DownloadClientOptionsConnector';
@@ -44,6 +48,11 @@ class DownloadClientSettings extends Component {
 
   render() {
     const {
+      isTestingAll,
+      dispatchTestAllDownloadClients
+    } = this.props;
+
+    const {
       isSaving,
       hasPendingChanges
     } = this.state;
@@ -53,6 +62,18 @@ class DownloadClientSettings extends Component {
         <SettingsToolbarConnector
           isSaving={isSaving}
           hasPendingChanges={hasPendingChanges}
+          additionalButtons={
+            <Fragment>
+              <PageToolbarSeparator />
+
+              <PageToolbarButton
+                label="Test All Clients"
+                iconName={icons.TEST}
+                isSpinning={isTestingAll}
+                onPress={dispatchTestAllDownloadClients}
+              />
+            </Fragment>
+          }
           onSavePress={this.onSavePress}
         />
 
@@ -70,5 +91,10 @@ class DownloadClientSettings extends Component {
     );
   }
 }
+
+DownloadClientSettings.propTypes = {
+  isTestingAll: PropTypes.bool.isRequired,
+  dispatchTestAllDownloadClients: PropTypes.func.isRequired
+};
 
 export default DownloadClientSettings;

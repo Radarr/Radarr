@@ -268,7 +268,7 @@
     "react/jsx-no-bind": [2, { "allowArrowFunctions": true }],
     "react/jsx-no-duplicate-props": [2, { "ignoreCase": true }],
     "react/jsx-max-props-per-line": [2, { "maximum": 2 }],
-    "react/jsx-handler-names": [2, { "eventHandlerPrefix": "on", "eventHandlerPropPrefix": "on" }],
+    "react/jsx-handler-names": [2, { "eventHandlerPrefix": "(on|dispatch)", "eventHandlerPropPrefix": "on" }],
     "react/jsx-no-undef": 2,
     "react/jsx-pascal-case": 2,
     "react/jsx-uses-react": 2,

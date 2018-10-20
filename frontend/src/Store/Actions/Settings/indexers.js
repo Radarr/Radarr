@@ -7,6 +7,7 @@ import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
 import createSaveProviderHandler, { createCancelSaveProviderHandler } from 'Store/Actions/Creators/createSaveProviderHandler';
 import createTestProviderHandler, { createCancelTestProviderHandler } from 'Store/Actions/Creators/createTestProviderHandler';
+import createTestAllProvidersHandler from 'Store/Actions/Creators/createTestAllProvidersHandler';
 import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHandler';
 
 //
@@ -27,6 +28,7 @@ export const CANCEL_SAVE_INDEXER = 'settings/indexers/cancelSaveIndexer';
 export const DELETE_INDEXER = 'settings/indexers/deleteIndexer';
 export const TEST_INDEXER = 'settings/indexers/testIndexer';
 export const CANCEL_TEST_INDEXER = 'settings/indexers/cancelTestIndexer';
+export const TEST_ALL_INDEXERS = 'settings/indexers/testAllIndexers';
 
 //
 // Action Creators
@@ -40,6 +42,7 @@ export const cancelSaveIndexer = createThunk(CANCEL_SAVE_INDEXER);
 export const deleteIndexer = createThunk(DELETE_INDEXER);
 export const testIndexer = createThunk(TEST_INDEXER);
 export const cancelTestIndexer = createThunk(CANCEL_TEST_INDEXER);
+export const testAllIndexers = createThunk(TEST_ALL_INDEXERS);
 
 export const setIndexerValue = createAction(SET_INDEXER_VALUE, (payload) => {
   return {
@@ -75,6 +78,7 @@ export default {
     isSaving: false,
     saveError: null,
     isTesting: false,
+    isTestingAll: false,
     items: [],
     pendingChanges: {}
   },
@@ -90,7 +94,8 @@ export default {
     [CANCEL_SAVE_INDEXER]: createCancelSaveProviderHandler(section),
     [DELETE_INDEXER]: createRemoveItemHandler(section, '/indexer'),
     [TEST_INDEXER]: createTestProviderHandler(section, '/indexer'),
-    [CANCEL_TEST_INDEXER]: createCancelTestProviderHandler(section)
+    [CANCEL_TEST_INDEXER]: createCancelTestProviderHandler(section),
+    [TEST_ALL_INDEXERS]: createTestAllProvidersHandler(section, '/indexer')
   },
 
   //
