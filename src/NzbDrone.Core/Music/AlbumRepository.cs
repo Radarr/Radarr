@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NLog;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
@@ -16,6 +17,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
         Album FindByTitle(int artistId, string title);
+        Album FindByTitleInexact(int artistId, string title);
         Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string spotifyId);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
@@ -31,13 +33,14 @@ namespace NzbDrone.Core.Music
     public class AlbumRepository : BasicRepository<Album>, IAlbumRepository
     {
         private readonly IMainDatabase _database;
+        private readonly Logger _logger;
 
-        public AlbumRepository(IMainDatabase database, IEventAggregator eventAggregator)
+        public AlbumRepository(IMainDatabase database, IEventAggregator eventAggregator, Logger logger)
             : base(database, eventAggregator)
         {
             _database = database;
+            _logger = logger;
         }
-
 
         public List<Album> GetAlbums(int artistId)
         {
@@ -287,11 +290,47 @@ namespace NzbDrone.Core.Music
 
         public Album FindByTitle(int artistId, string title)
         {
-            title = Parser.Parser.CleanArtistName(title);
-
-            return Query.Where(s => s.CleanTitle == title)
+            var cleanTitle = Parser.Parser.CleanArtistName(title);
+            
+            if (string.IsNullOrEmpty(cleanTitle))
+                cleanTitle = title;
+            
+            return Query.Where(s => s.CleanTitle == cleanTitle || s.Title == title)
                         .AndWhere(s => s.ArtistId == artistId)
                         .FirstOrDefault();
+        }
+
+        public Album FindByTitleInexact(int artistId, string title)
+        {
+            double fuzzThreshold = 0.7;
+            double fuzzGap = 0.4;
+            var cleanTitle = Parser.Parser.CleanArtistName(title);
+
+            if (string.IsNullOrEmpty(cleanTitle))
+                cleanTitle = title;
+
+            var sortedAlbums = Query.Where(s => s.ArtistId == artistId)
+                .Select(s => new
+                    {
+                        MatchProb = s.CleanTitle.FuzzyMatch(cleanTitle),
+                        Album = s
+                    })
+                .ToList()
+                .OrderByDescending(s => s.MatchProb)
+                .ToList();
+
+            if (!sortedAlbums.Any())
+                return null;
+
+            _logger.Trace("\nFuzzy album match on '{0}':\n{1}",
+                          cleanTitle,
+                          string.Join("\n", sortedAlbums.Select(x => $"{x.Album.CleanTitle}: {x.MatchProb}")));
+
+            if (sortedAlbums[0].MatchProb > fuzzThreshold
+                && (sortedAlbums.Count == 1 || sortedAlbums[0].MatchProb - sortedAlbums[1].MatchProb > fuzzGap))
+                return sortedAlbums[0].Album;
+
+            return null;
         }
 
         public Album FindByArtistAndName(string artistName, string cleanTitle)

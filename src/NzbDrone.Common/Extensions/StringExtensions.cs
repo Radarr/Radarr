@@ -71,7 +71,7 @@ namespace NzbDrone.Common.Extensions
             return string.Join(separator, values);
         }
 
-    public static string CleanSpaces(this string text)
+        public static string CleanSpaces(this string text)
         {
             return CollapseSpace.Replace(text, " ").Trim();
         }
@@ -139,6 +139,43 @@ namespace NzbDrone.Common.Extensions
         public static string SplitCamelCase(this string input)
         {
             return CamelCaseRegex.Replace(input, match => " " + match.Value);
+        }
+
+        public static double FuzzyMatch(this string a, string b)
+        {
+            if (a.Contains(" ") && b.Contains(" "))
+            {
+                var partsA = a.Split(' ');
+                var partsB = b.Split(' ');
+                var weightedHighCoefficients = new double[partsA.Length];
+                var distanceRatios = new double[partsA.Length];
+                for (int i = 0; i < partsA.Length; i++)
+                {
+                    double high = 0.0;
+                    int indexDistance = 0;
+                    for (int x = 0; x < partsB.Length; x++)
+                    {
+                        var coef = LevenshteinCoefficient(partsA[i], partsB[x]);
+                        if (coef > high)
+                        {
+                            high = coef;
+                            indexDistance = Math.Abs(i - x);
+                        }
+                    }
+                    double distanceWeight = 1.0 - (double)indexDistance / (double)partsA.Length;
+                    weightedHighCoefficients[i] = high * distanceWeight;
+                }
+                return weightedHighCoefficients.Sum() / (double)partsA.Length;
+            }
+            else
+            {
+                return LevenshteinCoefficient(a, b);
+            }
+        }
+
+        public static double LevenshteinCoefficient(this string a, string b)
+        {
+            return 1.0 - (double)a.LevenshteinDistance(b) / Math.Max(a.Length, b.Length);
         }
 
     }

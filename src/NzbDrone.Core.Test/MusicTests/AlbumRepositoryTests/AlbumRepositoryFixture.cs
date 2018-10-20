@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
@@ -16,6 +17,8 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
     {
         private Artist _artist;
         private Album _album;
+        private Album _albumSpecial;
+        private Album _albumSimilar;
         private AlbumRepository _albumRepo;
 
         [SetUp]
@@ -29,12 +32,15 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 Id = 1
             };
 
+            _albumRepo = Mocker.Resolve<AlbumRepository>();
+
             _album = new Album
             {
                 Title = "ANThology",
                 ForeignAlbumId = "1",
                 CleanTitle = "anthology",
                 Artist = _artist,
+                ArtistId = _artist.Id,
                 AlbumType = "",
                 Releases = new List<AlbumRelease>
                 {
@@ -46,9 +52,46 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 
             };
 
-            _albumRepo = Mocker.Resolve<AlbumRepository>();
-
             _albumRepo.Insert(_album);
+
+            _albumSpecial = new Album
+            {
+                Title = "+",
+                ForeignAlbumId = "2",
+                CleanTitle = "",
+                Artist = _artist,
+                ArtistId = _artist.Id,
+                AlbumType = "",
+                Releases = new List<AlbumRelease>
+                {
+                    new AlbumRelease
+                    {
+                        Id = "fake id"
+                    }
+                }
+                
+            };
+
+            _albumRepo.Insert(_albumSpecial);
+
+            _albumSimilar = new Album
+            {
+                Title = "ANThology2",
+                ForeignAlbumId = "3",
+                CleanTitle = "anthology2",
+                Artist = _artist,
+                ArtistId = _artist.Id,
+                AlbumType = "",
+                Releases = new List<AlbumRelease>
+                {
+                    new AlbumRelease
+                    {
+                        Id = "fake id 2"
+                    }
+                }
+                
+            };
+
         }
 
 
@@ -59,7 +102,60 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 
             var album = _albumRepo.FindAlbumByRelease(id);
 
+            album.Should().NotBeNull();
             album.Title.Should().Be(_album.Title);
+        }
+
+        [TestCase("ANThology")]
+        [TestCase("anthology")]
+        [TestCase("anthology!")]
+        public void should_find_album_in_db_by_title(string title)
+        {
+            var album = _albumRepo.FindByTitle(_artist.Id, title);
+
+            album.Should().NotBeNull();
+            album.Title.Should().Be(_album.Title);
+        }
+
+        [Test]
+        public void should_find_album_in_db_by_title_all_special_characters()
+        {
+            var album = _albumRepo.FindByTitle(_artist.Id, "+");
+
+            album.Should().NotBeNull();
+            album.Title.Should().Be(_albumSpecial.Title);
+        }
+
+        [TestCase("ANTholog")]
+        [TestCase("nthology")]
+        [TestCase("antholoyg")]
+        public void should_not_find_album_in_db_by_incorrect_title(string title)
+        {
+            var album = _albumRepo.FindByTitle(_artist.Id, title);
+
+            album.Should().BeNull();
+        }
+
+        [TestCase("ANTholog")]
+        [TestCase("antholoyg")]
+        [TestCase("ANThology CD")]
+        public void should_find_album_in_db_by_inexact_title(string title)
+        {
+            var album = _albumRepo.FindByTitleInexact(_artist.Id, title);
+
+            album.Should().NotBeNull();
+            album.Title.Should().Be(_album.Title);
+        }
+
+        [TestCase("ANTholog")]
+        [TestCase("antholoyg")]
+        [TestCase("ANThology CD")]
+        public void should_not_find_album_in_db_by_inexact_title_when_two_similar_matches(string title)
+        {
+            _albumRepo.Insert(_albumSimilar);
+            var album = _albumRepo.FindByTitleInexact(_artist.Id, title);
+
+            album.Should().BeNull();
         }
 
         [Test]

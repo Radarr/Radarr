@@ -5,6 +5,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace NzbDrone.Core.Music
         List<Track> GetTracks(IEnumerable<int> ids);
         Track FindTrack(int artistId, int albumId, int mediumNumber, int trackNumber);
         Track FindTrackByTitle(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle);
+        Track FindTrackByTitleInexact(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle);
         List<Track> GetTracksByArtist(int artistId);
         List<Track> GetTracksByAlbum(int albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
@@ -98,6 +100,43 @@ namespace NzbDrone.Core.Music
                 };
 
             return matches.OrderByDescending(e => e.NormalizedLength).FirstOrDefault()?.Track;
+        }
+
+        public Track FindTrackByTitleInexact(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle)
+        {
+            double fuzzThreshold = 0.6;
+            double fuzzGap = 0.2;
+
+            var normalizedReleaseTitle = Parser.Parser.NormalizeTrackTitle(releaseTitle).Replace(".", " ");
+            var tracks = _trackRepository.GetTracksByMedium(albumId, mediumNumber);
+
+            var matches = from track in tracks
+                let normalizedTitle = Parser.Parser.NormalizeTrackTitle(track.Title).Replace(".", " ")
+                let matchProb = normalizedTitle.FuzzyMatch(normalizedReleaseTitle)
+                where track.Title.Length > 0
+                orderby matchProb descending
+                select new
+                {
+                    MatchProb = matchProb,
+                    NormalizedTitle = normalizedTitle,
+                    Track = track
+                };
+
+            var matchList = matches.ToList();
+
+            if (!matchList.Any())
+                return null;
+
+            _logger.Trace("\nFuzzy track match on '{0}':\n{1}",
+                          normalizedReleaseTitle,
+                          string.Join("\n", matchList.Select(x => $"{x.NormalizedTitle}: {x.MatchProb}")));
+
+            if (matchList[0].MatchProb > fuzzThreshold
+                && (matchList.Count == 1 || matchList[0].MatchProb - matchList[1].MatchProb > fuzzGap)
+                && (trackNumber == 0 || matchList[0].Track.AbsoluteTrackNumber == trackNumber))
+                return matchList[0].Track;
+
+            return null;
         }
 
         public List<Track> TracksWithFiles(int artistId)

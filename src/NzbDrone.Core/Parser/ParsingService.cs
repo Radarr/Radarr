@@ -292,6 +292,12 @@ namespace NzbDrone.Core.Parser
 
             if (album == null)
             {
+                _logger.Debug("Trying inexact album match for {0}", parsedTrackInfo);
+                album = _albumService.FindByTitleInexact(artist.Id, cleanAlbumTitle);
+            }
+
+            if (album == null)
+            {
                 _logger.Debug("Parsed album title not found in Db for {0}", parsedTrackInfo);
                 return null;
             }
@@ -316,6 +322,12 @@ namespace NzbDrone.Core.Parser
                 if (trackInfo == null)
                 {
                     trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.TrackNumbers.FirstOrDefault(), parsedTrackInfo.Title);
+                }
+
+                if (trackInfo == null)
+                {
+                    _logger.Debug("Trying inexact track match for {0}", parsedTrackInfo);
+                    trackInfo = _trackService.FindTrackByTitleInexact(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.TrackNumbers.FirstOrDefault(), cleanTrackTitle);
                 }
 
                 if (trackInfo != null)
