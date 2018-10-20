@@ -12,7 +12,17 @@ function createMapStateToProps() {
     createAllArtistSelector(),
     (items) => {
       return {
-        items
+        items: items.sort((a, b) => {
+          if (a.sortName < b.sortName) {
+            return -1;
+          }
+
+          if (a.sortName > b.sortName) {
+            return 1;
+          }
+
+          return 0;
+        })
       };
     }
   );
