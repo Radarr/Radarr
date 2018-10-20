@@ -395,13 +395,15 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                                                 .Sum(s => decimal.Parse(s.Trim(), CultureInfo.InvariantCulture));
                 }
 
-
-                return Regex.Replace(audioChannelPositions, @"^\d+\sobjects", "", RegexOptions.Compiled | RegexOptions.IgnoreCase)
-                                            .Replace("Object Based / ", "")
-                                            .Split(new string[] { " / " }, StringSplitOptions.RemoveEmptyEntries)
-                                            .FirstOrDefault()
-                                           ?.Split('/')
-                                            .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
+                if (audioChannelPositions.Contains("/"))
+                {
+                    return Regex.Replace(audioChannelPositions, @"^\d+\sobjects", "", RegexOptions.Compiled | RegexOptions.IgnoreCase)
+                                .Replace("Object Based / ", "")
+                                .Split(new string[] { " / " }, StringSplitOptions.RemoveEmptyEntries)
+                                .FirstOrDefault()
+                                ?.Split('/')
+                                .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
+                }
             }
             catch (Exception e)
             {
