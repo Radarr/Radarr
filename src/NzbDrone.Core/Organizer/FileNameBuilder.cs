@@ -373,6 +373,12 @@ namespace NzbDrone.Core.Organizer
             var audioCodec =  MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
 
+            // Workaround until https://github.com/MediaArea/MediaInfo/issues/299 is fixed and release
+            if (audioCodec.EqualsIgnoreCase("DTS-X"))
+            {
+                audioChannels = audioChannels - 1 + 0.1m;
+            }
+
             var mediaInfoAudioLanguages = GetLanguagesToken(movieFile.MediaInfo.AudioLanguages);
             if (!mediaInfoAudioLanguages.IsNullOrWhiteSpace())
             {
