@@ -427,7 +427,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             {
                 Logger.Debug("Formatting audio channels using 'AudioChannelPositionsText', with a value of: '{0}'", audioChannelPositionsText);
 
-                return mediaInfo.AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? audioChannels - 1 + 0.1m : audioChannels;
+                return audioChannelPositionsText.ContainsIgnoreCase("LFE") ? audioChannels - 1 + 0.1m : audioChannels;
             }
             catch (Exception e)
             {
