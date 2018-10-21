@@ -395,7 +395,6 @@ namespace NzbDrone.Core.Organizer
                             audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
                             string.Empty;
 
-
             var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
 
             var videoColourPrimaries = movieFile.MediaInfo.VideoColourPrimaries ?? string.Empty;
