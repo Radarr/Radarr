@@ -52,7 +52,7 @@ namespace NzbDrone.Api.RootFolders
 
         private List<RootFolderResource> GetRootFolders()
         {
-            return _rootFolderService.AllWithUnmappedFolders().ToResource();
+            return _rootFolderService.AllWithSpace().ToResource();
         }
 
         private void DeleteFolder(int id)
