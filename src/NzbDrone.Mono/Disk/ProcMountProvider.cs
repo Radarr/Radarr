@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -118,6 +118,13 @@ namespace NzbDrone.Mono.Disk
                 // Not always fixed, but lets assume it.
                 driveType = DriveType.Fixed;
             }
+            
+            if (mount.StartsWith("/snap/"))
+            {
+                // Mount point for snap packages
+                return null;
+            }
+
 
             if (_networkDriveTypes.Contains(type))
             {
