@@ -21,7 +21,8 @@ var view = Marionette.ItemView.extend({
 		ui : {
 				profile         : '.x-profile',
 				minimumAvailability : '.x-minimumavailability',
-				rootFolder      : '.x-root-folder',
+                rootFolder      : '.x-root-folder',
+                tags            : '.x-tags'
 			},
 
 		events : {
@@ -52,7 +53,11 @@ var view = Marionette.ItemView.extend({
 					if (RootFolders.get(defaultRoot)) {
 							this.ui.rootFolder.val(defaultRoot);
 					}
-				}
+                }
+                this.ui.tags.tagInput({
+                    model    : this.model,
+                    property : 'tags'
+                });
 		},
 
 		_onBeforeSave : function() {

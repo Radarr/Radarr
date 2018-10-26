@@ -1,4 +1,5 @@
-﻿using Marr.Data;
+﻿using System.Collections.Generic;
+using Marr.Data;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
@@ -15,5 +16,6 @@ namespace NzbDrone.Core.NetImport
         public LazyLoaded<Profile> Profile { get; set; }
         public string RootFolderPath { get; set; }
         public override bool Enable => Enabled;
+        public HashSet<int> Tags { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace NzbDrone.Api.NetImport
             resource.RootFolderPath = definition.RootFolderPath;
             resource.ShouldMonitor = definition.ShouldMonitor;
             resource.MinimumAvailability = definition.MinimumAvailability;
+            resource.Tags = definition.Tags;
         }
 
         protected override void MapToModel(NetImportDefinition definition, NetImportResource resource)
@@ -36,6 +37,7 @@ namespace NzbDrone.Api.NetImport
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ShouldMonitor = resource.ShouldMonitor;
             definition.MinimumAvailability = resource.MinimumAvailability;
+            definition.Tags = resource.Tags;
         }
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)
