@@ -267,7 +267,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.X264.DTS[EN+ES].[EN+ES+IT]");
+                   .Should().Be("South.Park.H264.DTS[EN+ES].[EN+ES+IT]");
         }
 
         [Test]
@@ -284,7 +284,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.X264.DTS.[EN+ES+IT]");
+                   .Should().Be("South.Park.H264.DTS.[EN+ES+IT]");
         }
 
         [Test]
@@ -302,7 +302,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.3D.x264.DTS");
+                   .Should().Be("South.Park.3D.h264.DTS");
         }
 
         [Test]
@@ -322,7 +322,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.HDR.x264.DTS");
+                   .Should().Be("South.Park.HDR.h264.DTS");
         }
 
         [Test]

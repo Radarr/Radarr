@@ -49,7 +49,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioFormat.Should().Be("AAC");
             info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
-            info.AudioProfile.Should().Be("LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
@@ -87,7 +86,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioFormat.Should().Be("AAC");
             info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
-            info.AudioProfile.Should().Be("LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
