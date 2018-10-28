@@ -58,7 +58,7 @@ var view = Marionette.ItemView.extend({
 		},
 
 		_onBeforeSave : function() {
-			var profile = this.ui.profile.val();
+			var profile = parseInt(this.ui.profile.val(), 10);
 			var minAvail = this.ui.minimumAvailability.val();
 			var rootFolderPath = this.ui.rootFolder.children(':selected').text();
 			this.model.set({
