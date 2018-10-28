@@ -45,8 +45,7 @@ var view = Marionette.ItemView.extend({
 				var rootFolder = this.model.get("rootFolderPath");
 				if (rootFolder !== "") {
                     this.ui.rootFolder.children().filter(function() {
-                        //may want to use $.trim in here
-                        return $(this).text() === rootFolder;
+                        return $.trim($(this).text()) === rootFolder;
                     }).prop('selected', true);
 				} else {
 					var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
