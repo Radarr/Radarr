@@ -3,6 +3,10 @@
 ## (unreleased)
 
 ### **New features**
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Upped rate at which we scan the download client. Should reduce cpu and ram usage as well as decrease pressure on download clients. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Improve model and UI handling for lists. Should finally fix root folder errors. ([#3133](https://github.com/Radarr/Radarr/issues/3133)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't return unmapped folders on rootfolder API call. Massively improves loading time. ([#3116](https://github.com/Radarr/Radarr/issues/3116)) [<a href="https://github.com/Justin Kromlinger">Justin Kromlinger</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Support for Homebrew-installed mono ([#3090](https://github.com/Radarr/Radarr/issues/3090)) [<a href="https://github.com/Jeff Byrnes">Jeff Byrnes</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) mk3d file format ([#2795](https://github.com/Radarr/Radarr/issues/2795)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) "Add Paused" option to Deluge and Transmission ([#3038](https://github.com/Radarr/Radarr/issues/3038)) [<a href="https://github.com/cookandy">cookandy</a>]
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) All-around small improvements ([#3032](https://github.com/Radarr/Radarr/issues/3032)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
@@ -16,6 +20,10 @@
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Do not search movie if unmonitored ([#3131](https://github.com/Radarr/Radarr/issues/3131)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Quality badges not being shown on bulk import. ([#3121](https://github.com/Radarr/Radarr/issues/3121)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Trim filename from Kodi movie path before sending library scan request. ([#3097](https://github.com/Radarr/Radarr/issues/3097)) [<a href="https://github.com/Lawrence">Lawrence</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Hopefully fixed bulk import not showing files. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MPEG-2 remuxes being detected as "Raw-HD" quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Allow directory to be parsed similar to past implementation ([#3057](https://github.com/Radarr/Radarr/issues/3057)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Class names on the 'add movies screen' ([#3047](https://github.com/Radarr/Radarr/issues/3047)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
