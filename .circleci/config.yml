@@ -150,16 +150,16 @@ workflows:
             - unit_tests:
                 requires:
                     - build
-            - integration_tests:
-                requires:
-                    - build
+            #- integration_tests:
+            #    requires:
+            #        - build
             - publish_artifacts:
                 requires:
                     - build
-            - request_deploy:
-                type: approval
-                requires:
-                    - publish_artifacts
-            - deploy:
-                requires:
-                    - request_deploy
+            #- request_deploy:
+            #    type: approval
+            #    requires:
+            #        - publish_artifacts
+            #- deploy:
+            #    requires:
+            #        - request_deploy
