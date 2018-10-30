@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Movies;
+using NzbDrone.Common.Disk;
+using System.IO;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -85,6 +87,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
                 if (moviePath != null)
                 {
+                    moviePath = new OsPath(moviePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                     _logger.Debug("Updating movie {0} (Path: {1}) on XBMC host: {2}", movie, moviePath, settings.Address);
                 }
 
