@@ -44,11 +44,9 @@ var view = Marionette.ItemView.extend({
 		onRender : function() {
 				var rootFolder = this.model.get("rootFolderPath");
 				if (rootFolder !== "") {
-					//this.ui.rootFolder.val(rootFolder);
                     this.ui.rootFolder.children().filter(function() {
-                        //may want to use $.trim in here
-                        return $(this).text() === rootFolder;
-                    }).attr('selected', true);
+                        return $.trim($(this).text()) === rootFolder;
+                    }).prop('selected', true);
 				} else {
 					var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
 					if (RootFolders.get(defaultRoot)) {
@@ -58,7 +56,7 @@ var view = Marionette.ItemView.extend({
 		},
 
 		_onBeforeSave : function() {
-			var profile = this.ui.profile.val();
+			var profile = parseInt(this.ui.profile.val(), 10);
 			var minAvail = this.ui.minimumAvailability.val();
 			var rootFolderPath = this.ui.rootFolder.children(':selected').text();
 			this.model.set({
