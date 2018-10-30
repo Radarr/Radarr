@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
@@ -10,12 +9,22 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public class MediaInfoModel : IEmbeddedDocument
     {
-        public string VideoCodec { get; set; }
+        public string ContainerFormat { get; set; }
+        public string VideoFormat { get; set; }
+        public string VideoCodecID { get; set; }
+        public string VideoProfile { get; set; }
+        public string VideoCodecLibrary { get; set; }
         public int VideoBitrate { get; set; }
         public int VideoBitDepth { get; set; }
+        public int VideoMultiViewCount { get; set; }
+        public string VideoColourPrimaries { get; set; }
+        public string VideoTransferCharacteristics { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public string AudioFormat { get; set; }
+        public string AudioCodecID { get; set; }
+        public string AudioCodecLibrary { get; set; }
+        public string AudioAdditionalFeatures { get; set; }
         public int AudioBitrate { get; set; }
         public TimeSpan RunTime { get; set; }
         public int AudioStreamCount { get; set; }
@@ -28,40 +37,5 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string Subtitles { get; set; }
         public string ScanType { get; set; }
         public int SchemaRevision { get; set; }
-
-        [JsonIgnore]
-        public decimal FormattedAudioChannels
-        {
-            get
-            {
-				try
-				{
-					return
-					AudioChannelPositions.Replace("Object Based /", "").Replace(" / ", "$")
-						.Split('$')
-						.First()
-						.Split('/')
-						.Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
-				}
-				catch
-				{
-
-						if (AudioChannelPositionsText.IsNullOrWhiteSpace())
-						{
-							if (SchemaRevision >= 3)
-							{
-								return AudioChannels;
-							}
-
-							return 0;
-						}
-
-						return AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? AudioChannels - 1 + 0.1m : AudioChannels;
-
-
-				}
-
-            }
-        }
     }
 }

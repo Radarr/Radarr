@@ -12,6 +12,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
@@ -32,7 +33,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _mediaCoverService = mediaCoverService;
             _diskProvider = diskProvider;
             _detectNfo = detectNfo;
-            
+
         }
 
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|landscape|logo|backdrop|clearlogo)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -161,13 +162,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 if (movieFile.MediaInfo != null)
                 {
+                    var sceneName = movieFile.GetSceneOrFileName();
+
                     var fileInfo = new XElement("fileinfo");
                     var streamDetails = new XElement("streamdetails");
 
                     var video = new XElement("video");
                     video.Add(new XElement("aspect", (float)movieFile.MediaInfo.Width / (float)movieFile.MediaInfo.Height));
                     video.Add(new XElement("bitrate", movieFile.MediaInfo.VideoBitrate));
-                    video.Add(new XElement("codec", movieFile.MediaInfo.VideoCodec));
+                    video.Add(new XElement("codec", MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName)));
                     video.Add(new XElement("framerate", movieFile.MediaInfo.VideoFps));
                     video.Add(new XElement("height", movieFile.MediaInfo.Height));
                     video.Add(new XElement("scantype", movieFile.MediaInfo.ScanType));
@@ -184,7 +187,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     var audio = new XElement("audio");
                     audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
                     audio.Add(new XElement("channels", movieFile.MediaInfo.AudioChannels));
-                    audio.Add(new XElement("codec", GetAudioCodec(movieFile.MediaInfo.AudioFormat)));
+                    audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName)));
                     audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
                     streamDetails.Add(audio);
 
@@ -241,16 +244,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private string GetMovieMetadataFilename(string movieFilePath)
         {
             return Path.ChangeExtension(movieFilePath, "nfo");
-        }
-
-        private string GetAudioCodec(string audioCodec)
-        {
-            if (audioCodec == "AC-3")
-            {
-                return "AC3";
-            }
-
-            return audioCodec;
         }
 
         private bool GetExistingWatchedStatus(Movie movie, string movieFilePath)
