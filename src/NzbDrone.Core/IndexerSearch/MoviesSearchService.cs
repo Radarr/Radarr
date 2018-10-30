@@ -46,6 +46,7 @@ namespace NzbDrone.Core.IndexerSearch
                 if (!movies.Monitored)
                 {
                     _logger.Debug("Movie {0} is not monitored, skipping search", movies.Title);
+                    continue;
                 }
 
                 var decisions = _nzbSearchService.MovieSearch(movieId, false);//_nzbSearchService.SeasonSearch(message.MovieId, season.SeasonNumber, false, message.Trigger == CommandTrigger.Manual);
