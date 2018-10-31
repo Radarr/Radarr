@@ -8,9 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("UPDATE MovieFiles " +
-                        "SET MediaInfo = REPLACE(MediaInfo, 'videoCodec', 'videoFormat') " +
-                        "WHERE MediaInfo LIKE '%videoCodec%'");
+            Execute.Sql("UPDATE MovieFiles SET MediaInfo = REPLACE(MediaInfo, 'videoCodec', 'videoFormat')");
         }
     }
 }
