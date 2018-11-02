@@ -8,6 +8,11 @@ namespace NzbDrone.Core.NetImport
 {
     public class NetImportDefinition : ProviderDefinition
     {
+        public NetImportDefinition()
+        {
+            Tags = new HashSet<int>();
+        }
+
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
         public bool ShouldMonitor { get; set; }
