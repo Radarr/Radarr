@@ -701,6 +701,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 	            newMovie.Monitored = movie.Monitored;
 	            newMovie.MovieFile = movie.MovieFile;
 	            newMovie.MinimumAvailability = movie.MinimumAvailability;
+	            newMovie.Tags = movie.Tags;
 
 	            return newMovie;
 			}
