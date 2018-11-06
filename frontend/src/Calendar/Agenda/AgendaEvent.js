@@ -42,10 +42,9 @@ class AgendaEvent extends Component {
       artist,
       title,
       foreignAlbumId,
-      albumType,
       releaseDate,
       monitored,
-      // hasFile,
+      statistics,
       grabbed,
       queueItem,
       showDate,
@@ -57,7 +56,7 @@ class AgendaEvent extends Component {
     // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfTracks);
 
     return (
       <div>
@@ -126,7 +125,7 @@ AgendaEvent.propTypes = {
   albumType: PropTypes.string.isRequired,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  // hasFile: PropTypes.bool.isRequired,
+  statistics: PropTypes.object.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   showDate: PropTypes.bool.isRequired,

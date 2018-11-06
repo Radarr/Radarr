@@ -49,7 +49,7 @@ class CalendarEvent extends Component {
       foreignAlbumId,
       releaseDate,
       monitored,
-      // hasFile,
+      statistics,
       grabbed,
       queueItem,
       // timeFormat,
@@ -64,7 +64,7 @@ class CalendarEvent extends Component {
     // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfTracks);
 
     return (
       <div>
@@ -121,12 +121,12 @@ CalendarEvent.propTypes = {
   artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   foreignAlbumId: PropTypes.string.isRequired,
+  statistics: PropTypes.object.isRequired,
   // seasonNumber: PropTypes.number.isRequired,
   // episodeNumber: PropTypes.number.isRequired,
   // absoluteEpisodeNumber: PropTypes.number,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  // hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   // timeFormat: PropTypes.string.isRequired,
