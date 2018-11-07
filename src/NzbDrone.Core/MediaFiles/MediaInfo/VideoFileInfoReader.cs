@@ -17,8 +17,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 3;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 4;
+        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 4;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 5;
 
         public VideoFileInfoReader(IDiskProvider diskProvider, Logger logger)
         {
