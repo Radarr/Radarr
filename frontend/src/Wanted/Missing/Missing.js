@@ -22,6 +22,15 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MissingRowConnector from './MissingRowConnector';
 
+function getMonitoredValue(props) {
+  const {
+    filters,
+    selectedFilterKey
+  } = props;
+
+  return getFilterValue(filters, selectedFilterKey, 'monitored', false);
+}
+
 class Missing extends Component {
 
   //
@@ -75,9 +84,12 @@ class Missing extends Component {
   }
 
   onToggleSelectedPress = () => {
-    const selected = this.getSelectedIds();
+    const albumIds = this.getSelectedIds();
 
-    this.props.onToggleSelectedPress(selected);
+    this.props.batchToggleMissingAlbums({
+      albumIds,
+      monitored: !getMonitoredValue(this.props)
+    });
   }
 
   onSearchAllMissingPress = () => {
@@ -129,7 +141,7 @@ class Missing extends Component {
     } = this.state;
 
     const itemsSelected = !!this.getSelectedIds().length;
-    const monitoredFilterValue = getFilterValue(filters, 'monitored');
+    const isShowingMonitored = getMonitoredValue(this.props);
 
     return (
       <PageContent title="Missing">
@@ -143,8 +155,8 @@ class Missing extends Component {
             />
 
             <PageToolbarButton
-              label={monitoredFilterValue ? 'Unmonitor Selected' : 'Monitor Selected'}
-              iconName={icons.MONITORED}
+              label={isShowingMonitored ? 'Unmonitor Selected' : 'Monitor Selected'}
+              iconName={isShowingMonitored ? icons.UNMONITORED : icons.MONITORED}
               isDisabled={!itemsSelected}
               isSpinning={isSaving}
               onPress={this.onToggleSelectedPress}
@@ -279,7 +291,7 @@ Missing.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onSearchSelectedPress: PropTypes.func.isRequired,
-  onToggleSelectedPress: PropTypes.func.isRequired,
+  batchToggleMissingAlbums: PropTypes.func.isRequired,
   onSearchAllMissingPress: PropTypes.func.isRequired
 };
 

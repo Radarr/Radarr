@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
-import getFilterValue from 'Utilities/Filter/getFilterValue';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
@@ -45,7 +44,7 @@ class CutoffUnmetConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    registerPagePopulator(this.repopulate);
+    registerPagePopulator(this.repopulate, ['trackFileUpdated']);
     this.props.gotoCutoffUnmetFirstPage();
   }
 
@@ -122,19 +121,6 @@ class CutoffUnmetConnector extends Component {
     });
   }
 
-  onToggleSelectedPress = (selected) => {
-    const {
-      filters
-    } = this.props;
-
-    const monitored = getFilterValue(filters, 'monitored');
-
-    this.props.batchToggleCutoffUnmetAlbums({
-      albumIds: selected,
-      monitored: monitored == null || !monitored
-    });
-  }
-
   onSearchAllCutoffUnmetPress = () => {
     this.props.executeCommand({
       name: commandNames.CUTOFF_UNMET_ALBUM_SEARCH
@@ -166,7 +152,6 @@ class CutoffUnmetConnector extends Component {
 
 CutoffUnmetConnector.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchCutoffUnmet: PropTypes.func.isRequired,
   gotoCutoffUnmetFirstPage: PropTypes.func.isRequired,
   gotoCutoffUnmetPreviousPage: PropTypes.func.isRequired,
@@ -176,7 +161,6 @@ CutoffUnmetConnector.propTypes = {
   setCutoffUnmetSort: PropTypes.func.isRequired,
   setCutoffUnmetFilter: PropTypes.func.isRequired,
   setCutoffUnmetTableOption: PropTypes.func.isRequired,
-  batchToggleCutoffUnmetAlbums: PropTypes.func.isRequired,
   clearCutoffUnmet: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
