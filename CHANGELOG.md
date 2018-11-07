@@ -3,6 +3,9 @@
 ## (unreleased)
 
 ### **New features**
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) 64bit mediainfo.dll to 32bit to resolve issue: https://github.com/Radarr/Radarr/issues/3138. [<a href="https://github.com/geogolem">geogolem</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Refactor MediaInfo tokens (fixes old tokens adds new stuff) ([#3058](https://github.com/Radarr/Radarr/issues/3058)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't hide custom formats behind advanced settings when editing quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Upped rate at which we scan the download client. Should reduce cpu and ram usage as well as decrease pressure on download clients. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Improve model and UI handling for lists. Should finally fix root folder errors. ([#3133](https://github.com/Radarr/Radarr/issues/3133)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't return unmapped folders on rootfolder API call. Massively improves loading time. ([#3116](https://github.com/Radarr/Radarr/issues/3116)) [<a href="https://github.com/Justin Kromlinger">Justin Kromlinger</a>]
@@ -20,6 +23,12 @@
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Fallback to 'VideoCodec' if 'VideoFormat' is unavailable ([#3142](https://github.com/Radarr/Radarr/issues/3142)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Read video 'BitRate_Nominal' if 'BitRate' is empty ([#3144](https://github.com/Radarr/Radarr/issues/3144)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) UpdateMovieQualityService Tests. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Ignore "special drives" from System » Disk Space ([#3050](https://github.com/Radarr/Radarr/issues/3050)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Tweak style of movie path template on "add movies" screen ([#3108](https://github.com/Radarr/Radarr/issues/3108)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Unable to update custom formats for releases with bad Source Titles. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Do not search movie if unmonitored ([#3131](https://github.com/Radarr/Radarr/issues/3131)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Quality badges not being shown on bulk import. ([#3121](https://github.com/Radarr/Radarr/issues/3121)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Trim filename from Kodi movie path before sending library scan request. ([#3097](https://github.com/Radarr/Radarr/issues/3097)) [<a href="https://github.com/Lawrence">Lawrence</a>]
