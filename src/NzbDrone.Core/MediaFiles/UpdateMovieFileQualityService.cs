@@ -72,7 +72,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 ParsedMovieInfo parsedMovieInfo = null;
 
-                if (latestImportedName?.IsNotNullOrWhiteSpace() == false)
+                if (latestImportedName?.IsNotNullOrWhiteSpace() == true)
                 {
                     parsedMovieInfo = _parsingService.ParseMovieInfo(latestImportedName, helpers);
                 }
