@@ -205,7 +205,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
             if (Settings.MovieMetadataURL)
             {
-                _logger.Debug("Generating Movie Metadata URL for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
 
                 xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;
                 xmlResult += Environment.NewLine;
