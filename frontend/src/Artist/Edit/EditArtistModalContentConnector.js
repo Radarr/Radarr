@@ -8,13 +8,30 @@ import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import { setArtistValue, saveArtist } from 'Store/Actions/artistActions';
 import EditArtistModalContent from './EditArtistModalContent';
 
+function createIsPathChangingSelector() {
+  return createSelector(
+    (state) => state.artist.pendingChanges,
+    createArtistSelector(),
+    (pendingChanges, artist) => {
+      const path = pendingChanges.path;
+
+      if (path == null) {
+        return false;
+      }
+
+      return artist.path !== path;
+    }
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     (state) => state.artist,
     (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createArtistSelector(),
-    (artistState, languageProfiles, metadataProfiles, artist) => {
+    createIsPathChangingSelector(),
+    (artistState, languageProfiles, metadataProfiles, artist, isPathChanging) => {
       const {
         isSaving,
         saveError,
@@ -37,7 +54,7 @@ function createMapStateToProps() {
         artistName: artist.artistName,
         isSaving,
         saveError,
-        isPathChanging: pendingChanges.hasOwnProperty('path'),
+        isPathChanging,
         originalPath: artist.path,
         item: settings.settings,
         showLanguageProfile: languageProfiles.items.length > 1,
