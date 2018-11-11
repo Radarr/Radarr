@@ -133,4 +133,10 @@ AgendaEvent.propTypes = {
   longDateFormat: PropTypes.string.isRequired
 };
 
+AgendaEvent.defaultProps = {
+  statistics: {
+    percentOfTracks: 0
+  }
+};
+
 export default AgendaEvent;

@@ -134,4 +134,10 @@ CalendarEvent.propTypes = {
   onEventModalOpenToggle: PropTypes.func.isRequired
 };
 
+CalendarEvent.defaultProps = {
+  statistics: {
+    percentOfTracks: 0
+  }
+};
+
 export default CalendarEvent;
