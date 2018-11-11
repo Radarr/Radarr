@@ -9,6 +9,10 @@ function toggleSelected(state, items, id, selected, shiftKey) {
     [id]: selected
   };
 
+  if (selected == null) {
+    delete selectedState[id];
+  }
+
   if (shiftKey && lastToggled) {
     const { lower, upper } = getToggledRange(items, id, lastToggled);
 

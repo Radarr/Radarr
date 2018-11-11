@@ -20,6 +20,15 @@ class TableSelectCell extends Component {
     onSelectedChange({ id, value: isSelected });
   }
 
+  componentWillUnmount() {
+    const {
+      id,
+      onSelectedChange
+    } = this.props;
+
+    onSelectedChange({ id, value: null });
+  }
+
   //
   // Listeners
 
