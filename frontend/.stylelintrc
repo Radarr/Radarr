@@ -3,7 +3,8 @@
   "stylelint-order"
 ],
 "ignoreFiles": [
-  "frontend/src/Styles/scaffolding.css"
+  "frontend/src/Styles/scaffolding.css",
+  "**/*.js"
 ],
 "rules": {
     "at-rule-empty-line-before": [
