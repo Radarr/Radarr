@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
             // Refresh Artist is we change AlbumType Preferences
             if (message.Artist.LanguageProfileId != message.OldArtist.LanguageProfileId)
             {
-                _commandQueueManager.Push(new RefreshArtistCommand(message.Artist.Id));
+                _commandQueueManager.Push(new RefreshArtistCommand(message.Artist.Id, false));
             }
         }
     }

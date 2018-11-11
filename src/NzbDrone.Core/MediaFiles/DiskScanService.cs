@@ -30,7 +30,6 @@ namespace NzbDrone.Core.MediaFiles
 
     public class DiskScanService :
         IDiskScanService,
-        IHandle<ArtistUpdatedEvent>,
         IExecute<RescanArtistCommand> 
     {
         private readonly IDiskProvider _diskProvider;
@@ -207,11 +206,6 @@ namespace NzbDrone.Core.MediaFiles
                     _diskProvider.RemoveEmptySubfolders(path);
                 }
             }
-        }
-
-        public void Handle(ArtistUpdatedEvent message)
-        {
-            Scan(message.Artist);
         }
 
         public void Execute(RescanArtistCommand message)
