@@ -224,6 +224,7 @@ class QueuedTaskRow extends Component {
           {
             status === 'queued' &&
               <IconButton
+                title="Removed from task queue"
                 name={icons.REMOVE}
                 onPress={this.onCancelPress}
               />

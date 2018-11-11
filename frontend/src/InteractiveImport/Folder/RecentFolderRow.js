@@ -44,8 +44,8 @@ class RecentFolderRow extends Component {
 
         <TableRowCell className={styles.actions}>
           <IconButton
-            name={icons.REMOVE}
             title="Remove"
+            name={icons.REMOVE}
             onPress={this.onRemovePress}
           />
         </TableRowCell>

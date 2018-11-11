@@ -114,6 +114,7 @@ class BackupRow extends Component {
           />
 
           <IconButton
+            title="Delete backup"
             name={icons.DELETE}
             onPress={this.onDeletePress}
           />

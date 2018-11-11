@@ -40,6 +40,7 @@ function ImportArtistRootFolderRow(props) {
 
       <TableRowCell className={styles.actions}>
         <IconButton
+          title="Remove root folder"
           name={icons.REMOVE}
           onPress={onDeletePress}
         />

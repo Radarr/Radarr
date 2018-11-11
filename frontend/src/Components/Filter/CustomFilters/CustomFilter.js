@@ -89,6 +89,7 @@ class CustomFilter extends Component {
           />
 
           <SpinnerIconButton
+            title="Remove filter"
             name={icons.REMOVE}
             isSpinning={this.state.isDeleting}
             onPress={this.onRemovePress}

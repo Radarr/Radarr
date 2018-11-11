@@ -268,6 +268,7 @@ class QueueRow extends Component {
                   }
 
                   <SpinnerIconButton
+                    title="Remove from queue"
                     name={icons.REMOVE}
                     isSpinning={isRemoving}
                     onPress={this.onRemoveQueueItemPress}

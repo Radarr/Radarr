@@ -133,6 +133,7 @@ class ArtistHistoryRow extends Component {
           {
             eventType === 'grabbed' &&
               <IconButton
+                title="Mark as failed"
                 name={icons.REMOVE}
                 onPress={this.onMarkAsFailedPress}
               />
