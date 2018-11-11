@@ -76,14 +76,15 @@
   line-height: 50px;
 }
 
-.artistNavigationButtons {
-  white-space: no-wrap;
+.albumNavigationButtons {
+  white-space: nowrap;
 }
 
-.artistNavigationButton {
+.albumNavigationButton {
   composes: button from 'Components/Link/IconButton.css';
 
   margin-left: 5px;
+  width: 30px;
   color: #e1e2e3;
   white-space: nowrap;
 }

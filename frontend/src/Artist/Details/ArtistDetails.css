@@ -84,13 +84,14 @@
 }
 
 .artistNavigationButtons {
-  white-space: no-wrap;
+  white-space: nowrap;
 }
 
 .artistNavigationButton {
   composes: button from 'Components/Link/IconButton.css';
 
   margin-left: 5px;
+  width: 30px;
   color: #e1e2e3;
   white-space: nowrap;
 }

@@ -255,9 +255,9 @@ class AlbumDetails extends Component {
                     {title}{disambiguation ? ` (${disambiguation})` : ''}
                   </div>
 
-                  <div className={styles.artistNavigationButtons}>
+                  <div className={styles.albumNavigationButtons}>
                     <IconButton
-                      className={styles.artistNavigationButton}
+                      className={styles.albumNavigationButton}
                       name={icons.ARROW_LEFT}
                       size={30}
                       title={`Go to ${previousAlbum.title}`}
@@ -265,7 +265,7 @@ class AlbumDetails extends Component {
                     />
 
                     <IconButton
-                      className={styles.artistNavigationButton}
+                      className={styles.albumNavigationButton}
                       name={icons.ARROW_UP}
                       size={30}
                       title={`Go to ${artist.artistName}`}
@@ -273,7 +273,7 @@ class AlbumDetails extends Component {
                     />
 
                     <IconButton
-                      className={styles.artistNavigationButton}
+                      className={styles.albumNavigationButton}
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextAlbum.title}`}
