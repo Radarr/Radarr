@@ -70,11 +70,14 @@ class ArtistIndexPoster extends Component {
       showMonitored,
       showQualityProfile,
       qualityProfile,
+      showSearchAction,
       showRelativeDates,
       shortDateFormat,
       timeFormat,
       isRefreshingArtist,
+      isSearchingArtist,
       onRefreshArtistPress,
+      onSearchPress,
       ...otherProps
     } = this.props;
 
@@ -110,6 +113,17 @@ class ArtistIndexPoster extends Component {
                 isSpinning={isRefreshingArtist}
                 onPress={onRefreshArtistPress}
               />
+
+              {
+                showSearchAction &&
+                  <SpinnerIconButton
+                    className={styles.action}
+                    name={icons.SEARCH}
+                    title="Search for monitored albums"
+                    isSpinning={isSearchingArtist}
+                    onPress={onSearchPress}
+                  />
+              }
 
               <IconButton
                 className={styles.action}
@@ -235,11 +249,14 @@ ArtistIndexPoster.propTypes = {
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   qualityProfile: PropTypes.object.isRequired,
+  showSearchAction: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
-  onRefreshArtistPress: PropTypes.func.isRequired
+  isSearchingArtist: PropTypes.bool.isRequired,
+  onRefreshArtistPress: PropTypes.func.isRequired,
+  onSearchPress: PropTypes.func.isRequired
 };
 
 ArtistIndexPoster.defaultProps = {

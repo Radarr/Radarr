@@ -5,6 +5,7 @@ import IconButton from 'Components/Link/IconButton';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
 import TableOptionsModal from 'Components/Table/TableOptions/TableOptionsModal';
+import ArtistIndexTableOptionsConnector from './ArtistIndexTableOptionsConnector';
 import styles from './ArtistIndexHeader.css';
 
 class ArtistIndexHeader extends Component {
@@ -36,6 +37,7 @@ class ArtistIndexHeader extends Component {
 
   render() {
     const {
+      showSearchAction,
       columns,
       onTableOptionChange,
       ...otherProps
@@ -90,6 +92,7 @@ class ArtistIndexHeader extends Component {
         <TableOptionsModal
           isOpen={this.state.isTableOptionsModalOpen}
           columns={columns}
+          optionsComponent={ArtistIndexTableOptionsConnector}
           onTableOptionChange={onTableOptionChange}
           onModalClose={this.onTableOptionsModalClose}
         />

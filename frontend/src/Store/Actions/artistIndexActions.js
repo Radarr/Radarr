@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { createAction } from 'redux-actions';
 import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
@@ -28,7 +27,8 @@ export const defaultState = {
     size: 'large',
     showTitle: true,
     showMonitored: true,
-    showQualityProfile: true
+    showQualityProfile: true,
+    showSearchAction: false
   },
 
   bannerOptions: {
@@ -36,7 +36,8 @@ export const defaultState = {
     size: 'large',
     showTitle: false,
     showMonitored: true,
-    showQualityProfile: true
+    showQualityProfile: true,
+    showSearchAction: false
   },
 
   overviewOptions: {
@@ -48,7 +49,12 @@ export const defaultState = {
     showAdded: false,
     showAlbumCount: true,
     showPath: false,
-    showSizeOnDisk: false
+    showSizeOnDisk: false,
+    showSearchAction: false
+  },
+
+  tableOptions: {
+    showSearchAction: false
   },
 
   columns: [
@@ -337,7 +343,8 @@ export const persistState = [
   'artistIndex.columns',
   'artistIndex.posterOptions',
   'artistIndex.bannerOptions',
-  'artistIndex.overviewOptions'
+  'artistIndex.overviewOptions',
+  'artistIndex.tableOptions'
 ];
 
 //

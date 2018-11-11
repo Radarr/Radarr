@@ -13,17 +13,53 @@ import createMetadataProfileSelector from 'Store/Selectors/createMetadataProfile
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 
+function selectShowSearchAction() {
+  return createSelector(
+    (state) => state.artistIndex,
+    (artistIndex) => {
+      const view = artistIndex.view;
+
+      switch (view) {
+        case 'posters':
+          return artistIndex.posterOptions.showSearchAction;
+        case 'banners':
+          return artistIndex.bannerOptions.showSearchAction;
+        case 'overview':
+          return artistIndex.overviewOptions.showSearchAction;
+        default:
+          return artistIndex.tableOptions.showSearchAction;
+      }
+    }
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
     createQualityProfileSelector(),
     createLanguageProfileSelector(),
     createMetadataProfileSelector(),
+    selectShowSearchAction(),
     createCommandsSelector(),
-    (artist, qualityProfile, languageProfile, metadataProfile, commands) => {
+    (
+      artist,
+      qualityProfile,
+      languageProfile,
+      metadataProfile,
+      showSearchAction,
+      commands
+    ) => {
       const isRefreshingArtist = commands.some((command) => {
         return (
           command.name === commandNames.REFRESH_ARTIST &&
+          command.body.artistId === artist.id &&
+          isCommandExecuting(command)
+        );
+      });
+
+      const isSearchingArtist = commands.some((command) => {
+        return (
+          command.name === commandNames.ARTIST_SEARCH &&
           command.body.artistId === artist.id &&
           isCommandExecuting(command)
         );
@@ -37,7 +73,9 @@ function createMapStateToProps() {
         languageProfile,
         metadataProfile,
         latestAlbum,
-        isRefreshingArtist
+        showSearchAction,
+        isRefreshingArtist,
+        isSearchingArtist
       };
     }
   );
@@ -59,6 +97,13 @@ class ArtistIndexItemConnector extends Component {
     });
   }
 
+  onSearchPress = () => {
+    this.props.executeCommand({
+      name: commandNames.ARTIST_SEARCH,
+      artistId: this.props.id
+    });
+  }
+
   //
   // Render
 
@@ -72,6 +117,7 @@ class ArtistIndexItemConnector extends Component {
       <ItemComponent
         {...otherProps}
         onRefreshArtistPress={this.onRefreshArtistPress}
+        onSearchPress={this.onSearchPress}
       />
     );
   }

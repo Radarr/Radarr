@@ -109,6 +109,8 @@ class TableOptionsModal extends Component {
       isOpen,
       columns,
       canModifyColumns,
+      optionsComponent: OptionsComponent,
+      onTableOptionChange,
       onModalClose
     } = this.props;
 
@@ -150,6 +152,13 @@ class TableOptionsModal extends Component {
                       onChange={this.onPageSizeChange}
                     />
                   </FormGroup>
+              }
+
+              {
+                !!OptionsComponent &&
+                  <OptionsComponent
+                    onTableOptionChange={onTableOptionChange}
+                  />
               }
 
               {
@@ -231,6 +240,7 @@ TableOptionsModal.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   pageSize: PropTypes.number,
   canModifyColumns: PropTypes.bool.isRequired,
+  optionsComponent: PropTypes.func.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

@@ -84,6 +84,7 @@ class ArtistIndexOverview extends Component {
       posterHeight,
       qualityProfile,
       overviewOptions,
+      showSearchAction,
       showRelativeDates,
       shortDateFormat,
       longDateFormat,
@@ -91,7 +92,9 @@ class ArtistIndexOverview extends Component {
       rowHeight,
       isSmallScreen,
       isRefreshingArtist,
+      isSearchingArtist,
       onRefreshArtistPress,
+      onSearchPress,
       ...otherProps
     } = this.props;
 
@@ -175,6 +178,17 @@ class ArtistIndexOverview extends Component {
                   onPress={onRefreshArtistPress}
                 />
 
+                {
+                  showSearchAction &&
+                    <SpinnerIconButton
+                      className={styles.action}
+                      name={icons.SEARCH}
+                      title="Search for monitored albums"
+                      isSpinning={isSearchingArtist}
+                      onPress={onSearchPress}
+                    />
+                }
+
                 <IconButton
                   name={icons.EDIT}
                   title="Edit Artist"
@@ -246,12 +260,14 @@ ArtistIndexOverview.propTypes = {
   rowHeight: PropTypes.number.isRequired,
   qualityProfile: PropTypes.object.isRequired,
   overviewOptions: PropTypes.object.isRequired,
+  showSearchAction: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
+  isSearchingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired
 };
 

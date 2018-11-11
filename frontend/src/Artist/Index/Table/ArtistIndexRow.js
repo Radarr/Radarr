@@ -80,9 +80,12 @@ class ArtistIndexRow extends Component {
       ratings,
       path,
       tags,
+      showSearchAction,
       columns,
       isRefreshingArtist,
-      onRefreshArtistPress
+      isSearchingArtist,
+      onRefreshArtistPress,
+      onSearchPress
     } = this.props;
 
     const {
@@ -360,6 +363,17 @@ class ArtistIndexRow extends Component {
                     onPress={onRefreshArtistPress}
                   />
 
+                  {
+                    showSearchAction &&
+                      <SpinnerIconButton
+                        className={styles.action}
+                        name={icons.SEARCH}
+                        title="Search for monitored albums"
+                        isSpinning={isSearchingArtist}
+                        onPress={onSearchPress}
+                      />
+                  }
+
                   <IconButton
                     name={icons.EDIT}
                     title="Edit Artist"
@@ -410,9 +424,12 @@ ArtistIndexRow.propTypes = {
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
+  showSearchAction: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
-  onRefreshArtistPress: PropTypes.func.isRequired
+  isSearchingArtist: PropTypes.bool.isRequired,
+  onRefreshArtistPress: PropTypes.func.isRequired,
+  onSearchPress: PropTypes.func.isRequired
 };
 
 ArtistIndexRow.defaultProps = {

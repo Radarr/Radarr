@@ -61,6 +61,7 @@ $hoverScale: 1.05;
   position: absolute;
   bottom: 10px;
   left: 10px;
+  z-index: 3;
   border-radius: 4px;
   background-color: #216044;
   color: $white;

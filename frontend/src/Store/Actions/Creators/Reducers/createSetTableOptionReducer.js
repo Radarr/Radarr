@@ -4,7 +4,8 @@ import updateSectionState from 'Utilities/State/updateSectionState';
 
 const whitelistedProperties = [
   'pageSize',
-  'columns'
+  'columns',
+  'tableOptions'
 ];
 
 function createSetTableOptionReducer(section) {

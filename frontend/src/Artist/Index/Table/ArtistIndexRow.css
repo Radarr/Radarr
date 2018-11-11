@@ -82,7 +82,7 @@
 .actions {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
-  flex: 0 0 70px;
+  flex: 0 1 90px;
 }
 
 .checkInput {

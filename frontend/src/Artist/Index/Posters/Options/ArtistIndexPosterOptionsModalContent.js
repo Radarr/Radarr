@@ -31,7 +31,8 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       size: props.size,
       showTitle: props.showTitle,
       showMonitored: props.showMonitored,
-      showQualityProfile: props.showQualityProfile
+      showQualityProfile: props.showQualityProfile,
+      showSearchAction: props.showSearchAction
     };
   }
 
@@ -41,7 +42,8 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       size,
       showTitle,
       showMonitored,
-      showQualityProfile
+      showQualityProfile,
+      showSearchAction
     } = this.props;
 
     const state = {};
@@ -64,6 +66,10 @@ class ArtistIndexPosterOptionsModalContent extends Component {
 
     if (showQualityProfile !== prevProps.showQualityProfile) {
       state.showQualityProfile = showQualityProfile;
+    }
+
+    if (showSearchAction !== prevProps.showSearchAction) {
+      state.showSearchAction = showSearchAction;
     }
 
     if (!_.isEmpty(state)) {
@@ -95,7 +101,8 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       size,
       showTitle,
       showMonitored,
-      showQualityProfile
+      showQualityProfile,
+      showSearchAction
     } = this.state;
 
     return (
@@ -165,6 +172,18 @@ class ArtistIndexPosterOptionsModalContent extends Component {
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Show Search</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showSearchAction"
+                value={showSearchAction}
+                helpText="Show search button on hover"
+                onChange={this.onChangePosterOption}
+              />
+            </FormGroup>
           </Form>
         </ModalBody>
 
@@ -186,6 +205,7 @@ ArtistIndexPosterOptionsModalContent.propTypes = {
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
+  showSearchAction: PropTypes.bool.isRequired,
   onChangePosterOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

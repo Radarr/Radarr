@@ -35,7 +35,8 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       showAdded: props.showAdded,
       showAlbumCount: props.showAlbumCount,
       showPath: props.showPath,
-      showSizeOnDisk: props.showSizeOnDisk
+      showSizeOnDisk: props.showSizeOnDisk,
+      showSearchAction: props.showSearchAction
     };
   }
 
@@ -49,7 +50,8 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       showAdded,
       showAlbumCount,
       showPath,
-      showSizeOnDisk
+      showSizeOnDisk,
+      showSearchAction
     } = this.props;
 
     const state = {};
@@ -90,6 +92,10 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       state.showSizeOnDisk = showSizeOnDisk;
     }
 
+    if (showSearchAction !== prevProps.showSearchAction) {
+      state.showSearchAction = showSearchAction;
+    }
+
     if (!_.isEmpty(state)) {
       this.setState(state);
     }
@@ -123,7 +129,8 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
       showAdded,
       showAlbumCount,
       showPath,
-      showSizeOnDisk
+      showSizeOnDisk,
+      showSearchAction
     } = this.state;
 
     return (
@@ -235,6 +242,18 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Show Search</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showSearchAction"
+                value={showSearchAction}
+                helpText="Show search button"
+                onChange={this.onChangeOverviewOption}
+              />
+            </FormGroup>
           </Form>
         </ModalBody>
 
@@ -252,6 +271,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
 
 ArtistIndexOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
+  detailedProgressBar: PropTypes.bool.isRequired,
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   showLastAlbum: PropTypes.bool.isRequired,
@@ -259,7 +279,7 @@ ArtistIndexOverviewOptionsModalContent.propTypes = {
   showAlbumCount: PropTypes.bool.isRequired,
   showPath: PropTypes.bool.isRequired,
   showSizeOnDisk: PropTypes.bool.isRequired,
-  detailedProgressBar: PropTypes.bool.isRequired,
+  showSearchAction: PropTypes.bool.isRequired,
   onChangeOverviewOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
