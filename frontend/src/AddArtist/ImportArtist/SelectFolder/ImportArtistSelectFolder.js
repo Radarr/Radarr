@@ -68,6 +68,7 @@ class ImportArtistSelectFolder extends Component {
 
   render() {
     const {
+      isWindows,
       isFetching,
       isPopulated,
       error,
@@ -98,7 +99,7 @@ class ImportArtistSelectFolder extends Component {
                   Some tips to ensure the import goes smoothly:
                   <ul>
                     <li className={styles.tip}>
-                      Point Lidarr to the folder containing all of your music not a specific artist. eg. <span className={styles.code}>"\music\"</span> and not <span className={styles.code}>"\music\alien ant farm\"</span>
+                    Point Lidarr to the folder containing all of your music not a specific one. eg. <span className={styles.code}>"{isWindows ? 'C:\\music' : '/music'}"</span> and not <span className={styles.code}>"{isWindows ? 'C:\\music\\sublime' : '/music/sublime'}"</span>
                     </li>
                   </ul>
                 </div>
@@ -172,6 +173,7 @@ class ImportArtistSelectFolder extends Component {
 }
 
 ImportArtistSelectFolder.propTypes = {
+  isWindows: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,

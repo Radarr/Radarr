@@ -4,14 +4,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { push } from 'react-router-redux';
+import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import { fetchRootFolders, addRootFolder, deleteRootFolder } from 'Store/Actions/rootFolderActions';
 import ImportArtistSelectFolder from './ImportArtistSelectFolder';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.rootFolders,
-    (rootFolders) => {
-      return rootFolders;
+    createSystemStatusSelector(),
+    (rootFolders, systemStatus) => {
+      return {
+        ...rootFolders,
+        isWindows: systemStatus.isWindows
+      };
     }
   );
 }
