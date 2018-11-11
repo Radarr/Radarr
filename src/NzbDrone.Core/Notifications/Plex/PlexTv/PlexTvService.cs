@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
                                  .AddQueryParam("context[device][product]", "Lidarr")
                                  .AddQueryParam("context[device][platform]", "Windows")
                                  .AddQueryParam("context[device][platformVersion]", "7")
-                                 .AddQueryParam("context[device][version", BuildInfo.Version.ToString());
+                                 .AddQueryParam("context[device][version]", BuildInfo.Version.ToString());
 
             // #! is stripped out of the URL when building, this works around it.
             requestBuilder.Segments.Add("hashBang", "#!");
