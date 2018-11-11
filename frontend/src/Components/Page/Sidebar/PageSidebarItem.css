@@ -36,7 +36,9 @@
 
 .iconContainer {
   display: inline-block;
-  width: 25px;
+  margin-right: 7px;
+  width: 18px;
+  text-align: center;
 }
 
 .noIcon {
