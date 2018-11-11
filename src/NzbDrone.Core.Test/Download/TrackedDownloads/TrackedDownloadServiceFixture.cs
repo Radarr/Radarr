@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 .Returns(new List<History.History>(){
                  new History.History(){
                      DownloadId = "35238",
-                     SourceTitle = "Audio Artist - Audio Album",
+                     SourceTitle = "Audio Artist - Audio Album [2018 - FLAC]",
                      ArtistId = 5,
                      AlbumId = 4,
                  }
