@@ -62,6 +62,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                     Cutoff = Language.Spanish
                                                 }).Build();
 
+            remoteAlbum.DownloadAllowed = true;
+
             return remoteAlbum;
         }
 

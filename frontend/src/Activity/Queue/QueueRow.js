@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
@@ -8,6 +8,8 @@ import TableRow from 'Components/Table/TableRow';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import TrackQuality from 'Album/TrackQuality';
@@ -74,6 +76,7 @@ class QueueRow extends Component {
       protocol,
       indexer,
       downloadClient,
+      downloadForced,
       estimatedCompletionTime,
       timeleft,
       size,
@@ -250,6 +253,21 @@ class QueueRow extends Component {
                   className={styles.actions}
                 >
                   {
+                    downloadForced &&
+                      <Popover
+                        anchor={
+                          <Icon
+                            name={icons.DANGER}
+                            kind={kinds.DANGER}
+                          />
+                        }
+                        title="Manual Download"
+                        body="This release failed parsing checks and was manually downloaded from an interactive search.  Import is likely to fail."
+                        position={tooltipPositions.LEFT}
+                      />
+                  }
+
+                  {
                     showInteractiveImport &&
                       <IconButton
                         name={icons.INTERACTIVE}
@@ -314,6 +332,7 @@ QueueRow.propTypes = {
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,
   downloadClient: PropTypes.string,
+  downloadForced: PropTypes.bool.isRequired,
   estimatedCompletionTime: PropTypes.string,
   timeleft: PropTypes.string,
   size: PropTypes.number,

@@ -28,5 +28,6 @@ namespace NzbDrone.Core.Queue
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }
         public string ErrorMessage { get; set; }
+        public bool DownloadForced { get; set; }
     }
 }

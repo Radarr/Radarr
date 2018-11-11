@@ -94,10 +94,20 @@ namespace NzbDrone.Core.DecisionEngine
                             if (remoteAlbum.Artist == null)
                             {
                                 decision = new DownloadDecision(remoteAlbum, new Rejection("Unknown Artist"));
+                                // shove in the searched artist in case of forced download in interactive search
+                                if (searchCriteria != null)
+                                {
+                                    remoteAlbum.Artist = searchCriteria.Artist;
+                                    remoteAlbum.Albums = searchCriteria.Albums;
+                                }
                             }
                             else if (remoteAlbum.Albums.Empty())
                             {
                                 decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse albums from release name"));
+                                if (searchCriteria != null)
+                                {
+                                    remoteAlbum.Albums = searchCriteria.Albums;
+                                }
                             }
                             else
                             {

@@ -30,6 +30,7 @@ namespace Lidarr.Api.V1.Queue
         public DownloadProtocol Protocol { get; set; }
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }
+        public bool DownloadForced { get; set; }
     }
 
     public static class QueueResourceMapper
@@ -58,7 +59,8 @@ namespace Lidarr.Api.V1.Queue
                 DownloadId = model.DownloadId,
                 Protocol = model.Protocol,
                 DownloadClient = model.DownloadClient,
-                Indexer = model.Indexer
+                Indexer = model.Indexer,
+                DownloadForced = model.DownloadForced
             };
         }
 

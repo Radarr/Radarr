@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 
@@ -19,10 +20,13 @@ namespace NzbDrone.Core.Queue
     {
         private readonly IEventAggregator _eventAggregator;
         private static List<Queue> _queue = new List<Queue>();
+        private readonly IHistoryService _historyService;
 
-        public QueueService(IEventAggregator eventAggregator)
+        public QueueService(IEventAggregator eventAggregator,
+                            IHistoryService historyService)
         {
             _eventAggregator = eventAggregator;
+            _historyService = historyService;
         }
 
         public List<Queue> GetQueue()
@@ -65,6 +69,13 @@ namespace NzbDrone.Core.Queue
 
         private Queue MapAlbum(TrackedDownload trackedDownload, Album album)
         {
+            bool downloadForced = false;
+            var history = _historyService.Find(trackedDownload.DownloadItem.DownloadId, HistoryEventType.Grabbed).FirstOrDefault();
+            if (history != null && history.Data.ContainsKey("downloadForced"))
+            {
+                downloadForced = bool.Parse(history.Data["downloadForced"]);
+            }
+            
             var queue = new Queue
             {
                 Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}-album{1}", trackedDownload.DownloadItem.DownloadId, album.Id)),
@@ -83,7 +94,8 @@ namespace NzbDrone.Core.Queue
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
                 DownloadClient = trackedDownload.DownloadItem.DownloadClient,
-                Indexer = trackedDownload.Indexer
+                Indexer = trackedDownload.Indexer,
+                DownloadForced = downloadForced
             };
 
             if (queue.Timeleft.HasValue)

@@ -156,14 +156,13 @@ class InteractiveSearchRow extends Component {
 
         <TableRowCell className={styles.download}>
           {
-            downloadAllowed &&
-              <SpinnerIconButton
-                name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
-                kind={grabError ? kinds.DANGER : kinds.DEFAULT}
-                title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
-                isSpinning={isGrabbing}
-                onPress={this.onGrabPress}
-              />
+            <SpinnerIconButton
+              name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
+              kind={grabError || !downloadAllowed ? kinds.DANGER : kinds.DEFAULT}
+              title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+              isSpinning={isGrabbing}
+              onPress={this.onGrabPress}
+            />
           }
         </TableRowCell>
       </TableRow>
