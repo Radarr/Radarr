@@ -1,6 +1,7 @@
 .sectionContainer {
   display: flex;
   flex: 1 1 10%;
+  overflow: hidden;
 }
 
 .section {

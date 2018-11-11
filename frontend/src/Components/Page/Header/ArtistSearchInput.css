@@ -8,6 +8,7 @@
   width: 200px;
   border: none;
   border-bottom: solid 1px $white;
+  border-radius: 0;
   background-color: transparent;
   box-shadow: none;
   color: $white;
