@@ -23,10 +23,10 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setMetadataProviderValue,
-  saveMetadataProvider,
-  fetchMetadataProvider,
-  clearPendingChanges
+  dispatchFetchMetadataProvider: fetchMetadataProvider,
+  dispatchSetMetadataProviderValue: setMetadataProviderValue,
+  dispatchSaveMetadataProvider: saveMetadataProvider,
+  dispatchClearPendingChanges: clearPendingChanges
 };
 
 class MetadataProviderConnector extends Component {
@@ -35,31 +35,43 @@ class MetadataProviderConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchMetadataProvider();
+    const {
+      dispatchFetchMetadataProvider,
+      dispatchSaveMetadataProvider,
+      onChildMounted
+    } = this.props;
+
+    dispatchFetchMetadataProvider();
+    onChildMounted(dispatchSaveMetadataProvider);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasPendingChanges !== prevProps.hasPendingChanges) {
-      this.props.onHasPendingChange(this.props.hasPendingChanges);
+    const {
+      hasPendingChanges,
+      isSaving,
+      onChildStateChange
+    } = this.props;
+
+    if (
+      prevProps.isSaving !== isSaving ||
+      prevProps.hasPendingChanges !== hasPendingChanges
+    ) {
+      onChildStateChange({
+        isSaving,
+        hasPendingChanges
+      });
     }
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: SECTION });
-  }
-
-  //
-  // Control
-
-  save = () => {
-    this.props.saveMetadataProvider();
+    this.props.dispatchClearPendingChanges({ section: SECTION });
   }
 
   //
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setMetadataProviderValue({ name, value });
+    this.props.dispatchSetMetadataProviderValue({ name, value });
   }
 
   //
@@ -76,12 +88,14 @@ class MetadataProviderConnector extends Component {
 }
 
 MetadataProviderConnector.propTypes = {
+  isSaving: PropTypes.bool.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
-  setMetadataProviderValue: PropTypes.func.isRequired,
-  saveMetadataProvider: PropTypes.func.isRequired,
-  fetchMetadataProvider: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired,
-  onHasPendingChange: PropTypes.func.isRequired
+  dispatchFetchMetadataProvider: PropTypes.func.isRequired,
+  dispatchSetMetadataProviderValue: PropTypes.func.isRequired,
+  dispatchSaveMetadataProvider: PropTypes.func.isRequired,
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  onChildMounted: PropTypes.func.isRequired,
+  onChildStateChange: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MetadataProviderConnector);
