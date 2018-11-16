@@ -94,7 +94,6 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 
         }
 
-
         [Test]
         public void should_find_album_in_db_by_releaseid()
         {
@@ -129,31 +128,10 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         [TestCase("ANTholog")]
         [TestCase("nthology")]
         [TestCase("antholoyg")]
+        [TestCase("÷")]
         public void should_not_find_album_in_db_by_incorrect_title(string title)
         {
             var album = _albumRepo.FindByTitle(_artist.Id, title);
-
-            album.Should().BeNull();
-        }
-
-        [TestCase("ANTholog")]
-        [TestCase("antholoyg")]
-        [TestCase("ANThology CD")]
-        public void should_find_album_in_db_by_inexact_title(string title)
-        {
-            var album = _albumRepo.FindByTitleInexact(_artist.Id, title);
-
-            album.Should().NotBeNull();
-            album.Title.Should().Be(_album.Title);
-        }
-
-        [TestCase("ANTholog")]
-        [TestCase("antholoyg")]
-        [TestCase("ANThology CD")]
-        public void should_not_find_album_in_db_by_inexact_title_when_two_similar_matches(string title)
-        {
-            _albumRepo.Insert(_albumSimilar);
-            var album = _albumRepo.FindByTitleInexact(_artist.Id, title);
 
             album.Should().BeNull();
         }

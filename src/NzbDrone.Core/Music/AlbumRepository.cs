@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -17,7 +16,6 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
         Album FindByTitle(int artistId, string title);
-        Album FindByTitleInexact(int artistId, string title);
         Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string spotifyId);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
@@ -49,7 +47,7 @@ namespace NzbDrone.Core.Music
 
         public Album FindById(string foreignAlbumId)
         {
-            return Query.SingleOrDefault(s => s.ForeignAlbumId == foreignAlbumId);
+            return Query.Where(s => s.ForeignAlbumId == foreignAlbumId).SingleOrDefault();
         }
 
         public PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec)
@@ -285,7 +283,7 @@ namespace NzbDrone.Core.Music
         {
             cleanTitle = cleanTitle.ToLowerInvariant();
 
-            return Query.SingleOrDefault(s => s.CleanTitle == cleanTitle);
+            return Query.Where(s => s.CleanTitle == cleanTitle).SingleOrDefault();
         }
 
         public Album FindByTitle(int artistId, string title)
@@ -300,39 +298,6 @@ namespace NzbDrone.Core.Music
                         .FirstOrDefault();
         }
 
-        public Album FindByTitleInexact(int artistId, string title)
-        {
-            double fuzzThreshold = 0.7;
-            double fuzzGap = 0.4;
-            var cleanTitle = Parser.Parser.CleanArtistName(title);
-
-            if (string.IsNullOrEmpty(cleanTitle))
-                cleanTitle = title;
-
-            var sortedAlbums = Query.Where(s => s.ArtistId == artistId)
-                .Select(s => new
-                    {
-                        MatchProb = s.CleanTitle.FuzzyMatch(cleanTitle),
-                        Album = s
-                    })
-                .ToList()
-                .OrderByDescending(s => s.MatchProb)
-                .ToList();
-
-            if (!sortedAlbums.Any())
-                return null;
-
-            _logger.Trace("\nFuzzy album match on '{0}':\n{1}",
-                          cleanTitle,
-                          string.Join("\n", sortedAlbums.Select(x => $"{x.Album.CleanTitle}: {x.MatchProb}")));
-
-            if (sortedAlbums[0].MatchProb > fuzzThreshold
-                && (sortedAlbums.Count == 1 || sortedAlbums[0].MatchProb - sortedAlbums[1].MatchProb > fuzzGap))
-                return sortedAlbums[0].Album;
-
-            return null;
-        }
-
         public Album FindByArtistAndName(string artistName, string cleanTitle)
         {
             var cleanArtistName = Parser.Parser.CleanArtistName(artistName);
@@ -340,7 +305,8 @@ namespace NzbDrone.Core.Music
 
             return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
                         .Where<Artist>(artist => artist.CleanName == cleanArtistName)
-                        .SingleOrDefault(album => album.CleanTitle == cleanTitle);
+                        .Where<Album>(album => album.CleanTitle == cleanTitle)
+                        .SingleOrDefault();
         }
 
         public Album FindAlbumByRelease(string releaseId)

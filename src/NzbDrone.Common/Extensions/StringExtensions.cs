@@ -143,34 +143,44 @@ namespace NzbDrone.Common.Extensions
 
         public static double FuzzyMatch(this string a, string b)
         {
-            if (a.Contains(" ") && b.Contains(" "))
+            if (a.IsNullOrWhiteSpace() || b.IsNullOrWhiteSpace())
+            {
+                return 0;
+            }
+            else if (a.Contains(" ") && b.Contains(" "))
             {
                 var partsA = a.Split(' ');
                 var partsB = b.Split(' ');
-                var weightedHighCoefficients = new double[partsA.Length];
-                var distanceRatios = new double[partsA.Length];
-                for (int i = 0; i < partsA.Length; i++)
-                {
-                    double high = 0.0;
-                    int indexDistance = 0;
-                    for (int x = 0; x < partsB.Length; x++)
-                    {
-                        var coef = LevenshteinCoefficient(partsA[i], partsB[x]);
-                        if (coef > high)
-                        {
-                            high = coef;
-                            indexDistance = Math.Abs(i - x);
-                        }
-                    }
-                    double distanceWeight = 1.0 - (double)indexDistance / (double)partsA.Length;
-                    weightedHighCoefficients[i] = high * distanceWeight;
-                }
-                return weightedHighCoefficients.Sum() / (double)partsA.Length;
+
+                var coef = (FuzzyMatchComponents(partsA, partsB) + FuzzyMatchComponents(partsB, partsA)) / (partsA.Length + partsB.Length);
+                return Math.Max(coef, LevenshteinCoefficient(a, b));
             }
             else
             {
                 return LevenshteinCoefficient(a, b);
             }
+        }
+
+        private static double FuzzyMatchComponents(string[] a, string[] b)
+        {
+            double weightDenom = Math.Max(a.Length, b.Length);
+            double sum = 0;
+            for (int i = 0; i < a.Length; i++)
+            {
+                double high = 0.0;
+                int indexDistance = 0;
+                for (int x = 0; x < b.Length; x++)
+                {
+                    var coef = LevenshteinCoefficient(a[i], b[x]);
+                    if (coef > high)
+                    {
+                        high = coef;
+                        indexDistance = Math.Abs(i - x);
+                    }
+                }
+                sum += (1.0 - (double)indexDistance / weightDenom) * high;
+            }
+            return sum;
         }
 
         public static double LevenshteinCoefficient(this string a, string b)

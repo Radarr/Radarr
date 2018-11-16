@@ -299,12 +299,14 @@
     <Compile Include="MetadataSource\SearchArtistComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
     <Compile Include="MusicTests\AddAlbumFixture.cs" />
+    <Compile Include="MusicTests\AlbumServiceFixture.cs" />
     <Compile Include="MusicTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\AlbumMonitoredServiceTests\AlbumMonitoredServiceFixture.cs" />
     <Compile Include="MusicTests\AlbumRepositoryTests\AlbumRepositoryFixture.cs" />
     <Compile Include="MusicTests\ArtistRepositoryTests\ArtistRepositoryFixture.cs" />
     <Compile Include="MusicTests\ArtistServiceTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\ArtistServiceTests\UpdateMultipleArtistFixture.cs" />
+    <Compile Include="MusicTests\ArtistServiceTests\FindByNameInexactFixture.cs" />
     <Compile Include="MusicTests\RefreshAlbumServiceFixture.cs" />
     <Compile Include="MusicTests\ShouldRefreshAlbumFixture.cs" />
     <Compile Include="MusicTests\TitleMatchingTests\TitleMatchingFixture.cs" />

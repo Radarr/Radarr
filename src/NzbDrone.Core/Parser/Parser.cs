@@ -208,6 +208,14 @@ namespace NzbDrone.Core.Parser
             new Regex(@"(\[|\()*\b((featuring|feat.|feat|ft|ft.)\s{1}){1}\s*.*(\]|\))*", RegexOptions.IgnoreCase | RegexOptions.Compiled),
             new Regex(@"(?:\(|\[)(?:[^\(\[]*)(?:version|limited|deluxe|single|clean|album|special|bonus|promo|remastered)(?:[^\)\]]*)(?:\)|\])", RegexOptions.IgnoreCase | RegexOptions.Compiled)
         };
+
+        private static readonly Regex[] BracketRegex = new Regex[]
+        {
+            new Regex(@"\(.*\)", RegexOptions.Compiled),
+            new Regex(@"\[.*\]", RegexOptions.Compiled)
+        };
+
+        private static readonly Regex AfterDashRegex = new Regex(@"[-:].*", RegexOptions.Compiled);
         
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
@@ -528,14 +536,13 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
         }
 
-        public static string NormalizeTrackTitle(string title)
+        public static string NormalizeTrackTitle(this string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
             title = PunctuationRegex.Replace(title, " ");
             title = DuplicateSpacesRegex.Replace(title, " ");
 
-            return title.Trim()
-                        .ToLower();
+            return title.Trim().ToLower();
         }
 
         public static string NormalizeTitle(string title)
@@ -601,6 +608,22 @@ namespace NzbDrone.Core.Parser
             return CommonTagRegex[1].Replace(album, string.Empty).Trim();
         }
 
+        public static string RemoveBracketsAndContents(this string album)
+        {
+            var intermediate = album;
+            foreach (var regex in BracketRegex)
+            {
+                intermediate = regex.Replace(intermediate, string.Empty).Trim();
+            }
+            
+            return intermediate;
+        }
+
+        public static string RemoveAfterDash(this string text)
+        {
+            return AfterDashRegex.Replace(text, string.Empty).Trim();
+        }
+
         public static string CleanTrackTitle(string title)
         {
             var intermediateTitle = title;
@@ -619,7 +642,7 @@ namespace NzbDrone.Core.Parser
 
             var trackNumber = file.Tag.Track;
             var trackTitle = file.Tag.Title;
-            var discNumber = (file.Tag.Disc > 0) ? Convert.ToInt32(file.Tag.Disc) : 1;
+            var discNumber = (int)file.Tag.Disc;
 
             var artist = file.Tag.FirstAlbumArtist;
 

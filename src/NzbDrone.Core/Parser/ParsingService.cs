@@ -50,14 +50,21 @@ namespace NzbDrone.Core.Parser
         public Artist GetArtist(string title)
         {
             var parsedAlbumInfo = Parser.ParseAlbumTitle(title);
-            
-            if (parsedAlbumInfo == null || parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
+
+            if (parsedAlbumInfo != null && !parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
             {
-                return _artistService.FindByName(title);
+                title = parsedAlbumInfo.ArtistName;
+            }
+            
+            var artistInfo = _artistService.FindByName(title);
+
+            if (artistInfo == null)
+            {
+                _logger.Debug("Trying inexact artist match for {0}", title);
+                artistInfo = _artistService.FindByNameInexact(title);
             }
 
-            return _artistService.FindByName(parsedAlbumInfo.ArtistName);
-            
+            return artistInfo;
         }
 
         public Artist GetArtistFromTag(string file)
@@ -81,8 +88,15 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            return _artistService.FindByName(parsedTrackInfo.ArtistTitle);
+            artist = _artistService.FindByName(parsedTrackInfo.ArtistTitle);
 
+            if (artist == null)
+            {
+                _logger.Debug("Trying inexact artist match for {0}", parsedTrackInfo.ArtistTitle);
+                artist = _artistService.FindByNameInexact(parsedTrackInfo.ArtistTitle);
+            }
+
+            return artist;
         }
 
         public RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria = null)
@@ -147,6 +161,12 @@ namespace NzbDrone.Core.Parser
                 albumInfo = _albumService.FindByTitle(artist.Id, parsedAlbumInfo.AlbumTitle);
             }
 
+            if (albumInfo == null)
+            {
+                _logger.Debug("Trying inexact album match for {0}", parsedAlbumInfo.AlbumTitle);
+                albumInfo = _albumService.FindByTitleInexact(artist.Id, parsedAlbumInfo.AlbumTitle);
+            }
+
             if (albumInfo != null)
             {
                 result.Add(albumInfo);
@@ -185,6 +205,12 @@ namespace NzbDrone.Core.Parser
             }
 
             artist = _artistService.FindByName(parsedAlbumInfo.ArtistName);
+
+            if (artist == null)
+            {
+                _logger.Debug("Trying inexact artist match for {0}", parsedAlbumInfo.ArtistName);
+                artist = _artistService.FindByNameInexact(parsedAlbumInfo.ArtistName);
+            }
 
             if (artist == null)
             {

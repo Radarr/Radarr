@@ -17,6 +17,24 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
     public class ArtistRepositoryFixture : DbTest<ArtistRepository, Artist>
     {
+        private ArtistRepository _artistRepo;
+
+        private Artist CreateArtist(string name)
+        {
+            return Builder<Artist>.CreateNew()
+                .With(a => a.Name = name)
+                .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
+                .With(a => a.ForeignArtistId = name)
+                .BuildNew();
+        }
+
+        private void GivenArtists()
+        {
+            _artistRepo = Mocker.Resolve<ArtistRepository>();
+            _artistRepo.Insert(CreateArtist("The Black Eyed Peas"));
+            _artistRepo.Insert(CreateArtist("The Black Keys"));
+        }
+
         [Test]
         public void should_lazyload_profiles()
         {
@@ -60,6 +78,17 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             StoredModel.LanguageProfile.Should().NotBeNull();
             StoredModel.MetadataProfile.Should().NotBeNull();
 
+        }
+
+        [TestCase("The Black Eyed Peas")]
+        [TestCase("The Black Keys")]
+        public void should_find_artist_in_db_by_name(string name)
+        {
+            GivenArtists();
+            var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
+
+            artist.Should().NotBeNull();
+            artist.Name.Should().Be(name);
         }
     }
 }

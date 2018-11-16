@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Parser;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -89,7 +91,63 @@ namespace NzbDrone.Core.Music
 
         public Album FindByTitleInexact(int artistId, string title)
         {
-            return _albumRepository.FindByTitleInexact(artistId, title);
+            var cleanTitle = title.CleanArtistName();
+
+            var albums = GetAlbumsByArtist(artistId);
+
+            Func< Func<Album, string, double>, string, Tuple<Func<Album, string, double>, string>> tc = Tuple.Create;
+            var scoringFunctions = new List<Tuple<Func<Album, string, double>, string>> {
+                tc((a, t) => a.CleanTitle.FuzzyMatch(t), cleanTitle),
+                tc((a, t) => a.Title.FuzzyMatch(t), title),
+                tc((a, t) => a.CleanTitle.FuzzyMatch(t), title.RemoveBracketsAndContents().CleanArtistName()),
+                tc((a, t) => a.CleanTitle.FuzzyMatch(t), title.RemoveAfterDash().CleanArtistName()),
+                tc((a, t) => a.CleanTitle.FuzzyMatch(t), title.RemoveBracketsAndContents().RemoveAfterDash().CleanArtistName()),
+                tc((a, t) => t.FuzzyContains(a.CleanTitle), cleanTitle),
+                tc((a, t) => t.FuzzyContains(a.Title), title)
+            };
+
+            foreach (var func in scoringFunctions)
+            {
+                var album = FindByStringInexact(albums, func.Item1, func.Item2);
+                if (album != null)
+                {
+                    return album;
+                }
+            }
+
+            return null;
+        }
+
+        private Album FindByStringInexact(List<Album> albums, Func<Album, string, double> scoreFunction, string title)
+        {
+            const double fuzzThreshold = 0.7;
+            const double fuzzGap = 0.4;
+
+            var sortedAlbums = albums.Select(s => new
+                {
+                    MatchProb = scoreFunction(s, title),
+                    Album = s
+                })
+                .ToList()
+                .OrderByDescending(s => s.MatchProb)
+                .ToList();
+
+            if (!sortedAlbums.Any())
+            {
+                return null;
+            }
+
+            _logger.Trace("\nFuzzy album match on '{0}':\n{1}",
+                          title,
+                          string.Join("\n", sortedAlbums.Select(x => $"[{x.Album.Title}] {x.Album.CleanTitle}: {x.MatchProb}")));
+
+            if (sortedAlbums[0].MatchProb > fuzzThreshold
+                && (sortedAlbums.Count == 1 || sortedAlbums[0].MatchProb - sortedAlbums[1].MatchProb > fuzzGap))
+            {
+                return sortedAlbums[0].Album;
+            }
+
+            return null;
         }
 
         public List<Album> GetAllAlbums()

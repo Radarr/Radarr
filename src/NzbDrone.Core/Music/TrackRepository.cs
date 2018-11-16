@@ -61,6 +61,11 @@ namespace NzbDrone.Core.Music
 
         public List<Track> GetTracksByMedium(int albumId, int mediumNumber)
         {
+            if (mediumNumber < 1)
+            {
+                return GetTracksByAlbum(albumId);
+            }
+
             return Query.Where(s => s.AlbumId == albumId)
                         .AndWhere(s => s.MediumNumber == mediumNumber)
                         .ToList();

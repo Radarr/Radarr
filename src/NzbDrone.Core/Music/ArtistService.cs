@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Music
         List<Artist> AddArtists(List<Artist> newArtists);
         Artist FindById(string spotifyId);
         Artist FindByName(string title);
-        Artist FindByTitleInexact(string title);
+        Artist FindByNameInexact(string title);
         void DeleteArtist(int artistId, bool deleteFiles);
         List<Artist> GetAllArtists();
         List<Artist> AllForTag(int tagId);
@@ -89,9 +89,43 @@ namespace NzbDrone.Core.Music
             return _artistRepository.FindByName(title.CleanArtistName());
         }
 
-        public Artist FindByTitleInexact(string title)
+        public Artist FindByNameInexact(string title)
         {
-            throw new NotImplementedException();
+            const double fuzzThreshold = 0.8;
+            const double fuzzGap = 0.2;
+            var cleanTitle = Parser.Parser.CleanArtistName(title);
+
+            if (string.IsNullOrEmpty(cleanTitle))
+            {
+                cleanTitle = title;
+            }
+
+            var sortedArtists = GetAllArtists()
+                .Select(s => new
+                    {
+                        MatchProb = s.CleanName.FuzzyMatch(cleanTitle),
+                        Artist = s
+                    })
+                .ToList()
+                .OrderByDescending(s => s.MatchProb)
+                .ToList();
+
+            if (!sortedArtists.Any())
+            {
+                return null;
+            }
+
+            _logger.Trace("\nFuzzy artist match on '{0}':\n{1}",
+                          cleanTitle,
+                          string.Join("\n", sortedArtists.Select(x => $"{x.Artist.CleanName}: {x.MatchProb}")));
+
+            if (sortedArtists[0].MatchProb > fuzzThreshold
+                && (sortedArtists.Count == 1 || sortedArtists[0].MatchProb - sortedArtists[1].MatchProb > fuzzGap))
+            {
+                return sortedArtists[0].Artist;
+            }
+
+            return null;
         }
 
         public List<Artist> GetAllArtists()
@@ -109,7 +143,6 @@ namespace NzbDrone.Core.Music
         {
             return _artistRepository.Get(artistDBId);
         }
-
 
         public List<Artist> GetArtists(IEnumerable<int> artistIds)
         {

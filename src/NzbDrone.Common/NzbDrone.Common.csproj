@@ -71,6 +71,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArchiveService.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Instrumentation\Sentry\LidarrSentryPacket.cs" />
     <Compile Include="Instrumentation\VersionLayoutRenderer.cs" />
     <Compile Include="Extensions\LevenstheinExtensions.cs" />
+    <Compile Include="Extensions\FuzzyContains.cs" />
     <Compile Include="Messaging\IEvent.cs" />
     <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Model\ProcessInfo.cs" />
