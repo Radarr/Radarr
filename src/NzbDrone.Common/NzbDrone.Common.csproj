@@ -182,6 +182,7 @@
     <Compile Include="Http\TlsFailureException.cs" />
     <Compile Include="Http\TooManyRequestsException.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Http\UnexpectedHtmlContentException.cs" />
     <Compile Include="Http\UserAgentBuilder.cs" />
     <Compile Include="Instrumentation\CleanseLogMessage.cs" />
     <Compile Include="Instrumentation\CleansingJsonVisitor.cs" />
