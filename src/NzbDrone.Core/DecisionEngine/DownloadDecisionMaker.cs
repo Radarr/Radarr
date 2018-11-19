@@ -89,6 +89,21 @@ namespace NzbDrone.Core.DecisionEngine
                         if (!parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
                         {
                             var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
+
+                            // try parsing again using the search criteria, in case it parsed but parsed incorrectly
+                            if ((remoteAlbum.Artist == null || remoteAlbum.Albums.Empty()) && searchCriteria != null)
+                            {
+                                _logger.Debug("Artist/Album null for {0}, reparsing with search criteria", report.Title);
+                                var parsedAlbumInfoWithCriteria = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                                                                                                                  searchCriteria.Artist,
+                                                                                                                  searchCriteria.Albums);
+
+                                if (parsedAlbumInfoWithCriteria != null && parsedAlbumInfoWithCriteria.ArtistName.IsNotNullOrWhiteSpace())
+                                {
+                                    remoteAlbum = _parsingService.Map(parsedAlbumInfoWithCriteria, searchCriteria);
+                                }
+                            }
+
                             remoteAlbum.Release = report;
 
                             if (remoteAlbum.Artist == null)

@@ -182,6 +182,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Black Sabbath Black Sabbath FLAC")]
         [TestCase("BlaCk SabBaTh Black SabBatH FLAC")]
         [TestCase("Black Sabbath FLAC Black Sabbath")]
+        [TestCase("Black.Sabbath-FLAC-Black.Sabbath")]
+        [TestCase("Black_Sabbath-FLAC-Black_Sabbath")]
         public void should_parse_artist_name_and_album_title_by_search_criteria(string releaseTitle)
         {
             GivenSearchCriteria("Black Sabbath", "Black Sabbath");
