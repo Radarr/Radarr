@@ -324,6 +324,7 @@ class InteractiveImportRow extends Component {
           id={id}
           artistId={artist && artist.id}
           albumId={album && album.id}
+          filename={relativePath}
           onModalClose={this.onSelectTrackModalClose}
         />
 

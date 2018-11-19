@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()))
+                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()))
                   .Returns(_localTrack);
 
             GivenVideoFiles(new List<string> { @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.Spanish.XviD-OSiTV.avi".AsOsAgnostic() });
@@ -151,7 +151,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             GivenSpecifications(_pass1);
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()))
+                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()))
                   .Throws<TestException>();
 
             _audioFiles = new List<string>
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             Subject.GetImportDecisions(_audioFiles, _artist);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(_audioFiles.Count));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(_audioFiles.Count));
 
             ExceptionVerification.ExpectedErrors(3);
         }
@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             GivenSpecifications(_pass1);
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()))
+                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()))
                   .Returns(new LocalTrack() { Path = "test" });
 
             _audioFiles = new List<string>
@@ -275,7 +275,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             var decisions = Subject.GetImportDecisions(_audioFiles, _artist);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(_audioFiles.Count));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(_audioFiles.Count));
 
             decisions.Should().HaveCount(3);
             decisions.First().Rejections.Should().NotBeEmpty();
@@ -299,10 +299,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             Subject.GetImportDecisions(_audioFiles, _artist, folderInfo);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), null), Times.Exactly(3));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), null), Times.Exactly(3));
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
         }
 
         [Test]
@@ -322,10 +322,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             Subject.GetImportDecisions(_audioFiles, _artist, folderInfo);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), null), Times.Exactly(2));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), null), Times.Exactly(2));
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
         }
 
         [Test]
@@ -344,10 +344,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             Subject.GetImportDecisions(_audioFiles, _artist, folderInfo);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(1));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()), Times.Exactly(1));
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), null), Times.Never());
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), null), Times.Never());
         }
 
         [Test]
@@ -366,10 +366,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             Subject.GetImportDecisions(_audioFiles, _artist, folderInfo);
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), null), Times.Exactly(1));
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), null), Times.Exactly(1));
 
             Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
+                  .Verify(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.Is<ParsedTrackInfo>(p => p != null)), Times.Never());
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         public void should_return_a_decision_when_exception_is_caught()
         {
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()))
+                  .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<ParsedTrackInfo>()))
                   .Throws<TestException>();
 
             _audioFiles = new List<string>

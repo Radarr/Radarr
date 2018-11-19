@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Parser
         Album GetLocalAlbum(string filename, Artist artist);
         LocalTrack GetLocalTrack(string filename, Artist artist);
         LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo);
-
+        LocalTrack GetLocalTrack(string filename, Artist artist, Album album, ParsedTrackInfo folderInfo);
     }
 
     public class ParsingService : IParsingService
@@ -246,6 +246,11 @@ namespace NzbDrone.Core.Parser
 
         public LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo)
         {
+            return GetLocalTrack(filename, artist, null, folderInfo);
+        }
+
+        public LocalTrack GetLocalTrack(string filename, Artist artist, Album album, ParsedTrackInfo folderInfo)
+        {
             ParsedTrackInfo parsedTrackInfo;
 
 
@@ -258,7 +263,7 @@ namespace NzbDrone.Core.Parser
                 parsedTrackInfo = Parser.ParseMusicPath(filename);
             }
 
-            if (parsedTrackInfo == null || (parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace()) && parsedTrackInfo.ReleaseMBId.IsNullOrWhiteSpace())
+            if (parsedTrackInfo == null || (parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace()) && parsedTrackInfo.ReleaseMBId.IsNullOrWhiteSpace() && album == null)
             {
                 if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
                 {
@@ -268,7 +273,11 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            var album = GetAlbum(artist, parsedTrackInfo);
+            if (album == null)
+            {
+                album = GetAlbum(artist, parsedTrackInfo);
+            }
+            
             var tracks = new List<Track>();
             if (album != null)
             {

@@ -3,10 +3,11 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
-    public class ManualImportItem
+    public class ManualImportItem : ModelBase
     {
         public string Path { get; set; }
         public string RelativePath { get; set; }

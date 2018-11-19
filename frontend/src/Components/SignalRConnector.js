@@ -224,6 +224,16 @@ class SignalRConnector extends Component {
     }
   }
 
+  handleManualimport = (body) => {
+    if (body.action === 'updated') {
+      this.props.dispatchUpdateItem({
+        section: 'interactiveImport',
+        updateOnly: true,
+        ...body.resource
+      });
+    }
+  }
+
   handleQueue = () => {
     if (this.props.isQueuePopulated) {
       this.props.dispatchFetchQueue();

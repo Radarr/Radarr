@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles);
-
+        ImportDecision GetImportDecision(string musicFile, Artist artist, Album album);
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -68,19 +68,24 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             foreach (var file in files)
             {
-                decisions.AddIfNotNull(GetDecision(file, artist, folderInfo, shouldUseFolderName));
+                decisions.AddIfNotNull(GetDecision(file, artist, null, folderInfo, shouldUseFolderName));
             }
 
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Artist artist, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
+        public ImportDecision GetImportDecision(string file, Artist artist, Album album)
+        {
+            return GetDecision(file, artist, album, null, false);
+        }
+
+        private ImportDecision GetDecision(string file, Artist artist, Album album, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
         {
             ImportDecision decision = null;
 
             try
             {
-                var localTrack = _parsingService.GetLocalTrack(file, artist, shouldUseFolderName ? folderInfo : null);
+                var localTrack = _parsingService.GetLocalTrack(file, artist, album, shouldUseFolderName ? folderInfo : null);
 
                 if (localTrack != null)
                 {

@@ -15,12 +15,16 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
+using NzbDrone.Common.Crypto;
+using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles);
+        void UpdateItem(ManualImportItem item);
+        ManualImportItem Find(int id);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -35,7 +39,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly ITrackedDownloadService _trackedDownloadService;
-        private readonly IDownloadedTracksImportService _downloadedEpisodesImportService;
+        private readonly IDownloadedTracksImportService _downloadedTracksImportService;
+        private readonly ICached<ManualImportItem> _cache;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -49,7 +54,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                                    IVideoFileInfoReader videoFileInfoReader,
                                    IImportApprovedTracks importApprovedTracks,
                                    ITrackedDownloadService trackedDownloadService,
-                                   IDownloadedTracksImportService downloadedEpisodesImportService,
+                                   IDownloadedTracksImportService downloadedTracksImportService,
+                                   ICacheManager cacheManager,
                                    IEventAggregator eventAggregator,
                                    Logger logger)
         {
@@ -63,13 +69,21 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _videoFileInfoReader = videoFileInfoReader;
             _importApprovedTracks = importApprovedTracks;
             _trackedDownloadService = trackedDownloadService;
-            _downloadedEpisodesImportService = downloadedEpisodesImportService;
+            _downloadedTracksImportService = downloadedTracksImportService;
+            _cache = cacheManager.GetCache<ManualImportItem>(GetType());
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
+        public ManualImportItem Find(int id)
+        {
+            return _cache.Find(id.ToString());
+        }
+
         public List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles)
         {
+            _cache.Clear();
+            
             if (downloadId.IsNotNullOrWhiteSpace())
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
@@ -89,10 +103,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     return new List<ManualImportItem>();
                 }
 
-                return new List<ManualImportItem> { ProcessFile(path, downloadId) };
+                var decision = ProcessFile(path, downloadId);
+                _cache.Set(decision.Id.ToString(), decision);
+
+                return new List<ManualImportItem> { decision };
             }
 
-            return ProcessFolder(path, downloadId, filterExistingFiles);
+            var items = ProcessFolder(path, downloadId, filterExistingFiles);
+            foreach (var item in items)
+            {
+                _cache.Set(item.Id.ToString(), item);
+            }
+            
+            return items;
         }
 
         private List<ManualImportItem> ProcessFolder(string folder, string downloadId, bool filterExistingFiles)
@@ -118,6 +141,30 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo, filterExistingFiles);
 
             return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
+        }
+
+        public void UpdateItem(ManualImportItem item)
+        {
+            var decision = _importDecisionMaker.GetImportDecision(item.Path, item.Artist, item.Album);
+
+            if (decision.LocalTrack.Artist != null)
+            {
+                item.Artist = decision.LocalTrack.Artist;
+            }
+
+            if (decision.LocalTrack.Album != null)
+            {
+                item.Album = decision.LocalTrack.Album;
+            }
+
+            if (decision.LocalTrack.Tracks.Any())
+            {
+                item.Tracks = decision.LocalTrack.Tracks;
+            }
+
+            item.Rejections = decision.Rejections;
+
+            _cache.Set(item.Id.ToString(), item);
         }
 
         private ManualImportItem ProcessFile(string file, string downloadId, string folder = null)
@@ -158,6 +205,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : new ManualImportItem
             {
+                Id = HashConverter.GetHashInt31(file),
                 DownloadId = downloadId,
                 Path = file,
                 RelativePath = folder.GetRelativePath(file),
@@ -178,6 +226,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         {
             var item = new ManualImportItem();
 
+            item.Id = HashConverter.GetHashInt31(decision.LocalTrack.Path);
             item.Path = decision.LocalTrack.Path;
             item.RelativePath = folder.GetRelativePath(decision.LocalTrack.Path);
             item.Name = Path.GetFileNameWithoutExtension(decision.LocalTrack.Path);
@@ -271,7 +320,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
                 if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
                 {
-                    if (_downloadedEpisodesImportService.ShouldDeleteFolder(
+                    if (_downloadedTracksImportService.ShouldDeleteFolder(
                             new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
                             trackedDownload.RemoteAlbum.Artist) && trackedDownload.DownloadItem.CanMoveFiles)
                     {

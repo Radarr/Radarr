@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
+import { updateInteractiveImportItem, saveInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import SelectArtistModalContent from './SelectArtistModalContent';
 
@@ -29,7 +29,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  updateInteractiveImportItem
+  updateInteractiveImportItem,
+  saveInteractiveImportItem
 };
 
 class SelectArtistModalContentConnector extends Component {
@@ -45,8 +46,10 @@ class SelectArtistModalContentConnector extends Component {
         id,
         artist,
         album: undefined,
-        tracks: []
+        tracks: [],
+        rejections: []
       });
+      this.props.saveInteractiveImportItem({ id });
     });
 
     this.props.onModalClose(true);

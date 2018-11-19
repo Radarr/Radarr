@@ -87,7 +87,8 @@ class SelectTrackModalContent extends Component {
       sortKey,
       sortDirection,
       onSortPress,
-      onModalClose
+      onModalClose,
+      filename
     } = this.props;
 
     const {
@@ -96,12 +97,13 @@ class SelectTrackModalContent extends Component {
       selectedState
     } = this.state;
 
+    const title = `Manual Import - Select Track(s): ${filename}`;
     const errorMessage = getErrorMessage(error, 'Unable to load tracks');
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Track(s)
+          {title}
         </ModalHeader>
 
         <ModalBody>
@@ -179,7 +181,8 @@ SelectTrackModalContent.propTypes = {
   sortDirection: PropTypes.string,
   onSortPress: PropTypes.func.isRequired,
   onTracksSelect: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  filename: PropTypes.string.isRequired
 };
 
 export default SelectTrackModalContent;

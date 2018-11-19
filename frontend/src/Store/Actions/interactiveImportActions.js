@@ -8,6 +8,7 @@ import { sortDirections } from 'Helpers/Props';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
+import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import { set, update } from './baseActions';
 
 //
@@ -25,6 +26,7 @@ export const defaultState = {
   isPopulated: false,
   error: null,
   items: [],
+  pendingChanges: {},
   sortKey: 'quality',
   sortDirection: sortDirections.DESCENDING,
   recentFolders: [],
@@ -67,6 +69,7 @@ export const persistState = [
 
 export const FETCH_INTERACTIVE_IMPORT_ITEMS = 'FETCH_INTERACTIVE_IMPORT_ITEMS';
 export const UPDATE_INTERACTIVE_IMPORT_ITEM = 'UPDATE_INTERACTIVE_IMPORT_ITEM';
+export const SAVE_INTERACTIVE_IMPORT_ITEM = 'SAVE_INTERACTIVE_IMPORT_ITEM';
 export const SET_INTERACTIVE_IMPORT_SORT = 'SET_INTERACTIVE_IMPORT_SORT';
 export const CLEAR_INTERACTIVE_IMPORT = 'CLEAR_INTERACTIVE_IMPORT';
 export const ADD_RECENT_FOLDER = 'ADD_RECENT_FOLDER';
@@ -83,6 +86,7 @@ export const CLEAR_INTERACTIVE_IMPORT_ALBUMS = 'CLEAR_INTERACTIVE_IMPORT_ALBUMS'
 export const fetchInteractiveImportItems = createThunk(FETCH_INTERACTIVE_IMPORT_ITEMS);
 export const setInteractiveImportSort = createAction(SET_INTERACTIVE_IMPORT_SORT);
 export const updateInteractiveImportItem = createAction(UPDATE_INTERACTIVE_IMPORT_ITEM);
+export const saveInteractiveImportItem = createThunk(SAVE_INTERACTIVE_IMPORT_ITEM);
 export const clearInteractiveImport = createAction(CLEAR_INTERACTIVE_IMPORT);
 export const addRecentFolder = createAction(ADD_RECENT_FOLDER);
 export const removeRecentFolder = createAction(REMOVE_RECENT_FOLDER);
@@ -130,6 +134,8 @@ export const actionHandlers = handleThunks({
       }));
     });
   },
+
+  [SAVE_INTERACTIVE_IMPORT_ITEM]: createSaveProviderHandler(section, '/manualimport'),
 
   [FETCH_INTERACTIVE_IMPORT_ALBUMS]: createFetchHandler('interactiveImport.albums', '/album')
 });

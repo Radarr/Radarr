@@ -4,20 +4,30 @@ using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
-
+using NzbDrone.SignalR;
+using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.Music;
+using NLog;
 
 namespace Lidarr.Api.V1.ManualImport
 {
-    public class ManualImportModule : LidarrRestModule<ManualImportResource>
+    public class ManualImportModule : ManualImportModuleWithSignalR
     {
-        private readonly IManualImportService _manualImportService;
+        private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
 
-        public ManualImportModule(IManualImportService manualImportService)
-            : base("/manualimport")
+        public ManualImportModule(IManualImportService manualImportService,
+                                  IArtistService artistService,
+                                  IAlbumService albumService,
+                                  IBroadcastSignalRMessage signalRBroadcaster,
+                                  Logger logger)
+        : base(manualImportService, signalRBroadcaster, logger)
         {
-            _manualImportService = manualImportService;
+            _albumService = albumService;
+            _artistService = artistService;
 
             GetResourceAll = GetMediaFiles;
+            UpdateResource = UpdateImportItem;
         }
 
         private List<ManualImportResource> GetMediaFiles()
@@ -39,6 +49,27 @@ namespace Lidarr.Api.V1.ManualImport
             }
            
             return item;
+        }
+
+        private void UpdateImportItem(ManualImportResource resource)
+        {
+            var item = new ManualImportItem{
+                Id = resource.Id,
+                Path = resource.Path,
+                RelativePath = resource.RelativePath,
+                FolderName = resource.FolderName,
+                Name = resource.Name,
+                Size = resource.Size,
+                Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
+                Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
+                Quality = resource.Quality,
+                Language = resource.Language,
+                DownloadId = resource.DownloadId
+            };
+            
+            //recalculate import and broadcast
+            _manualImportService.UpdateItem(item);
+            BroadcastResourceChange(ModelAction.Updated, item.Id);
         }
     }
 }

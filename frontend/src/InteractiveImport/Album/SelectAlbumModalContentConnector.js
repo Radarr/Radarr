@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import {
   updateInteractiveImportItem,
+  saveInteractiveImportItem,
   fetchInteractiveImportAlbums,
   setInteractiveImportAlbumsSort,
   clearInteractiveImportAlbums
@@ -25,7 +26,8 @@ const mapDispatchToProps = {
   fetchInteractiveImportAlbums,
   setInteractiveImportAlbumsSort,
   clearInteractiveImportAlbums,
-  updateInteractiveImportItem
+  updateInteractiveImportItem,
+  saveInteractiveImportItem
 };
 
 class SelectAlbumModalContentConnector extends Component {
@@ -61,8 +63,10 @@ class SelectAlbumModalContentConnector extends Component {
       this.props.updateInteractiveImportItem({
         id,
         album,
-        tracks: []
+        tracks: [],
+        rejections: []
       });
+      this.props.saveInteractiveImportItem({ id });
     });
 
     this.props.onModalClose(true);

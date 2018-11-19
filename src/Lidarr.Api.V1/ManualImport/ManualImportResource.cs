@@ -37,7 +37,7 @@ namespace Lidarr.Api.V1.ManualImport
 
             return new ManualImportResource
             {
-                Id = HashConverter.GetHashInt31(model.Path),
+                Id = model.Id,
                 Path = model.Path,
                 RelativePath = model.RelativePath,
                 FolderName = model.FolderName,
