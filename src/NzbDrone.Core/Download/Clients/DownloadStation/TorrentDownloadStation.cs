@@ -13,6 +13,7 @@ using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation
@@ -46,6 +47,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         }
 
         public override string Name => "Download Station";
+
+        public override ProviderMessage Message => new ProviderMessage("Lidarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
 
         protected IEnumerable<DownloadStationTask> GetTasks()
         {
