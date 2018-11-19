@@ -16,6 +16,10 @@
   composes: downloaded from 'Calendar/Events/CalendarEvent.css';
 }
 
+.partial {
+  composes: partial from 'Calendar/Events/CalendarEvent.css';
+}
+
 .downloading {
   composes: downloading from 'Calendar/Events/CalendarEvent.css';
 }

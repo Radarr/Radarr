@@ -41,6 +41,10 @@
   border-left-color: $successColor;
 }
 
+.partial {
+  border-left-color: $yellow;
+}
+
 .downloading {
   border-left-color: $purple;
 }
@@ -62,7 +66,7 @@
 }
 
 .unreleased {
-  border-left-color: $primaryColor;
+  border-left-color: $blue;
 
   &:global(.colorImpaired) {
     background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);

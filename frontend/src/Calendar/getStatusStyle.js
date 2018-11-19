@@ -8,6 +8,10 @@ function getStatusStyle(episodeNumber, downloading, startTime, isMonitored, perc
     return 'downloaded';
   }
 
+  if (percentOfTracks > 0) {
+    return 'partial';
+  }
+
   if (downloading) {
     return 'downloading';
   }

@@ -28,8 +28,8 @@ function Legend({ colorImpairedMode }) {
         />
 
         <LegendItem
-          status="missing"
-          tooltip="Track file has not been found"
+          status="partial"
+          tooltip="Album was partially downloaded"
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -38,6 +38,12 @@ function Legend({ colorImpairedMode }) {
         <LegendItem
           status="unmonitored"
           tooltip="Album is unmonitored"
+          colorImpairedMode={colorImpairedMode}
+        />
+
+        <LegendItem
+          status="missing"
+          tooltip="Track file has not been found"
           colorImpairedMode={colorImpairedMode}
         />
       </div>
