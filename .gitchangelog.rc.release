@@ -82,13 +82,13 @@ ignore_regexps = [
 ## whenever you are tweaking this variable.
 ##
 section_regexps = [
-    ('**New features**', [
+    ('**New features:**', [
         r'^[aA]dded?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[uU]pdated?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[cC]hanged?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[nN]ew?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
      ]),
-    ('**Fixes**', [
+    ('**Fixes:**', [
         r'^(?![mM]erge\s*)'
     ]
     ),
@@ -151,7 +151,7 @@ subject_process = (strip |
     ReSub(r'^([cC]hang(ed?)?)(\s?:?\s)(.*)$', r'\4') |
     ReSub(r'^([fF]ix(ed?)?)(\s?:?\s)(.*)$', r'\4') |
     ReSub(r'^([uU]pdat(ed?)?)(\s?:?\s)(.*)$', r'\4') |
-    ReSub(r'#(\d{3,4})', r'<a href="https://github.com/Radarr/Radarr/issues/\1">\1</a>') |
+    ReSub(r'#(\d{3,4})', r'Issue #\1') |
     SetIfEmpty("No commit message.") | ucfirst | final_dot)
 
 
