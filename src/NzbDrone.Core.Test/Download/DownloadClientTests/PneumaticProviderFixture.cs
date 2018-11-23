@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private const string _nzbUrl = "http://www.nzbs.com/url";
         private const string _title = "30.Rock.S01E05.hdtv.xvid-LoL";
         private string _pneumaticFolder;
-        private string _sabDrop;
+        private string _strmFolder;
         private string _nzbPath;
         private RemoteMovie _remoteMovie;
 
@@ -29,9 +29,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _pneumaticFolder = @"d:\nzb\pneumatic\".AsOsAgnostic();
 
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
-            _sabDrop = @"d:\unsorted tv\".AsOsAgnostic();
-
-            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedMoviesFolder).Returns(_sabDrop);
+            _strmFolder = @"d:\unsorted tv\".AsOsAgnostic();
 
             _remoteMovie = new RemoteMovie();
             _remoteMovie.Release = new ReleaseInfo();
@@ -43,7 +41,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
             {
-                NzbFolder = _pneumaticFolder
+                NzbFolder = _pneumaticFolder,
+                StrmFolder = _strmFolder
             };
         }
 

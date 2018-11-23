@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using FluentAssertions;
 using Moq;
@@ -257,7 +257,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void GetUpdateClientFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr\NzbDrone.Update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr\Radarr.Update\".AsOsAgnostic());
         }
 
         [Test]

@@ -1,13 +1,15 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
- using NzbDrone.Core.CustomFormats;
- using NzbDrone.Core.Parser;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using Radarr.Http;
+using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Profiles
 {
-    public class ProfileSchemaModule : NzbDroneRestModule<ProfileResource>
+    public class ProfileSchemaModule : RadarrRestModule<ProfileResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly ICustomFormatService _formatService;

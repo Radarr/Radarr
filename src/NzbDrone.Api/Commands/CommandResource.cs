@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Api.Commands

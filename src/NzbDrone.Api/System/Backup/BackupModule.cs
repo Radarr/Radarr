@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Core.Backup;
+using Radarr.Http;
 
 namespace NzbDrone.Api.System.Backup
 {
-    public class BackupModule : NzbDroneRestModule<BackupResource>
+    public class BackupModule : RadarrRestModule<BackupResource>
     {
         private readonly IBackupService _backupService;
 

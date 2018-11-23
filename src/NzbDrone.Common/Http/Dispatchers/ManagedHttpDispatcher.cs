@@ -26,11 +26,20 @@ namespace NzbDrone.Common.Http.Dispatchers
         {
             var webRequest = (HttpWebRequest)WebRequest.Create((Uri)request.Url);
 
-            // Deflate is not a standard and could break depending on implementation.
-            // we should just stick with the more compatible Gzip
-            //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
-            webRequest.AutomaticDecompression = DecompressionMethods.GZip;
-
+            if (PlatformInfo.IsMono)
+            {
+                // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
+                webRequest.AutomaticDecompression = DecompressionMethods.None;
+                webRequest.Headers.Add("Accept-Encoding", "gzip");
+            }
+            else
+            {
+                // Deflate is not a standard and could break depending on implementation.
+                // we should just stick with the more compatible Gzip
+                //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
+                webRequest.AutomaticDecompression = DecompressionMethods.GZip;
+            }
+            
             webRequest.Method = request.Method.ToString();
             webRequest.UserAgent = _userAgentBuilder.GetUserAgent(request.UseSimplifiedUserAgent);
             webRequest.KeepAlive = request.ConnectionKeepAlive;
@@ -39,42 +48,20 @@ namespace NzbDrone.Common.Http.Dispatchers
 
             if (request.RequestTimeout != TimeSpan.Zero)
             {
-                webRequest = (HttpWebRequest) WebRequest.Create((Uri) request.Url);
+                webRequest.Timeout = (int)Math.Ceiling(request.RequestTimeout.TotalMilliseconds);
+            }
 
-                if (PlatformInfo.IsMonoRuntime)
-                {
-                    // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
-                    webRequest.AutomaticDecompression = DecompressionMethods.None;
-                    webRequest.Headers.Add("Accept-Encoding", "gzip");
-                }
-                else
-                {
-                    // Deflate is not a standard and could break depending on implementation.
-                    // we should just stick with the more compatible Gzip
-                    //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
-                    webRequest.AutomaticDecompression = DecompressionMethods.GZip;
-                }
-                
-                webRequest.Method = request.Method.ToString();
-                webRequest.UserAgent = request.UseSimplifiedUserAgent
-                    ? UserAgentBuilder.UserAgentSimplified
-                    : UserAgentBuilder.UserAgent;
-                webRequest.KeepAlive = request.ConnectionKeepAlive;
-                webRequest.AllowAutoRedirect = false;
-                webRequest.CookieContainer = cookies;
+            AddProxy(webRequest, request);
 
-                if (request.RequestTimeout != TimeSpan.Zero)
-                {
-                    webRequest.Timeout = (int) Math.Ceiling(request.RequestTimeout.TotalMilliseconds);
-                }
+            if (request.Headers != null)
+            {
+                AddRequestHeaders(webRequest, request.Headers);
+            }
 
-                AddProxy(webRequest, request);
+            HttpWebResponse httpWebResponse;
 
-                if (request.Headers != null)
-                {
-                    AddRequestHeaders(webRequest, request.Headers);
-                }
-
+            try
+            {
                 if (request.ContentData != null)
                 {
                     webRequest.ContentLength = request.ContentData.Length;
@@ -84,34 +71,54 @@ namespace NzbDrone.Common.Http.Dispatchers
                     }
                 }
 
-                try
+                httpWebResponse = (HttpWebResponse)webRequest.GetResponse();
+            }
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.SecureChannelFailure && OsInfo.IsWindows)
                 {
-                    httpWebResponse = (HttpWebResponse) webRequest.GetResponse();
+                    SecurityProtocolPolicy.DisableTls12();
                 }
-                catch (WebException e)
+
+                httpWebResponse = (HttpWebResponse)e.Response;
+
+                if (httpWebResponse == null)
                 {
-                    if (e.Status == WebExceptionStatus.SecureChannelFailure && OsInfo.IsWindows)
+                    // The default messages for WebException on mono are pretty horrible.
+                    if (e.Status == WebExceptionStatus.NameResolutionFailure)
                     {
-                        SecurityProtocolPolicy.DisableTls12();
+                        throw new WebException($"DNS Name Resolution Failure: '{webRequest.RequestUri.Host}'", e.Status);
                     }
-
-                    httpWebResponse = (HttpWebResponse) e.Response;
-
-                    if (httpWebResponse == null)
+                    else if (e.ToString().Contains("TLS Support not"))
+                    {
+                        throw new TlsFailureException(webRequest, e);
+                    }
+                    else if (e.ToString().Contains("The authentication or decryption has failed."))
+                    {
+                        throw new TlsFailureException(webRequest, e);
+                    }
+                    else if (OsInfo.IsNotWindows)
+                    {
+                        throw new WebException($"{e.Message}: '{webRequest.RequestUri}'", e, e.Status, e.Response);
+                    }
+                    else
                     {
                         throw;
                     }
                 }
+            }
 
-                byte[] data = null;
+            byte[] data = null;
 
-                using (var responseStream = httpWebResponse.GetResponseStream())
+            using (var responseStream = httpWebResponse.GetResponseStream())
+            {
+                if (responseStream != null && responseStream != Stream.Null)
                 {
-                    if (responseStream != null)
+                    try
                     {
                         data = responseStream.ToBytes();
 
-                        if (PlatformInfo.IsMonoRuntime && httpWebResponse.ContentEncoding == "gzip")
+                        if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
                         {
                             using (var compressedStream = new MemoryStream(data))
                             using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))
@@ -124,17 +131,14 @@ namespace NzbDrone.Common.Http.Dispatchers
                             httpWebResponse.Headers.Remove("Content-Encoding");
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        throw new WebException("Failed to read complete http response", ex, WebExceptionStatus.ReceiveFailure, httpWebResponse);
+                    }
                 }
+            }
 
-                return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data,
-                    httpWebResponse.StatusCode);
-            }
-            finally
-            {
-                webRequest = null;
-                (httpWebResponse as IDisposable)?.Dispose();
-                httpWebResponse = null;
-            }
+            return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data, httpWebResponse.StatusCode);
         }
 
         protected virtual void AddProxy(HttpWebRequest webRequest, HttpRequest request)

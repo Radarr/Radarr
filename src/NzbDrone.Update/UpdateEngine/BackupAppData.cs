@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -47,7 +47,7 @@ namespace NzbDrone.Update.UpdateEngine
             try
             {
                 _diskTransferService.TransferFile(_appFolderInfo.GetConfigPath(), _appFolderInfo.GetUpdateBackupConfigFile(), TransferMode.Copy);
-                _diskTransferService.TransferFile(_appFolderInfo.GetNzbDroneDatabase(), _appFolderInfo.GetUpdateBackupDatabase(), TransferMode.Copy);
+                _diskTransferService.TransferFile(_appFolderInfo.GetDatabase(), _appFolderInfo.GetUpdateBackupDatabase(), TransferMode.Copy);
             }
             catch (Exception e)
             {

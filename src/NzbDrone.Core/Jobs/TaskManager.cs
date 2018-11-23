@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Jobs
 
         public void Handle(ApplicationStartedEvent message)
         {
-            float updateInterval = 6 * 60;
+            int updateInterval = 6 * 60;
 
             if (_configFileProvider.Branch == "nightly")
             {
@@ -78,7 +78,12 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
-                    new ScheduledTask{ Interval = 7*24*60, TypeName = typeof(BackupCommand).FullName},
+
+                    new ScheduledTask
+                    {
+                        Interval = GetBackupInterval(),
+                        TypeName = typeof(BackupCommand).FullName
+                    },
 
                     new ScheduledTask
                     { 
@@ -93,16 +98,10 @@ namespace NzbDrone.Core.Jobs
                     },
 
                     new ScheduledTask
-                    { 
-                        Interval = _configService.DownloadedMoviesScanInterval,
-                        TypeName = typeof(DownloadedMoviesScanCommand).FullName
-                    },
-
-                    new ScheduledTask
                     {
                         Interval = Math.Max(_configService.CheckForFinishedDownloadInterval, 1),
                         TypeName = typeof(CheckForFinishedDownloadCommand).FullName
-                    },
+                    }
                 };
 
             var currentTasks = _scheduledTaskRepository.All().ToList();
@@ -131,6 +130,12 @@ namespace NzbDrone.Core.Jobs
 
                 _scheduledTaskRepository.Upsert(currentDefinition);
             }
+        }
+
+        private int GetBackupInterval()
+        {
+            var interval = _configService.BackupInterval;
+            return interval * 60 * 24;
         }
 
         private int GetRssSyncInterval()
@@ -183,16 +188,13 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedMovies = _scheduledTaskRepository.GetDefinition(typeof(DownloadedMoviesScanCommand));
-            downloadedMovies.Interval = _configService.DownloadedMoviesScanInterval;
-
             var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
             netImport.Interval = _configService.NetImportSyncInterval;
 
             var checkForFinishedDownloads = _scheduledTaskRepository.GetDefinition(typeof(CheckForFinishedDownloadCommand));
             checkForFinishedDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport, checkForFinishedDownloads });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, netImport, checkForFinishedDownloads });
         }
     }
 }

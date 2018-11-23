@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -166,6 +166,12 @@ namespace NzbDrone.Core.ThingiProvider
                 _logger.Debug("Removing {0} ", invalidDefinition.Name);
                 _providerRepository.Delete(invalidDefinition);
             }
+        }
+
+        public List<TProviderDefinition> AllForTag(int tagId)
+        {
+            return All().Where(p => p.Tags.Contains(tagId))
+                        .ToList();
         }
     }
 }

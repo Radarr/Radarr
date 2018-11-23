@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Core.Test</RootNamespace>
-    <AssemblyName>NzbDrone.Core.Test</AssemblyName>
+    <AssemblyName>Radarr.Core.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -218,7 +218,6 @@
     <Compile Include="HealthCheck\Checks\DeleteBadMediaCovers.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationFixture.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheckFixture.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\HealthCheckFixtureExtensions.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
@@ -363,6 +362,7 @@
     <Compile Include="MovieTests\ShouldRefreshMovieFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
+    <Compile Include="ValidationTests\SystemFolderValidatorFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
     <Compile Include="BulkImport\AddMultiMoviesFixture.cs" />
     <Content Include="Files\ArabicRomanNumeralDictionary.JSON">

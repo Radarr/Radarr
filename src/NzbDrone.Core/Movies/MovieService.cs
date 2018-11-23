@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Movies
 		void SetFileId(Movie movie, MovieFile movieFile);
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
+        List<Movie> AllForTag(int tagId);
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
         List<Movie> FilterExistingMovies(List<Movie> movies);
@@ -219,10 +220,7 @@ namespace NzbDrone.Core.Movies
 
             _logger.Debug("Adding {0} movies, {1} duplicates detected and skipped", newMovies.Count, potentialMovieCount - newMovies.Count);
 
-            newMovies.ForEach(m =>
-            {
-                _eventAggregator.PublishEvent(new MovieAddedEvent(m));
-            });
+            _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies.Select(s => s.Id).ToList()));
 
             return newMovies;
         }
@@ -310,6 +308,12 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.All().ToList();
         }
 
+        public List<Movie> AllForTag(int tagId)
+        {
+            return GetAllMovies().Where(s => s.Tags.Contains(tagId))
+                                 .ToList();
+        }
+
         public Movie UpdateMovie(Movie movie)
         {
             var storedMovie = GetMovie(movie.Id);
@@ -377,7 +381,7 @@ namespace NzbDrone.Core.Movies
             movie.MovieFileId = 0;
             _logger.Debug("Detaching movie {0} from file.", movie.Id);
 
-            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedMovies)
             {
                 movie.Monitored = false;
             }

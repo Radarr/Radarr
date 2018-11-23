@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Api.Movies;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Api.Parse

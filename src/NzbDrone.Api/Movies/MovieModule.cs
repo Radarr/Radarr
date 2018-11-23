@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -17,10 +17,11 @@ using NzbDrone.SignalR;
 using NzbDrone.Core.Datastore;
 using Microsoft.CSharp.RuntimeBinder;
 using Nancy;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-    public class MovieModule : NzbDroneRestModuleWithSignalR<MovieResource, Core.Movies.Movie>, 
+    public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Core.Movies.Movie>, 
                                 IHandle<MovieImportedEvent>,
                                 IHandle<MovieFileDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,       
@@ -41,8 +42,8 @@ namespace NzbDrone.Api.Movies
                             RootFolderValidator rootFolderValidator,
                             MoviePathValidator moviesPathValidator,
                             MovieExistsValidator moviesExistsValidator,
-                            DroneFactoryValidator droneFactoryValidator,
                             MovieAncestorValidator moviesAncestorValidator,
+                            SystemFolderValidator systemFolderValidator,
                             ProfileExistsValidator profileExistsValidator
             )
             : base(signalRBroadcaster)
@@ -64,15 +65,15 @@ namespace NzbDrone.Api.Movies
             UpdateResource = UpdateMovie;
             DeleteResource = DeleteMovie;
 
-            Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.ProfileId));
+            SharedValidator.RuleFor(s => s.ProfileId).ValidId();
 
             SharedValidator.RuleFor(s => s.Path)
                            .Cascade(CascadeMode.StopOnFirstFailure)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
                            .SetValidator(moviesPathValidator)
-                           .SetValidator(droneFactoryValidator)
                            .SetValidator(moviesAncestorValidator)
+                           .SetValidator(systemFolderValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
             SharedValidator.RuleFor(s => s.ProfileId).SetValidator(profileExistsValidator);
@@ -110,14 +111,14 @@ namespace NzbDrone.Api.Movies
 
 		private PagingResource<MovieResource> GetMoviePaged(PagingResource<MovieResource> pagingResource)
 		{
-			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Movies.Movie>();
+			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Movie>();
 
-            pagingSpec.FilterExpression = _moviesService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue, pagingResource.FilterType);
+            pagingSpec.FilterExpressions.Add(_moviesService.ConstructFilterExpression(pagingResource.Filters.FirstOrDefault().Key, pagingResource.Filters.FirstOrDefault().Value));
 
             return ApplyToPage(_moviesService.Paged, pagingSpec, MapToResource);
 		}
 
-        protected MovieResource MapToResource(Core.Movies.Movie movies)
+        protected MovieResource MapToResource(Movie movies)
         {
             if (movies == null) return null;
 

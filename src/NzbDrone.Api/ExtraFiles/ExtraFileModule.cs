@@ -1,13 +1,14 @@
 using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
+using Radarr.Http;
 
 namespace NzbDrone.Api.ExtraFiles
 {
-    public class ExtraFileModule : NzbDroneRestModule<ExtraFileResource>
+    public class ExtraFileModule : RadarrRestModule<ExtraFileResource>
     {
         private readonly IExtraFileService<SubtitleFile> _subtitleFileService;
         private readonly IExtraFileService<MetadataFile> _metadataFileService;

@@ -1,8 +1,10 @@
+using System.Linq;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Datastore;
 using NzbDrone.SignalR;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Wanted
 {
@@ -22,9 +24,18 @@ namespace NzbDrone.Api.Wanted
 
         private PagingResource<MovieResource> GetCutoffUnmetMovies(PagingResource<MovieResource> pagingResource)
         {
-            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Movies.Movie>("title", SortDirection.Ascending);
+            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Movie>("title", SortDirection.Ascending);
 
-            pagingSpec.FilterExpression = _movieService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue);
+            var filter = pagingResource.Filters.FirstOrDefault(f => f.Key == "monitored");
+
+            if (filter != null && filter.Value == "false")
+            {
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == false);
+            }
+            else
+            {
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
+            }
 
             var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, true));
 

@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
         public List<int> MovieIds { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
 
         public RenameMovieCommand()
         {

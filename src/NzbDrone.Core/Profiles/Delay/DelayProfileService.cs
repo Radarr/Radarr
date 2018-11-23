@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Profiles.Delay
         void Delete(int id);
         List<DelayProfile> All();
         DelayProfile Get(int id);
+        List<DelayProfile> AllForTag(int tagId);
         List<DelayProfile> AllForTags(HashSet<int> tagIds);
         DelayProfile BestForTags(HashSet<int> tagIds);
     }
@@ -58,6 +59,12 @@ namespace NzbDrone.Core.Profiles.Delay
         public DelayProfile Get(int id)
         {
             return _repo.Get(id);
+        }
+
+        public List<DelayProfile> AllForTag(int tagId)
+        {
+            return All().Where(r => r.Tags.Contains(tagId))
+                        .ToList();
         }
 
         public List<DelayProfile> AllForTags(HashSet<int> tagIds)

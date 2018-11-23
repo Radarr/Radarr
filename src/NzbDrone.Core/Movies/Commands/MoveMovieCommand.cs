@@ -8,5 +8,7 @@ namespace NzbDrone.Core.Movies.Commands
         public string SourcePath { get; set; }
         public string DestinationPath { get; set; }
         public string DestinationRootFolder { get; set; }
+
+        public override bool RequiresDiskAccess => true;
     }
 }

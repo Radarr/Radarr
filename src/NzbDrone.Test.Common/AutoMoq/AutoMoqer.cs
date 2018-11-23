@@ -171,11 +171,11 @@ namespace NzbDrone.Test.Common.AutoMoq
 
         private void RegisterPlatformLibrary(IUnityContainer container)
         {
-            var assemblyName = "NzbDrone.Windows";
+            var assemblyName = "Radarr.Windows";
 
             if (OsInfo.IsNotWindows)
             {
-                assemblyName = "NzbDrone.Mono";
+                assemblyName = "Radarr.Mono";
             }
 
             if (!File.Exists(assemblyName + ".dll"))

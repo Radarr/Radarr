@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation.Paths;
+using Radarr.Http;
 
 namespace NzbDrone.Api.RemotePathMappings
 {
-    public class RemotePathMappingModule : NzbDroneRestModule<RemotePathMappingResource>
+    public class RemotePathMappingModule : RadarrRestModule<RemotePathMappingResource>
     {
         private readonly IRemotePathMappingService _remotePathMappingService;
 

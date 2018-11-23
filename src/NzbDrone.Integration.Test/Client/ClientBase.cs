@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using FluentAssertions;
 using NLog;
 using NzbDrone.Api;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
+using Radarr.Http;
 using NzbDrone.Common.Serializer;
 using RestSharp;
 using System.Linq;

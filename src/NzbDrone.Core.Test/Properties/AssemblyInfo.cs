@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NzbDrone.Core.Test")]
+[assembly: AssemblyTitle("Radarr.Core.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NzbDrone.Core.Test")]
+[assembly: AssemblyProduct("Radarr.Core.Test")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -25,4 +25,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("699aed1b-015e-4f0d-9c81-d5557b05d260")]
 
-[assembly: InternalsVisibleTo("NzbDrone.Core")]
+[assembly: InternalsVisibleTo("Radarr.Core")]

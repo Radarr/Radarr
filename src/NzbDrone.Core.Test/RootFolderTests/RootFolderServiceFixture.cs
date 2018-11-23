@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -95,18 +95,6 @@ namespace NzbDrone.Core.Test.RootFolderTests
                   .Returns(false);
 
             Assert.Throws<UnauthorizedAccessException>(() => Subject.Add(new RootFolder { Path = @"C:\TV".AsOsAgnostic() }));
-        }
-
-        [Test]
-        public void should_throw_when_same_path_as_drone_factory()
-        {
-            var path = @"C:\TV".AsOsAgnostic();
-
-            Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.DownloadedMoviesFolder)
-                  .Returns(path);
-
-            Assert.Throws<InvalidOperationException>(() => Subject.Add(new RootFolder { Path = path }));
         }
 
         [TestCase("$recycle.bin")]

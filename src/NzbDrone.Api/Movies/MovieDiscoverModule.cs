@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
 using System;
-using NzbDrone.Api.REST;
+using Radarr.Http;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Api.NetImport;
 
 namespace NzbDrone.Api.Movies
 {
-    public class MovieDiscoverModule : NzbDroneRestModule<MovieResource>
+    public class MovieDiscoverModule : RadarrRestModule<MovieResource>
     {
         private readonly IDiscoverNewMovies _searchProxy;
         private readonly INetImportFactory _netImportFactory;

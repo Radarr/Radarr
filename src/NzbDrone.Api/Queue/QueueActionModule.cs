@@ -1,16 +1,17 @@
-﻿using System;
+using System;
 using Nancy;
 using Nancy.Responses;
-using NzbDrone.Api.Extensions;
-using NzbDrone.Api.REST;
+using Radarr.Http.Extensions;
+using Radarr.Http.REST;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Queue;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Queue
 {
-    public class QueueActionModule : NzbDroneRestModule<QueueResource>
+    public class QueueActionModule : RadarrRestModule<QueueResource>
     {
         private readonly IQueueService _queueService;
         private readonly ITrackedDownloadService _trackedDownloadService;

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _logger.ProgressInfo("Updating quality for {0}/{1} files.", count, movieFiles.Count);
 
-                var history = _historyService.FindByMovieId(movieFile.MovieId).OrderByDescending(h => h.Date);
+                var history = _historyService.GetByMovieId(movieFile.MovieId, null).OrderByDescending(h => h.Date);
                 var latestImported = history.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadFolderImported);
                 var latestImportedName = latestImported?.SourceTitle;
                 var latestGrabbed = history.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);

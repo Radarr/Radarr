@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.App.Test</RootNamespace>
-    <AssemblyName>NzbDrone.App.Test</AssemblyName>
+    <AssemblyName>Radarr.App.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -116,12 +116,12 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent Condition="('$(OS)' == 'Windows_NT')">
-      xcopy /s /y "$(SolutionDir)\..\_output\NzbDrone.Mono.*"   "$(TargetDir)"
-      xcopy /s /y "$(SolutionDir)\..\_output\NzbDrone.Windows.*"   "$(TargetDir)"
+      xcopy /s /y "$(SolutionDir)\..\_output\Radarr.Mono.*"   "$(TargetDir)"
+      xcopy /s /y "$(SolutionDir)\..\_output\Radarr.Windows.*"   "$(TargetDir)"
     </PostBuildEvent>
     <PostBuildEvent Condition="('$(OS)' != 'Windows_NT')">
-      cp -rv $(SolutionDir)\..\_output\NzbDrone.Mono.* $(TargetDir)
-      cp -rv $(SolutionDir)\..\_output\NzbDrone.Windows.* $(TargetDir)
+      cp -rv $(SolutionDir)\..\_output\Radarr.Mono.* $(TargetDir)
+      cp -rv $(SolutionDir)\..\_output\Radarr.Windows.* $(TargetDir)
     </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -33,7 +33,12 @@ namespace NzbDrone.Common.Http
         private readonly IHttpDispatcher _httpDispatcher;
         private readonly IUserAgentBuilder _userAgentBuilder;
 
-        public HttpClient(IEnumerable<IHttpRequestInterceptor> requestInterceptors, ICacheManager cacheManager, IRateLimitService rateLimitService, IHttpDispatcher httpDispatcher, IUserAgentBuilder userAgentBuilder, Logger logger)
+        public HttpClient(IEnumerable<IHttpRequestInterceptor> requestInterceptors,
+            ICacheManager cacheManager,
+            IRateLimitService rateLimitService,
+            IHttpDispatcher httpDispatcher,
+            IUserAgentBuilder userAgentBuilder,
+            Logger logger)
         {
             _requestInterceptors = requestInterceptors.ToList();
             _rateLimitService = rateLimitService;
@@ -65,7 +70,7 @@ namespace NzbDrone.Common.Http
 
                     if (autoRedirectChain.Count > 3)
                     {
-                        throw new WebException($"Too many automatic redirections were attempted for {string.Join(" -> ", autoRedirectChain)}", WebExceptionStatus.ProtocolError);
+                        throw new WebException($"Too many automatic redirections were attempted for {autoRedirectChain.Join(" -> ")}", WebExceptionStatus.ProtocolError);
                     }
 
                     response = ExecuteRequest(request, cookieContainer);
@@ -141,23 +146,30 @@ namespace NzbDrone.Common.Http
                 var sourceContainer = new CookieContainer();
 
                 var presistentContainer = _cookieContainerCache.Get("container", () => new CookieContainer());
-
-                if (!request.IgnorePersistentCookies)
-                {
-                    var persistentCookies = presistentContainer.GetCookies((Uri)request.Url);
-                    sourceContainer.Add(persistentCookies);   
-                }
+                var persistentCookies = presistentContainer.GetCookies((Uri)request.Url);
+                sourceContainer.Add(persistentCookies);
 
                 if (request.Cookies.Count != 0)
                 {
                     foreach (var pair in request.Cookies)
                     {
-                        var cookie = new Cookie(pair.Key, pair.Value, "/")
+                        Cookie cookie;
+                        if (pair.Value == null)
                         {
-                            // Use Now rather than UtcNow to work around Mono cookie expiry bug.
-                            // See https://gist.github.com/ta264/7822b1424f72e5b4c961
-                            Expires = DateTime.Now.AddHours(1)
-                        };
+                            cookie = new Cookie(pair.Key, "", "/")
+                            {
+                                Expires = DateTime.Now.AddDays(-1)
+                            };
+                        }
+                        else
+                        {
+                            cookie = new Cookie(pair.Key, pair.Value, "/")
+                            {
+                                // Use Now rather than UtcNow to work around Mono cookie expiry bug.
+                                // See https://gist.github.com/ta264/7822b1424f72e5b4c961
+                                Expires = DateTime.Now.AddHours(1)
+                            };
+                        }
 
                         sourceContainer.Add((Uri)request.Url, cookie);
 
@@ -230,7 +242,7 @@ namespace NzbDrone.Common.Http
                 var stopWatch = Stopwatch.StartNew();
                 using (var webClient = new GZipWebClient())
                 {
-                    webClient.Headers.Add(HttpRequestHeader.UserAgent, UserAgentBuilder.UserAgent);
+                    webClient.Headers.Add(HttpRequestHeader.UserAgent, _userAgentBuilder.GetUserAgent());
                     webClient.DownloadFile(url, fileName);
                     stopWatch.Stop();
                     _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
@@ -257,6 +269,7 @@ namespace NzbDrone.Common.Http
         public HttpResponse<T> Get<T>(HttpRequest request) where T : new()
         {
             var response = Get(request);
+            CheckResponseContentType(response);
             return new HttpResponse<T>(response);
         }
 
@@ -275,7 +288,16 @@ namespace NzbDrone.Common.Http
         public HttpResponse<T> Post<T>(HttpRequest request) where T : new()
         {
             var response = Post(request);
+            CheckResponseContentType(response);
             return new HttpResponse<T>(response);
+        }
+
+        private void CheckResponseContentType(HttpResponse response)
+        {
+            if (response.Headers.ContentType != null && response.Headers.ContentType.Contains("text/html"))
+            {
+                throw new UnexpectedHtmlContentException(response);
+            }
         }
     }
 }

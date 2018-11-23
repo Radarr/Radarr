@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Common</RootNamespace>
-    <AssemblyName>NzbDrone.Common</AssemblyName>
+    <AssemblyName>Radarr.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -98,6 +98,8 @@
     <Compile Include="EnvironmentInfo\IOsVersionAdapter.cs" />
     <Compile Include="EnvironmentInfo\IPlatformInfo.cs" />
     <Compile Include="EnvironmentInfo\OsVersionModel.cs" />
+    <Compile Include="EnvironmentInfo\RuntimeMode.cs" />
+    <Compile Include="Exceptions\RadarrStartupException.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Disk\GdiPlusInterop.cs" />
     <Compile Include="Disk\OsPath.cs" />
@@ -193,8 +195,10 @@
     <Compile Include="Http\HttpRequestBuilder.cs" />
     <Compile Include="Http\HttpRequestBuilderFactory.cs" />
     <Compile Include="Http\Proxy\ProxyType.cs" />
+    <Compile Include="Http\TlsFailureException.cs" />
     <Compile Include="Http\TooManyRequestsException.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Http\UnexpectedHtmlContentException.cs" />
     <Compile Include="Http\UserAgentBuilder.cs" />
     <Compile Include="Instrumentation\CleanseLogMessage.cs" />
     <Compile Include="Instrumentation\Extensions\LoggerProgressExtensions.cs" />

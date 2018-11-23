@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Restrictions;
 
-namespace NzbDrone.Api.Restrictions
+namespace Radarr.Http.RESTrictions
 {
     public class RestrictionResource : RestResource
     {

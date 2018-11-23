@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Restrictions
 
         public List<Restriction> AllForTag(int tagId)
         {
-            return _repo.All().Where(r => r.Tags.Contains(tagId) || r.Tags.Empty()).ToList();
+            return _repo.All().Where(r => r.Tags.Contains(tagId)).ToList();
         }
 
         public List<Restriction> AllForTags(HashSet<int> tagIds)

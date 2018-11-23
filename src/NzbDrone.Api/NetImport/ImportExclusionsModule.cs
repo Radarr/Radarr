@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using FluentValidation;
-using NzbDrone.Api.ClientSchema;
+using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Validation.Paths;
+using Radarr.Http;
 
 namespace NzbDrone.Api.NetImport
 {
-    public class ImportExclusionsModule : NzbDroneRestModule<ImportExclusionsResource>
+    public class ImportExclusionsModule : RadarrRestModule<ImportExclusionsResource>
     {
         private readonly IImportExclusionsService _exclusionService;
 

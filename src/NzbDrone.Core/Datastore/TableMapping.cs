@@ -27,6 +27,7 @@ using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Authentication;
+using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
@@ -59,10 +60,12 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.Enable)
                   .Ignore(i => i.Protocol)
                   .Ignore(i => i.SupportsRss)
-                  .Ignore(i => i.SupportsSearch);
+                  .Ignore(i => i.SupportsSearch)
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<NetImportDefinition>().RegisterDefinition("NetImport")
                 .Ignore(i => i.Enable)
+                .Ignore(d => d.Tags)
                 .Relationship()
                 .HasOne(n => n.Profile, n => n.ProfileId);
 
@@ -72,10 +75,12 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsOnUpgrade)
                   .Ignore(i => i.SupportsOnRename);
 
-            Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata");
+            Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata")
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<DownloadClientDefinition>().RegisterDefinition("DownloadClients")
-                  .Ignore(d => d.Protocol);
+                  .Ignore(d => d.Protocol)
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
@@ -134,6 +139,8 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(c => c.Message);
 
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
+
+            Mapper.Entity<CustomFilter>().RegisterModel("CustomFilters");
         }
 
         private static void RegisterMappers()

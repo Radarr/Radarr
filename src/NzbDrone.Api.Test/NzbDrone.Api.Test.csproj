@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Api.Test</RootNamespace>
-    <AssemblyName>NzbDrone.Api.Test</AssemblyName>
+    <AssemblyName>Radarr.Api.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -91,6 +91,10 @@
     <ProjectReference Include="..\NzbDrone.Test.Common\NzbDrone.Test.Common.csproj">
       <Project>{CADDFCE0-7509-4430-8364-2074E1EEFCA2}</Project>
       <Name>NzbDrone.Test.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Radarr.Http\Radarr.Http.csproj">
+      <Project>{c5953dab-89db-46d9-a401-d620f54b776e}</Project>
+      <Name>Radarr.Http</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

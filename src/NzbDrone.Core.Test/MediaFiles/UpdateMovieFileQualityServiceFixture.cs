@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IMediaFileService>().Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
                 .Returns(new List<MovieFile>{_movieFile});
 
-            Mocker.GetMock<IHistoryService>().Setup(s => s.FindByMovieId(It.IsAny<int>()))
+            Mocker.GetMock<IHistoryService>().Setup(s => s.GetByMovieId(It.IsAny<int>(), null))
                 .Returns(new List<History.History>());
         }
 
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var imported = Builder<History.History>.CreateNew()
                 .With(h => h.EventType = HistoryEventType.DownloadFolderImported)
                 .With(h => h.SourceTitle = "My Movie 2018.mkv").Build();
-            Mocker.GetMock<IHistoryService>().Setup(s => s.FindByMovieId(It.IsAny<int>()))
+            Mocker.GetMock<IHistoryService>().Setup(s => s.GetByMovieId(It.IsAny<int>(), null))
                 .Returns(new List<History.History> {imported});
 
             ExecuteCommand();

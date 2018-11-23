@@ -12,9 +12,7 @@ namespace NzbDrone.Core.Configuration
         bool IsDefined(string key);
 
         //Download Client
-        string DownloadedMoviesFolder { get; set; }
         string DownloadClientWorkingFolders { get; set; }
-        int DownloadedMoviesScanInterval { get; set; }
         int DownloadClientHistoryLimit { get; set; }
         int CheckForFinishedDownloadInterval { get; set; }
 
@@ -26,16 +24,18 @@ namespace NzbDrone.Core.Configuration
         bool RemoveFailedDownloads { get; set; }
 
         //Media Management
-        bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
+        bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         string RecycleBin { get; set; }
         bool AutoDownloadPropers { get; set; }
-        bool CreateEmptySeriesFolders { get; set; }
+        bool CreateEmptyMovieFolders { get; set; }
+        bool DeleteEmptyFolders { get; set; }
         FileDateType FileDate { get; set; }
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
         bool EnableMediaInfo { get; set; }
         bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
+        RescanAfterRefreshType RescanAfterRefresh { get; set; }
         bool AutoRenameFolders { get; set; }
         bool PathsDefaultStatic { get; set; }
 
@@ -100,5 +100,10 @@ namespace NzbDrone.Core.Configuration
         string ProxyPassword { get; }
         string ProxyBypassFilter { get; }
         bool ProxyBypassLocalAddresses { get; }
+
+        // Backups
+        string BackupFolder { get; }
+        int BackupInterval { get; }
+        int BackupRetention { get; }
     }
 }

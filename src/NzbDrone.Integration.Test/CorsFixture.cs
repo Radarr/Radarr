@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test

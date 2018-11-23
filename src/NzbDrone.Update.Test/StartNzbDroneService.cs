@@ -20,7 +20,7 @@ namespace NzbDrone.Update.Test
 
             Subject.Start(AppType.Service, targetFolder);
 
-            Mocker.GetMock<IServiceProvider>().Verify(c => c.Start(ServiceProvider.NZBDRONE_SERVICE_NAME), Times.Once());
+            Mocker.GetMock<IServiceProvider>().Verify(c => c.Start(ServiceProvider.SERVICE_NAME), Times.Once());
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace NzbDrone.Update.Test
         {
             const string targetFolder = "c:\\Radarr\\";
 
-            Mocker.GetMock<IServiceProvider>().Setup(c => c.Start(ServiceProvider.NZBDRONE_SERVICE_NAME)).Throws(new InvalidOperationException());
+            Mocker.GetMock<IServiceProvider>().Setup(c => c.Start(ServiceProvider.SERVICE_NAME)).Throws(new InvalidOperationException());
 
             Subject.Start(AppType.Service, targetFolder);
 

@@ -197,6 +197,14 @@
       <Project>{7C2CC69F-5CA0-4E5C-85CB-983F9F6C3B36}</Project>
       <Name>NzbDrone.SignalR</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Radarr.Api.V2\Radarr.Api.V2.csproj">
+      <Project>{38497dc6-e488-4b9e-a973-a1a7961b33c4}</Project>
+      <Name>Radarr.Api.V2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Radarr.Http\Radarr.Http.csproj">
+      <Project>{c5953dab-89db-46d9-a401-d620f54b776e}</Project>
+      <Name>Radarr.Http</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Radarr.ico" />

@@ -19,8 +19,8 @@ namespace NzbDrone.Common.Composition
         {
             _loadedTypes = new List<Type>();
 
-            assemblies.Add(OsInfo.IsWindows ? "NzbDrone.Windows" : "NzbDrone.Mono");
-            assemblies.Add("NzbDrone.Common");
+            assemblies.Add(OsInfo.IsWindows ? "Radarr.Windows" : "Radarr.Mono");
+            assemblies.Add("Radarr.Common");
 
             foreach (var assembly in assemblies)
             {

@@ -1,4 +1,4 @@
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 
@@ -33,10 +33,10 @@ namespace NzbDrone.Api.Config
         {
             return new MediaManagementConfigResource
             {
-                AutoUnmonitorPreviouslyDownloadedEpisodes = model.AutoUnmonitorPreviouslyDownloadedEpisodes,
+                AutoUnmonitorPreviouslyDownloadedEpisodes = model.AutoUnmonitorPreviouslyDownloadedMovies,
                 RecycleBin = model.RecycleBin,
                 AutoDownloadPropers = model.AutoDownloadPropers,
-                CreateEmptySeriesFolders = model.CreateEmptySeriesFolders,
+                CreateEmptySeriesFolders = model.CreateEmptyMovieFolders,
                 FileDate = model.FileDate,
                 AutoRenameFolders = model.AutoRenameFolders,
                 PathsDefaultStatic = model.PathsDefaultStatic,

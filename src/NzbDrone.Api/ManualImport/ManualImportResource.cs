@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Movies;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;

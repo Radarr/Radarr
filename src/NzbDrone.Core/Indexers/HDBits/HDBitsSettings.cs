@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Indexers.HDBits
         [FieldDefinition(6, Label = "Mediums", Type = FieldType.Tag, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
         public IEnumerable<int> Mediums { get; set; }
 
-        [FieldDefinition(7, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        [FieldDefinition(7, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]

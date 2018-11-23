@@ -1,11 +1,13 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
+using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace NzbDrone.Api.ManualImport
 {
-    public class ManualImportModule : NzbDroneRestModule<ManualImportResource>
+    public class ManualImportModule : RadarrRestModule<ManualImportResource>
     {
         private readonly IManualImportService _manualImportService;
 
@@ -24,8 +26,9 @@ namespace NzbDrone.Api.ManualImport
 
             var downloadIdQuery = Request.Query.downloadId;
             var downloadId = (string)downloadIdQuery.Value;
+            var filterExistingFiles = Request.GetBooleanQueryParameter("filterExistingFiles", true);
 
-            return _manualImportService.GetMediaFiles(folder, downloadId).ToResource().Select(AddQualityWeight).ToList();
+            return _manualImportService.GetMediaFiles(folder, downloadId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

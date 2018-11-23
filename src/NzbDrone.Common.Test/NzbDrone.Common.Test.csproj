@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Common.Test</RootNamespace>
-    <AssemblyName>NzbDrone.Common.Test</AssemblyName>
+    <AssemblyName>Radarr.Common.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -80,6 +80,7 @@
     <Compile Include="DiskTests\IsParentFixtureBase.cs" />
     <Compile Include="DiskTests\DiskTransferServiceFixture.cs" />
     <Compile Include="EnsureTest\PathExtensionFixture.cs" />
+    <Compile Include="EnvironmentInfo\BuildInfoFixture.cs" />
     <Compile Include="EnvironmentProviderTest.cs" />
     <Compile Include="EnvironmentTests\EnvironmentProviderTest.cs" />
     <Compile Include="EnvironmentTests\StartupArgumentsFixture.cs" />

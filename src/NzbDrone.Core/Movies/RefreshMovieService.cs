@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 //using NzbDrone.Core.DataAugmentation.DailyMovie;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Movies
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
+        private readonly IConfigService _configService;
         private readonly IRadarrAPIClient _apiClient;
 
         private readonly Logger _logger;
@@ -40,6 +42,7 @@ namespace NzbDrone.Core.Movies
                                     IRadarrAPIClient apiClient,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
                                     IManageCommandQueue commandQueue,
+                                    IConfigService configService,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
@@ -50,6 +53,7 @@ namespace NzbDrone.Core.Movies
             _commandQueueManager = commandQueue;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -59,15 +63,7 @@ namespace NzbDrone.Core.Movies
 
             Movie movieInfo;
 
-            try
-            {
-                movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
-            }
-            catch (MovieNotFoundException)
-            {
-                _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from TheTVDB.", movie.Title, movie.ImdbId);
-                return;
-            }
+            movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
 
             if (movie.TmdbId != movieInfo.TmdbId)
             {
@@ -167,14 +163,67 @@ namespace NzbDrone.Core.Movies
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
         }
 
+        private void RescanMovie(Movie movie, bool isNew, CommandTrigger trigger)
+        {
+            var rescanAfterRefresh = _configService.RescanAfterRefresh;
+            var shouldRescan = true;
+
+            if (isNew)
+            {
+                _logger.Trace("Forcing refresh of {0}. Reason: New movie", movie);
+                shouldRescan = true;
+            }
+            else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
+            {
+                _logger.Trace("Skipping refresh of {0}. Reason: never recan after refresh", movie);
+                shouldRescan = false;
+            }
+            else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
+            {
+                _logger.Trace("Skipping refresh of {0}. Reason: not after automatic scans", movie);
+                shouldRescan = false;
+            }
+
+            if (!shouldRescan)
+            {
+                return;
+            }
+
+            try
+            {
+                _diskScanService.Scan(movie);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Couldn't rescan movie {0}", movie);
+            }
+        }
+
         public void Execute(RefreshMovieCommand message)
         {
+            var trigger = message.Trigger;
+            var isNew = message.IsNewMovie;
             _eventAggregator.PublishEvent(new MovieRefreshStartingEvent(message.Trigger == CommandTrigger.Manual));
 
             if (message.MovieId.HasValue)
             {
                 var movie = _movieService.GetMovie(message.MovieId.Value);
-                RefreshMovieInfo(movie);
+
+                try
+                {
+                    RefreshMovieInfo(movie);
+                    RescanMovie(movie, isNew, trigger);
+                }
+                catch (MovieNotFoundException)
+                {
+                    _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from TheTVDB.", movie.Title, movie.ImdbId);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't refresh info for {0}", movie);
+                    RescanMovie(movie, isNew, trigger);
+                    throw;
+                }
             }
             else
             {
@@ -188,24 +237,23 @@ namespace NzbDrone.Core.Movies
                         {
                             RefreshMovieInfo(movie);
                         }
+                        catch (MovieNotFoundException)
+                        {
+                            _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from TheTVDB.", movie.Title, movie.ImdbId);
+                            continue;
+                        }
                         catch (Exception e)
                         {
-                            _logger.Error(e, "Couldn't refresh info for {0}".Inject(movie));
+                            _logger.Error(e, "Couldn't refresh info for {0}", movie);
                         }
+
+                        RescanMovie(movie, false, trigger);
                     }
 
                     else
                     {
-                        try
-                        {
-                            _logger.Info("Skipping refresh of movie: {0}", movie.Title);
-                            _commandQueueManager.Push(new RenameMovieFolderCommand(new List<int> { movie.Id }));
-                            _diskScanService.Scan(movie);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "Couldn't rescan movie {0}".Inject(movie));
-                        }
+                        _logger.Info("Skipping refresh of movie: {0}", movie.Title);
+                        RescanMovie(movie, false, trigger);
                     }
                 }
             }

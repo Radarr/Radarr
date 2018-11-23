@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
@@ -15,6 +15,7 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Profiles;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
@@ -27,7 +28,7 @@ namespace NzbDrone.Api.Movies
         }
     }
 
-    public class MovieBulkImportModule : NzbDroneRestModule<MovieResource>
+    public class MovieBulkImportModule : RadarrRestModule<MovieResource>
     {
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IRootFolderService _rootFolderService;
