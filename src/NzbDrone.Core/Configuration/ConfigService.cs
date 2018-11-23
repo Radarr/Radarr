@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
@@ -75,17 +74,10 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedMoviesFolder
+        public bool AutoUnmonitorPreviouslyDownloadedMovies
         {
-            get { return GetValue(ConfigKey.DownloadedMoviesFolder.ToString()); }
-
-            set { SetValue(ConfigKey.DownloadedMoviesFolder.ToString(), value); }
-        }
-
-        public bool AutoUnmonitorPreviouslyDownloadedEpisodes
-        {
-            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedEpisodes"); }
-            set { SetValue("AutoUnmonitorPreviouslyDownloadedEpisodes", value); }
+            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedMovies"); }
+            set { SetValue("AutoUnmonitorPreviouslyDownloadedMovies", value); }
         }
 
         public int Retention
@@ -247,11 +239,18 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RemoveFailedDownloads", value); }
         }
 
-        public bool CreateEmptySeriesFolders
+        public bool CreateEmptyMovieFolders
         {
-            get { return GetValueBoolean("CreateEmptySeriesFolders", false); }
+            get { return GetValueBoolean("CreateEmptyMovieFolders", false); }
 
-            set { SetValue("CreateEmptySeriesFolders", value); }
+            set { SetValue("CreateEmptyMovieFolders", value); }
+        }
+
+        public bool DeleteEmptyFolders
+        {
+            get { return GetValueBoolean("DeleteEmptyFolders", false); }
+
+            set { SetValue("DeleteEmptyFolders", value); }
         }
 
         public FileDateType FileDate
@@ -265,13 +264,6 @@ namespace NzbDrone.Core.Configuration
         {
             get { return GetValue("DownloadClientWorkingFolders", "_UNPACK_|_FAILED_"); }
             set { SetValue("DownloadClientWorkingFolders", value); }
-        }
-
-        public int DownloadedMoviesScanInterval
-        {
-            get { return GetValueInt("DownloadedMoviesScanInterval", 0); }
-
-            set { SetValue("DownloadedMoviesScanInterval", value); }
         }
 
         public int DownloadClientHistoryLimit
@@ -328,6 +320,13 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueBoolean("PathsDefaultStatic", true); }
 
             set { SetValue("PathsDefaultStatic", value); }
+        }
+
+        public RescanAfterRefreshType RescanAfterRefresh
+        {
+            get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }
+
+            set { SetValue("RescanAfterRefresh", value); }
         }
 
         public bool SetPermissionsLinux
@@ -444,6 +443,12 @@ namespace NzbDrone.Core.Configuration
         public string ProxyBypassFilter => GetValue("ProxyBypassFilter", string.Empty);
 
         public bool ProxyBypassLocalAddresses => GetValueBoolean("ProxyBypassLocalAddresses", true);
+
+        public string BackupFolder => GetValue("BackupFolder", "Backups");
+
+        public int BackupInterval => GetValueInt("BackupInterval", 7);
+
+        public int BackupRetention => GetValueInt("BackupRetention", 28);
 
         private string GetValue(string key)
         {

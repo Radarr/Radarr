@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using Nancy;
-using NzbDrone.Api.Extensions;
-using NzbDrone.Api.Validation;
+using Radarr.Http.Extensions;
+using Radarr.Http.Validation;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Qualities
 {
-    public class CustomFormatModule : NzbDroneRestModule<CustomFormatResource>
+    public class CustomFormatModule : RadarrRestModule<CustomFormatResource>
     {
         private readonly ICustomFormatService _formatService;
         private readonly IParsingService _parsingService;
@@ -22,7 +23,7 @@ namespace NzbDrone.Api.Qualities
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
             SharedValidator.RuleFor(c => c.Name)
                 .Must((v, c) => !_formatService.All().Any(f => f.Name == c && f.Id != v.Id)).WithMessage("Must be unique.");
-            SharedValidator.RuleFor(c => c.FormatTags).AreValidFormatTags();
+            SharedValidator.RuleFor(c => c.FormatTags).SetValidator(new FormatTagValidator());
             SharedValidator.RuleFor(c => c.FormatTags).Must((v, c) =>
                 {
                     var allFormats = _formatService.All();

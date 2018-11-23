@@ -1,13 +1,14 @@
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.MediaFiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-    public class RenameMovieModule : NzbDroneRestModule<RenameMovieResource>
+    public class RenameMovieModule : RadarrRestModule<RenameMovieResource>
     {
         private readonly IRenameMovieFileService _renameMovieFileService;
 

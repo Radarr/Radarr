@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.DiskSpace
@@ -19,16 +18,14 @@ namespace NzbDrone.Core.DiskSpace
     public class DiskSpaceService : IDiskSpaceService
     {
         private readonly IMovieService _movieService;
-        private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         private static readonly Regex _regexSpecialDrive = new Regex("^/var/lib/(docker|rancher|kubelet)(/|$)|^/(boot|etc|snap)(/|$)|/docker(/var)?/aufs(/|$)", RegexOptions.Compiled);
 
-        public DiskSpaceService(IMovieService movieService, IConfigService configService, IDiskProvider diskProvider, Logger logger)
+        public DiskSpaceService(IMovieService movieService, IDiskProvider diskProvider, Logger logger)
         {
             _movieService = movieService;
-            _configService = configService;
             _diskProvider = diskProvider;
             _logger = logger;
         }
@@ -37,7 +34,6 @@ namespace NzbDrone.Core.DiskSpace
         {
             var diskSpace = new List<DiskSpace>();
             diskSpace.AddRange(GetMovieFreeSpace());
-            diskSpace.AddRange(GetDroneFactoryFreeSpace());
             diskSpace.AddRange(GetFixedDisksFreeSpace());
 
             return diskSpace.DistinctBy(d => d.Path).ToList();
@@ -48,16 +44,6 @@ namespace NzbDrone.Core.DiskSpace
             var movieRootPaths = _movieService.GetAllMovies().Select(s => _diskProvider.GetPathRoot(s.Path)).Distinct();
 
             return GetDiskSpace(movieRootPaths);
-        }
-
-        private IEnumerable<DiskSpace> GetDroneFactoryFreeSpace()
-        {
-            if (!string.IsNullOrWhiteSpace(_configService.DownloadedMoviesFolder))
-            {
-                return GetDiskSpace(new[] { _diskProvider.GetPathRoot(_configService.DownloadedMoviesFolder) });
-            }
-
-            return new List<DiskSpace>();
         }
 
         private IEnumerable<DiskSpace> GetFixedDisksFreeSpace()

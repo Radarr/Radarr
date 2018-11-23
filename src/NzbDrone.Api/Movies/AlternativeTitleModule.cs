@@ -16,10 +16,11 @@ using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-    public class AlternativeTitleModule : NzbDroneRestModule<AlternativeTitleResource>
+    public class AlternativeTitleModule : RadarrRestModule<AlternativeTitleResource>
     {
         private readonly IAlternativeTitleService _altTitleService;
         private readonly IMovieService _movieService;

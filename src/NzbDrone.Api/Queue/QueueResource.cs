@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Download.TrackedDownloads;

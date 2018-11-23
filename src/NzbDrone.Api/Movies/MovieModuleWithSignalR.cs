@@ -6,10 +6,11 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-    public abstract class MovieModuleWithSignalR : NzbDroneRestModuleWithSignalR<MovieResource, Core.Movies.Movie>,
+    public abstract class MovieModuleWithSignalR : RadarrRestModuleWithSignalR<MovieResource, Core.Movies.Movie>,
         IHandle<MovieGrabbedEvent>,
         IHandle<MovieDownloadedEvent>
     {

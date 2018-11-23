@@ -5,7 +5,7 @@ namespace NzbDrone.Test.Dummy
 {
     public class DummyApp
     {
-        public const string DUMMY_PROCCESS_NAME = "NzbDrone.Test.Dummy";
+        public const string DUMMY_PROCCESS_NAME = "Radarr.Test.Dummy";
 
         static void Main(string[] args)
         {

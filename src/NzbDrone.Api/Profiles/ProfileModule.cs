@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Validation;
+using Radarr.Http;
+using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Profiles
 {
-    public class ProfileModule : NzbDroneRestModule<ProfileResource>
+    public class ProfileModule : RadarrRestModule<ProfileResource>
     {
         private readonly IProfileService _profileService;
         private readonly ICustomFormatService _formatService;

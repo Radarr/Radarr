@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Update;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Update
 {
-    public class UpdateModule : NzbDroneRestModule<UpdateResource>
+    public class UpdateModule : RadarrRestModule<UpdateResource>
     {
         private readonly IRecentUpdateProvider _recentUpdateProvider;
 

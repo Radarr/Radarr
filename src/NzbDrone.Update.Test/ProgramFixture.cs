@@ -34,7 +34,7 @@ namespace NzbDrone.Update.Test
         [Test]
         public void should_call_update_with_correct_path()
         {
-            var ProcessPath = @"C:\NzbDrone\radarr.exe".AsOsAgnostic();
+            var ProcessPath = @"C:\Radarr\radarr.exe".AsOsAgnostic();
 
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetProcessById(12))
                 .Returns(new ProcessInfo() { StartPath = ProcessPath });
@@ -43,7 +43,7 @@ namespace NzbDrone.Update.Test
             Subject.Start(new[] { "12", "", ProcessPath });
 
 
-            Mocker.GetMock<IInstallUpdateService>().Verify(c => c.Start(@"C:\NzbDrone".AsOsAgnostic(), 12), Times.Once());
+            Mocker.GetMock<IInstallUpdateService>().Verify(c => c.Start(@"C:\Radarr".AsOsAgnostic(), 12), Times.Once());
         }
 
 

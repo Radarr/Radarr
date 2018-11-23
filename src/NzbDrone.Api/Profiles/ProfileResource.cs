@@ -1,7 +1,7 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
- using NzbDrone.Api.Qualities;
- using NzbDrone.Api.REST;
+using NzbDrone.Api.Qualities;
+using Radarr.Http.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;

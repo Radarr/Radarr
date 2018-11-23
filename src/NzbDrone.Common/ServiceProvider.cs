@@ -25,7 +25,7 @@ namespace NzbDrone.Common
 
     public class ServiceProvider : IServiceProvider
     {
-        public const string NZBDRONE_SERVICE_NAME = "Radarr";
+        public const string SERVICE_NAME = "Radarr";
 
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;

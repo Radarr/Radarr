@@ -12,6 +12,7 @@ namespace NzbDrone.Common.EnvironmentInfo
     public class RuntimeInfo : IRuntimeInfo
     {
         private readonly Logger _logger;
+        private readonly DateTime _startTime = DateTime.UtcNow;
 
         public RuntimeInfo(IServiceProvider serviceProvider, Logger logger)
         {
@@ -19,8 +20,8 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             IsWindowsService = !IsUserInteractive &&
                                OsInfo.IsWindows &&
-                               serviceProvider.ServiceExist(ServiceProvider.NZBDRONE_SERVICE_NAME) &&
-                               serviceProvider.GetStatus(ServiceProvider.NZBDRONE_SERVICE_NAME) == ServiceControllerStatus.StartPending;
+                               serviceProvider.ServiceExist(ServiceProvider.SERVICE_NAME) &&
+                               serviceProvider.GetStatus(ServiceProvider.SERVICE_NAME) == ServiceControllerStatus.StartPending;
 
             //Guarded to avoid issues when running in a non-managed process
             var entry = Assembly.GetEntryAssembly();
@@ -28,13 +29,21 @@ namespace NzbDrone.Common.EnvironmentInfo
             if (entry != null)
             {
                 ExecutingApplication = entry.Location;
-                IsWindowsTray = entry.ManifestModule.Name == $"{ProcessProvider.NZB_DRONE_PROCESS_NAME}.exe";
+                IsWindowsTray = entry.ManifestModule.Name == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
             }
         }
 
         static RuntimeInfo()
         {
             IsProduction = InternalIsProduction();
+        }
+
+        public DateTime StartTime
+        {
+            get
+            {
+                return _startTime;
+            }
         }
 
         public static bool IsUserInteractive => Environment.UserInteractive;
@@ -61,6 +70,37 @@ namespace NzbDrone.Common.EnvironmentInfo
         public bool IsWindowsService { get; private set; }
 
         public bool IsExiting { get; set; }
+        public bool IsTray
+        {
+            get
+            {
+                if (OsInfo.IsWindows)
+                {
+                    return IsUserInteractive && Process.GetCurrentProcess().ProcessName.Equals(ProcessProvider.RADARR_PROCESS_NAME, StringComparison.InvariantCultureIgnoreCase);
+                }
+
+                return false;
+            }
+        }
+
+        public RuntimeMode Mode
+        {
+            get
+            {
+                if (IsWindowsService)
+                {
+                    return RuntimeMode.Service;
+                }
+
+                if (IsTray)
+                {
+                    return RuntimeMode.Tray;
+                }
+
+                return RuntimeMode.Console;
+            }
+        }
+
         public bool RestartPending { get; set; }
         public string ExecutingApplication { get; }
 

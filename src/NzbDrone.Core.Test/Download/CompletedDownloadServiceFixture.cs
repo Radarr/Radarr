@@ -151,20 +151,6 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_not_process_if_storage_directory_in_drone_factory()
-        {
-            Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedMoviesFolder)
-                  .Returns(@"C:\DropFolder".AsOsAgnostic());
-
-            _trackedDownload.DownloadItem.OutputPath = new OsPath(@"C:\DropFolder\SomeOtherFolder".AsOsAgnostic());
-
-            Subject.Process(_trackedDownload);
-
-            AssertNoAttemptedImport();
-        }
-
-        [Test]
         public void should_not_process_if_output_path_is_empty()
         {
             _trackedDownload.DownloadItem.OutputPath = new OsPath();

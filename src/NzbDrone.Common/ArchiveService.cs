@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -27,7 +28,7 @@ namespace NzbDrone.Common
         {
             _logger.Debug("Extracting archive [{0}] to [{1}]", compressedFile, destination);
 
-            if (OsInfo.IsWindows)
+            if (compressedFile.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
             {
                 ExtractZip(compressedFile, destination);
             }

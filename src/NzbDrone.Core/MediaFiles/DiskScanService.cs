@@ -29,7 +29,6 @@ namespace NzbDrone.Core.MediaFiles
 
     public class DiskScanService :
         IDiskScanService,
-        IHandle<MovieUpdatedEvent>,
         IExecute<RescanMovieCommand>
     {
         private readonly IDiskProvider _diskProvider;
@@ -101,7 +100,7 @@ namespace NzbDrone.Core.MediaFiles
 
                     _logger.Debug("Movies folder doesn't exist: {0}", movie.Path);
                 }
-                else if (_configService.CreateEmptySeriesFolders &&
+                else if (_configService.CreateEmptyMovieFolders &&
                     _diskProvider.FolderExists(rootFolder))
                 {
                     _logger.Debug("Creating missing movies folder: {0}", movie.Path);
@@ -132,6 +131,8 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Trace("Import decisions complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
             
             _importApprovedMovies.Import(decisions, false);
+
+            RemoveEmptyMovieFolder(movie.Path);
 
             _logger.Info("Completed scanning disk for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieScannedEvent(movie));
@@ -193,9 +194,22 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        public void Handle(MovieUpdatedEvent message)
+        private void RemoveEmptyMovieFolder(string path)
         {
-            Scan(message.Movie);
+            if (_diskProvider.GetFiles(path, SearchOption.AllDirectories).Empty() &&
+                !_configService.CreateEmptyMovieFolders)
+                if (_configService.DeleteEmptyFolders)
+                {
+                    _diskProvider.DeleteFolder(path, true);
+                    if (_diskProvider.GetFiles(path, SearchOption.AllDirectories).Empty())
+                    {
+                        _diskProvider.DeleteFolder(path, true);
+                    }
+                    else
+                    {
+                        _diskProvider.RemoveEmptySubfolders(path);
+                    }
+                }
         }
 
         public void Execute(RescanMovieCommand message)

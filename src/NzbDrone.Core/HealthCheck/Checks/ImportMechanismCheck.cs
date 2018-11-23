@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Clients.Nzbget;
 using NzbDrone.Core.Download.Clients.Sabnzbd;
 
@@ -24,7 +22,6 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var droneFactoryFolder = new OsPath(_configService.DownloadedMoviesFolder);
             List<ImportMechanismCheckStatus> downloadClients;
 
             try
@@ -35,16 +32,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     Status = v.GetStatus()
                 }).ToList();
             }
-            catch (DownloadClientException)
+            catch (Exception)
             {
                 // One or more download clients failed, assume the health is okay and verify later
                 return new HealthCheck(GetType());
             }
 
             var downloadClientIsLocalHost = downloadClients.All(v => v.Status.IsLocalhost);
-            var downloadClientOutputInDroneFactory = !droneFactoryFolder.IsEmpty &&
-                                                     downloadClients.Any(v => v.Status.OutputRootFolders != null &&
-                                                     v.Status.OutputRootFolders.Any(droneFactoryFolder.Contains));
 
             if (!_configService.IsDefined("EnableCompletedDownloadHandling"))
             {
@@ -56,30 +50,18 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                 if (downloadClients.All(v => v.DownloadClient is Sabnzbd))
                 {
-                    // With Sabnzbd we can check if the category should be changed.
-                    if (downloadClientOutputInDroneFactory)
-                    {
-                        return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling if possible (Sabnzbd - Conflicting Category)", "Migrating-to-Completed-Download-Handling#sabnzbd-conflicting-download-client-category");
-                    }
-
                     return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling if possible (Sabnzbd)", "Migrating-to-Completed-Download-Handling#sabnzbd-enable-completed-download-handling");
                 }
 
                 if (downloadClients.All(v => v.DownloadClient is Nzbget))
                 {
-                    // With Nzbget we can check if the category should be changed.
-                    if (downloadClientOutputInDroneFactory)
-                    {
-                        return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling if possible (Nzbget - Conflicting Category)", "Migrating-to-Completed-Download-Handling#nzbget-conflicting-download-client-category");
-                    }
-
                     return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling if possible (Nzbget)", "Migrating-to-Completed-Download-Handling#nzbget-enable-completed-download-handling");
                 }
 
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling if possible", "Migrating-to-Completed-Download-Handling");
             }
 
-            if (!_configService.EnableCompletedDownloadHandling && droneFactoryFolder.IsEmpty)
+            if (!_configService.EnableCompletedDownloadHandling)
             {
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, "Enable Completed Download Handling or configure Drone factory");
             }

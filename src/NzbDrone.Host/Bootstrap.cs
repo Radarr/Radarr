@@ -4,9 +4,11 @@ using System.Threading;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Processes;
 using NzbDrone.Common.Security;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Instrumentation;
 
 namespace Radarr.Host
@@ -48,6 +50,10 @@ namespace Radarr.Host
                 {
                     SpinToExit(appMode);
                 }
+            }
+            catch (InvalidConfigFileException ex)
+            {
+                throw new RadarrStartupException(ex);
             }
             catch (TerminateApplicationException e)
             {

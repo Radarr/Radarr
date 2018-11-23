@@ -1,11 +1,12 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
-using NzbDrone.Api.REST;
+using Radarr.Http;
+using Radarr.Http.REST;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Api.Config
 {
-    public abstract class NzbDroneConfigModule<TResource> : NzbDroneRestModule<TResource> where TResource : RestResource, new()
+    public abstract class NzbDroneConfigModule<TResource> : RadarrRestModule<TResource> where TResource : RestResource, new()
     {
         private readonly IConfigService _configService;
 

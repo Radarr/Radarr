@@ -66,7 +66,10 @@ namespace NzbDrone.Core.Queue
                 RemoteMovie = trackedDownload.RemoteMovie,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
-                Movie = movie
+                Movie = movie,
+                DownloadClient = trackedDownload.DownloadItem.DownloadClient,
+                Indexer = trackedDownload.Indexer
+               
             };
 
             if (queue.Timeleft.HasValue)

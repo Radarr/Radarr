@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;
 using NzbDrone.Common.Composition;

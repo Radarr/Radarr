@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.AspNet.SignalR.Infrastructure;
 
 namespace NzbDrone.SignalR
@@ -9,7 +9,7 @@ namespace NzbDrone.SignalR
 
         public void Initialize(string instanceName, CancellationToken hostShutdownToken)
         {
-
+            
         }
 
         public IPerformanceCounter LoadCounter(string categoryName, string counterName, string instanceName, bool isReadOnly)

@@ -17,10 +17,11 @@ using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-    public class AlternativeYearModule : NzbDroneRestModule<AlternativeYearResource>
+    public class AlternativeYearModule : RadarrRestModule<AlternativeYearResource>
     {
         private readonly IMovieService _movieService;
         private readonly IRadarrAPIClient _radarrApi;

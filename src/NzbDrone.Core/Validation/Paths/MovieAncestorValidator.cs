@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IMovieService _movieService;
 
         public MovieAncestorValidator(IMovieService movieService)
-            : base("Path is an ancestor of an existing path")
+            : base("Path is an ancestor of an existing movie")
         {
             _movieService = movieService;
         }

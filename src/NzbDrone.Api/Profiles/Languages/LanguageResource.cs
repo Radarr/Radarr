@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Profiles.Languages
 {

@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Queue
 {
-    public class QueueModule : NzbDroneRestModuleWithSignalR<QueueResource, Core.Queue.Queue>,
+    public class QueueModule : RadarrRestModuleWithSignalR<QueueResource, Core.Queue.Queue>,
                                IHandle<QueueUpdatedEvent>, IHandle<PendingReleasesUpdatedEvent>
     {
         private readonly IQueueService _queueService;

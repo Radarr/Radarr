@@ -38,7 +38,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                 _caBundleFilePath = _caBundleFileName;
             }
         }
-        
+
         public CurlHttpDispatcher(IHttpProxySettingsProvider proxySettingsProvider, IUserAgentBuilder userAgentBuilder, Logger logger)
         {
             _proxySettingsProvider = proxySettingsProvider;
@@ -68,96 +68,95 @@ namespace NzbDrone.Common.Http.Dispatchers
 
             lock (CurlGlobalHandle.Instance)
             {
-                using (Stream responseStream = new MemoryStream())
-                using (Stream headerStream = new MemoryStream())
+                Stream responseStream = new MemoryStream();
+                Stream headerStream = new MemoryStream();
+
+                using (var curlEasy = new CurlEasy())
                 {
-                    using (var curlEasy = new CurlEasy())
+                    curlEasy.AutoReferer = false;
+                    curlEasy.WriteFunction = (b, s, n, o) =>
                     {
-                        curlEasy.AutoReferer = false;
-                        curlEasy.WriteFunction = (b, s, n, o) =>
+                        responseStream.Write(b, 0, s * n);
+                        return s * n;
+                    };
+                    curlEasy.HeaderFunction = (b, s, n, o) =>
+                    {
+                        headerStream.Write(b, 0, s * n);
+                        return s * n;
+                    };
+
+                    AddProxy(curlEasy, request);
+
+                    curlEasy.Url = request.Url.FullUri;
+
+                    switch (request.Method)
+                    {
+                        case HttpMethod.GET:
+                            curlEasy.HttpGet = true;
+                            break;
+
+                        case HttpMethod.POST:
+                            curlEasy.Post = true;
+                            break;
+
+                        case HttpMethod.PUT:
+                            curlEasy.Put = true;
+                            break;
+
+                        default:
+                            throw new NotSupportedException($"HttpCurl method {request.Method} not supported");
+                    }
+                    curlEasy.UserAgent = _userAgentBuilder.GetUserAgent(request.UseSimplifiedUserAgent);
+                    curlEasy.FollowLocation = false;
+
+                    if (request.RequestTimeout != TimeSpan.Zero)
+                    {
+                        curlEasy.Timeout = (int)Math.Ceiling(request.RequestTimeout.TotalSeconds);
+                    }
+
+                    if (OsInfo.IsWindows)
+                    {
+                        curlEasy.CaInfo = _caBundleFilePath;
+                    }
+
+                    if (cookies != null)
+                    {
+                        curlEasy.Cookie = cookies.GetCookieHeader((Uri)request.Url);
+                    }
+
+                    if (request.ContentData != null)
+                    {
+                        curlEasy.PostFieldSize = request.ContentData.Length;
+                        curlEasy.SetOpt(CurlOption.CopyPostFields, new string(Array.ConvertAll(request.ContentData, v => (char)v)));
+                    }
+
+                    // Yes, we have to keep a ref to the object to prevent corrupting the unmanaged state
+                    using (var httpRequestHeaders = SerializeHeaders(request))
+                    {
+                        curlEasy.HttpHeader = httpRequestHeaders;
+
+                        var result = curlEasy.Perform();
+
+                        if (result != CurlCode.Ok)
                         {
-                            responseStream.Write(b, 0, s * n);
-                            return s * n;
-                        };
-                        curlEasy.HeaderFunction = (b, s, n, o) =>
-                        {
-                            headerStream.Write(b, 0, s * n);
-                            return s * n;
-                        };
-    
-                        AddProxy(curlEasy, request);
-    
-                        curlEasy.Url = request.Url.FullUri;
-    
-                        switch (request.Method)
-                        {
-                            case HttpMethod.GET:
-                                curlEasy.HttpGet = true;
-                                break;
-    
-                            case HttpMethod.POST:
-                                curlEasy.Post = true;
-                                break;
-    
-                            case HttpMethod.PUT:
-                                curlEasy.Put = true;
-                                break;
-    
-                            default:
-                                throw new NotSupportedException(string.Format("HttpCurl method {0} not supported", request.Method));
-                        }
-                        curlEasy.FollowLocation = false;
-                        curlEasy.UserAgent = request.UseSimplifiedUserAgent ? UserAgentBuilder.UserAgentSimplified : UserAgentBuilder.UserAgent; ;
-    
-                        if (request.RequestTimeout != TimeSpan.Zero)
-                        {
-                            curlEasy.Timeout = (int)Math.Ceiling(request.RequestTimeout.TotalSeconds);
-                        }
-    
-                        if (OsInfo.IsWindows)
-                        {
-                            curlEasy.CaInfo = _caBundleFilePath;
-                        }
-    
-                        if (cookies != null)
-                        {
-                            curlEasy.Cookie = cookies.GetCookieHeader((Uri)request.Url);
-                        }
-    
-                        if (request.ContentData != null)
-                        {
-                            curlEasy.PostFieldSize = request.ContentData.Length;
-                            curlEasy.SetOpt(CurlOption.CopyPostFields, new string(Array.ConvertAll(request.ContentData, v => (char)v)));
-                        }
-    
-                        // Yes, we have to keep a ref to the object to prevent corrupting the unmanaged state
-                        using (var httpRequestHeaders = SerializeHeaders(request))
-                        {
-                            curlEasy.HttpHeader = httpRequestHeaders;
-    
-                            var result = curlEasy.Perform();
-    
-                            if (result != CurlCode.Ok)
+                            switch (result)
                             {
-                                switch (result)
-                                {
-                                    case CurlCode.SslCaCert:
-                                    case (CurlCode)77:
-                                        throw new WebException(string.Format("Curl Error {0} for Url {1}, issues with your operating system SSL Root Certificate Bundle (ca-bundle).", result, curlEasy.Url));
-                                    default:
-                                        throw new WebException(string.Format("Curl Error {0} for Url {1}", result, curlEasy.Url));
-    
-                                }
+                                case CurlCode.SslCaCert:
+                                case (CurlCode)77:
+                                    throw new WebException(string.Format("Curl Error {0} for Url {1}, issues with your operating system SSL Root Certificate Bundle (ca-bundle).", result, curlEasy.Url));
+                                default:
+                                    throw new WebException(string.Format("Curl Error {0} for Url {1}", result, curlEasy.Url));
+
                             }
                         }
-    
-                        var webHeaderCollection = ProcessHeaderStream(request, cookies, headerStream);
-                        var responseData = ProcessResponseStream(request, responseStream, webHeaderCollection);
-    
-                        var httpHeader = new HttpHeader(webHeaderCollection);
-    
-                        return new HttpResponse(request, httpHeader, responseData, (HttpStatusCode)curlEasy.ResponseCode);
                     }
+
+                    var webHeaderCollection = ProcessHeaderStream(request, cookies, headerStream);
+                    var responseData = ProcessResponseStream(request, responseStream, webHeaderCollection);
+
+                    var httpHeader = new HttpHeader(webHeaderCollection);
+
+                    return new HttpResponse(request, httpHeader, responseData, (HttpStatusCode)curlEasy.ResponseCode);
                 }
             }
         }

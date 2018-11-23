@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
@@ -8,6 +8,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public List<ManualImportFile> Files { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
 
         public ImportMode ImportMode { get; set; }
     }

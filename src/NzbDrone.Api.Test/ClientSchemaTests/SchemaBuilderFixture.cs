@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.ClientSchema;
+using Radarr.Http.ClientSchema;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Test.Common;
 
@@ -28,8 +28,8 @@ namespace NzbDrone.Api.Test.ClientSchemaTests
 
             var schema = SchemaBuilder.ToSchema(model);
 
-            schema.Should().Contain(c => c.Order == 1 && c.Name == "LastName" && c.Label == "Last Name" && c.HelpText == "Your Last Name" && (string) c.Value == "Poop");
-            schema.Should().Contain(c => c.Order == 0 && c.Name == "FirstName" && c.Label == "First Name" && c.HelpText == "Your First Name" && (string) c.Value == "Bob");
+            schema.Should().Contain(c => c.Order == 1 && c.Name == "lastName" && c.Label == "Last Name" && c.HelpText == "Your Last Name" && (string) c.Value == "Poop");
+            schema.Should().Contain(c => c.Order == 0 && c.Name == "firstName" && c.Label == "First Name" && c.HelpText == "Your First Name" && (string) c.Value == "Bob");
         }
 
     }

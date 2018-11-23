@@ -1,4 +1,4 @@
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 

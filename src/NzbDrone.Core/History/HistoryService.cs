@@ -25,8 +25,9 @@ namespace NzbDrone.Core.History
         History Get(int historyId);
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
-        List<History> FindByMovieId(int movieId);
+        List<History> GetByMovieId(int movieId, HistoryEventType? eventType);
         void UpdateMany(List<History> toUpdate);
+        List<History> Since(DateTime date, HistoryEventType? eventType);
     }
 
     public class HistoryService : IHistoryService,
@@ -75,9 +76,9 @@ namespace NzbDrone.Core.History
             return _historyRepository.FindByDownloadId(downloadId);
         }
 
-        public List<History> FindByMovieId(int movieId)
+        public List<History> GetByMovieId(int movieId, HistoryEventType? eventType)
         {
-            return _historyRepository.FindByMovieId(movieId);
+            return _historyRepository.GetByMovieId(movieId, eventType);
         }
 
         public QualityModel GetBestQualityInHistory(Profile profile, int movieId)
@@ -256,6 +257,11 @@ namespace NzbDrone.Core.History
             history.Data.Add("Message", message.Message);
 
             _historyRepository.Insert(history);
+        }
+
+        public List<History> Since(DateTime date, HistoryEventType? eventType)
+        {
+            return _historyRepository.Since(date, eventType);
         }
     }
 }

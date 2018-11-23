@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 {
     public interface IManualImportService
     {
-        List<ManualImportItem> GetMediaFiles(string path, string downloadId);
+        List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _logger = logger;
         }
 
-        public List<ManualImportItem> GetMediaFiles(string path, string downloadId)
+        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles)
         {
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -94,10 +94,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return new List<ManualImportItem> { ProcessFile(path, downloadId) };
             }
 
-            return ProcessFolder(path, downloadId);
+            return ProcessFolder(path, downloadId, filterExistingFiles);
         }
 
-        private List<ManualImportItem> ProcessFolder(string folder, string downloadId)
+        private List<ManualImportItem> ProcessFolder(string folder, string downloadId, bool filterExistingFiles)
         {
             DownloadClientItem downloadClientItem = null;
             var directoryInfo = new DirectoryInfo(folder);

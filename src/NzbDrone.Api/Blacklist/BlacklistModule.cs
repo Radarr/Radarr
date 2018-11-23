@@ -1,9 +1,10 @@
-﻿using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Datastore;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Blacklist
 {
-    public class BlacklistModule : NzbDroneRestModule<BlacklistResource>
+    public class BlacklistModule : RadarrRestModule<BlacklistResource>
     {
         private readonly IBlacklistService _blacklistService;
 

@@ -1,5 +1,5 @@
 using FluentValidation;
-using NzbDrone.Api.Validation;
+using Radarr.Http.Validation;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Api.Config

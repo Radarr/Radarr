@@ -219,10 +219,7 @@ namespace NzbDrone.Core.Movies
 
             _logger.Debug("Adding {0} movies, {1} duplicates detected and skipped", newMovies.Count, potentialMovieCount - newMovies.Count);
 
-            newMovies.ForEach(m =>
-            {
-                _eventAggregator.PublishEvent(new MovieAddedEvent(m));
-            });
+            _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies.Select(s => s.Id).ToList()));
 
             return newMovies;
         }
@@ -377,7 +374,7 @@ namespace NzbDrone.Core.Movies
             movie.MovieFileId = 0;
             _logger.Debug("Detaching movie {0} from file.", movie.Id);
 
-            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedMovies)
             {
                 movie.Monitored = false;
             }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NLog;
@@ -58,15 +58,16 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(MissingMoviesSearchCommand message)
         {
-            List<Movie> movies = _movieService.MoviesWithoutFiles(new PagingSpec<Movie>
+            var pagingSpec = new PagingSpec<Movie>
             {
                 Page = 1,
                 PageSize = 100000,
                 SortDirection = SortDirection.Ascending,
-                SortKey = "Id",
-                FilterExpression = _movieService.ConstructFilterExpression(message.FilterKey, message.FilterValue)
-            }).Records.ToList();
+                SortKey = "Id"
+            };
 
+            pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
+            List<Movie> movies = _movieService.MoviesWithoutFiles(pagingSpec).Records.ToList();
 
             var queue = _queueService.GetQueue().Select(q => q.Movie.Id);
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
@@ -77,14 +78,17 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(CutoffUnmetMoviesSearchCommand message)
         {
-            List<Movie> movies = _movieCutoffService.MoviesWhereCutoffUnmet(new PagingSpec<Movie>
+            var pagingSpec = new PagingSpec<Movie>
             {
                 Page = 1,
                 PageSize = 100000,
                 SortDirection = SortDirection.Ascending,
-                SortKey = "Id",
-                FilterExpression = _movieService.ConstructFilterExpression(message.FilterKey, message.FilterValue)
-            }).Records.ToList();
+                SortKey = "Id"
+            };
+
+            pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
+
+            List<Movie> movies = _movieCutoffService.MoviesWhereCutoffUnmet(pagingSpec).Records.ToList();
 
 
             var queue = _queueService.GetQueue().Select(q => q.Movie.Id);

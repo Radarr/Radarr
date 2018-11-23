@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Core</RootNamespace>
-    <AssemblyName>NzbDrone.Core</AssemblyName>
+    <AssemblyName>Radarr.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -125,6 +125,11 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
+    <Compile Include="Backup\RestoreBackupFailedException.cs" />
+    <Compile Include="Configuration\RescanAfterRefreshType.cs" />
+    <Compile Include="CustomFilters\CustomFilter.cs" />
+    <Compile Include="CustomFilters\CustomFilterRepository.cs" />
+    <Compile Include="CustomFilters\CustomFilterService.cs" />
     <Compile Include="CustomFormats\CustomFormat.cs" />
     <Compile Include="CustomFormats\CustomFormatRepository.cs" />
     <Compile Include="CustomFormats\CustomFormatService.cs" />
@@ -132,6 +137,7 @@
     <Compile Include="CustomFormats\FormatTagMatchResult.cs" />
     <Compile Include="Datastore\Converters\CustomFormatIntConverter.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
+    <Compile Include="Datastore\DatabaseRestorationService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="Datastore\Migration\148_remove_extra_naming_config.cs" />
     <Compile Include="Datastore\Migration\146_naming_config_colon_replacement_format.cs" />
@@ -144,11 +150,13 @@
     <Compile Include="Datastore\Migration\144_add_cookies_to_indexer_status.cs" />
     <Compile Include="Datastore\Migration\149_convert_regex_required_tags.cs" />
     <Compile Include="Datastore\Migration\150_fix_format_tags_double_underscore.cs" />
+    <Compile Include="Datastore\Migration\151_add_custom_filters.cs" />
     <Compile Include="DecisionEngine\Specifications\CustomFormatAllowedByProfileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="Download\InvalidNzbException.cs" />
     <Compile Include="Download\NzbValidationService.cs" />
+    <Compile Include="Download\TrackedDownloads\TrackedDownloadsRemovedEvent.cs" />
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcNfoDetector.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
     <Compile Include="HealthCheck\Checks\PTPOldSettingsCheck.cs" />
@@ -170,6 +178,7 @@
     <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleRepository.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleService.cs" />
+    <Compile Include="Movies\Events\MoviesImportedEvent.cs" />
     <Compile Include="NetImport\NetImportListLevels.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
@@ -639,7 +648,6 @@
     <Compile Include="HealthCheck\CheckHealthCommand.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
@@ -1008,6 +1016,8 @@
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\Revision.cs" />
+    <Compile Include="Queue\EstimatedCompletionTimeComparer.cs" />
+    <Compile Include="Queue\TimeleftComparer.cs" />
     <Compile Include="RemotePathMappings\RemotePathMapping.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingService.cs" />
@@ -1213,7 +1223,6 @@
     <Compile Include="Validation\NzbDroneValidationResult.cs" />
     <Compile Include="Validation\NzbDroneValidationState.cs" />
     <Compile Include="Validation\Paths\MappedNetworkDriveValidator.cs" />
-    <Compile Include="Validation\Paths\DroneFactoryValidator.cs" />
     <Compile Include="Validation\Paths\FolderWritableValidator.cs" />
     <Compile Include="Validation\Paths\PathExistsValidator.cs" />
     <Compile Include="Validation\Paths\PathValidator.cs" />
@@ -1222,6 +1231,7 @@
     <Compile Include="Validation\Paths\MovieExistsValidator.cs" />
     <Compile Include="Validation\Paths\StartupFolderValidator.cs" />
     <Compile Include="Validation\Paths\RootFolderValidator.cs" />
+    <Compile Include="Validation\Paths\SystemFolderValidator.cs" />
     <Compile Include="Validation\ProfileExistsValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
@@ -1273,7 +1283,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NzbDrone.Core.dll.config">
+    <None Include="Radarr.Core.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -32,12 +32,7 @@ namespace NzbDrone.Test.Common
         {
             AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + DateTime.Now.Ticks);
 
-            var nzbdroneConsoleExe = "Radarr.Console.exe";
-
-            if (OsInfo.IsNotWindows)
-            {
-                nzbdroneConsoleExe = "Radarr.exe";
-            }
+            var radarrConsoleExe = OsInfo.IsWindows ? "Radarr.Console.exe" : "Radarr.exe";
 
             if (BuildInfo.IsDebug)
             {
@@ -45,7 +40,7 @@ namespace NzbDrone.Test.Common
             }
             else
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "bin", nzbdroneConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "bin", radarrConsoleExe));
             }
 
             while (true)
@@ -67,11 +62,11 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    Console.WriteLine("NzbDrone is started. Running Tests");
+                    Console.WriteLine("Radarr is started. Running Tests");
                     return;
                 }
 
-                Console.WriteLine("Waiting for NzbDrone to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException);
+                Console.WriteLine("Waiting for Radarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException);
 
                 Thread.Sleep(500);
             }
@@ -84,14 +79,14 @@ namespace NzbDrone.Test.Common
                 _processProvider.Kill(_nzbDroneProcess.Id);
             }
 
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME);
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_PROCESS_NAME);
+            _processProvider.KillAll(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME);
+            _processProvider.KillAll(ProcessProvider.RADARR_PROCESS_NAME);
         }
 
-        private void Start(string outputNzbdroneConsoleExe)
+        private void Start(string outputRadarrConsoleExe)
         {
             var args = "-nobrowser -data=\"" + AppData + "\"";
-            _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
+            _nzbDroneProcess = _processProvider.Start(outputRadarrConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
 
         }
 

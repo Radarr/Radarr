@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.Extensions;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;

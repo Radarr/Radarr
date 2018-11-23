@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NzbDrone.Core")]
+[assembly: AssemblyTitle("Radarr.Core")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("3C29FEF7-4B07-49ED-822E-1C29DC49BFAB")]
 
-[assembly: InternalsVisibleTo("NzbDrone.Core.Test")]
+[assembly: InternalsVisibleTo("Radarr.Core.Test")]

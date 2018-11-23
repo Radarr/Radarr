@@ -1,5 +1,5 @@
-﻿using System;
-using NzbDrone.Api.REST;
+using System;
+using Radarr.Http.REST;
 using NzbDrone.Core.Backup;
 
 namespace NzbDrone.Api.System.Backup

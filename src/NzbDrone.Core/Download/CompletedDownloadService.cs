@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -77,14 +77,6 @@ namespace NzbDrone.Core.Download
                     (OsInfo.IsNotWindows && !downloadItemOutputPath.IsUnixPath))
                 {
                     trackedDownload.Warn("[{0}] is not a valid local path. You may need a Remote Path Mapping.", downloadItemOutputPath);
-                    return;
-                }
-
-                var downloadedMoviesFolder = new OsPath(_configService.DownloadedMoviesFolder);
-
-                if (downloadedMoviesFolder.Contains(downloadItemOutputPath))
-                {
-                    trackedDownload.Warn("Intermediate Download path inside drone factory, Skipping.");
                     return;
                 }
 

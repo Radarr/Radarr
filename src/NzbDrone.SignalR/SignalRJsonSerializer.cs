@@ -1,4 +1,4 @@
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using NzbDrone.Common.Serializer;
 

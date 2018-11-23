@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Api.Extensions;
+using Radarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
 using System;
-using NzbDrone.Api.REST;
+using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Movies
 {
-    public class MovieLookupModule : NzbDroneRestModule<MovieResource>
+    public class MovieLookupModule : RadarrRestModule<MovieResource>
     {
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IProvideMovieInfo _movieInfo;

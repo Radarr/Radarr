@@ -11,8 +11,9 @@ namespace NzbDrone.Common.Extensions
     public static class PathExtensions
     {
         private const string APP_CONFIG_FILE = "config.xml";
-        private const string NZBDRONE_DB = "nzbdrone.db";
-        private const string NZBDRONE_LOG_DB = "logs.db";
+        private const string DB = "radarr.db";
+        private const string DB_RESTORE = "radarr.restore";
+        private const string LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
         private const string UPDATE_CLIENT_EXE = "Radarr.Update.exe";
         private const string BACKUP_FOLDER = "Backups";
@@ -21,7 +22,7 @@ namespace NzbDrone.Common.Extensions
         private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "Radarr" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_BACKUP_FOLDER_NAME = "radarr_backup" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_BACKUP_APPDATA_FOLDER_NAME = "radarr_appdata_backup" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_CLIENT_FOLDER_NAME = "NzbDrone.Update" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_CLIENT_FOLDER_NAME = "Radarr.Update" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_LOG_FOLDER_NAME = "UpdateLogs" + Path.DirectorySeparatorChar;
 
         public static string CleanFilePath(this string path)
@@ -238,7 +239,7 @@ namespace NzbDrone.Common.Extensions
 
         public static string GetUpdateBackupDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), NZBDRONE_DB);
+            return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), DB);
         }
 
         public static string GetUpdatePackageFolder(this IAppFolderInfo appFolderInfo)
@@ -256,19 +257,19 @@ namespace NzbDrone.Common.Extensions
             return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE);
         }
 
-        public static string GetBackupFolder(this IAppFolderInfo appFolderInfo)
+        public static string GetDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), BACKUP_FOLDER);
+            return Path.Combine(GetAppDataPath(appFolderInfo), DB);
         }
 
-        public static string GetNzbDroneDatabase(this IAppFolderInfo appFolderInfo)
+        public static string GetDatabaseRestore(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), NZBDRONE_DB);
+            return Path.Combine(GetAppDataPath(appFolderInfo), DB_RESTORE);
         }
 
         public static string GetLogDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), NZBDRONE_LOG_DB);
+            return Path.Combine(GetAppDataPath(appFolderInfo), LOG_DB);
         }
 
         public static string GetNlogConfigPath(this IAppFolderInfo appFolderInfo)

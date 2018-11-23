@@ -65,8 +65,8 @@ namespace Radarr.Host
             {
                 var currentId = _processProvider.GetCurrentProcess().Id;
 
-                var otherProcesses = _processProvider.FindProcessByName(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME)
-                                                     .Union(_processProvider.FindProcessByName(ProcessProvider.NZB_DRONE_PROCESS_NAME))
+                var otherProcesses = _processProvider.FindProcessByName(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME)
+                                                     .Union(_processProvider.FindProcessByName(ProcessProvider.RADARR_PROCESS_NAME))
                                                      .Select(c => c.Id)
                                                      .Except(new[] { currentId })
                                                      .ToList();

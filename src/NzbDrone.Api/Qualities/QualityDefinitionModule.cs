@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using Radarr.Http.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Qualities
 {
-    public class QualityDefinitionModule : NzbDroneRestModule<QualityDefinitionResource>
+    public class QualityDefinitionModule : RadarrRestModule<QualityDefinitionResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IParsingService _parsingService;

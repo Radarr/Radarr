@@ -1,5 +1,5 @@
-﻿using System;
-using NzbDrone.Api.REST;
+using System;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.System.Tasks
 {

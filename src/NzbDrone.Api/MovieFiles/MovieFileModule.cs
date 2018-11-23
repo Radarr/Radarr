@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using NLog;
-using NzbDrone.Api.REST;
+using Radarr.Http;
+using Radarr.Http.REST;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
@@ -12,7 +13,7 @@ using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.MovieFiles
 {
-    public class MovieFileModule : NzbDroneRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
+    public class MovieFileModule : RadarrRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;

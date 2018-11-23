@@ -5,5 +5,5 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NzbDrone.Host")]
+[assembly: AssemblyTitle("Radarr.Host")]
 [assembly: Guid("67AADCD9-89AA-4D95-8281-3193740E70E5")]

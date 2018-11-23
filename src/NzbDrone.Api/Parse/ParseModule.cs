@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Parser;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Parse
 {
-    public class ParseModule : NzbDroneRestModule<ParseResource>
+    public class ParseModule : RadarrRestModule<ParseResource>
     {
         private readonly IParsingService _parsingService;
 

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.DiskSpace;
+using Radarr.Http;
 
 namespace NzbDrone.Api.DiskSpace
 {
-    public class DiskSpaceModule :NzbDroneRestModule<DiskSpaceResource>
+    public class DiskSpaceModule :RadarrRestModule<DiskSpaceResource>
     {
         private readonly IDiskSpaceService _diskSpaceService;
 

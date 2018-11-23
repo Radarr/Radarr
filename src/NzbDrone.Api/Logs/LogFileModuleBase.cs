@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common.Disk;
 using Nancy;
 using Nancy.Responses;
 using NzbDrone.Core.Configuration;
+using Radarr.Http;
 
 namespace NzbDrone.Api.Logs
 {
-    public abstract class LogFileModuleBase : NzbDroneRestModule<LogFileResource>
+    public abstract class LogFileModuleBase : RadarrRestModule<LogFileResource>
     {
         protected const string LOGFILE_ROUTE = @"/(?<filename>[-.a-zA-Z0-9]+?\.txt)";
 
