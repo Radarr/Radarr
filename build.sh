@@ -7,9 +7,9 @@ outputFolderOsxApp='./_output_osx_app'
 testPackageFolder='./_tests/'
 testSearchPattern='*.Test/bin/x86/Release'
 sourceFolder='./src'
-slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/NzbDrone.Update
-updateFolderMono=$outputFolderMono/NzbDrone.Update
+slnFile=$sourceFolder/Radarr.sln
+updateFolder=$outputFolder/Radarr.Update
+updateFolderMono=$outputFolderMono/Radarr.Update
 
 nuget='tools/nuget/nuget.exe';
 CheckExitCode()
@@ -88,9 +88,20 @@ BuildWithXbuild()
     CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb /maxcpucount:3 $slnFile
 }
 
+LintUI()
+{
+    echo "ESLint"
+    CheckExitCode yarn eslint
+    echo "ESLint"
+
+    echo "Stylelint"
+    CheckExitCode yarn stylelint
+    echo "Stylelint"
+}
+
 Build()
 {
-    echo "##teamcity[progressStart 'Build']"
+    echo "Start Build"
 
     rm -rf $outputFolder
 
@@ -109,18 +120,20 @@ Build()
     echo "Removing Mono.Posix.dll"
     rm $outputFolder/Mono.Posix.dll
 
-    echo "##teamcity[progressFinish 'Build']"
+    echo "Finish Build"
 }
 
 RunGulp()
 {
-    echo "##teamcity[progressStart 'npm install']"
-    npm-cache install npm || CheckExitCode npm install
-    echo "##teamcity[progressFinish 'npm install']"
+    echo "Start yarn install"
+    yarn install
+    echo "Finish yarn install"
 
-    echo "##teamcity[progressStart 'Running gulp']"
-    CheckExitCode npm run build
-    echo "##teamcity[progressFinish 'Running gulp']"
+    LintUI
+
+    echo "Start Running gulp"
+    CheckExitCode yarn run build --production
+    echo "Finish Running gulp"
 }
 
 CreateMdbs()
@@ -161,22 +174,22 @@ PackageMono()
     rm -f $outputFolderMono/MediaInfo.*
 
     echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderMono
+    cp $sourceFolder/NzbDrone.Core/Radarr.Core.dll.config $outputFolderMono
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
 
-    echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
+    echo "Renaming Radarr.Console.exe to Radarr.exe"
     rm $outputFolderMono/Radarr.exe*
     for file in $outputFolderMono/Radarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
-    echo "Removing NzbDrone.Windows"
-    rm $outputFolderMono/NzbDrone.Windows.*
+    echo "Removing Radarr.Windows"
+    rm $outputFolderMono/Radarr.Windows.*
 
-    echo "Adding NzbDrone.Mono to UpdatePackage"
-    cp $outputFolderMono/NzbDrone.Mono.* $updateFolderMono
+    echo "Adding Radarr.Mono to UpdatePackage"
+    cp $outputFolderMono/Radarr.Mono.* $updateFolderMono
 
     echo "##teamcity[progressFinish 'Creating Mono Package']"
 }
@@ -236,8 +249,8 @@ PackageTests()
 
     CleanFolder $testPackageFolder true
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
+    echo "Adding Radarr.Core.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Core/Radarr.Core.dll.config $testPackageFolder
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
@@ -250,11 +263,11 @@ PackageTests()
 
 CleanupWindowsPackage()
 {
-    echo "Removing NzbDrone.Mono"
-    rm -f $outputFolder/NzbDrone.Mono.*
+    echo "Removing Radarr.Mono"
+    rm -f $outputFolder/Radarr.Mono.*
 
-    echo "Adding NzbDrone.Windows to UpdatePackage"
-    cp $outputFolder/NzbDrone.Windows.* $updateFolder
+    echo "Adding Radarr.Windows to UpdatePackage"
+    cp $outputFolder/Radarr.Windows.* $updateFolder
 }
 
 # Use mono or .net depending on OS
@@ -262,7 +275,7 @@ case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
         # on windows, use dotnet
         runtime="dotnet"
-		vsLoc=$(./vswhere.exe -property installationPath)
+		vsLoc=$(./tools/vswhere/vswhere.exe -property installationPath)
 		vsLoc=$(echo "/$vsLoc" | sed -e 's/\\/\//g' -e 's/://')
 		msBuild="$vsLoc$msBuild"
         ;;

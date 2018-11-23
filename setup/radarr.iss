@@ -6,7 +6,7 @@
 #define AppURL "https://radarr.video/"
 #define ForumsURL "https://github.com/Radarr/Radarr/issues"
 #define AppExeName "Radarr.exe"
-#define BuildNumber "2.0"
+#define BuildNumber "1.0"
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
 #define BranchName StringChange(GetEnv('APPVEYOR_REPO_BRANCH'), "/", "-")
 

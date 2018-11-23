@@ -38,10 +38,10 @@ chmod +x $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr2
 mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr2 $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr >& error.log
 
 if [ $runtime = "dotnet" ] ; then
-  ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
-  ./7za.exe a -ttar -so Radarr_Mono_$VERSION.tar ./Radarr_Mono_$VERSION/* | ./7za.exe a -si Radarr_Mono_$VERSION.tar.gz
-  ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
-  ./7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
+  ./tools/7zip/7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
+  ./tools/7zip/7za.exe a -ttar -so Radarr_Mono_$VERSION.tar ./Radarr_Mono_$VERSION/* | ./tools/7zip/7za.exe a -si Radarr_Mono_$VERSION.tar.gz
+  ./tools/7zip/7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./tools/7zip/7za.exe a -si Radarr_OSX_$VERSION.tar.gz
+  ./tools/7zip/7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./tools/7zip/7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
 else
   cp -r $outputFolder/ Radarr
   zip -r Radarr.$BRANCH.$VERSION.windows.zip Radarr
