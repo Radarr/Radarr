@@ -115,7 +115,7 @@ jobs:
                     zip -r ../_packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx-app.zip *
             - run:
                 name: "Creating Installer"
-                command: wine setup/inno/ISCC.exe setup/nzbdrone.iss && cp -r setup/Output/Radarr* _packages/
+                command: wine setup/inno/ISCC.exe setup/radarr.iss && cp -r setup/Output/Radarr* _packages/
             - store_artifacts:
                 path: _packages
                 destination: artifacts

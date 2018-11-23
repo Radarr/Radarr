@@ -125,8 +125,6 @@ _tests/
 setup/Output/
 *.~is
 
-UI.Phantom/
-
 # VS outout folders
 bin
 obj

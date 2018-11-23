@@ -11,9 +11,9 @@ var outputFolderOsxApp = outputFolderOsx + "_app";
 var testPackageFolder = "./_tests";
 var testSearchPattern = "*.Test/bin/x86/Release";
 var sourceFolder = "./src";
-var solutionFile = sourceFolder + "/NzbDrone.sln";
-var updateFolder = outputFolder + "/NzbDrone.Update";
-var updateFolderMono = outputFolderMono + "/NzbDrone.Update";
+var solutionFile = sourceFolder + "/Radarr.sln";
+var updateFolder = outputFolder + "/Radarr.Update";
+var updateFolderMono = outputFolderMono + "/Radarr.Update";
 
 // Artifact variables
 var artifactsFolder = "./_artifacts";
@@ -136,8 +136,8 @@ Task("PackageMono").Does(() => {
 	DeleteFiles(outputFolderMono + "/sqlite3.*");
 	DeleteFiles(outputFolderMono + "/MediaInfo.*");
 
-	// Adding NzbDrone.Core.dll.config (for dllmap)
-	CopyFile(sourceFolder + "/NzbDrone.Core/NzbDrone.Core.dll.config", outputFolderMono + "/NzbDrone.Core.dll.config");
+	// Adding Radarr.Core.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Core/Radarr.Core.dll.config", outputFolderMono + "/Radarr.Core.dll.config");
 
 	// Adding CurlSharp.dll.config (for dllmap)
 	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", outputFolderMono + "/CurlSharp.dll.config");
@@ -148,11 +148,11 @@ Task("PackageMono").Does(() => {
 	MoveFile(outputFolderMono + "/Radarr.Console.exe.config", outputFolderMono + "/Radarr.exe.config");
 	MoveFile(outputFolderMono + "/Radarr.Console.exe.mdb", outputFolderMono + "/Radarr.exe.mdb");
 
-	// Remove NzbDrone.Windows.*
-	DeleteFiles(outputFolderMono + "/NzbDrone.Windows.*");
+	// Remove Radarr.Windows.*
+	DeleteFiles(outputFolderMono + "/Radarr.Windows.*");
 
-	// Adding NzbDrone.Mono to updatePackage
-	CopyFiles(outputFolderMono + "/NzbDrone.Mono.*", updateFolderMono);
+	// Adding Radarr.Mono to updatePackage
+	CopyFiles(outputFolderMono + "/Radarr.Mono.*", updateFolderMono);
 });
 
 Task("PackageOsx").Does(() => {
@@ -236,8 +236,8 @@ Task("PackageTests").Does(() => {
 	// Clean
 	CleanFolder(testPackageFolder, true);
 
-	// Adding NzbDrone.Core.dll.config (for dllmap)
-	CopyFile(sourceFolder + "/NzbDrone.Core/NzbDrone.Core.dll.config", testPackageFolder + "/NzbDrone.Core.dll.config");
+	// Adding Radarr.Core.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Core/Radarr.Core.dll.config", testPackageFolder + "/Radarr.Core.dll.config");
 
 	// Adding CurlSharp.dll.config (for dllmap)
 	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", testPackageFolder + "/CurlSharp.dll.config");
@@ -248,10 +248,10 @@ Task("PackageTests").Does(() => {
 
 Task("CleanupWindowsPackage").Does(() => {
 	// Remove mono
-	DeleteFiles(outputFolder + "/NzbDrone.Mono.*");
+	DeleteFiles(outputFolder + "/Radarr.Mono.*");
 
 	// Adding NzbDrone.Windows to updatePackage
-	CopyFiles(outputFolder + "/NzbDrone.Windows.*", updateFolder);
+	CopyFiles(outputFolder + "/Radarr.Windows.*", updateFolder);
 });
 
 Task("Build")
@@ -277,7 +277,7 @@ Task("ArtifactsWindows").Does(() => {
 });
 
 Task("ArtifactsWindowsInstaller").Does(() => {
-	InnoSetup("./setup/nzbdrone.iss", new InnoSetupSettings {
+	InnoSetup("./setup/radarr.iss", new InnoSetupSettings {
 		OutputDirectory = artifactsFolder,
 		ToolPath = "./setup/inno/ISCC.exe"
     });
