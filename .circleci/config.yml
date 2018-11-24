@@ -105,10 +105,10 @@ jobs:
                     zip -r _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.windows.zip _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_mono/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.linux.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.linux.tar.gz -C _packages Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_osx/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx.tar.gz -C _packages Radarr
                     rm -rf _packages/Radarr
                     cd _output_osx_app/
                     zip -r ../_packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx-app.zip *
