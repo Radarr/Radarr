@@ -62,6 +62,7 @@ jobs:
                     - _tests
                     - setup
                     - .circleci
+                    - deploy.sh
     unit_tests:
         <<: *defaults
         steps:
