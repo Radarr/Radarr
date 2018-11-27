@@ -50,7 +50,7 @@ namespace NzbDrone.Core.NetImport
 
         public List<INetImport> Discoverable()
         {
-            var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(Radarr.RadarrLists) || n.GetType() == typeof(TMDb.TMDbImport)));
+            var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(Radarr.RadarrLists) || n.GetType() == typeof(TMDb.TMDbImport) || n.GetType() == typeof(RadarrInstance.RadarrInstanceLists)));
             var indexers = FilterBlockedIndexers(enabledImporters);
             return indexers.ToList();
         }
