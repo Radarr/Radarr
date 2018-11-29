@@ -10,6 +10,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -58,6 +59,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             ExecuteCommand();
 
+            ExceptionVerification.ExpectedWarns(1);
+            
             Mocker.GetMock<IMediaFileService>().Verify(s => s.Update(It.IsAny<MovieFile>()), Times.Never());
         }
 

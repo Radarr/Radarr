@@ -5,7 +5,7 @@
 {{#sections}}
 {{{label}}}
 {{#commits}}
-- {{{subject}}} [<a href="https://github.com/{{{author}}}">{{{author}}}</a>]
+- {{{subject}}} [{{{author}}}]
 {{/commits}}
 
 {{/sections}}

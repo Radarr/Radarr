@@ -9,6 +9,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 
@@ -333,12 +334,12 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{IMDb Id}"] = m => $"{imdbId}";
         }
 
-        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile episodeFile)
+        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
-            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(episodeFile);
-            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(episodeFile);
+            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile);
+            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile);
             //tokenHandlers["{IMDb Id}"] = m =>
-            tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Radarr");
+            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
@@ -366,98 +367,22 @@ namespace NzbDrone.Core.Organizer
         {
             if (movieFile.MediaInfo == null) return;
 
-            string videoCodec;
-            switch (movieFile.MediaInfo.VideoCodec)
+            var sceneName = movieFile.GetSceneOrFileName();
+
+            var videoCodec =  MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
+            var audioCodec =  MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
+            var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
+
+            // Workaround until https://github.com/MediaArea/MediaInfo/issues/299 is fixed and release
+            if (audioCodec.EqualsIgnoreCase("DTS-X"))
             {
-                case "AVC":
-                    if (movieFile.SceneName.IsNotNullOrWhiteSpace() && Path.GetFileNameWithoutExtension(movieFile.SceneName).Contains("h264"))
-                    {
-                        videoCodec = "h264";
-                    }
-                    else
-                    {
-                        videoCodec = "x264";
-                    }
-                    break;
-
-                case "V_MPEGH/ISO/HEVC":
-                    if (movieFile.SceneName.IsNotNullOrWhiteSpace() && Path.GetFileNameWithoutExtension(movieFile.SceneName).Contains("h265"))
-                    {
-                        videoCodec = "h265";
-                    }
-                    else
-                    {
-                        videoCodec = "x265";
-                    }
-                    break;
-
-                case "MPEG-2 Video":
-                    videoCodec = "MPEG2";
-                    break;
-
-                default:
-                    videoCodec = movieFile.MediaInfo.VideoCodec;
-                    break;
-            }
-
-            string audioCodec;
-            switch (movieFile.MediaInfo.AudioFormat)
-            {
-                case "AC-3":
-                    audioCodec = "AC3";
-                    break;
-
-                case "E-AC-3":
-                    audioCodec = "EAC3";
-                    break;
-
-                case "Atmos / TrueHD":
-                    audioCodec = "Atmos TrueHD";
-                    break;
-
-                case "MPEG Audio":
-                    if (movieFile.MediaInfo.AudioProfile == "Layer 3")
-                    {
-                        audioCodec = "MP3";
-                    }
-                    else
-                    {
-                        audioCodec = movieFile.MediaInfo.AudioFormat;
-                    }
-                    break;
-
-                case "DTS":
-                    if (movieFile.MediaInfo.AudioProfile == "ES" || movieFile.MediaInfo.AudioProfile == "ES Discrete" || movieFile.MediaInfo.AudioProfile == "ES Matrix")
-                    {
-                        audioCodec = "DTS-ES";
-                    }
-                    else if (movieFile.MediaInfo.AudioProfile == "MA")
-                    {
-                        audioCodec = "DTS-HD MA";
-                    }
-                    else if (movieFile.MediaInfo.AudioProfile == "HRA")
-                    {
-                        audioCodec = "DTS-HD HRA";
-                    }
-                    else if (movieFile.MediaInfo.AudioProfile == "X")
-                    {
-                        audioCodec = "DTS-X";
-                    }
-                    else
-                    {
-                        audioCodec = movieFile.MediaInfo.AudioFormat;
-                    }
-                    break;
-
-                default:
-                    audioCodec = movieFile.MediaInfo.AudioFormat;
-                    break;
+                audioChannels = audioChannels - 1 + 0.1m;
             }
 
             var mediaInfoAudioLanguages = GetLanguagesToken(movieFile.MediaInfo.AudioLanguages);
             if (!mediaInfoAudioLanguages.IsNullOrWhiteSpace())
             {
-                mediaInfoAudioLanguages = string.Format("[{0}]", mediaInfoAudioLanguages);
+                mediaInfoAudioLanguages = $"[{mediaInfoAudioLanguages}]";
             }
             var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
             if (mediaInfoAudioLanguages == "[EN]")
@@ -465,17 +390,32 @@ namespace NzbDrone.Core.Organizer
                 mediaInfoAudioLanguages = string.Empty;
             }
 
-
             var mediaInfoSubtitleLanguages = GetLanguagesToken(movieFile.MediaInfo.Subtitles);
             if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
             {
-                mediaInfoSubtitleLanguages = string.Format("[{0}]", mediaInfoSubtitleLanguages);
+                mediaInfoSubtitleLanguages = $"[{mediaInfoSubtitleLanguages}]";
             }
 
             var videoBitDepth = movieFile.MediaInfo.VideoBitDepth > 0 ? movieFile.MediaInfo.VideoBitDepth.ToString() : string.Empty;
-            var audioChannels = movieFile.MediaInfo.FormattedAudioChannels > 0 ?
-                                movieFile.MediaInfo.FormattedAudioChannels.ToString("F1", CultureInfo.InvariantCulture) :
-                                string.Empty;
+            var audioChannelsFormatted = audioChannels > 0 ?
+                            audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
+                            string.Empty;
+
+            var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
+
+            var videoColourPrimaries = movieFile.MediaInfo.VideoColourPrimaries ?? string.Empty;
+            var videoTransferCharacteristics = movieFile.MediaInfo.VideoTransferCharacteristics ?? string.Empty;
+            var mediaInfoHDR = string.Empty;
+
+            if (movieFile.MediaInfo.VideoBitDepth >= 10 && !videoColourPrimaries.IsNullOrWhiteSpace() && !videoTransferCharacteristics.IsNullOrWhiteSpace())
+            {
+                string[] validTransferFunctions = new string[] { "PQ", "HLG" };
+
+                if (videoColourPrimaries.EqualsIgnoreCase("BT.2020") && validTransferFunctions.Any(videoTransferCharacteristics.Contains))
+                {
+                    mediaInfoHDR = "HDR";
+                }
+            }
 
             tokenHandlers["{MediaInfo Video}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoCodec}"] = m => videoCodec;
@@ -483,14 +423,17 @@ namespace NzbDrone.Core.Organizer
 
             tokenHandlers["{MediaInfo Audio}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioCodec}"] = m => audioCodec;
-            tokenHandlers["{MediaInfo AudioChannels}"] = m => audioChannels;
-
-            tokenHandlers["{MediaInfo Simple}"] = m => string.Format("{0} {1}", videoCodec, audioCodec);
-
-            tokenHandlers["{MediaInfo Full}"] = m => string.Format("{0} {1}{2} {3}", videoCodec, audioCodec, mediaInfoAudioLanguages, mediaInfoSubtitleLanguages);
+            tokenHandlers["{MediaInfo AudioChannels}"] = m => audioChannelsFormatted;
             tokenHandlers["{MediaInfo AudioLanguages}"] = m => mediaInfoAudioLanguages;
             tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
+
             tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
+
+            tokenHandlers["{MediaInfo 3D}"] = m => mediaInfo3D;
+            tokenHandlers["{MediaInfo HDR}"] = m => mediaInfoHDR;
+
+            tokenHandlers["{MediaInfo Simple}"] = m => $"{videoCodec} {audioCodec}";
+            tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)
@@ -610,24 +553,24 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetOriginalTitle(MovieFile episodeFile)
+        private string GetOriginalTitle(MovieFile movieFile)
         {
-            if (episodeFile.SceneName.IsNullOrWhiteSpace())
+            if (movieFile.SceneName.IsNullOrWhiteSpace())
             {
-                return GetOriginalFileName(episodeFile);
+                return GetOriginalFileName(movieFile);
             }
 
-            return episodeFile.SceneName;
+            return movieFile.SceneName;
         }
 
-        private string GetOriginalFileName(MovieFile episodeFile)
+        private string GetOriginalFileName(MovieFile movieFile)
         {
-            if (episodeFile.RelativePath.IsNullOrWhiteSpace())
+            if (movieFile.RelativePath.IsNullOrWhiteSpace())
             {
-                return Path.GetFileNameWithoutExtension(episodeFile.Path);
+                return Path.GetFileNameWithoutExtension(movieFile.Path);
             }
 
-            return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
+            return Path.GetFileNameWithoutExtension(movieFile.RelativePath);
         }
     }
 

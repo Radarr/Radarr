@@ -260,14 +260,14 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 AudioFormat = "DTS",
                 AudioLanguages = "English/Spanish",
                 Subtitles = "English/Spanish/Italian"
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.X264.DTS[EN+ES].[EN+ES+IT]");
+                   .Should().Be("South.Park.H264.DTS[EN+ES].[EN+ES+IT]");
         }
 
         [Test]
@@ -277,14 +277,52 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoCodec = "AVC",
+                VideoFormat = "AVC",
                 AudioFormat = "DTS",
                 AudioLanguages = "English",
                 Subtitles = "English/Spanish/Italian"
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South.Park.X264.DTS.[EN+ES+IT]");
+                   .Should().Be("South.Park.H264.DTS.[EN+ES+IT]");
+        }
+
+        [Test]
+        public void should_format_mediainfo_3d_properly()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.3D}.{MediaInfo.Simple}";
+
+            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            {
+                VideoFormat = "AVC",
+                VideoMultiViewCount = 2,
+                AudioFormat = "DTS",
+                AudioLanguages = "English",
+                Subtitles = "English/Spanish/Italian"
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South.Park.3D.h264.DTS");
+        }
+
+        [Test]
+        public void should_format_mediainfo_hdr_properly()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.HDR}.{MediaInfo.Simple}";
+
+            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            {
+                VideoFormat = "AVC",
+                VideoBitDepth = 10,
+                VideoColourPrimaries = "BT.2020",
+                VideoTransferCharacteristics = "PQ",
+                AudioFormat = "DTS",
+                AudioLanguages = "English",
+                Subtitles = "English/Spanish/Italian"
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South.Park.HDR.h264.DTS");
         }
 
         [Test]

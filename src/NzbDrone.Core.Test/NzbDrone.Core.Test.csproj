@@ -168,6 +168,7 @@
     <Compile Include="DecisionEngineTests\Search\MovieSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RawDiskSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
+    <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
@@ -314,6 +315,9 @@
     <Compile Include="OrganizerTests\CleanFixture.cs" />
     <Compile Include="MediaFiles\MediaFileServiceTests\FilterFixture.cs" />
     <Compile Include="MediaFiles\MediaFileTableCleanupServiceFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioChannelsFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatVideoCodecFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\VideoFileInfoReaderFixture.cs" />
     <Compile Include="MediaFiles\RenameMovieFileServiceFixture.cs" />

@@ -104,13 +104,6 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (RawHDRegex.IsMatch(normalizedName))
-            {
-                result.Modifier = Modifier.RAWHD;
-                result.Source = Source.TV;
-                return result;
-            }
-
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
@@ -128,6 +121,13 @@ namespace NzbDrone.Core.Parser
                 result.Modifier = Modifier.REMUX;
                 result.Source = Source.BLURAY;
                 return result; //We found remux!
+            }
+            
+            if (RawHDRegex.IsMatch(normalizedName) && result.Modifier != Modifier.BRDISK)
+            {
+                result.Modifier = Modifier.RAWHD;
+                result.Source = Source.TV;
+                return result;
             }
 
             if (sourceMatch != null && sourceMatch.Success)

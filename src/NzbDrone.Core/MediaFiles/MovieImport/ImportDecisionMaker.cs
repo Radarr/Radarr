@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IQualityDefinitionService _qualitiesService;
         private readonly IConfigService _config;
         private readonly IHistoryService _historyService;
+        private readonly ICached<string> _warnedFiles;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -48,6 +50,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IQualityDefinitionService qualitiesService,
                                    IConfigService config,
                                    IHistoryService historyService,
+                                   ICacheManager cacheManager,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -59,6 +62,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _qualitiesService = qualitiesService;
             _config = config;
             _historyService = historyService;
+            _warnedFiles = cacheManager.GetCache<string>(this.GetType());
             _logger = logger;
         }
 
@@ -148,7 +152,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                     {
-                        _logger.Warn("Unable to parse movie info from path {0}", file);
+                        if (_warnedFiles.Find(file) == null)
+                        {
+                            _warnedFiles.Set(file, "warned");
+                            _logger.Warn("Unable to parse movie info from path {0}", file);  
+                        }
+                        else
+                        {
+                            _logger.Trace("Already warned user that we are unable to parse movie info from path: {0}", file);
+                        }
+
                     }
 
                     decision = new ImportDecision(localMovie, new Rejection("Unable to parse file"));

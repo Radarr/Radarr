@@ -236,6 +236,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
         [TestCase("27.Dresses.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        [TestCase("The.Stoning.of.Soraya.M.2008.USA.BluRay.Remux.1080p.MPEG-2.DD.5.1-TDD")]
+        [TestCase("Wildling.2018.1080p.BluRay.REMUX.MPEG-2.DTS-HD.MA.5.1-EPSiLON")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080P, Modifier.REMUX);
@@ -344,7 +346,10 @@ namespace NzbDrone.Core.Test.ParserTests
         private void ParseAndVerifyQuality(string title, Source source, bool proper, Resolution resolution, Modifier modifier = Modifier.NONE)
         {
             var result = QualityParser.ParseQuality(title);
-            result.Resolution.Should().Be(resolution);
+            if (resolution != Resolution.Unknown)
+            {
+                result.Resolution.Should().Be(resolution);
+            }
             result.Source.Should().Be(source);
             if (modifier != Modifier.NONE)
             {

@@ -15,6 +15,7 @@ namespace NzbDrone.Core.RootFolders
     {
         List<RootFolder> All();
         List<RootFolder> AllWithUnmappedFolders();
+        List<RootFolder> AllWithSpace();
         RootFolder Add(RootFolder rootDir);
         void Remove(int id);
         RootFolder Get(int id);
@@ -58,6 +59,31 @@ namespace NzbDrone.Core.RootFolders
         public List<RootFolder> All()
         {
             var rootFolders = _rootFolderRepository.All().ToList();
+
+            return rootFolders;
+        }
+
+        public List<RootFolder> AllWithSpace()
+        {
+            var rootFolders = _rootFolderRepository.All().ToList();
+
+            rootFolders.ForEach(folder =>
+            {
+                try
+                {
+                    if (folder.Path.IsPathValid() && _diskProvider.FolderExists(folder.Path))
+                    {
+                        folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
+                        folder.TotalSpace = _diskProvider.GetTotalSize(folder.Path);
+                    }
+                }
+                //We don't want an exception to prevent the root folders from loading in the UI, so they can still be deleted
+                catch (Exception ex)
+                {
+                    folder.FreeSpace = 0;
+                    _logger.Error(ex, "Unable to get free space for root folder {0}", folder.Path);
+                }
+            });
 
             return rootFolders;
         }

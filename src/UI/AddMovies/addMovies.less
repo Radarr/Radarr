@@ -1,3 +1,4 @@
+@import "../Content/Bootstrap/mixins";
 @import "../Shared/Styles/card.less";
 @import "../Shared/Styles/clickable.less";
 
@@ -130,6 +131,13 @@
   .hint {
     color      : #999999;
     font-style : italic;
+
+    &.path {
+      .text-overflow();
+
+      display: block;
+      font-size: 12px;
+    }
   }
 
   .monitor-tooltip-contents {

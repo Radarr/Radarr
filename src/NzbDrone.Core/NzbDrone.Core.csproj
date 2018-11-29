@@ -847,6 +847,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaFiles\MediaFileTableCleanupService.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoLib.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoModel.cs" />
     <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoService.cs" />
@@ -1318,7 +1319,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

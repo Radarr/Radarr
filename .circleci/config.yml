@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: gallileo/radarr-cci-primary:5.8.7
+    - image: gallileo/radarr-cci-primary:5.8.8
   environment:
       BUILD_VERSION: 0.2.0
 
@@ -62,6 +62,7 @@ jobs:
                     - _tests
                     - setup
                     - .circleci
+                    - deploy.sh
     unit_tests:
         <<: *defaults
         steps:
@@ -105,10 +106,10 @@ jobs:
                     zip -r _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.windows.zip _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_mono/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.linux.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.linux.tar.gz -C _packages Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_osx/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx.tar.gz -C _packages Radarr
                     rm -rf _packages/Radarr
                     cd _output_osx_app/
                     zip -r ../_packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx-app.zip *
@@ -118,6 +119,9 @@ jobs:
             - store_artifacts:
                 path: _packages
                 destination: artifacts
+            - run:
+                name: "Deploying"
+                command: chmod +x deploy.sh && ./deploy.sh
             - persist_to_workspace:
                 root: .
                 # Must be relative path from root
@@ -150,16 +154,16 @@ workflows:
             - unit_tests:
                 requires:
                     - build
-            - integration_tests:
-                requires:
-                    - build
+            #- integration_tests:
+            #    requires:
+            #        - build
             - publish_artifacts:
                 requires:
                     - build
-            - request_deploy:
-                type: approval
-                requires:
-                    - publish_artifacts
-            - deploy:
-                requires:
-                    - request_deploy
+            #- request_deploy:
+            #    type: approval
+            #    requires:
+            #        - publish_artifacts
+            #- deploy:
+            #    requires:
+            #        - request_deploy

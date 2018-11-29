@@ -11,3 +11,4 @@ RUN curl -O https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz && tar xvf go*.
 ENV GOPATH=$HOME/work
 ENV PATH="${PATH}:/usr/local/go/bin:$GOPATH/bin"
 RUN go get github.com/aktau/github-release
+RUN npm install -g yarn

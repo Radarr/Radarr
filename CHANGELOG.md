@@ -3,6 +3,16 @@
 ## (unreleased)
 
 ### **New features**
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) 64bit mediainfo.dll to 32bit to resolve issue: https://github.com/Radarr/Radarr/issues/3138. [<a href="https://github.com/geogolem">geogolem</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Refactor MediaInfo tokens (fixes old tokens adds new stuff) ([#3058](https://github.com/Radarr/Radarr/issues/3058)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't hide custom formats behind advanced settings when editing quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Upped rate at which we scan the download client. Should reduce cpu and ram usage as well as decrease pressure on download clients. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Improve model and UI handling for lists. Should finally fix root folder errors. ([#3133](https://github.com/Radarr/Radarr/issues/3133)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't return unmapped folders on rootfolder API call. Massively improves loading time. ([#3116](https://github.com/Radarr/Radarr/issues/3116)) [<a href="https://github.com/Justin Kromlinger">Justin Kromlinger</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Support for Homebrew-installed mono ([#3090](https://github.com/Radarr/Radarr/issues/3090)) [<a href="https://github.com/Jeff Byrnes">Jeff Byrnes</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) mk3d file format ([#2795](https://github.com/Radarr/Radarr/issues/2795)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) "Add Paused" option to Deluge and Transmission ([#3038](https://github.com/Radarr/Radarr/issues/3038)) [<a href="https://github.com/cookandy">cookandy</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) All-around small improvements ([#3032](https://github.com/Radarr/Radarr/issues/3032)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Czech Language ([#2948](https://github.com/Radarr/Radarr/issues/2948)) [<a href="https://github.com/halali">halali</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Fallback to Bitrate_Nominal for MediaInfo ([#2886](https://github.com/Radarr/Radarr/issues/2886)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) All new custom formats 9000! (Rescan old files, delete formats, polish UI, etc. See discord for full changes): [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
@@ -13,6 +23,21 @@
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) "importing an episode" to "importing a movie file" ([#2829](https://github.com/Radarr/Radarr/issues/2829)) [<a href="https://github.com/Travis Boss">Travis Boss</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Fallback to 'VideoCodec' if 'VideoFormat' is unavailable ([#3142](https://github.com/Radarr/Radarr/issues/3142)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Read video 'BitRate_Nominal' if 'BitRate' is empty ([#3144](https://github.com/Radarr/Radarr/issues/3144)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) UpdateMovieQualityService Tests. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Ignore "special drives" from System » Disk Space ([#3050](https://github.com/Radarr/Radarr/issues/3050)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Tweak style of movie path template on "add movies" screen ([#3108](https://github.com/Radarr/Radarr/issues/3108)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Unable to update custom formats for releases with bad Source Titles. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Do not search movie if unmonitored ([#3131](https://github.com/Radarr/Radarr/issues/3131)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Quality badges not being shown on bulk import. ([#3121](https://github.com/Radarr/Radarr/issues/3121)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Trim filename from Kodi movie path before sending library scan request. ([#3097](https://github.com/Radarr/Radarr/issues/3097)) [<a href="https://github.com/Lawrence">Lawrence</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Hopefully fixed bulk import not showing files. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MPEG-2 remuxes being detected as "Raw-HD" quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Allow directory to be parsed similar to past implementation ([#3057](https://github.com/Radarr/Radarr/issues/3057)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Class names on the 'add movies screen' ([#3047](https://github.com/Radarr/Radarr/issues/3047)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Use proper cursor for text and linked labels ([#3041](https://github.com/Radarr/Radarr/issues/3041)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Donate button requiring two clicks to actually work. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Templates for custom format using wrong modifiers. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Profiles always failing validation. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) ImdbIds not being padded with zeroes, which messes up matching. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]

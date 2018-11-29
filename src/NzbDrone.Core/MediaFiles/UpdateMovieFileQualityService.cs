@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.Commands;
@@ -9,6 +10,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using RestSharp.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -51,6 +53,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 var history = _historyService.FindByMovieId(movieFile.MovieId).OrderByDescending(h => h.Date);
                 var latestImported = history.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadFolderImported);
+                var latestImportedName = latestImported?.SourceTitle;
                 var latestGrabbed = history.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
                 var sizeMovie = new LocalMovie();
                 sizeMovie.Size = movieFile.Size;
@@ -67,7 +70,18 @@ namespace NzbDrone.Core.MediaFiles
                     helpers.Add(latestGrabbed);
                 }
 
-                var parsedMovieInfo = _parsingService.ParseMovieInfo(latestImported?.SourceTitle ?? movieFile.RelativePath, helpers);
+                ParsedMovieInfo parsedMovieInfo = null;
+
+                if (latestImportedName?.IsNotNullOrWhiteSpace() == true)
+                {
+                    parsedMovieInfo = _parsingService.ParseMovieInfo(latestImportedName, helpers);
+                }
+
+                if (parsedMovieInfo == null)
+                {
+                    _logger.Debug("Could not parse movie info from history source title, using current path instead: {0}.", movieFile.RelativePath);
+                    parsedMovieInfo = _parsingService.ParseMovieInfo(movieFile.RelativePath, helpers);
+                }
 
                 //Only update Custom formats for now.
                 if (parsedMovieInfo != null)
@@ -78,7 +92,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else
                 {
-                    _logger.Debug("Could not update custom formats for {0}, since it's title could not be parsed!", movieFile);
+                    _logger.Warn("Could not update custom formats for {0}, since it's title could not be parsed!", movieFile);
                 }
 
                 count++;
