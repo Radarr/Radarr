@@ -41,6 +41,8 @@ const plugins = [
   })
 ];
 
+let babelPlugins = ['transform-class-properties', 'transform-react-jsx-source'];
+
 if (isProduction) {
   plugins.push(new UglifyJSPlugin({
     sourceMap: true,
@@ -52,6 +54,8 @@ if (isProduction) {
       }
     }
   }));
+
+  babelPlugins = ['transform-class-properties', 'transform-react-remove-prop-types'];
 }
 
 const config = {
@@ -102,14 +106,9 @@ const config = {
         test: /\.js?$/,
         exclude: /(node_modules|JsLibraries)/,
         loader: 'babel-loader',
-        query: {
-          plugins: ['transform-class-properties'],
-          presets: ['es2015', 'decorators-legacy', 'react', 'stage-2'],
-          env: {
-            development: {
-              plugins: ['transform-react-jsx-source']
-            }
-          }
+        options: {
+          plugins: babelPlugins,
+          presets: ['env', 'decorators-legacy', 'react', 'stage-2']
         }
       },
 

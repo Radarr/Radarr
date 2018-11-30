@@ -2,19 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import albumEntities from 'Album/albumEntities';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
-import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
 import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import styles from './MissingRow.css';
 
 function MissingRow(props) {
   const {
     id,
-    // trackFileId,
     artist,
     releaseDate,
     albumType,
@@ -111,7 +108,6 @@ function MissingRow(props) {
 
 MissingRow.propTypes = {
   id: PropTypes.number.isRequired,
-  // trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
   foreignAlbumId: PropTypes.string.isRequired,

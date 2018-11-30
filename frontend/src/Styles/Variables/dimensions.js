@@ -18,7 +18,7 @@ module.exports = {
   breakpointExtraSmall: '480px',
   breakpointSmall: '768px',
   breakpointMedium: '992px',
-  breakpointLarge: '1200px',
+  breakpointLarge: '1310px',
   breakpointExtraLarge: '1450px',
 
   // Form

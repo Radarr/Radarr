@@ -496,7 +496,7 @@ class ArtistDetails extends Component {
                 </div>
                 <div className={styles.overview}>
                   <TextTruncate
-                    line={Math.floor(200 / (defaultFontSize * lineHeight))}
+                    line={Math.floor(125 / (defaultFontSize * lineHeight))}
                     text={overview}
                   />
                 </div>
