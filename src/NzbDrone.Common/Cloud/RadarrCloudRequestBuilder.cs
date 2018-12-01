@@ -2,23 +2,18 @@ using NzbDrone.Common.Http;
 
 namespace NzbDrone.Common.Cloud
 {
-    public interface ISonarrCloudRequestBuilder
+    public interface IRadarrCloudRequestBuilder
     {
         IHttpRequestBuilderFactory Services { get; }
-        IHttpRequestBuilderFactory SkyHookTvdb { get; }
         IHttpRequestBuilderFactory TMDB { get; }
         IHttpRequestBuilderFactory TMDBSingle { get; }
     }
 
-    public class SonarrCloudRequestBuilder : ISonarrCloudRequestBuilder
+    public class RadarrCloudRequestBuilder : IRadarrCloudRequestBuilder
     {
-        public SonarrCloudRequestBuilder()
+        public RadarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("http://radarr.aeonlucid.com/v1/")
-                .CreateFactory();
-
-            SkyHookTvdb = new HttpRequestBuilder("http://skyhook.sonarr.tv/v1/tvdb/{route}/{language}/")
-                .SetSegment("language", "en")
+            Services = new HttpRequestBuilder("https://radarr.aeonlucid.com/v1/")
                 .CreateFactory();
 
             TMDB = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}/{id}{secondaryRoute}")
@@ -31,7 +26,6 @@ namespace NzbDrone.Common.Cloud
         }
 
         public IHttpRequestBuilderFactory Services { get; private set; }
-        public IHttpRequestBuilderFactory SkyHookTvdb { get; private set; }
         public IHttpRequestBuilderFactory TMDB { get; private set; }
         public IHttpRequestBuilderFactory TMDBSingle { get; private set; }
     }

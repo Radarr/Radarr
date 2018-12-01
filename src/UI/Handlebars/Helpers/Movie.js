@@ -103,15 +103,15 @@ Handlebars.registerHelper('remotePoster', function() {
 });
 
 Handlebars.registerHelper('traktUrl', function() {
-    return 'http://trakt.tv/search/tmdb/' + this.tmdbId + '?id_type=movie';
+    return 'https://trakt.tv/search/tmdb/' + this.tmdbId + '?id_type=movie';
 });
 
 Handlebars.registerHelper('imdbUrl', function() {
-    return 'http://imdb.com/title/' + this.imdbId;
+    return 'https://imdb.com/title/' + this.imdbId;
 });
 
 Handlebars.registerHelper('tvdbUrl', function() {
-    return 'http://imdb.com/title/tt' + this.imdbId;
+    return 'https://imdb.com/title/tt' + this.imdbId;
 });
 
 Handlebars.registerHelper('tmdbUrl', function() {
