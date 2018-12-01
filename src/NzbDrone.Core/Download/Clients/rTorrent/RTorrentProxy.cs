@@ -13,8 +13,8 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         string GetVersion(RTorrentSettings settings);
         List<RTorrentTorrent> GetTorrents(RTorrentSettings settings);
 
-        void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, RTorrentSettings settings);
-        void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, RTorrentSettings settings);
+        void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings);
+        void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings);
         void RemoveTorrent(string hash, RTorrentSettings settings);
         bool HasHashTorrent(string hash, RTorrentSettings settings);
     }
