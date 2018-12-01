@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
 
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings.DontStartAutomatically, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
 
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings.DontStartAutomatically, Settings);
 
             var tries = 10;
             var retryDelay = 500;
