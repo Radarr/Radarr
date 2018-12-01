@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
         }
 
-        public void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool donNotStart, RTorrentSettings settings)
+        public void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings)
         {
             _logger.Debug("Executing remote method: load.raw");
 
