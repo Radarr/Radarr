@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -340,14 +340,27 @@ namespace NzbDrone.Core.Configuration
             {
                 throw new InvalidConfigFileException($"{_configFile} is corrupt is invalid. Please delete the config file and Lidarr will recreate it.", ex);
             }
+
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new AccessDeniedConfigFileException($"Lidarr does not have access to config file: {_configFile}. Please fix permissions", ex);
+            }
         }
 
         private void SaveConfigFile(XDocument xDoc)
         {
-            lock (Mutex)
+            try
             {
-                _diskProvider.WriteAllText(_configFile, xDoc.ToString());
+                lock (Mutex)
+                {
+                    _diskProvider.WriteAllText(_configFile, xDoc.ToString());
+                }
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new AccessDeniedConfigFileException($"Lidarr does not have access to config file: {_configFile}. Please fix permissions", ex);
+            }
+
         }
 
         private string GenerateApiKey()

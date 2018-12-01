@@ -93,15 +93,15 @@ namespace NzbDrone.Common.Instrumentation
             if (updateClient)
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://40210a1318dd4182840c17230a1bef36:2432a6c304964372ac878179c6511811@sentry.io/209545"
-                    : "https://edab7530cf9544dba1f86ac28aa0110b:b84a1425fc304f0188ef968576fe9690@sentry.io/227247";
+                    ? "https://f9238e093c75412b9351f80668a3a87c:a9392d355bd64cad80780a5279d9af82@sentry.io/209545"
+                    : "https://28faaa7023384031b29e38d3be74fa11:829cdc25ebd34ad5a8c16aca920cb5b0@sentry.io/227247";
 
             }
             else
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://40210a1318dd4182840c17230a1bef36:2432a6c304964372ac878179c6511811@sentry.io/209545"
-                    : "https://edab7530cf9544dba1f86ac28aa0110b:b84a1425fc304f0188ef968576fe9690@sentry.io/227247";
+                    ? "https://f9238e093c75412b9351f80668a3a87c:a9392d355bd64cad80780a5279d9af82@sentry.io/209545"
+                    : "https://28faaa7023384031b29e38d3be74fa11:829cdc25ebd34ad5a8c16aca920cb5b0@sentry.io/227247";
             }
 
             var target = new SentryTarget(dsn)

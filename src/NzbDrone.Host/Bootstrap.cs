@@ -54,6 +54,10 @@ namespace NzbDrone.Host
             {
                 throw new LidarrStartupException(ex);
             }
+            catch (AccessDeniedConfigFileException ex)
+            {
+                throw new LidarrStartupException(ex);
+            }
             catch (TerminateApplicationException ex)
             {
                 Logger.Info(ex.Message);
