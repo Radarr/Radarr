@@ -300,6 +300,7 @@
     <Compile Include="NetImport\RSSImportParserFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
+    <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
     <Compile Include="OrganizerTests\GetMovieFolderFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentMovieInfoFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithFileSizeFixture.cs" />

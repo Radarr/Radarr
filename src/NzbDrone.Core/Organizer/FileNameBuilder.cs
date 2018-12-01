@@ -72,6 +72,8 @@ namespace NzbDrone.Core.Organizer
 
         private static readonly char[] EpisodeTitleTrimCharacters = new[] { ' ', '.', '?' };
 
+        private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
                                ICacheManager cacheManager,
@@ -265,24 +267,7 @@ namespace NzbDrone.Core.Organizer
 
         public static string TitleThe(string title)
         {
-            string[] prefixes = { "The ", "An ", "A " };
-
-			if (title.Length < 5)
-			{
-				return title;
-			}
-
-            foreach (string prefix in prefixes)
-            {
-                int prefix_length = prefix.Length;
-                if (prefix.ToLower() == title.Substring(0, prefix_length).ToLower())
-                {
-                    title = title.Substring(prefix_length) + ", " + prefix.Trim();
-                    break;
-                }
-            }
-
-            return title.Trim();
+            return TitlePrefixRegex.Replace(title, "$2, $1$3");
         }
 
         public static string CleanFileName(string name, bool replace = true, ColonReplacementFormat colonReplacement = ColonReplacementFormat.Delete)
@@ -313,7 +298,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Movie Title}"] = m => movie.Title;
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
-            tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
+            tokenHandlers["{Movie TitleThe}"] = m => TitleThe(movie.Title);
         }
 
         private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
@@ -500,6 +485,7 @@ namespace NzbDrone.Core.Organizer
 
             if (!tokenMatch.Separator.IsNullOrWhiteSpace())
             {
+                replacementText = replacementText.Replace(", ", ",");
                 replacementText = replacementText.Replace(" ", tokenMatch.Separator);
             }
 
