@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         public void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings)
         {
-            _logger.Debug("Executing remote method: load.normal");
+            _logger.Debug("Adding Torrent From URL");
 
             var client = BuildClient(settings);
 
@@ -118,10 +118,12 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
             if (doNotStart)
             {
+                _logger.Debug("Executing remote method load.normal");
                 response = client.Load("", torrentUrl, GetCommands(label, priority, directory));
             }
             else
             {
+                _logger.Debug("Executing remote method load.start");
                 response = client.LoadStart("", torrentUrl, GetCommands(label, priority, directory));
             }
 
@@ -133,7 +135,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         public void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings)
         {
-            _logger.Debug("Executing remote method: load.raw");
+            _logger.Debug("Loading Torrent from File");
 
             var client = BuildClient(settings);
 
@@ -141,10 +143,12 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
             if (doNotStart)
             {
+                _logger.Debug("Executing remote method load.raw");
                 response = client.LoadRaw("", fileContent, GetCommands(label, priority, directory));
             }
             else
             {
+                _logger.Debug("Executing remote method load.raw_start");
                 response = client.LoadRawStart("", fileContent, GetCommands(label, priority, directory));
             }
 
