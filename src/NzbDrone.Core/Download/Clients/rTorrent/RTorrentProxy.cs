@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
             var client = BuildClient(settings);
 
-            var response = null;
+            var response = -1;
 
             if (doNotStart)
             {
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
             var client = BuildClient(settings);
 
-            var response = null;
+            var response = -1;
 
             if (doNotStart)
             {
