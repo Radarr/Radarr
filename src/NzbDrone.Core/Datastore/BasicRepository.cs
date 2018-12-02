@@ -42,7 +42,10 @@ namespace NzbDrone.Core.Datastore
         private readonly IDatabase _database;
         private readonly IEventAggregator _eventAggregator;
 
-        protected IDataMapper DataMapper => _database.GetDataMapper();
+        protected IDataMapper DataMapper()
+        {
+            return _database.GetDataMapper();
+        }
 
         public BasicRepository(IDatabase database, IEventAggregator eventAggregator)
         {
@@ -50,26 +53,40 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => AddJoinQueries(DataMapper.Query<TModel>());
+
+        protected T Query<T>(Func<QueryBuilder<TModel>, T> finalizeQuery)
+        {
+            using (var mapper = DataMapper())
+            {
+                var query = AddJoinQueries(mapper.Query<TModel>());
+                return finalizeQuery(query);
+            }
+        }
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
-            DataMapper.Delete(filter);
+            using (var db = DataMapper())
+            {
+                db.Delete(filter);
+            }
         }
 
         public IEnumerable<TModel> All()
         {
-            return Query.ToList();
+            return Query((q => q.ToList()));
         }
 
         public int Count()
         {
-            return DataMapper.Query<TModel>().GetRowCount();
+            using (var db = DataMapper())
+            {
+                return db.Query<TModel>().GetRowCount();
+            }
         }
 
         public TModel Get(int id)
         {
-            var model = Query.Where(c => c.Id == id).SingleOrDefault();
+            TModel model = Query(q => q.Where(c => c.Id == id).SingleOrDefault());
 
             if (model == null)
             {
@@ -83,7 +100,7 @@ namespace NzbDrone.Core.Datastore
         {
             var idList = ids.ToList();
             var query = string.Format("Id IN ({0})", string.Join(",", idList));
-            var result = Query.Where(m => m.Id.In(idList)).ToList();
+            var result = Query(q => q.Where(m => m.Id.In(idList)).ToList());
             //var result = Query.Where(query).ToList();
 
             if (result.Count != idList.Count())
@@ -111,7 +128,10 @@ namespace NzbDrone.Core.Datastore
                 throw new InvalidOperationException("Can't insert model with existing ID " + model.Id);
             }
 
-            DataMapper.Insert(model);
+            using (var db = DataMapper())
+            {
+                db.Insert(model);
+            }
 
             ModelCreated(model);
 
@@ -125,7 +145,10 @@ namespace NzbDrone.Core.Datastore
                 throw new InvalidOperationException("Can't update model with ID 0");
             }
 
-            DataMapper.Update(model, c => c.Id == model.Id);
+            using (var db = DataMapper())
+            {
+                db.Update(model, c => c.Id == model.Id);
+            }
 
             ModelUpdated(model);
 
@@ -139,7 +162,7 @@ namespace NzbDrone.Core.Datastore
 
         public void InsertMany(IList<TModel> models)
         {
-            using (var unitOfWork = new UnitOfWork(() => DataMapper))
+            using (var unitOfWork = new UnitOfWork(() => DataMapper()))
             {
                 unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
 
@@ -154,7 +177,7 @@ namespace NzbDrone.Core.Datastore
 
         public void UpdateMany(IList<TModel> models)
         {
-            using (var unitOfWork = new UnitOfWork(() => DataMapper))
+            using (var unitOfWork = new UnitOfWork(() => DataMapper()))
             {
                 unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
 
@@ -192,12 +215,15 @@ namespace NzbDrone.Core.Datastore
 
         public void Delete(int id)
         {
-            DataMapper.Delete<TModel>(c => c.Id == id);
+            using (var db = DataMapper())
+            {
+                db.Delete<TModel>(c => c.Id == id);
+            }
         }
 
         public void DeleteMany(IEnumerable<int> ids)
         {
-            using (var unitOfWork = new UnitOfWork(() => DataMapper))
+            using (var unitOfWork = new UnitOfWork(() => DataMapper()))
             {
                 unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
 
@@ -214,7 +240,10 @@ namespace NzbDrone.Core.Datastore
 
         public void Purge(bool vacuum = false)
         {
-            DataMapper.Delete<TModel>(c => c.Id > -1);
+            using (var db = DataMapper())
+            {
+                db.Delete<TModel>(c => c.Id > -1);
+            }
             if (vacuum)
             {
                 Vacuum();
@@ -238,20 +267,23 @@ namespace NzbDrone.Core.Datastore
                 throw new InvalidOperationException("Attempted to updated model without ID");
             }
 
-            DataMapper.Update<TModel>()
-                .Where(c => c.Id == model.Id)
-                .ColumnsIncluding(properties)
-                .Entity(model)
-                .Execute();
+            using (var db = DataMapper())
+            {
+                db.Update<TModel>()
+                    .Where(c => c.Id == model.Id)
+                    .ColumnsIncluding(properties)
+                    .Entity(model)
+                    .Execute();   
+            }
 
             ModelUpdated(model);
         }
 
         public virtual PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec)
         {
-            pagingSpec.Records = GetPagedQuery(Query, pagingSpec).Skip(pagingSpec.PagingOffset())
-                .Take(pagingSpec.PageSize).ToList();
-            pagingSpec.TotalRecords = GetPagedQuery(Query, pagingSpec).GetRowCount();
+            pagingSpec.Records = Query(q => GetPagedQuery(q, pagingSpec).Skip(pagingSpec.PagingOffset())
+                .Take(pagingSpec.PageSize).ToList());
+            pagingSpec.TotalRecords = Query(q => GetPagedQuery(q, pagingSpec).GetRowCount());
 
             return pagingSpec;
         }
@@ -285,7 +317,7 @@ namespace NzbDrone.Core.Datastore
             }
         }
 
-        protected virtual QueryBuilder<TModel> AddJoinQueries(QueryBuilder<TModel> baseQuery)
+        protected virtual QueryBuilder<TActual> AddJoinQueries<TActual>(QueryBuilder<TActual> baseQuery)
         {
             return baseQuery;
         }

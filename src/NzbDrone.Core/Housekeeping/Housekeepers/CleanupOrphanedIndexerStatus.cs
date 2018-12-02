@@ -13,14 +13,16 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM IndexerStatus
+                mapper.ExecuteNonQuery(@"DELETE FROM IndexerStatus
                                      WHERE Id IN (
                                      SELECT IndexerStatus.Id FROM IndexerStatus
                                      LEFT OUTER JOIN Indexers
                                      ON IndexerStatus.IndexerId = Indexers.Id
                                      WHERE Indexers.Id IS NULL)");
+            }
         }
     }
 }
