@@ -12,7 +12,10 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
-
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
 {
@@ -25,23 +28,32 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
     {
         private readonly IUpgradeMediaFiles _movieFileUpgrader;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
                                       IMediaFileService mediaFileService,
+                                      IMovieRepository movieRepository,
+                                      IQualityUpgradableSpecification qualityUpgradableSpecification,
                                       IExtraService extraService,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
+                                      IConfigService configService,
                                       Logger logger)
         {
             _movieFileUpgrader = movieFileUpgrader;
             _mediaFileService = mediaFileService;
+            _movieRepository = movieRepository;
+            _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _extraService = extraService;
             _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -134,6 +146,19 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     if (newDownload)
                     {
                         _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles, downloadClientItem));
+                    }
+
+                    if (_configService.AutoUnmonitorWhenCutoffMet)
+                    {
+                        var storedMovie = _movieRepository.GetMoviesByFileId(movieFile.MovieId).First();
+                        storedMovie.Profile.LazyLoad();
+                        if (!_qualityUpgradableSpecification.CutoffNotMet(storedMovie.Profile, movieFile.Quality))
+                        {
+                            _logger.Info("Cutoff for [{0}] met, marking as unmonitored", storedMovie.Title);
+                            storedMovie.Monitored = false;
+                            var updatedMovie = _movieRepository.Update(storedMovie);
+                            _eventAggregator.PublishEvent(new MovieEditedEvent(updatedMovie, storedMovie));
+                        }
                     }
                 }
                 catch (Exception e)

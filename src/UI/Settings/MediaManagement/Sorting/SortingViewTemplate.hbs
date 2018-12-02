@@ -100,6 +100,29 @@
 {{/if_mono}}
 
     <div class="form-group advanced-setting">
+        <label class="col-sm-3 control-label">Unmonitor When Cutoff Met</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="checkbox toggle well">
+                    <input type="checkbox" name="autoUnmonitorWhenCutoffMet"/>
+
+                    <p>
+                        <span>Yes</span>
+                        <span>No</span>
+                    </p>
+
+                    <div class="btn btn-primary slide-button"/>
+                </label>
+
+                <span class="help-inline-checkbox">
+                    <i class="icon-radarr-form-info" title="Mark a movie as unmonitored if the imported movie meets the cutoff requirements."/>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group advanced-setting">
         <label class="col-sm-3 control-label">Use Hardlinks instead of Copy</label>
 
         <div class="col-sm-9">

@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Configuration
 
         //Media Management
         bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
+        bool AutoUnmonitorWhenCutoffMet { get; set; }
         string RecycleBin { get; set; }
         bool AutoDownloadPropers { get; set; }
         bool CreateEmptySeriesFolders { get; set; }

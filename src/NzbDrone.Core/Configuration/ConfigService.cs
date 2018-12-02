@@ -87,6 +87,12 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AutoUnmonitorPreviouslyDownloadedEpisodes", value); }
         }
 
+        public bool AutoUnmonitorWhenCutoffMet
+        {
+            get { return GetValueBoolean("AutoUnmonitorWhenCutoffMet"); }
+            set { SetValue("AutoUnmonitorWhenCutoffMet", value); }
+        }
+
         public int Retention
         {
             get { return GetValueInt("Retention", 0); }
