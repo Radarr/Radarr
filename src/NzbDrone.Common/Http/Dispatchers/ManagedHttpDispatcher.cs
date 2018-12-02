@@ -95,7 +95,7 @@ namespace NzbDrone.Common.Http.Dispatchers
             finally
             {
                 webRequest = null;
-                httpWebResponse?.Dispose();
+                (httpWebResponse as IDisposable)?.Dispose();
                 httpWebResponse = null;
             }
         }
