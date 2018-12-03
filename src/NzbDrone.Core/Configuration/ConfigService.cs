@@ -273,6 +273,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadedMoviesScanInterval", value); }
         }
 
+        public int CheckForFinishedDownloadInterval
+        {
+            get { return GetValueInt("CheckForFinishedDownloadInterval", 1); }
+
+            set { SetValue("CheckForFinishedDownloadInterval", value); }
+        }
+
         public int DownloadClientHistoryLimit
         {
             get { return GetValueInt("DownloadClientHistoryLimit", 30); }
