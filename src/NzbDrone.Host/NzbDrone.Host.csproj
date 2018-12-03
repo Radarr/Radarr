@@ -56,9 +56,6 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Radarr.ico</ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -191,9 +188,6 @@
       <Project>{7C2CC69F-5CA0-4E5C-85CB-983F9F6C3B36}</Project>
       <Name>NzbDrone.SignalR</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Radarr.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
