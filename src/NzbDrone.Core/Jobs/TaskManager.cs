@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     {
-                        Interval = _configService.CheckForFinishedDownloadInterval,
+                        Interval = Math.Max(_configService.CheckForFinishedDownloadInterval, 1),
                         TypeName = typeof(CheckForFinishedDownloadCommand).FullName
                     },
                 };
