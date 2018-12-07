@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
         public RSSImportSettings()
         {
-            Link = "http://rss.yoursite.com";
+            Link = "https://rss.yoursite.com";
         }
 
         [FieldDefinition(0, Label = "RSS Link", HelpText = "Link to the rss feed of movies.")]

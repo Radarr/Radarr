@@ -16,7 +16,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
 
-        public ProxyCheck(ISonarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, Logger logger)
+        public ProxyCheck(IRadarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, Logger logger)
         {
             _configService = configService;
             _client = client;
