@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,8 +13,8 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         string GetVersion(RTorrentSettings settings);
         List<RTorrentTorrent> GetTorrents(RTorrentSettings settings);
 
-        void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, RTorrentSettings settings);
-        void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, RTorrentSettings settings);
+        void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings);
+        void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings);
         void RemoveTorrent(string hash, RTorrentSettings settings);
         bool HasHashTorrent(string hash, RTorrentSettings settings);
     }
@@ -24,8 +24,14 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [XmlRpcMethod("d.multicall2")]
         object[] TorrentMulticall(params string[] parameters);
 
+        [XmlRpcMethod("load.normal")]
+        int Load(string target, string data, params string[] commands);
+
         [XmlRpcMethod("load.start")]
         int LoadStart(string target, string data, params string[] commands);
+
+        [XmlRpcMethod("load.raw")]
+        int LoadRaw(string target, byte[] data, params string[] commands);
 
         [XmlRpcMethod("load.raw_start")]
         int LoadRawStart(string target, byte[] data, params string[] commands);
@@ -102,26 +108,50 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             return items;
         }
 
-        public void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, RTorrentSettings settings)
+        public void AddTorrentFromUrl(string torrentUrl, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings)
         {
-            _logger.Debug("Executing remote method: load.normal");
+            _logger.Debug("Adding Torrent From URL");
 
             var client = BuildClient(settings);
 
-            var response = client.LoadStart("", torrentUrl, GetCommands(label, priority, directory));
+            var response = -1;
+
+            if (doNotStart)
+            {
+                _logger.Debug("Executing remote method load.normal");
+                response = client.Load("", torrentUrl, GetCommands(label, priority, directory));
+            }
+            else
+            {
+                _logger.Debug("Executing remote method load.start");
+                response = client.LoadStart("", torrentUrl, GetCommands(label, priority, directory));
+            }
+
             if (response != 0)
             {
                 throw new DownloadClientException("Could not add torrent: {0}.", torrentUrl);
             }
         }
 
-        public void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, RTorrentSettings settings)
+        public void AddTorrentFromFile(string fileName, byte[] fileContent, string label, RTorrentPriority priority, string directory, bool doNotStart, RTorrentSettings settings)
         {
-            _logger.Debug("Executing remote method: load.raw");
+            _logger.Debug("Loading Torrent from File");
 
             var client = BuildClient(settings);
 
-            var response = client.LoadRawStart("", fileContent, GetCommands(label, priority, directory));
+            var response = -1;
+
+            if (doNotStart)
+            {
+                _logger.Debug("Executing remote method load.raw");
+                response = client.LoadRaw("", fileContent, GetCommands(label, priority, directory));
+            }
+            else
+            {
+                _logger.Debug("Executing remote method load.raw_start");
+                response = client.LoadRawStart("", fileContent, GetCommands(label, priority, directory));
+            }
+
             if (response != 0)
             {
                 throw new DownloadClientException("Could not add torrent: {0}.", fileName);
