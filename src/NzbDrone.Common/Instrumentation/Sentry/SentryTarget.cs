@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,6 +163,14 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                         logEvent.Message
                     }
                 };
+
+                // Fix openflixr being stupid with permissions
+                var serverName = sentryEvent.Contexts.Device.Name.ToLower();
+
+                if (serverName == "openflixr")
+                {
+                    return;
+                }
 
                 if (logEvent.Exception != null)
                 {
