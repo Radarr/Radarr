@@ -113,6 +113,7 @@ src/UI/.idea/*
 *log.txt
 node_modules/
 _output*
+_artifacts
 _rawPackage/
 _dotTrace*
 _tests/

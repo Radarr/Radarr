@@ -1,6 +1,6 @@
 version: '0.5.0.{build}'
 
-image: Previous Visual Studio 2017
+image: Visual Studio 2017
 
 assembly_info:
   patch: true

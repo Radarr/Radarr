@@ -156,6 +156,8 @@ PackageMono()
     ProgressStart 'Creating Mono Package'
 
     rm -rf $outputFolderLinux
+
+    echo "Copying Binaries"
     cp -r $outputFolder $outputFolderLinux
 
     echo "Creating MDBs"
@@ -193,12 +195,19 @@ PackageMono()
     ProgressEnd 'Creating Mono Package'
 }
 
-PackageOsx()
+PackageMacOS()
 {
     ProgressStart 'Creating MacOS Package'
 
     rm -rf $outputFolderMacOS
-    cp -r $outputFolderLinux $outputFolderMacOS
+    mkdir $outputFolderMacOS
+
+    echo "Adding Startup script"
+    cp ./macOS/Lidarr $outputFolderMacOS
+    dos2unix $outputFolderMacOS/Lidarr
+
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOS
 
     echo "Adding sqlite dylibs"
     cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOS
@@ -206,23 +215,35 @@ PackageOsx()
     echo "Adding MediaInfo dylib"
     cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOS
 
-    echo "Adding Startup script"
-    cp  ./osx/Lidarr $outputFolderMacOS
-
     ProgressEnd 'Creating MacOS Package'
 }
 
-PackageOsxApp()
+PackageMacOSApp()
 {
-    ProgressStart 'Creating MacOS App Package'
+    ProgressStart 'Creating macOS App Package'
 
     rm -rf $outputFolderMacOSApp
     mkdir $outputFolderMacOSApp
+    cp -r ./macOS/Lidarr.app $outputFolderMacOSApp
+    mkdir -p $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
 
-    cp -r ./osx/Lidarr.app $outputFolderMacOSApp
-    cp -r $outputFolderMacOS $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+    echo "Adding Startup script"
+    cp ./macOS/Lidarr $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+    dos2unix $outputFolderMacOSApp/Lidarr.app/Contents/MacOS/Lidarr
 
-    ProgressEnd 'Creating MacOS App Package'
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+
+    echo "Adding MediaInfo dylib"
+    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+
+    echo "Removing Update Folder"
+    rm -r $outputFolderMacOSApp/Lidarr.app/Contents/MacOS/Lidarr.Update
+
+    ProgressEnd 'Creating macOS App Package'
 }
 
 PackageTests()
@@ -311,8 +332,8 @@ esac
 Build
 RunGulp
 PackageMono
-PackageOsx
-PackageOsxApp
+PackageMacOS
+PackageMacOSApp
 PackageTests
 CleanupWindowsPackage
 PackageArtifacts
