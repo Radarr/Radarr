@@ -8,6 +8,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.MediaCover
         IHandleAsync<MovieUpdatedEvent>,
         IHandleAsync<MovieAddedEvent>,
         IHandleAsync<MovieDeletedEvent>,
+        IExecute<EnsureMediaCoversCommand>,
         IMapCoversToLocal
     {
         private readonly IImageResizer _resizer;
@@ -32,6 +34,8 @@ namespace NzbDrone.Core.MediaCover
         private readonly ICoverExistsSpecification _coverExistsSpecification;
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IManageCommandQueue _commandQueue;
+        private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
         private readonly string _coverRootFolder;
@@ -43,6 +47,8 @@ namespace NzbDrone.Core.MediaCover
                                  ICoverExistsSpecification coverExistsSpecification,
                                  IConfigFileProvider configFileProvider,
                                  IEventAggregator eventAggregator,
+                                 IManageCommandQueue commandQueue,
+                                 IMovieService movieService,
                                  Logger logger)
         {
             _resizer = resizer;
@@ -51,6 +57,8 @@ namespace NzbDrone.Core.MediaCover
             _coverExistsSpecification = coverExistsSpecification;
             _configFileProvider = configFileProvider;
             _eventAggregator = eventAggregator;
+            _commandQueue = commandQueue;
+            _movieService = movieService;
             _logger = logger;
 
             _coverRootFolder = appFolderInfo.GetMediaCoverPath();
@@ -182,16 +190,25 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
+        public void Execute(EnsureMediaCoversCommand command)
+        {
+            var movie = _movieService.GetMovie(command.MovieId);
+            EnsureCovers(movie);
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(movie));
+        }
+
         public void HandleAsync(MovieUpdatedEvent message)
         {
-            EnsureCovers(message.Movie);
-            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
+            //EnsureCovers(message.Movie);
+            _commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
+            //_eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
 
         public void HandleAsync(MovieAddedEvent message)
         {
-            EnsureCovers(message.Movie);
-            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
+            //EnsureCovers(message.Movie);
+            _commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
+            //_eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
 
         public void HandleAsync(MovieDeletedEvent message)

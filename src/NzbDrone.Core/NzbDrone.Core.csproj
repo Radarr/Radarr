@@ -152,6 +152,7 @@
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcNfoDetector.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
+    <Compile Include="MediaCover\EnsureMediaCoversCommand.cs" />
     <Compile Include="MediaFiles\Commands\UpdateMovieFileQualityCommand.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\SameFileSpecification.cs" />
