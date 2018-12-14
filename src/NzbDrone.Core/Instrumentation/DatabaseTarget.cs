@@ -89,6 +89,7 @@ namespace NzbDrone.Core.Instrumentation
                     SQLiteFactory.Instance.CreateConnection())
                 {
                     connection.ConnectionString = _connectionStringFactory.LogDbConnectionString;
+                    connection.Open();
                     using (var sqlCommand = connection.CreateCommand())
                     {
                         sqlCommand.CommandText = INSERT_COMMAND;

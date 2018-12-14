@@ -200,6 +200,7 @@ namespace NzbDrone.Core.MediaCover
         public void HandleAsync(MovieUpdatedEvent message)
         {
             //EnsureCovers(message.Movie);
+            _logger.Info("Testing: {0}, {1}", _commandQueue, message.Movie.Id);
             _commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
             //_eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
