@@ -346,6 +346,14 @@ class ArtistDetails extends Component {
 
                     <IconButton
                       className={styles.artistNavigationButton}
+                      name={icons.ARROW_UP}
+                      size={30}
+                      title={'Go to artist listing'}
+                      to={'/'}
+                    />
+
+                    <IconButton
+                      className={styles.artistNavigationButton}
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextArtist.artistName}`}

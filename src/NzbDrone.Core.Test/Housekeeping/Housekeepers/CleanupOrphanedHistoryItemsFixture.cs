@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                                      .BuildNew();
 
             _album = Builder<Album>.CreateNew()
-                                       .BuildNew();
+                .BuildNew();
         }
 
         private void GivenArtist()

@@ -86,7 +86,7 @@ namespace NzbDrone.Core.IndexerSearch
                     SortKey = "Id"
                 };
 
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Value.Monitored == true);
 
                 albums = _albumService.AlbumsWithoutFiles(pagingSpec).Records.Where(e => e.ArtistId.Equals(artistId)).ToList();
 
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.IndexerSearch
                     SortKey = "Id"
                 };
 
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Value.Monitored == true);
 
                 albums = _albumService.AlbumsWithoutFiles(pagingSpec).Records.ToList();
 
@@ -118,20 +118,9 @@ namespace NzbDrone.Core.IndexerSearch
         {
             Expression<Func<Album, bool>> filterExpression;
 
-            if (message.ArtistId.HasValue)
-            {
-                filterExpression = v =>
-                    v.ArtistId == message.ArtistId.Value &&
-                    v.Monitored == true &&
-                    v.Artist.Monitored == true;
-            }
-
-            else
-            {
-                filterExpression = v =>
-                    v.Monitored == true &&
-                    v.Artist.Monitored == true;
-            }
+            filterExpression = v =>
+                v.Monitored == true &&
+                v.Artist.Value.Monitored == true;
 
             var pagingSpec = new PagingSpec<Album>
             {

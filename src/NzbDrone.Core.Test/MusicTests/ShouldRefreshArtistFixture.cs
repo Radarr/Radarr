@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.MusicTests
         public void Setup()
         {
             _artist = Builder<Artist>.CreateNew()
-                                     .With(v => v.Status == ArtistStatusType.Continuing)
+                                     .With(v => v.Metadata.Value.Status == ArtistStatusType.Continuing)
                                      .Build();
 
             Mocker.GetMock<IAlbumService>()
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
         private void GivenArtistIsEnded()
         {
-            _artist.Status = ArtistStatusType.Ended;
+            _artist.Metadata.Value.Status = ArtistStatusType.Ended;
         }
 
         private void GivenArtistLastRefreshedMonthsAgo()

@@ -32,7 +32,7 @@ namespace Lidarr.Api.V1.Artist
             foreach (var currentArtist in artist)
             {
                 var resource = currentArtist.ToResource();
-                var poster = currentArtist.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var poster = currentArtist.Metadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;

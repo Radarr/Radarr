@@ -19,29 +19,46 @@ namespace NzbDrone.Core.Test.MusicTests
     {
         private Artist _artist;
         private List<Album> _albums;
+        private List<AlbumRelease> _releases;
+        private readonly string _fakeArtistForeignId = "xxx-xxx-xxx";
+        private readonly List<ArtistMetadata> _fakeArtists = new List<ArtistMetadata> { new ArtistMetadata() };
 
         [SetUp]
         public void Setup()
         {
-            var album1 = Builder<Album>.CreateNew()
-                .With(s => s.ForeignAlbumId = "1")
+
+            var release = Builder<AlbumRelease>
+                .CreateNew()
+                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .With(s => s.ForeignReleaseId = "xxx-xxx-xxx-xxx")
+                .With(s => s.Monitored = true)
+                .With(s => s.TrackCount = 10)
                 .Build();
 
-            _albums = new List<Album>{album1};
+            _releases = new List<AlbumRelease> { release };
+            
+            var album1 = Builder<Album>.CreateNew()
+                .With(s => s.Id = 1234)
+                .With(s => s.ForeignAlbumId = "1")
+                .With(s => s.AlbumReleases = _releases)
+                .Build();
+
+            _albums = new List<Album>{ album1 };
 
             _artist = Builder<Artist>.CreateNew()
-                                     .With(s => s.Albums = new List<Album>
-                                                            {
-                                                                album1
-                                                            })
-                                     .Build();
+                .With(s => s.Albums = _albums)
+                .Build();
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(_artist.Id))
                   .Returns(_artist);
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(s => s.GetReleasesByAlbum(album1.Id))
+                .Returns(new List<AlbumRelease> { release });
             
             Mocker.GetMock<IProvideAlbumInfo>()
-                  .Setup(s => s.GetAlbumInfo(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetAlbumInfo(It.IsAny<string>()))
                   .Callback(() => { throw new AlbumNotFoundException(album1.ForeignAlbumId); });
 
             Mocker.GetMock<ICheckIfAlbumShouldBeRefreshed>()
@@ -52,8 +69,8 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenNewAlbumInfo(Album album)
         {
             Mocker.GetMock<IProvideAlbumInfo>()
-                  .Setup(s => s.GetAlbumInfo(_albums.First().ForeignAlbumId, It.IsAny<string>()))
-                  .Returns(new Tuple<Album, List<Track>>(album, new List<Track>()));
+                .Setup(s => s.GetAlbumInfo(_albums.First().ForeignAlbumId))
+                .Returns(new Tuple<string, Album, List<ArtistMetadata>>(_fakeArtistForeignId, album, _fakeArtists));
         }
 
         [Test]
@@ -72,6 +89,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newAlbumInfo = _albums.FirstOrDefault().JsonClone();
             newAlbumInfo.ForeignAlbumId = _albums.First().ForeignAlbumId + 1;
+            newAlbumInfo.AlbumReleases = _releases;
 
             GivenNewAlbumInfo(newAlbumInfo);
 

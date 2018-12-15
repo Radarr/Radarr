@@ -24,20 +24,20 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_tracks()
         {
-            var album = Builder<Album>.CreateNew()
+            var release = Builder<AlbumRelease>.CreateNew()
                                         .BuildNew();
 
-            Db.Insert(album);
+            Db.Insert(release);
 
             var tracks = Builder<Track>.CreateListOfSize(2)
                                           .TheFirst(1)
-                                          .With(e => e.AlbumId = album.Id)
+                                          .With(e => e.AlbumReleaseId = release.Id)
                                           .BuildListOfNew();
 
             Db.InsertMany(tracks);
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(e => e.AlbumId == album.Id);
+            AllStoredModels.Should().Contain(e => e.AlbumReleaseId == release.Id);
         }
     }
 }

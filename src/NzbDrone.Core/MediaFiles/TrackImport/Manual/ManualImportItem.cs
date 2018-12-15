@@ -16,6 +16,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public long Size { get; set; }
         public Artist Artist { get; set; }
         public Album Album { get; set; }
+        public AlbumRelease Release { get; set; }
         public List<Track> Tracks { get; set; }
         public QualityModel Quality { get; set; }
         public Language Language { get; set; }

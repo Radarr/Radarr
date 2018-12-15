@@ -59,8 +59,10 @@ namespace NzbDrone.Core.Test.HistoryTests
             var artist = Builder<Artist>.CreateNew().Build();
             var tracks = Builder<Track>.CreateListOfSize(1).Build().ToList();
             var trackFile = Builder<TrackFile>.CreateNew()
-                                                  .With(f => f.SceneName = null)
-                                                  .Build();
+                .With(f => f.SceneName = null)
+                .With(f => f.Artist = artist)
+                .With(f => f.Album = new Album())
+                .Build();
 
             var localTrack = new LocalTrack
             {

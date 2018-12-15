@@ -19,7 +19,7 @@ function getMediumStatistics(tracks) {
     if (track.trackFileId) {
       trackCount++;
       trackFileCount++;
-    } else if (track.monitored) {
+    } else {
       trackCount++;
     }
 

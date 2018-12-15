@@ -14,13 +14,16 @@ namespace Lidarr.Api.V1.Albums
 {
     public class AlbumModule : AlbumModuleWithSignalR
     {
-        public AlbumModule(IArtistService artistService,
-                             IAlbumService albumService,
-                             IArtistStatisticsService artistStatisticsService,
-                             IUpgradableSpecification upgradableSpecification,
-                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, artistService, upgradableSpecification, signalRBroadcaster)
+        protected readonly IReleaseService _releaseService;
+        
+        public AlbumModule(IAlbumService albumService,
+                           IReleaseService releaseService,
+                           IArtistStatisticsService artistStatisticsService,
+                           IUpgradableSpecification upgradableSpecification,
+                           IBroadcastSignalRMessage signalRBroadcaster)
+        : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster)
         {
+            _releaseService = releaseService;
             GetResourceAll = GetAlbums;
             UpdateResource = UpdateAlbum;
             Put["/monitor"] = x => SetAlbumsMonitored();
@@ -67,8 +70,9 @@ namespace Lidarr.Api.V1.Albums
             var model = albumResource.ToModel(album);
 
             _albumService.UpdateAlbum(model);
+            _releaseService.UpdateMany(model.AlbumReleases.Value);
 
-            BroadcastResourceChange(ModelAction.Updated, albumResource);
+            BroadcastResourceChange(ModelAction.Updated, model.Id);
         }
 
         private Response SetAlbumsMonitored()

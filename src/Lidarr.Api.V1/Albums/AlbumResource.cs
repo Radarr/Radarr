@@ -13,10 +13,11 @@ namespace Lidarr.Api.V1.Albums
     {
         public string Title { get; set; }
         public string Disambiguation { get; set; }
+        public string Overview { get; set; }
         public int ArtistId { get; set; }
-        public List<string> AlbumLabel { get; set; }
         public string ForeignAlbumId { get; set; }
         public bool Monitored { get; set; }
+        public bool AnyReleaseOk { get; set; }
         public int ProfileId { get; set; }
         public int Duration { get; set; }
         public string AlbumType { get; set; }
@@ -35,12 +36,12 @@ namespace Lidarr.Api.V1.Albums
         }
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
-        public AlbumRelease CurrentRelease { get; set; }
         public List<AlbumReleaseResource> Releases { get; set; }
         public List<string> Genres { get; set; }
         public List<MediumResource> Media { get; set; }
         public ArtistResource Artist { get; set; }
         public List<MediaCover> Images { get; set; }
+        public List<Links> Links { get; set; }
         public AlbumStatisticsResource Statistics { get; set; }
 
         public string RemoteCover { get; set; }
@@ -56,27 +57,30 @@ namespace Lidarr.Api.V1.Albums
         {
             if (model == null) return null;
 
+            var selectedRelease = model.AlbumReleases.Value.Where(x => x.Monitored).SingleOrDefault();
+
             return new AlbumResource
             {
                 Id = model.Id,
                 ArtistId = model.ArtistId,
-                AlbumLabel = model.Label,
                 ForeignAlbumId = model.ForeignAlbumId,
                 ProfileId = model.ProfileId,
                 Monitored = model.Monitored,
+                AnyReleaseOk = model.AnyReleaseOk,
                 ReleaseDate = model.ReleaseDate,
                 Genres = model.Genres,
                 Title = model.Title,
                 Disambiguation = model.Disambiguation,
+                Overview = model.Overview,
                 Images = model.Images,
+                Links = model.Links,
                 Ratings = model.Ratings,
-                Duration = model.Duration,
+                Duration = selectedRelease.Duration,
                 AlbumType = model.AlbumType,
                 SecondaryTypes = model.SecondaryTypes.Select(s => s.Name).ToList(),
-                Media = model.Media.ToResource(),
-                CurrentRelease = model.CurrentRelease,
-                Releases = model.Releases.ToResource(),
-                Artist = model.Artist.ToResource()
+                Releases = model.AlbumReleases.Value.ToResource(),
+                Media = selectedRelease.Media.ToResource(),
+                Artist = model.Artist.Value.ToResource()
             };
         }
 
@@ -90,9 +94,11 @@ namespace Lidarr.Api.V1.Albums
                 ForeignAlbumId = resource.ForeignAlbumId,
                 Title = resource.Title,
                 Disambiguation = resource.Disambiguation,
+                Overview = resource.Overview,
                 Images = resource.Images,
                 Monitored = resource.Monitored,
-                CurrentRelease = resource.CurrentRelease
+                AnyReleaseOk = resource.AnyReleaseOk,
+                AlbumReleases = resource.Releases.ToModel()
             };
         }
 
@@ -101,6 +107,7 @@ namespace Lidarr.Api.V1.Albums
             var updatedAlbum = resource.ToModel();
 
             album.ApplyChanges(updatedAlbum);
+            album.AlbumReleases = updatedAlbum.AlbumReleases;
 
             return album;
         }

@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
     {
         private Artist _artist;
         private Album _album;
+        private AlbumRelease _release;
         private Track _track;
         private TrackFile _trackFile;
 
@@ -23,25 +24,31 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         public void Setup()
         {
             _artist = Builder<Artist>.CreateNew()
-                                        .BuildNew();
-
+                .With(a => a.ArtistMetadataId = 10)
+                .BuildNew();
+            Db.Insert(_artist);
+            
             _album = Builder<Album>.CreateNew()
-                                        .With(e => e.ReleaseDate = DateTime.Today.AddDays(5))
-                                        .BuildNew();
-
-            _artist.Id = Db.Insert(_artist).Id;
-            _artist.Id = Db.Insert(_album).Id;
+                .With(e => e.ReleaseDate = DateTime.Today.AddDays(-5))
+                .With(e => e.ArtistMetadataId = 10)
+                .BuildNew();
+            Db.Insert(_album);
+            
+            _release = Builder<AlbumRelease>.CreateNew()
+                .With(e => e.AlbumId = _album.Id)
+                .With(e => e.Monitored = true)
+                .BuildNew();
+            Db.Insert(_release);
 
             _track = Builder<Track>.CreateNew()
                                           .With(e => e.TrackFileId = 0)
-                                          .With(e => e.Monitored = false)
-                                          .With(e => e.ArtistId = _artist.Id)
-                                          .With(e => e.AlbumId = _album.Id)
+                                          .With(e => e.Artist = _artist)
+                                          .With(e => e.AlbumReleaseId = _release.Id)
                                           .BuildNew();
 
             _trackFile = Builder<TrackFile>.CreateNew()
-                                           .With(e => e.ArtistId = _artist.Id)
-                                           .With(e => e.AlbumId = _album.Id)
+                                           .With(e => e.Artist = _artist)
+                                           .With(e => e.Album = _album)
                                            .With(e => e.Quality = new QualityModel(Quality.MP3_256))
                                            .BuildNew();
 
@@ -50,11 +57,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         private void GivenTrackWithFile()
         {
             _track.TrackFileId = 1;
-        }
-
-        private void GivenMonitoredTrack()
-        {
-            _track.Monitored = true;
         }
 
         private void GivenTrack()
@@ -70,7 +72,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_get_stats_for_artist()
         {
-            GivenMonitoredTrack();
             GivenTrack();
 
             var stats = Subject.ArtistStatistics();
@@ -115,6 +116,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_have_size_on_disk_when_track_file_exists()
         {
+            GivenTrackWithFile();
             GivenTrack();
             GivenTrackFile();
 

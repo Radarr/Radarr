@@ -28,13 +28,14 @@ namespace NzbDrone.Core.Test.MusicTests
                 .CreateNew()
                 .With(s => s.Path = null)
                 .Build();
+            _fakeArtist.Albums = new List<Album>();
         }
 
         private void GivenValidArtist(string lidarrId)
         {
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(lidarrId, It.IsAny<int>()))
-                  .Returns(new Tuple<Artist, List<Album>>(_fakeArtist, new List<Album>()));
+                .Setup(s => s.GetArtistInfo(lidarrId, It.IsAny<int>()))
+                .Returns(_fakeArtist);
         }
 
         private void GivenValidPath()

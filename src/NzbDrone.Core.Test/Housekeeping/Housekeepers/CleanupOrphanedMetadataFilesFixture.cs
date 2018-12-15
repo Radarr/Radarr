@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                                         .BuildNew();
 
             var album = Builder<Album>.CreateNew()
-                                        .BuildNew();
+                .BuildNew();
 
             Db.Insert(artist);
             Db.Insert(album);

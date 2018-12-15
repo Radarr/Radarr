@@ -11,7 +11,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     public class ImportDecision
     {
         public LocalTrack LocalTrack { get; private set; }
-        public IEnumerable<Rejection> Rejections { get; private set; }
+        public IList<Rejection> Rejections { get; private set; }
 
         public bool Approved => Rejections.Empty();
 
@@ -19,6 +19,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         {
             LocalTrack = localTrack;
             Rejections = rejections.ToList();
+        }
+
+        public void Reject(Rejection rejection)
+        {
+            Rejections.Add(rejection);
         }
     }
 }

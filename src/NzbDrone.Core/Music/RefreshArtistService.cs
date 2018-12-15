@@ -60,38 +60,28 @@ namespace NzbDrone.Core.Music
         {
             _logger.ProgressInfo("Updating Info for {0}", artist.Name);
 
-            Tuple<Artist, List<Album>> tuple;
+            Artist artistInfo;
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(artist.ForeignArtistId, artist.MetadataProfileId);
+                artistInfo = _artistInfo.GetArtistInfo(artist.Metadata.Value.ForeignArtistId, artist.MetadataProfileId);
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("Artist '{0}' (LidarrAPI {1}) was not found, it may have been removed from Metadata sources.", artist.Name, artist.ForeignArtistId);
+                _logger.Error("Artist '{0}' (LidarrAPI {1}) was not found, it may have been removed from Metadata sources.", artist.Name, artist.Metadata.Value.ForeignArtistId);
                 return;
             }
 
-            var artistInfo = tuple.Item1;
-
-            if (artist.ForeignArtistId != artistInfo.ForeignArtistId)
+            if (artist.Metadata.Value.ForeignArtistId != artistInfo.Metadata.Value.ForeignArtistId)
             {
-                _logger.Warn("Artist '{0}' (Artist {1}) was replaced with '{2}' (LidarrAPI {3}), because the original was a duplicate.", artist.Name, artist.ForeignArtistId, artistInfo.Name, artistInfo.ForeignArtistId);
-                artist.ForeignArtistId = artistInfo.ForeignArtistId;
+                _logger.Warn("Artist '{0}' (Artist {1}) was replaced with '{2}' (LidarrAPI {3}), because the original was a duplicate.", artist.Name, artist.Metadata.Value.ForeignArtistId, artistInfo.Name, artistInfo.Metadata.Value.ForeignArtistId);
+                artist.Metadata.Value.ForeignArtistId = artistInfo.Metadata.Value.ForeignArtistId;
             }
 
-            artist.Name = artistInfo.Name;
-            artist.Overview = artistInfo.Overview;
-            artist.Status = artistInfo.Status;
+            artist.Metadata.Value.ApplyChanges(artistInfo.Metadata.Value);
             artist.CleanName = artistInfo.CleanName;
             artist.SortName = artistInfo.SortName;
             artist.LastInfoSync = DateTime.UtcNow;
-            artist.Images = artistInfo.Images;
-            artist.Genres = artistInfo.Genres;
-            artist.Links = artistInfo.Links;
-            artist.Ratings = artistInfo.Ratings;
-            artist.Disambiguation = artistInfo.Disambiguation;
-            artist.ArtistType = artistInfo.ArtistType;
 
             try
             {
@@ -103,7 +93,7 @@ namespace NzbDrone.Core.Music
                 _logger.Warn(e, "Couldn't update artist path for " + artist.Path);
             }
 
-            var remoteAlbums = tuple.Item2.DistinctBy(m => new { m.ForeignAlbumId, m.ReleaseDate }).ToList();
+            var remoteAlbums = artistInfo.Albums.Value.DistinctBy(m => new { m.ForeignAlbumId, m.ReleaseDate }).ToList();
 
             // Get list of DB current db albums for artist
             var existingAlbums = _albumService.GetAlbumsByArtist(artist.Id);
@@ -128,16 +118,20 @@ namespace NzbDrone.Core.Music
                 }
             }
 
+            // Delete old albums first - this avoids errors if albums have been merged and we'll
+            // end up trying to duplicate an existing release under a new album
+            _albumService.DeleteMany(existingAlbums);
+            
             // Update new albums with artist info and correct monitored status
             newAlbumsList = UpdateAlbums(artist, newAlbumsList);
+
+            _logger.Info("Artist {0}, MetadataId {1}, Metadata.Id {2}", artist, artist.ArtistMetadataId, artist.Metadata.Value.Id);
 
             _artistService.UpdateArtist(artist);
 
             _addAlbumService.AddAlbums(newAlbumsList);
 
             _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh);
-
-            _albumService.DeleteMany(existingAlbums);
 
             _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
 
@@ -149,7 +143,6 @@ namespace NzbDrone.Core.Music
         {
             foreach (var album in albumsToUpdate)
             {
-                album.ArtistId = artist.Id;
                 album.ProfileId = artist.ProfileId;
                 album.Monitored = artist.Monitored;
             }

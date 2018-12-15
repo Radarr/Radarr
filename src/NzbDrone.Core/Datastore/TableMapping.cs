@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Marr.Data;
 using Marr.Data.Mapping;
 using NzbDrone.Common.Reflection;
@@ -87,28 +88,71 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Artist>().RegisterModel("Artists")
                 .Ignore(s => s.RootFolderPath)
+                .Ignore(s => s.Name)
+                .Ignore(s => s.ForeignArtistId)
                 .Relationship()
+                .HasOne(a => a.Metadata, a => a.ArtistMetadataId)
                 .HasOne(a => a.Profile, a => a.ProfileId)
                 .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId)
-                .HasOne(s => s.MetadataProfile, s => s.MetadataProfileId);
+                .HasOne(s => s.MetadataProfile, s => s.MetadataProfileId)
+                .For(a => a.Albums)
+                .LazyLoad(condition: a => a.Id > 0, query: (db, a) => db.Query<Album>().Where(rg => rg.ArtistMetadataId == a.Id).ToList());
 
-            Mapper.Entity<Album>().RegisterModel("Albums");
+            Mapper.Entity<ArtistMetadata>().RegisterModel("ArtistMetadata");
 
-            Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
-                  .Ignore(f => f.Path)
-                  .Relationships.AutoMapICollectionOrComplexProperties()
-                  .For("Tracks")
-                  .LazyLoad(condition: parent => parent.Id > 0,
-                            query: (db, parent) => db.Query<Track>().Where(c => c.TrackFileId == parent.Id).ToList()) // TODO: Figure what the hell to do here
-                  .HasOne(file => file.Artist, file => file.ArtistId); 
+            Mapper.Entity<Album>().RegisterModel("Albums")
+                .Ignore(r => r.ArtistId)
+                .Relationship()
+                .HasOne(r => r.ArtistMetadata, r => r.ArtistMetadataId)
+                .For(rg => rg.AlbumReleases)
+                .LazyLoad(condition: rg => rg.Id > 0, query: (db, rg) => db.Query<AlbumRelease>().Where(r => r.AlbumId == rg.Id).ToList())
+                .For(rg => rg.Artist)
+                .LazyLoad(condition: rg => rg.ArtistMetadataId > 0, query: (db, rg) => db.Query<Artist>().Where(a => a.ArtistMetadataId == rg.ArtistMetadataId).SingleOrDefault());
+
+
+            Mapper.Entity<AlbumRelease>().RegisterModel("AlbumReleases")
+                .Relationship()
+                .HasOne(r => r.Album, r => r.AlbumId)
+                .For(r => r.Tracks)
+                .LazyLoad(condition: r => r.Id > 0, query: (db, r) => db.Query<Track>().Where(t => t.AlbumReleaseId == r.Id).ToList());
 
             Mapper.Entity<Track>().RegisterModel("Tracks")
-                  //.Ignore(e => e.SeriesTitle)
-                  .Ignore(e => e.Album)
-                  .Ignore(e => e.HasFile)
-                  .Relationship()
-                  // TODO: Need to implement ArtistId to Artist.Id here
-                  .HasOne(track => track.TrackFile, track => track.TrackFileId); // TODO: Check lazy load for artists
+                .Ignore(t => t.HasFile)
+                .Ignore(t => t.AlbumId)
+                .Ignore(t => t.ArtistId)
+                .Ignore(t => t.Album)
+                .Relationship()
+                .HasOne(track => track.AlbumRelease, track => track.AlbumReleaseId)
+                .HasOne(track => track.ArtistMetadata, track => track.ArtistMetadataId)
+                .HasOne(track => track.TrackFile, track => track.TrackFileId)
+                .For(t => t.Artist)
+                .LazyLoad(condition: t => t.AlbumReleaseId > 0, query: (db, t) => db.Query<Artist>().QueryText(string.Format(
+                   "/* LazyLoading Artist for Track */\n" +
+                   "SELECT Artists.* " +
+                   "FROM Artists " +
+                   "JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId " +
+                   "JOIN AlbumReleases ON AlbumReleases.AlbumId = Albums.Id " +
+                   "WHERE AlbumReleases.Id = {0}",
+                   t.AlbumReleaseId)).SingleOrDefault());
+
+            Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
+                .Ignore(f => f.Path)
+                .Relationship()
+                .HasOne(f => f.Album, f => f.AlbumId)
+                .For("Tracks")
+                .LazyLoad(condition: parent => parent.Id > 0,
+                          query: (db, parent) => db.Query<Track>().Where(c => c.TrackFileId == parent.Id).ToList())
+                .For(t => t.Artist)
+                .LazyLoad(condition: f => f.Id > 0, query: (db, f) => db.Query<Artist>().QueryText(string.Format(
+                   "/* LazyLoading Artist for TrackFile */\n" +
+                   "SELECT Artists.* " +
+                   "FROM Artists " +
+                   "JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId " +
+                   "JOIN AlbumReleases ON AlbumReleases.AlbumId = Albums.Id " +
+                   "JOIN Tracks ON Tracks.AlbumReleaseId = AlbumReleases.Id " +
+                   "JOIN TrackFiles ON TrackFiles.Id = Tracks.TrackFileId " +
+                   "WHERE TrackFiles.Id = {0}",
+                   f.Id)).SingleOrDefault());
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.GroupName)

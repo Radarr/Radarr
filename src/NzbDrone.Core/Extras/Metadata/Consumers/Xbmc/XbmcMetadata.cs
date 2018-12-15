@@ -113,19 +113,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 artistElement.Add(new XElement("title", artist.Name));
 
-                if (artist.Ratings != null && artist.Ratings.Votes > 0)
+                if (artist.Metadata.Value.Ratings != null && artist.Metadata.Value.Ratings.Votes > 0)
                 {
-                    artistElement.Add(new XElement("rating", artist.Ratings.Value));
+                    artistElement.Add(new XElement("rating", artist.Metadata.Value.Ratings.Value));
                 }
 
-                artistElement.Add(new XElement("musicbrainzartistid", artist.ForeignArtistId));
-                artistElement.Add(new XElement("biography", artist.Overview));
-                artistElement.Add(new XElement("outline", artist.Overview));
+                artistElement.Add(new XElement("musicbrainzartistid", artist.Metadata.Value.ForeignArtistId));
+                artistElement.Add(new XElement("biography", artist.Metadata.Value.Overview));
+                artistElement.Add(new XElement("outline", artist.Metadata.Value.Overview));
 
                 var doc = new XDocument(artistElement);
                 doc.Save(xw);
 
-                _logger.Debug("Saving artist.nfo for {0}", artist.Name);
+                _logger.Debug("Saving artist.nfo for {0}", artist.Metadata.Value.Name);
 
                 return new MetadataFileResult("artist.nfo", doc.ToString());
             }
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 }
 
                 albumElement.Add(new XElement("musicbrainzalbumid", album.ForeignAlbumId));
-                albumElement.Add(new XElement("artistdesc", artist.Overview));
+                albumElement.Add(new XElement("artistdesc", artist.Metadata.Value.Overview));
                 albumElement.Add(new XElement("releasedate", album.ReleaseDate.Value.ToShortDateString()));
 
                 var doc = new XDocument(albumElement);
@@ -203,7 +203,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         private IEnumerable<ImageFileResult> ProcessArtistImages(Artist artist)
         {
-            foreach (var image in artist.Images)
+            foreach (var image in artist.Metadata.Value.Images)
             {
                 var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
                 var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);

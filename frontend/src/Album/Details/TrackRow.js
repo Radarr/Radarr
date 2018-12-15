@@ -178,7 +178,6 @@ TrackRow.propTypes = {
   id: PropTypes.number.isRequired,
   albumId: PropTypes.number.isRequired,
   trackFileId: PropTypes.number,
-  monitored: PropTypes.bool.isRequired,
   mediumNumber: PropTypes.number.isRequired,
   trackNumber: PropTypes.string.isRequired,
   absoluteTrackNumber: PropTypes.number,

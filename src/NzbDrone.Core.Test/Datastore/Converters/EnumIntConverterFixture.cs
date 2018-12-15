@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_enum_when_getting_int_from_db()
         {
             var mockMemberInfo = new Mock<MemberInfo>();
-            mockMemberInfo.SetupGet(s => s.DeclaringType).Returns(typeof(Artist));
+            mockMemberInfo.SetupGet(s => s.DeclaringType).Returns(typeof(ArtistMetadata));
             mockMemberInfo.SetupGet(s => s.Name).Returns("Status");
 
             var expected = ArtistStatusType.Continuing;

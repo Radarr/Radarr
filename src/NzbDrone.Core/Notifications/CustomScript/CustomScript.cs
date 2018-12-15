@@ -37,9 +37,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             environmentVariables.Add("Lidarr_EventType", "Grab");
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Lidarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
             environmentVariables.Add("Lidarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
             environmentVariables.Add("Lidarr_Release_AlbumTitles", string.Join("|", remoteAlbum.Albums.Select(e => e.Title)));
@@ -66,10 +66,10 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_EventType", "Download");
             environmentVariables.Add("Lidarr_IsUpgrade", message.OldFiles.Any().ToString());
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Lidarr_Album_Title", album.Title);
             environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
@@ -106,10 +106,10 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             environmentVariables.Add("Lidarr_EventType", "AlbumDownload");
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Lidarr_Album_Title", album.Title);
             environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
@@ -138,10 +138,10 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             environmentVariables.Add("Lidarr_EventType", "Rename");
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
 
             ExecuteScript(environmentVariables);
         }

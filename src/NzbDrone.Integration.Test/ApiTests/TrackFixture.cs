@@ -46,17 +46,6 @@ namespace NzbDrone.Integration.Test.ApiTests
             Tracks.Get(tracks.First().Id).Should().NotBeNull();
         }
 
-        [Test]
-        public void should_be_able_to_set_monitor_status()
-        {
-            var tracks = Tracks.GetTracksInArtist(_artist.Id);
-            var updatedTrack = tracks.First();
-            updatedTrack.Monitored = false;
-
-            Tracks.Put(updatedTrack).Monitored.Should().BeFalse();
-        }
-
-
         [TearDown]
         public void TearDown()
         {

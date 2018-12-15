@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_orphaned_albums()
         {
             var album = Builder<Album>.CreateNew()
-                                          .BuildNew();
+                .BuildNew();
 
             Db.Insert(album);
             Subject.Clean();
@@ -25,19 +25,20 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_not_delete_unorphaned_albums()
         {
             var artist = Builder<Artist>.CreateNew()
-                                        .BuildNew();
+                .With(e => e.Metadata = new ArtistMetadata {Id = 1})
+                .BuildNew();
 
             Db.Insert(artist);
 
             var albums = Builder<Album>.CreateListOfSize(2)
-                                          .TheFirst(1)
-                                          .With(e => e.ArtistId = artist.Id)
-                                          .BuildListOfNew();
+                .TheFirst(1)
+                .With(e => e.ArtistMetadataId = artist.Metadata.Value.Id)
+                .BuildListOfNew();
 
             Db.InsertMany(albums);
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(e => e.ArtistId == artist.Id);
+            AllStoredModels.Should().Contain(e => e.ArtistMetadataId == artist.Metadata.Value.Id);
         }
     }
 }

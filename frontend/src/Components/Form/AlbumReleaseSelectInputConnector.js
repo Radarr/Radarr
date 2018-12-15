@@ -9,15 +9,14 @@ import SelectInput from './SelectInput';
 function createMapStateToProps() {
   return createSelector(
     (state, { albumReleases }) => albumReleases,
-    (state, { selectedRelease }) => selectedRelease,
-    (albumReleases, selectedRelease) => {
+    (albumReleases) => {
       const values = _.map(albumReleases.value, (albumRelease) => {
 
         return {
-          key: albumRelease.id,
+          key: albumRelease.foreignReleaseId,
           value: `${albumRelease.title}` +
             `${albumRelease.disambiguation ? ' (' : ''}${titleCase(albumRelease.disambiguation)}${albumRelease.disambiguation ? ')' : ''}` +
-            `, ${albumRelease.mediaCount} med, ${albumRelease.trackCount} tracks` +
+            `, ${albumRelease.mediumCount} med, ${albumRelease.trackCount} tracks` +
             `${albumRelease.country.length > 0 ? ', ' : ''}${albumRelease.country}` +
             `${albumRelease.format ? ', [' : ''}${albumRelease.format}${albumRelease.format ? ']' : ''}`
         };
@@ -25,7 +24,7 @@ function createMapStateToProps() {
 
       const sortedValues = _.orderBy(values, ['value']);
 
-      const value = selectedRelease.value.id;
+      const value = _.find(albumReleases.value, { monitored: true }).foreignReleaseId;
 
       return {
         values: sortedValues,
@@ -45,7 +44,10 @@ class AlbumReleaseSelectInputConnector extends Component {
       albumReleases
     } = this.props;
 
-    this.props.onChange({ name, value: _.find(albumReleases.value, { id: value }) });
+    let updatedReleases = _.map(albumReleases.value, (e) => ({ ...e, monitored: false }));
+    _.find(updatedReleases, { foreignReleaseId: value }).monitored = true;
+
+    this.props.onChange({ name, value: updatedReleases });
   }
 
   render() {

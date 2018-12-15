@@ -2,14 +2,17 @@ import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons, sizes } from 'Helpers/Props';
+import { align, icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
+import fonts from 'Styles/Variables/fonts';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
+import Tooltip from 'Components/Tooltip/Tooltip';
 import AlbumCover from 'Album/AlbumCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import EditAlbumModalConnector from 'Album/Edit/EditAlbumModalConnector';
@@ -24,8 +27,11 @@ import AlbumDetailsMediumConnector from './AlbumDetailsMediumConnector';
 import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
 import InteractiveSearchModal from 'InteractiveSearch/InteractiveSearchModal';
 import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
-
+import AlbumDetailsLinks from './AlbumDetailsLinks';
 import styles from './AlbumDetails.css';
+
+const defaultFontSize = parseInt(fonts.defaultFontSize);
+const lineHeight = parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images) {
   const fanartImage = _.find(images, { coverType: 'fanart' });
@@ -135,14 +141,17 @@ class AlbumDetails extends Component {
   render() {
     const {
       id,
+      foreignAlbumId,
       title,
       disambiguation,
+      overview,
       albumType,
       statistics = {},
       monitored,
       releaseDate,
       ratings,
       images,
+      links,
       media,
       isFetching,
       isPopulated,
@@ -357,6 +366,38 @@ class AlbumDetails extends Component {
                       </Label>
                   }
 
+                  <Tooltip
+                    anchor={
+                      <Label
+                        className={styles.detailsLabel}
+                        size={sizes.LARGE}
+                      >
+                        <Icon
+                          name={icons.EXTERNAL_LINK}
+                          size={17}
+                        />
+
+                        <span className={styles.links}>
+                          Links
+                        </span>
+                      </Label>
+                    }
+                    tooltip={
+                      <AlbumDetailsLinks
+                        foreignAlbumId={foreignAlbumId}
+                        links={links}
+                      />
+                    }
+                    kind={kinds.INVERSE}
+                    position={tooltipPositions.BOTTOM}
+                  />
+
+                </div>
+                <div className={styles.overview}>
+                  <TextTruncate
+                    line={Math.floor(125 / (defaultFontSize * lineHeight))}
+                    text={overview}
+                  />
                 </div>
               </div>
             </div>
@@ -446,11 +487,13 @@ AlbumDetails.propTypes = {
   foreignAlbumId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
+  overview: PropTypes.string,
   albumType: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  links: PropTypes.arrayOf(PropTypes.object).isRequired,
   media: PropTypes.arrayOf(PropTypes.object).isRequired,
   monitored: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Test.Common;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
 {
-
     public class GetAudioFilesFixture : CoreTest<DiskScanService>
     {
         private string[] _fileNames;
+        private readonly string path = @"C:\Test\".AsOsAgnostic();
 
         [SetUp]
         public void Setup()
@@ -48,8 +47,6 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         [Test]
         public void should_check_all_directories()
         {
-            var path = @"C:\Test\";
-
             Subject.GetAudioFiles(path);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Once());
@@ -59,8 +56,6 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         [Test]
         public void should_check_all_directories_when_allDirectories_is_true()
         {
-            var path = @"C:\Test\";
-
             Subject.GetAudioFiles(path, true);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Once());
@@ -70,8 +65,6 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         [Test]
         public void should_check_top_level_directory_only_when_allDirectories_is_false()
         {
-            var path = @"C:\Test\";
-
             Subject.GetAudioFiles(path, false);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Never());
@@ -81,7 +74,6 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         [Test]
         public void should_return_audio_files_only()
         {
-            var path = @"C:\Test\";
             GivenFiles(GetFiles(path));
 
             Subject.GetAudioFiles(path).Should().HaveCount(4);
@@ -96,7 +88,6 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         [TestCase(".unwanted")]
         public void should_filter_certain_sub_folders(string subFolder)
         {
-            var path = @"C:\Test\";
             var files = GetFiles(path).ToList();
             var specialFiles = GetFiles(path, subFolder).ToList();
             var allFiles = files.Concat(specialFiles);

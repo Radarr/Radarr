@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Artist _artist;
         private Album _album;
+        private AlbumRelease _release;
         private Track _track;
         private TrackFile _trackFile;
         private NamingConfig _namingConfig;
@@ -32,10 +33,16 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .CreateNew()
                     .With(s => s.Title = "Anthology")
                     .Build();
+            
+            _release = Builder<AlbumRelease>
+                .CreateNew()
+                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .Build();
 
             _track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "City Sushi")
                             .With(e => e.AbsoluteTrackNumber = 6)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "LidarrTest" };

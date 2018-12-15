@@ -41,6 +41,14 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                         Allowed = true
                     }
                 },
+                ReleaseStatuses = new List<ProfileReleaseStatusItem>
+                {
+                    new ProfileReleaseStatusItem
+                    {
+                        ReleaseStatus = ReleaseStatus.Official,
+                        Allowed = true
+                    }
+                }
             };
 
             Mocker.GetMock<IMetadataProfileService>()
@@ -58,34 +66,33 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             var details = Subject.GetArtistInfo(mbId, 1);
 
-            ValidateArtist(details.Item1);
-            ValidateAlbums(details.Item2);
+            ValidateArtist(details);
+            ValidateAlbums(details.Albums.Value);
 
-            details.Item1.Name.Should().Be(name);
+            details.Name.Should().Be(name);
         }
         
-        [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", null, "Hysteria")]
-        public void should_be_able_to_get_album_detail(string mbId, string release, string name)
+        [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "Hysteria")]
+        public void should_be_able_to_get_album_detail(string mbId, string name)
         {
-            var details = Subject.GetAlbumInfo(mbId, release);
+            var details = Subject.GetAlbumInfo(mbId);
             
-            ValidateAlbums(new List<Album> {details.Item1});
+            ValidateAlbums(new List<Album> {details.Item2});
 
-            details.Item1.Title.Should().Be(name);
+            details.Item2.Title.Should().Be(name);
         }
 
         [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "3c186b52-ca73-46a3-a8e6-04559bfbb581",1, 13, "Hysteria")]
         [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "dee9ca6f-4f84-4359-82a9-b75a37ffc316",2, 27,"Hysteria")]
         public void should_be_able_to_get_album_detail_with_release(string mbId, string release, int mediaCount, int trackCount, string name)
         {
-            var details = Subject.GetAlbumInfo(mbId, release);
+            var details = Subject.GetAlbumInfo(mbId);
 
-            ValidateAlbums(new List<Album> { details.Item1 });
+            ValidateAlbums(new List<Album> { details.Item2 });
 
-            details.Item1.Media.Count.Should().Be(mediaCount);
-            details.Item2.Count.Should().Be(trackCount);
-
-            details.Item1.Title.Should().Be(name);
+            details.Item2.AlbumReleases.Value.Single(r => r.ForeignReleaseId == release).Media.Count.Should().Be(mediaCount);
+            details.Item2.AlbumReleases.Value.Single(r => r.ForeignReleaseId == release).Tracks.Value.Count.Should().Be(trackCount);
+            details.Item2.Title.Should().Be(name);
         }
 
         [Test]
@@ -103,13 +110,13 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [Test]
         public void getting_details_of_invalid_album()
         {
-            Assert.Throws<AlbumNotFoundException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1",null));
+            Assert.Throws<AlbumNotFoundException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
         }
 
         [Test]
         public void getting_details_of_invalid_guid_for_album()
         {
-            Assert.Throws<BadRequestException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-aaaaaa", null));
+            Assert.Throws<BadRequestException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-aaaaaa"));
         }
 
         private void ValidateArtist(Artist artist)
@@ -118,8 +125,8 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             artist.Name.Should().NotBeNullOrWhiteSpace();
             artist.CleanName.Should().Be(Parser.Parser.CleanArtistName(artist.Name));
             artist.SortName.Should().Be(Parser.Parser.NormalizeTitle(artist.Name));
-            artist.Overview.Should().NotBeNullOrWhiteSpace();
-            artist.Images.Should().NotBeEmpty();
+            artist.Metadata.Value.Overview.Should().NotBeNullOrWhiteSpace();
+            artist.Metadata.Value.Images.Should().NotBeEmpty();
             artist.ForeignArtistId.Should().NotBeNullOrWhiteSpace();
         }
 

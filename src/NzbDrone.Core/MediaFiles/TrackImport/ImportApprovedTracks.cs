@@ -9,6 +9,8 @@ using NzbDrone.Core.Extras;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
@@ -24,20 +26,23 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IMediaFileService _mediaFileService;
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IReleaseService _releaseService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public ImportApprovedTracks(IUpgradeMediaFiles trackFileUpgrader,
-                                      IMediaFileService mediaFileService,
-                                      IExtraService extraService,
-                                      IDiskProvider diskProvider,
-                                      IEventAggregator eventAggregator,
-                                      Logger logger)
+                                    IMediaFileService mediaFileService,
+                                    IExtraService extraService,
+                                    IDiskProvider diskProvider,
+                                    IReleaseService releaseService,
+                                    IEventAggregator eventAggregator,
+                                    Logger logger)
         {
             _trackFileUpgrader = trackFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
             _diskProvider = diskProvider;
+            _releaseService = releaseService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -55,6 +60,22 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             var importResults = new List<ImportResult>();
             var allImportedTrackFiles = new List<TrackFile>();
             var allOldTrackFiles = new List<TrackFile>();
+
+            var albumDecisions = decisions.Where(e => e.LocalTrack.Album != null)
+                .GroupBy(e => e.LocalTrack.Album.Id).ToList();
+
+            foreach (var albumDecision in albumDecisions)
+            {
+                // set the correct release to be monitored after doing the import
+                var album = albumDecision.First().LocalTrack.Album;
+                var release = albumDecision.First().LocalTrack.Release;
+                _logger.Debug("Updating release to {0} [{1} tracks]", release, release.TrackCount);
+                _releaseService.SetMonitored(release);
+
+                // Publish album edited event.
+                // Deliberatly don't put in the old album since we don't want to trigger an ArtistScan.
+                _eventAggregator.PublishEvent(new AlbumEditedEvent(album, album));
+            }
 
             foreach (var importDecision in qualifiedImports.OrderBy(e => e.LocalTrack.Tracks.Select(track => track.AbsoluteTrackNumber).MinOrDefault())
                                                            .ThenByDescending(e => e.LocalTrack.Size))
@@ -74,17 +95,18 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         continue;
                     }
 
-                    var trackFile = new TrackFile();
-                    trackFile.DateAdded = DateTime.UtcNow;
-                    trackFile.ArtistId = localTrack.Artist.Id;
-                    trackFile.Path = localTrack.Path.CleanFilePath();
-                    trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
-                    trackFile.Quality = localTrack.Quality;
-                    trackFile.MediaInfo = localTrack.MediaInfo;
-                    trackFile.AlbumId = localTrack.Album.Id;
-                    trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
-                    trackFile.Tracks = localTrack.Tracks;
-                    trackFile.Language = localTrack.Language;
+                    
+                    var trackFile = new TrackFile {
+                        Path = localTrack.Path.CleanFilePath(),
+                        Size = _diskProvider.GetFileSize(localTrack.Path),
+                        DateAdded = DateTime.UtcNow,
+                        ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup,
+                        Quality = localTrack.Quality,
+                        MediaInfo = localTrack.MediaInfo,
+                        Language = localTrack.Language,
+                        AlbumId = localTrack.Album.Id,
+                        Tracks = localTrack.Tracks
+                    };
 
                     bool copyOnly;
                     switch (importMode)
@@ -177,6 +199,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         allOldTrackFiles.Where(s => s.AlbumId == album.Id).ToList(), newDownload,
                         downloadClientItem));
                 }
+
             }
 
             //Adding all the rejected decisions

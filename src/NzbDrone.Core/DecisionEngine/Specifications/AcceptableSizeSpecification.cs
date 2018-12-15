@@ -35,19 +35,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             var qualityDefinition = _qualityDefinitionService.Get(quality);
-            var albumsDuration = subject.Albums.Sum(album => album.Duration) / 1000;
 
             if (qualityDefinition.MinSize.HasValue)
             {
                 var minSize = qualityDefinition.MinSize.Value.Kilobits();
+                var minReleaseDuration = subject.Albums.Select(a => a.AlbumReleases.Value.Where(r => r.Monitored || a.AnyReleaseOk).Select(r => r.Duration).Min()).Sum() / 1000;
 
-                //Multiply minSize by Album.Duration
-                minSize = minSize * albumsDuration;
+                //Multiply minSize by smallest release duration
+                minSize = minSize * minReleaseDuration;
 
                 //If the parsed size is smaller than minSize we don't want it
                 if (subject.Release.Size < minSize)
                 {
-                    var runtimeMessage = $"{albumsDuration}sec";
+                    var runtimeMessage = $"{minReleaseDuration}sec";
 
                     _logger.Debug("Item: {0}, Size: {1} is smaller than minimum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, minSize, runtimeMessage);
                     return Decision.Reject("{0} is smaller than minimum allowed {1}", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix());
@@ -60,14 +60,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             else
             {
                 var maxSize = qualityDefinition.MaxSize.Value.Kilobits();
-
+                var maxReleaseDuration = subject.Albums.Select(a => a.AlbumReleases.Value.Where(r => r.Monitored || a.AnyReleaseOk).Select(r => r.Duration).Max()).Sum() / 1000;
+                
                 //Multiply maxSize by Album.Duration
-                maxSize = maxSize * albumsDuration;
+                maxSize = maxSize * maxReleaseDuration;
 
                 //If the parsed size is greater than maxSize we don't want it
                 if (subject.Release.Size > maxSize)
                 {
-                    var runtimeMessage = $"{albumsDuration}sec";
+                    var runtimeMessage = $"{maxReleaseDuration}sec";
 
                     _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, maxSize, runtimeMessage);
                     return Decision.Reject("{0} is larger than maximum allowed {1}", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix());

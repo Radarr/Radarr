@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                      SELECT Albums.Id FROM Albums
                                      LEFT OUTER JOIN Artists
-                                     ON Albums.ArtistId = Artists.Id
+                                     ON Albums.ArtistMetadataId = Artists.ArtistMetadataId
                                      WHERE Artists.Id IS NULL)");
         }
     }

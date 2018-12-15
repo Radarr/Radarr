@@ -105,6 +105,7 @@ class InteractiveImportModalContentConnector extends Component {
         const {
           artist,
           album,
+          albumReleaseId,
           tracks,
           quality,
           language
@@ -140,6 +141,7 @@ class InteractiveImportModalContentConnector extends Component {
           folderName: item.folderName,
           artistId: artist.id,
           albumId: album.id,
+          albumReleaseId,
           trackIds: _.map(tracks, 'id'),
           quality,
           language,

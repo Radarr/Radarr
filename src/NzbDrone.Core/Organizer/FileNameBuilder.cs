@@ -101,14 +101,14 @@ namespace NzbDrone.Core.Organizer
             var pattern = namingConfig.StandardTrackFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
-            tracks = tracks.OrderBy(e => e.AlbumId).ThenBy(e => e.TrackNumber).ToList();
+            tracks = tracks.OrderBy(e => e.AlbumReleaseId).ThenBy(e => e.TrackNumber).ToList();
 
             pattern = FormatTrackNumberTokens(pattern, "", tracks);
             pattern = FormatMediumNumberTokens(pattern, "", tracks);
 
             AddArtistTokens(tokenHandlers, artist);
             AddAlbumTokens(tokenHandlers, album);
-            AddMediumTokens(tokenHandlers, album.Media.SingleOrDefault(m => m.Number == tracks.First().MediumNumber));
+            AddMediumTokens(tokenHandlers, tracks.First().AlbumRelease.Value.Media.SingleOrDefault(m => m.Number == tracks.First().MediumNumber));
             AddTrackTokens(tokenHandlers, tracks);
             AddTrackFileTokens(tokenHandlers, trackFile);
             AddQualityTokens(tokenHandlers, artist, trackFile);

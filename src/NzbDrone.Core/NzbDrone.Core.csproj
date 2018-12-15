@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -199,6 +199,7 @@
     <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
     <Compile Include="Datastore\Migration\021_add_custom_filters.cs" />
     <Compile Include="Datastore\Migration\022_import_list_tags.cs" />
+    <Compile Include="Datastore\Migration\023_add_release_groups_etc.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -510,7 +511,9 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFiles.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFiles.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedArtistMetadata.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbums.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklist.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedDownloadClientStatus.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedImportListStatus.cs" />
@@ -798,16 +801,13 @@
     <Compile Include="MetadataSource\ISearchForNewAlbum.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
     <Compile Include="MetadataSource\IProvideAlbumInfo.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\AlbumArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MediumResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\LinkResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ReleaseResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchArtistComparer.cs" />
@@ -832,7 +832,10 @@
     <Compile Include="Music\AddAlbumService.cs" />
     <Compile Include="Music\AlbumAddedService.cs" />
     <Compile Include="Music\AlbumEditedService.cs" />
-    <Compile Include="Music\AlbumRelease.cs" />
+    <Compile Include="Music\AlbumRepository.cs" />
+    <Compile Include="Music\ReleaseRepository.cs" />
+    <Compile Include="Music\ReleaseService.cs" />
+    <Compile Include="Music\Release.cs" />
     <Compile Include="Music\ArtistPathBuilder.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
@@ -858,15 +861,17 @@
     <Compile Include="Music\AddArtistValidator.cs" />
     <Compile Include="Music\Album.cs" />
     <Compile Include="Music\Artist.cs" />
+    <Compile Include="Music\ArtistMetadata.cs" />
     <Compile Include="Music\ArtistAddedHandler.cs" />
     <Compile Include="Music\ArtistNameNormalizer.cs" />
     <Compile Include="Music\AlbumService.cs" />
-    <Compile Include="Music\AlbumRepository.cs" />
     <Compile Include="Music\ArtistRepository.cs" />
+    <Compile Include="Music\ArtistMetadataRepository.cs" />
     <Compile Include="Music\ArtistService.cs" />
     <Compile Include="Music\Commands\RefreshArtistCommand.cs" />
     <Compile Include="Music\Events\AlbumAddedEvent.cs" />
     <Compile Include="Music\Events\ArtistAddedEvent.cs" />
+    <Compile Include="Music\Events\ReleaseDeletedEvent.cs" />
     <Compile Include="Music\Events\AlbumDeletedEvent.cs" />
     <Compile Include="Music\Events\ArtistDeletedEvent.cs" />
     <Compile Include="Music\Events\AlbumEditedEvent.cs" />

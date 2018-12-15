@@ -40,6 +40,14 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                         Allowed = true
                     }
                 },
+                ReleaseStatuses = new List<ProfileReleaseStatusItem>
+                {
+                    new ProfileReleaseStatusItem
+                    {
+                        ReleaseStatus = ReleaseStatus.Official,
+                        Allowed = true
+                    }
+                }
             };
 
             Mocker.GetMock<IMetadataProfileService>()

@@ -103,12 +103,6 @@ namespace NzbDrone.Core.Music
             foreach (var album in albums)
             {
                 album.Monitored = monitored;
-                var tracks = _trackService.GetTracksByAlbum(album.Id);
-                foreach (var track in tracks)
-                {
-                    track.Monitored = monitored;
-                }
-                _trackService.UpdateTracks(tracks);
             }
         }
     }

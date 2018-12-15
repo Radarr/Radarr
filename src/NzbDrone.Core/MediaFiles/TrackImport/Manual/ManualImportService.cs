@@ -35,6 +35,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
+        private readonly IReleaseService _releaseService;
         private readonly ITrackService _trackService;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IImportApprovedTracks _importApprovedTracks;
@@ -50,6 +51,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                                    IMakeImportDecision importDecisionMaker,
                                    IArtistService artistService,
                                    IAlbumService albumService,
+                                   IReleaseService releaseService,
                                    ITrackService trackService,
                                    IVideoFileInfoReader videoFileInfoReader,
                                    IImportApprovedTracks importApprovedTracks,
@@ -65,6 +67,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _importDecisionMaker = importDecisionMaker;
             _artistService = artistService;
             _albumService = albumService;
+            _releaseService = releaseService;
             _trackService = trackService;
             _videoFileInfoReader = videoFileInfoReader;
             _importApprovedTracks = importApprovedTracks;
@@ -138,7 +141,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
             var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo, filterExistingFiles);
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo, filterExistingFiles, true);
 
             return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
         }
@@ -155,6 +158,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             if (decision.LocalTrack.Album != null)
             {
                 item.Album = decision.LocalTrack.Album;
+                item.Release = decision.LocalTrack.Release;
             }
 
             if (decision.LocalTrack.Tracks.Any())
@@ -240,6 +244,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             if (decision.LocalTrack.Album != null)
             {
                 item.Album = decision.LocalTrack.Album;
+                item.Release = decision.LocalTrack.Release;
             }
 
             if (decision.LocalTrack.Tracks.Any())
@@ -269,6 +274,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 var file = message.Files[i];
                 var artist = _artistService.GetArtist(file.ArtistId);
                 var album = _albumService.GetAlbum(file.AlbumId);
+                var release = _releaseService.GetRelease(file.AlbumReleaseId);
                 var tracks = _trackService.GetTracks(file.TrackIds);
                 var parsedTrackInfo = Parser.Parser.ParseMusicPath(file.Path) ?? new ParsedTrackInfo();
                 var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
@@ -285,6 +291,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     Language = file.Language,
                     Artist = artist,
                     Album = album,
+                    Release = release,
                     Size = 0
                 };
 

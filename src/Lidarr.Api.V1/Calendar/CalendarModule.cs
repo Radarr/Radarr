@@ -14,10 +14,9 @@ namespace Lidarr.Api.V1.Calendar
     {
         public CalendarModule(IAlbumService albumService,
                               IArtistStatisticsService artistStatisticsService,
-                              IArtistService artistService,
-                              IUpgradableSpecification ugradableSpecification,
+                              IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, artistService, ugradableSpecification, signalRBroadcaster, "calendar")
+            : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }

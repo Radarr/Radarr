@@ -9,6 +9,8 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Test.Languages;
+using Marr.Data.QGen;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -38,24 +40,44 @@ namespace NzbDrone.Core.Test.Datastore
             profile = Db.Insert(profile);
             languageProfile = Db.Insert(languageProfile);
 
+            var metadata = Builder<ArtistMetadata>.CreateNew()
+                .With(v => v.Id = 0)
+                .Build();
+            Db.Insert(metadata);
+
             var artist = Builder<Artist>.CreateListOfSize(1)
                 .All()
+                .With(v => v.Id = 0)
                 .With(v => v.ProfileId = profile.Id)
                 .With(v => v.LanguageProfileId = languageProfile.Id)
+                .With(v => v.ArtistMetadataId = metadata.Id)
                 .BuildListOfNew();
 
             Db.InsertMany(artist);
 
             var albums = Builder<Album>.CreateListOfSize(3)
                 .All()
-                .With(v => v.ArtistId = artist[0].Id)
+                .With(v => v.Id = 0)
+                .With(v => v.ArtistMetadataId = metadata.Id)
                 .BuildListOfNew();
 
             Db.InsertMany(albums);
 
+            var releases = new List<AlbumRelease>();
+            foreach (var album in albums)
+            {
+                releases.Add(
+                    Builder<AlbumRelease>.CreateNew()
+                    .With(v => v.Id = 0)
+                    .With(v => v.AlbumId = album.Id)
+                    .With(v => v.ForeignReleaseId = "test" + album.Id)
+                    .Build());
+            }
+            Db.InsertMany(releases);
+
             var trackFiles = Builder<TrackFile>.CreateListOfSize(1)
                 .All()
-                .With(v => v.ArtistId = artist[0].Id)
+                .With(v => v.Id = 0)
                 .With(v => v.Quality = new QualityModel())
                 .BuildListOfNew();
 
@@ -63,23 +85,22 @@ namespace NzbDrone.Core.Test.Datastore
 
             var tracks = Builder<Track>.CreateListOfSize(10)
                 .All()
-                .With(v => v.Monitored = true)
+                .With(v => v.Id = 0)
                 .With(v => v.TrackFileId = trackFiles[0].Id)
-                .With(v => v.ArtistId = artist[0].Id)
+                .With(v => v.AlbumReleaseId = releases[0].Id)
                 .BuildListOfNew();
 
             Db.InsertMany(tracks);
         }
 
         [Test]
-        [Ignore("This does not currently join correctly, however we are not using the joined info")]
         public void should_join_artist_when_query_for_albums()
         {
             var db = Mocker.Resolve<IDatabase>();
             var DataMapper = db.GetDataMapper();
 
             var albums = DataMapper.Query<Album>()
-                .Join<Album, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
+                .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
                 .ToList();
 
             foreach (var album in albums)
@@ -95,14 +116,19 @@ namespace NzbDrone.Core.Test.Datastore
             var DataMapper = db.GetDataMapper();
 
             var tracks = DataMapper.Query<Track>()
-                .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
+                .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
+                .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
+                .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
                 .ToList();
 
             foreach (var track in tracks)
             {
-                Assert.IsNotNull(track.Artist);
-                Assert.IsFalse(track.Artist.Profile.IsLoaded);
-                Assert.IsFalse(track.Artist.LanguageProfile.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
+                Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
+                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.Profile.IsLoaded);
+                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
             }
         }
 
@@ -113,12 +139,12 @@ namespace NzbDrone.Core.Test.Datastore
             var DataMapper = db.GetDataMapper();
 
             var tracks = DataMapper.Query<Track>()
-                .Join<Track, TrackFile>(Marr.Data.QGen.JoinType.Inner, v => v.TrackFile, (l, r) => l.TrackFileId == r.Id)
+                .Join<Track, TrackFile>(JoinType.Inner, v => v.TrackFile, (l, r) => l.TrackFileId == r.Id)
                 .ToList();
 
             foreach (var track in tracks)
             {
-                Assert.IsNull(track.Artist);
+                Assert.IsFalse(track.Artist.IsLoaded);
                 Assert.IsTrue(track.TrackFile.IsLoaded);
             }
         }
@@ -130,15 +156,20 @@ namespace NzbDrone.Core.Test.Datastore
             var DataMapper = db.GetDataMapper();
 
             var tracks = DataMapper.Query<Track>()
-                .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
-                .Join<Artist, Profile>(Marr.Data.QGen.JoinType.Inner, v => v.Profile, (l, r) => l.ProfileId == r.Id)
+                .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
+                .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
+                .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
+                .Join<Artist, Profile>(JoinType.Inner, v => v.Profile, (l, r) => l.ProfileId == r.Id)
                 .ToList();
 
             foreach (var track in tracks)
             {
-                Assert.IsNotNull(track.Artist);
-                Assert.IsTrue(track.Artist.Profile.IsLoaded);
-                Assert.IsFalse(track.Artist.LanguageProfile.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
+                Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.Value.Profile.IsLoaded);
+                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
             }
         }
 
@@ -149,15 +180,20 @@ namespace NzbDrone.Core.Test.Datastore
             var DataMapper = db.GetDataMapper();
 
             var tracks = DataMapper.Query<Track>()
-                                     .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
-                                     .Join<Artist, LanguageProfile>(Marr.Data.QGen.JoinType.Inner, v => v.LanguageProfile, (l, r) => l.ProfileId == r.Id)
-                                     .ToList();
+                .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
+                .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
+                .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
+                .Join<Artist, LanguageProfile>(JoinType.Inner, v => v.LanguageProfile, (l, r) => l.LanguageProfileId == r.Id)
+                .ToList();
 
             foreach (var track in tracks)
             {
-                Assert.IsNotNull(track.Artist);
-                Assert.IsFalse(track.Artist.Profile.IsLoaded);
-                Assert.IsTrue(track.Artist.LanguageProfile.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
+                Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
+                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.Profile.IsLoaded);
+                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
             }
         }
 

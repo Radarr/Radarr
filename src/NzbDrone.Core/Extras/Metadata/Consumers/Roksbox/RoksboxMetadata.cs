@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 return new List<ImageFileResult>();
             }
 
-            var image = artist.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? artist.Images.FirstOrDefault();
+            var image = artist.Metadata.Value.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? artist.Metadata.Value.Images.FirstOrDefault();
             if (image == null)
             {
                 _logger.Trace("Failed to find suitable Artist image for artist {0}.", artist.Name);

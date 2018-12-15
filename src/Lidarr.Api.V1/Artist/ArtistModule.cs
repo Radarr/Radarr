@@ -238,7 +238,7 @@ namespace Lidarr.Api.V1.Artist
 
         public void Handle(TrackImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.ArtistId);
+            BroadcastResourceChange(ModelAction.Updated, message.TrackInfo.Artist.ToResource());
         }
 
         public void Handle(TrackFileDeletedEvent message)

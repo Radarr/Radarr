@@ -67,6 +67,10 @@ const mapDispatchToProps = {
   clearTrackFiles
 };
 
+function getMonitoredReleases(props) {
+  return _.map(_.filter(props.releases, { monitored: true }), 'id').sort();
+}
+
 class AlbumDetailsConnector extends Component {
 
   componentDidMount() {
@@ -75,14 +79,8 @@ class AlbumDetailsConnector extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      id
-    } = this.props;
-
-    // If the id has changed we need to clear the tracks/track
-    // files and fetch from the server.
-
-    if (prevProps.id !== id) {
+    if (!_.isEqual(getMonitoredReleases(prevProps), getMonitoredReleases(this.props)) ||
+        (prevProps.anyReleaseOk === false && this.props.anyReleaseOk === true)) {
       this.unpopulate();
       this.populate();
     }

@@ -84,7 +84,8 @@ BuildWithMSBuild()
 BuildWithXbuild()
 {
     export MONO_IOMAP=case
-    CheckExitCode msbuild /t:Clean $slnFile
+    CheckExitCode msbuild /p:Configuration=Debug /t:Clean $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /t:Clean $slnFile
     mono $nuget restore $slnFile
     CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }

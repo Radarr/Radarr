@@ -11,6 +11,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
+using Marr.Data;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -233,7 +234,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var albums = Builder<Album>.CreateListOfSize(2)
                 .All()
                 .With(v => v.ArtistId, artist.Id)
-                .With(v => v.Artist, artist)
+                .With(v => v.Artist, new LazyLoaded<Artist>(artist))
                 .BuildList();
 
             var criteria = new ArtistSearchCriteria { Albums = albums.Take(1).ToList()};

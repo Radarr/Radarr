@@ -29,7 +29,17 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<TrackFile> GetFilesByArtist(int artistId)
         {
-            return Query.Where(c => c.ArtistId == artistId).ToList();
+            string query = string.Format("SELECT TrackFiles.* " +
+                                         "FROM Artists " +
+                                         "JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId " +
+                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
+                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
+                                         "JOIN TrackFiles ON TrackFiles.Id == Tracks.TrackFileId " +
+                                         "WHERE Artists.Id == {0} " +
+                                         "AND AlbumReleases.Monitored = 1",
+                                         artistId);
+
+            return Query.QueryText(query).ToList();
         }
 
         public List<TrackFile> GetFilesByAlbum(int albumId)
@@ -39,9 +49,20 @@ namespace NzbDrone.Core.MediaFiles
         
         public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
         {
-            return Query.Where(c => c.ArtistId == artistId)
-                .AndWhere(c => c.RelativePath == relativePath)
-                .ToList();
+            var mapper = DataMapper;
+            mapper.AddParameter("artistId", artistId);
+            mapper.AddParameter("relativePath", relativePath);
+            string query = "SELECT TrackFiles.* " +
+                "FROM Artists " +
+                "JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId " +
+                "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
+                "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
+                "JOIN TrackFiles ON TrackFiles.Id == Tracks.TrackFileId " +
+                "WHERE Artists.Id == @artistId " +
+                "AND AlbumReleases.Monitored = 1 " +
+                "AND TrackFiles.RelativePath == @relativePath";
+
+            return mapper.Query<TrackFile>(query);
         }
 
     }

@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Artist _artist;
         private Album _album;
+        private AlbumRelease _release;
         private Track _track1;
         private TrackFile _trackFile;
         private NamingConfig _namingConfig;
@@ -37,6 +38,11 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .With(s => s.Disambiguation = "The Best Album")
                     .Build();
 
+            _release = Builder<AlbumRelease>
+                .CreateNew()
+                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .Build();
+
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameTracks = true;
@@ -48,6 +54,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _track1 = Builder<Track>.CreateNew()
                             .With(e => e.Title = "City Sushi")
                             .With(e => e.AbsoluteTrackNumber = 6)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
@@ -351,6 +358,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             var track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Part 1")
                             .With(e => e.AbsoluteTrackNumber = 6)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
             Subject.BuildTrackFileName(new List<Track> { track }, new Artist { Name = "In The Woods." }, new Album { Title = "30 Rock" }, _trackFile)
@@ -365,6 +373,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             var track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Part 1")
                             .With(e => e.AbsoluteTrackNumber = 6)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
             Subject.BuildTrackFileName(new List<Track> { track }, new Artist { Name = "In The Woods..." }, new Album { Title = "30 Rock" }, _trackFile)

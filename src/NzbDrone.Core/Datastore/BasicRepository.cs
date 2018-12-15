@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
+        protected virtual QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Datastore
         public IEnumerable<TModel> Get(IEnumerable<int> ids)
         {
             var idList = ids.ToList();
-            var query = string.Format("Id IN ({0})", string.Join(",", idList));
+            var query = string.Format("[t0].[Id] IN ({0})", string.Join(",", idList));
             var result = Query.Where(query).ToList();
 
             if (result.Count != idList.Count())

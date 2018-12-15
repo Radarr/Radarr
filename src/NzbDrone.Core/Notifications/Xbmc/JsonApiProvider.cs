@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 var musicBrainzId = s.MusicbrainzArtistId.FirstOrDefault();
 
-                return musicBrainzId == artist.ForeignArtistId || s.Label == artist.Name;
+                return musicBrainzId == artist.Metadata.Value.ForeignArtistId || s.Label == artist.Name;
             });
 
             return matchingArtist?.File;

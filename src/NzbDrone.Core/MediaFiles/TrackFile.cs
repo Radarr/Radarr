@@ -13,10 +13,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public class TrackFile : ModelBase
     {
-        //public string ForeignTrackId { get; set; }
-        //public string ForeignArtistId { get; set; }
-        public int AlbumId { get; set; }
-        public int ArtistId { get; set; }
+        // these are model properties
         public string RelativePath { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
@@ -25,10 +22,16 @@ namespace NzbDrone.Core.MediaFiles
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
-        //public LazyLoaded<List<Track>> Episodes { get; set; }
-        public LazyLoaded<Artist> Artist { get; set; }
-        public LazyLoaded<List<Track>> Tracks { get; set; }
         public Language Language { get; set; }
+        public int AlbumId { get; set; }
+        
+        // These are queried from the database
+        public LazyLoaded<List<Track>> Tracks { get; set; }
+        public LazyLoaded<Artist> Artist { get; set; }
+        public LazyLoaded<Album> Album { get; set; }
+
+        // these are ignored by the database but retained/populated for compatibility
+        public int ArtistId { get { return Artist.Value?.Id ?? 0; } }
 
         public override string ToString()
         {

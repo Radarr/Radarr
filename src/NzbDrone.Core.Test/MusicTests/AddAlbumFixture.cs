@@ -19,6 +19,9 @@ namespace NzbDrone.Core.Test.MusicTests
     public class AddAlbumFixture : CoreTest<AddAlbumService>
     {
         private Album _fakeAlbum;
+        private AlbumRelease _fakeRelease;
+        private readonly string _fakeArtistForeignId = "xxx-xxx-xxx";
+        private readonly List<ArtistMetadata> _fakeArtists = new List<ArtistMetadata> { new ArtistMetadata() };
 
         [SetUp]
         public void Setup()
@@ -26,13 +29,18 @@ namespace NzbDrone.Core.Test.MusicTests
             _fakeAlbum = Builder<Album>
                 .CreateNew()
                 .Build();
+            _fakeRelease = Builder<AlbumRelease>
+                .CreateNew()
+                .Build();
+            _fakeRelease.Tracks = new List<Track>();
+            _fakeAlbum.AlbumReleases = new List<AlbumRelease> {_fakeRelease};
         }
 
         private void GivenValidAlbum(string lidarrId)
         {
             Mocker.GetMock<IProvideAlbumInfo>()
-                  .Setup(s => s.GetAlbumInfo(lidarrId, It.IsAny<string>()))
-                  .Returns(new Tuple<Album, List<Track>>(_fakeAlbum, new List<Track>()));
+                .Setup(s => s.GetAlbumInfo(lidarrId))
+                .Returns(new Tuple<string, Album, List<ArtistMetadata>>(_fakeArtistForeignId, _fakeAlbum, _fakeArtists));
         }
 
         [Test]
@@ -59,8 +67,8 @@ namespace NzbDrone.Core.Test.MusicTests
             };
 
             Mocker.GetMock<IProvideAlbumInfo>()
-                  .Setup(s => s.GetAlbumInfo(newAlbum.ForeignAlbumId, It.IsAny<string>()))
-                  .Throws(new AlbumNotFoundException(newAlbum.ForeignAlbumId));
+                .Setup(s => s.GetAlbumInfo(newAlbum.ForeignAlbumId))
+                .Throws(new AlbumNotFoundException(newAlbum.ForeignAlbumId));
 
             Assert.Throws<ValidationException>(() => Subject.AddAlbum(newAlbum));
 

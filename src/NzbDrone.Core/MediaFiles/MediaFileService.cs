@@ -28,7 +28,7 @@ namespace NzbDrone.Core.MediaFiles
 
     }
 
-    public class MediaFileService : IMediaFileService, IHandleAsync<ArtistDeletedEvent>, IHandleAsync<AlbumDeletedEvent>
+    public class MediaFileService : IMediaFileService, IHandleAsync<AlbumDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
@@ -102,12 +102,6 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
         {
             return _mediaFileRepository.GetFilesWithRelativePath(artistId, relativePath);
-        }
-
-        public void HandleAsync(ArtistDeletedEvent message)
-        {
-            var files = GetFilesByArtist(message.Artist.Id);
-            _mediaFileRepository.DeleteMany(files);
         }
 
         public void HandleAsync(AlbumDeletedEvent message)

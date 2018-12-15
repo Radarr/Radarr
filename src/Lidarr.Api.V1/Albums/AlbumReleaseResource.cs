@@ -7,15 +7,31 @@ namespace Lidarr.Api.V1.Albums
 {
     public class AlbumReleaseResource
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public int AlbumId { get; set; }
+        public string ForeignReleaseId { get; set; }
         public string Title { get; set; }
-        public DateTime? ReleaseDate { get; set; }
+        public string Status { get; set; }
+        public int Duration { get; set; }
         public int TrackCount { get; set; }
-        public int MediaCount { get; set; }
+        public List<MediumResource> Media { get; set; }
+        public int MediumCount
+        {
+            get
+            {
+                if (Media == null)
+                {
+                    return 0;
+                }
+
+                return Media.Where(s => s.MediumNumber > 0).Count();
+            }
+        }
         public string Disambiguation { get; set; }
         public List<string> Country { get; set; }
         public List<string> Label { get; set; }
         public string Format { get; set; }
+        public bool Monitored { get; set; }
     }
 
     public static class AlbumReleaseResourceMapper
@@ -30,14 +46,23 @@ namespace Lidarr.Api.V1.Albums
             return new AlbumReleaseResource
             {
                 Id = model.Id,
+                AlbumId = model.AlbumId,
+                ForeignReleaseId = model.ForeignReleaseId,
                 Title = model.Title,
-                ReleaseDate = model.ReleaseDate,
+                Status = model.Status,
+                Duration = model.Duration,
                 TrackCount = model.TrackCount,
-                MediaCount = model.MediaCount,
+                Media = model.Media.ToResource(),
                 Disambiguation = model.Disambiguation,
                 Country = model.Country,
                 Label = model.Label,
-                Format = model.Format
+                Monitored = model.Monitored,
+                Format = string.Join(", ",
+                                     model.Media.OrderBy(x => x.Number)
+                                     .GroupBy(x => x.Format)
+                                     .Select(g => MediaFormatHelper(g.Key, g.Count()))
+                                     .ToList())
+
             };
         }
 
@@ -51,15 +76,23 @@ namespace Lidarr.Api.V1.Albums
             return new AlbumRelease
             {
                 Id = resource.Id,
+                AlbumId = resource.AlbumId,
+                ForeignReleaseId = resource.ForeignReleaseId,
                 Title = resource.Title,
-                ReleaseDate = resource.ReleaseDate,
-                TrackCount = resource.TrackCount,
-                MediaCount = resource.MediaCount,
+                Status = resource.Status,
+                Duration = resource.Duration,
+                Label = resource.Label,
                 Disambiguation = resource.Disambiguation,
                 Country = resource.Country,
-                Label = resource.Label,
-                Format = resource.Format
+                Media = resource.Media.ToModel(),
+                TrackCount = resource.TrackCount,
+                Monitored = resource.Monitored
             };
+        }
+
+        private static string MediaFormatHelper(string name, int count)
+        {
+            return count == 1 ? name : string.Join("x", new List<string> {count.ToString(), name});
         }
 
         public static List<AlbumReleaseResource> ToResource(this IEnumerable<AlbumRelease> models)

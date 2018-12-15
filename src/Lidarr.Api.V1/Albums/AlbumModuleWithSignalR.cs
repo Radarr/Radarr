@@ -24,19 +24,16 @@ namespace Lidarr.Api.V1.Albums
     {
         protected readonly IAlbumService _albumService;
         protected readonly IArtistStatisticsService _artistStatisticsService;
-        protected readonly IArtistService _artistService;
         protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
-                                           IArtistService artistService,
                                            IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
             _albumService = albumService;
             _artistStatisticsService = artistStatisticsService;
-            _artistService = artistService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetAlbum;
@@ -44,7 +41,6 @@ namespace Lidarr.Api.V1.Albums
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
-                                           IArtistService artistService,
                                            IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
@@ -52,7 +48,6 @@ namespace Lidarr.Api.V1.Albums
         {
             _albumService = albumService;
             _artistStatisticsService = artistStatisticsService;
-            _artistService = artistService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetAlbum;
@@ -71,7 +66,7 @@ namespace Lidarr.Api.V1.Albums
 
             if (includeArtist)
             {
-                var artist = album.Artist ?? _artistService.GetArtist(album.ArtistId);
+                var artist = album.Artist.Value;
 
                 resource.Artist = artist.ToResource();
             }
@@ -92,9 +87,8 @@ namespace Lidarr.Api.V1.Albums
                 {
                     var album = albums[i];
                     var resource = result[i];
-
-                    var artist = album.Artist ?? artistDict.GetValueOrDefault(albums[i].ArtistId) ?? _artistService.GetArtist(albums[i].ArtistId);
-                    artistDict[artist.Id] = artist;
+                    var artist = artistDict.GetValueOrDefault(albums[i].ArtistMetadataId) ?? album.Artist?.Value;
+                    artistDict[artist.ArtistMetadataId] = artist;
 
                     resource.Artist = artist.ToResource();
                 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
+using Marr.Data.QGen;
 
 namespace NzbDrone.Core.Music
 {
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.Music
         Artist FindByName(string cleanTitle);
         Artist FindById(int dbId);
         Artist FindById(string spotifyId);
+        Artist GetArtistByMetadataId(int artistMetadataId);
     }
 
     public class ArtistRepository : BasicRepository<Artist>, IArtistRepository
@@ -18,7 +20,9 @@ namespace NzbDrone.Core.Music
             : base(database, eventAggregator)
         {
         }
-       
+
+        // Always explicitly join with ArtistMetadata to populate Metadata without repeated LazyLoading
+        protected override QueryBuilder<Artist> Query => DataMapper.Query<Artist>().Join<Artist, ArtistMetadata>(JoinType.Inner, a => a.Metadata, (l, r) => l.ArtistMetadataId == r.Id);
 
         public bool ArtistPathExists(string path)
         {
@@ -27,7 +31,7 @@ namespace NzbDrone.Core.Music
 
         public Artist FindById(string foreignArtistId)
         {
-            return Query.Where(s => s.ForeignArtistId == foreignArtistId).SingleOrDefault();
+            return Query.Where<ArtistMetadata>(m => m.ForeignArtistId == foreignArtistId).SingleOrDefault();
         }
 
         public Artist FindById(int dbId)
@@ -41,6 +45,11 @@ namespace NzbDrone.Core.Music
 
             return Query.Where(s => s.CleanName == cleanName)
                         .SingleOrDefault();
+        }
+
+        public Artist GetArtistByMetadataId(int artistMetadataId)
+        {
+            return Query.Where(s => s.ArtistMetadataId == artistMetadataId).SingleOrDefault();
         }
     }
 }

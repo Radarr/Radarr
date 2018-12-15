@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Extras.Files
 
             else
             {
-                var artist = _artistService.GetArtist(message.TrackFile.ArtistId);
+                var artist = trackFile.Artist.Value;
 
                 foreach (var extra in _repository.GetFilesByTrackFile(trackFile.Id))
                 {

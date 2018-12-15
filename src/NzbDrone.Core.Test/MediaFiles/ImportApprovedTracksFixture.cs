@@ -49,7 +49,10 @@ namespace NzbDrone.Core.Test.MediaFiles
             var album = Builder<Album>.CreateNew()
                 .With(e => e.Artist = artist)
                 .Build();
-               
+
+            var release = Builder<AlbumRelease>.CreateNew()
+                .With(e => e.AlbumId = album.Id)
+                .Build();
 
             var tracks = Builder<Track>.CreateListOfSize(5)
                                            .Build();
@@ -68,6 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                            {
                                                Artist = artist,
                                                Album = album,
+                                               Release = release,
                                                Tracks = new List<Track> { track },
                                                Path = Path.Combine(artist.Path, "Alien Ant Farm - 01 - Pilot.mp3"),
                                                Quality = new QualityModel(Quality.MP3_256),

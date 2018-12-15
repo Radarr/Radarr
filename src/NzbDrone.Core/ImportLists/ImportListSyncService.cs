@@ -96,8 +96,8 @@ namespace NzbDrone.Core.ImportLists
 
                     report.AlbumMusicBrainzId = mappedAlbum.ForeignAlbumId;
                     report.Album = mappedAlbum.Title;
-                    report.Artist = mappedAlbum.Artist?.Name;
-                    report.ArtistMusicBrainzId = mappedAlbum?.Artist?.ForeignArtistId;
+                    report.Artist = mappedAlbum.ArtistMetadata?.Value?.Name;
+                    report.ArtistMusicBrainzId = mappedAlbum?.ArtistMetadata?.Value?.ForeignArtistId;
 
                 }
 
@@ -106,20 +106,22 @@ namespace NzbDrone.Core.ImportLists
                 {
                     var mappedArtist = _artistSearchService.SearchForNewArtist(report.Artist)
                         .FirstOrDefault();
-                    report.ArtistMusicBrainzId = mappedArtist?.ForeignArtistId;
-                    report.Artist = mappedArtist?.Name;
+                    report.ArtistMusicBrainzId = mappedArtist?.Metadata.Value?.ForeignArtistId;
+                    report.Artist = mappedArtist?.Metadata.Value?.Name;
                 }
 
                 // Check to see if artist in DB
                 var existingArtist = _artistService.FindById(report.ArtistMusicBrainzId);
 
                 // Append Artist if not already in DB or already on add list
-                if (existingArtist == null && artistsToAdd.All(s => s.ForeignArtistId != report.ArtistMusicBrainzId))
+                if (existingArtist == null && artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
                 {
                     artistsToAdd.Add(new Artist
                     {
-                        ForeignArtistId = report.ArtistMusicBrainzId,
-                        Name = report.Artist,
+                        Metadata = new ArtistMetadata {
+                            ForeignArtistId = report.ArtistMusicBrainzId,
+                            Name = report.Artist
+                        },
                         Monitored = importList.ShouldMonitor,
                         RootFolderPath = importList.RootFolderPath,
                         ProfileId = importList.ProfileId,
@@ -132,9 +134,9 @@ namespace NzbDrone.Core.ImportLists
                 }
 
                 // Add Album so we know what to monitor
-                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s => s.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor)
+                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s => s.Metadata.Value.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor)
                 {
-                    artistsToAdd.Find(s => s.ForeignArtistId == report.ArtistMusicBrainzId).AddOptions.AlbumsToMonitor.Add(report.AlbumMusicBrainzId);
+                    artistsToAdd.Find(s => s.Metadata.Value.ForeignArtistId == report.ArtistMusicBrainzId).AddOptions.AlbumsToMonitor.Add(report.AlbumMusicBrainzId);
                 }
             }
 

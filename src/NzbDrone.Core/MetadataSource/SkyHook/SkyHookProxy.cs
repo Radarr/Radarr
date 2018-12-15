@@ -45,7 +45,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
-        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId, int metadataProfileId)
+        public Artist GetArtistInfo(string foreignArtistId, int metadataProfileId)
         {
 
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
@@ -87,13 +87,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var albums = httpResponse.Resource.Albums.Select(MapAlbum);
-            var artist = MapArtist(httpResponse.Resource);
+            var artist = new Artist();
+            artist.Metadata = MapArtistMetadata(httpResponse.Resource);
+            artist.CleanName = Parser.Parser.CleanArtistName(artist.Metadata.Value.Name);
+            artist.SortName = Parser.Parser.NormalizeTitle(artist.Metadata.Value.Name);
+            artist.Albums = httpResponse.Resource.Albums.Select(x => MapAlbum(x, null)).ToList();
 
-            return new Tuple<Artist, List<Album>>(artist, albums.ToList());
+            return artist;
         }
 
-        public Tuple<Album, List<Track>> GetAlbumInfo(string foreignAlbumId, string releaseId)
+        public Tuple<string, Album, List<ArtistMetadata>> GetAlbumInfo(string foreignAlbumId)
         {
             _logger.Debug("Getting Album with LidarrAPI.MetadataID of {0}", foreignAlbumId);
 
@@ -101,14 +104,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var httpRequest = _customerRequestBuilder.Create()
                 .SetSegment("route", "album/" + foreignAlbumId)
-                .AddQueryParam("release", releaseId ?? string.Empty)
                 .Build();
 
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<AlbumResource>(httpRequest);
-
 
             if (httpResponse.HasHttpError)
             {
@@ -126,10 +127,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var tracks = httpResponse.Resource.Tracks.Select(MapTrack);
-            var album = MapAlbum(httpResponse.Resource);
+            var artists = httpResponse.Resource.Artists.Select(MapArtistMetadata).ToList();
+            var artistDict = artists.ToDictionary(x => x.ForeignArtistId, x => x);
+            var album = MapAlbum(httpResponse.Resource, artistDict);
 
-            return new Tuple<Album, List<Track>>(album, tracks.ToList());
+            return new Tuple<string, Album, List<ArtistMetadata>>(httpResponse.Resource.ArtistId, album, artists);
         }
 
         public List<Artist> SearchForNewArtist(string title)
@@ -161,7 +163,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                         var metadataProfile = _metadataProfileService.All().First().Id; //Change this to Use last Used profile?
 
-                        return new List<Artist> { GetArtistInfo(searchGuid.ToString(), metadataProfile).Item1 };
+                        return new List<Artist> { GetArtistInfo(searchGuid.ToString(), metadataProfile) };
                     }
                     catch (ArtistNotFoundException)
                     {
@@ -183,7 +185,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<List<ArtistResource>>(httpRequest);
 
-                return httpResponse.Resource.SelectList(MapSearhResult);
+                return httpResponse.Resource.SelectList(MapSearchResult);
             }
             catch (HttpException)
             {
@@ -221,7 +223,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                         if (existingAlbum == null)
                         {
-                            return new List<Album> {GetAlbumInfo(searchGuid.ToString(), null).Item1};
+                            return new List<Album> { GetAlbumInfo(searchGuid.ToString()).Item2 };
                         }
 
                         existingAlbum.Artist = _artistService.GetArtist(existingAlbum.ArtistId);
@@ -247,7 +249,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<List<AlbumResource>>(httpRequest);
 
-                return httpResponse.Resource.SelectList(MapSearhResult);
+                return httpResponse.Resource.SelectList(MapSearchResult);
             }
             catch (HttpException)
             {
@@ -260,16 +262,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private Artist MapSearhResult(ArtistResource resource)
+        private Artist MapSearchResult(ArtistResource resource)
         {
-            var artist = _artistService.FindById(resource.Id) ?? MapArtist(resource);
+            var artist = _artistService.FindById(resource.Id);
+            if (artist == null)
+            {
+                artist = new Artist();
+                artist.Metadata = MapArtistMetadata(resource);
+            }
 
             return artist;
         }
 
-        private Album MapSearhResult(AlbumResource resource)
+        private Album MapSearchResult(AlbumResource resource)
         {
-            var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource);
+            var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource, null);
 
             if (album.Artist == null)
             {
@@ -279,43 +286,60 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return album;
         }
 
-        private static Album MapAlbum(AlbumResource resource)
+        private static Album MapAlbum(AlbumResource resource, Dictionary<string, ArtistMetadata> artistDict)
         {
             Album album = new Album();
-            album.Title = resource.Title;
-            album.Disambiguation = resource.Disambiguation;
             album.ForeignAlbumId = resource.Id;
+            album.Title = resource.Title;
+            album.Overview = resource.Overview;
+            album.Disambiguation = resource.Disambiguation;
             album.ReleaseDate = resource.ReleaseDate;
-            album.CleanTitle = Parser.Parser.CleanArtistName(album.Title);
-            album.Ratings = MapRatings(resource.Rating);
-            album.AlbumType = resource.Type;
 
             if (resource.Images != null)
             {
                 album.Images = resource.Images.Select(MapImage).ToList();
             }
 
-            album.Label = resource.Labels;
-            album.Media = resource.Media.Select(MapMedium).ToList();
+            album.AlbumType = resource.Type;
             album.SecondaryTypes = resource.SecondaryTypes.Select(MapSecondaryTypes).ToList();
+            album.Ratings = MapRatings(resource.Rating);
+            album.Links = resource.Links?.Select(MapLink).ToList();
+            album.CleanTitle = Parser.Parser.CleanArtistName(album.Title);
 
             if (resource.Releases != null)
             {
-                album.Releases = resource.Releases.Select(MapAlbumRelease).ToList();
-                album.CurrentRelease = album.Releases.FirstOrDefault(s => s.Id == resource.SelectedRelease);
+                album.AlbumReleases = resource.Releases.Select(x => MapRelease(x, artistDict)).ToList();
+                album.AlbumReleases.Value.OrderByDescending(x => x.TrackCount).First().Monitored = true;
             }
 
-            if (resource.Artist != null)
-            {
-                album.Artist = new Artist
-                {
-                    ForeignArtistId = resource.Artist.Id,
-                    Name = resource.Artist.Name
-                };
-            }
-            
+            album.AnyReleaseOk = true;
 
             return album;
+        }
+
+        private static AlbumRelease MapRelease(ReleaseResource resource, Dictionary<string, ArtistMetadata> artistDict)
+        {
+            AlbumRelease release = new AlbumRelease();
+            release.ForeignReleaseId = resource.Id;
+            release.Title = resource.Title;
+            release.Status = resource.Status;
+            release.Label = resource.Label;
+            release.Disambiguation = resource.Disambiguation;
+            release.Country = resource.Country;
+            release.ReleaseDate = resource.ReleaseDate;
+            release.TrackCount = resource.TrackCount;
+            release.Tracks = resource.Tracks.Select(x => MapTrack(x, artistDict)).ToList();
+            release.Media = resource.Media.Select(MapMedium).ToList();
+            if (!release.Media.Any())
+            {
+                foreach(int n in release.Tracks.Value.Select(x => x.MediumNumber).Distinct())
+                {
+                    release.Media.Add(new Medium { Name = "Unknown", Number = n, Format = "Unknown" });
+                }
+            }
+            release.Duration = release.Tracks.Value.Sum(x => x.Duration);
+
+            return release;
         }
 
         private static Medium MapMedium(MediumResource resource)
@@ -330,30 +354,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return medium;
         }
 
-        private static AlbumRelease MapAlbumRelease(ReleaseResource resource)
-        {
-            AlbumRelease albumRelease = new AlbumRelease
-            {
-                Id = resource.Id,
-                Title = resource.Title,
-                ReleaseDate = resource.ReleaseDate,
-                TrackCount = resource.TrackCount,
-                Format = resource.Format,
-                MediaCount = resource.MediaCount,
-                Country = resource.Country,
-                Disambiguation = resource.Disambiguation,
-                Label = resource.Label
-            };
-            
-            return albumRelease;
-        }
-
-        private static Track MapTrack(TrackResource resource)
+        private static Track MapTrack(TrackResource resource, Dictionary<string, ArtistMetadata> artistDict)
         {
             Track track = new Track
             {
+                ArtistMetadata = artistDict[resource.ArtistId],
                 Title = resource.TrackName,
                 ForeignTrackId = resource.Id,
+                ForeignRecordingId = resource.RecordingId,
                 TrackNumber = resource.TrackNumber,
                 AbsoluteTrackNumber = resource.TrackPosition,
                 Duration = resource.DurationMs,
@@ -363,43 +371,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return track;
         }
 
-        private static Artist MapArtist(ArtistResource resource)
+        private static ArtistMetadata MapArtistMetadata(ArtistResource resource)
         {
 
-            Artist artist = new Artist();
+            ArtistMetadata artist = new ArtistMetadata();
 
             artist.Name = resource.ArtistName;
             artist.ForeignArtistId = resource.Id;
             artist.Genres = resource.Genres;
             artist.Overview = resource.Overview;
-            artist.CleanName = Parser.Parser.CleanArtistName(artist.Name);
-            artist.SortName = Parser.Parser.NormalizeTitle(artist.Name);
             artist.Disambiguation = resource.Disambiguation;
-            artist.ArtistType = resource.Type;
-            artist.Images = resource.Images.Select(MapImage).ToList();
+            artist.Type = resource.Type;
             artist.Status = MapArtistStatus(resource.Status);
             artist.Ratings = MapRatings(resource.Rating);
-            artist.Links = resource.Links.Select(MapLink).ToList();
+            artist.Images = resource.Images?.Select(MapImage).ToList();
+            artist.Links = resource.Links?.Select(MapLink).ToList();
             return artist;
-        }
-
-        private static Member MapMembers(MemberResource arg)
-        {
-            var newMember = new Member
-            {
-                Name = arg.Name,
-                Instrument = arg.Instrument
-            };
-
-            if (arg.Image != null)
-            {
-                newMember.Images = new List<MediaCover.MediaCover>
-                {
-                    new MediaCover.MediaCover(MediaCoverTypes.Headshot, arg.Image)
-                };
-            }
-
-            return newMember;
         }
 
         private static ArtistStatusType MapArtistStatus(string status)

@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             _artist = Builder<Artist>.CreateNew()
                 .With(v => v.Id = 2)
-                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
+                .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
                 .Build();
 
             _album = Builder<Album>.CreateNew()

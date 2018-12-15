@@ -17,10 +17,9 @@ namespace Lidarr.Api.V1.Wanted
         public CutoffModule(IAlbumCutoffService albumCutoffService,
                             IAlbumService albumService,
                             IArtistStatisticsService artistStatisticsService,
-                            IArtistService artistService,
                             IUpgradableSpecification upgradableSpecification,
                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, artistService, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
+            : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {
             _albumCutoffService = albumCutoffService;
             GetResourcePaged = GetCutoffUnmetAlbums;
@@ -41,11 +40,11 @@ namespace Lidarr.Api.V1.Wanted
 
             if (filter != null && filter.Value == "false")
             {
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Artist.Monitored == false);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Artist.Value.Monitored == false);
             }
             else
             {
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Value.Monitored == true);
             }
 
             var resource = ApplyToPage(_albumCutoffService.AlbumsWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeArtist));

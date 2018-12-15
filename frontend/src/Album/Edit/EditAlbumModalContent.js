@@ -43,7 +43,7 @@ class EditAlbumModalContent extends Component {
 
     const {
       monitored,
-      currentRelease,
+      anyReleaseOk,
       releases
     } = item;
 
@@ -70,14 +70,25 @@ class EditAlbumModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>Automatically Switch Release</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="anyReleaseOk"
+                helpText="Lidarr will automatically switch to the release best matching downloaded tracks"
+                {...anyReleaseOk}
+                onChange={onInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <FormLabel> Release</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.ALBUM_RELEASE_SELECT}
-                name="currentRelease"
+                name="releases"
                 helpText="Change release for this album"
                 albumReleases={releases}
-                selectedRelease={currentRelease}
                 onChange={onInputChange}
               />
             </FormGroup>

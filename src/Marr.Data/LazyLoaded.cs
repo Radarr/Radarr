@@ -36,6 +36,11 @@ namespace Marr.Data
             }
         }
 
+        public bool ShouldSerializeValue()
+        {
+            return IsLoaded;
+        }
+
         public bool IsLoaded { get; protected set; }
 
         public virtual void Prepare(Func<IDataMapper> dataMapperFactory, object parent)

@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             Id = artist.Id;
             Name = artist.Name;
             Path = artist.Path;
-            MBId = artist.ForeignArtistId;
+            MBId = artist.Metadata.Value.ForeignArtistId;
         }
     }
 }

@@ -106,6 +106,7 @@
 
 .sizeOnDisk,
 .qualityProfileName,
+.links,
 .tags {
   margin-left: 8px;
   font-weight: 300;

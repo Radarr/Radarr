@@ -18,9 +18,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             mapper.ExecuteNonQuery(@"DELETE FROM Tracks
                                      WHERE Id IN (
                                      SELECT Tracks.Id FROM Tracks
-                                     LEFT OUTER JOIN Albums
-                                     ON Tracks.AlbumId = Albums.Id
-                                     WHERE Albums.Id IS NULL)");
+                                     LEFT OUTER JOIN AlbumReleases
+                                     ON Tracks.AlbumReleaseId = AlbumReleases.Id
+                                     WHERE AlbumReleases.Id IS NULL)");
         }
     }
 }

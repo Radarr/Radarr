@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Music
                 return false;
             }
 
-            if (artist.Status == ArtistStatusType.Continuing && artist.LastInfoSync < DateTime.UtcNow.AddDays(-2))
+            if (artist.Metadata.Value.Status == ArtistStatusType.Continuing && artist.LastInfoSync < DateTime.UtcNow.AddDays(-2))
             {
                 _logger.Trace("Artist {0} is continuing and has not been refreshed in 2 days, should refresh.", artist.Name);
                 return true;

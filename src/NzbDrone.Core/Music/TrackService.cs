@@ -23,22 +23,19 @@ namespace NzbDrone.Core.Music
         Track FindTrackByTitleInexact(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle);
         List<Track> GetTracksByArtist(int artistId);
         List<Track> GetTracksByAlbum(int albumId);
-        //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
+        List<Track> GetTracksByRelease(int albumReleaseId);
+        List<Track> GetTracksByForeignReleaseId(string foreignReleaseId);
         List<Track> TracksWithFiles(int artistId);
-        //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         List<Track> GetTracksByFileId(int trackFileId);
         void UpdateTrack(Track track);
-        void SetTrackMonitored(int trackId, bool monitored);
         void UpdateTracks(List<Track> tracks);
         void InsertMany(List<Track> tracks);
         void UpdateMany(List<Track> tracks);
         void DeleteMany(List<Track> tracks);
-        void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored);
     }
 
     public class TrackService : ITrackService,
-                                IHandleAsync<ArtistDeletedEvent>,
-                                IHandleAsync<AlbumDeletedEvent>,
+                                IHandleAsync<ReleaseDeletedEvent>,
                                 IHandle<TrackFileDeletedEvent>,
                                 IHandle<TrackFileAddedEvent>
     {
@@ -77,6 +74,16 @@ namespace NzbDrone.Core.Music
         public List<Track> GetTracksByAlbum(int albumId)
         {
             return _trackRepository.GetTracksByAlbum(albumId);
+        }
+
+        public List<Track> GetTracksByRelease(int albumReleaseId)
+        {
+            return _trackRepository.GetTracksByRelease(albumReleaseId);
+        }
+
+        public List<Track> GetTracksByForeignReleaseId(string foreignReleaseId)
+        {
+            return _trackRepository.GetTracksByForeignReleaseId(foreignReleaseId);
         }
 
         public Track FindTrackByTitle(int artistId, int albumId, int mediumNumber, int trackNumber, string releaseTitle)
@@ -158,14 +165,6 @@ namespace NzbDrone.Core.Music
             return _trackRepository.TracksWithFiles(artistId);
         }
 
-
-        public PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec)
-        {
-            var episodeResult = _trackRepository.TracksWithoutFiles(pagingSpec);
-
-            return episodeResult;
-        }
-
         public List<Track> GetTracksByFileId(int trackFileId)
         {
             return _trackRepository.GetTracksByFileId(trackFileId);
@@ -174,19 +173,6 @@ namespace NzbDrone.Core.Music
         public void UpdateTrack(Track track)
         {
             _trackRepository.Update(track);
-        }
-
-        public void SetTrackMonitored(int trackId, bool monitored)
-        {
-            var track = _trackRepository.Get(trackId);
-            _trackRepository.SetMonitoredFlat(track, monitored);
-
-            _logger.Debug("Monitored flag for Track:{0} was set to {1}", trackId, monitored);
-        }
-
-        public void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored)
-        {
-            _trackRepository.SetMonitoredByAlbum(artistId, albumId, monitored);
         }
 
         public void UpdateTracks(List<Track> tracks)
@@ -209,15 +195,9 @@ namespace NzbDrone.Core.Music
             _trackRepository.DeleteMany(tracks);
         }
 
-        public void HandleAsync(ArtistDeletedEvent message)
+        public void HandleAsync(ReleaseDeletedEvent message)
         {
-            var tracks = GetTracksByArtist(message.Artist.Id);
-            _trackRepository.DeleteMany(tracks);
-        }
-
-        public void HandleAsync(AlbumDeletedEvent message)
-        {
-            var tracks = GetTracksByAlbum(message.Album.Id);
+            var tracks = GetTracksByRelease(message.Release.Id);
             _trackRepository.DeleteMany(tracks);
         }
 
@@ -227,12 +207,6 @@ namespace NzbDrone.Core.Music
             {
                 _logger.Debug("Detaching track {0} from file.", track.Id);
                 track.TrackFileId = 0;
-
-                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedTracks)
-                {
-                    track.Monitored = false;
-                }
-
                 UpdateTrack(track);
             }
         }

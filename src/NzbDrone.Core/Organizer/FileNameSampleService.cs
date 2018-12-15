@@ -30,7 +30,10 @@ namespace NzbDrone.Core.Organizer
 
             _standardArtist = new Artist
             {
-                Name = "The Artist Name"
+                Metadata = new ArtistMetadata
+                {
+                    Name = "The Artist Name"
+                }
             };
 
             _standardAlbum = new Album
@@ -39,6 +42,11 @@ namespace NzbDrone.Core.Organizer
                 ReleaseDate = System.DateTime.Today,
                 AlbumType = "Album",
                 Disambiguation = "The Best Album",
+            };
+
+            var _release = new AlbumRelease
+            {
+                Album = _standardAlbum,
                 Media = new List<Medium>
                 {
                     new Medium
@@ -47,11 +55,13 @@ namespace NzbDrone.Core.Organizer
                         Format = "CD",
                         Number = 1
                     }
-                }
+                },
+                Monitored = true
             };
 
             _track1 = new Track
             {
+                AlbumRelease = _release,
                 AbsoluteTrackNumber = 3,
                 MediumNumber = 1,
                 

@@ -105,7 +105,7 @@ namespace NzbDrone.Core.MediaCover
 
         private void EnsureCovers(Artist artist)
         {
-            foreach (var cover in artist.Images)
+            foreach (var cover in artist.Metadata.Value.Images)
             {
                 var fileName = GetCoverPath(artist.Id, cover.CoverType);
                 var alreadyExists = false;

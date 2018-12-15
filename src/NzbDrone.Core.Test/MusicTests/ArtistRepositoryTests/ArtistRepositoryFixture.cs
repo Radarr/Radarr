@@ -18,21 +18,32 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
     public class ArtistRepositoryFixture : DbTest<ArtistRepository, Artist>
     {
         private ArtistRepository _artistRepo;
+        private ArtistMetadataRepository _artistMetadataRepo;
 
-        private Artist CreateArtist(string name)
+        private void AddArtist(string name)
         {
-            return Builder<Artist>.CreateNew()
+            var metadata = Builder<ArtistMetadata>.CreateNew()
+                .With(a => a.Id = 0)
                 .With(a => a.Name = name)
+                .BuildNew();
+            
+            var artist = Builder<Artist>.CreateNew()
+                .With(a => a.Id = 0)
+                .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
                 .With(a => a.ForeignArtistId = name)
                 .BuildNew();
+
+            _artistMetadataRepo.Insert(artist);
+            _artistRepo.Insert(artist);
         }
 
         private void GivenArtists()
         {
             _artistRepo = Mocker.Resolve<ArtistRepository>();
-            _artistRepo.Insert(CreateArtist("The Black Eyed Peas"));
-            _artistRepo.Insert(CreateArtist("The Black Keys"));
+            _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
+            AddArtist("The Black Eyed Peas");
+            AddArtist("The Black Keys");
         }
 
         [Test]

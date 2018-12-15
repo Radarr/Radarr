@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 });
 
             Mocker.GetMock<IAlbumRepository>()
-                .Setup(s => s.GetAlbums(It.IsAny<int>()))
+                .Setup(s => s.GetAlbumsByArtistMetadataId(It.IsAny<int>()))
                 .Returns(_albums);
         }
 

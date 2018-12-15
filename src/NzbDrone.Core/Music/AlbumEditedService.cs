@@ -1,7 +1,9 @@
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Commands;
+using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Music.Events;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Music
 {
@@ -16,9 +18,15 @@ namespace NzbDrone.Core.Music
 
         public void Handle(AlbumEditedEvent message)
         {
-            if (message.Album.CurrentRelease.Id != message.OldAlbum.CurrentRelease.Id)
+            if (message.Album.AlbumReleases.IsLoaded && message.OldAlbum.AlbumReleases.IsLoaded)
             {
-                _commandQueueManager.Push(new RefreshAlbumCommand(message.Album.Id));
+                var new_monitored = new HashSet<int>(message.Album.AlbumReleases.Value.Where(x => x.Monitored).Select(x => x.Id));
+                var old_monitored = new HashSet<int>(message.OldAlbum.AlbumReleases.Value.Where(x => x.Monitored).Select(x => x.Id));
+                if (!new_monitored.SetEquals(old_monitored) ||
+                    (message.OldAlbum.AnyReleaseOk == false && message.Album.AnyReleaseOk == true))
+                {
+                   _commandQueueManager.Push(new RescanArtistCommand(message.Album.ArtistId));
+                }
             }
         }
     }

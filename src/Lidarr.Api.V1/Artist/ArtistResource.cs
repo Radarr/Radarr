@@ -76,18 +76,18 @@ namespace Lidarr.Api.V1.Artist
                 //AlternateTitles
                 SortName = model.SortName,
 
-                Status = model.Status,
-                Overview = model.Overview,
-                ArtistType = model.ArtistType,
-                Disambiguation = model.Disambiguation,
+                Status = model.Metadata.Value.Status,
+                Overview = model.Metadata.Value.Overview,
+                ArtistType = model.Metadata.Value.Type,
+                Disambiguation = model.Metadata.Value.Disambiguation,
 
-                Images = model.Images,
+                Images = model.Metadata.Value.Images,
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
                 LanguageProfileId = model.LanguageProfileId,
                 MetadataProfileId = model.MetadataProfileId,
-                Links = model.Links,
+                Links = model.Metadata.Value.Links,
 
                 AlbumFolder = model.AlbumFolder,
                 Monitored = model.Monitored,
@@ -95,14 +95,14 @@ namespace Lidarr.Api.V1.Artist
                 LastInfoSync = model.LastInfoSync,
 
                 CleanName = model.CleanName,
-                ForeignArtistId = model.ForeignArtistId,
+                ForeignArtistId = model.Metadata.Value.ForeignArtistId,
                 // Root folder path is now calculated from the artist path
                 // RootFolderPath = model.RootFolderPath,
-                Genres = model.Genres,
+                Genres = model.Metadata.Value.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
-                Ratings = model.Ratings,
+                Ratings = model.Metadata.Value.Ratings,
 
                 Statistics = new ArtistStatisticsResource()
             };
@@ -116,34 +116,38 @@ namespace Lidarr.Api.V1.Artist
             {
                 Id = resource.Id,
 
-                Name = resource.ArtistName,
+                Metadata = new NzbDrone.Core.Music.ArtistMetadata
+                {
+                    ForeignArtistId = resource.ForeignArtistId,
+                    Name = resource.ArtistName,
+                    Status = resource.Status,
+                    Overview = resource.Overview,
+                    Links = resource.Links,
+                    Images = resource.Images,
+                    Genres = resource.Genres,
+                    Ratings = resource.Ratings,
+                    Type = resource.ArtistType
+                },
+                    
                 //AlternateTitles
                 SortName = resource.SortName,
-
-                Status = resource.Status,
-                Overview = resource.Overview,
-
-                Images = resource.Images,
-
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
                 LanguageProfileId = resource.LanguageProfileId,
                 MetadataProfileId = resource.MetadataProfileId,
-                Links = resource.Links,
+
 
                 AlbumFolder = resource.AlbumFolder,
                 Monitored = resource.Monitored,
 
                 LastInfoSync = resource.LastInfoSync,
-                ArtistType = resource.ArtistType,
                 CleanName = resource.CleanName,
-                ForeignArtistId = resource.ForeignArtistId,
                 RootFolderPath = resource.RootFolderPath,
-                Genres = resource.Genres,
+
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
-                Ratings = resource.Ratings
+
             };
         }
 

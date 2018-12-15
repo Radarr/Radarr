@@ -202,8 +202,8 @@ namespace NzbDrone.Core.History
                         Date = DateTime.UtcNow,
                         Quality = message.TrackInfo.Quality,
                         SourceTitle = message.ImportedTrack.SceneName ?? Path.GetFileNameWithoutExtension(message.TrackInfo.Path),
-                        ArtistId = message.ImportedTrack.ArtistId,
-                        AlbumId = message.ImportedTrack.AlbumId,
+                        ArtistId = message.TrackInfo.Artist.Id,
+                        AlbumId = message.TrackInfo.Album.Id,
                         TrackId = track.Id,
                         DownloadId = downloadId,
                         Language = message.TrackInfo.Language

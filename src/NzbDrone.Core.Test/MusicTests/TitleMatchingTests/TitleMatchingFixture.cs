@@ -174,7 +174,5 @@ namespace NzbDrone.Core.Test.MusicTests.TitleMatchingTests
 
             track.Should().BeNull();
         }
-
-
     }
 }

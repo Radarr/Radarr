@@ -9,6 +9,7 @@ using Lidarr.Api.V1.Tracks;
 using Lidarr.Http.REST;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Music;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -21,6 +22,7 @@ namespace Lidarr.Api.V1.ManualImport
         public long Size { get; set; }
         public ArtistResource Artist { get; set; }
         public AlbumResource Album { get; set; }
+        public int AlbumReleaseId { get; set; }
         public List<TrackResource> Tracks { get; set; }
         public QualityModel Quality { get; set; }
         public Language Language { get; set; }
@@ -45,6 +47,7 @@ namespace Lidarr.Api.V1.ManualImport
                 Size = model.Size,
                 Artist = model.Artist.ToResource(),
                 Album = model.Album.ToResource(),
+                AlbumReleaseId = model.Release?.Id ?? 0,
                 Tracks = model.Tracks.ToResource(),
                 Quality = model.Quality,
                 Language = model.Language,

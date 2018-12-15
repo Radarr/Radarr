@@ -15,16 +15,19 @@ namespace Lidarr.Api.V1.ManualImport
     {
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
+        private readonly IReleaseService _releaseService;
 
         public ManualImportModule(IManualImportService manualImportService,
                                   IArtistService artistService,
                                   IAlbumService albumService,
+                                  IReleaseService releaseService,
                                   IBroadcastSignalRMessage signalRBroadcaster,
                                   Logger logger)
         : base(manualImportService, signalRBroadcaster, logger)
         {
-            _albumService = albumService;
             _artistService = artistService;
+            _albumService = albumService;
+            _releaseService = releaseService;
 
             GetResourceAll = GetMediaFiles;
             UpdateResource = UpdateImportItem;
@@ -62,6 +65,7 @@ namespace Lidarr.Api.V1.ManualImport
                 Size = resource.Size,
                 Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
                 Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
+                Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
                 Quality = resource.Quality,
                 Language = resource.Language,
                 DownloadId = resource.DownloadId

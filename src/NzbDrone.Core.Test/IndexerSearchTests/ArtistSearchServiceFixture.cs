@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             Mocker.GetMock<ISearchForNzb>()
                 .Verify(v => v.ArtistSearch(_artist.Id, false, true, false),
-                    Times.Exactly(_artist.Albums.Count(s => s.Monitored)));
+                    Times.Exactly(_artist.Albums.Value.Count(s => s.Monitored)));
         }
     }
 }

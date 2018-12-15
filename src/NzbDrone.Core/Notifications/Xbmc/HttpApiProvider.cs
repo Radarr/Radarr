@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             var query =
                 string.Format(
                     "select path.strPath from path, artist, artistlinkpath where artist.c12 = {0} and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath",
-                    artist.ForeignArtistId);
+                    artist.Metadata.Value.ForeignArtistId);
             var command = string.Format("QueryMusicDatabase({0})", query);
 
             const string setResponseCommand =

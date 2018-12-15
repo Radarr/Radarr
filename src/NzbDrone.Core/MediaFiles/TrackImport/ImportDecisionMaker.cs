@@ -12,6 +12,10 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music.Events;
+using System.Diagnostics;
+using NzbDrone.Common.EnsureThat;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -19,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     {
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
-        List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles);
+        List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool timidReleaseSwitching);
         ImportDecision GetImportDecision(string musicFile, Artist artist, Album album);
     }
 
@@ -28,6 +32,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IEnumerable<IImportDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IAlbumService _albumService;
+        private readonly IReleaseService _releaseService;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IDiskProvider _diskProvider;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly Logger _logger;
@@ -35,6 +42,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
                                    IParsingService parsingService,
                                    IMediaFileService mediaFileService,
+                                   IAlbumService albumService,
+                                   IReleaseService releaseService,
+                                   IEventAggregator eventAggregator,
                                    IDiskProvider diskProvider,
                                    IVideoFileInfoReader videoFileInfoReader,
                                    Logger logger)
@@ -42,6 +52,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _specifications = specifications;
             _parsingService = parsingService;
             _mediaFileService = mediaFileService;
+            _albumService = albumService;
+            _releaseService = releaseService;
+            _eventAggregator = eventAggregator;
             _diskProvider = diskProvider;
             _videoFileInfoReader = videoFileInfoReader;
             _logger = logger;
@@ -54,16 +67,47 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
         public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
         {
-            return GetImportDecisions(musicFiles, artist, folderInfo, false);
+            return GetImportDecisions(musicFiles, artist, folderInfo, false, false);
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles)
+        private bool MatchesCurrentRelease(ImportDecision decision)
+        {
+            return decision.Approved || decision.Rejections.Select(x => x.Reason).Contains("Has the same filesize as existing file");
+        }
+
+        public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool timidReleaseSwitching)
         {
             var files = filterExistingFiles ? _mediaFileService.FilterExistingFiles(musicFiles.ToList(), artist) : musicFiles.ToList();
 
             _logger.Debug("Analyzing {0}/{1} files.", files.Count, musicFiles.Count);
 
             var shouldUseFolderName = ShouldUseFolderName(musicFiles, artist, folderInfo);
+
+            // We have to do this once to match against albums
+            var decisions = GetImportDecisionsForCurrentRelease(files, artist, folderInfo, shouldUseFolderName);
+
+            // Now we have matched the files against albums, we can group by album and check for the best release
+            var albums = decisions.Where(x => x.LocalTrack.Album != null)
+                .Select(x => x.LocalTrack.Album)
+                .GroupBy(x => x.Id)
+                .Select(x => x.First())
+                .ToList();
+
+            var revisedDecisions = decisions.Where(x => x.LocalTrack.Album == null).ToList();
+
+            foreach (var album in albums)
+            {
+                var albumDecisions = decisions.Where(x => x.LocalTrack.Album != null && x.LocalTrack.Album.Id == album.Id).ToList();
+                revisedDecisions.AddRange(GetImportDecisions(albumDecisions, artist, album, folderInfo, shouldUseFolderName, timidReleaseSwitching));
+            }
+
+            Ensure.That(decisions.Count == revisedDecisions.Count).IsTrue();
+            
+            return revisedDecisions;
+        }
+
+        private List<ImportDecision> GetImportDecisionsForCurrentRelease(List<string> files, Artist artist, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
+        {
             var decisions = new List<ImportDecision>();
 
             foreach (var file in files)
@@ -77,6 +121,90 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         public ImportDecision GetImportDecision(string file, Artist artist, Album album)
         {
             return GetDecision(file, artist, album, null, false);
+        }
+        
+        public List<ImportDecision> GetImportDecisions(List<ImportDecision> decisions, Artist artist, Album album, ParsedTrackInfo folderInfo, bool shouldUseFolderName, bool timidReleaseSwitching)
+        {
+            _logger.Debug("Importing {0}", album);
+            var maxTrackCount = album.AlbumReleases.Value.Where(x => x.Monitored).Select(x => x.TrackCount).Max();
+            var haveExistingFiles = _mediaFileService.GetFilesByAlbum(album.Id).Any();
+            var releaseSwitchingAllowed = !(haveExistingFiles && timidReleaseSwitching);
+
+            if (album.AnyReleaseOk && releaseSwitchingAllowed)
+            {
+                if (decisions.Any(x => !MatchesCurrentRelease(x)) || decisions.Count != maxTrackCount)
+                {
+                    _logger.Debug("Importing {0}: {1}/{2} files approved for {3} track release",
+                                  album,
+                                  decisions.Count(x => MatchesCurrentRelease(x)),
+                                  decisions.Count,
+                                  maxTrackCount);
+                    return GetImportDecisionsForBestRelease(decisions, artist, album, folderInfo, shouldUseFolderName);
+                }
+                else
+                {
+                    _logger.Debug("Importing {0}: All files approved and all tracks have a file", album);
+                    return decisions;
+                }
+            }
+            else
+            {
+                _logger.Debug("Importing {0}: {1}/{2} files approved for {3} track release.  Release switching not allowed.",
+                              album,
+                              decisions.Count(x => MatchesCurrentRelease(x)),
+                              decisions.Count,
+                              maxTrackCount);
+                return decisions;
+            }
+        }
+
+        private List<ImportDecision> GetImportDecisionsForBestRelease(List<ImportDecision> decisions, Artist artist, Album album, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
+        {
+            var files = decisions.Select(x => x.LocalTrack.Path).ToList();
+
+            // At the moment we assume only one release can be monitored at a time
+            var originalRelease = album.AlbumReleases.Value.Where(x => x.Monitored).Single();
+            var candidateReleases = album.AlbumReleases.Value.Where(x => x.TrackCount >= files.Count && x.Id != originalRelease.Id).ToList();
+            var bestRelease = originalRelease;
+            var bestMatchCount = decisions.Count(x => MatchesCurrentRelease(x));
+            var bestDecisions = decisions;
+                
+            foreach (var release in candidateReleases)
+            {
+                _logger.Debug("Trying Release {0} [{1} tracks]", release, release.TrackCount);
+                album.AlbumReleases = _releaseService.SetMonitored(release);
+                var newDecisions = GetImportDecisionsForCurrentRelease(files, artist, folderInfo, shouldUseFolderName);
+
+                _logger.Debug("Importing {0}: {1}/{2} files approved for {3} track release {4}",
+                              album,
+                              newDecisions.Count(x => MatchesCurrentRelease(x)),
+                              newDecisions.Count,
+                              release.TrackCount,
+                              release);
+
+                // We want the release that matches the most tracks.  If there's a tie,
+                // we want the release with the fewest entries (i.e. fewest missing)
+                var currentMatchCount = newDecisions.Count(x => MatchesCurrentRelease(x));
+                if (currentMatchCount > bestMatchCount
+                    || (currentMatchCount == bestMatchCount && release.TrackCount < bestRelease.TrackCount))
+                {
+                    bestMatchCount = currentMatchCount;
+                    bestRelease = release;
+                    bestDecisions = newDecisions;
+
+                    if (currentMatchCount == release.TrackCount && newDecisions.All(x => MatchesCurrentRelease(x)))
+                    {
+                        break;
+                    }
+                }
+            }
+
+            _logger.Debug("{0} Best release: {1}", album, bestRelease);
+
+            // reinstate the original release in case the import isn't run (manual import)
+            album.AlbumReleases = _releaseService.SetMonitored(originalRelease);
+
+            return bestDecisions;
         }
 
         private ImportDecision GetDecision(string file, Artist artist, Album album, ParsedTrackInfo folderInfo, bool shouldUseFolderName)

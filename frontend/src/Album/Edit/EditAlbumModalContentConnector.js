@@ -23,7 +23,7 @@ function createMapStateToProps() {
 
       const albumSettings = _.pick(album, [
         'monitored',
-        'currentRelease',
+        'anyReleaseOk',
         'releases'
       ]);
 

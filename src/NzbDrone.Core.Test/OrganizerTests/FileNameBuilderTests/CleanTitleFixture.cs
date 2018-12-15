@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Artist _artist;
         private Album _album;
+        private AlbumRelease _release;
         private Track _track;
         private TrackFile _trackFile;
         private NamingConfig _namingConfig;
@@ -33,9 +34,15 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .With(s => s.Title = "Hail to the King")
                     .Build();
 
+            _release = Builder<AlbumRelease>
+                .CreateNew()
+                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .Build();
+
             _track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Doing Time")
                             .With(e => e.AbsoluteTrackNumber = 3)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
@@ -86,6 +93,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                                            .With(e => e.Title = "Surrender Benson")
                                            .TheNext(1)
                                            .With(e => e.Title = "Imprisoned Lives")
+                                           .All()
+                                           .With(e => e.AlbumRelease = _release)
                                            .Build()
                                            .ToList();
 

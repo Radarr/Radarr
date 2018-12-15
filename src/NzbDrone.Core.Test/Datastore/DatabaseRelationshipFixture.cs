@@ -17,13 +17,15 @@ namespace NzbDrone.Core.Test.Datastore
         public void one_to_one()
         {
             var trackFile = Builder<TrackFile>.CreateNew()
-                           .With(c => c.Quality = new QualityModel())
-                           .With(c => c.Language = Language.English)
-                           .BuildNew();
+                .With(c => c.Id = 0)
+                .With(c => c.Quality = new QualityModel())
+                .With(c => c.Language = Language.English)
+                .BuildNew();
 
             Db.Insert(trackFile);
 
             var track = Builder<Track>.CreateNew()
+                .With(c => c.Id = 0)
                 .With(c => c.TrackFileId = trackFile.Id)
                 .BuildNew();
 
@@ -38,7 +40,9 @@ namespace NzbDrone.Core.Test.Datastore
                     .Excluding(c => c.DateAdded)
                     .Excluding(c => c.Path)
                     .Excluding(c => c.Artist)
-                    .Excluding(c => c.Tracks));
+                    .Excluding(c => c.Tracks)
+                    .Excluding(c => c.Album)
+                    .Excluding(c => c.ArtistId));
         }
 
         [Test]

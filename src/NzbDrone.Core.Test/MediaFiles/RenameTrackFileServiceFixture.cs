@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             _trackFiles = Builder<TrackFile>.CreateListOfSize(2)
                                                 .All()
-                                                .With(e => e.ArtistId = _artist.Id)
+                                                .With(e => e.Artist = _artist)
                                                 .Build()
                                                 .ToList();
 
