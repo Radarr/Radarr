@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Music
             album.AlbumReleases = new List<AlbumRelease>();
 
             var remoteReleases = albumInfo.AlbumReleases.Value.DistinctBy(m => m.ForeignReleaseId).ToList();
-            var existingReleases = _releaseService.GetReleasesByForeignReleaseId(remoteReleases.Select(x => x.ForeignReleaseId).ToList());
+            var existingReleases = _releaseService.GetReleasesByAlbum(album.Id);
 
             var newReleaseList = new List<AlbumRelease>();
             var updateReleaseList = new List<AlbumRelease>();

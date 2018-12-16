@@ -20,7 +20,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      SELECT ArtistMetadata.Id FROM ArtistMetadata
                                      LEFT OUTER JOIN Albums ON Albums.ArtistMetadataId = ArtistMetadata.Id
                                      LEFT OUTER JOIN Tracks ON Tracks.ArtistMetadataId = ArtistMetadata.Id
-                                     WHERE Albums.Id IS NULL AND Tracks.Id IS NULL)");
+                                     LEFT OUTER JOIN Artists ON Artists.ArtistMetadataId = ArtistMetadata.Id
+                                     WHERE Albums.Id IS NULL AND Tracks.Id IS NULL AND Artists.Id IS NULL)");
         }
     }
 }

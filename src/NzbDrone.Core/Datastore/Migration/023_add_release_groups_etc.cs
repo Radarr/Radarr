@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using NzbDrone.Core.Music;
 using System.Data;
 using System;
+using System.Linq;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -158,7 +160,8 @@ namespace NzbDrone.Core.Datastore.Migration
         private void PopulateReleases(IDbConnection conn, IDbTransaction tran)
         {
             var releases = ReadReleasesFromAlbums(conn, tran);
-            WriteReleasesToReleases(releases,conn, tran);
+            var dupeFreeReleases = releases.DistinctBy(x => x.ForeignReleaseId).ToList();
+            WriteReleasesToReleases(dupeFreeReleases, conn, tran);
         }
 
         public class LegacyAlbumRelease : IEmbeddedDocument
@@ -200,7 +203,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         releases.Add(new AlbumRelease {
                                 AlbumId = rgId,
                                 ForeignReleaseId = albumRelease.Id,
-                                Title = albumRelease.Title,
+                                Title = albumRelease.Title.IsNotNullOrWhiteSpace() ? albumRelease.Title : "",
                                 Status = "",
                                 Duration = 0,
                                 Label = albumRelease.Label,
