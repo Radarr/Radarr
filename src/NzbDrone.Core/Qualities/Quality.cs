@@ -105,7 +105,8 @@ namespace NzbDrone.Core.Qualities
         public static Quality Remux1080p => new Quality(30, "Remux-1080p", Source.BLURAY, 1080, Modifier.REMUX);
         public static Quality Remux2160p => new Quality(31, "Remux-2160p", Source.BLURAY, 2160, Modifier.REMUX);
 
-        public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 0, Modifier.BRDISK); // new
+        public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 1080, Modifier.BRDISK);
+        public static Quality UHDBRDISK => new Quality(32, "UHD-BR-DISK", Source.BLURAY, 2160, Modifier.BRDISK);
 
         // Others
         public static Quality RAWHD => new Quality(10, "Raw-HD", Source.TV, 0, Modifier.RAWHD);
@@ -139,6 +140,7 @@ namespace NzbDrone.Core.Qualities
                 Remux1080p,
                 Remux2160p,
                 BRDISK,
+                UHDBRDISK,
                 RAWHD
             };
 
@@ -180,7 +182,8 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null },
 
                 new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null }
+                new QualityDefinition(Quality.UHDBRDISK)   { Weight = 26, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.RAWHD)       { Weight = 27, MinSize = 0, MaxSize = null }
             };
         }
 

@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480(i|p)|640x480|848x480)|(?<R576p>576(i|p))|(?<R720p>720(i|p)|1280x720)|(?<R1080p>1080(i|p)|1920x1080)|(?<R2160p>2160(i|p)|UHD))\b",
+        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480(i|p)|640x480|848x480)|(?<R576p>576(i|p))|(?<R720p>720(i|p)|1280x720)|(?<R1080p>1080(i|p)|1920x1080)|(?<R2160p>2160(i|p)|UltraHD|UHD))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>X-?vid)|(?<divx>divx))\b",
@@ -114,6 +114,11 @@ namespace NzbDrone.Core.Parser
             {
                 result.Modifier = Modifier.BRDISK;
                 result.Source = Source.BLURAY;
+                if (resolution == Resolution.R2160P)
+                {
+                    result.Resolution = resolution;
+                    return result;
+                }
             }
 
             if (RemuxRegex.IsMatch(normalizedName) && sourceMatch?.Groups["webdl"].Success != true && sourceMatch?.Groups["hdtv"].Success != true)

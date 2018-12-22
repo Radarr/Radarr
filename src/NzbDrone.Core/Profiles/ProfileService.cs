@@ -157,7 +157,8 @@ namespace NzbDrone.Core.Profiles
                 Quality.Bluray2160p,
                 Quality.Remux1080p,
                 Quality.Remux2160p,
-                Quality.BRDISK);
+                Quality.BRDISK,
+                Quality.UHDBRDISK);
 
             AddDefaultProfile("SD", Quality.Bluray480p,
                 Quality.WORKPRINT,
