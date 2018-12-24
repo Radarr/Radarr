@@ -2,6 +2,8 @@
 <img src="/Logo/text256.png" alt="Radarr">
 </p>
 
+**New UI Development:** For an overview of the new UI development see https://github.com/Radarr/Radarr/blob/aphrodite/DEVELOPMENT.md.
+
 Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) reworked for automatically downloading movies via Usenet and BitTorrent.
 
 The project was inspired by other Usenet/BitTorrent movie downloaders such as CouchPotato.
