@@ -87,6 +87,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurlSharp", "ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj", "{74420A79-CC16-442C-8B1E-7C1B913844F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsingLibrary", "ParsingLibrary\ParsingLibrary.csproj", "{BAC762EF-4627-49C8-BC99-EB9D20682FA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radarr.Api.V2", "Radarr.Api.V2\Radarr.Api.V2.csproj", "{38497DC6-E488-4B9E-A973-A1A7961B33C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radarr.Http", "Radarr.Http\Radarr.Http.csproj", "{C5953DAB-89DB-46D9-A401-D620F54B776E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -262,9 +265,24 @@ Global
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Mono|x86.Build.0 = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Mono|x86.ActiveCfg = Debug|Any CPU
 		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Release|x86.ActiveCfg = Release|Any CPU
+=======
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Debug|x86.ActiveCfg = Debug|x86
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Debug|x86.Build.0 = Debug|x86
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Mono|x86.ActiveCfg = Debug|x86
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Mono|x86.Build.0 = Debug|x86
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Release|x86.ActiveCfg = Release|x86
+		{38497DC6-E488-4B9E-A973-A1A7961B33C4}.Release|x86.Build.0 = Release|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Debug|x86.ActiveCfg = Debug|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Debug|x86.Build.0 = Debug|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Mono|x86.ActiveCfg = Debug|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Mono|x86.Build.0 = Debug|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Release|x86.ActiveCfg = Release|x86
+		{C5953DAB-89DB-46D9-A401-D620F54B776E}.Release|x86.Build.0 = Release|x86
+>>>>>>> 28648ed18... Added: Development Description.
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
