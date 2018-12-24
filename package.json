@@ -44,6 +44,7 @@
     "tar.gz": "0.1.1",
     "url-search-params": "^0.6.1",
     "webpack": "1.12.0",
-    "webpack-stream": "2.1.0"
+    "webpack-stream": "2.1.0",
+    "natives": "^1.1.3"
   }
 }
