@@ -187,6 +187,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             foreach (var albumImport in albumImports)
             {
+                var release = albumImport.First().ImportDecision.LocalTrack.Release;
                 var album = albumImport.First().ImportDecision.LocalTrack.Album;
                 var artist = albumImport.First().ImportDecision.LocalTrack.Artist;
 
@@ -195,6 +196,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     _eventAggregator.PublishEvent(new AlbumImportedEvent(
                         artist,
                         album,
+                        release,
                         allImportedTrackFiles.Where(s => s.AlbumId == album.Id).ToList(),
                         allOldTrackFiles.Where(s => s.AlbumId == album.Id).ToList(), newDownload,
                         downloadClientItem));

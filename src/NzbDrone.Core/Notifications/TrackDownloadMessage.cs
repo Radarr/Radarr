@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Notifications
         public string Message { get; set; }
         public Artist Artist { get; set; }
         public Album Album { get; set; }
+        public AlbumRelease Release { get; set; }
         public TrackFile TrackFile { get; set; }
         public List<TrackFile> OldFiles { get; set; }
         public string SourcePath { get; set; }

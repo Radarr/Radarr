@@ -59,6 +59,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var artist = message.Artist;
             var album = message.Album;
+            var release = message.Release;
             var trackFile = message.TrackFile;
             var sourcePath = message.SourcePath;
             var environmentVariables = new StringDictionary();
@@ -73,6 +74,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Lidarr_Album_Title", album.Title);
             environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
             environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
             environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
@@ -102,6 +104,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var artist = message.Artist;
             var album = message.Album;
+            var release = message.Release;
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Lidarr_EventType", "AlbumDownload");
@@ -113,6 +116,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Lidarr_Album_Title", album.Title);
             environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
             environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
             environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
