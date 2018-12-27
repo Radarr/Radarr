@@ -185,7 +185,10 @@ class InteractiveImportRow extends Component {
     } = this.state;
 
     const artistName = artist ? artist.artistName : '';
-    const albumTitle = album ? album.title : '';
+    let albumTitle = '';
+    if (album) {
+      albumTitle = album.disambiguation ? `${album.title} (${album.disambiguation})` : album.title;
+    }
     const trackNumbers = tracks.map((track) => `${track.mediumNumber}x${track.trackNumber}`)
       .join(', ');
 

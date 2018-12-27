@@ -34,6 +34,7 @@ class SelectAlbumRow extends Component {
   render() {
     const {
       title,
+      disambiguation,
       albumType,
       releaseDate,
       statistics,
@@ -46,6 +47,8 @@ class SelectAlbumRow extends Component {
       trackFileCount,
       totalTrackCount
     } = statistics;
+
+    const extendedTitle = disambiguation ? `${title} (${disambiguation})` : title;
 
     return (
       <TableRow
@@ -66,7 +69,7 @@ class SelectAlbumRow extends Component {
             if (name === 'title') {
               return (
                 <TableRowCell key={name}>
-                  {title}
+                  {extendedTitle}
                 </TableRowCell>
               );
             }
@@ -118,6 +121,7 @@ class SelectAlbumRow extends Component {
 SelectAlbumRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string.isRequired,
   albumType: PropTypes.string.isRequired,
   releaseDate: PropTypes.string.isRequired,
   onAlbumSelect: PropTypes.func.isRequired,
