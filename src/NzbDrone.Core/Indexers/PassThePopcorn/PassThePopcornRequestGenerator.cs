@@ -4,6 +4,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Common.Cache;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
@@ -39,21 +40,34 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
         private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
         {
-            Cookies = GetCookies();
-            
-            Authenticate();
-
             var request =
                 new IndexerRequest(
                     $"{Settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?action=advanced&json=noredirect&searchstr={searchParameters}",
                     HttpAccept.Json);
-
-            foreach (var cookie in Cookies)
+            
+            if (Settings.APIKey.IsNullOrWhiteSpace())
             {
-                request.HttpRequest.Cookies[cookie.Key] = cookie.Value;
+                Cookies = GetCookies();
+            
+                Authenticate();
+                
+                Logger.Warn("You are using the old method of logging into PassThePopcorn. Please switch to the new method using APIUser & APIKey.");
+            }
+            else
+            {
+                request.HttpRequest.Headers["ApiUser"] = Settings.APIUser;
+                request.HttpRequest.Headers["ApiKey"] = Settings.APIKey;
             }
 
-            CookiesUpdater(Cookies, DateTime.Now + TimeSpan.FromDays(30));
+            if (Settings.APIKey.IsNullOrWhiteSpace())
+            {
+                foreach (var cookie in Cookies)
+                {
+                    request.HttpRequest.Cookies[cookie.Key] = cookie.Value;
+                }
+                
+                CookiesUpdater(Cookies, DateTime.Now + TimeSpan.FromDays(30));
+            }
 
             yield return request;
         }
