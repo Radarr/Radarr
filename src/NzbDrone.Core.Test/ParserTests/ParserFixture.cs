@@ -53,6 +53,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
 		[TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
 		[TestCase("My Movie 1999 German Bluray", "My Movie")]
+        [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 		    Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
@@ -67,6 +68,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", 2016)]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
+        [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", 1897)]
         public void should_parse_movie_year(string postTitle, int year)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
