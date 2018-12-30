@@ -1,6 +1,7 @@
 #addin nuget:?package=Cake.Npm
 #addin nuget:?package=SharpZipLib
 #addin nuget:?package=Cake.Compression
+#addin "Cake.FileHelpers"
 
 // Build variables
 var outputFolder = "./_output";
@@ -178,7 +179,7 @@ Task("PackageOsx").Does(() => {
 	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
 });
 
-Task("PackageOsxApp").Does(() => {
+Task("PackageOsxApp").Does((ctx) => {
 	// Start osx app package
 	if (DirectoryExists(outputFolderOsxApp)) {
 		DeleteDirectory(outputFolderOsxApp, true);
@@ -189,6 +190,9 @@ Task("PackageOsxApp").Does(() => {
 	// Copy osx package files
 	CopyDirectory("./osx/Radarr.app", outputFolderOsxApp + "/Radarr.app");
 	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
+
+    // Edit version of osx app
+    ctx.ReplaceTextInFiles(outputFolderOsxApp + "/Radarr.app/Contents/Info.plist", "2.0", ctx.EnvironmentVariable("APPVEYOR_BUILD_VERSION") ?? "unknown");
 });
 
 Task("PackageTests").Does(() => {
