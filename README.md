@@ -6,6 +6,8 @@ Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) 
 
 The project was inspired by other Usenet/BitTorrent movie downloaders such as CouchPotato.
 
+See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/11/roadmap-update.html) for an overview of planned features.
+
 ## Getting Started
 
 [![Installation](https://img.shields.io/badge/wiki-installation-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation)
@@ -93,12 +95,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 ### Planned Features
 
-* Dynamically renaming folders with quality info, etc. (Currently working partially.) (\*)
-* Supporting custom folder structures, such as all movie files in one folder (\*)
-* Supporting multiple editions per movies (\*)
-* Supporting collections of movies, such as James Bond (\*)
-
-**Note:** All features marked with (\*) are set to be in the first release of Radarr.
+See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/11/roadmap-update.html) for an overview of planned features.
 
 #### [Feature Requests](http://feathub.com/Radarr/Radarr)
 
