@@ -234,40 +234,40 @@ namespace NzbDrone.Core.Movies
                 cleanTitleWithArabicNumbers = cleanTitleWithArabicNumbers.Replace(romanNumber, arabicNumber);
             }
 
-            return Query(q =>
+            Movie result = Query(q =>
             {
-                Movie result = q.Where(s => s.CleanTitle == cleanTitle).FirstWithYear(year);
+                return q.Where(s => s.CleanTitle == cleanTitle).FirstWithYear(year);
+            });
+            
+            if (result == null)
+            {
+                result =
+                    Query(q => q.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year)) ??
+                    Query(q => q.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year));
 
                 if (result == null)
                 {
-                    result =
-                        q.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year) ??
-                        q.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+                    /*IEnumerable<Movie> movies = All();
+                    Func<string, string> titleCleaner = title => CoreParser.CleanSeriesTitle(title.ToLower());
+                    Func<IEnumerable<AlternativeTitle>, string, bool> altTitleComparer =
+                        (alternativeTitles, atitle) =>
+                        alternativeTitles.Any(altTitle => altTitle.CleanTitle == atitle);*/
 
-                    if (result == null)
-                    {
-                        /*IEnumerable<Movie> movies = All();
-                        Func<string, string> titleCleaner = title => CoreParser.CleanSeriesTitle(title.ToLower());
-                        Func<IEnumerable<AlternativeTitle>, string, bool> altTitleComparer =
-                            (alternativeTitles, atitle) =>
-                            alternativeTitles.Any(altTitle => altTitle.CleanTitle == atitle);*/
+                    /*result = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
+                                                altTitleComparer(m.AlternativeTitles, cleanTitleWithRomanNumbers) ||
+                                          altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers)).FirstWithYear(year);*/
 
-                        /*result = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
-                                                    altTitleComparer(m.AlternativeTitles, cleanTitleWithRomanNumbers) ||
-                                              altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers)).FirstWithYear(year);*/
+                    //result = Query.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m._newAltTitles,
+                    //(m, t) => m.Id == t.MovieId && (t.CleanTitle == cleanTitle)).FirstWithYear(year);
+                    result = Query(q => q.Where<AlternativeTitle>(t =>
+                            t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers
+                                                       || t.CleanTitle == cleanTitleWithRomanNumbers)
+                        .FirstWithYear(year));
 
-                        //result = Query.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m._newAltTitles,
-                        //(m, t) => m.Id == t.MovieId && (t.CleanTitle == cleanTitle)).FirstWithYear(year);
-                        result = q.Where<AlternativeTitle>(t =>
-                                t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers
-                                                           || t.CleanTitle == cleanTitleWithRomanNumbers)
-                            .FirstWithYear(year);
-
-                    }
                 }
+            }
 
-                return result;
-            });
+            return result;
 
             /*return year.HasValue
                 ? results?.FirstOrDefault(movie => movie.Year == year.Value)
