@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -7,7 +6,6 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -171,7 +169,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Metallica - ...And Justice for All (1988) [FLAC Lossless]", "Metallica", "...And Justice for All")]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)
         {
-
             var parseResult = Parser.Parser.ParseAlbumTitle(postTitle);
             parseResult.ArtistName.Should().Be(name);
             parseResult.AlbumTitle.Should().Be(title);
@@ -236,6 +233,29 @@ namespace NzbDrone.Core.Test.ParserTests
             GivenSearchCriteria(artist, album);
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.ArtistName.Should().Be(artist);
+        }
+
+        [TestCase("Michael Bubl\u00E9", "Michael Bubl\u00E9", @"Michael Buble Michael Buble CD FLAC 2003 PERFECT")]
+        public void should_match_with_accent_in_artist_and_album(string artist, string album, string releaseTitle)
+        {
+            GivenSearchCriteria(artist, album);
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            parseResult.ArtistName.Should().Be("Michael Buble");
+            parseResult.AlbumTitle.Should().Be("Michael Buble");
+        }
+
+        [Test]
+        public void should_find_result_if_multiple_albums_in_searchcriteria()
+        {
+            GivenSearchCriteria("Michael Bubl\u00E9", "Call Me Irresponsible");
+            GivenSearchCriteria("Michael Bubl\u00E9", "Michael Bubl\u00E9");
+            GivenSearchCriteria("Michael Bubl\u00E9", "love");
+            GivenSearchCriteria("Michael Bubl\u00E9", "Christmas");
+            GivenSearchCriteria("Michael Bubl\u00E9", "To Be Loved");
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(
+                "Michael Buble Christmas (Deluxe Special Edition) CD FLAC 2012 UNDERTONE iNT", _artist, _albums);
+            parseResult.ArtistName.Should().Be("Michael Buble");
+            parseResult.AlbumTitle.Should().Be("Christmas");
         }
     }
 }
