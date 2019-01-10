@@ -20,38 +20,44 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void DeleteOrphanedByMovie()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
                                      LEFT OUTER JOIN Movies
                                      ON MetadataFiles.MovieId = Movies.Id
                                      WHERE Movies.Id IS NULL)");
+            }
         }
 
         private void DeleteOrphanedByMovieFile()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
                                      LEFT OUTER JOIN MovieFiles
                                      ON MetadataFiles.MovieFileId = MovieFiles.Id
                                      WHERE MetadataFiles.MovieFileId > 0
                                      AND MovieFiles.Id IS NULL)");
+            }
         }
 
         private void DeleteWhereMovieFileIsZero()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
                                      WHERE Type IN (1, 2)
                                      AND MovieFileId = 0)");
+            }
         }
     }
 }

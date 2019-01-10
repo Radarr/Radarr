@@ -44,6 +44,8 @@ namespace NzbDrone.Common.Instrumentation
                     return;
                 }
             }
+            
+            Console.WriteLine(exception.StackTrace);
 
             Console.WriteLine("EPIC FAIL: {0}", exception);
             Logger.Fatal(exception, "EPIC FAIL: " + exception.Message);

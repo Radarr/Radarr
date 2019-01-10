@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public List<PendingRelease> AllByMovieId(int movieId)
         {
-            return Query.Where(p => p.MovieId == movieId);
+            return Query(q => q.Where(p => p.MovieId == movieId).ToList());
         }
     }
 }
