@@ -178,12 +178,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         private string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
         {
+            var path = localMovie.Path;
+
             if (downloadClientItem != null)
             {
-                return downloadClientItem.OutputPath.Directory.ToString().GetRelativePath(localMovie.Path);
+                var outputDirectory = downloadClientItem.OutputPath.Directory.ToString();
+
+                if (outputDirectory.IsParentPath(path))
+                {
+                    return outputDirectory.GetRelativePath(path);
+                }
             }
 
-            var path = localMovie.Path;
             var folderMovieInfo = localMovie.FolderMovieInfo;
 
             if (folderMovieInfo != null)
