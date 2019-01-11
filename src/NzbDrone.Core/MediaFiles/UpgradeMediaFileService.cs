@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
@@ -38,18 +39,21 @@ namespace NzbDrone.Core.MediaFiles
         public MovieFileMoveResult UpgradeMovieFile(MovieFile movieFile, LocalMovie localMovie, bool copyOnly = false)
         {
             _logger.Trace("Upgrading existing movie file.");
-            var moveFileResult = new MovieFileMoveResult();
 
+            var moveFileResult = new MovieFileMoveResult();
             var existingFile = localMovie.Movie.MovieFile;
 
+            var rootFolder = _diskProvider.GetParentFolder(localMovie.Movie.Path);
+
             if (existingFile != null)
-            {
+            {                
                 var movieFilePath = Path.Combine(localMovie.Movie.Path, existingFile.RelativePath);
+                var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(movieFilePath));
 
                 if (_diskProvider.FileExists(movieFilePath))
                 {
                     _logger.Debug("Removing existing movie file: {0}", existingFile);
-                    _recycleBinProvider.DeleteFile(movieFilePath);
+                    _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
                 }
 
                 moveFileResult.OldFiles.Add(existingFile);

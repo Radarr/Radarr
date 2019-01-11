@@ -9,25 +9,30 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
+using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Api.MovieFiles
 {
     public class MovieFileModule : NzbDroneRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
     {
+        private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMovieService _movieService;
         private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
-        public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
-                             IMediaFileService mediaFileService,
-                             IRecycleBinProvider recycleBinProvider,
-                             IMovieService movieService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
-                             Logger logger)
+        public MovieFileModule(IDiskProvider diskProvider,
+                               IBroadcastSignalRMessage signalRBroadcaster,
+                               IMediaFileService mediaFileService,
+                               IRecycleBinProvider recycleBinProvider,
+                               IMovieService movieService,
+                               IQualityUpgradableSpecification qualityUpgradableSpecification,
+                               Logger logger)
             : base(signalRBroadcaster)
         {
+            _diskProvider = diskProvider;
             _mediaFileService = mediaFileService;
             _recycleBinProvider = recycleBinProvider;
             _movieService = movieService;
@@ -62,7 +67,9 @@ namespace NzbDrone.Api.MovieFiles
             var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
 
             _logger.Info("Deleting movie file: {0}", fullPath);
-            _recycleBinProvider.DeleteFile(fullPath);
+
+            var subfolder = _diskProvider.GetParentFolder(movie.Path).GetRelativePath(_diskProvider.GetParentFolder(fullPath));
+            _recycleBinProvider.DeleteFile(fullPath, subfolder);
             _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
         }
 

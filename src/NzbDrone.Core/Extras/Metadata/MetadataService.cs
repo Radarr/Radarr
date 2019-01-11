@@ -312,7 +312,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 _logger.Debug("Removing duplicate Metadata file: {0}", path);
 
-                _recycleBinProvider.DeleteFile(path);
+                var subfolder = _diskProvider.GetParentFolder(movie.Path).GetRelativePath(_diskProvider.GetParentFolder(path));
+                _recycleBinProvider.DeleteFile(path, subfolder);
                 _metadataFileService.Delete(file.Id);
             }
 
