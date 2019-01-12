@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Test.Framework;
 
@@ -16,6 +17,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void SetUp()
         {
             _epoch = DateTime.UtcNow;
+
+            Mocker.GetMock<IRuntimeInfo>()
+                .SetupGet(v => v.StartTime)
+                .Returns(_epoch - TimeSpan.FromHours(1));
         }
 
         private void WithStatus(ImportListStatus status)

@@ -1,4 +1,5 @@
 using NLog;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider.Status;
@@ -14,8 +15,8 @@ namespace NzbDrone.Core.ImportLists
 
     public class ImportListStatusService : ProviderStatusServiceBase<IImportList, ImportListStatus>, IImportListStatusService
     {
-        public ImportListStatusService(IImportListStatusRepository providerStatusRepository, IEventAggregator eventAggregator, Logger logger)
-            : base(providerStatusRepository, eventAggregator, logger)
+        public ImportListStatusService(IImportListStatusRepository providerStatusRepository, IEventAggregator eventAggregator, IRuntimeInfo runtimeInfo, Logger logger)
+            : base(providerStatusRepository, eventAggregator, runtimeInfo, logger)
         {
         }
 
