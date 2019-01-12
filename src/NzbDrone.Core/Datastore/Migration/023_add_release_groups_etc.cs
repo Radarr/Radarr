@@ -161,7 +161,12 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             var releases = ReadReleasesFromAlbums(conn, tran);
             var dupeFreeReleases = releases.DistinctBy(x => x.ForeignReleaseId).ToList();
-            WriteReleasesToReleases(dupeFreeReleases, conn, tran);
+            var duplicates = releases.Except(dupeFreeReleases);
+            foreach (var release in duplicates)
+            {
+                release.ForeignReleaseId = release.AlbumId.ToString();
+            }
+            WriteReleasesToReleases(releases, conn, tran);
         }
 
         public class LegacyAlbumRelease : IEmbeddedDocument
@@ -192,27 +197,47 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     while (releaseReader.Read())
                     {
-                        int rgId = releaseReader.GetInt32(0);
+                        int albumId = releaseReader.GetInt32(0);
                         var albumRelease = Json.Deserialize<LegacyAlbumRelease>(releaseReader.GetString(1));
-                        var media = new List<Medium>();
-                        for (var i = 1; i <= albumRelease.MediaCount; i++)
+
+                        AlbumRelease toInsert = null;
+                        if (albumRelease != null)
                         {
-                            media.Add(new Medium { Number = i, Name = "", Format = albumRelease.Format } );
-                        }
+                            var media = new List<Medium>();
+                            for (var i = 1; i <= Math.Max(albumRelease.MediaCount, 1); i++)
+                            {
+                                media.Add(new Medium { Number = i, Name = "", Format = albumRelease.Format ?? "Unknown" } );
+                            }
                         
-                        releases.Add(new AlbumRelease {
-                                AlbumId = rgId,
-                                ForeignReleaseId = albumRelease.Id,
-                                Title = albumRelease.Title.IsNotNullOrWhiteSpace() ? albumRelease.Title : "",
+                            toInsert = new AlbumRelease {
+                                    AlbumId = albumId,
+                                    ForeignReleaseId = albumRelease.Id.IsNotNullOrWhiteSpace() ? albumRelease.Id : albumId.ToString(),
+                                    Title = albumRelease.Title.IsNotNullOrWhiteSpace() ? albumRelease.Title : "",
+                                    Status = "",
+                                    Duration = 0,
+                                    Label = albumRelease.Label,
+                                    Disambiguation = albumRelease.Disambiguation,
+                                    Country = albumRelease.Country,
+                                    Media = media,
+                                    TrackCount = albumRelease.TrackCount,
+                                    Monitored = true
+                                };
+                        }
+                        else
+                        {
+                            toInsert = new AlbumRelease {
+                                AlbumId = albumId,
+                                ForeignReleaseId = albumId.ToString(),
+                                Title = "",
                                 Status = "",
-                                Duration = 0,
-                                Label = albumRelease.Label,
-                                Disambiguation = albumRelease.Disambiguation,
-                                Country = albumRelease.Country,
-                                Media=media,
-                                TrackCount = albumRelease.TrackCount,
+                                Label = new List<string>(),
+                                Country = new List<string>(),
+                                Media = new List<Medium> { new Medium { Name = "Unknown", Number = 1, Format = "Unknown" } },
                                 Monitored = true
-                            });
+                            };
+                        }
+
+                        releases.Add(toInsert);
                     }
                 }
             }

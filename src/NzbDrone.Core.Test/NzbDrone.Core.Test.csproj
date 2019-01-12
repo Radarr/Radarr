@@ -122,6 +122,7 @@
     <Compile Include="Datastore\MappingExtentionFixture.cs" />
     <Compile Include="Datastore\MarrDataLazyLoadingFixture.cs" />
     <Compile Include="Datastore\Migration\004_add_various_qualities_in_profileFixture.cs" />
+    <Compile Include="Datastore\Migration\023_add_release_groups_etcFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />

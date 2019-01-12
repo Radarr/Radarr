@@ -56,6 +56,10 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<IReleaseService>()
                 .Setup(s => s.GetReleasesByAlbum(album1.Id))
                 .Returns(new List<AlbumRelease> { release });
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(s => s.GetReleasesByForeignReleaseId(It.IsAny<List<string>>()))
+                .Returns(new List<AlbumRelease> { release });
             
             Mocker.GetMock<IProvideAlbumInfo>()
                 .Setup(s => s.GetAlbumInfo(It.IsAny<string>()))

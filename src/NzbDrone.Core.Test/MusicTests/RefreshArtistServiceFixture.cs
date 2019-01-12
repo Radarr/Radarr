@@ -48,6 +48,10 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<IAlbumService>()
                 .Setup(s => s.GetAlbumsByArtist(It.IsAny<int>()))
                 .Returns(new List<Album>());
+
+            Mocker.GetMock<IAlbumService>()
+                .Setup(s => s.FindById(It.IsAny<List<string>>()))
+                .Returns(new List<Album>());
             
             Mocker.GetMock<IProvideArtistInfo>()
                   .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<int>()))

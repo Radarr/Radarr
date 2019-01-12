@@ -112,7 +112,13 @@ namespace NzbDrone.Core.Music
             album.AlbumReleases = new List<AlbumRelease>();
 
             var remoteReleases = albumInfo.AlbumReleases.Value.DistinctBy(m => m.ForeignReleaseId).ToList();
-            var existingReleases = _releaseService.GetReleasesByAlbum(album.Id);
+
+            // Search both ways to make sure we properly deal with releases that have been moved from one album to another
+            // as well as deleting any releases that have been removed from an album.
+            // note that under normal circumstances, a release would be captured by both queries.
+            var existingReleasesByAlbum = _releaseService.GetReleasesByAlbum(album.Id);
+            var existingReleasesById = _releaseService.GetReleasesByForeignReleaseId(remoteReleases.Select(x => x.ForeignReleaseId).ToList());
+            var existingReleases = existingReleasesByAlbum.Union(existingReleasesById).DistinctBy(x => x.Id).ToList();
 
             var newReleaseList = new List<AlbumRelease>();
             var updateReleaseList = new List<AlbumRelease>();
@@ -137,9 +143,13 @@ namespace NzbDrone.Core.Music
                 album.AlbumReleases.Value.Add(release);
             }
 
-            _releaseService.InsertMany(newReleaseList);
-            _releaseService.UpdateMany(updateReleaseList);
+            _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} releases",
+                          album, existingReleases.Count, updateReleaseList.Count, newReleaseList.Count);
+
+            // Delete first to avoid hitting distinct constraints
             _releaseService.DeleteMany(existingReleases);
+            _releaseService.UpdateMany(updateReleaseList);
+            _releaseService.InsertMany(newReleaseList);
 
             if (album.AlbumReleases.Value.Count(x => x.Monitored) == 0)
             {

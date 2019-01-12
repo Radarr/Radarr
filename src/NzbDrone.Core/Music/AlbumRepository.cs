@@ -18,7 +18,8 @@ namespace NzbDrone.Core.Music
         Album FindByName(string cleanTitle);
         Album FindByTitle(int artistMetadataId, string title);
         Album FindByArtistAndName(string artistName, string cleanTitle);
-        Album FindById(string spotifyId);
+        Album FindById(string foreignId);
+        List<Album> FindById(List<string> foreignIds);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         PagingSpec<Album> AlbumsWhereCutoffUnmet(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
@@ -56,6 +57,16 @@ namespace NzbDrone.Core.Music
         public Album FindById(string foreignAlbumId)
         {
             return Query.Where(s => s.ForeignAlbumId == foreignAlbumId).SingleOrDefault();
+        }
+
+        public List<Album> FindById(List<string> ids)
+        {
+            string query = string.Format("SELECT Albums.* " +
+                                         "FROM Albums " +
+                                         "WHERE ForeignAlbumId IN ('{0}')",
+                                         string.Join("', '", ids));
+
+            return Query.QueryText(query).ToList();
         }
 
         public PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec)

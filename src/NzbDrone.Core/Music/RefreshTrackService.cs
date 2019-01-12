@@ -37,12 +37,17 @@ namespace NzbDrone.Core.Music
 
             foreach (var release in album.AlbumReleases.Value)
             {
-
-                var existingTracks = _trackService.GetTracksByForeignReleaseId(release.ForeignReleaseId);
+                var dupeFreeRemoteTracks = release.Tracks.Value.DistinctBy(m => new { m.ForeignTrackId, m.TrackNumber }).ToList();
+                
+                // Search both ways to make sure we properly deal with tracks that have been moved from one release to another
+                // as well as deleting any tracks that have been removed from a release.
+                // note that under normal circumstances, a track would be captured by both queries.
+                var existingTracksByRelease = _trackService.GetTracksByForeignReleaseId(release.ForeignReleaseId);
+                var existingTracksById = _trackService.GetTracksByForeignTrackIds(dupeFreeRemoteTracks.Select(x => x.ForeignTrackId).ToList());
+                var existingTracks = existingTracksByRelease.Union(existingTracksById).DistinctBy(x => x.Id).ToList();
 
                 var updateList = new List<Track>();
                 var newList = new List<Track>();
-                var dupeFreeRemoteTracks = release.Tracks.Value.DistinctBy(m => new { m.ForeignTrackId, m.TrackNumber }).ToList();
 
                 foreach (var track in OrderTracks(dupeFreeRemoteTracks))
                 {
@@ -82,6 +87,9 @@ namespace NzbDrone.Core.Music
                         failCount++;
                     }
                 }
+
+                _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} tracks",
+                              release, existingTracks.Count, updateList.Count, newList.Count);
 
                 _trackService.DeleteMany(existingTracks);
                 _trackService.UpdateMany(updateList);

@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Music
         List<Track> GetTracksByAlbum(int albumId);
         List<Track> GetTracksByRelease(int albumReleaseId);
         List<Track> GetTracksByForeignReleaseId(string foreignReleaseId);
+        List<Track> GetTracksByForeignTrackIds(List<string> foreignTrackId);
         List<Track> GetTracksByMedium(int albumId, int mediumNumber);
         List<Track> GetTracksByFileId(int fileId);
         List<Track> TracksWithFiles(int artistId);
@@ -93,6 +94,16 @@ namespace NzbDrone.Core.Music
                                          "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
                                          "WHERE AlbumReleases.ForeignReleaseId = '{0}'",
                                          foreignReleaseId);
+
+            return Query.QueryText(query).ToList();
+        }
+
+        public List<Track> GetTracksByForeignTrackIds(List<string> ids)
+        {
+            string query = string.Format("SELECT Tracks.* " +
+                                         "FROM Tracks " +
+                                         "WHERE ForeignTrackId IN ('{0}')",
+                                         string.Join("', '", ids));
 
             return Query.QueryText(query).ToList();
         }

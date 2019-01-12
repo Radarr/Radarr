@@ -96,8 +96,10 @@ namespace NzbDrone.Core.Music
             var remoteAlbums = artistInfo.Albums.Value.DistinctBy(m => new { m.ForeignAlbumId, m.ReleaseDate }).ToList();
 
             // Get list of DB current db albums for artist
-            var existingAlbums = _albumService.GetAlbumsByArtist(artist.Id);
-
+            var existingAlbumsByArtist = _albumService.GetAlbumsByArtist(artist.Id);
+            var existingAlbumsById = _albumService.FindById(remoteAlbums.Select(x => x.ForeignAlbumId).ToList());
+            var existingAlbums = existingAlbumsByArtist.Union(existingAlbumsById).DistinctBy(x => x.Id).ToList();
+            
             var newAlbumsList = new List<Album>();
             var updateAlbumsList = new List<Album>();
 
@@ -118,17 +120,17 @@ namespace NzbDrone.Core.Music
                 }
             }
 
+            _artistService.UpdateArtist(artist);
+            
+            _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} albums",
+                          artist, existingAlbums.Count, updateAlbumsList.Count, newAlbumsList.Count);
+
             // Delete old albums first - this avoids errors if albums have been merged and we'll
             // end up trying to duplicate an existing release under a new album
             _albumService.DeleteMany(existingAlbums);
             
             // Update new albums with artist info and correct monitored status
             newAlbumsList = UpdateAlbums(artist, newAlbumsList);
-
-            _logger.Info("Artist {0}, MetadataId {1}, Metadata.Id {2}", artist, artist.ArtistMetadataId, artist.Metadata.Value.Id);
-
-            _artistService.UpdateArtist(artist);
-
             _addAlbumService.AddAlbums(newAlbumsList);
 
             _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh);
