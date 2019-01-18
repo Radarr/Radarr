@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.UpdateMovies(Settings, message.Movie);
+                _mediaBrowserService.UpdateMovies(Settings, message.Movie, "Created");
             }
         }
 
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
         {
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.UpdateMovies(Settings, movie);
+                _mediaBrowserService.UpdateMovies(Settings, movie, "Modified");
             }
         }
 
