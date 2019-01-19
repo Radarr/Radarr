@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Music
         }
 
         public static ReleaseStatus Official => new ReleaseStatus(0, "Official");
-        public static ReleaseStatus Promotional => new ReleaseStatus(1, "Promotional");
+        public static ReleaseStatus Promotion => new ReleaseStatus(1, "Promotion");
         public static ReleaseStatus Bootleg => new ReleaseStatus(2, "Bootleg");
         public static ReleaseStatus Pseudo => new ReleaseStatus(3, "Pseudo");
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Music
         public static readonly List<ReleaseStatus> All = new List<ReleaseStatus>
         {
             Official,
-            Promotional,
+            Promotion,
             Bootleg,
             Pseudo
         };

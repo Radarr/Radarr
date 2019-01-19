@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Music
         public static SecondaryAlbumType Audiobook => new SecondaryAlbumType(5, "Audiobook");
         public static SecondaryAlbumType Live => new SecondaryAlbumType(6, "Live");
         public static SecondaryAlbumType Remix => new SecondaryAlbumType(7, "Remix");
-        public static SecondaryAlbumType DJMix => new SecondaryAlbumType(8, "DJ-Mix");
+        public static SecondaryAlbumType DJMix => new SecondaryAlbumType(8, "DJ-mix");
         public static SecondaryAlbumType Mixtape => new SecondaryAlbumType(9, "Mixtape/Street");
         public static SecondaryAlbumType Demo => new SecondaryAlbumType(10, "Demo");
 
@@ -85,7 +85,8 @@ namespace NzbDrone.Core.Music
             Live,
             Remix,
             DJMix,
-            Mixtape
+            Mixtape,
+            Demo
         };
 
 
