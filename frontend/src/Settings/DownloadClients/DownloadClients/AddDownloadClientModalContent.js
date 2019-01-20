@@ -51,7 +51,7 @@ class AddDownloadClientModalContent extends Component {
 
                 <Alert kind={kinds.INFO}>
                   <div>Lidarr supports any downloadClient that uses the Newznab standard, as well as other downloadClients listed below.</div>
-                  <div>For more information on the individual downloadClients, clink on the info buttons.</div>
+                  <div>For more information on the individual downloadClients, click on the info buttons.</div>
                 </Alert>
 
                 <FieldSet legend="Usenet">
