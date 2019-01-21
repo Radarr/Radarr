@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public int GetVersion(QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/webapiVersion");
+            var request = BuildRequest(settings).Resource("/api/v2/app/version");
             var response = ProcessRequest<int>(request, settings);
 
             return response;
