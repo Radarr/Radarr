@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const errorHandler = require('./helpers/errorHandler');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const uiFolder = 'UI';
 const root = path.join(__dirname, '..', 'src');
@@ -31,6 +32,8 @@ const extractCSSPlugin = new ExtractTextPlugin({
 const plugins = [
   extractCSSPlugin,
 
+  new OptimizeCssAssetsPlugin({}),
+
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor'
   }),
@@ -41,7 +44,37 @@ const plugins = [
   })
 ];
 
-let babelPlugins = ['transform-class-properties', 'transform-react-jsx-source'];
+function babelPlugins() {
+
+  const bplugins = [];
+
+  bplugins.push(
+    '@babel/plugin-proposal-class-properties',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-syntax-import-meta',
+    '@babel/plugin-proposal-json-strings',
+    [
+      '@babel/plugin-proposal-decorators',
+      {
+        legacy: true
+      }
+    ],
+    '@babel/plugin-proposal-function-sent',
+    '@babel/plugin-proposal-export-namespace-from',
+    '@babel/plugin-proposal-numeric-separator',
+    '@babel/plugin-proposal-throw-expressions'
+  );
+
+  if (process.env.NODE_ENV !== 'production') {
+    bplugins.push('@babel/transform-react-jsx-source');
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    bplugins.push('transform-react-remove-prop-types');
+  }
+
+  return bplugins;
+}
 
 if (isProduction) {
   plugins.push(new UglifyJSPlugin({
@@ -54,8 +87,6 @@ if (isProduction) {
       }
     }
   }));
-
-  babelPlugins = ['transform-class-properties', 'transform-react-remove-prop-types'];
 }
 
 const config = {
@@ -107,8 +138,8 @@ const config = {
         exclude: /(node_modules|JsLibraries)/,
         loader: 'babel-loader',
         options: {
-          plugins: babelPlugins,
-          presets: ['env', 'decorators-legacy', 'react', 'stage-2']
+          plugins: babelPlugins(),
+          presets: ['@babel/env', '@babel/react']
         }
       },
 
@@ -195,14 +226,14 @@ const config = {
 
 gulp.task('webpack', () => {
   return gulp.src('index.js')
-    .pipe(webpackStream(config))
+    .pipe(webpackStream(config, webpack))
     .pipe(gulp.dest(''));
 });
 
 gulp.task('webpackWatch', () => {
   config.watch = true;
   return gulp.src('')
-    .pipe(webpackStream(config))
+    .pipe(webpackStream(config, webpack))
     .on('error', errorHandler)
     .pipe(gulp.dest(''))
     .on('error', errorHandler)
