@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public QBittorrentPreferences GetConfig(QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/preferences");
+            var request = BuildRequest(settings).Resource("/api/v2/app/setPreferences");
             var response = ProcessRequest<QBittorrentPreferences>(request, settings);
 
             return response;
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/torrents")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/torrents")
                                                 .AddQueryParam("label", settings.MovieCategory)
                                                 .AddQueryParam("category", settings.MovieCategory);
 
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void AddTorrentFromUrl(string torrentUrl, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/download")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/add")
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void AddTorrentFromFile(string fileName, Byte[] fileContent, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/upload")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/upload")
                                                 .Post()
                                                 .AddFormUpload("torrents", fileName, fileContent);
 
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void RemoveTorrent(string hash, Boolean removeData, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource(removeData ? "/api/v2/app/deletePerm" : "/api/v2/app/delete")
+            var request = BuildRequest(settings).Resource(removeData ? "/api/v2/app/deleteFiles" : "/api/v2/app/delete")
                                                 .Post()
                                                 .AddFormParameter("hashes", hash);
             
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void SetTorrentLabel(string hash, string label, QBittorrentSettings settings)
         {
-            var setCategoryRequest = BuildRequest(settings).Resource("/api/v2/app/setCategory")
+            var setCategoryRequest = BuildRequest(settings).Resource("/api/v2/torrents/setCategory")
                                                         .Post()
                                                         .AddFormParameter("hashes", hash)
                                                         .AddFormParameter("category", label);
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void MoveTorrentToTopInQueue(string hash, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/topPrio")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/topPrio")
                                                 .Post()
                                                 .AddFormParameter("hashes", hash);
 
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void PauseTorrent(string hash, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/pause")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/pause")
                                                 .Post()
                                                 .AddFormParameter("hash", hash);
 
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void ResumeTorrent(string hash, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/resume")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/resume")
                                                 .Post()
                                                 .AddFormParameter("hash", hash);
 
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public void SetForceStart(string hash, bool enabled, QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/app/setForceStart")
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/setForceStart")
                                                 .Post()
                                                 .AddFormParameter("hashes", hash)
                                                 .AddFormParameter("value", enabled ? "true": "false");
