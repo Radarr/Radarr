@@ -54,6 +54,9 @@ namespace NzbDrone.Core.Music
             try
             {
                 _diskTransferService.TransferFolder(sourcePath, destinationPath, TransferMode.Move);
+                _logger.ProgressInfo("{0} moved successfully to {1}", artist.Name, artist.Path);
+
+                _eventAggregator.PublishEvent(new ArtistMovedEvent(artist, sourcePath, destinationPath));
             }
             catch (IOException ex)
             {
@@ -61,10 +64,6 @@ namespace NzbDrone.Core.Music
 
                 RevertPath(artist.Id, sourcePath);
             }
-
-            _logger.ProgressInfo("{0} moved successfully to {1}", artist.Name, artist.Path);
-
-            _eventAggregator.PublishEvent(new ArtistMovedEvent(artist, sourcePath, destinationPath));
         }
 
         private void RevertPath(int artistId, string path)
