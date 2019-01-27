@@ -64,7 +64,7 @@ class MetadataProviderConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatchClearPendingChanges({ section: SECTION });
+    this.props.dispatchClearPendingChanges({ section: 'settings.metadataProvider' });
   }
 
   //
