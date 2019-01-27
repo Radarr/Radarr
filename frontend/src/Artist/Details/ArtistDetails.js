@@ -12,6 +12,7 @@ import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
 import Measure from 'Components/Measure';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -173,6 +174,7 @@ class ArtistDetails extends Component {
       images,
       alternateTitles,
       tags,
+      isSaving,
       isRefreshing,
       isSearching,
       isFetching,
@@ -182,6 +184,7 @@ class ArtistDetails extends Component {
       hasMonitoredAlbums,
       previousArtist,
       nextArtist,
+      onMonitorTogglePress,
       onRefreshPress,
       onSearchPress
     } = this.props;
@@ -313,13 +316,25 @@ class ArtistDetails extends Component {
               />
 
               <div className={styles.info}>
-                <div className={styles.titleContainer}>
-                  <div className={styles.title}>
-                    {artistName}
+                <div className={styles.titleRow}>
+                  <div className={styles.titleContainer}>
+                    <div className={styles.toggleMonitoredContainer}>
+                      <MonitorToggleButton
+                        className={styles.monitorToggleButton}
+                        monitored={monitored}
+                        isSaving={isSaving}
+                        size={40}
+                        onPress={onMonitorTogglePress}
+                      />
+                    </div>
+
+                    <div className={styles.title}>
+                      {artistName}
+                    </div>
 
                     {
                       !!alternateTitles.length &&
-                        <span className={styles.alternateTitlesIconContainer}>
+                        <div className={styles.alternateTitlesIconContainer}>
                           <Popover
                             anchor={
                               <Icon
@@ -331,7 +346,7 @@ class ArtistDetails extends Component {
                             body={<ArtistAlternateTitles alternateTitles={alternateTitles} />}
                             position={tooltipPositions.BOTTOM}
                           />
-                        </span>
+                        </div>
                     }
                   </div>
 
@@ -616,6 +631,7 @@ ArtistDetails.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isSaving: PropTypes.bool.isRequired,
   isRefreshing: PropTypes.bool.isRequired,
   isSearching: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -625,6 +641,7 @@ ArtistDetails.propTypes = {
   hasMonitoredAlbums: PropTypes.bool.isRequired,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,
+  onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };

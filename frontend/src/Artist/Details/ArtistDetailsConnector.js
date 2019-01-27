@@ -10,6 +10,7 @@ import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
+import { toggleArtistMonitored } from 'Store/Actions/artistActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -101,6 +102,7 @@ const mapDispatchToProps = {
   clearAlbums,
   fetchTrackFiles,
   clearTrackFiles,
+  toggleArtistMonitored,
   fetchQueueDetails,
   clearQueueDetails,
   executeCommand
@@ -168,6 +170,13 @@ class ArtistDetailsConnector extends Component {
   //
   // Listeners
 
+  onMonitorTogglePress = (monitored) => {
+    this.props.toggleArtistMonitored({
+      artistId: this.props.id,
+      monitored
+    });
+  }
+
   onRefreshPress = () => {
     this.props.executeCommand({
       name: commandNames.REFRESH_ARTIST,
@@ -189,6 +198,7 @@ class ArtistDetailsConnector extends Component {
     return (
       <ArtistDetails
         {...this.props}
+        onMonitorTogglePress={this.onMonitorTogglePress}
         onRefreshPress={this.onRefreshPress}
         onSearchPress={this.onSearchPress}
       />
@@ -208,6 +218,7 @@ ArtistDetailsConnector.propTypes = {
   clearAlbums: PropTypes.func.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
+  toggleArtistMonitored: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired

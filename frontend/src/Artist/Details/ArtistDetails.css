@@ -32,13 +32,6 @@
   color: $white;
 }
 
-.logo {
-  flex-shrink: 0;
-  margin-right: 35px;
-  width: 250px;
-  height: 97px;
-}
-
 .poster {
   flex-shrink: 0;
   margin-right: 35px;
@@ -68,19 +61,33 @@
 
 .titleContainer {
   display: flex;
-  justify-content: space-between;
+  margin-bottom: 5px;
 }
 
 .title {
-  margin-bottom: 5px;
   font-weight: 300;
   font-size: 50px;
   line-height: 50px;
 }
 
+.toggleMonitoredContainer {
+  align-self: center;
+  margin-right: 10px;
+}
+
+.monitorToggleButton {
+  composes: toggleButton from 'Components/MonitorToggleButton.css';
+
+  width: 40px;
+
+  &:hover {
+    color: $iconButtonHoverLightColor;
+  }
+}
+
 .alternateTitlesIconContainer {
+  align-self: flex-end;
   margin-left: 20px;
-  line-height: 50px;
 }
 
 .artistNavigationButtons {
@@ -94,6 +101,10 @@
   width: 30px;
   color: #e1e2e3;
   white-space: nowrap;
+
+  &:hover {
+    color: $iconButtonHoverLightColor;
+  }
 }
 
 .details {
