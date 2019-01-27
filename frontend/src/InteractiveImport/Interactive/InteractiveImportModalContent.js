@@ -314,12 +314,18 @@ class InteractiveImportModalContent extends Component {
           <div className={styles.centerButtons}>
             {
               allowArtistChange &&
-                <Button onPress={this.onSelectArtistPress}>
+                <Button
+                  onPress={this.onSelectArtistPress}
+                  isDisabled={!selectedIds.length}
+                >
                   Select Artist
                 </Button>
             }
 
-            <Button onPress={this.onSelectAlbumPress}>
+            <Button
+              onPress={this.onSelectAlbumPress}
+              isDisabled={!selectedIds.length}
+            >
               Select Album
             </Button>
           </div>
