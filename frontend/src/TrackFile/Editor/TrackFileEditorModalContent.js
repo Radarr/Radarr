@@ -7,6 +7,7 @@ import toggleSelected from 'Utilities/Table/toggleSelected';
 import { kinds } from 'Helpers/Props';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Button from 'Components/Link/Button';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import SelectInput from 'Components/Form/SelectInput';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -133,6 +134,7 @@ class TrackFileEditorModalContent extends Component {
   render() {
     const {
       isDeleting,
+      isFetching,
       items,
       languages,
       qualities,
@@ -174,14 +176,19 @@ class TrackFileEditorModalContent extends Component {
 
         <ModalBody>
           {
-            !items.length &&
+            isFetching &&
+              <LoadingIndicator />
+          }
+
+          {
+            !isFetching && !items.length &&
               <div>
                 No track files to manage.
               </div>
           }
 
           {
-            !!items.length &&
+            !isFetching && !!items.length &&
               <Table
                 columns={columns}
                 selectAll={true}
@@ -262,6 +269,7 @@ class TrackFileEditorModalContent extends Component {
 
 TrackFileEditorModalContent.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,

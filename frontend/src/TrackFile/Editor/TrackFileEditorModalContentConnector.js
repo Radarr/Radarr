@@ -59,6 +59,7 @@ function createMapStateToProps() {
         items,
         artistType: artist.artistType,
         isDeleting: trackFiles.isDeleting,
+        isFetching: tracks.isFetching || trackFiles.isFetching,
         isSaving: trackFiles.isSaving,
         languages,
         qualities
