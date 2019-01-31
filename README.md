@@ -22,13 +22,12 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ## Downloads
 
-[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
-[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)
+Branch | develop (stable) | nightly (semi-unstable) |
+---|---|---
+Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases) | [![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)
+Docker (linuxserver.io, x86_64, arm64, armhf) | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr) 
+Docker (hotio, see [here](https://gitlab.com/hotio/suitarr/blob/master/README.md) for more information) | [![Docker release / nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr) | [![Docker release / nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)
 
-[![Docker release](https://img.shields.io/badge/docker-release-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)
-[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
-[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
 ## Support
 
