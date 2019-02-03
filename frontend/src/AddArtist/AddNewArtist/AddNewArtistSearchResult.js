@@ -92,12 +92,14 @@ class AddNewArtistSearchResult extends Component {
           {...linkProps}
         >
           {
-            !isSmallScreen &&
-            <ArtistPoster
-              className={styles.poster}
-              images={images}
-              size={250}
-            />
+            isSmallScreen ?
+              null :
+              <ArtistPoster
+                className={styles.poster}
+                images={images}
+                size={250}
+                overflow={true}
+              />
           }
 
           <div>
