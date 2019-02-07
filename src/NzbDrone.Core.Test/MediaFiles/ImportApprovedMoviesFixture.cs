@@ -380,5 +380,20 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.OriginalFilePath == $"subfolder\\{name}.mkv".AsOsAgnostic())));
         }
+
+        [Test]
+        public void should_use_folder_info_original_title_to_find_relative_path_when_download_client_item_has_an_empty_output_path()
+        {
+            var name = "Transformers.2007.720p.BluRay.x264-Radarr";
+            var outputPath = Path.Combine(@"C:\Test\Unsorted\movies\".AsOsAgnostic(), name);
+            var localMovie = _approvedDecisions.First().LocalMovie;
+
+            localMovie.FolderMovieInfo = new ParsedMovieInfo { ReleaseTitle = name };
+            localMovie.Path = Path.Combine(outputPath, "subfolder", name + ".mkv");
+
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
+
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.OriginalFilePath == $"subfolder\\{name}.mkv".AsOsAgnostic())));
+        }
     }
 }
