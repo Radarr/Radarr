@@ -180,7 +180,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             var path = localMovie.Path;
 
-            if (downloadClientItem != null)
+            if (downloadClientItem != null && !downloadClientItem.OutputPath.IsEmpty)
             {
                 var outputDirectory = downloadClientItem.OutputPath.Directory.ToString();
 
