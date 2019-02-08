@@ -141,6 +141,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 request.AddFormParameter("category", settings.MovieCategory);
             }
 
+            if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
+            {
+                request.AddFormParameter("paused", true);
+            }
+            
             var result = ProcessRequest(request, settings);
 
             // Note: Current qbit versions return nothing, so we can't do != "Ok." here.
@@ -166,6 +171,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                     .Post()
                                                     .AddFormParameter("hashes", hash);
             }
+            
             ProcessRequest(request, settings);
         }
 
@@ -185,6 +191,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                         .Post()
                                                         .AddFormParameter("hashes", hash)
                                                         .AddFormParameter("category", label);
+                                                        
                 try
                 {
                     ProcessRequest(setCategoryRequest, settings);
@@ -220,6 +227,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                     .Post()
                                                     .AddFormParameter("hashes", hash);
             }
+            
             try
             {
                 ProcessRequest(request, settings);
@@ -253,6 +261,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                  .Post()
                                                  .AddFormParameter("hash", hash);
             }
+            
             ProcessRequest(request, settings);
         }
 
@@ -271,6 +280,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("hash", hash);
             }
+            
             ProcessRequest(request, settings);
         }
 
@@ -290,6 +300,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .AddFormParameter("hashes", hash)
                                                 .AddFormParameter("value", enabled ? "true" : "false");
             }
+            
             ProcessRequest(request, settings);
         }
 
