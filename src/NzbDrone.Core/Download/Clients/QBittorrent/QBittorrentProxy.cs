@@ -106,6 +106,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 request.AddFormParameter("category", settings.MovieCategory);
             }
 
+            if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
+            {
+                request.AddFormParameter("paused", true);
+            }
+            
             var result = ProcessRequest(request, settings);
 
             // Note: Older qbit versions returned nothing, so we can't do != "Ok." here.
