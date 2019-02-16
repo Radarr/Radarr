@@ -1,10 +1,9 @@
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
-    public interface IImportDecisionEngineSpecification
+    public interface IImportDecisionEngineSpecification<T>
     {
-        Decision IsSatisfiedBy(LocalTrack localTrack);
+        Decision IsSatisfiedBy(T item);
     }
 }

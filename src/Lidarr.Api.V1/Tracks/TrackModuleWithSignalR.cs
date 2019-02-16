@@ -107,7 +107,8 @@ namespace Lidarr.Api.V1.Tracks
         {
             foreach (var track in message.TrackInfo.Tracks)
             {
-                BroadcastResourceChange(ModelAction.Updated, track.Id);
+                track.TrackFile = message.ImportedTrack;
+                BroadcastResourceChange(ModelAction.Updated, MapToResource(track, true, true));
             }
         }
 
@@ -115,7 +116,8 @@ namespace Lidarr.Api.V1.Tracks
         {
             foreach (var track in message.TrackFile.Tracks.Value)
             {
-                BroadcastResourceChange(ModelAction.Updated, track.Id);
+                track.TrackFile = message.TrackFile;
+                BroadcastResourceChange(ModelAction.Updated, MapToResource(track, true, true));
             }
         }
 

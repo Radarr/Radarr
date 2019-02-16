@@ -7,8 +7,9 @@
     "start": "gulp watch",
     "clean": "rimraf ./_output/UI",
     "eslint": "esprint check",
-    "eslint-fix": "eslint start --fix",
-    "stylelint": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
+    "eslint-fix": "eslint --fix frontend/** ",
+    "stylelint-linux": "stylelint $(find frontend -name '*.css') --config frontend/.stylelintrc",
+    "stylelint-windows": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
   },
   "repository": {
     "type": "git",

@@ -232,7 +232,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 return new List<ImportResult>
                        {
-                           new ImportResult(new ImportDecision(new LocalTrack { Path = fileInfo.FullName }, new Rejection("Invalid music file, filename starts with '._'")), "Invalid music file, filename starts with '._'")
+                           new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack { Path = fileInfo.FullName }, new Rejection("Invalid music file, filename starts with '._'")), "Invalid music file, filename starts with '._'")
                        };
             }
 
@@ -263,14 +263,14 @@ namespace NzbDrone.Core.MediaFiles
         private ImportResult FileIsLockedResult(string audioFile)
         {
             _logger.Debug("[{0}] is currently locked by another process, skipping", audioFile);
-            return new ImportResult(new ImportDecision(new LocalTrack { Path = audioFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
+            return new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack { Path = audioFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
         }
 
         private ImportResult UnknownArtistResult(string message, string audioFile = null)
         {
             var localTrack = audioFile == null ? null : new LocalTrack { Path = audioFile };
 
-            return new ImportResult(new ImportDecision(localTrack, new Rejection("Unknown Artist")), message);
+            return new ImportResult(new ImportDecision<LocalTrack>(localTrack, new Rejection("Unknown Artist")), message);
         }
     }
 }

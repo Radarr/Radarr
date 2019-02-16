@@ -41,5 +41,10 @@ namespace Lidarr.Api.V1.ManualImport
         {
             return _manualImportService.Find(id).ToResource();
         }
+
+        protected List<ManualImportResource> GetManualImportItems(IEnumerable<int> ids)
+        {
+            return ids.Select(x => _manualImportService.Find(x).ToResource()).ToList();
+        }
     }
 }

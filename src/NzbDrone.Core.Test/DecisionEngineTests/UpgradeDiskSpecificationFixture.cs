@@ -44,6 +44,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                          .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = languages })
                          .Build();
 
+            Mocker.GetMock<ITrackService>()
+                .Setup(c => c.TracksWithoutFiles(It.IsAny<int>()))
+                .Returns(new List<Track>());
+
             Mocker.GetMock<IMediaFileService>()
                   .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
                   .Returns(new List<TrackFile> { _firstFile, _secondFile });
@@ -82,6 +86,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(new List<TrackFile> { });
 
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_true_if_track_is_missing()
+        {
+            Mocker.GetMock<ITrackService>()
+                  .Setup(c => c.TracksWithoutFiles(It.IsAny<int>()))
+                .Returns(new List<Track> { new Track() });
+
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_only_query_db_for_missing_tracks_once()
+        {
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+
+            Mocker.GetMock<ITrackService>()
+                .Verify(c => c.TracksWithoutFiles(It.IsAny<int>()), Times.Once());
         }
 
         [Test]

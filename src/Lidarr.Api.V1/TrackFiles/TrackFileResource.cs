@@ -36,7 +36,7 @@ namespace Lidarr.Api.V1.TrackFiles
             {
                 Id = model.Id,
 
-                ArtistId = model.ArtistId,
+                ArtistId = model.Artist.Value.Id,
                 AlbumId = model.AlbumId,
                 RelativePath = model.RelativePath,
                 //Path
@@ -59,7 +59,7 @@ namespace Lidarr.Api.V1.TrackFiles
             {
                 Id = model.Id,
 
-                ArtistId = model.ArtistId,
+                ArtistId = artist.Id,
                 AlbumId = model.AlbumId,
                 RelativePath = model.RelativePath,
                 Path = Path.Combine(artist.Path, model.RelativePath),

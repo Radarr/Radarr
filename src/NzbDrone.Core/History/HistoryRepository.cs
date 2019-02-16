@@ -89,7 +89,7 @@ namespace NzbDrone.Core.History
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.DownloadFolderImported)
+                 h.EventType == HistoryEventType.TrackFileImported)
                  ).ToList();
         }
 

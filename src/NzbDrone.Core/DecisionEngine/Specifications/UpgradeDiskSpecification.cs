@@ -4,20 +4,30 @@ using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
+using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public class UpgradeDiskSpecification : IDecisionEngineSpecification
     {
         private readonly IMediaFileService _mediaFileService;
+        private readonly ITrackService _trackService;
         private readonly UpgradableSpecification _upgradableSpecification;
         private readonly Logger _logger;
-
-        public UpgradeDiskSpecification(UpgradableSpecification qualityUpgradableSpecification, IMediaFileService mediaFileService, Logger logger)
+        private readonly ICached<bool> _missingFilesCache;
+        
+        public UpgradeDiskSpecification(UpgradableSpecification qualityUpgradableSpecification,
+                                        IMediaFileService mediaFileService,
+                                        ITrackService trackService,
+                                        ICacheManager cacheManager,
+                                        Logger logger)
         {
             _upgradableSpecification = qualityUpgradableSpecification;
             _mediaFileService = mediaFileService;
+            _trackService = trackService;
             _logger = logger;
+            _missingFilesCache = cacheManager.GetCache<bool>(GetType());
         }
 
         public SpecificationPriority Priority => SpecificationPriority.Default;
@@ -28,9 +38,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var album in subject.Albums)
             {
+                var tracksMissing = _missingFilesCache.Get(album.Id.ToString(), () => _trackService.TracksWithoutFiles(album.Id).Any(),
+                                                           TimeSpan.FromSeconds(30));
                 var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
-                if (trackFiles.Any())
+                if (!tracksMissing && trackFiles.Any())
                 {
                     var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
 

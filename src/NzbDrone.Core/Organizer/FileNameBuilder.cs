@@ -9,7 +9,6 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 
@@ -324,36 +323,14 @@ namespace NzbDrone.Core.Organizer
 
             var audioCodec = MediaInfoFormatter.FormatAudioCodec(trackFile.MediaInfo);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(trackFile.MediaInfo);
-
-            var mediaInfoAudioLanguages = GetLanguagesToken(trackFile.MediaInfo.AudioLanguages);
-            if (!mediaInfoAudioLanguages.IsNullOrWhiteSpace())
-            {
-                mediaInfoAudioLanguages = $"[{mediaInfoAudioLanguages}]";
-            }
-
-            if (mediaInfoAudioLanguages == "[EN]")
-            {
-                mediaInfoAudioLanguages = string.Empty;
-            }
-
-            var mediaInfoSubtitleLanguages = GetLanguagesToken(trackFile.MediaInfo.Subtitles);
-            if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
-            {
-                mediaInfoSubtitleLanguages = $"[{mediaInfoSubtitleLanguages}]";
-            }
-
-            var videoBitDepth = trackFile.MediaInfo.VideoBitDepth > 0 ? trackFile.MediaInfo.VideoBitDepth.ToString() : string.Empty;
             var audioChannelsFormatted = audioChannels > 0 ?
                                 audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
                                 string.Empty;
 
-            tokenHandlers["{MediaInfo Audio}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioCodec}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioChannels}"] = m => audioChannelsFormatted;
-
-            tokenHandlers["{MediaInfo Simple}"] = m => $"{audioCodec}";
-
-            tokenHandlers["{MediaInfo Full}"] = m => $"{audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
+            tokenHandlers["{MediaInfo AudioBitsPerSample}"] = m => MediaInfoFormatter.FormatAudioBitsPerSample(trackFile.MediaInfo);
+            tokenHandlers["{MediaInfo AudioSampleRate}"] = m => MediaInfoFormatter.FormatAudioSampleRate(trackFile.MediaInfo);
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)

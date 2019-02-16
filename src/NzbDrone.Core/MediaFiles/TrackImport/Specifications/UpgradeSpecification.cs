@@ -8,7 +8,7 @@ using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
-    public class UpgradeSpecification : IImportDecisionEngineSpecification
+    public class UpgradeSpecification : IImportDecisionEngineSpecification<LocalTrack>
     {
         private readonly Logger _logger;
 

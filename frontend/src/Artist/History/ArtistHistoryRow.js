@@ -18,7 +18,7 @@ function getTitle(eventType) {
   switch (eventType) {
     case 'grabbed': return 'Grabbed';
     case 'artistFolderImported': return 'Artist Folder Imported';
-    case 'downloadFolderImported': return 'Download Folder Imported';
+    case 'trackFileImported': return 'Download Folder Imported';
     case 'downloadFailed': return 'Download Failed';
     case 'trackFileDeleted': return 'Track File Deleted';
     case 'trackFileRenamed': return 'Track File Renamed';

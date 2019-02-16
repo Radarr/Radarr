@@ -6,22 +6,24 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 
 namespace NzbDrone.Core.Extras.Lyrics
 {
     public class ExistingLyricImporter : ImportExistingExtraFilesBase<LyricFile>
     {
         private readonly IExtraFileService<LyricFile> _lyricFileService;
-        private readonly IParsingService _parsingService;
+        private readonly IAugmentingService _augmentingService;
         private readonly Logger _logger;
 
         public ExistingLyricImporter(IExtraFileService<LyricFile> lyricFileService,
-                                        IParsingService parsingService,
-                                        Logger logger)
+                                     IAugmentingService augmentingService,
+                                     Logger logger)
             : base (lyricFileService)
         {
             _lyricFileService = lyricFileService;
-            _parsingService = parsingService;
+            _augmentingService = augmentingService;
             _logger = logger;
         }
 
@@ -34,29 +36,38 @@ namespace NzbDrone.Core.Extras.Lyrics
             var subtitleFiles = new List<LyricFile>();
             var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
 
-            foreach (var possibleSubtitleFile in filterResult.FilesOnDisk)
+            foreach (var possibleLyricFile in filterResult.FilesOnDisk)
             {
-                var extension = Path.GetExtension(possibleSubtitleFile);
+                var extension = Path.GetExtension(possibleLyricFile);
 
                 if (LyricFileExtensions.Extensions.Contains(extension))
                 {
-                    var localTrack = _parsingService.GetLocalTrack(possibleSubtitleFile, artist);
-
-                    if (localTrack == null)
+                    var localTrack = new LocalTrack
                     {
-                        _logger.Debug("Unable to parse lyric file: {0}", possibleSubtitleFile);
+                        FileTrackInfo = Parser.Parser.ParseMusicPath(possibleLyricFile),
+                        Artist = artist,
+                        Path = possibleLyricFile
+                    };
+
+                    try
+                    {
+                        _augmentingService.Augment(localTrack, false);
+                    }
+                    catch (AugmentingFailedException)
+                    {
+                        _logger.Debug("Unable to parse lyric file: {0}", possibleLyricFile);
                         continue;
                     }
 
                     if (localTrack.Tracks.Empty())
                     {
-                        _logger.Debug("Cannot find related tracks for: {0}", possibleSubtitleFile);
+                        _logger.Debug("Cannot find related tracks for: {0}", possibleLyricFile);
                         continue;
                     }
 
                     if (localTrack.Tracks.DistinctBy(e => e.TrackFileId).Count() > 1)
                     {
-                        _logger.Debug("Lyric file: {0} does not match existing files.", possibleSubtitleFile);
+                        _logger.Debug("Lyric file: {0} does not match existing files.", possibleLyricFile);
                         continue;
                     }
 
@@ -65,8 +76,8 @@ namespace NzbDrone.Core.Extras.Lyrics
                                            ArtistId = artist.Id,
                                            AlbumId = localTrack.Album.Id,
                                            TrackFileId = localTrack.Tracks.First().TrackFileId,
-                                           RelativePath = artist.Path.GetRelativePath(possibleSubtitleFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
+                                           RelativePath = artist.Path.GetRelativePath(possibleLyricFile),
+                                           Language = LanguageParser.ParseSubtitleLanguage(possibleLyricFile),
                                            Extension = extension
                                        };
 

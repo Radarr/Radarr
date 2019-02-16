@@ -25,11 +25,12 @@ namespace Lidarr.Api.V1.Tracks
         {
             var artistIdQuery = Request.Query.ArtistId;
             var albumIdQuery = Request.Query.AlbumId;
+            var albumReleaseIdQuery = Request.Query.AlbumReleaseId;
             var trackIdsQuery = Request.Query.TrackIds;
 
-            if (!artistIdQuery.HasValue && !trackIdsQuery.HasValue && !albumIdQuery.HasValue)
+            if (!artistIdQuery.HasValue && !trackIdsQuery.HasValue && !albumIdQuery.HasValue && !albumReleaseIdQuery.HasValue)
             {
-                throw new BadRequestException("artistId or trackIds must be provided");
+                throw new BadRequestException("One of artistId, albumId, albumReleaseId or trackIds must be provided");
             }
 
             if (artistIdQuery.HasValue && !albumIdQuery.HasValue)
@@ -37,6 +38,13 @@ namespace Lidarr.Api.V1.Tracks
                 int artistId = Convert.ToInt32(artistIdQuery.Value);
 
                 return MapToResource(_trackService.GetTracksByArtist(artistId), false, false);
+            }
+
+            if (albumReleaseIdQuery.HasValue)
+            {
+                int releaseId = Convert.ToInt32(albumReleaseIdQuery.Value);
+
+                return MapToResource(_trackService.GetTracksByRelease(releaseId), false, false);
             }
 
             if (albumIdQuery.HasValue)

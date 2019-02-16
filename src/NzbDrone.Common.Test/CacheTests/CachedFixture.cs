@@ -102,6 +102,32 @@ namespace NzbDrone.Common.Test.CacheTests
 
             hitCount.Should().BeInRange(3, 6);
         }
+
+        [Test]
+        public void should_clear_expired_when_they_expire()
+        {
+            int hitCount = 0;
+
+            Func<string> testfunc = () => {
+                hitCount++;
+                return null;
+            };
+
+            _cachedString.Values.Should().HaveCount(0);
+            
+            _cachedString.Get("key", testfunc, TimeSpan.FromMilliseconds(300));
+
+            Thread.Sleep(100);
+            
+            _cachedString.Values.Should().HaveCount(1);
+
+            _cachedString.Get("key", testfunc, TimeSpan.FromMilliseconds(300));
+
+            Thread.Sleep(1000);
+
+            _cachedString.Values.Should().HaveCount(0);
+            hitCount.Should().Be(1);
+        }
     }
 
     public class Worker

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
@@ -14,6 +15,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import SelectTrackRow from './SelectTrackRow';
+import FileDetails from '../FileDetails';
 
 const columns = [
   {
@@ -32,6 +34,19 @@ const columns = [
     name: 'title',
     label: 'Title',
     isVisible: true
+  },
+  {
+    name: 'trackStatus',
+    label: 'Status',
+    isVisible: true
+  }
+];
+
+const selectAllBlankColumn = [
+  {
+    name: 'dummy',
+    label: ' ',
+    isVisible: true
   }
 ];
 
@@ -43,12 +58,17 @@ class SelectTrackModalContent extends Component {
   constructor(props, context) {
     super(props, context);
 
+    const selectedTracks = _.filter(props.selectedTracksByItem, ['id', props.id])[0].tracks;
+    const init = _.zipObject(selectedTracks, _.times(selectedTracks.length, _.constant(true)));
+
     this.state = {
       allSelected: false,
       allUnselected: false,
       lastToggled: null,
-      selectedState: {}
+      selectedState: init
     };
+
+    props.onSortPress( props.sortKey, props.sortDirection );
   }
 
   //
@@ -80,6 +100,9 @@ class SelectTrackModalContent extends Component {
 
   render() {
     const {
+      id,
+      audioTags,
+      rejections,
       isFetching,
       isPopulated,
       error,
@@ -88,6 +111,7 @@ class SelectTrackModalContent extends Component {
       sortDirection,
       onSortPress,
       onModalClose,
+      selectedTracksByItem,
       filename
     } = this.props;
 
@@ -97,13 +121,23 @@ class SelectTrackModalContent extends Component {
       selectedState
     } = this.state;
 
-    const title = `Manual Import - Select Track(s): ${filename}`;
     const errorMessage = getErrorMessage(error, 'Unable to load tracks');
+
+    // all tracks selected for other items
+    const otherSelected = _.map(_.filter(selectedTracksByItem, (item) => {
+      return item.id !== id;
+    }), (x) => {
+      return x.tracks;
+    }).flat();
+    // tracks selected for the current file
+    const currentSelected = _.keys(_.pickBy(selectedState, _.identity)).map(Number);
+    // only enable selectAll if no other files have any tracks selected.
+    const selectAllEnabled = otherSelected.length === 0;
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          {title}
+          Manual Import - Select Track(s):
         </ModalHeader>
 
         <ModalBody>
@@ -117,11 +151,18 @@ class SelectTrackModalContent extends Component {
               <div>{errorMessage}</div>
           }
 
+          <FileDetails
+            audioTags={audioTags}
+            filename={filename}
+            rejections={rejections}
+            isExpanded={false}
+          />
+
           {
             isPopulated && !!items.length &&
               <Table
-                columns={columns}
-                selectAll={true}
+                columns={selectAllEnabled ? columns : selectAllBlankColumn.concat(columns)}
+                selectAll={selectAllEnabled}
                 allSelected={allSelected}
                 allUnselected={allUnselected}
                 sortKey={sortKey}
@@ -139,6 +180,9 @@ class SelectTrackModalContent extends Component {
                           mediumNumber={item.mediumNumber}
                           trackNumber={item.absoluteTrackNumber}
                           title={item.title}
+                          hasFile={item.hasFile}
+                          importSelected={otherSelected.concat(currentSelected).includes(item.id)}
+                          isDisabled={otherSelected.includes(item.id)}
                           isSelected={selectedState[item.id]}
                           onSelectedChange={this.onSelectedChange}
                         />
@@ -173,6 +217,9 @@ class SelectTrackModalContent extends Component {
 }
 
 SelectTrackModalContent.propTypes = {
+  id: PropTypes.number.isRequired,
+  rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  audioTags: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -182,6 +229,7 @@ SelectTrackModalContent.propTypes = {
   onSortPress: PropTypes.func.isRequired,
   onTracksSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
+  selectedTracksByItem: PropTypes.arrayOf(PropTypes.object).isRequired,
   filename: PropTypes.string.isRequired
 };
 

@@ -17,12 +17,16 @@ function getHeaderTitle(eventType) {
       return 'Grabbed';
     case 'downloadFailed':
       return 'Download Failed';
-    case 'downloadFolderImported':
+    case 'trackFileImported':
       return 'Track Imported';
     case 'trackFileDeleted':
       return 'Track File Deleted';
     case 'trackFileRenamed':
       return 'Track File Renamed';
+    case 'albumImportIncomplete':
+      return 'Album Import Incomplete';
+    case 'downloadImported':
+      return 'Download Completed';
     default:
       return 'Unknown';
   }

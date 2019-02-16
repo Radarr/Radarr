@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace NzbDrone.Common.Extensions
 {
@@ -49,6 +50,34 @@ namespace NzbDrone.Common.Extensions
                     yield return element;
                 }
             }
+        }
+
+        public static TSource ExclusiveOrDefault<TSource>(this IEnumerable<TSource> source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            var results = source.Take(2).ToArray();
+
+            return results.Length == 1 ? results[0] : default(TSource);
+        }
+
+        public static TSource ExclusiveOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            var results = source.Where(predicate).Take(2).ToArray();
+
+            return results.Length == 1 ? results[0] : default(TSource);
         }
 
         public static Dictionary<TKey, TItem> ToDictionaryIgnoreDuplicates<TItem, TKey>(this IEnumerable<TItem> src, Func<TItem, TKey> keySelector)

@@ -17,6 +17,8 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Common;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -33,6 +35,7 @@ namespace NzbDrone.Core.MediaFiles
         IExecute<RescanArtistCommand> 
     {
         private readonly IDiskProvider _diskProvider;
+        private readonly IMediaFileService _mediaFileService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly IConfigService _configService;
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
+                               IMediaFileService mediaFileService,
                                IMakeImportDecision importDecisionMaker,
                                IImportApprovedTracks importApprovedTracks,
                                IConfigService configService,
@@ -53,6 +57,7 @@ namespace NzbDrone.Core.MediaFiles
                                Logger logger)
         {
             _diskProvider = diskProvider;
+            _mediaFileService = mediaFileService;
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
             _configService = configService;
@@ -114,11 +119,36 @@ namespace NzbDrone.Core.MediaFiles
             var decisionsStopwatch = Stopwatch.StartNew();
             var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist);
             decisionsStopwatch.Stop();
-            _logger.Trace("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
+            _logger.Debug("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
+            
+            var importStopwatch = Stopwatch.StartNew();
             _importApprovedTracks.Import(decisions, false);
-
             RemoveEmptyArtistFolder(artist.Path);
+            UpdateMediaInfo(artist, decisions.Select(x => x.Item).ToList());
             CompletedScanning(artist);
+            importStopwatch.Stop();
+            _logger.Debug("Track import complete for: {0} [{1}]", artist, importStopwatch.Elapsed);
+        }
+
+        private void UpdateMediaInfo(Artist artist, List<LocalTrack> mediaFiles)
+        {
+            var existingFiles = _mediaFileService.GetFilesByArtist(artist.Id);
+            var toUpdate = new List<TrackFile>(existingFiles.Count);
+
+            foreach (var file in existingFiles)
+            {
+                var path = Path.Combine(artist.Path, file.RelativePath);
+                var scannedFile = mediaFiles.FirstOrDefault(x => PathEqualityComparer.Instance.Equals(path, x.Path));
+
+                if (scannedFile != null)
+                {
+                    file.MediaInfo = scannedFile.FileTrackInfo.MediaInfo;
+                    toUpdate.Add(file);
+                }
+            }
+
+            _logger.Debug($"Updating Media Info for:\n{string.Join("\n", toUpdate)}");
+            _mediaFileService.UpdateMediaInfo(toUpdate);
         }
         
         private void CleanMediaFiles(Artist artist, List<string> mediaFileList)

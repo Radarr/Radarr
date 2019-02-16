@@ -25,7 +25,7 @@ function createSaveProviderHandler(section, url, options = {}) {
       ...otherPayload
     } = payload;
 
-    const saveData = getProviderState({ id, ...otherPayload }, getState, section);
+    const saveData = Array.isArray(id) ? id.map((x) => getProviderState({ id: x, ...otherPayload }, getState, section)) : getProviderState({ id, ...otherPayload }, getState, section);
 
     const ajaxOptions = {
       url: `${url}?${$.param(queryParams, true)}`,
@@ -36,8 +36,10 @@ function createSaveProviderHandler(section, url, options = {}) {
     };
 
     if (id) {
-      ajaxOptions.url = `${url}/${id}?${$.param(queryParams, true)}`;
       ajaxOptions.method = 'PUT';
+      if (!Array.isArray(id)) {
+        ajaxOptions.url = `${url}/${id}?${$.param(queryParams, true)}`;
+      }
     }
 
     const { request, abortRequest } = createAjaxRequest(ajaxOptions);
@@ -45,16 +47,18 @@ function createSaveProviderHandler(section, url, options = {}) {
     abortCurrentRequests[section] = abortRequest;
 
     request.done((data) => {
-      dispatch(batchActions([
-        updateItem({ section, ...data }),
-
-        set({
-          section,
-          isSaving: false,
-          saveError: null,
-          pendingChanges: {}
-        })
-      ]));
+      if (!Array.isArray(data)) {
+        data = [data];
+      }
+      dispatch(batchActions(
+        data.map((item) => updateItem({ section, ...item })).concat(
+          set({
+            section,
+            isSaving: false,
+            saveError: null,
+            pendingChanges: {}
+          })
+        )));
     });
 
     request.fail((xhr) => {

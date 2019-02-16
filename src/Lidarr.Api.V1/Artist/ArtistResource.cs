@@ -81,7 +81,7 @@ namespace Lidarr.Api.V1.Artist
                 ArtistType = model.Metadata.Value.Type,
                 Disambiguation = model.Metadata.Value.Disambiguation,
 
-                Images = model.Metadata.Value.Images,
+                Images = model.Metadata.Value.Images.JsonClone(),
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,

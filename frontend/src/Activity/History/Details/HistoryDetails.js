@@ -8,6 +8,33 @@ import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem'
 import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
 
+function getDetailedList(statusMessages) {
+  return (
+    <div>
+      {
+        statusMessages.map(({ title, messages }) => {
+          return (
+            <div key={title}>
+              {title}
+              <ul>
+                {
+                  messages.map((message) => {
+                    return (
+                      <li key={message}>
+                        {message}
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            </div>
+          );
+        })
+      }
+    </div>
+  );
+}
+
 function HistoryDetails(props) {
   const {
     eventType,
@@ -124,7 +151,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'downloadFolderImported') {
+  if (eventType === 'trackFileImported') {
     const {
       droppedPath,
       importedPath
@@ -221,6 +248,113 @@ function HistoryDetails(props) {
           title="Destination Relative Path"
           data={relativePath}
         />
+      </DescriptionList>
+    );
+  }
+
+  if (eventType === 'albumImportIncomplete') {
+    const {
+      statusMessages
+    } = data;
+
+    return (
+      <DescriptionList>
+        <DescriptionListItem
+          title="Name"
+          data={sourceTitle}
+        />
+
+        {
+          !!statusMessages &&
+            <DescriptionListItem
+              title="Import failures"
+              data={getDetailedList(JSON.parse(statusMessages))}
+            />
+        }
+      </DescriptionList>
+    );
+  }
+
+  if (eventType === 'downloadImported') {
+    const {
+      indexer,
+      releaseGroup,
+      nzbInfoUrl,
+      downloadClient,
+      downloadId,
+      age,
+      ageHours,
+      ageMinutes,
+      publishedDate
+    } = data;
+
+    return (
+      <DescriptionList>
+        <DescriptionListItem
+          title="Name"
+          data={sourceTitle}
+        />
+
+        {
+          !!indexer &&
+            <DescriptionListItem
+              title="Indexer"
+              data={indexer}
+            />
+        }
+
+        {
+          !!releaseGroup &&
+            <DescriptionListItem
+              title="Release Group"
+              data={releaseGroup}
+            />
+        }
+
+        {
+          !!nzbInfoUrl &&
+            <span>
+              <DescriptionListItemTitle>
+                Info URL
+              </DescriptionListItemTitle>
+
+              <DescriptionListItemDescription>
+                <Link to={nzbInfoUrl}>{nzbInfoUrl}</Link>
+              </DescriptionListItemDescription>
+            </span>
+        }
+
+        {
+          !!downloadClient &&
+            <DescriptionListItem
+              title="Download Client"
+              data={downloadClient}
+            />
+        }
+
+        {
+          !!downloadId &&
+            <DescriptionListItem
+              title="Grab ID"
+              data={downloadId}
+            />
+        }
+
+        {
+          !!indexer &&
+            <DescriptionListItem
+              title="Age (when grabbed)"
+              data={formatAge(age, ageHours, ageMinutes)}
+            />
+        }
+
+        {
+          !!publishedDate &&
+            <DescriptionListItem
+              title="Published Date"
+              data={formatDateTime(publishedDate, shortDateFormat, timeFormat, { includeSeconds: true })}
+            />
+        }
       </DescriptionList>
     );
   }

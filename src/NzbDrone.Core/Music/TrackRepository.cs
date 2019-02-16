@@ -1,28 +1,23 @@
 using NzbDrone.Core.Datastore;
 using System.Collections.Generic;
-using System.Linq;
 using NLog;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.MediaFiles;
-using Marr.Data.QGen;
-using NzbDrone.Core.Datastore.Extensions;
-using System;
 
 namespace NzbDrone.Core.Music
 {
     public interface ITrackRepository : IBasicRepository<Track>
     {
-        Track Find(int artistId, int albumId, int mediumNumber, int trackNumber);
         List<Track> GetTracks(int artistId);
         List<Track> GetTracksByAlbum(int albumId);
         List<Track> GetTracksByRelease(int albumReleaseId);
+        List<Track> GetTracksByReleases(List<int> albumReleaseId);
         List<Track> GetTracksByForeignReleaseId(string foreignReleaseId);
         List<Track> GetTracksByForeignTrackIds(List<string> foreignTrackId);
-        List<Track> GetTracksByMedium(int albumId, int mediumNumber);
         List<Track> GetTracksByFileId(int fileId);
         List<Track> TracksWithFiles(int artistId);
-        void SetFileId(int trackId, int fileId);
+        List<Track> TracksWithoutFiles(int albumId);
+        void SetFileId(List<Track> tracks);
+        void DetachTrackFile(int trackFileId);
     }
 
     public class TrackRepository : BasicRepository<Track>, ITrackRepository
@@ -36,24 +31,6 @@ namespace NzbDrone.Core.Music
             _database = database;
             _logger = logger;
         }
-
-        public Track Find(int artistId, int albumId, int mediumNumber, int trackNumber)
-        {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Artists " +
-                                         "JOIN Albums ON Albums.ArtistMetadataId == Artists.ArtistMetadataId " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "WHERE Artists.Id = {0} " +
-                                         "AND Albums.Id = {1} " +
-                                         "AND AlbumReleases.Monitored = 1 " +
-                                         "AND Tracks.MediumNumber = {2} " +
-                                         "AND Tracks.AbsoluteTrackNumber = {3}",
-                                         artistId, albumId, mediumNumber, trackNumber);
-
-            return Query.QueryText(query).SingleOrDefault();
-        }
-
 
         public List<Track> GetTracks(int artistId)
         {
@@ -87,6 +64,15 @@ namespace NzbDrone.Core.Music
             return Query.Where(t => t.AlbumReleaseId == albumReleaseId).ToList();
         }
 
+        public List<Track> GetTracksByReleases(List<int> albumReleaseIds)
+        {
+            // this will populate the artist metadata also
+            return Query
+                .Join<Track, ArtistMetadata>(Marr.Data.QGen.JoinType.Inner, t => t.ArtistMetadata, (l, r) => l.ArtistMetadataId == r.Id)
+                .Where($"[AlbumReleaseId] IN ({string.Join(", ", albumReleaseIds)})")
+                .ToList();
+        }
+
         public List<Track> GetTracksByForeignReleaseId(string foreignReleaseId)
         {
             string query = string.Format("SELECT Tracks.* " +
@@ -104,26 +90,6 @@ namespace NzbDrone.Core.Music
                                          "FROM Tracks " +
                                          "WHERE ForeignTrackId IN ('{0}')",
                                          string.Join("', '", ids));
-
-            return Query.QueryText(query).ToList();
-        }
-
-        public List<Track> GetTracksByMedium(int albumId, int mediumNumber)
-        {
-            if (mediumNumber < 1)
-            {
-                return GetTracksByAlbum(albumId);
-            }
-
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Albums " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "WHERE Albums.Id = {0} " +
-                                         "AND AlbumReleases.Monitored = 1 " +
-                                         "AND Tracks.MediumNumber = {1}",
-                                         albumId,
-                                         mediumNumber);
 
             return Query.QueryText(query).ToList();
         }
@@ -148,9 +114,33 @@ namespace NzbDrone.Core.Music
             return Query.QueryText(query).ToList();
         }
 
-        public void SetFileId(int trackId, int fileId)
+        public List<Track> TracksWithoutFiles(int albumId)
         {
-            SetFields(new Track { Id = trackId, TrackFileId = fileId }, track => track.TrackFileId);
+            string query = string.Format("SELECT Tracks.* " +
+                                         "FROM Albums " +
+                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
+                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
+                                         "LEFT OUTER JOIN TrackFiles ON TrackFiles.Id == Tracks.TrackFileId " +
+                                         "WHERE Albums.Id == {0} " +
+                                         "AND AlbumReleases.Monitored = 1 " +
+                                         "AND TrackFiles.Id IS NULL",
+                                         albumId);
+
+            return Query.QueryText(query).ToList();
+        }
+
+        public void SetFileId(List<Track> tracks)
+        {
+            SetFields(tracks, t => t.TrackFileId);
+        }
+
+        public void DetachTrackFile(int trackFileId)
+        {
+            DataMapper.Update<Track>()
+                .Where(x => x.TrackFileId == trackFileId)
+                .ColumnsIncluding(x => x.TrackFileId)
+                .Entity(new Track { TrackFileId = 0 })
+                .Execute();
         }
     }
 }

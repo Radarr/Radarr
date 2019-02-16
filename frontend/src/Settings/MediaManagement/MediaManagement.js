@@ -18,6 +18,12 @@ const rescanAfterRefreshOptions = [
   { key: 'never', value: 'Never' }
 ];
 
+const allowFingerprintingOptions = [
+  { key: 'allFiles', value: 'Always' },
+  { key: 'newFiles', value: 'For new imports only' },
+  { key: 'never', value: 'Never' }
+];
+
 const fileDateOptions = [
   { key: 'none', value: 'None' },
   { key: 'albumReleaseDate', value: 'Album Release Date' }
@@ -212,22 +218,6 @@ class MediaManagement extends Component {
                   <FormGroup
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
-                    size={sizes.MEDIUM}
-                  >
-                    <FormLabel>Analyse audio files</FormLabel>
-
-                    <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="enableMediaInfo"
-                      helpText="Extract audio information such as bitrate, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."
-                      onChange={onInputChange}
-                      {...settings.enableMediaInfo}
-                    />
-                  </FormGroup>
-
-                  <FormGroup
-                    advancedSettings={advancedSettings}
-                    isAdvanced={true}
                   >
                     <FormLabel>Rescan Artist Folder after Refresh</FormLabel>
 
@@ -239,6 +229,23 @@ class MediaManagement extends Component {
                       values={rescanAfterRefreshOptions}
                       onChange={onInputChange}
                       {...settings.rescanAfterRefresh}
+                    />
+                  </FormGroup>
+
+                  <FormGroup
+                    advancedSettings={advancedSettings}
+                    isAdvanced={true}
+                  >
+                    <FormLabel>Allow Fingerprinting</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="allowFingerprinting"
+                      helpText="Use fingerprinting to improve accuracy of track matching"
+                      helpTextWarning="This requires Lidarr to read parts of the file which will slow down scans and may cause high disk or network activity."
+                      values={allowFingerprintingOptions}
+                      onChange={onInputChange}
+                      {...settings.allowFingerprinting}
                     />
                   </FormGroup>
 

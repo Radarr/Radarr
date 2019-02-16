@@ -70,7 +70,11 @@ namespace NzbDrone.Core.Parser
 
                 result.Quality = FindQuality(descCodec, fileBitrate, fileSampleSize);
 
-                if (result.Quality != Quality.Unknown) { return result; }
+                if (result.Quality != Quality.Unknown)
+                {
+                    result.QualityDetectionSource = QualityDetectionSource.TagLib;
+                    return result;
+                }
             }
 
             var codec = ParseCodec(normalizedName,name);
@@ -148,7 +152,7 @@ namespace NzbDrone.Core.Parser
                 try
                 {
                     result.Quality = MediaFileExtensions.GetQualityForExtension(Path.GetExtension(name));
-                    result.QualitySource = QualitySource.Extension;
+                    result.QualityDetectionSource = QualityDetectionSource.Extension;
                 }
                 catch (ArgumentException)
                 {
@@ -160,7 +164,7 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        private static Codec ParseCodec(string name, string origName)
+        public static Codec ParseCodec(string name, string origName)
         {
             var match = CodecRegex.Match(name);
 

@@ -53,9 +53,8 @@ namespace Lidarr.Api.V1.TrackFiles
         private TrackFileResource GetTrackFile(int id)
         {
             var trackFile = _mediaFileService.Get(id);
-            var artist = _artistService.GetArtist(trackFile.ArtistId);
 
-            return trackFile.ToResource(artist, _upgradableSpecification);
+            return trackFile.ToResource(trackFile.Artist.Value, _upgradableSpecification);
         }
 
         private List<TrackFileResource> GetTrackFiles()
@@ -94,12 +93,9 @@ namespace Lidarr.Api.V1.TrackFiles
                                                         .Select(e => Convert.ToInt32(e))
                                                         .ToList();
 
+                // trackfiles will come back with the artist already populated
                 var trackFiles = _mediaFileService.Get(trackFileIds);
-
-                return trackFiles.GroupBy(e => e.ArtistId)
-                                   .SelectMany(f => f.ToList()
-                                                     .ConvertAll(e => e.ToResource(_artistService.GetArtist(f.Key), _upgradableSpecification)))
-                                   .ToList();
+                return trackFiles.ConvertAll(e => e.ToResource(e.Artist.Value, _upgradableSpecification));
             }
         }
 
@@ -113,7 +109,7 @@ namespace Lidarr.Api.V1.TrackFiles
         private Response SetQuality()
         {
             var resource = Request.Body.FromJson<TrackFileListResource>();
-            var trackFiles = _mediaFileService.GetFiles(resource.TrackFileIds);
+            var trackFiles = _mediaFileService.Get(resource.TrackFileIds);
 
             foreach (var trackFile in trackFiles)
             {
@@ -130,9 +126,7 @@ namespace Lidarr.Api.V1.TrackFiles
 
             _mediaFileService.Update(trackFiles);
 
-            var artist = _artistService.GetArtist(trackFiles.First().ArtistId);
-
-            return trackFiles.ConvertAll(f => f.ToResource(artist, _upgradableSpecification))
+            return trackFiles.ConvertAll(f => f.ToResource(trackFiles.First().Artist.Value, _upgradableSpecification))
                                .AsResponse(Nancy.HttpStatusCode.Accepted);
         }
 
@@ -145,7 +139,7 @@ namespace Lidarr.Api.V1.TrackFiles
                 throw new NzbDroneClientException(HttpStatusCode.NotFound, "Track file not found");
             }
 
-            var artist = _artistService.GetArtist(trackFile.ArtistId);
+            var artist = trackFile.Artist.Value;
             var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
 
             _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
@@ -154,8 +148,8 @@ namespace Lidarr.Api.V1.TrackFiles
         private Response DeleteTrackFiles()
         {
             var resource = Request.Body.FromJson<TrackFileListResource>();
-            var trackFiles = _mediaFileService.GetFiles(resource.TrackFileIds);
-            var artist = _artistService.GetArtist(trackFiles.First().ArtistId);
+            var trackFiles = _mediaFileService.Get(resource.TrackFileIds);
+            var artist = trackFiles.First().Artist.Value;
 
             foreach (var trackFile in trackFiles)
             {
@@ -169,12 +163,12 @@ namespace Lidarr.Api.V1.TrackFiles
 
         public void Handle(TrackFileAddedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.Id);
+            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.ToResource(message.TrackFile.Artist.Value, _upgradableSpecification));
         }
 
         public void Handle(TrackFileDeletedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Deleted, message.TrackFile.Id);
+            BroadcastResourceChange(ModelAction.Deleted, message.TrackFile.ToResource(message.TrackFile.Artist.Value, _upgradableSpecification));
         }
 
     }

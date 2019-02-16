@@ -10,12 +10,23 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Languages;
 using TagLib;
+using TagLib.Id3v2;
+using NzbDrone.Common.Serializer;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Parser
 {
     public static class Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
+
+        private static readonly JsonSerializerSettings SerializerSettings;
+
+        static Parser()
+        {
+            SerializerSettings = Json.GetSerializerSettings();
+            SerializerSettings.Formatting = Formatting.None;
+        }
 
         private static readonly Regex[] ReportMusicTitleRegex = new[]
         {
@@ -225,7 +236,15 @@ namespace NzbDrone.Core.Parser
 
             if (MediaFiles.MediaFileExtensions.Extensions.Contains(fileInfo.Extension))
             {
-                result = ParseAudioTags(path);
+                try
+                {
+                    result = ParseAudioTags(path);
+                }
+                catch(TagLib.CorruptFileException)
+                {
+                    Logger.Debug("Caught exception parsing {0}", path);
+                    result = null;
+                }
             }
             else
             {
@@ -602,7 +621,7 @@ namespace NzbDrone.Core.Parser
             return title;
         }
 
-        public static string CleanAlbumTitle(string album)
+        public static string CleanAlbumTitle(this string album)
         {
             return CommonTagRegex[1].Replace(album, string.Empty).Trim();
         }
@@ -623,7 +642,7 @@ namespace NzbDrone.Core.Parser
             return AfterDashRegex.Replace(text, string.Empty).Trim();
         }
 
-        public static string CleanTrackTitle(string title)
+        public static string CleanTrackTitle(this string title)
         {
             var intermediateTitle = title;
             foreach (var regex in CommonTagRegex)
@@ -636,61 +655,89 @@ namespace NzbDrone.Core.Parser
 
         private static ParsedTrackInfo ParseAudioTags(string path)
         {
-            var file = TagLib.File.Create(path);
-            Logger.Debug("Starting Tag Parse for {0}", file.Name);
-
-            var trackNumber = file.Tag.Track;
-            var trackTitle = file.Tag.Title;
-            var discNumber = (int)file.Tag.Disc;
-
-            var artist = file.Tag.FirstAlbumArtist;
-
-            if (artist.IsNullOrWhiteSpace())
+            using(var file = TagLib.File.Create(path))
             {
-                artist = file.Tag.FirstPerformer;
-            }
+                Logger.Debug("Starting Tag Parse for {0}", file.Name);
 
-            var artistTitleInfo = new ArtistTitleInfo
-            {
-                Title = artist,
-                Year = (int)file.Tag.Year
-            };
+                var artist = file.Tag.FirstAlbumArtist;
 
-            var temp = new int[1];
-            temp[0] = (int)trackNumber;
-
-            var result = new ParsedTrackInfo
-            {
-                Language = Language.English, //TODO Parse from Tag/Mediainfo
-                AlbumTitle = file.Tag.Album,
-                ArtistTitle = artist,
-                ArtistMBId = file.Tag.MusicBrainzArtistId,
-                ReleaseMBId = file.Tag.MusicBrainzReleaseId,
-                DiscNumber = discNumber,
-                TrackMBId = file.Tag.MusicBrainzTrackId,
-                TrackNumbers = temp,
-                ArtistTitleInfo = artistTitleInfo,
-                Title = trackTitle
-            };
-            
-            Logger.Trace("File Tags Parsed: Artist: {0}, Album: {1}, Disc: {2}, Track Numbers(s): {3}, TrackTitle: {4}", result.ArtistTitle, result.AlbumTitle, result.DiscNumber, trackNumber, result.Title);
-
-            foreach (ICodec codec in file.Properties.Codecs)
-            {
-                IAudioCodec acodec = codec as IAudioCodec;
-                IVideoCodec vcodec = codec as IVideoCodec;
-
-                if (acodec != null && (acodec.MediaTypes & MediaTypes.Audio) != MediaTypes.None)
+                if (artist.IsNullOrWhiteSpace())
                 {
-                    Logger.Debug("Audio Properties : " + acodec.Description + ", Bitrate: " + acodec.AudioBitrate + ", Sample Size: " +
-                        file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
-
-                    result.Quality = QualityParser.ParseQuality(file.Name, acodec.Description, acodec.AudioBitrate, file.Properties.BitsPerSample);
-                    Logger.Debug("Quality parsed: {0}", result.Quality);
+                    artist = file.Tag.FirstPerformer;
                 }
-            }
 
-            return result;
+                var artistTitleInfo = new ArtistTitleInfo
+                {
+                    Title = artist,
+                    Year = (int)file.Tag.Year
+                };
+
+                var result = new ParsedTrackInfo
+                {
+                    Language = Language.English, //TODO Parse from Tag/Mediainfo
+                    AlbumTitle = file.Tag.Album,
+                    ArtistTitle = artist,
+                    ArtistMBId = file.Tag.MusicBrainzArtistId,
+                    AlbumMBId = file.Tag.MusicBrainzReleaseGroupId,
+                    ReleaseMBId = file.Tag.MusicBrainzReleaseId,
+                    // SIC: the recording ID is stored in this field.
+                    // See https://picard.musicbrainz.org/docs/mappings/
+                    RecordingMBId = file.Tag.MusicBrainzTrackId,
+                    DiscNumber = (int) file.Tag.Disc,
+                    DiscCount = (int) file.Tag.DiscCount,
+                    Duration = file.Properties.Duration,
+                    Year = file.Tag.Year,
+                    Label = file.Tag.Publisher,
+                    TrackNumbers = new [] { (int) file.Tag.Track },
+                    ArtistTitleInfo = artistTitleInfo,
+                    Title = file.Tag.Title,
+                    CleanTitle = file.Tag.Title?.CleanTrackTitle(),
+                    Country = IsoCountries.Find(file.Tag.MusicBrainzReleaseCountry)
+                };
+
+                // custom tags varying by format
+                if ((file.TagTypesOnDisk & TagTypes.Id3v2) == TagTypes.Id3v2)
+                {
+                    var tag = (TagLib.Id3v2.Tag) file.GetTag(TagTypes.Id3v2);
+                    result.CatalogNumber = UserTextInformationFrame.Get(tag, "CATALOGNUMBER", false)?.Text.ExclusiveOrDefault();
+                    // this one was invented for beets
+                    result.Disambiguation = UserTextInformationFrame.Get(tag, "MusicBrainz Album Comment", false)?.Text.ExclusiveOrDefault();
+                    result.TrackMBId =  UserTextInformationFrame.Get(tag, "MusicBrainz Release Track Id", false)?.Text.ExclusiveOrDefault();
+                }
+                else if ((file.TagTypesOnDisk & TagTypes.Xiph) == TagTypes.Xiph)
+                {
+                    var tag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
+                    result.CatalogNumber = tag.GetField("CATALOGNUMBER").ExclusiveOrDefault();
+                    result.Disambiguation = tag.GetField("MUSICBRAINZ_ALBUMCOMMENT").ExclusiveOrDefault();
+                    result.TrackMBId = tag.GetField("MUSICBRAINZ_RELEASETRACKID").ExclusiveOrDefault();
+                }
+            
+                Logger.Debug("File Tags Parsed: {0}", JsonConvert.SerializeObject(result, SerializerSettings));
+
+                foreach (ICodec codec in file.Properties.Codecs)
+                {
+                    IAudioCodec acodec = codec as IAudioCodec;
+
+                    if (acodec != null && (acodec.MediaTypes & MediaTypes.Audio) != MediaTypes.None)
+                    {
+                        Logger.Debug("Audio Properties : " + acodec.Description + ", Bitrate: " + acodec.AudioBitrate + ", Sample Size: " +
+                                     file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
+
+                        result.Quality = QualityParser.ParseQuality(file.Name, acodec.Description, acodec.AudioBitrate, file.Properties.BitsPerSample);
+                        Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                        result.MediaInfo = new MediaInfoModel {
+                            AudioFormat = acodec.Description,
+                            AudioBitrate = acodec.AudioBitrate,
+                            AudioChannels = acodec.AudioChannels,
+                            AudioBits = file.Properties.BitsPerSample,
+                            AudioSampleRate = acodec.AudioSampleRate
+                        };
+                    }
+                }
+                
+                return result;
+            }
         }
 
         private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)

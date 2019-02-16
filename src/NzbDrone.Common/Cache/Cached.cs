@@ -40,6 +40,11 @@ namespace NzbDrone.Common.Cache
         {
             Ensure.That(key, () => key).IsNotNullOrWhiteSpace();
             _store[key] = new CacheItem(value, lifetime);
+
+            if (lifetime != null)
+            {
+                System.Threading.Tasks.Task.Delay(lifetime.Value).ContinueWith(t => _store.TryRemove(key, out var temp));
+            }
         }
 
         public T Find(string key)

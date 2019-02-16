@@ -8,16 +8,16 @@ using System.Text;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
-    public class ImportDecision
+    public class ImportDecision<T>
     {
-        public LocalTrack LocalTrack { get; private set; }
+        public T Item { get; private set; }
         public IList<Rejection> Rejections { get; private set; }
 
         public bool Approved => Rejections.Empty();
 
-        public ImportDecision(LocalTrack localTrack, params Rejection[] rejections)
+        public ImportDecision(T localTrack, params Rejection[] rejections)
         {
-            LocalTrack = localTrack;
+            Item = localTrack;
             Rejections = rejections.ToList();
         }
 

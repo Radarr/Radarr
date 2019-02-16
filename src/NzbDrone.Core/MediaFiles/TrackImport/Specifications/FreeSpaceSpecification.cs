@@ -8,7 +8,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
-    public class FreeSpaceSpecification : IImportDecisionEngineSpecification
+    public class FreeSpaceSpecification : IImportDecisionEngineSpecification<LocalTrack>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;

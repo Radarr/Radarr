@@ -37,12 +37,27 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [TestCase("The Black Eyde Peas", "The Black Eyed Peas")]
         [TestCase("Black Eyed Peas", "The Black Eyed Peas")]
         [TestCase("The Black eys", "The Black Keys")]
+        [TestCase("Black Keys", "The Black Keys")]
         public void should_find_artist_in_db_by_name_inexact(string name, string expected)
         {
             var artist = Subject.FindByNameInexact(name);
 
             artist.Should().NotBeNull();
             artist.Name.Should().Be(expected);
+        }
+
+        [Test]
+        public void should_find_artist_when_the_is_omitted_from_start()
+        {
+            _artists = new List<Artist>();
+            _artists.Add(CreateArtist("Black Keys"));
+            _artists.Add(CreateArtist("The Black Eyed Peas"));
+
+            Mocker.GetMock<IArtistRepository>()
+                .Setup(s => s.All())
+                .Returns(_artists);
+
+            Subject.FindByNameInexact("The Black Keys").Should().NotBeNull();
         }
 
         [TestCase("The Black Peas")]

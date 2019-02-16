@@ -1,5 +1,6 @@
-using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.MediaFiles;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Parser.Model;
 
 namespace Lidarr.Api.V1.TrackFiles
 {

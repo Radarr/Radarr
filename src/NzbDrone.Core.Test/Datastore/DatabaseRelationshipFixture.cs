@@ -16,33 +16,27 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void one_to_one()
         {
-            var trackFile = Builder<TrackFile>.CreateNew()
+            var album = Builder<Album>.CreateNew()
                 .With(c => c.Id = 0)
-                .With(c => c.Quality = new QualityModel())
-                .With(c => c.Language = Language.English)
                 .BuildNew();
+            Db.Insert(album);
 
-            Db.Insert(trackFile);
-
-            var track = Builder<Track>.CreateNew()
+            var albumRelease = Builder<AlbumRelease>.CreateNew()
                 .With(c => c.Id = 0)
-                .With(c => c.TrackFileId = trackFile.Id)
+                .With(c => c.AlbumId = album.Id)
                 .BuildNew();
+            Db.Insert(albumRelease);
 
-            Db.Insert(track);
+            var loadedAlbum = Db.Single<AlbumRelease>().Album.Value;
 
-            var loadedTrackFile = Db.Single<Track>().TrackFile.Value;
-
-            loadedTrackFile.Should().NotBeNull();
-            loadedTrackFile.ShouldBeEquivalentTo(trackFile,
-                options => options
-                    .IncludingAllRuntimeProperties()
-                    .Excluding(c => c.DateAdded)
-                    .Excluding(c => c.Path)
-                    .Excluding(c => c.Artist)
-                    .Excluding(c => c.Tracks)
-                    .Excluding(c => c.Album)
-                    .Excluding(c => c.ArtistId));
+            loadedAlbum.Should().NotBeNull();
+            loadedAlbum.ShouldBeEquivalentTo(album,
+                                             options => options
+                                             .IncludingAllRuntimeProperties()
+                                             .Excluding(c => c.Artist)
+                                             .Excluding(c => c.ArtistId)
+                                             .Excluding(c => c.ArtistMetadata)
+                                             .Excluding(c => c.AlbumReleases));
         }
 
         [Test]

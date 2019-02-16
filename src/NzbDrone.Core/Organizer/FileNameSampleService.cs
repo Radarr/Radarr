@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -73,13 +73,11 @@ namespace NzbDrone.Core.Organizer
 
             var mediaInfo = new MediaInfoModel()
             {
-                VideoCodec = "AVC",
-                VideoBitDepth = 8,
-                AudioFormat = "FLAC",
-                AudioChannels = 6,
-                AudioChannelPositions = "3/2/0.1",
-                AudioLanguages = "English",
-                Subtitles = "English/German"
+                AudioFormat = "Flac Audio",
+                AudioChannels = 2,
+                AudioBitrate = 875,
+                AudioBits = 24,
+                AudioSampleRate = 44100
             };
 
             _singleTrackFile = new TrackFile

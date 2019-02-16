@@ -7,12 +7,20 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 using Lidarr.Http.Extensions;
-using Lidarr.Http.REST;
 using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace Lidarr.Api.V1.Albums
 {
-    public class AlbumModule : AlbumModuleWithSignalR
+    public class AlbumModule : AlbumModuleWithSignalR,
+        IHandle<AlbumGrabbedEvent>,
+        IHandle<AlbumEditedEvent>,
+        IHandle<AlbumImportedEvent>,
+        IHandle<TrackImportedEvent>
+
     {
         protected readonly IReleaseService _releaseService;
         
@@ -82,6 +90,32 @@ namespace Lidarr.Api.V1.Albums
             _albumService.SetMonitored(resource.AlbumIds, resource.Monitored);
 
             return MapToResource(_albumService.GetAlbums(resource.AlbumIds), false).AsResponse(HttpStatusCode.Accepted);
+        }
+
+        public void Handle(AlbumGrabbedEvent message)
+        {
+            foreach (var album in message.Album.Albums)
+            {
+                var resource = album.ToResource();
+                resource.Grabbed = true;
+
+                BroadcastResourceChange(ModelAction.Updated, resource);
+            }
+        }
+        
+        public void Handle(AlbumEditedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.Album, true));
+        }
+
+        public void Handle(AlbumImportedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.Album, true));
+        }
+
+        public void Handle(TrackImportedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, message.TrackInfo.Album.ToResource());
         }
     }
 }

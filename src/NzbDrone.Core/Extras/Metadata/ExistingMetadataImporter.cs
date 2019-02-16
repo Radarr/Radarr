@@ -8,6 +8,8 @@ using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Metadata
 {
@@ -15,17 +17,20 @@ namespace NzbDrone.Core.Extras.Metadata
     {
         private readonly IExtraFileService<MetadataFile> _metadataFileService;
         private readonly IParsingService _parsingService;
+        private readonly IAugmentingService _augmentingService;
         private readonly Logger _logger;
         private readonly List<IMetadata> _consumers;
 
         public ExistingMetadataImporter(IExtraFileService<MetadataFile> metadataFileService,
                                         IEnumerable<IMetadata> consumers,
                                         IParsingService parsingService,
+                                        IAugmentingService augmentingService,
                                         Logger logger)
         : base(metadataFileService)
         {
             _metadataFileService = metadataFileService;
             _parsingService = parsingService;
+            _augmentingService = augmentingService;
             _logger = logger;
             _consumers = consumers.ToList();
         }
@@ -72,9 +77,18 @@ namespace NzbDrone.Core.Extras.Metadata
 
                     if (metadata.Type == MetadataType.TrackMetadata)
                     {
-                        var localTrack = _parsingService.GetLocalTrack(possibleMetadataFile, artist);
-
-                        if (localTrack == null)
+                        var localTrack = new LocalTrack
+                        {
+                            FileTrackInfo = Parser.Parser.ParseMusicPath(possibleMetadataFile),
+                            Artist = artist,
+                            Path = possibleMetadataFile
+                        };
+                
+                        try
+                        {
+                            _augmentingService.Augment(localTrack, false);
+                        }
+                        catch (AugmentingFailedException)
                         {
                             _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
                             continue;

@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_quality_from_extension(string title)
         {
             Parser.Parser.ParseAlbumTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
-            Parser.Parser.ParseAlbumTitle(title).Quality.QualitySource.Should().Be(QualitySource.Extension);
+            Parser.Parser.ParseAlbumTitle(title).Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
         }
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "VA", "The Best 101 Love Ballads")]

@@ -1,27 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Others
 {
     public class ExistingOtherExtraImporter : ImportExistingExtraFilesBase<OtherExtraFile>
     {
         private readonly IExtraFileService<OtherExtraFile> _otherExtraFileService;
-        private readonly IParsingService _parsingService;
+        private readonly IAugmentingService _augmentingService;
         private readonly Logger _logger;
 
         public ExistingOtherExtraImporter(IExtraFileService<OtherExtraFile> otherExtraFileService,
-                                          IParsingService parsingService,
+                                          IAugmentingService augmentingService,
                                           Logger logger)
             : base(otherExtraFileService)
         {
             _otherExtraFileService = otherExtraFileService;
-            _parsingService = parsingService;
+            _augmentingService = augmentingService;
             _logger = logger;
         }
 
@@ -44,9 +47,18 @@ namespace NzbDrone.Core.Extras.Others
                     continue;
                 }
 
-                var localTrack = _parsingService.GetLocalTrack(possibleExtraFile, artist);
-
-                if (localTrack == null)
+                var localTrack = new LocalTrack
+                {
+                    FileTrackInfo = Parser.Parser.ParseMusicPath(possibleExtraFile),
+                    Artist = artist,
+                    Path = possibleExtraFile
+                };
+                
+                try
+                {
+                    _augmentingService.Augment(localTrack, false);
+                }
+                catch (AugmentingFailedException)
                 {
                     _logger.Debug("Unable to parse extra file: {0}", possibleExtraFile);
                     continue;

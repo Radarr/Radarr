@@ -1,6 +1,5 @@
 using Marr.Data;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -29,9 +29,6 @@ namespace NzbDrone.Core.MediaFiles
         public LazyLoaded<List<Track>> Tracks { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
         public LazyLoaded<Album> Album { get; set; }
-
-        // these are ignored by the database but retained/populated for compatibility
-        public int ArtistId { get { return Artist.Value?.Id ?? 0; } }
 
         public override string ToString()
         {

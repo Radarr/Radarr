@@ -401,38 +401,6 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_format_mediainfo_properly()
-        {
-            _namingConfig.StandardTrackFormat = "{Artist.Name}.{track:00}.{Track.Title}.{MEDIAINFO.FULL}";
-
-            _trackFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
-            {
-                AudioFormat = "FLAC",
-                AudioLanguages = "English/Spanish",
-                Subtitles = "English/Spanish/Italian"
-            };
-
-            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be("Linkin.Park.06.City.Sushi.FLAC[EN+ES].[EN+ES+IT]");
-        }
-
-        [Test]
-        public void should_exclude_english_in_mediainfo_audio_language()
-        {
-            _namingConfig.StandardTrackFormat = "{Artist.Name}.{track:00}.{Track.Title}.{MEDIAINFO.FULL}";
-
-            _trackFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel
-            {
-                AudioFormat = "FLAC",
-                AudioLanguages = "English",
-                Subtitles = "English/Spanish/Italian"
-            };
-
-            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be("Linkin.Park.06.City.Sushi.FLAC.[EN+ES+IT]");
-        }
-
-        [Test]
         public void should_remove_duplicate_non_word_characters()
         {
             _artist.Name = "Venture Bros.";

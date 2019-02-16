@@ -1,4 +1,5 @@
 ﻿using NzbDrone.Common.EnsureThat;
+using NzbDrone.Core.Parser.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 {
     public class ImportResult
     {
-        public ImportDecision ImportDecision { get; private set; }
+        public ImportDecision<LocalTrack> ImportDecision { get; private set; }
         public List<string> Errors { get; private set; }
 
         public ImportResultType Result
@@ -29,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             }
         }
 
-        public ImportResult(ImportDecision importDecision, params string[] errors)
+        public ImportResult(ImportDecision<LocalTrack> importDecision, params string[] errors)
         {
             Ensure.That(importDecision, () => importDecision).IsNotNull();
 

@@ -2,17 +2,24 @@ language: csharp
 os:
   - linux
   - osx
+addons:
+  apt:
+    packages:
+      - dos2unix
+      - nuget
+      - libchromaprint-tools
+    update: true
+  homebrew:
+    packages:
+      - yarn
+      - dos2unix
+      - nuget
+    update: true
 solution: src/Lidarr.sln
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn; fi
   - nvm install 8
   - nvm use 8
 script:
   - ./build.sh
-  - chmod +x test.sh
-  - ./test.sh Linux Unit
-after_success:
-  - chmod +x package.sh
-  - ./package.sh
-
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./test.sh Mac Unit; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./test.sh Linux Unit; fi

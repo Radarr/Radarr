@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         }
 
         //Constructor for use when deserializing JSON
-        private TrackedDownloadStatusMessage()
+        public TrackedDownloadStatusMessage()
         {
         }
     }

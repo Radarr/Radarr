@@ -262,7 +262,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Little Mix - Salute [Deluxe Edition] [2013] [M4A-256]-V3nom [GLT")]
         public void should_parse_quality_from_name(string title)
         {
-            QualityParser.ParseQuality(title, null, 0).QualitySource.Should().Be(QualitySource.Name);
+            QualityParser.ParseQuality(title, null, 0).QualityDetectionSource.Should().Be(QualityDetectionSource.Name);
         }
 
         [TestCase("01. Kanye West - Ultralight Beam.mp3")]
@@ -273,7 +273,7 @@ namespace NzbDrone.Core.Test.ParserTests
         //[TestCase("01. Kanye West - Ultralight Beam.wav")]
         public void should_parse_quality_from_extension(string title)
         {
-            QualityParser.ParseQuality(title, null, 0).QualitySource.Should().Be(QualitySource.Extension);
+            QualityParser.ParseQuality(title, null, 0).QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
         }
 
         private void ParseAndVerifyQuality(string name, string desc, int bitrate, Quality quality, int sampleSize = 0)

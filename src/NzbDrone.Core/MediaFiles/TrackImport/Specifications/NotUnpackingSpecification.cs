@@ -9,7 +9,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
-    public class NotUnpackingSpecification : IImportDecisionEngineSpecification
+    public class NotUnpackingSpecification : IImportDecisionEngineSpecification<LocalTrack>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;

@@ -53,6 +53,7 @@ import {
   faEye as fasEye,
   faFastBackward as fasFastBackward,
   faFastForward as fasFastForward,
+  faFileImport as fasFileImport,
   faFilter as fasFilter,
   faFolderOpen as fasFolderOpen,
   faForward as fasForward,
@@ -137,6 +138,7 @@ export const EXPAND_INDETERMINATE = fasChevronCircleRight;
 export const EXTERNAL_LINK = fasExternalLinkAlt;
 export const FATAL = fasTimesCircle;
 export const FILE = farFile;
+export const FILEIMPORT = fasFileImport;
 export const FILTER = fasFilter;
 export const FOLDER = farFolder;
 export const FOLDER_OPEN = fasFolderOpen;

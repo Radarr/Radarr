@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Datastore
         bool HasItems();
         void DeleteMany(IEnumerable<int> ids);
         void SetFields(TModel model, params Expression<Func<TModel, object>>[] properties);
+        void SetFields(IEnumerable<TModel> models, params Expression<Func<TModel, object>>[] properties);
         TModel Single();
         PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec);
     }
@@ -242,6 +243,30 @@ namespace NzbDrone.Core.Datastore
                 .Execute();
 
             ModelUpdated(model);
+        }
+
+        public void SetFields(IEnumerable<TModel> models, params Expression<Func<TModel, object>>[] properties)
+        {
+            using (var unitOfWork = new UnitOfWork(() => DataMapper))
+            {
+                unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
+
+                foreach (var model in models)
+                {
+                    if (model.Id == 0)
+                    {
+                        throw new InvalidOperationException("Can't update model with ID 0");
+                    }
+
+                    unitOfWork.DB.Update<TModel>()
+                        .Where(c => c.Id == model.Id)
+                        .ColumnsIncluding(properties)
+                        .Entity(model)
+                        .Execute();
+                }
+
+                unitOfWork.Commit();
+            }
         }
 
         public virtual PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec)

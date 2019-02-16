@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -285,8 +285,15 @@
     <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedTracksImportServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaFileDeletionService\DeleteTrackFileFixture.cs" />
-    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioChannelsFixture.cs" />
-    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\AggregateFilenameInfoFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\MunkresFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\DistanceFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\TrackGroupingServiceFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\TrackDistanceFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\AlbumDistanceFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\TrackMappingFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\GetCandidatesFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\IdentificationServiceFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecificationFixture.cs" />
@@ -310,13 +317,12 @@
     <Compile Include="MusicTests\ArtistServiceTests\FindByNameInexactFixture.cs" />
     <Compile Include="MusicTests\RefreshAlbumServiceFixture.cs" />
     <Compile Include="MusicTests\ShouldRefreshAlbumFixture.cs" />
-    <Compile Include="MusicTests\TitleMatchingTests\TitleMatchingFixture.cs" />
     <Compile Include="NotificationTests\NotificationBaseFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
     <Compile Include="ParserTests\MusicParserFixture.cs" />
-    <Compile Include="ParserTests\ParsingServiceTests\GetLocalTrackFixture.cs" />
+    <Compile Include="ParserTests\FingerprintingServiceFixture.cs" />
     <Compile Include="Profiles\Delay\DelayProfileServiceFixture.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileServiceFixture.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileRepositoryFixture.cs" />
@@ -327,8 +333,6 @@
     <Compile Include="OrganizerTests\CleanFixture.cs" />
     <Compile Include="MediaFiles\MediaFileServiceTests\FilterFixture.cs" />
     <Compile Include="MediaFiles\MediaFileTableCleanupServiceFixture.cs" />
-    <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoServiceFixture.cs" />
-    <Compile Include="MediaFiles\MediaInfo\VideoFileInfoReaderFixture.cs" />
     <Compile Include="MediaFiles\RenameTrackFileServiceFixture.cs" />
     <Compile Include="MediaFiles\UpgradeMediaFileServiceFixture.cs" />
     <Compile Include="Messaging\Commands\CommandEqualityComparerFixture.cs" />
@@ -498,6 +502,12 @@
     <Content Include="Files\Media\H264_sample.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Files\Media\nin.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Media\nin.flac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Files\Nzbget\JsonError.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -594,8 +604,14 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target> -->
   <Target Name="AfterBuild">
+    <ItemGroup>
+      <IdentificationTestCases Include="Files\Identification\*.json" />
+    </ItemGroup>
+    <Copy
+        SourceFiles="@(IdentificationTestCases)"
+        DestinationFolder="$(OutputPath)\Files\Identification\"
+        SkipUnchangedFiles="true"/>
   </Target>
-  -->
 </Project>

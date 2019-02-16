@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -8,6 +7,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
 using System;
+using System.IO;
 
 namespace NzbDrone.Core.Parser
 {
@@ -18,12 +18,10 @@ namespace NzbDrone.Core.Parser
         RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria = null);
         RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, int artistId, IEnumerable<int> albumIds);
         List<Album> GetAlbums(ParsedAlbumInfo parsedAlbumInfo, Artist artist, SearchCriteriaBase searchCriteria = null);
+        Album GetAlbum(Artist artist, ParsedTrackInfo parsedTrackInfo);
 
         // Music stuff here
         Album GetLocalAlbum(string filename, Artist artist);
-        LocalTrack GetLocalTrack(string filename, Artist artist);
-        LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo);
-        LocalTrack GetLocalTrack(string filename, Artist artist, Album album, ParsedTrackInfo folderInfo);
     }
 
     public class ParsingService : IParsingService
@@ -239,66 +237,7 @@ namespace NzbDrone.Core.Parser
             return tracksInAlbum.Count == 1 ? _albumService.GetAlbum(tracksInAlbum.First().AlbumId) : null;
         }
 
-        public LocalTrack GetLocalTrack(string filename, Artist artist)
-        {
-            return GetLocalTrack(filename, artist, null);
-        }
-
-        public LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo)
-        {
-            return GetLocalTrack(filename, artist, null, folderInfo);
-        }
-
-        public LocalTrack GetLocalTrack(string filename, Artist artist, Album album, ParsedTrackInfo folderInfo)
-        {
-            ParsedTrackInfo parsedTrackInfo;
-
-
-            if (folderInfo != null)
-            {
-                parsedTrackInfo = folderInfo.JsonClone();
-                parsedTrackInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename), null, 0);
-            } else
-            {
-                parsedTrackInfo = Parser.ParseMusicPath(filename);
-            }
-
-            if (parsedTrackInfo == null || (parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace()) && parsedTrackInfo.ReleaseMBId.IsNullOrWhiteSpace() && album == null)
-            {
-                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
-                {
-                    _logger.Warn("Unable to parse track info from path {0}", filename);
-                }
-
-                return null;
-            }
-
-            if (album == null)
-            {
-                album = GetAlbum(artist, parsedTrackInfo);
-            }
-            
-            var tracks = new List<Track>();
-            if (album != null)
-            {
-                tracks = GetTracks(artist, album, parsedTrackInfo);
-            }
-            
-            return new LocalTrack
-            {
-                Artist = artist,
-                Album = album,
-                Release = album?.AlbumReleases.Value.Single(r => r.Monitored),
-                Quality = parsedTrackInfo.Quality,
-                Language = parsedTrackInfo.Language,
-                Tracks = tracks,
-                Path = filename,
-                ParsedTrackInfo = parsedTrackInfo,
-                ExistingFile = artist.Path.IsParentPath(filename)
-            };
-        }
-
-        private Album GetAlbum(Artist artist, ParsedTrackInfo parsedTrackInfo)
+        public Album GetAlbum(Artist artist, ParsedTrackInfo parsedTrackInfo)
         {
             Album album = null;
 
@@ -341,43 +280,6 @@ namespace NzbDrone.Core.Parser
             _logger.Debug("Album {0} selected for {1}", album, parsedTrackInfo);
 
             return album;
-        }
-
-        private List<Track> GetTracks(Artist artist, Album album, ParsedTrackInfo parsedTrackInfo)
-        {
-            var result = new List<Track>();
-
-            if (parsedTrackInfo.Title.IsNotNullOrWhiteSpace())
-            {
-                Track trackInfo;
-                var cleanTrackTitle = Parser.CleanTrackTitle(parsedTrackInfo.Title);
-                _logger.Debug("Cleaning Track title of common matching issues. Cleaned track title is '{0}'", cleanTrackTitle);
-
-                trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.TrackNumbers.FirstOrDefault(), cleanTrackTitle);
-
-                if (trackInfo == null)
-                {
-                    trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.TrackNumbers.FirstOrDefault(), parsedTrackInfo.Title);
-                }
-
-                if (trackInfo == null)
-                {
-                    _logger.Debug("Trying inexact track match for {0}", parsedTrackInfo);
-                    trackInfo = _trackService.FindTrackByTitleInexact(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.TrackNumbers.FirstOrDefault(), cleanTrackTitle);
-                }
-
-                if (trackInfo != null)
-                {
-                    _logger.Debug("Track {0} selected for {1}", trackInfo, parsedTrackInfo);
-                    result.Add(trackInfo);
-                }
-                else
-                {
-                    _logger.Debug("Unable to find track for {0}", parsedTrackInfo);
-                }
-            }
-
-            return result;
         }
     }
 }

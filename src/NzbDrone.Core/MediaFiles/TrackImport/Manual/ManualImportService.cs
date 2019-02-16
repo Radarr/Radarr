@@ -6,10 +6,8 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
@@ -23,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles);
-        void UpdateItem(ManualImportItem item);
+        void UpdateItems(List<ManualImportItem> item);
         ManualImportItem Find(int id);
     }
 
@@ -37,7 +35,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         private readonly IAlbumService _albumService;
         private readonly IReleaseService _releaseService;
         private readonly ITrackService _trackService;
-        private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDownloadedTracksImportService _downloadedTracksImportService;
@@ -53,7 +50,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                                    IAlbumService albumService,
                                    IReleaseService releaseService,
                                    ITrackService trackService,
-                                   IVideoFileInfoReader videoFileInfoReader,
                                    IImportApprovedTracks importApprovedTracks,
                                    ITrackedDownloadService trackedDownloadService,
                                    IDownloadedTracksImportService downloadedTracksImportService,
@@ -69,7 +65,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _albumService = albumService;
             _releaseService = releaseService;
             _trackService = trackService;
-            _videoFileInfoReader = videoFileInfoReader;
             _importApprovedTracks = importApprovedTracks;
             _trackedDownloadService = trackedDownloadService;
             _downloadedTracksImportService = downloadedTracksImportService;
@@ -106,10 +101,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     return new List<ManualImportItem>();
                 }
 
-                var decision = ProcessFile(path, downloadId);
-                _cache.Set(decision.Id.ToString(), decision);
+                var decision = _importDecisionMaker.GetImportDecisions(new List<string> { path }, null, null, null, null, false, true, false);
+                var result = MapItem(decision.First(), Path.GetDirectoryName(path), downloadId);
+                _cache.Set(result.Id.ToString(), result);
 
-                return new List<ManualImportItem> { decision };
+                return new List<ManualImportItem> { result };
             }
 
             var items = ProcessFolder(path, downloadId, filterExistingFiles);
@@ -132,130 +128,81 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 artist = trackedDownload.RemoteAlbum.Artist;
             }
 
-            if (artist == null)
-            {
-                var files = _diskScanService.FilterFiles(folder, _diskScanService.GetAudioFiles(folder));
-
-                return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
-            }
-
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
             var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo, filterExistingFiles, true);
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, null, null, folderInfo, filterExistingFiles, true, false);
 
             return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
         }
 
-        public void UpdateItem(ManualImportItem item)
+        public void UpdateItems(List<ManualImportItem> items)
         {
-            var decision = _importDecisionMaker.GetImportDecision(item.Path, item.Artist, item.Album);
-
-            if (decision.LocalTrack.Artist != null)
+            var groupedItems = items.GroupBy(x => x.Album?.Id);
+            _logger.Debug("UpdateItems, {0} groups", groupedItems.Count());
+            foreach(var group in groupedItems)
             {
-                item.Artist = decision.LocalTrack.Artist;
-            }
+                // generate dummy decisions that don't match the release
+                _logger.Debug("UpdateItems, group key: {0}", group.Key);
+                var decisions = _importDecisionMaker.GetImportDecisions(group.Select(x => x.Path).ToList(), group.First().Artist, group.First().Album, null, null, false, true, true);
 
-            if (decision.LocalTrack.Album != null)
-            {
-                item.Album = decision.LocalTrack.Album;
-                item.Release = decision.LocalTrack.Release;
-            }
-
-            if (decision.LocalTrack.Tracks.Any())
-            {
-                item.Tracks = decision.LocalTrack.Tracks;
-            }
-
-            item.Rejections = decision.Rejections;
-
-            _cache.Set(item.Id.ToString(), item);
-        }
-
-        private ManualImportItem ProcessFile(string file, string downloadId, string folder = null)
-        {
-            if (folder.IsNullOrWhiteSpace())
-            {
-                folder = new FileInfo(file).Directory.FullName;
-            }
-
-            var relativeFile = folder.GetRelativePath(file);
-
-            var artist = _parsingService.GetArtist(relativeFile.Split('\\', '/')[0]);
-
-            if (artist == null)
-            {
-                artist = _parsingService.GetArtistFromTag(file);
-            }
-
-            if (artist == null && downloadId.IsNotNullOrWhiteSpace())
-            {
-                var trackedDownload = _trackedDownloadService.Find(downloadId);
-                artist = trackedDownload.RemoteAlbum.Artist;
-            }
-
-            if (artist == null)
-            {
-                var localTrack = new LocalTrack();
-                localTrack.Path = file;
-                localTrack.Quality = QualityParser.ParseQuality(file, null, 0);
-                localTrack.Language = LanguageParser.ParseLanguage(file);
-                localTrack.Size = _diskProvider.GetFileSize(file);
-
-                return MapItem(new ImportDecision(localTrack, new Rejection("Unknown Artist")), folder, downloadId);
-            }
-
-            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file },
-                artist, null);
-
-            return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : new ManualImportItem
-            {
-                Id = HashConverter.GetHashInt31(file),
-                DownloadId = downloadId,
-                Path = file,
-                RelativePath = folder.GetRelativePath(file),
-                Name = Path.GetFileNameWithoutExtension(file),
-                Rejections = new List<Rejection>
+                foreach (var decision in decisions)
                 {
-                    new Rejection("Unable to process file")
+                    var item = items.Where(x => x.Path == decision.Item.Path).Single();
+
+                    if (decision.Item.Artist != null)
+                    {
+                        item.Artist = decision.Item.Artist;
+                    }
+
+                    if (decision.Item.Album != null)
+                    {
+                        item.Album = decision.Item.Album;
+                        item.Release = decision.Item.Release;
+                    }
+
+                    if (decision.Item.Tracks.Any())
+                    {
+                        item.Tracks = decision.Item.Tracks;
+                    }
+
+                    item.Rejections = decision.Rejections;
+
+                    _cache.Set(item.Id.ToString(), item);
                 }
-            };
+            }
         }
 
-        private bool SceneSource(Artist artist, string folder)
-        {
-            return !(artist.Path.PathEquals(folder) || artist.Path.IsParentPath(folder));
-        }
-
-        private ManualImportItem MapItem(ImportDecision decision, string folder, string downloadId)
+        private ManualImportItem MapItem(ImportDecision<LocalTrack> decision, string folder, string downloadId)
         {
             var item = new ManualImportItem();
 
-            item.Id = HashConverter.GetHashInt31(decision.LocalTrack.Path);
-            item.Path = decision.LocalTrack.Path;
-            item.RelativePath = folder.GetRelativePath(decision.LocalTrack.Path);
-            item.Name = Path.GetFileNameWithoutExtension(decision.LocalTrack.Path);
+            item.Id = HashConverter.GetHashInt31(decision.Item.Path);
+            item.Path = decision.Item.Path;
+            item.RelativePath = folder.GetRelativePath(decision.Item.Path);
+            item.Name = Path.GetFileNameWithoutExtension(decision.Item.Path);
             item.DownloadId = downloadId;
 
-            if (decision.LocalTrack.Artist != null)
+            if (decision.Item.Artist != null)
             {
-                item.Artist = decision.LocalTrack.Artist;
+                item.Artist = decision.Item.Artist;
             }
 
-            if (decision.LocalTrack.Album != null)
+            if (decision.Item.Album != null)
             {
-                item.Album = decision.LocalTrack.Album;
-                item.Release = decision.LocalTrack.Release;
+                item.Album = decision.Item.Album;
+                item.Release = decision.Item.Release;
             }
 
-            if (decision.LocalTrack.Tracks.Any())
+            if (decision.Item.Tracks.Any())
             {
-                item.Tracks = decision.LocalTrack.Tracks;
+                item.Tracks = decision.Item.Tracks;
             }
 
-            item.Quality = decision.LocalTrack.Quality;
-            item.Language = decision.LocalTrack.Language;
-            item.Size = _diskProvider.GetFileSize(decision.LocalTrack.Path);
+            item.Quality = decision.Item.Quality;
+            item.Language = decision.Item.Language;
+            item.Size = _diskProvider.GetFileSize(decision.Item.Path);
             item.Rejections = decision.Rejections;
+            item.Tags = decision.Item.FileTrackInfo;
 
             return item;
         }
@@ -266,56 +213,63 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             var imported = new List<ImportResult>();
             var importedTrackedDownload = new List<ManuallyImportedFile>();
+            var albumIds = message.Files.GroupBy(e => e.AlbumId).ToList();
+            var fileCount = 0;
 
-            for (int i = 0; i < message.Files.Count; i++)
+            foreach (var importAlbumId in albumIds)
             {
-                _logger.ProgressTrace("Processing file {0} of {1}", i + 1, message.Files.Count);
+                var albumImportDecisions = new List<ImportDecision<LocalTrack>>();
 
-                var file = message.Files[i];
-                var artist = _artistService.GetArtist(file.ArtistId);
-                var album = _albumService.GetAlbum(file.AlbumId);
-                var release = _releaseService.GetRelease(file.AlbumReleaseId);
-                var tracks = _trackService.GetTracks(file.TrackIds);
-                var parsedTrackInfo = Parser.Parser.ParseMusicPath(file.Path) ?? new ParsedTrackInfo();
-                var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
-                var existingFile = artist.Path.IsParentPath(file.Path);
-
-                var localTrack = new LocalTrack
+                foreach (var file in importAlbumId)
                 {
-                    ExistingFile = false,
-                    Tracks = tracks,
-                    MediaInfo = mediaInfo,
-                    ParsedTrackInfo = parsedTrackInfo,
-                    Path = file.Path,
-                    Quality = file.Quality,
-                    Language = file.Language,
-                    Artist = artist,
-                    Album = album,
-                    Release = release,
-                    Size = 0
-                };
+                    _logger.ProgressTrace("Processing file {0} of {1}", fileCount + 1, message.Files.Count);
 
-                //TODO: Cleanup non-tracked downloads
+                    var artist = _artistService.GetArtist(file.ArtistId);
+                    var album = _albumService.GetAlbum(file.AlbumId);
+                    var release = _releaseService.GetRelease(file.AlbumReleaseId);
+                    var tracks = _trackService.GetTracks(file.TrackIds);
+                    var fileTrackInfo = Parser.Parser.ParseMusicPath(file.Path) ?? new ParsedTrackInfo();
 
-                var importDecision = new ImportDecision(localTrack);
+                    var localTrack = new LocalTrack
+                    {
+                        ExistingFile = false,
+                        Tracks = tracks,
+                        MediaInfo = null,
+                        FileTrackInfo = fileTrackInfo,
+                        Path = file.Path,
+                        Quality = file.Quality,
+                        Language = file.Language,
+                        Artist = artist,
+                        Album = album,
+                        Release = release,
+                        Size = 0
+                    };
 
-                if (file.DownloadId.IsNullOrWhiteSpace())
-                {
-                    imported.AddRange(_importApprovedTracks.Import(new List<ImportDecision> { importDecision }, !existingFile, null, message.ImportMode));
+                    albumImportDecisions.Add(new ImportDecision<LocalTrack>(localTrack));
+                    fileCount += 1;
                 }
 
+                var existingFile = albumImportDecisions.First().Item.Artist.Path.IsParentPath(importAlbumId.First().Path);
+
+                if (importAlbumId.First().DownloadId.IsNullOrWhiteSpace())
+                {
+                    imported.AddRange(_importApprovedTracks.Import(albumImportDecisions, !existingFile, null, message.ImportMode));
+                }
                 else
                 {
-                    var trackedDownload = _trackedDownloadService.Find(file.DownloadId);
-                    var importResult = _importApprovedTracks.Import(new List<ImportDecision> { importDecision }, true, trackedDownload.DownloadItem, message.ImportMode).First();
+                    var trackedDownload = _trackedDownloadService.Find(importAlbumId.First().DownloadId);
+                    var importResults = _importApprovedTracks.Import(albumImportDecisions, true, trackedDownload.DownloadItem, message.ImportMode);
 
-                    imported.Add(importResult);
+                    imported.AddRange(importResults);
 
-                    importedTrackedDownload.Add(new ManuallyImportedFile
+                    foreach (var importResult in importResults)
                     {
-                        TrackedDownload = trackedDownload,
-                        ImportResult = importResult
-                    });
+                        importedTrackedDownload.Add(new ManuallyImportedFile
+                        {
+                            TrackedDownload = trackedDownload,
+                            ImportResult = importResult
+                        });
+                    }
                 }
             }
 

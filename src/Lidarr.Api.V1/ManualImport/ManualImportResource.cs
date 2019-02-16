@@ -10,6 +10,7 @@ using Lidarr.Http.REST;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -29,6 +30,7 @@ namespace Lidarr.Api.V1.ManualImport
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
+        public ParsedTrackInfo AudioTags { get; set; }
     }
 
     public static class ManualImportResourceMapper
@@ -53,7 +55,8 @@ namespace Lidarr.Api.V1.ManualImport
                 Language = model.Language,
                 //QualityWeight
                 DownloadId = model.DownloadId,
-                Rejections = model.Rejections
+                Rejections = model.Rejections,
+                AudioTags = model.Tags
             };
         }
 

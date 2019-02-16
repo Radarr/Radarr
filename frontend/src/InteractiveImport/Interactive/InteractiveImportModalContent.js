@@ -155,6 +155,18 @@ class InteractiveImportModalContent extends Component {
     this.setState({ isSelectAlbumModalOpen: true });
   }
 
+  onClearTrackMappingPress = () => {
+    const selectedIds = this.getSelectedIds();
+
+    selectedIds.forEach((id) => {
+      this.props.updateInteractiveImportItem({
+        id,
+        tracks: [],
+        rejections: []
+      });
+    });
+  }
+
   onSelectArtistModalClose = () => {
     this.setState({ isSelectArtistModalOpen: false });
   }
@@ -328,6 +340,10 @@ class InteractiveImportModalContent extends Component {
             >
               Select Album
             </Button>
+
+            <Button onPress={this.onClearTrackMappingPress}>
+              Clear Track Mapping
+            </Button>
           </div>
 
           <div className={styles.rightButtons}>
@@ -362,6 +378,7 @@ class InteractiveImportModalContent extends Component {
           artistId={selectedItem && selectedItem.artist && selectedItem.artist.id}
           onModalClose={this.onSelectAlbumModalClose}
         />
+
       </ModalContent>
     );
   }
@@ -387,6 +404,7 @@ InteractiveImportModalContent.propTypes = {
   onFilterExistingFilesChange: PropTypes.func.isRequired,
   onImportModeChange: PropTypes.func.isRequired,
   onImportSelectedPress: PropTypes.func.isRequired,
+  updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

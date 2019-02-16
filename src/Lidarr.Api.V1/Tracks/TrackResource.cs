@@ -41,7 +41,7 @@ namespace Lidarr.Api.V1.Tracks
             {
                 Id = model.Id,
 
-                ArtistId = model.ArtistId,
+                ArtistId = model.Artist.Value.Id,
                 TrackFileId = model.TrackFileId,
                 AlbumId = model.AlbumId,
                 Explicit = model.Explicit,

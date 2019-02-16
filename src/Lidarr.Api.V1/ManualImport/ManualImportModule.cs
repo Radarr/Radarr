@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
-using Lidarr.Http;
 using Lidarr.Http.Extensions;
 using NzbDrone.SignalR;
-using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Music;
 using NLog;
+using Nancy;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -30,7 +29,13 @@ namespace Lidarr.Api.V1.ManualImport
             _releaseService = releaseService;
 
             GetResourceAll = GetMediaFiles;
-            UpdateResource = UpdateImportItem;
+            
+            Put["/"] = options =>
+                {
+                    var resource = Request.Body.FromJson<List<ManualImportResource>>();
+                    UpdateImportItems(resource);
+                    return GetManualImportItems(resource.Select(x => x.Id)).AsResponse(HttpStatusCode.Accepted);
+                };
         }
 
         private List<ManualImportResource> GetMediaFiles()
@@ -54,26 +59,29 @@ namespace Lidarr.Api.V1.ManualImport
             return item;
         }
 
-        private void UpdateImportItem(ManualImportResource resource)
+        private void UpdateImportItems(List<ManualImportResource> resources)
         {
-            var item = new ManualImportItem{
-                Id = resource.Id,
-                Path = resource.Path,
-                RelativePath = resource.RelativePath,
-                FolderName = resource.FolderName,
-                Name = resource.Name,
-                Size = resource.Size,
-                Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
-                Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
-                Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
-                Quality = resource.Quality,
-                Language = resource.Language,
-                DownloadId = resource.DownloadId
-            };
+            var items = new List<ManualImportItem>();
+            foreach (var resource in resources)
+            {
+                items.Add(new ManualImportItem {
+                        Id = resource.Id,
+                        Path = resource.Path,
+                        RelativePath = resource.RelativePath,
+                        FolderName = resource.FolderName,
+                        Name = resource.Name,
+                        Size = resource.Size,
+                        Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
+                        Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
+                        Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
+                        Quality = resource.Quality,
+                        Language = resource.Language,
+                        DownloadId = resource.DownloadId
+                    });
+            }
             
             //recalculate import and broadcast
-            _manualImportService.UpdateItem(item);
-            BroadcastResourceChange(ModelAction.Updated, item.Id);
+            _manualImportService.UpdateItems(items);
         }
     }
 }

@@ -89,10 +89,6 @@
     <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
     </Reference>
-    <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
@@ -110,8 +106,8 @@
     <Reference Include="System.Data.SQLite">
       <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
+    <Reference Include="taglib-sharp, Version=2.2.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagLibSharp.2.2.0-beta\lib\netstandard2.0\taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -144,6 +140,7 @@
     <Compile Include="Configuration\AccessDeniedConfigFileException.cs" />
     <Compile Include="Configuration\InvalidConfigFileException.cs" />
     <Compile Include="Configuration\RescanAfterRefreshType.cs" />
+    <Compile Include="Configuration\AllowFingerprinting.cs" />
     <Compile Include="Configuration\ResetApiKeyCommand.cs" />
     <Compile Include="CustomFilters\CustomFilter.cs" />
     <Compile Include="CustomFilters\CustomFilterRepository.cs" />
@@ -200,6 +197,7 @@
     <Compile Include="Datastore\Migration\021_add_custom_filters.cs" />
     <Compile Include="Datastore\Migration\022_import_list_tags.cs" />
     <Compile Include="Datastore\Migration\023_add_release_groups_etc.cs" />
+    <Compile Include="Datastore\Migration\024_clear_media_info.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -483,6 +481,7 @@
     <Compile Include="HealthCheck\Checks\AppDataLocationCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientStatusCheck.cs" />
+    <Compile Include="HealthCheck\Checks\FpcalcCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportListStatusCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoDebugCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoTlsCheck.cs" />
@@ -491,7 +490,6 @@
     <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheck.cs" />
-    <Compile Include="HealthCheck\Checks\MediaInfoDllCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheck.cs" />
     <Compile Include="HealthCheck\Checks\ProxyCheck.cs" />
     <Compile Include="HealthCheck\Checks\RootFolderCheck.cs" />
@@ -713,16 +711,23 @@
     <Compile Include="MediaFiles\Commands\DownloadedAlbumsScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
     <Compile Include="MediaFiles\Events\AlbumImportedEvent.cs" />
+    <Compile Include="MediaFiles\Events\AlbumImportIncompleteEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportFailedEvent.cs" />
     <Compile Include="MediaFiles\MediaFileDeletionService.cs" />
-    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatter.cs" />
+    <Compile Include="MediaFiles\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
     <Compile Include="MediaFiles\RenameTrackFileService.cs" />
     <Compile Include="MediaFiles\TrackFileMovingService.cs" />
     <Compile Include="MediaFiles\TrackFileMoveResult.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportMode.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\Aggregators\AggregateQuality.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\Aggregators\AggregateReleaseGroup.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\Aggregators\AggregateFilenameInfo.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\Aggregators\IAggregateLocalTrack.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\AggregationService.cs" />
+    <Compile Include="MediaFiles\TrackImport\Aggregation\AggregationFailedException.cs" />
     <Compile Include="MediaFiles\Commands\RenameFilesCommand.cs" />
     <Compile Include="MediaFiles\DeleteMediaFileReason.cs" />
     <Compile Include="MediaFiles\DiskScanService.cs">
@@ -745,6 +750,17 @@
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\CloseAlbumMatchSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\CloseTrackMatchSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\AlbumUpgradeSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\MoreTracksSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\NoMissingOrUnmatchedTracksSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\ReleaseWantedSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\TrackGroupingService.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\IdentificationService.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\IdentificationTestCase.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\Distance.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\Munkres.cs" />
     <Compile Include="MediaFiles\Events\ArtistRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScannedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScanSkippedEvent.cs" />
@@ -760,10 +776,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaFiles\MediaFileTableCleanupService.cs" />
-    <Compile Include="MediaFiles\MediaInfo\MediaInfoLib.cs" />
-    <Compile Include="MediaFiles\MediaInfo\MediaInfoModel.cs" />
-    <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoService.cs" />
-    <Compile Include="MediaFiles\MediaInfo\VideoFileInfoReader.cs" />
     <Compile Include="MediaFiles\RecycleBinProvider.cs" />
     <Compile Include="MediaFiles\SameFilenameException.cs" />
     <Compile Include="MediaFiles\TrackFile.cs" />
@@ -970,10 +982,14 @@
     <Compile Include="Notifications\Twitter\TwitterSettings.cs" />
     <Compile Include="Parser\IsoLanguage.cs" />
     <Compile Include="Parser\IsoLanguages.cs" />
+    <Compile Include="Parser\IsoCountry.cs" />
+    <Compile Include="Parser\IsoCountries.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
     <Compile Include="Parser\Model\ArtistTitleInfo.cs" />
     <Compile Include="Parser\Model\ImportListItemInfo.cs" />
+    <Compile Include="Parser\Model\LocalAlbumRelease.cs" />
     <Compile Include="Parser\Model\LocalTrack.cs" />
+    <Compile Include="Parser\Model\MediaInfoModel.cs" />
     <Compile Include="Parser\Model\ParsedAlbumInfo.cs" />
     <Compile Include="Parser\Model\ParsedTrackInfo.cs" />
     <Compile Include="Parser\Model\RemoteAlbum.cs" />
@@ -995,7 +1011,7 @@
     <Compile Include="Profiles\Qualities\ProfileRepository.cs" />
     <Compile Include="Profiles\Qualities\QualityIndex.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
-    <Compile Include="Qualities\QualitySource.cs" />
+    <Compile Include="Qualities\QualityDetectionSource.cs" />
     <Compile Include="Qualities\Revision.cs" />
     <Compile Include="Queue\EstimatedCompletionTimeComparer.cs" />
     <Compile Include="Queue\TimeleftComparer.cs" />
@@ -1093,6 +1109,7 @@
     <Compile Include="Parser\Model\TorrentInfo.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParsingService.cs" />
+    <Compile Include="Parser\FingerprintingService.cs" />
     <Compile Include="Parser\SceneChecker.cs" />
     <Compile Include="Parser\QualityParser.cs" />
     <Compile Include="Profiles\Qualities\Profile.cs" />
@@ -1220,9 +1237,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Lidarr.Core.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\AnalysisRules.ruleset" />
   </ItemGroup>
@@ -1249,19 +1263,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Libraries\MediaInfo\MediaInfo.dll">
-      <Link>MediaInfo.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Libraries\MediaInfo\libmediainfo.0.dylib">
-      <Link>libmediainfo.0.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\Libraries\Sqlite\libsqlite3.0.dylib">
       <Link>libsqlite3.0.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

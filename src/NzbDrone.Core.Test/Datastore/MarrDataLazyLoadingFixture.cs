@@ -11,6 +11,7 @@ using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Test.Languages;
 using Marr.Data.QGen;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -78,6 +79,7 @@ namespace NzbDrone.Core.Test.Datastore
             var trackFiles = Builder<TrackFile>.CreateListOfSize(1)
                 .All()
                 .With(v => v.Id = 0)
+                .With(v => v.AlbumId = albums[0].Id)
                 .With(v => v.Quality = new QualityModel())
                 .BuildListOfNew();
 
@@ -146,6 +148,141 @@ namespace NzbDrone.Core.Test.Datastore
             {
                 Assert.IsFalse(track.Artist.IsLoaded);
                 Assert.IsTrue(track.TrackFile.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_lazy_load_artist_for_track()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var tracks = DataMapper.Query<Track>()
+                .ToList();
+
+            Assert.IsNotEmpty(tracks);
+            foreach (var track in tracks)
+            {
+                Assert.IsFalse(track.Artist.IsLoaded);
+                Assert.IsNotNull(track.Artist.Value);
+                Assert.IsTrue(track.Artist.IsLoaded);
+                Assert.IsTrue(track.Artist.Value.Metadata.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_lazy_load_artist_for_trackfile()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var tracks = DataMapper.Query<TrackFile>()
+                .ToList();
+
+            Assert.IsNotEmpty(tracks);
+            foreach (var track in tracks)
+            {
+                Assert.IsFalse(track.Artist.IsLoaded);
+                Assert.IsNotNull(track.Artist.Value);
+                Assert.IsTrue(track.Artist.IsLoaded);
+                Assert.IsTrue(track.Artist.Value.Metadata.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_lazy_load_trackfile_if_not_joined()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var tracks = DataMapper.Query<Track>()
+                .ToList();
+
+            foreach (var track in tracks)
+            {
+                Assert.IsFalse(track.TrackFile.IsLoaded);
+                Assert.IsNotNull(track.TrackFile.Value);
+                Assert.IsTrue(track.TrackFile.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_explicit_load_everything_if_joined()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var files = DataMapper.Query<TrackFile>()
+                .Join<TrackFile, Track>(JoinType.Inner, f => f.Tracks, (f, t) => f.Id == t.TrackFileId)
+                .Join<TrackFile, Album>(JoinType.Inner, t => t.Album, (t, a) => t.AlbumId == a.Id)
+                .Join<TrackFile, Artist>(JoinType.Inner, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
+                .Join<Artist, ArtistMetadata>(JoinType.Inner, a => a.Metadata, (a, m) => a.ArtistMetadataId == m.Id)
+                .ToList();
+
+            Assert.IsNotEmpty(files);
+            foreach (var file in files)
+            {
+                Assert.IsTrue(file.Tracks.IsLoaded);
+                Assert.IsNotEmpty(file.Tracks.Value);
+                Assert.IsTrue(file.Album.IsLoaded);
+                Assert.IsTrue(file.Artist.IsLoaded);
+                Assert.IsTrue(file.Artist.Value.Metadata.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_lazy_load_tracks_if_not_joined_to_trackfile()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var files = DataMapper.Query<TrackFile>()
+                .Join<TrackFile, Album>(JoinType.Inner, t => t.Album, (t, a) => t.AlbumId == a.Id)
+                .Join<TrackFile, Artist>(JoinType.Inner, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
+                .Join<Artist, ArtistMetadata>(JoinType.Inner, a => a.Metadata, (a, m) => a.ArtistMetadataId == m.Id)
+                .ToList();
+
+            Assert.IsNotEmpty(files);
+            foreach (var file in files)
+            {
+                Assert.IsFalse(file.Tracks.IsLoaded);
+                Assert.IsNotNull(file.Tracks.Value);
+                Assert.IsNotEmpty(file.Tracks.Value);
+                Assert.IsTrue(file.Tracks.IsLoaded);
+                Assert.IsTrue(file.Album.IsLoaded);
+                Assert.IsTrue(file.Artist.IsLoaded);
+                Assert.IsTrue(file.Artist.Value.Metadata.IsLoaded);
+            }
+        }
+
+        [Test]
+        public void should_lazy_load_tracks_if_not_joined()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var release = DataMapper.Query<AlbumRelease>().Where(x => x.Id == 1).SingleOrDefault();
+
+            Assert.IsFalse(release.Tracks.IsLoaded);
+            Assert.IsNotNull(release.Tracks.Value);
+            Assert.IsNotEmpty(release.Tracks.Value);
+            Assert.IsTrue(release.Tracks.IsLoaded);
+        }
+
+        [Test]
+        public void should_lazy_load_track_if_not_joined()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var tracks = DataMapper.Query<TrackFile>()
+                .ToList();
+
+            foreach (var track in tracks)
+            {
+                Assert.IsFalse(track.Tracks.IsLoaded);
+                Assert.IsNotNull(track.Tracks.Value);
+                Assert.IsTrue(track.Tracks.IsLoaded);
             }
         }
 

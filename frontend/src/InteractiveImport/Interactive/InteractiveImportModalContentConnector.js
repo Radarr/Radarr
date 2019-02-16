@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchInteractiveImportItems, setInteractiveImportSort, clearInteractiveImport, setInteractiveImportMode } from 'Store/Actions/interactiveImportActions';
+import { fetchInteractiveImportItems, setInteractiveImportSort, clearInteractiveImport, setInteractiveImportMode, updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -23,6 +23,7 @@ const mapDispatchToProps = {
   setInteractiveImportSort,
   setInteractiveImportMode,
   clearInteractiveImport,
+  updateInteractiveImportItem,
   executeCommand
 };
 
@@ -195,6 +196,7 @@ InteractiveImportModalContentConnector.propTypes = {
   setInteractiveImportSort: PropTypes.func.isRequired,
   clearInteractiveImport: PropTypes.func.isRequired,
   setInteractiveImportMode: PropTypes.func.isRequired,
+  updateInteractiveImportItem: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

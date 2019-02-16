@@ -152,7 +152,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private bool DownloadIsTrackable(TrackedDownload trackedDownload)
         {
             // If the download has already been imported or failed don't track it
-            if (trackedDownload.State != TrackedDownloadStage.Downloading)
+            if (trackedDownload.State == TrackedDownloadStage.DownloadFailed
+                || trackedDownload.State == TrackedDownloadStage.Imported)
             {
                 return false;
             }

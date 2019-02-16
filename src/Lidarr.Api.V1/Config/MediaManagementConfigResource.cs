@@ -13,6 +13,7 @@ namespace Lidarr.Api.V1.Config
         public bool DeleteEmptyFolders { get; set; }
         public FileDateType FileDate { get; set; }
         public RescanAfterRefreshType RescanAfterRefresh { get; set; }
+        public AllowFingerprinting AllowFingerprinting { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
         public string FileChmod { get; set; }
@@ -24,7 +25,6 @@ namespace Lidarr.Api.V1.Config
         public bool CopyUsingHardlinks { get; set; }
         public bool ImportExtraFiles { get; set; }
         public string ExtraFileExtensions { get; set; }
-        public bool EnableMediaInfo { get; set; }
     }
 
     public static class MediaManagementConfigResourceMapper
@@ -40,6 +40,7 @@ namespace Lidarr.Api.V1.Config
                 DeleteEmptyFolders = model.DeleteEmptyFolders,
                 FileDate = model.FileDate,
                 RescanAfterRefresh = model.RescanAfterRefresh,
+                AllowFingerprinting = model.AllowFingerprinting,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,
@@ -51,7 +52,6 @@ namespace Lidarr.Api.V1.Config
                 CopyUsingHardlinks = model.CopyUsingHardlinks,
                 ImportExtraFiles = model.ImportExtraFiles,
                 ExtraFileExtensions = model.ExtraFileExtensions,
-                EnableMediaInfo = model.EnableMediaInfo
             };
         }
     }

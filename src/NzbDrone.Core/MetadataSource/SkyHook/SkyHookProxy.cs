@@ -19,12 +19,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
-
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IConfigService _configService;
         private readonly IMetadataProfileService _metadataProfileService;
+
+        private static readonly List<string> nonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
+        private static readonly List<string> skippedTracks = new List<string> { "[data track]" };
 
         private IHttpRequestBuilderFactory _customerRequestBuilder;
 
@@ -327,16 +329,29 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             release.Disambiguation = resource.Disambiguation;
             release.Country = resource.Country;
             release.ReleaseDate = resource.ReleaseDate;
-            release.TrackCount = resource.TrackCount;
-            release.Tracks = resource.Tracks.Select(x => MapTrack(x, artistDict)).ToList();
-            release.Media = resource.Media.Select(MapMedium).ToList();
-            if (!release.Media.Any())
+
+            // Get the complete set of media/tracks returned by the API, adding missing media if necessary
+            var allMedia = resource.Media.Select(MapMedium).ToList();
+            var allTracks = resource.Tracks.Select(x => MapTrack(x, artistDict));
+            if (!allMedia.Any())
             {
-                foreach(int n in release.Tracks.Value.Select(x => x.MediumNumber).Distinct())
+                foreach(int n in allTracks.Select(x => x.MediumNumber).Distinct())
                 {
-                    release.Media.Add(new Medium { Name = "Unknown", Number = n, Format = "Unknown" });
+                    allMedia.Add(new Medium { Name = "Unknown", Number = n, Format = "Unknown" });
                 }
             }
+
+            // Skip non-audio media
+            var audioMediaNumbers = allMedia.Where(x => !nonAudioMedia.Contains(x.Format)).Select(x => x.Number);
+
+            // Get tracks on the audio media and omit any that are skipped
+            release.Tracks = allTracks.Where(x => audioMediaNumbers.Contains(x.MediumNumber) && !skippedTracks.Contains(x.Title)).ToList();
+            release.TrackCount = release.Tracks.Value.Count;
+
+            // Only include the media that contain the tracks we have selected
+            var usedMediaNumbers = release.Tracks.Value.Select(track => track.MediumNumber);
+            release.Media = allMedia.Where(medium => usedMediaNumbers.Contains(medium.Number)).ToList();
+            
             release.Duration = release.Tracks.Value.Sum(x => x.Duration);
 
             return release;

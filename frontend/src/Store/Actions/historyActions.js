@@ -109,8 +109,8 @@ export const defaultState = {
       ]
     },
     {
-      key: 'imported',
-      label: 'Imported',
+      key: 'trackFileImported',
+      label: 'Track Imported',
       filters: [
         {
           key: 'eventType',
@@ -121,11 +121,33 @@ export const defaultState = {
     },
     {
       key: 'failed',
-      label: 'Failed',
+      label: 'Download Failed',
       filters: [
         {
           key: 'eventType',
           value: '4',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'importFailed',
+      label: 'Import Failed',
+      filters: [
+        {
+          key: 'eventType',
+          value: '7',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'downloadImported',
+      label: 'Download Imported',
+      filters: [
+        {
+          key: 'eventType',
+          value: '8',
           type: filterTypes.EQUAL
         }
       ]

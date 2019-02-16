@@ -6,7 +6,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
-    public class SameFileSpecification : IImportDecisionEngineSpecification
+    public class SameFileSpecification : IImportDecisionEngineSpecification<LocalTrack>
     {
         private readonly Logger _logger;
 

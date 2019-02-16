@@ -4,6 +4,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
@@ -22,5 +23,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public Language Language { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
+        public ParsedTrackInfo Tags { get; set; }
     }
 }

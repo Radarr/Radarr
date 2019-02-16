@@ -165,7 +165,7 @@ namespace Marr.Data
         /// </summary>
         public void AddLazyRelationship(Relationship childRelationship)
         {
-            _children.Add(new EntityGraph(childRelationship.RelationshipInfo.EntityType.GetGenericArguments()[0], this, childRelationship));
+            _children.Add(new EntityGraph(childRelationship.RelationshipInfo.EntityType, this, childRelationship));
         }
 
         /// <summary>
@@ -297,16 +297,30 @@ namespace Marr.Data
         private void InitOneToManyChildLists(EntityReference entityRef)
         {
             // Get a reference to the parent's the childrens' OwningLists to the parent entity
-            for (int i = 0; i < Relationships.Count; i++)
+            foreach (var child in _children)
             {
-                Relationship relationship = Relationships[i];
+                Relationship relationship = child._relationship;
                 if (relationship.RelationshipInfo.RelationType == RelationshipTypes.Many)
                 {
                     try
                     {
-                        IList list = (IList)_repos.ReflectionStrategy.CreateInstance(relationship.MemberType);
-                        relationship.Setter(entityRef.Entity, list);
+                        var memberType = relationship.MemberType;
 
+                        object memberInstance;
+                        object childList;
+                        if (typeof(ILazyLoaded).IsAssignableFrom(memberType))
+                        {
+                            childList = _repos.ReflectionStrategy.CreateInstance(memberType.GetGenericArguments()[0]);
+                            memberInstance = Activator.CreateInstance(relationship.MemberType, childList);
+                        }
+                        else
+                        {
+                            childList = _repos.ReflectionStrategy.CreateInstance(memberType);
+                            memberInstance = childList;
+                        }
+                        IList list = (IList) childList;
+                        
+                        relationship.Setter(entityRef.Entity, memberInstance);
                         // Save a reference to each 1-M list
                         entityRef.AddChildList(relationship.Member.Name, list);
                     }

@@ -30,10 +30,10 @@ namespace NzbDrone.Core.Configuration
         FileDateType FileDate { get; set; }
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
-        bool EnableMediaInfo { get; set; }
         bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
         RescanAfterRefreshType RescanAfterRefresh { get; set; }
+        AllowFingerprinting AllowFingerprinting { get; set; }
 
         //Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }

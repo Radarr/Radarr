@@ -8,6 +8,7 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
@@ -104,7 +105,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 if (historyItems.Any())
                 {
                     var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).First();
-                    trackedDownload.State = GetStateFromHistory(firstHistoryItem.EventType);
+                    trackedDownload.State = GetStateFromHistory(firstHistoryItem);
+                    if (firstHistoryItem.EventType == HistoryEventType.AlbumImportIncomplete)
+                    {
+                        var messages = Json.Deserialize<List<TrackedDownloadStatusMessage>>(firstHistoryItem?.Data["statusMessages"]).ToArray();
+                        trackedDownload.Warn(messages);
+                    }
 
                     var grabbedEvent = historyItems.FirstOrDefault(v => v.EventType == HistoryEventType.Grabbed);
                     trackedDownload.Indexer = grabbedEvent?.Data["indexer"];
@@ -186,7 +192,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 existingItem.CanBeRemoved != downloadItem.CanBeRemoved ||
                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
-                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} SonarrStage={4} Episode='{5}' OutputPath={6}.",
+                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} LidarrStage={4} Album='{5}' OutputPath={6}.",
                     downloadItem.DownloadClient, downloadItem.Title,
                     downloadItem.Status, downloadItem.CanBeRemoved ? "" :
                                          downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
@@ -197,17 +203,25 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         }
 
 
-        private static TrackedDownloadStage GetStateFromHistory(HistoryEventType eventType)
+        private static TrackedDownloadStage GetStateFromHistory(NzbDrone.Core.History.History history)
         {
-            switch (eventType)
+            switch (history.EventType)
             {
-                case HistoryEventType.DownloadFolderImported:
+                case HistoryEventType.AlbumImportIncomplete:
+                    return TrackedDownloadStage.ImportFailed;
+                case HistoryEventType.DownloadImported:
                     return TrackedDownloadStage.Imported;
                 case HistoryEventType.DownloadFailed:
                     return TrackedDownloadStage.DownloadFailed;
-                default:
-                    return TrackedDownloadStage.Downloading;
             }
+
+            // Since DownloadComplete is a new event type, we can't assume it exists for old downloads
+            if (history.EventType == HistoryEventType.TrackFileImported)
+            {
+                return DateTime.UtcNow.Subtract(history.Date).TotalSeconds < 60 ? TrackedDownloadStage.Importing : TrackedDownloadStage.Imported;
+            }
+
+            return TrackedDownloadStage.Downloading;
         }
     }
 }

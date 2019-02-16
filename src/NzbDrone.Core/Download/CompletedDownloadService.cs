@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -13,6 +12,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace NzbDrone.Core.Download
 {
@@ -107,11 +107,14 @@ namespace NzbDrone.Core.Download
 
             if (importResults.Empty())
             {
+                trackedDownload.State = TrackedDownloadStage.ImportFailed;
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
                 return;
             }
 
-            if (importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Count))
+            if (importResults.All(c => c.Result == ImportResultType.Imported)
+                || importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount))))
             {
                 trackedDownload.State = TrackedDownloadStage.Imported;
                 _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
@@ -120,14 +123,15 @@ namespace NzbDrone.Core.Download
 
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
+                trackedDownload.State = TrackedDownloadStage.ImportFailed;
                 var statusMessages = importResults
                     .Where(v => v.Result != ImportResultType.Imported)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalTrack.Path), v.Errors))
+                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.Item.Path), v.Errors))
                     .ToArray();
 
                 trackedDownload.Warn(statusMessages);
+                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
             }
-
         }
     }
 }

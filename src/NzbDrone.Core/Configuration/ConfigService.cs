@@ -195,13 +195,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CopyUsingHardlinks", value); }
         }
 
-        public bool EnableMediaInfo
-        {
-            get { return GetValueBoolean("EnableMediaInfo", true); }
-
-            set { SetValue("EnableMediaInfo", value); }
-        }
-
         public bool ImportExtraFiles
         {
             get { return GetValueBoolean("ImportExtraFiles", false); }
@@ -221,6 +214,13 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }
 
             set { SetValue("RescanAfterRefresh", value); }
+        }
+
+        public AllowFingerprinting AllowFingerprinting
+        {
+            get { return GetValueEnum("AllowFingerprinting", AllowFingerprinting.NewFiles); }
+
+            set { SetValue("AllowFingerprinting", value); }
         }
 
         public bool SetPermissionsLinux

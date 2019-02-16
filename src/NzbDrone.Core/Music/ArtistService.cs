@@ -1,14 +1,12 @@
 using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
-using NzbDrone.Core.Organizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Parser;
-using System.Text;
-using System.IO;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.Music
 {
@@ -22,6 +20,7 @@ namespace NzbDrone.Core.Music
         Artist FindById(string spotifyId);
         Artist FindByName(string title);
         Artist FindByNameInexact(string title);
+        List<Artist> GetCandidates(string title);
         void DeleteArtist(int artistId, bool deleteFiles);
         List<Artist> GetAllArtists();
         List<Artist> AllForTag(int tagId);
@@ -39,12 +38,14 @@ namespace NzbDrone.Core.Music
         private readonly ITrackService _trackService;
         private readonly IBuildArtistPaths _artistPathBuilder;
         private readonly Logger _logger;
+        private readonly ICached<List<Artist>> _cache;
 
         public ArtistService(IArtistRepository artistRepository,
                              IArtistMetadataRepository artistMetadataRepository,
                              IEventAggregator eventAggregator,
                              ITrackService trackService,
                              IBuildArtistPaths artistPathBuilder,
+                             ICacheManager cacheManager,
                              Logger logger)
         {
             _artistRepository = artistRepository;
@@ -52,11 +53,13 @@ namespace NzbDrone.Core.Music
             _eventAggregator = eventAggregator;
             _trackService = trackService;
             _artistPathBuilder = artistPathBuilder;
+            _cache = cacheManager.GetCache<List<Artist>>(GetType());
             _logger = logger;
         }
 
         public Artist AddArtist(Artist newArtist)
         {
+            _cache.Clear();
             _artistMetadataRepository.Upsert(newArtist);
             _artistRepository.Insert(newArtist);
             _eventAggregator.PublishEvent(new ArtistAddedEvent(GetArtist(newArtist.Id)));
@@ -66,6 +69,7 @@ namespace NzbDrone.Core.Music
 
         public List<Artist> AddArtists(List<Artist> newArtists)
         {
+            _cache.Clear();
             _artistMetadataRepository.UpsertMany(newArtists);
             _artistRepository.InsertMany(newArtists);
             _eventAggregator.PublishEvent(new ArtistsImportedEvent(newArtists.Select(s => s.Id).ToList()));
@@ -80,6 +84,7 @@ namespace NzbDrone.Core.Music
 
         public void DeleteArtist(int artistId, bool deleteFiles)
         {
+            _cache.Clear();
             var artist = _artistRepository.Get(artistId);
             _artistRepository.Delete(artistId);
             _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles));
@@ -95,48 +100,82 @@ namespace NzbDrone.Core.Music
             return _artistRepository.FindByName(title.CleanArtistName());
         }
 
+        public List<Tuple<Func<Artist, string, double>, string>> ArtistScoringFunctions(string title, string cleanTitle)
+        {
+            Func< Func<Artist, string, double>, string, Tuple<Func<Artist, string, double>, string>> tc = Tuple.Create;
+            var scoringFunctions = new List<Tuple<Func<Artist, string, double>, string>> {
+                tc((a, t) => a.CleanName.FuzzyMatch(t), cleanTitle),
+                tc((a, t) => a.Name.FuzzyMatch(t), title),
+            };
+
+            if (title.StartsWith("The ", StringComparison.CurrentCultureIgnoreCase))
+            {
+                scoringFunctions.Add(tc((a, t) => a.CleanName.FuzzyMatch(t), title.Substring(4).CleanArtistName()));
+            }
+            else
+            {
+                scoringFunctions.Add(tc((a, t) => a.CleanName.FuzzyMatch(t), "the" + cleanTitle));
+            }
+
+            return scoringFunctions;
+        }
+
         public Artist FindByNameInexact(string title)
         {
-            const double fuzzThreshold = 0.8;
-            const double fuzzGap = 0.2;
-            var cleanTitle = Parser.Parser.CleanArtistName(title);
+            var artists = GetAllArtists();
 
-            if (string.IsNullOrEmpty(cleanTitle))
+            foreach (var func in ArtistScoringFunctions(title, title.CleanArtistName()))
             {
-                cleanTitle = title;
-            }
-
-            var sortedArtists = GetAllArtists()
-                .Select(s => new
-                    {
-                        MatchProb = s.CleanName.FuzzyMatch(cleanTitle),
-                        Artist = s
-                    })
-                .ToList()
-                .OrderByDescending(s => s.MatchProb)
-                .ToList();
-
-            if (!sortedArtists.Any())
-            {
-                return null;
-            }
-
-            _logger.Trace("\nFuzzy artist match on '{0}':\n{1}",
-                          cleanTitle,
-                          string.Join("\n", sortedArtists.Select(x => $"{x.Artist.CleanName}: {x.MatchProb}")));
-
-            if (sortedArtists[0].MatchProb > fuzzThreshold
-                && (sortedArtists.Count == 1 || sortedArtists[0].MatchProb - sortedArtists[1].MatchProb > fuzzGap))
-            {
-                return sortedArtists[0].Artist;
+                var results = FindByStringInexact(artists, func.Item1, func.Item2);
+                if (results.Count == 1)
+                {
+                    return results[0];
+                }
             }
 
             return null;
         }
 
+        public List<Artist> GetCandidates(string title)
+        {
+            var artists = GetAllArtists();
+            var output = new List<Artist>();
+            
+            foreach (var func in ArtistScoringFunctions(title, title.CleanArtistName()))
+            {
+                output.AddRange(FindByStringInexact(artists, func.Item1, func.Item2));
+            }
+
+            return output.DistinctBy(x => x.Id).ToList();
+        }
+
+        private List<Artist> FindByStringInexact(List<Artist> artists, Func<Artist, string, double> scoreFunction, string title)
+        {
+            const double fuzzThreshold = 0.8;
+            const double fuzzGap = 0.2;
+
+            var sortedArtists = artists.Select(s => new
+                {
+                    MatchProb = scoreFunction(s, title),
+                    Artist = s
+                })
+                .ToList()
+                .OrderByDescending(s => s.MatchProb)
+                .ToList();
+
+            _logger.Trace("\nFuzzy artist match on '{0}':\n{1}",
+                          title,
+                          string.Join("\n", sortedArtists.Select(x => $"[{x.Artist.Name}] {x.Artist.CleanName}: {x.MatchProb}")));
+
+            return sortedArtists.TakeWhile((x, i) => i == 0 ? true : sortedArtists[i - 1].MatchProb - x.MatchProb < fuzzGap)
+                .TakeWhile((x, i) => x.MatchProb > fuzzThreshold || (i > 0 && sortedArtists[i - 1].MatchProb > fuzzThreshold))
+                .Select(x => x.Artist)
+                .ToList();
+        }
+
         public List<Artist> GetAllArtists()
         {
-            return _artistRepository.All().ToList();
+            return _cache.Get("GetAllArtists", () => _artistRepository.All().ToList(), TimeSpan.FromSeconds(30));
         }
 
         public List<Artist> AllForTag(int tagId)
@@ -167,6 +206,7 @@ namespace NzbDrone.Core.Music
 
         public Artist UpdateArtist(Artist artist)
         {
+            _cache.Clear();
             var storedArtist = GetArtist(artist.Id); // Is it Id or iTunesId?
             var updatedArtist = _artistMetadataRepository.Update(artist);
             updatedArtist = _artistRepository.Update(updatedArtist);
@@ -177,6 +217,7 @@ namespace NzbDrone.Core.Music
 
         public List<Artist> UpdateArtists(List<Artist> artist, bool useExistingRelativeFolder)
         {
+            _cache.Clear();
             _logger.Debug("Updating {0} artist", artist.Count);
 
             foreach (var s in artist)

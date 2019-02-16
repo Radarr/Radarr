@@ -12,6 +12,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Test.Common;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 {
@@ -44,6 +45,14 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             Mocker.GetMock<IRootFolderService>()
                 .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
                 .Returns(_rootFolder);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                .Setup(v => v.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>()))
+                .Returns(new List<ImportDecision<LocalTrack>>());
+
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(v => v.GetFilesByArtist(It.IsAny<int>()))
+                .Returns(new List<TrackFile>());
         }
 
         private void GivenRootFolder(params string[] subfolders)

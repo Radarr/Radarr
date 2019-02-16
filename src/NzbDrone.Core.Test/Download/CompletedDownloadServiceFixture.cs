@@ -17,6 +17,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace NzbDrone.Core.Test.Download
 {
@@ -61,12 +62,25 @@ namespace NzbDrone.Core.Test.Download
 
         }
 
+        private Album CreateAlbum(int id, int trackCount)
+        {
+            return new Album {
+                Id = id,
+                AlbumReleases = new List<AlbumRelease> {
+                    new AlbumRelease {
+                        Monitored = true,
+                        TrackCount = trackCount
+                    }
+                }
+            };
+        }
+
         private RemoteAlbum BuildRemoteAlbum()
         {
             return new RemoteAlbum
             {
                 Artist = new Artist(),
-                Albums = new List<Album> { new Album { Id = 1 } }
+                Albums = new List<Album> { CreateAlbum(1, 1) }
             };
         }
 
@@ -84,13 +98,14 @@ namespace NzbDrone.Core.Test.Download
                 .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                 .Returns(new List<ImportResult>
                     {
-                        new ImportResult(new ImportDecision(new LocalTrack() { Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic() }))
+                        new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack { Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic() }))
                     });
         }
 
 
         private void GivenABadlyNamedDownload()
         {
+            _trackedDownload.RemoteAlbum.Artist = null;
             _trackedDownload.DownloadItem.DownloadId = "1234";
             _trackedDownload.DownloadItem.Title = "Droned Pilot"; // Set a badly named download
             Mocker.GetMock<IHistoryService>()
@@ -162,18 +177,49 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_mark_as_imported_if_all_episodes_were_imported()
+        public void should_mark_as_imported_if_all_tracks_were_imported()
         {
+            _trackedDownload.RemoteAlbum.Albums = new List<Album>
+            {
+                CreateAlbum(1, 2)
+            };
+
             Mocker.GetMock<IDownloadedTracksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
                                new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
 
                                 new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
+                                       new LocalTrack {Path = @"C:\TestPath\Droned.S01E02.mkv".AsOsAgnostic()}))
+                           });
+
+            Subject.Process(_trackedDownload);
+
+            AssertCompletedDownload();
+        }
+
+        [Test]
+        public void should_mark_as_imported_if_all_tracks_were_imported_but_album_incomplete()
+        {
+            _trackedDownload.RemoteAlbum.Albums = new List<Album>
+            {
+                CreateAlbum(1, 3)
+            };
+
+            Mocker.GetMock<IDownloadedTracksImportService>()
+                  .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
+                  .Returns(new List<ImportResult>
+                           {
+                               new ImportResult(
+                                   new ImportDecision<LocalTrack>(
+                                       new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+
+                                new ImportResult(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E02.mkv".AsOsAgnostic()}))
                            });
 
@@ -190,11 +236,11 @@ namespace NzbDrone.Core.Test.Download
                   .Returns(new List<ImportResult>
                            {
                                new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}, new Rejection("Rejected!")), "Test Failure"),
 
                                 new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E02.mkv".AsOsAgnostic()},new Rejection("Rejected!")), "Test Failure")
                            });
 
@@ -203,22 +249,22 @@ namespace NzbDrone.Core.Test.Download
             Mocker.GetMock<IEventAggregator>()
                 .Verify(v => v.PublishEvent<DownloadCompletedEvent>(It.IsAny<DownloadCompletedEvent>()), Times.Never());
 
-            AssertNoCompletedDownload();
+            AssertImportIncomplete();
         }
 
         [Test]
-        public void should_not_mark_as_imported_if_no_episodes_were_parsed()
+        public void should_not_mark_as_imported_if_no_tracks_were_parsed()
         {
             Mocker.GetMock<IDownloadedTracksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
                                new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}, new Rejection("Rejected!")), "Test Failure"),
 
                                 new ImportResult(
-                                   new ImportDecision(
+                                   new ImportDecision<LocalTrack>(
                                        new LocalTrack {Path = @"C:\TestPath\Droned.S01E02.mkv".AsOsAgnostic()},new Rejection("Rejected!")), "Test Failure")
                            });
 
@@ -226,7 +272,7 @@ namespace NzbDrone.Core.Test.Download
 
             Subject.Process(_trackedDownload);
 
-            AssertNoCompletedDownload();
+            AssertImportIncomplete();
         }
 
         [Test]
@@ -236,32 +282,34 @@ namespace NzbDrone.Core.Test.Download
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure"),
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure")
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure"),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure")
                            });
 
 
             Subject.Process(_trackedDownload);
 
-            AssertNoCompletedDownload();
+            AssertImportIncomplete();
         }
 
         [Test]
-        public void should_mark_as_imported_if_all_episodes_were_imported_but_extra_files_were_not()
+        public void should_mark_as_imported_if_all_tracks_were_imported_but_extra_files_were_not()
         {
             GivenArtistMatch();
 
             _trackedDownload.RemoteAlbum.Albums = new List<Album>
             {
-                new Album()
+                CreateAlbum(1, 3)
             };
 
             Mocker.GetMock<IDownloadedTracksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
-                               new ImportResult(new ImportDecision(new LocalTrack{Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure")
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}), "Test Failure")
                            });
 
             Subject.Process(_trackedDownload);
@@ -270,28 +318,30 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_mark_as_failed_if_some_of_episodes_were_not_imported()
+        public void should_mark_as_failed_if_some_tracks_were_not_imported()
         {
             _trackedDownload.RemoteAlbum.Albums = new List<Album>
             {
-                new Album(),
-                new Album(),
-                new Album()
+                CreateAlbum(1, 1),
+                CreateAlbum(1, 2),
+                CreateAlbum(1, 1)
             };
 
             Mocker.GetMock<IDownloadedTracksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
-                               new ImportResult(new ImportDecision(new LocalTrack{Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure"),
-                               new ImportResult(new ImportDecision(new LocalTrack{Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}),"Test Failure")
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()})),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}), "Test Failure"),
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}), "Test Failure")
                            });
 
 
             Subject.Process(_trackedDownload);
 
-            AssertNoCompletedDownload();
+            AssertImportIncomplete();
         }
 
         [Test]
@@ -303,7 +353,7 @@ namespace NzbDrone.Core.Test.Download
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
                            });
 
             Mocker.GetMock<IArtistService>()
@@ -324,7 +374,7 @@ namespace NzbDrone.Core.Test.Download
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
                            });
 
             Mocker.GetMock<IHistoryService>()
@@ -338,6 +388,7 @@ namespace NzbDrone.Core.Test.Download
         [Test]
         public void should_not_import_when_there_is_a_title_mismatch()
         {
+            _trackedDownload.RemoteAlbum.Artist = null;
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
                   .Returns((Artist)null);
@@ -352,14 +403,14 @@ namespace NzbDrone.Core.Test.Download
         {
             _trackedDownload.RemoteAlbum.Albums = new List<Album>
             {
-                new Album()
+                CreateAlbum(0, 1)
             };
 
             Mocker.GetMock<IDownloadedTracksImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
+                               new ImportResult(new ImportDecision<LocalTrack>(new LocalTrack {Path = @"C:\TestPath\Droned.S01E01.mkv".AsOsAgnostic()}))
                            });
 
             Subject.Process(_trackedDownload, true);
@@ -395,6 +446,14 @@ namespace NzbDrone.Core.Test.Download
         {
             Mocker.GetMock<IDownloadedTracksImportService>()
                 .Verify(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()), Times.Never());
+
+            AssertNoCompletedDownload();
+        }
+
+        private void AssertImportIncomplete()
+        {
+            Mocker.GetMock<IEventAggregator>()
+                .Verify(v => v.PublishEvent(It.IsAny<AlbumImportIncompleteEvent>()), Times.Once());
 
             AssertNoCompletedDownload();
         }

@@ -5,7 +5,7 @@ outputFolderLinux='./_output_linux'
 outputFolderMacOS='./_output_macos'
 outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
-testSearchPattern='*.Test/bin/x86/Release'
+testSearchPattern='*.Test/bin/x86/Release/*'
 sourceFolder='./src'
 slnFile=$sourceFolder/Lidarr.sln
 updateFolder=$outputFolder/Lidarr.Update
@@ -97,7 +97,11 @@ LintUI()
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'
-    CheckExitCode yarn stylelint
+    if [ $runtime = "dotnet" ] ; then
+        CheckExitCode yarn stylelint-windows
+    else
+        CheckExitCode yarn stylelint-linux
+    fi
     ProgressEnd 'Stylelint'
 }
 
@@ -171,12 +175,9 @@ PackageMono()
     rm -f $outputFolderLinux/ServiceUninstall.*
     rm -f $outputFolderLinux/ServiceInstall.*
 
-    echo "Removing native windows binaries Sqlite, MediaInfo"
+    echo "Removing native windows binaries Sqlite, fpcalc"
     rm -f $outputFolderLinux/sqlite3.*
-    rm -f $outputFolderLinux/MediaInfo.*
-
-    echo "Adding Lidarr.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $outputFolderLinux
+    rm -f $outputFolderLinux/fpcalc*
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderLinux
@@ -209,12 +210,10 @@ PackageMacOS()
 
     echo "Copying Binaries"
     cp -r $outputFolderLinux/* $outputFolderMacOS
+    cp $outputFolder/fpcalc $outputFolderMacOS
 
     echo "Adding sqlite dylibs"
     cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOS
-
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOS
 
     ProgressEnd 'Creating MacOS Package'
 }
@@ -234,12 +233,10 @@ PackageMacOSApp()
 
     echo "Copying Binaries"
     cp -r $outputFolderLinux/* $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+    cp $outputFolder/fpcalc $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
 
     echo "Adding sqlite dylibs"
     cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
-
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
 
     echo "Removing Update Folder"
     rm -r $outputFolderMacOSApp/Lidarr.app/Contents/MacOS/Lidarr.Update
@@ -254,15 +251,17 @@ PackageTests()
     rm -rf $testPackageFolder
     mkdir $testPackageFolder
 
-    find $sourceFolder -path $testSearchPattern -exec cp -r -u -T "{}" $testPackageFolder \;
+    find . -maxdepth 6 -path $testSearchPattern -exec cp -r "{}" $testPackageFolder \;
 
     if [ $runtime = "dotnet" ] ; then
         $nuget install NUnit.ConsoleRunner -Version 3.7.0 -Output $testPackageFolder
     else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.7.0 -Output $testPackageFolder
+        nuget install NUnit.ConsoleRunner -Version 3.7.0 -Output $testPackageFolder
     fi
 
     cp $outputFolder/*.dll $testPackageFolder
+    cp $outputFolder/*.exe $testPackageFolder
+    cp $outputFolder/fpcalc $testPackageFolder
     cp ./*.sh $testPackageFolder
 
     echo "Creating MDBs for tests"
@@ -281,6 +280,9 @@ PackageTests()
     echo "Copying CurlSharp libraries"
     cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
+    echo "Copying dylibs"
+    cp -r $outputFolderMacOS/*.dylib $testPackageFolder
+
     ProgressEnd 'Creating Test Package'
 }
 
@@ -293,6 +295,9 @@ CleanupWindowsPackage()
 
     echo "Adding Lidarr.Windows to UpdatePackage"
     cp $outputFolder/Lidarr.Windows.* $updateFolder
+
+    echo "Removing MacOS fpcalc"
+    rm $outputFolder/fpcalc
 
     ProgressEnd 'Cleaning Windows Package'
 }
