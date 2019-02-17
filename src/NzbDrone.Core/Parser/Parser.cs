@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Instrumentation;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
+using NLog;
+using NzbDrone.Common.Instrumentation;
+#if !LIBRARY
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Movies;
 using TinyIoC;
+#endif
 
 namespace NzbDrone.Core.Parser
 {
@@ -461,27 +463,6 @@ namespace NzbDrone.Core.Parser
                 });
 
             return title;
-        }
-
-        private static SeriesTitleInfo GetSeriesTitleInfo(string title)
-        {
-            var seriesTitleInfo = new SeriesTitleInfo();
-            seriesTitleInfo.Title = title;
-
-            var match = YearInTitleRegex.Match(title);
-
-            if (!match.Success)
-            {
-                seriesTitleInfo.TitleWithoutYear = title;
-            }
-
-            else
-            {
-                seriesTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
-                seriesTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
-            }
-
-            return seriesTitleInfo;
         }
 
         private static ParsedMovieInfo ParseMovieMatchCollection(MatchCollection matchCollection)

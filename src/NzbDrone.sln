@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogentriesNLog", "Logentrie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurlSharp", "ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj", "{74420A79-CC16-442C-8B1E-7C1B913844F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsingLibrary", "ParsingLibrary\ParsingLibrary.csproj", "{BAC762EF-4627-49C8-BC99-EB9D20682FA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -276,6 +278,12 @@ Global
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Mono|x86.Build.0 = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.Build.0 = Release|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Debug|x86.Build.0 = Debug|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Mono|x86.ActiveCfg = Debug|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Mono|x86.Build.0 = Debug|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Release|x86.ActiveCfg = Release|Any CPU
+		{BAC762EF-4627-49C8-BC99-EB9D20682FA4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
