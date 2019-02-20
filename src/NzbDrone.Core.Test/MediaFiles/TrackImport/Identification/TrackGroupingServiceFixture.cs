@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
         protected override string GetString(MemberInfo memberInfo)
         {
-            int length = generator.Next(0, 100);
+            int length = generator.Next(1, 100);
 
             char[] chars = new char[length];
 
@@ -102,6 +102,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             return outp;
         }
 
+        [Repeat(100)]
         private List<LocalTrack> GivenVaTracks(string root, string album, int count)
         {
             var settings = new BuilderSettings();
@@ -135,7 +136,9 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
         }
 
+        // GivenVaTracks uses random names so repeat multiple times to try to prompt any intermittent failures
         [Test]
+        [Repeat(100)]
         public void all_different_artists_is_various_artists()
         {
             var tracks = GivenVaTracks(@"C:\music\incoming".AsOsAgnostic(), "album", 10);
@@ -153,6 +156,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         }
 
         [Test]
+        [Repeat(100)]
         public void mostly_different_artists_is_various_artists()
         {
             var dir = @"C:\music\incoming".AsOsAgnostic();
@@ -170,6 +174,16 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         {
             var tracks = GivenTracks(@"C:\music\incoming".AsOsAgnostic(), artist, "album", 10);
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(true);
+        }
+
+        [TestCase("Va?!")]
+        [TestCase("Va Va Voom")]
+        [TestCase("V.A. Jr.")]
+        [TestCase("Ca Va")]
+        public void va_in_artist_name_is_not_various_artists(string artist)
+        {
+            var tracks = GivenTracks(@"C:\music\incoming".AsOsAgnostic(), artist, "album", 10);
+            TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
         }
 
         [TestCase(1)]
@@ -308,6 +322,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         }
 
         [Test]
+        [Repeat(100)]
         public void should_group_va_release()
         {
             var tracks = GivenVaTracks(@"C:\music\incoming".AsOsAgnostic(), "album", 10);
@@ -364,6 +379,30 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
             output[0].LocalTracks.Count.Should().Be(12);
+        }
+
+        [Test]
+        public void should_cope_with_one_album_in_subfolder_of_another()
+        {
+            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(),
+                                     "artist1", "album", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\album\\anotheralbum".AsOsAgnostic(),
+                                        "artist2", "album2", 10));
+
+            TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
+            TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
+
+            var output = Subject.GroupTracks(tracks);
+
+            foreach(var group in output)
+            {
+                TestLogger.Debug($"*** group {group} ***");
+                TestLogger.Debug(string.Join("\n", group.LocalTracks.Select(x => x.Path)));
+            }
+
+            output.Count.Should().Be(2);
+            output[0].LocalTracks.Count.Should().Be(10);
+            output[1].LocalTracks.Count.Should().Be(10);
         }
     }
 }

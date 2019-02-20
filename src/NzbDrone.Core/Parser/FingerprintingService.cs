@@ -13,6 +13,7 @@ using System;
 using NzbDrone.Common.EnvironmentInfo;
 using System.Threading;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Parser
 {
@@ -337,19 +338,25 @@ namespace NzbDrone.Core.Parser
             httpRequest.SetContent(Compress(Encoding.UTF8.GetBytes(sb.ToString())));
             httpRequest.Headers.Add("Content-Encoding", "gzip");
             httpRequest.Headers.ContentType = "application/x-www-form-urlencoded";
+            httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Post<LookupResponse>(httpRequest);
-
-            if (httpResponse.HasHttpError)
-            {
-                throw new HttpException(httpRequest, httpResponse);
-            }
-
             var response = httpResponse.Resource;
 
-            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            // The API will give errors if fingerprint isn't found or is invalid.
+            // We don't want to stop the entire import because the fingerprinting failed
+            // so just log and return.
+            if (httpResponse.HasHttpError || (response != null && response.Status != "ok"))
             {
-                _logger.Debug("Webservice error: {0}", response.ErrorMessage);
+                if (response != null && response.Error != null)
+                {
+                    _logger.Debug($"Webservice error {response.Error.Code}: {response.Error.Message}");
+                }
+                else
+                {
+                    _logger.Warn("HTTP Error - {0}", httpResponse);
+                }
+                
                 return;
             }
 
@@ -373,13 +380,24 @@ namespace NzbDrone.Core.Parser
             }
 
             _logger.Debug("Fingerprinting complete.");
+
+            var SerializerSettings = Json.GetSerializerSettings();
+            SerializerSettings.Formatting = Formatting.None;
+            var output = new { Fingerprints = toLookup.Select(x => new { Path = x.Item1.Path, AcoustIdResults = x.Item1.AcoustIdResults }) };
+            _logger.Debug($"*** FingerprintingService TestCaseGenerator ***\n{JsonConvert.SerializeObject(output, SerializerSettings)}");
         }
 
         private class LookupResponse
         {
-            public string StatusCode { get; set; }
-            public string ErrorMessage { get; set; }
+            public string Status { get; set; }
+            public LookupError Error { get; set; }
             public List<LookupResultListItem> Fingerprints { get; set; }
+        }
+
+        private class LookupError
+        {
+            public string Message { get; set; }
+            public int Code { get; set; }
         }
 
         private class LookupResultListItem

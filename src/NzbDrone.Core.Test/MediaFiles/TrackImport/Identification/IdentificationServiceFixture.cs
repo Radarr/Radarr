@@ -17,6 +17,11 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
+using System.Collections.Generic;
+using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
@@ -62,23 +67,45 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             Mocker.GetMock<IAddArtistValidator>().Setup(x => x.Validate(It.IsAny<Artist>())).Returns(new ValidationResult());
 
             Mocker.SetConstant<ITrackGroupingService>(Mocker.Resolve<TrackGroupingService>());
+
+            // set up the augmenters
+            List<IAggregate<LocalAlbumRelease>> aggregators = new List<IAggregate<LocalAlbumRelease>> {
+                Mocker.Resolve<AggregateFilenameInfo>()
+            };
+            Mocker.SetConstant<IEnumerable<IAggregate<LocalAlbumRelease>>>(aggregators);
+            Mocker.SetConstant<IAugmentingService>(Mocker.Resolve<AugmentingService>());
+            
             Subject = Mocker.Resolve<IdentificationService>();
 
         }
 
         private void GivenMetadataProfile(MetadataProfile profile)
         {
-            Mocker.GetMock<IMetadataProfileService>().Setup(x => x.Get(It.IsAny<int>())).Returns(profile);            
+            Mocker.GetMock<IMetadataProfileService>().Setup(x => x.Get(profile.Id)).Returns(profile);
         }
 
-        private Artist GivenArtist(string foreignArtistId)
+        private List<Artist> GivenArtists(List<ArtistTestCase> artists)
+        {
+            var outp = new List<Artist>();
+            for (int i = 0; i < artists.Count; i++)
+            {
+                var meta = artists[i].MetadataProfile;
+                meta.Id = i + 1;
+                GivenMetadataProfile(meta);
+                outp.Add(GivenArtist(artists[i].Artist, meta.Id));
+            }
+
+            return outp;
+        }
+
+        private Artist GivenArtist(string foreignArtistId, int metadataProfileId)
         {
             var artist = _addArtistService.AddArtist(new Artist {
                     Metadata = new ArtistMetadata {
                         ForeignArtistId = foreignArtistId
                     },
                     Path = @"c:\test".AsOsAgnostic(),
-                    MetadataProfileId = 1
+                    MetadataProfileId = metadataProfileId
                 });
 
             var command = new RefreshArtistCommand{
@@ -91,6 +118,18 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             return _artistService.FindById(foreignArtistId);
         }
 
+        private void GivenFingerprints(List<AcoustIdTestCase> fingerprints)
+        {
+            Mocker.GetMock<IConfigService>().Setup(x => x.AllowFingerprinting).Returns(AllowFingerprinting.AllFiles);
+            Mocker.GetMock<IFingerprintingService>().Setup(x => x.IsSetup()).Returns(true);
+
+            Mocker.GetMock<IFingerprintingService>()
+                .Setup(x => x.Lookup(It.IsAny<List<LocalTrack>>(), It.IsAny<double>()))
+                .Callback((List<LocalTrack> track, double thres) => {
+                        track.ForEach(x => x.AcoustIdResults = fingerprints.SingleOrDefault(f => f.Path == x.Path).AcoustIdResults);
+                    });
+        }
+
         public static class IdTestCaseFactory
         {
             // for some reason using Directory.GetFiles causes nUnit to error
@@ -99,7 +138,9 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 "PreferMissingToBadMatch.json",
                 "InconsistentTyposInAlbum.json",
                 "SucceedWhenManyAlbumsHaveSameTitle.json",
-                "PenalizeUnknownMedia.json"
+                "PenalizeUnknownMedia.json",
+                "CorruptFile.json",
+                "FilesWithoutTags.json"
             };
 
             public static IEnumerable TestCases
@@ -122,19 +163,25 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Identification", file);
             var testcase = JsonConvert.DeserializeObject<IdTestCase>(File.ReadAllText(path));
 
-            GivenMetadataProfile(testcase.MetadataProfile);
-            
-            var artist = GivenArtist(testcase.Artist);
+            var artists = GivenArtists(testcase.LibraryArtists);
+            var specifiedArtist = artists.SingleOrDefault(x => x.Metadata.Value.ForeignArtistId == testcase.Artist);
 
             var tracks = testcase.Tracks.Select(x => new LocalTrack {
                     Path = x.Path.AsOsAgnostic(),
                     FileTrackInfo = x.FileTrackInfo
                 }).ToList();
 
-            var result = Subject.Identify(tracks, artist, null, null, testcase.NewDownload, testcase.SingleRelease);
+            if (testcase.Fingerprints != null)
+            {
+                GivenFingerprints(testcase.Fingerprints);
+            }
+
+            var result = Subject.Identify(tracks, specifiedArtist, null, null, testcase.NewDownload, testcase.SingleRelease);
+
+            TestLogger.Debug($"Found releases:\n{result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease?.ForeignReleaseId).ToJson()}");
 
             result.Should().HaveCount(testcase.ExpectedMusicBrainzReleaseIds.Count);
-            result.Select(x => x.AlbumRelease.ForeignReleaseId).ShouldBeEquivalentTo(testcase.ExpectedMusicBrainzReleaseIds);
+            result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease.ForeignReleaseId).ShouldBeEquivalentTo(testcase.ExpectedMusicBrainzReleaseIds);
         }
     }
 }

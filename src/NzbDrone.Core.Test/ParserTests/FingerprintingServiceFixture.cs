@@ -128,5 +128,58 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             files[0].AcoustIdResults.Should().BeNull();
             files[1].AcoustIdResults.Should().BeNull();
         }
+
+        [Test]
+        public void should_not_fail_if_duration_reported_as_zero()
+        {
+            UseRealHttp();
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "missing.mp3");
+            var localTrack = new LocalTrack { Path = path };
+            var acoustId = new AcoustId {
+                Duration = 0,
+                Fingerprint = "fingerprint"
+            };
+
+            Subject.Lookup(new List<Tuple<LocalTrack, AcoustId>> { Tuple.Create(localTrack, acoustId)}, 0.5);
+        }
+
+        [Test]
+        public void should_not_throw_if_fingerprint_invalid()
+        {
+            UseRealHttp();
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "missing.mp3");
+            var localTrack = new LocalTrack { Path = path };
+            var acoustId = new AcoustId {
+                Duration = 1,
+                Fingerprint = "fingerprint"
+            };
+
+            var files = new List<Tuple<LocalTrack, AcoustId>> { Tuple.Create(localTrack, acoustId)};
+            Subject.Lookup(files, 0.5);
+            files[0].Item1.AcoustIdResults.Should().BeNull();
+        }
+
+        [Test]
+        public void should_not_fail_for_some_invalid_fingerprints()
+        {
+            UseRealHttp();
+
+            var files = new [] {
+                "nin.mp3",
+                "nin.flac"
+            }.Select(x => new LocalTrack { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
+
+            var idpairs = files.Select(x => Tuple.Create(x, Subject.GetFingerprint(x.Path))).ToList();
+
+            idpairs.Add(Tuple.Create(new LocalTrack(), new AcoustId { Duration = 1, Fingerprint = "fingerprint" }));
+            
+            Subject.Lookup(idpairs, 0.5);
+
+            idpairs[0].Item1.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
+            idpairs[1].Item1.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
+            idpairs[2].Item1.AcoustIdResults.Should().BeNull();
+        }
     }
 }

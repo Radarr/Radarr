@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .With(x => x.RecordingMBId = track.ForeignRecordingId)
                 .With(x => x.Country = IsoCountries.Find("US"))
                 .With(x => x.Label = release.Label.First())
-                .With(x => x.Year = (uint)release.Album.Value.ReleaseDate.Value.Year)
+                .With(x => x.Year = (uint)(release.Album.Value.ReleaseDate?.Year ?? 0))
                 .Build();
             
             var localTrack = Builder<LocalTrack>
@@ -211,6 +211,54 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var mapping = GivenMapping(localTracks, tracks);
 
             Subject.AlbumReleaseDistance(localTracks, release, mapping).NormalizedDistance().Should().Be(0.0);
+        }
+
+        private static DateTime?[] dates = new DateTime?[] { null, new DateTime(2007, 1, 1), DateTime.Now };
+
+        [TestCaseSource("dates")]
+        public void test_null_album_year(DateTime? releaseDate)
+        {
+            var tracks = GivenTracks(3);
+            var release = GivenAlbumRelease("album", tracks);
+            var localTracks = GivenLocalTracks(tracks, release);
+            var mapping = GivenMapping(localTracks, tracks);
+
+            release.Album.Value.ReleaseDate = null;
+            release.ReleaseDate = releaseDate;
+
+            var result = Subject.AlbumReleaseDistance(localTracks, release, mapping).NormalizedDistance();
+
+            if (!releaseDate.HasValue || (localTracks[0].FileTrackInfo.Year == (releaseDate?.Year ?? 0)))
+            {
+                result.Should().Be(0.0);
+            }
+            else
+            {
+                result.Should().NotBe(0.0);
+            }
+        }
+
+        [TestCaseSource("dates")]
+        public void test_null_release_year(DateTime? albumDate)
+        {
+            var tracks = GivenTracks(3);
+            var release = GivenAlbumRelease("album", tracks);
+            var localTracks = GivenLocalTracks(tracks, release);
+            var mapping = GivenMapping(localTracks, tracks);
+
+            release.Album.Value.ReleaseDate = albumDate;
+            release.ReleaseDate = null;
+
+            var result = Subject.AlbumReleaseDistance(localTracks, release, mapping).NormalizedDistance();
+
+            if (!albumDate.HasValue || (localTracks[0].FileTrackInfo.Year == (albumDate?.Year ?? 0)))
+            {
+                result.Should().Be(0.0);
+            }
+            else
+            {
+                result.Should().NotBe(0.0);
+            }
         }
     }
 }

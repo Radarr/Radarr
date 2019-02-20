@@ -107,26 +107,23 @@ namespace NzbDrone.Common.Test.CacheTests
         public void should_clear_expired_when_they_expire()
         {
             int hitCount = 0;
+            _cachedString = new Cached<string>();
 
-            Func<string> testfunc = () => {
-                hitCount++;
-                return null;
-            };
+            for (int i = 0; i < 10; i++)
+            {
+                _cachedString.Get("key", () =>
+                    {
+                        hitCount++;
+                        return null;
+                    }, TimeSpan.FromMilliseconds(300));
 
-            _cachedString.Values.Should().HaveCount(0);
-            
-            _cachedString.Get("key", testfunc, TimeSpan.FromMilliseconds(300));
-
-            Thread.Sleep(100);
-            
-            _cachedString.Values.Should().HaveCount(1);
-
-            _cachedString.Get("key", testfunc, TimeSpan.FromMilliseconds(300));
+                Thread.Sleep(100);
+            }
 
             Thread.Sleep(1000);
 
+            hitCount.Should().BeInRange(3, 6);
             _cachedString.Values.Should().HaveCount(0);
-            hitCount.Should().Be(1);
         }
     }
 

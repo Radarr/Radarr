@@ -2,150 +2,154 @@
   "expectedMusicBrainzReleaseIds": [
     "134f5f3e-8b5f-46ab-809d-8c0dbc794f3e"
   ],
-  "metadataProfile": {
-    "name": "Standard",
-    "primaryAlbumTypes": [
-      {
-        "primaryAlbumType": {
-          "id": 2,
-          "name": "Single"
-        },
-        "allowed": false
-      },
-      {
-        "primaryAlbumType": {
-          "id": 4,
-          "name": "Other"
-        },
-        "allowed": false
-      },
-      {
-        "primaryAlbumType": {
-          "id": 1,
-          "name": "EP"
-        },
-        "allowed": false
-      },
-      {
-        "primaryAlbumType": {
-          "id": 3,
-          "name": "Broadcast"
-        },
-        "allowed": false
-      },
-      {
-        "primaryAlbumType": {
-          "id": 0,
-          "name": "Album"
-        },
-        "allowed": true
+  "libraryArtists": [
+    {
+      "artist": "c296e10c-110a-4103-9e77-47bfebb7fb2e",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
       }
-    ],
-    "secondaryAlbumTypes": [
-      {
-        "secondaryAlbumType": {
-          "id": 0,
-          "name": "Studio"
-        },
-        "allowed": true
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 3,
-          "name": "Spokenword"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 2,
-          "name": "Soundtrack"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 7,
-          "name": "Remix"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 9,
-          "name": "Mixtape/Street"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 6,
-          "name": "Live"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 4,
-          "name": "Interview"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 8,
-          "name": "DJ-mix"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 10,
-          "name": "Demo"
-        },
-        "allowed": false
-      },
-      {
-        "secondaryAlbumType": {
-          "id": 1,
-          "name": "Compilation"
-        },
-        "allowed": false
-      }
-    ],
-    "releaseStatuses": [
-      {
-        "releaseStatus": {
-          "id": 3,
-          "name": "Pseudo"
-        },
-        "allowed": false
-      },
-      {
-        "releaseStatus": {
-          "id": 1,
-          "name": "Promotion"
-        },
-        "allowed": false
-      },
-      {
-        "releaseStatus": {
-          "id": 0,
-          "name": "Official"
-        },
-        "allowed": true
-      },
-      {
-        "releaseStatus": {
-          "id": 2,
-          "name": "Bootleg"
-        },
-        "allowed": false
-      }
-    ],
-    "id": 1
-  },
-  "artist": "c296e10c-110a-4103-9e77-47bfebb7fb2e",
+    }
+  ],
   "newDownload": false,
   "singleRelease": false,
   "tracks": [

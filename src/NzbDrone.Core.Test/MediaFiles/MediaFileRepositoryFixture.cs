@@ -53,13 +53,13 @@ namespace NzbDrone.Core.Test.MediaFiles
             
             var track = Builder<Track>.CreateListOfSize(10)
                 .TheFirst(1)
+                .With(a => a.TrackFileId = files[0].Id)
+                .TheNext(1)
                 .With(a => a.TrackFileId = files[1].Id)
                 .TheNext(1)
                 .With(a => a.TrackFileId = files[2].Id)
                 .TheNext(1)
                 .With(a => a.TrackFileId = files[3].Id)
-                .TheNext(1)
-                .With(a => a.TrackFileId = files[4].Id)
                 .TheNext(6)
                 .With(a => a.TrackFileId = 0)
                 .All()
@@ -115,9 +115,15 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             foreach (var file in files)
             {
+                file.Tracks.IsLoaded.Should().BeTrue();
+                file.Tracks.Value.Should().NotBeNull();
+                file.Tracks.Value.Should().NotBeEmpty();
                 file.Album.IsLoaded.Should().BeTrue();
+                file.Album.Value.Should().NotBeNull();
                 file.Artist.IsLoaded.Should().BeTrue();
+                file.Artist.Value.Should().NotBeNull();
                 file.Artist.Value.Metadata.IsLoaded.Should().BeTrue();
+                file.Artist.Value.Metadata.Value.Should().NotBeNull();
             }
         }
     }

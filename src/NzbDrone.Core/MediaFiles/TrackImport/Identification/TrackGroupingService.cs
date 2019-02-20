@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Parser.Model;
@@ -207,7 +208,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
                 // reset and put current folder into output
                 subdirRegex = null;
-                output.AddRange(tracks.Where(x => x.Path.StartsWith(folder)));
+                output.AddRange(tracks.Where(x => PathEqualityComparer.Instance.Equals(Path.GetDirectoryName(x.Path), folder)));
 
                 // check if the start of another multi disc match
                 foreach (var marker in multiDiscMarkers)

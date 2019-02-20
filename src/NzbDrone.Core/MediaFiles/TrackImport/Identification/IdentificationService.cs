@@ -70,7 +70,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 });
             var options = new IdTestCase {
                 ExpectedMusicBrainzReleaseIds = new List<string> {"expected-id-1", "expected-id-2", "..."},
-                MetadataProfile = artist?.MetadataProfile.Value,
+                LibraryArtists = new List<ArtistTestCase> {
+                    new ArtistTestCase {
+                        Artist = artist?.Metadata.Value.ForeignArtistId ?? "expected-artist-id (dev: don't forget to add metadata profile)",
+                        MetadataProfile = artist?.MetadataProfile.Value
+                    }
+                },
                 Artist = artist?.Metadata.Value.ForeignArtistId,
                 Album = album?.ForeignAlbumId,
                 Release = release?.ForeignReleaseId,
@@ -400,8 +405,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 result.Mapping.Add(localTracks[pair.Item1], Tuple.Create(mbTracks[pair.Item2], distances[pair.Item1, pair.Item2]));
                 _logger.Trace("Mapped {0} to {1}, dist: {2}", localTracks[pair.Item1], mbTracks[pair.Item2], costs[pair.Item1, pair.Item2]);
             }
+            
             result.LocalExtra = localTracks.Except(result.Mapping.Keys).ToList();
+            _logger.Trace($"Unmapped files:\n{string.Join("\n", result.LocalExtra)}");
+            
             result.MBExtra = mbTracks.Except(result.Mapping.Values.Select(x => x.Item1)).ToList();
+            _logger.Trace($"Missing tracks:\n{string.Join("\n", result.MBExtra)}");
 
             return result;
         }
@@ -435,7 +444,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 dist.AddString("track_artist", localTrack.FileTrackInfo.ArtistTitle, mbTrack.ArtistMetadata.Value.Name);
             }
 
-            if (localTrack.FileTrackInfo.TrackNumbers[0] > 0 && mbTrack.AbsoluteTrackNumber > 0)
+            if (localTrack.FileTrackInfo.TrackNumbers.FirstOrDefault() > 0 && mbTrack.AbsoluteTrackNumber > 0)
             {
                 dist.AddBool("track_index", TrackIndexIncorrect(localTrack, mbTrack, totalTrackNumber));
             }
@@ -489,21 +498,22 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             // Year
             var localYear = MostCommon(localTracks.Select(x => x.FileTrackInfo.Year));
-            if (localYear > 0 && release.Album.Value.ReleaseDate.HasValue)
+            if (localYear > 0 && (release.Album.Value.ReleaseDate.HasValue || release.ReleaseDate.HasValue))
             {
-                var albumYear = release.Album.Value.ReleaseDate.Value.Year;
-                var releaseYear = release.ReleaseDate.Value.Year;
+                var albumYear = release.Album.Value.ReleaseDate?.Year ?? 0;
+                var releaseYear = release.ReleaseDate?.Year ?? 0;
                 if (localYear == albumYear || localYear == releaseYear)
                 {
                     dist.Add("year", 0.0);
                 }
                 else
                 {
-                    var diff = Math.Abs(localYear - albumYear);
-                    var diff_max = Math.Abs(DateTime.Now.Year - albumYear);
+                    var remoteYear = albumYear > 0 ? albumYear : releaseYear;
+                    var diff = Math.Abs(localYear - remoteYear);
+                    var diff_max = Math.Abs(DateTime.Now.Year - remoteYear);
                     dist.AddRatio("year", diff, diff_max);
                 }
-                _logger.Trace("year: {0} vs {1}; {2}", localYear, release.Album.Value.ReleaseDate?.Year, dist.NormalizedDistance());
+                _logger.Trace($"year: {localYear} vs {release.Album.Value.ReleaseDate?.Year} or {release.ReleaseDate?.Year}; {dist.NormalizedDistance()}");
             }
 
             // If we parsed a country from the files use that, otherwise use our preference
@@ -513,7 +523,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 if (country != null)
                 {
                     dist.AddEquality("country", country.Name, release.Country);
-                    _logger.Trace("country: {0} vs {1}; {2}", country, string.Join(", ", release.Country), dist.NormalizedDistance());
+                    _logger.Trace("country: {0} vs {1}; {2}", country.Name, string.Join(", ", release.Country), dist.NormalizedDistance());
                 }
                 else if (preferredCountries.Count > 0)
                 {
