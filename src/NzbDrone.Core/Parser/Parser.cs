@@ -168,9 +168,6 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             };
 
-        //Regex to detect whether the title was reversed.
-        private static readonly Regex ReversedTitleRegex = new Regex(@"[-._ ](p027|p0801|\d{2}E\d{2}S)[-._ ]", RegexOptions.Compiled);
-
         private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^)(a(?!$)|an|the|and|or|of)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -278,16 +275,6 @@ namespace NzbDrone.Core.Parser
 
                 Logger.Debug("Parsing string '{0}'", title);
 
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
-
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
-
                 var releaseTitle = RemoveFileExtension(title);
 
                 var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
@@ -364,16 +351,6 @@ namespace NzbDrone.Core.Parser
                 Logger.Debug("Parsing string '{0}' using search criteria artist: '{1}' album: '{2}'",
                              title, artist.Name.RemoveAccent(), string.Join(", ", album.Select(a => a.Title.RemoveAccent())));
 
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
-
-                    title = new string (titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
-
                 var releaseTitle = RemoveFileExtension(title);
 
                 var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
@@ -445,17 +422,6 @@ namespace NzbDrone.Core.Parser
                 if (!ValidateBeforeParsing(title)) return null;
 
                 Logger.Debug("Parsing string '{0}'", title);
-
-
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
-
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
 
                 var releaseTitle = RemoveFileExtension(title);
 
