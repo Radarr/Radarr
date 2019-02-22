@@ -122,6 +122,9 @@ Build()
     echo "Removing Mono.Posix.dll"
     rm $outputFolder/Mono.Posix.dll
 
+    echo "Adding LICENSE.md"
+    cp LICENSE.md $outputFolder
+
     ProgressEnd 'Build'
 }
 
