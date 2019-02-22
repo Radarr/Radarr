@@ -34,17 +34,12 @@ class MoreInfo extends Component {
             <Link to="https://discord.gg/8Y7rDc9">#lidarr on Discord</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Donations (OpenCollective)</DescriptionListItemTitle>
+          <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://opencollective.com/lidarr">Donate to Lidarr</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Donations (BTC)</DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            1LSPk1acPTBGxYWs6u216xC4rFLptVcnxy
-          </DescriptionListItemDescription>
-
-          <DescriptionListItemTitle>Donations (Sonarr)</DescriptionListItemTitle>
+          <DescriptionListItemTitle>Sonarr Donations</DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://sonarr.tv/donate">Donate to Sonarr</Link>
           </DescriptionListItemDescription>
