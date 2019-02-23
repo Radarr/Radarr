@@ -5,10 +5,10 @@ import createSetServerSideCollectionPageHandler from './createSetServerSideColle
 import createSetServerSideCollectionSortHandler from './createSetServerSideCollectionSortHandler';
 import createSetServerSideCollectionFilterHandler from './createSetServerSideCollectionFilterHandler';
 
-function createServerSideCollectionHandlers(section, url, fetchThunk, handlers) {
+function createServerSideCollectionHandlers(section, url, fetchThunk, handlers, fetchDataAugmenter) {
   const actionHandlers = {};
   const fetchHandlerType = handlers[serverSideCollectionHandlers.FETCH];
-  const fetchHandler = createFetchServerSideCollectionHandler(section, url);
+  const fetchHandler = createFetchServerSideCollectionHandler(section, url, fetchDataAugmenter);
   actionHandlers[fetchHandlerType] = fetchHandler;
 
   if (handlers.hasOwnProperty(serverSideCollectionHandlers.FIRST_PAGE)) {

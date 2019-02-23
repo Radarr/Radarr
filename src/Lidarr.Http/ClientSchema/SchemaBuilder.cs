@@ -97,7 +97,8 @@ namespace Lidarr.Http.ClientSchema
                         HelpLink = fieldAttribute.HelpLink,
                         Order = fieldAttribute.Order,
                         Advanced = fieldAttribute.Advanced,
-                        Type = fieldAttribute.Type.ToString().ToLowerInvariant()
+                        Type = fieldAttribute.Type.ToString().ToLowerInvariant(),
+                        Section = fieldAttribute.Section
                     };
 
                     if (fieldAttribute.Type == FieldType.Select)

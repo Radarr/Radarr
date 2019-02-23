@@ -21,7 +21,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             _logger.Debug("Checking if report meets quality requirements. {0}", subject.ParsedAlbumInfo.Quality);
 
-            var profile = subject.Artist.Profile.Value;
+            var profile = subject.Artist.QualityProfile.Value;
             var qualityIndex = profile.GetIndex(subject.ParsedAlbumInfo.Quality.Quality);
             var qualityOrGroup = profile.Items[qualityIndex.Index];
 

@@ -107,8 +107,11 @@ class AddNewArtistSearchResult extends Component {
               {artistName}
 
               {
-                !name.contains(year) && !!year &&
-                <span className={styles.year}>({year})</span>
+                !name.contains(year) && year ?
+                  <span className={styles.year}>
+                    ({year})
+                  </span> :
+                  null
               }
 
               {
@@ -117,13 +120,14 @@ class AddNewArtistSearchResult extends Component {
               }
 
               {
-                isExistingArtist &&
-                <Icon
-                  className={styles.alreadyExistsIcon}
-                  name={icons.CHECK_CIRCLE}
-                  size={36}
-                  title="Already in your library"
-                />
+                isExistingArtist ?
+                  <Icon
+                    className={styles.alreadyExistsIcon}
+                    name={icons.CHECK_CIRCLE}
+                    size={36}
+                    title="Already in your library"
+                  /> :
+                  null
               }
             </div>
 
@@ -136,20 +140,22 @@ class AddNewArtistSearchResult extends Component {
               </Label>
 
               {
-                !!artistType &&
+                artistType ?
                   <Label size={sizes.LARGE}>
                     {artistType}
-                  </Label>
+                  </Label> :
+                  null
               }
 
               {
-                status === 'ended' &&
+                status === 'ended' ?
                   <Label
                     kind={kinds.DANGER}
                     size={sizes.LARGE}
                   >
                     Ended
-                  </Label>
+                  </Label> :
+                  null
               }
             </div>
 

@@ -54,6 +54,7 @@ export const defaultState = {
   },
 
   tableOptions: {
+    showBanners: false,
     showSearchAction: false
   },
 

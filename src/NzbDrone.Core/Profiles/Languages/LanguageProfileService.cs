@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Profiles.Languages
         List<LanguageProfile> All();
         LanguageProfile Get(int id);
         bool Exists(int id);
+        LanguageProfile GetDefaultProfile(string name, Language cutoff = null, params Language[] allowed);
     }
 
     public class LanguageProfileService : ILanguageProfileService, IHandle<ApplicationStartedEvent>
@@ -70,11 +71,30 @@ namespace NzbDrone.Core.Profiles.Languages
             return _profileRepository.Exists(id);
         }
 
+        public LanguageProfile GetDefaultProfile(string name, Language cutoff = null, params Language[] allowed)
+        {
+            var orderedLanguages = Language.All
+                                           .Where(l => l != Language.Unknown)
+                                           .OrderByDescending(l => l.Name)
+                                           .ToList();
+
+            orderedLanguages.Insert(0, Language.Unknown);
+
+            var languages = orderedLanguages.Select(v => new LanguageProfileItem { Language = v, Allowed = false })
+                                            .ToList();
+
+            return new LanguageProfile
+            {
+                Cutoff = Language.Unknown,
+                Languages = languages
+            };
+        }
+
         private LanguageProfile AddDefaultProfile(string name, Language cutoff, params Language[] allowed)
         {
             var languages = Language.All
                                     .OrderByDescending(l => l.Name)
-                                    .Select(v => new ProfileLanguageItem { Language = v, Allowed = allowed.Contains(v) })
+                                    .Select(v => new LanguageProfileItem { Language = v, Allowed = allowed.Contains(v) })
                                     .ToList();
 
             var profile = new LanguageProfile

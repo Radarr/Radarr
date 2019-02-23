@@ -10,18 +10,18 @@ function createMapStateToProps() {
     (state) => state.settings.importLists,
     (importLists) => {
       const {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         schema
       } = importLists;
 
       const allLists = schema;
 
       return {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         allLists
       };
     }

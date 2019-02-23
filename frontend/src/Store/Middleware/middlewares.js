@@ -2,7 +2,7 @@ import { applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import createSentryMiddleware from './createSentryMiddleware';
-import persistState from './persistState';
+import createPersistState from './createPersistState';
 
 export default function(history) {
   const middlewares = [];
@@ -20,6 +20,6 @@ export default function(history) {
 
   return composeEnhancers(
     applyMiddleware(...middlewares),
-    persistState
+    createPersistState()
   );
 }

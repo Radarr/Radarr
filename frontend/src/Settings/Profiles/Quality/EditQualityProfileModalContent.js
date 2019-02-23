@@ -105,6 +105,7 @@ class EditQualityProfileModalContent extends Component {
     const {
       id,
       name,
+      upgradeAllowed,
       cutoff,
       items
     } = item;
@@ -139,9 +140,7 @@ class EditQualityProfileModalContent extends Component {
 
               {
                 !isFetching && !error &&
-                  <Form
-                    {...otherProps}
-                  >
+                  <Form {...otherProps}>
                     <div className={styles.formGroupsContainer}>
                       <div className={styles.formGroupWrapper}>
                         <FormGroup size={sizes.EXTRA_SMALL}>
@@ -159,18 +158,35 @@ class EditQualityProfileModalContent extends Component {
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                            Cutoff
+                            Upgrades Allowed
                           </FormLabel>
 
                           <FormInputGroup
-                            type={inputTypes.SELECT}
-                            name="cutoff"
-                            {...cutoff}
-                            values={qualities}
-                            helpText="Once this quality is reached Lidarr will no longer download albums"
-                            onChange={onCutoffChange}
+                            type={inputTypes.CHECK}
+                            name="upgradeAllowed"
+                            {...upgradeAllowed}
+                            helpText="If disabled qualities will not be upgraded"
+                            onChange={onInputChange}
                           />
                         </FormGroup>
+
+                        {
+                          upgradeAllowed.value &&
+                            <FormGroup size={sizes.EXTRA_SMALL}>
+                              <FormLabel size={sizes.SMALL}>
+                              Upgrade Until
+                              </FormLabel>
+
+                              <FormInputGroup
+                                type={inputTypes.SELECT}
+                                name="cutoff"
+                                {...cutoff}
+                                values={qualities}
+                                helpText="Once this quality is reached Sonarr will no longer download episodes"
+                                onChange={onCutoffChange}
+                              />
+                            </FormGroup>
+                        }
                       </div>
 
                       <div className={styles.formGroupWrapper}>

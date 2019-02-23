@@ -91,8 +91,8 @@ class ArtistSearchInput extends Component {
   //
   // Listeners
 
-  onChange = (event, { newValue }) => {
-    if (!newValue) {
+  onChange = (event, { newValue, method }) => {
+    if (method === 'up' || method === 'down') {
       return;
     }
 
@@ -117,6 +117,7 @@ class ArtistSearchInput extends Component {
     if (!suggestions.length || highlightedSectionIndex && (event.key !== 'ArrowDown' || event.key !== 'ArrowUp')) {
       this.props.onGoToAddNewArtist(value);
       this._autosuggest.input.blur();
+      this.reset();
 
       return;
     }
@@ -129,6 +130,9 @@ class ArtistSearchInput extends Component {
     } else {
       this.goToArtist(suggestions[highlightedSuggestionIndex]);
     }
+
+    this._autosuggest.input.blur();
+    this.reset();
   }
 
   onBlur = () => {
@@ -142,9 +146,15 @@ class ArtistSearchInput extends Component {
       // Check the title first and if there isn't a match fallback to
       // the alternate titles and finally the tags.
 
+      if (value.length === 1) {
+        return (
+          artist.cleanName.startsWith(lowerCaseValue) ||
+          artist.tags.some((tag) => tag.cleanLabel.startsWith(lowerCaseValue))
+        );
+      }
+
       return (
         artist.cleanName.contains(lowerCaseValue) ||
-        // artist.alternateTitles.some((alternateTitle) => alternateTitle.cleanTitle.contains(lowerCaseValue)) ||
         artist.tags.some((tag) => tag.cleanLabel.contains(lowerCaseValue))
       );
     });
@@ -153,7 +163,9 @@ class ArtistSearchInput extends Component {
   }
 
   onSuggestionsClearRequested = () => {
-    this.reset();
+    this.setState({
+      suggestions: []
+    });
   }
 
   onSuggestionSelected = (event, { suggestion }) => {

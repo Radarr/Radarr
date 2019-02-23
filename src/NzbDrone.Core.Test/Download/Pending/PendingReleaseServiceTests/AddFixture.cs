@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private DownloadDecision _temporarilyRejected;
         private Artist _artist;
         private Album _album;
-        private Profile _profile;
+        private QualityProfile _profile;
         private ReleaseInfo _release;
         private ParsedAlbumInfo _parsedAlbumInfo;
         private RemoteAlbum _remoteAlbum;
@@ -38,19 +38,19 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _album = Builder<Album>.CreateNew()
                                        .Build();
 
-            _profile = new Profile
+            _profile = new QualityProfile
                        {
                            Name = "Test",
                            Cutoff = Quality.MP3_256.Id,
-                           Items = new List<ProfileQualityItem>
+                           Items = new List<QualityProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 }
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 }
                                    },
                        };
 
-            _artist.Profile = new LazyLoaded<Profile>(_profile);
+            _artist.QualityProfile = new LazyLoaded<QualityProfile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 

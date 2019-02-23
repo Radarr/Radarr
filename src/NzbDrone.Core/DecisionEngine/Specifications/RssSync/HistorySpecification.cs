@@ -5,6 +5,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
@@ -13,16 +14,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         private readonly IHistoryService _historyService;
         private readonly UpgradableSpecification _upgradableSpecification;
         private readonly IConfigService _configService;
+        private readonly IPreferredWordService _preferredWordServiceCalculator;
         private readonly Logger _logger;
 
         public HistorySpecification(IHistoryService historyService,
                                            UpgradableSpecification qualityUpgradableSpecification,
                                            IConfigService configService,
+                                           IPreferredWordService preferredWordServiceCalculator,
                                            Logger logger)
         {
             _historyService = historyService;
             _upgradableSpecification = qualityUpgradableSpecification;
             _configService = configService;
+            _preferredWordServiceCalculator = preferredWordServiceCalculator;
             _logger = logger;
         }
 
@@ -48,8 +52,28 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
                     var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
-                    var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Artist.Profile, subject.Artist.LanguageProfile, mostRecent.Quality, mostRecent.Language, subject.ParsedAlbumInfo.Quality);
-                    var upgradeable = _upgradableSpecification.IsUpgradable(subject.Artist.Profile, subject.Artist.LanguageProfile, mostRecent.Quality, mostRecent.Language, subject.ParsedAlbumInfo.Quality, subject.ParsedAlbumInfo.Language);
+                    // The artist will be the same as the one in history since it's the same episode.
+                    // Instead of fetching the series from the DB reuse the known series.
+                    var preferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Artist, mostRecent.SourceTitle);
+
+                    var cutoffUnmet = _upgradableSpecification.CutoffNotMet(
+                        subject.Artist.QualityProfile,
+                        subject.Artist.LanguageProfile,
+                        mostRecent.Quality,
+                        mostRecent.Language,
+                        preferredWordScore,
+                        subject.ParsedAlbumInfo.Quality,
+                        subject.PreferredWordScore);
+
+                    var upgradeable = _upgradableSpecification.IsUpgradable(
+                        subject.Artist.QualityProfile,
+                        subject.Artist.LanguageProfile,
+                        mostRecent.Quality,
+                        mostRecent.Language,
+                        preferredWordScore,
+                        subject.ParsedAlbumInfo.Quality,
+                        subject.ParsedAlbumInfo.Language,
+                        subject.PreferredWordScore);
 
                     if (!recent && cdhEnabled)
                     {

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
-import albumEntities from 'Album/albumEntities';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';

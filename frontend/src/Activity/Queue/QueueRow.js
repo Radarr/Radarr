@@ -12,6 +12,7 @@ import Icon from 'Components/Icon';
 import Popover from 'Components/Tooltip/Popover';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
+import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import ArtistNameLink from 'Artist/ArtistNameLink';
@@ -72,6 +73,7 @@ class QueueRow extends Component {
       errorMessage,
       artist,
       album,
+      language,
       quality,
       protocol,
       indexer,
@@ -137,21 +139,14 @@ class QueueRow extends Component {
             if (name === 'artist.sortName') {
               return (
                 <TableRowCell key={name}>
-                  <ArtistNameLink
-                    foreignArtistId={artist.foreignArtistId}
-                    artistName={artist.artistName}
-                  />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'artist') {
-              return (
-                <TableRowCell key={name}>
-                  <ArtistNameLink
-                    foreignArtistId={artist.foreignArtistId}
-                    artistName={artist.artistName}
-                  />
+                  {
+                    artist ?
+                      <ArtistNameLink
+                        foreignArtistId={artist.foreignArtistId}
+                        artistName={artist.artistName}
+                      /> :
+                      title
+                  }
                 </TableRowCell>
               );
             }
@@ -159,21 +154,43 @@ class QueueRow extends Component {
             if (name === 'album.title') {
               return (
                 <TableRowCell key={name}>
-                  <AlbumTitleLink
-                    foreignAlbumId={album.foreignAlbumId}
-                    title={album.title}
-                    disambiguation={album.disambiguation}
-                  />
+                  {
+                    album ?
+                      <AlbumTitleLink
+                        foreignAlbumId={album.foreignAlbumId}
+                        title={album.title}
+                        disambiguation={album.disambiguation}
+                      /> :
+                      '-'
+                  }
                 </TableRowCell>
               );
             }
 
             if (name === 'album.releaseDate') {
+              if (album) {
+                return (
+                  <RelativeDateCellConnector
+                    key={name}
+                    date={album.releaseDate}
+                  />
+                );
+              }
+
               return (
-                <RelativeDateCellConnector
-                  key={name}
-                  date={album.releaseDate}
-                />
+                <TableRowCell key={name}>
+                  -
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'language') {
+              return (
+                <TableRowCell key={name}>
+                  <TrackLanguage
+                    language={language}
+                  />
+                </TableRowCell>
               );
             }
 
@@ -326,8 +343,9 @@ QueueRow.propTypes = {
   trackedDownloadStatus: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
-  artist: PropTypes.object.isRequired,
-  album: PropTypes.object.isRequired,
+  artist: PropTypes.object,
+  album: PropTypes.object,
+  language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

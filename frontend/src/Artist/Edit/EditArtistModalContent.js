@@ -85,9 +85,7 @@ class EditArtistModalContent extends Component {
         </ModalHeader>
 
         <ModalBody>
-          <Form
-            {...otherProps}
-          >
+          <Form {...otherProps}>
             <FormGroup>
               <FormLabel>Monitored</FormLabel>
 

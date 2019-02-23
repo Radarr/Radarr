@@ -51,10 +51,6 @@ class QueueRowConnector extends Component {
   // Render
 
   render() {
-    if (!this.props.album) {
-      return null;
-    }
-
     return (
       <QueueRow
         {...this.props}

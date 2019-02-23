@@ -7,6 +7,7 @@ import { createSelector } from 'reselect';
 import { findCommand } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import { toggleAlbumsMonitored } from 'Store/Actions/albumActions';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -64,7 +65,8 @@ const mapDispatchToProps = {
   fetchTracks,
   clearTracks,
   fetchTrackFiles,
-  clearTrackFiles
+  clearTrackFiles,
+  toggleAlbumsMonitored
 };
 
 function getMonitoredReleases(props) {
@@ -109,6 +111,13 @@ class AlbumDetailsConnector extends Component {
   //
   // Listeners
 
+  onMonitorTogglePress = (monitored) => {
+    this.props.toggleAlbumsMonitored({
+      albumIds: [this.props.id],
+      monitored
+    });
+  }
+
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.ALBUM_SEARCH,
@@ -123,6 +132,7 @@ class AlbumDetailsConnector extends Component {
     return (
       <AlbumDetails
         {...this.props}
+        onMonitorTogglePress={this.onMonitorTogglePress}
         onSearchPress={this.onSearchPress}
       />
     );
@@ -138,6 +148,7 @@ AlbumDetailsConnector.propTypes = {
   clearTracks: PropTypes.func.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
+  toggleAlbumsMonitored: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

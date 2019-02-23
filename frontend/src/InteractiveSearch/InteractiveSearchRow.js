@@ -7,9 +7,11 @@ import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import Link from 'Components/Link/Link';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
+import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
@@ -42,6 +44,17 @@ function getDownloadTooltip(isGrabbing, isGrabbed, grabError) {
 class InteractiveSearchRow extends Component {
 
   //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isConfirmGrabModalOpen: false
+    };
+  }
+
+  //
   // Listeners
 
   onGrabPress = () => {
@@ -49,9 +62,37 @@ class InteractiveSearchRow extends Component {
       guid,
       indexerId,
       onGrabPress
-    }= this.props;
+    } = this.props;
 
-    onGrabPress(guid, indexerId);
+    onGrabPress({
+      guid,
+      indexerId
+    });
+  }
+
+  onConfirmGrabPress = () => {
+    this.setState({ isConfirmGrabModalOpen: true });
+  }
+
+  onGrabConfirm = () => {
+    this.setState({ isConfirmGrabModalOpen: false });
+
+    const {
+      guid,
+      indexerId,
+      searchPayload,
+      onGrabPress
+    } = this.props;
+
+    onGrabPress({
+      guid,
+      indexerId,
+      ...searchPayload
+    });
+  }
+
+  onGrabCancel = () => {
+    this.setState({ isConfirmGrabModalOpen: false });
   }
 
   //
@@ -71,6 +112,8 @@ class InteractiveSearchRow extends Component {
       seeders,
       leechers,
       quality,
+      language,
+      preferredWordScore,
       rejections,
       downloadAllowed,
       isGrabbing,
@@ -119,10 +162,17 @@ class InteractiveSearchRow extends Component {
           }
         </TableRowCell>
 
+        <TableRowCell className={styles.language}>
+          <TrackLanguage language={language} />
+        </TableRowCell>
+
         <TableRowCell className={styles.quality}>
-          <TrackQuality
-            quality={quality}
-          />
+          <TrackQuality quality={quality} />
+        </TableRowCell>
+
+        <TableRowCell className={styles.preferredWordScore}>
+          {preferredWordScore > 0 && `+${preferredWordScore}`}
+          {preferredWordScore < 0 && preferredWordScore}
         </TableRowCell>
 
         <TableRowCell className={styles.rejected}>
@@ -161,10 +211,20 @@ class InteractiveSearchRow extends Component {
               kind={grabError || !downloadAllowed ? kinds.DANGER : kinds.DEFAULT}
               title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
               isSpinning={isGrabbing}
-              onPress={this.onGrabPress}
+              onPress={downloadAllowed ? this.onGrabPress : this.onConfirmGrabPress}
             />
           }
         </TableRowCell>
+
+        <ConfirmModal
+          isOpen={this.state.isConfirmGrabModalOpen}
+          kind={kinds.WARNING}
+          title="Grab Release"
+          message={`Lidarr was unable to determine which artist and album this release was for. Lidarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
+          confirmLabel="Grab"
+          onConfirm={this.onGrabConfirm}
+          onCancel={this.onGrabCancel}
+        />
       </TableRow>
     );
   }
@@ -185,6 +245,8 @@ InteractiveSearchRow.propTypes = {
   seeders: PropTypes.number,
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
+  language: PropTypes.object.isRequired,
+  preferredWordScore: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.string).isRequired,
   downloadAllowed: PropTypes.bool.isRequired,
   isGrabbing: PropTypes.bool.isRequired,
@@ -192,10 +254,12 @@ InteractiveSearchRow.propTypes = {
   grabError: PropTypes.string,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
+  searchPayload: PropTypes.object.isRequired,
   onGrabPress: PropTypes.func.isRequired
 };
 
 InteractiveSearchRow.defaultProps = {
+  rejections: [],
   isGrabbing: false,
   isGrabbed: false
 };

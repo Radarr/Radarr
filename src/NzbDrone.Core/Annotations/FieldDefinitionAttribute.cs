@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Annotations
         public FieldType Type { get; set; }
         public bool Advanced { get; set; }
         public Type SelectOptions { get; set; }
+        public string Section { get; set; }
     }
 
     public enum FieldType

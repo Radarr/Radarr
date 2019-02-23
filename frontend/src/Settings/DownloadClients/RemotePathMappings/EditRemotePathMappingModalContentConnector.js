@@ -13,11 +13,29 @@ const newRemotePathMapping = {
   localPath: ''
 };
 
+const selectDownloadClientHosts = createSelector(
+  (state) => state.settings.downloadClients.items,
+  (downloadClients) => {
+    return downloadClients.reduce((acc, downloadClient) => {
+      const host = downloadClient.fields.find((field) => {
+        return field.name === 'host';
+      });
+
+      if (host && !acc.includes(host.value)) {
+        acc.push(host.value);
+      }
+
+      return acc;
+    }, []);
+  }
+);
+
 function createRemotePathMappingSelector() {
   return createSelector(
     (state, { id }) => id,
     (state) => state.settings.remotePathMappings,
-    (id, remotePathMappings) => {
+    selectDownloadClientHosts,
+    (id, remotePathMappings, downloadClientHosts) => {
       const {
         isFetching,
         error,
@@ -37,7 +55,8 @@ function createRemotePathMappingSelector() {
         isSaving,
         saveError,
         item: settings.settings,
-        ...settings
+        ...settings,
+        downloadClientHosts
       };
     }
   );
@@ -55,8 +74,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setRemotePathMappingValue,
-  saveRemotePathMapping
+  dispatchSetRemotePathMappingValue: setRemotePathMappingValue,
+  dispatchSaveRemotePathMapping: saveRemotePathMapping
 };
 
 class EditRemotePathMappingModalContentConnector extends Component {
@@ -67,7 +86,7 @@ class EditRemotePathMappingModalContentConnector extends Component {
   componentDidMount() {
     if (!this.props.id) {
       Object.keys(newRemotePathMapping).forEach((name) => {
-        this.props.setRemotePathMappingValue({
+        this.props.dispatchSetRemotePathMappingValue({
           name,
           value: newRemotePathMapping[name]
         });
@@ -85,11 +104,11 @@ class EditRemotePathMappingModalContentConnector extends Component {
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setRemotePathMappingValue({ name, value });
+    this.props.dispatchSetRemotePathMappingValue({ name, value });
   }
 
   onSavePress = () => {
-    this.props.saveRemotePathMapping({ id: this.props.id });
+    this.props.dispatchSaveRemotePathMapping({ id: this.props.id });
   }
 
   //
@@ -111,8 +130,8 @@ EditRemotePathMappingModalContentConnector.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,
-  setRemotePathMappingValue: PropTypes.func.isRequired,
-  saveRemotePathMapping: PropTypes.func.isRequired,
+  dispatchSetRemotePathMappingValue: PropTypes.func.isRequired,
+  dispatchSaveRemotePathMapping: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

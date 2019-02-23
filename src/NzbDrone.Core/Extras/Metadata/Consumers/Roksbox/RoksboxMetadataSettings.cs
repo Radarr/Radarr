@@ -20,13 +20,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             AlbumImages = true;
         }
 
-        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, HelpText = "Album\\filename.xml")]
+        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata, HelpText = "Album\\filename.xml")]
         public bool TrackMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox, HelpText = "Artist Title.jpg")]
+        [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, HelpText = "Artist Title.jpg")]
         public bool ArtistImages { get; set; }
 
-        [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox, HelpText = "Album Title.jpg")]
+        [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, HelpText = "Album Title.jpg")]
         public bool AlbumImages { get; set; }
         
         public bool IsValid => true;

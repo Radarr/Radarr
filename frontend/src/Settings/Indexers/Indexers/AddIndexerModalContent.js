@@ -19,9 +19,9 @@ class AddIndexerModalContent extends Component {
 
   render() {
     const {
-      isFetching,
-      isPopulated,
-      error,
+      isSchemaFetching,
+      isSchemaPopulated,
+      schemaError,
       usenetIndexers,
       torrentIndexers,
       onIndexerSelect,
@@ -36,17 +36,17 @@ class AddIndexerModalContent extends Component {
 
         <ModalBody>
           {
-            isFetching &&
+            isSchemaFetching &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && !!error &&
+            !isSchemaFetching && !!schemaError &&
               <div>Unable to add a new indexer, please try again.</div>
           }
 
           {
-            isPopulated && !error &&
+            isSchemaPopulated && !schemaError &&
               <div>
 
                 <Alert kind={kinds.INFO}>
@@ -103,9 +103,9 @@ class AddIndexerModalContent extends Component {
 }
 
 AddIndexerModalContent.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object,
+  isSchemaFetching: PropTypes.bool.isRequired,
+  isSchemaPopulated: PropTypes.bool.isRequired,
+  schemaError: PropTypes.object,
   usenetIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   torrentIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   onIndexerSelect: PropTypes.func.isRequired,

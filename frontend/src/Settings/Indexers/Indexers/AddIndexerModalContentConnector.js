@@ -11,9 +11,9 @@ function createMapStateToProps() {
     (state) => state.settings.indexers,
     (indexers) => {
       const {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         schema
       } = indexers;
 
@@ -21,9 +21,9 @@ function createMapStateToProps() {
       const torrentIndexers = _.filter(schema, { protocol: 'torrent' });
 
       return {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         usenetIndexers,
         torrentIndexers
       };

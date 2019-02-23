@@ -29,8 +29,8 @@ namespace NzbDrone.Core.Music
         public string Path { get; set; }
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
-        public int ProfileId { get; set; }
-        public LazyLoaded<Profile> Profile { get; set; }
+        public int QualityProfileId { get; set; }
+        public LazyLoaded<QualityProfile> QualityProfile { get; set; }
         public int LanguageProfileId { get; set; }        
         public LazyLoaded<LanguageProfile> LanguageProfile { get; set; }
         public int MetadataProfileId { get; set; }        
@@ -48,8 +48,8 @@ namespace NzbDrone.Core.Music
         {
 
             Path = otherArtist.Path;
-            ProfileId = otherArtist.ProfileId;
-            Profile = otherArtist.Profile;
+            QualityProfileId = otherArtist.QualityProfileId;
+            QualityProfile = otherArtist.QualityProfile;
             LanguageProfileId = otherArtist.LanguageProfileId;
             MetadataProfileId = otherArtist.MetadataProfileId;
 

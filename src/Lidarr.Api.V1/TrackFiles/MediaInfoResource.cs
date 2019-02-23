@@ -25,7 +25,7 @@ namespace Lidarr.Api.V1.TrackFiles
                        AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
                        AudioCodec = MediaInfoFormatter.FormatAudioCodec(model),
                        AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model)
-                   };
+                    };
         }
     }
 }

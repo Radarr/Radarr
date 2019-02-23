@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createTrackFileSelector from 'Store/Selectors/createTrackFileSelector';
-import EpisodeLanguage from 'Album/EpisodeLanguage';
+import TrackLanguage from 'Album/TrackLanguage';
 
 function createMapStateToProps() {
   return createSelector(
@@ -14,4 +14,4 @@ function createMapStateToProps() {
   );
 }
 
-export default connect(createMapStateToProps)(EpisodeLanguage);
+export default connect(createMapStateToProps)(TrackLanguage);

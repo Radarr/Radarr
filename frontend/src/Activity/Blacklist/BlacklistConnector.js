@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import withCurrentPage from 'Components/withCurrentPage';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import * as blacklistActions from 'Store/Actions/blacklistActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -33,8 +34,19 @@ class BlacklistConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    const {
+      useCurrentPage,
+      fetchBlacklist,
+      gotoBlacklistFirstPage
+    } = this.props;
+
     registerPagePopulator(this.repopulate);
-    this.props.gotoBlacklistFirstPage();
+
+    if (useCurrentPage) {
+      fetchBlacklist();
+    } else {
+      gotoBlacklistFirstPage();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -44,6 +56,7 @@ class BlacklistConnector extends Component {
   }
 
   componentWillUnmount() {
+    this.props.clearBlacklist();
     unregisterPagePopulator(this.repopulate);
   }
 
@@ -53,7 +66,6 @@ class BlacklistConnector extends Component {
   repopulate = () => {
     this.props.fetchBlacklist();
   }
-
   //
   // Listeners
 
@@ -93,6 +105,14 @@ class BlacklistConnector extends Component {
     this.props.executeCommand({ name: commandNames.CLEAR_BLACKLIST });
   }
 
+  onTableOptionChange = (payload) => {
+    this.props.setBlacklistTableOption(payload);
+
+    if (payload.pageSize) {
+      this.props.gotoBlacklistFirstPage();
+    }
+  }
+
   //
   // Render
 
@@ -114,6 +134,7 @@ class BlacklistConnector extends Component {
 }
 
 BlacklistConnector.propTypes = {
+  useCurrentPage: PropTypes.bool.isRequired,
   isClearingBlacklistExecuting: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchBlacklist: PropTypes.func.isRequired,
@@ -124,7 +145,10 @@ BlacklistConnector.propTypes = {
   gotoBlacklistPage: PropTypes.func.isRequired,
   setBlacklistSort: PropTypes.func.isRequired,
   setBlacklistTableOption: PropTypes.func.isRequired,
+  clearBlacklist: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(BlacklistConnector);
+export default withCurrentPage(
+  connect(createMapStateToProps, mapDispatchToProps)(BlacklistConnector)
+);

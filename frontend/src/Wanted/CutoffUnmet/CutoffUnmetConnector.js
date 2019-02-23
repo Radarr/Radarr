@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -6,6 +5,7 @@ import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
+import withCurrentPage from 'Components/withCurrentPage';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import * as wantedActions from 'Store/Actions/wantedActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -22,7 +22,7 @@ function createMapStateToProps() {
 
       return {
         isSearchingForCutoffUnmetAlbums,
-        isSaving: _.some(cutoffUnmet.items, { isSaving: true }),
+        isSaving: cutoffUnmet.items.filter((m) => m.isSaving).length > 1,
         ...cutoffUnmet
       };
     }
@@ -44,8 +44,19 @@ class CutoffUnmetConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    const {
+      useCurrentPage,
+      fetchCutoffUnmet,
+      gotoCutoffUnmetFirstPage
+    } = this.props;
+
     registerPagePopulator(this.repopulate, ['trackFileUpdated']);
-    this.props.gotoCutoffUnmetFirstPage();
+
+    if (useCurrentPage) {
+      fetchCutoffUnmet();
+    } else {
+      gotoCutoffUnmetFirstPage();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -169,4 +180,6 @@ CutoffUnmetConnector.propTypes = {
   clearTrackFiles: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(CutoffUnmetConnector);
+export default withCurrentPage(
+  connect(createMapStateToProps, mapDispatchToProps)(CutoffUnmetConnector)
+);

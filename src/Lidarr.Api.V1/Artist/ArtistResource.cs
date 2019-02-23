@@ -84,7 +84,7 @@ namespace Lidarr.Api.V1.Artist
                 Images = model.Metadata.Value.Images.JsonClone(),
 
                 Path = model.Path,
-                QualityProfileId = model.ProfileId,
+                QualityProfileId = model.QualityProfileId,
                 LanguageProfileId = model.LanguageProfileId,
                 MetadataProfileId = model.MetadataProfileId,
                 Links = model.Metadata.Value.Links,
@@ -132,7 +132,7 @@ namespace Lidarr.Api.V1.Artist
                 //AlternateTitles
                 SortName = resource.SortName,
                 Path = resource.Path,
-                ProfileId = resource.QualityProfileId,
+                QualityProfileId = resource.QualityProfileId,
                 LanguageProfileId = resource.LanguageProfileId,
                 MetadataProfileId = resource.MetadataProfileId,
 

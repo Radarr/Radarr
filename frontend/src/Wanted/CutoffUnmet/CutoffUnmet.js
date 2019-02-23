@@ -26,6 +26,7 @@ function getMonitoredValue(props) {
     filters,
     selectedFilterKey
   } = props;
+
   return getFilterValue(filters, selectedFilterKey, 'monitored', false);
 }
 

@@ -9,6 +9,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 
@@ -16,7 +17,7 @@ namespace NzbDrone.Core.Organizer
 {
     public interface IBuildFileNames
     {
-        string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null);
+        string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
         string BuildTrackFilePath(Artist artist, Album album, string fileName, string extension);
         string BuildAlbumPath(Artist artist, Album album);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Organizer
     {
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
+        private readonly IPreferredWordService _preferredWordService;
         private readonly ICached<TrackFormat[]> _trackFormatCache;
         private readonly ICached<AbsoluteTrackFormat[]> _absoluteTrackFormatCache;
         private readonly Logger _logger;
@@ -71,16 +73,18 @@ namespace NzbDrone.Core.Organizer
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
                                ICacheManager cacheManager,
+                               IPreferredWordService preferredWordService,
                                Logger logger)
         {
             _namingConfigService = namingConfigService;
             _qualityDefinitionService = qualityDefinitionService;
+            _preferredWordService = preferredWordService;
             _trackFormatCache = cacheManager.GetCache<TrackFormat[]>(GetType(), "trackFormat");
             _absoluteTrackFormatCache = cacheManager.GetCache<AbsoluteTrackFormat[]>(GetType(), "absoluteTrackFormat");
             _logger = logger;
         }
 
-        public string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null)
+        public string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
         {
             if (namingConfig == null)
             {
@@ -112,6 +116,7 @@ namespace NzbDrone.Core.Organizer
             AddTrackFileTokens(tokenHandlers, trackFile);
             AddQualityTokens(tokenHandlers, artist, trackFile);
             AddMediaInfoTokens(tokenHandlers, trackFile);
+            AddPreferredWords(tokenHandlers, artist, trackFile, preferredWords);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -318,6 +323,8 @@ namespace NzbDrone.Core.Organizer
         {
             if (trackFile.MediaInfo == null)
             {
+                _logger.Trace("Media info is unavailable for {0}", trackFile);
+
                 return;
             }
 
@@ -332,6 +339,17 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo AudioBitsPerSample}"] = m => MediaInfoFormatter.FormatAudioBitsPerSample(trackFile.MediaInfo);
             tokenHandlers["{MediaInfo AudioSampleRate}"] = m => MediaInfoFormatter.FormatAudioSampleRate(trackFile.MediaInfo);
         }
+
+        private void AddPreferredWords(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist, TrackFile trackFile, List<string> preferredWords = null)
+        {
+            if (preferredWords == null)
+            {
+                preferredWords = _preferredWordService.GetMatchingPreferredWords(artist, trackFile.GetSceneOrFileName(), true);
+            }
+
+            tokenHandlers["{Preferred Words}"] = m => string.Join(" ", preferredWords);
+        }
+
 
         private string GetLanguagesToken(string mediaInfoLanguages)
         {

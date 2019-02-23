@@ -8,32 +8,8 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
-import Table from 'Components/Table/Table';
-import TableBody from 'Components/Table/TableBody';
-import ImportArtistRootFolderRowConnector from './ImportArtistRootFolderRowConnector';
+import RootFolders from 'RootFolder/RootFolders';
 import styles from './ImportArtistSelectFolder.css';
-
-const rootFolderColumns = [
-  {
-    name: 'path',
-    label: 'Path',
-    isVisible: true
-  },
-  {
-    name: 'freeSpace',
-    label: 'Free Space',
-    isVisible: true
-  },
-  {
-    name: 'unmappedFolders',
-    label: 'Unmapped Folders',
-    isVisible: true
-  },
-  {
-    name: 'actions',
-    isVisible: true
-  }
-];
 
 class ImportArtistSelectFolder extends Component {
 
@@ -107,26 +83,13 @@ class ImportArtistSelectFolder extends Component {
                 {
                   items.length > 0 ?
                     <div className={styles.recentFolders}>
-                      <FieldSet legend="Recent Folders">
-                        <Table
-                          columns={rootFolderColumns}
-                        >
-                          <TableBody>
-                            {
-                              items.map((rootFolder) => {
-                                return (
-                                  <ImportArtistRootFolderRowConnector
-                                    key={rootFolder.id}
-                                    id={rootFolder.id}
-                                    path={rootFolder.path}
-                                    freeSpace={rootFolder.freeSpace}
-                                    unmappedFolders={rootFolder.unmappedFolders}
-                                  />
-                                );
-                              })
-                            }
-                          </TableBody>
-                        </Table>
+                      <FieldSet legend="Root Folders">
+                        <RootFolders
+                          isFetching={isFetching}
+                          isPopulated={isPopulated}
+                          error={error}
+                          items={items}
+                        />
                       </FieldSet>
 
                       <Button
@@ -178,8 +141,7 @@ ImportArtistSelectFolder.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onNewRootFolderSelect: PropTypes.func.isRequired,
-  onDeleteRootFolderPress: PropTypes.func.isRequired
+  onNewRootFolderSelect: PropTypes.func.isRequired
 };
 
 export default ImportArtistSelectFolder;

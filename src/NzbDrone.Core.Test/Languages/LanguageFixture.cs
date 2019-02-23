@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.Languages
             i.Should().Be(expected);
         }
 
-        public static List<ProfileLanguageItem> GetDefaultLanguages(params Language[] allowed)
+        public static List<LanguageProfileItem> GetDefaultLanguages(params Language[] allowed)
         {
             var languages = new List<Language>
             {
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.Languages
             var items = languages
                 .Except(allowed)
                 .Concat(allowed)
-                .Select(v => new ProfileLanguageItem { Language = v, Allowed = allowed.Contains(v) }).ToList();
+                .Select(v => new LanguageProfileItem { Language = v, Allowed = allowed.Contains(v) }).ToList();
 
             return items;
         }

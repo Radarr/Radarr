@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         [Test]
         public void should_be_able_to_monitor_all_albums()
         {
-            Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions{Monitored = true});
+            Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions{Monitor = MonitorTypes.All});
 
             Mocker.GetMock<IAlbumService>()
                   .Verify(v => v.UpdateAlbums(It.Is<List<Album>>(l => l.All(e => e.Monitored))));
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         {
             var monitoringOptions = new MonitoringOptions
             {
-                SelectedOption = MonitoringOption.Future
+                Monitor = MonitorTypes.Future
             };
 
             Subject.SetAlbumMonitoredStatus(_artist, monitoringOptions);

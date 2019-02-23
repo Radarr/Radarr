@@ -110,7 +110,6 @@ ImportArtistRow.propTypes = {
   selectedArtist: PropTypes.object,
   isExistingArtist: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  queued: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,

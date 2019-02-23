@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteAlbum.Release.DownloadProtocol = downloadProtocol;
 
             remoteAlbum.Artist = Builder<Artist>.CreateNew()
-                                                .With(e => e.Profile = new Profile
+                                                .With(e => e.QualityProfile = new QualityProfile
                                                 {
                                                     Items = Qualities.QualityFixture.GetDefaultQualities()
                                                 })

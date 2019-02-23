@@ -54,7 +54,7 @@ export default {
     error: null,
     isDeleting: false,
     deleteError: null,
-    isFetchingSchema: false,
+    isSchemaFetching: false,
     isSchemaPopulated: false,
     schemaError: null,
     schema: {},

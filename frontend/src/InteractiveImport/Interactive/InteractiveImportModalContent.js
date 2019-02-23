@@ -134,9 +134,17 @@ class InteractiveImportModalContent extends Component {
   }
 
   onImportSelectedPress = () => {
-    const selected = this.getSelectedIds();
+    const {
+      downloadId,
+      showImportMode,
+      importMode,
+      onImportSelectedPress
+    } = this.props;
 
-    this.props.onImportSelectedPress(selected, this.props.importMode);
+    const selected = this.getSelectedIds();
+    const finalImportMode = downloadId || !showImportMode ? 'auto' : importMode;
+
+    onImportSelectedPress(selected, finalImportMode);
   }
 
   onFilterExistingFilesChange = (value) => {

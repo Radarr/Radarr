@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Organizer
         private static Track _track1;
         private static List<Track> _singleTrack;
         private static TrackFile _singleTrackFile;
+        private static List<string> _preferredWords;
 
         public FileNameSampleService(IBuildFileNames buildFileNames)
         {
@@ -89,6 +90,12 @@ namespace NzbDrone.Core.Organizer
                 MediaInfo = mediaInfo
             };
 
+            _preferredWords = new List<string>
+            {
+                "iNTERNAL"
+            };
+
+
         }
 
         public SampleResult GetStandardTrackSample(NamingConfig nameSpec)
@@ -119,7 +126,7 @@ namespace NzbDrone.Core.Organizer
         {
             try
             {
-                return _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile, nameSpec);
+                return _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile, nameSpec, _preferredWords);
             }
             catch (NamingFormatException)
             {

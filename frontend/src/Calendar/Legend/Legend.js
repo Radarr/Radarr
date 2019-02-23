@@ -1,9 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { icons, kinds } from 'Helpers/Props';
 import LegendItem from './LegendItem';
+import LegendIconItem from './LegendIconItem';
 import styles from './Legend.css';
 
-function Legend({ colorImpairedMode }) {
+function Legend(props) {
+  const {
+    showCutoffUnmetIcon,
+    colorImpairedMode
+  } = props;
+
+  const iconsToShow = [];
+
+  if (showCutoffUnmetIcon) {
+    iconsToShow.push(
+      <LegendIconItem
+        name="Cutoff Not Met"
+        icon={icons.TRACK_FILE}
+        kind={kinds.WARNING}
+        tooltip="Quality or language cutoff has not been met"
+      />
+    );
+  }
+
   return (
     <div className={styles.legend}>
       <div>
@@ -47,11 +67,24 @@ function Legend({ colorImpairedMode }) {
           colorImpairedMode={colorImpairedMode}
         />
       </div>
+
+      <div>
+        {iconsToShow[0]}
+      </div>
+
+      {
+        iconsToShow.length > 1 &&
+          <div>
+            {iconsToShow[1]}
+            {iconsToShow[2]}
+          </div>
+      }
     </div>
   );
 }
 
 Legend.propTypes = {
+  showCutoffUnmetIcon: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };
 

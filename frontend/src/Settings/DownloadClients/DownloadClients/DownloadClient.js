@@ -68,12 +68,18 @@ class DownloadClient extends Component {
         </div>
 
         <div className={styles.enabled}>
-          <Label
-            kind={enable ? kinds.SUCCESS : kinds.DANGER}
-            outline={!enable}
-          >
-            Enabled
-          </Label>
+          {
+            enable ?
+              <Label kind={kinds.SUCCESS}>
+                Enabled
+              </Label> :
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                Disabled
+              </Label>
+          }
         </div>
 
         <EditDownloadClientModalConnector

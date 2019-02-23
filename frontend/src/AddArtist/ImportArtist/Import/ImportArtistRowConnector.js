@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { queueLookupArtist, setImportArtistValue } from 'Store/Actions/importArtistActions';
+import { setImportArtistValue } from 'Store/Actions/importArtistActions';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import ImportArtistRow from './ImportArtistRow';
 
@@ -34,7 +34,6 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  queueLookupArtist,
   setImportArtistValue
 };
 
@@ -82,7 +81,6 @@ ImportArtistRowConnector.propTypes = {
   monitor: PropTypes.string,
   albumFolder: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.object),
-  queueLookupArtist: PropTypes.func.isRequired,
   setImportArtistValue: PropTypes.func.isRequired
 };
 

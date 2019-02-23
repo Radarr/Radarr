@@ -2,44 +2,91 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextInput from './TextInput';
 
+function parseValue(props, value) {
+  const {
+    isFloat,
+    min,
+    max
+  } = props;
+
+  if (value == null || value === '') {
+    return min;
+  }
+
+  let newValue = isFloat ? parseFloat(value) : parseInt(value);
+
+  if (min != null && newValue != null && newValue < min) {
+    newValue = min;
+  } else if (max != null && newValue != null && newValue > max) {
+    newValue = max;
+  }
+
+  return newValue;
+}
+
 class NumberInput extends Component {
+
+  //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      value: props.value == null ? '' : props.value.toString(),
+      isFocused: false
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { value } = this.props;
+
+    if (value !== prevProps.value && !this.state.isFocused) {
+      this.setState({
+        value: value == null ? '' : value.toString()
+      });
+    }
+  }
 
   //
   // Listeners
 
   onChange = ({ name, value }) => {
-    let newValue = null;
-
-    if (value) {
-      newValue = this.props.isFloat ? parseFloat(value) : parseInt(value);
-    }
+    this.setState({ value });
 
     this.props.onChange({
       name,
-      value: newValue
+      value: parseValue(this.props, value)
     });
+
+  }
+
+  onFocus = () => {
+    this.setState({ isFocused: true });
   }
 
   onBlur = () => {
     const {
       name,
-      value,
-      min,
-      max,
       onChange
     } = this.props;
 
-    let newValue = value;
+    const { value } = this.state;
+    const parsedValue = parseValue(this.props, value);
+    const stringValue = parsedValue == null ? '' : parsedValue.toString();
 
-    if (min != null && newValue != null && newValue < min) {
-      newValue = min;
-    } else if (max != null && newValue != null && newValue > max) {
-      newValue = max;
+    if (stringValue === value) {
+      this.setState({ isFocused: false });
+    } else {
+      this.setState({
+        value: stringValue,
+        isFocused: false
+      });
     }
 
     onChange({
       name,
-      value: newValue
+      value: parsedValue
     });
   }
 
@@ -47,18 +94,16 @@ class NumberInput extends Component {
   // Render
 
   render() {
-    const {
-      value,
-      ...otherProps
-    } = this.props;
+    const value = this.state.value;
 
     return (
       <TextInput
+        {...this.props}
         type="number"
         value={value == null ? '' : value}
-        {...otherProps}
         onChange={this.onChange}
         onBlur={this.onBlur}
+        onFocus={this.onFocus}
       />
     );
   }

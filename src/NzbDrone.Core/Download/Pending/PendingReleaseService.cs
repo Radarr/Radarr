@@ -197,6 +197,7 @@ namespace NzbDrone.Core.Download.Pending
                         Artist = pendingRelease.RemoteAlbum.Artist,
                         Album = album,
                         Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
+                        Language = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Language,
                         Title = pendingRelease.Title,
                         Size = pendingRelease.RemoteAlbum.Release.Size,
                         Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
@@ -217,7 +218,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 var artist = g.First().Artist;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(artist.Profile))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(artist.QualityProfile))
                         .ThenBy(q => PrioritizeDownloadProtocol(q.Artist, q.Protocol))
                         .First();
             });
@@ -368,7 +369,7 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteAlbum.Artist.Profile.Value;
+            var profile = remoteAlbum.Artist.QualityProfile.Value;
 
             foreach (var existingReport in existingReports)
             {

@@ -38,7 +38,7 @@ namespace Lidarr.Api.V1.Artist
 
                 if (resource.QualityProfileId.HasValue)
                 {
-                    artist.ProfileId = resource.QualityProfileId.Value;
+                    artist.QualityProfileId = resource.QualityProfileId.Value;
                 }
 
                 if (resource.LanguageProfileId.HasValue)

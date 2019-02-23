@@ -6,6 +6,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
 using NzbDrone.Common.Cache;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -16,18 +17,21 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         private readonly ITrackService _trackService;
         private readonly Logger _logger;
         private readonly ICached<bool> _missingFilesCache;
+        private readonly IPreferredWordService _preferredWordServiceCalculator;
         
         public CutoffSpecification(UpgradableSpecification upgradableSpecification,
                                    Logger logger,
                                    ICacheManager cacheManager,
                                    IMediaFileService mediaFileService,
+                                   IPreferredWordService preferredWordServiceCalculator,
                                    ITrackService trackService)
         {
             _upgradableSpecification = upgradableSpecification;
-            _logger = logger;
             _mediaFileService = mediaFileService;
             _trackService = trackService;
             _missingFilesCache = cacheManager.GetCache<bool>(GetType());
+            _preferredWordServiceCalculator = preferredWordServiceCalculator;
+            _logger = logger;
         }
 
         public SpecificationPriority Priority => SpecificationPriority.Default;
@@ -36,7 +40,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
 
-            var profile = subject.Artist.Profile.Value;
+            var profile = subject.Artist.QualityProfile.Value;
 
             foreach (var album in subject.Albums)
             {
@@ -54,7 +58,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                                                                subject.Artist.LanguageProfile,
                                                                lowestQuality,
                                                                trackFiles[0].Language,
-                                                               subject.ParsedAlbumInfo.Quality))
+                                                               _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
+                                                               subject.ParsedAlbumInfo.Quality,
+                                                               subject.PreferredWordScore))
                     {
                         _logger.Debug("Cutoff already met, rejecting.");
                         var qualityCutoffIndex = profile.GetIndex(profile.Cutoff);

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
@@ -69,7 +69,7 @@ namespace Lidarr.Api.V1.TrackFiles
                 Language = model.Language,
                 Quality = model.Quality,
                 MediaInfo = model.MediaInfo.ToResource(),
-                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(artist.Profile.Value, model.Quality),
+                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(artist.QualityProfile.Value, model.Quality),
                 LanguageCutoffNotMet = upgradableSpecification.LanguageCutoffNotMet(artist.LanguageProfile.Value, model.Language)
             };
         }

@@ -12,6 +12,7 @@ function AppUpdatedModal(props) {
   return (
     <Modal
       isOpen={isOpen}
+      closeOnBackgroundClick={false}
       onModalClose={onModalClose}
     >
       <AppUpdatedModalContentConnector

@@ -7,12 +7,14 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageJumpBar from 'Components/Page/PageJumpBar';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import NoArtist from 'Artist/NoArtist';
 import ArtistIndexTableConnector from './Table/ArtistIndexTableConnector';
+import ArtistIndexTableOptionsConnector from './Table/ArtistIndexTableOptionsConnector';
 import ArtistIndexPosterOptionsModal from './Posters/Options/ArtistIndexPosterOptionsModal';
 import ArtistIndexPostersConnector from './Posters/ArtistIndexPostersConnector';
 import ArtistIndexBannerOptionsModal from './Banners/Options/ArtistIndexBannerOptionsModal';
@@ -187,6 +189,7 @@ class ArtistIndex extends Component {
       error,
       totalItems,
       items,
+      columns,
       selectedFilterKey,
       filters,
       customFilters,
@@ -245,35 +248,52 @@ class ArtistIndex extends Component {
             alignContent={align.RIGHT}
             collapseButtons={false}
           >
+            {
+              view === 'table' ?
+                <TableOptionsModalWrapper
+                  {...otherProps}
+                  columns={columns}
+                  optionsComponent={ArtistIndexTableOptionsConnector}
+                >
+                  <PageToolbarButton
+                    label="Options"
+                    iconName={icons.TABLE}
+                  />
+                </TableOptionsModalWrapper> :
+                null
+            }
 
             {
-              view === 'posters' &&
+              view === 'posters' ?
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.POSTER}
                   isDisabled={hasNoArtist}
                   onPress={this.onPosterOptionsPress}
-                />
+                /> :
+                null
             }
 
             {
-              view === 'banners' &&
+              view === 'banners' ?
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.POSTER}
                   isDisabled={hasNoArtist}
                   onPress={this.onBannerOptionsPress}
-                />
+                /> :
+                null
             }
 
             {
-              view === 'overview' &&
-              <PageToolbarButton
-                label="Options"
-                iconName={icons.OVERVIEW}
-                isDisabled={hasNoArtist}
-                onPress={this.onOverviewOptionsPress}
-              />
+              view === 'overview' ?
+                <PageToolbarButton
+                  label="Options"
+                  iconName={icons.OVERVIEW}
+                  isDisabled={hasNoArtist}
+                  onPress={this.onOverviewOptionsPress}
+                /> :
+                null
             }
 
             {
@@ -382,6 +402,7 @@ ArtistIndex.propTypes = {
   error: PropTypes.object,
   totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,

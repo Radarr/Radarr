@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NzbDrone.Core.Datastore.Events;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 using Lidarr.Http.Extensions;

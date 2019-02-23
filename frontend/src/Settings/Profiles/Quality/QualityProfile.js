@@ -65,6 +65,7 @@ class QualityProfile extends Component {
     const {
       id,
       name,
+      upgradeAllowed,
       cutoff,
       items,
       isDeleting
@@ -97,20 +98,20 @@ class QualityProfile extends Component {
               }
 
               if (item.quality) {
-                const isCutoff = item.quality.id === cutoff;
+                const isCutoff = upgradeAllowed && item.quality.id === cutoff;
 
                 return (
                   <Label
                     key={item.quality.id}
                     kind={isCutoff ? kinds.INFO : kinds.default}
-                    title={isCutoff ? 'Cutoff' : null}
+                    title={isCutoff ? 'Upgrade until this quality is met or exceeded' : null}
                   >
                     {item.quality.name}
                   </Label>
                 );
               }
 
-              const isCutoff = item.id === cutoff;
+              const isCutoff = upgradeAllowed && item.id === cutoff;
 
               return (
                 <Tooltip
@@ -174,6 +175,7 @@ class QualityProfile extends Component {
 QualityProfile.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
+  upgradeAllowed: PropTypes.bool.isRequired,
   cutoff: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,

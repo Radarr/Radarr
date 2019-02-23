@@ -24,6 +24,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 CompareQuality,
                 CompareLanguage,
+                ComparePreferredWordScore,
                 CompareProtocol,
                 ComparePeersIfTorrent,
                 CompareAlbumCount,
@@ -56,7 +57,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
-            return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.Profile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
+            return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.QualityProfile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version));
         }
@@ -64,6 +65,11 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareLanguage(DownloadDecision x, DownloadDecision y)
         {
             return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.LanguageProfile.Value.Languages.FindIndex(l => l.Language == remoteAlbum.ParsedAlbumInfo.Language));
+        }
+
+        private int ComparePreferredWordScore(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.PreferredWordScore);
         }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)

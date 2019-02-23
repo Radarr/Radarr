@@ -6,8 +6,11 @@ import moment from 'moment';
 import { filterTypes } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import * as calendarViews from 'Calendar/calendarViews';
+import * as commandNames from 'Commands/commandNames';
+import createClearReducer from './Creators/Reducers/createClearReducer';
 import createHandleActions from './Creators/createHandleActions';
 import { set, update } from './baseActions';
+import { executeCommandHelper } from './commandActions';
 
 //
 // Variables
@@ -35,6 +38,12 @@ export const defaultState = {
   showUpcoming: true,
   error: null,
   items: [],
+  searchMissingCommandId: null,
+
+  options: {
+    collapseMultipleAlbums: false,
+    showCutoffUnmetIcon: false
+  },
 
   selectedFilterKey: 'monitored',
 
@@ -67,7 +76,7 @@ export const defaultState = {
 export const persistState = [
   'calendar.view',
   'calendar.selectedFilterKey',
-  'calendar.showUpcoming'
+  'calendar.options'
 ];
 
 //
@@ -78,9 +87,11 @@ export const SET_CALENDAR_DAYS_COUNT = 'calendar/setCalendarDaysCount';
 export const SET_CALENDAR_FILTER = 'calendar/setCalendarFilter';
 export const SET_CALENDAR_VIEW = 'calendar/setCalendarView';
 export const GOTO_CALENDAR_TODAY = 'calendar/gotoCalendarToday';
-export const GOTO_CALENDAR_PREVIOUS_RANGE = 'calendar/gotoCalendarPreviousRange';
 export const GOTO_CALENDAR_NEXT_RANGE = 'calendar/gotoCalendarNextRange';
 export const CLEAR_CALENDAR = 'calendar/clearCalendar';
+export const SET_CALENDAR_OPTION = 'calendar/setCalendarOption';
+export const SEARCH_MISSING = 'calendar/searchMissing';
+export const GOTO_CALENDAR_PREVIOUS_RANGE = 'calendar/gotoCalendarPreviousRange';
 
 //
 // Helpers
@@ -188,6 +199,8 @@ export const gotoCalendarToday = createThunk(GOTO_CALENDAR_TODAY);
 export const gotoCalendarPreviousRange = createThunk(GOTO_CALENDAR_PREVIOUS_RANGE);
 export const gotoCalendarNextRange = createThunk(GOTO_CALENDAR_NEXT_RANGE);
 export const clearCalendar = createAction(CLEAR_CALENDAR);
+export const setCalendarOption = createAction(SET_CALENDAR_OPTION);
+export const searchMissing = createThunk(SEARCH_MISSING);
 
 //
 // Action Handlers
@@ -195,11 +208,12 @@ export const clearCalendar = createAction(CLEAR_CALENDAR);
 export const actionHandlers = handleThunks({
   [FETCH_CALENDAR]: function(getState, payload, dispatch) {
     const state = getState();
-    const unmonitored = state.calendar.selectedFilterKey === 'all';
+    const calendar = state.calendar;
+    const unmonitored = calendar.selectedFilterKey === 'all';
 
     const {
-      time,
-      view
+      time = calendar.time,
+      view = calendar.view
     } = payload;
 
     const dayCount = state.calendar.dayCount;
@@ -328,6 +342,22 @@ export const actionHandlers = handleThunks({
     const time = moment(state.calendar.time).add(amount, viewRanges[view]);
 
     dispatch(fetchCalendar({ time, view }));
+  },
+
+  [SEARCH_MISSING]: function(getState, payload, dispatch) {
+    const { albumIds } = payload;
+
+    const commandPayload = {
+      name: commandNames.ALBUM_SEARCH,
+      albumIds
+    };
+
+    executeCommandHelper(commandPayload, dispatch).then((data) => {
+      dispatch(set({
+        section,
+        searchMissingCommandId: data.id
+      }));
+    });
   }
 });
 
@@ -336,15 +366,23 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [CLEAR_CALENDAR]: (state) => {
-    const {
-      view,
-      selectedFilterKey,
-      showUpcoming,
-      ...otherDefaultState
-    } = defaultState;
+  [CLEAR_CALENDAR]: createClearReducer(section, {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    items: []
+  }),
 
-    return Object.assign({}, state, otherDefaultState);
+  [SET_CALENDAR_OPTION]: function(state, { payload }) {
+    const options = state.options;
+
+    return {
+      ...state,
+      options: {
+        ...options,
+        ...payload
+      }
+    };
   }
 
 }, defaultState, section);

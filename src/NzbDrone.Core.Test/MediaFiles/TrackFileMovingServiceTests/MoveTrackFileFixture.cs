@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
                                                  .Build();
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.BuildTrackFileName(It.IsAny<List<Track>>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<TrackFile>(), null))
+                  .Setup(s => s.BuildTrackFileName(It.IsAny<List<Track>>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<TrackFile>(), null, null))
                   .Returns("File Name");
 
             Mocker.GetMock<IBuildFileNames>()

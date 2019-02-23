@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             remoteAlbum.Artist = Builder<Artist>.CreateNew()
-                .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
             return remoteAlbum;

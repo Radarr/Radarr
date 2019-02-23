@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.Languages
         {
             var profile = new LanguageProfile
                 {
-                    Languages = Language.All.OrderByDescending(l => l.Name).Select(l => new ProfileLanguageItem {Language = l, Allowed = l == Language.English}).ToList(),
+                    Languages = Language.All.OrderByDescending(l => l.Name).Select(l => new LanguageProfileItem {Language = l, Allowed = l == Language.English}).ToList(),
                     Name = "TestProfile",
                     Cutoff = Language.English
                 };

@@ -11,20 +11,45 @@ import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import { fetchLanguageProfileSchema, fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
 import TrackFileEditorModalContent from './TrackFileEditorModalContent';
 
+function createSchemaSelector() {
+  return createSelector(
+    (state) => state.settings.languageProfiles,
+    (state) => state.settings.qualityProfiles,
+    (languageProfiles, qualityProfiles) => {
+      const languages = _.map(languageProfiles.schema.languages, 'language');
+      const qualities = getQualities(qualityProfiles.schema.items);
+
+      let error = null;
+
+      if (languageProfiles.schemaError) {
+        error = 'Unable to load languages';
+      } else if (qualityProfiles.schemaError) {
+        error = 'Unable to load qualities';
+      }
+
+      return {
+        isFetching: languageProfiles.isSchemaFetching || qualityProfiles.isSchemaFetching,
+        isPopulated: languageProfiles.isSchemaPopulated && qualityProfiles.isSchemaPopulated,
+        error,
+        languages,
+        qualities
+      };
+    }
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     (state, { albumId }) => albumId,
     (state) => state.tracks,
     (state) => state.trackFiles,
-    (state) => state.settings.languageProfiles.schema,
-    (state) => state.settings.qualityProfiles.schema,
+    createSchemaSelector(),
     createArtistSelector(),
     (
       albumId,
       tracks,
       trackFiles,
-      languageProfilesSchema,
-      qualityProfileSchema,
+      schema,
       artist
     ) => {
       const filtered = _.filter(tracks.items, (track) => {
@@ -52,17 +77,12 @@ function createMapStateToProps() {
         };
       });
 
-      const languages = _.map(languageProfilesSchema.languages, 'language');
-      const qualities = getQualities(qualityProfileSchema.items);
-
       return {
+        ...schema,
         items,
         artistType: artist.artistType,
         isDeleting: trackFiles.isDeleting,
-        isFetching: tracks.isFetching || trackFiles.isFetching,
-        isSaving: trackFiles.isSaving,
-        languages,
-        qualities
+        isSaving: trackFiles.isSaving
       };
     }
   );
@@ -116,9 +136,6 @@ class TrackFileEditorModalContentConnector extends Component {
   }
 
   //
-  // Render
-
-  //
   // Listeners
 
   onLanguageChange = (trackFileIds, languageId) => {
@@ -138,6 +155,9 @@ class TrackFileEditorModalContentConnector extends Component {
 
     this.props.dispatchUpdateTrackFiles({ trackFileIds, quality });
   }
+
+  //
+  // Render
 
   render() {
     const {

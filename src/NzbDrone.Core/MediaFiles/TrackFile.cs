@@ -4,8 +4,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 
@@ -33,6 +32,26 @@ namespace NzbDrone.Core.MediaFiles
         public override string ToString()
         {
             return string.Format("[{0}] {1}", Id, RelativePath);
+        }
+
+        public string GetSceneOrFileName()
+        {
+            if (SceneName.IsNotNullOrWhiteSpace())
+            {
+                return SceneName;
+            }
+
+            if (RelativePath.IsNotNullOrWhiteSpace())
+            {
+                return System.IO.Path.GetFileName(RelativePath);
+            }
+
+            if (Path.IsNotNullOrWhiteSpace())
+            {
+                return System.IO.Path.GetFileName(Path);
+            }
+
+            return string.Empty;
         }
     }
 }

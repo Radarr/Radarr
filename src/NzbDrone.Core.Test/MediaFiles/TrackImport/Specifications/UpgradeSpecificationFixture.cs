@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         public void Setup()
         {
             _artist = Builder<Artist>.CreateNew()
-                                     .With(e => e.Profile = new Profile
+                                     .With(e => e.QualityProfile = new QualityProfile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
                                      })

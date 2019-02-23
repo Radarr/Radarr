@@ -10,6 +10,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import RootFoldersConnector from 'RootFolder/RootFoldersConnector';
 import NamingConnector from './Naming/NamingConnector';
 
 const rescanAfterRefreshOptions = [
@@ -56,14 +57,20 @@ class MediaManagement extends Component {
         />
 
         <PageContentBodyConnector>
+          <NamingConnector />
+
           {
             isFetching &&
-              <LoadingIndicator />
+              <FieldSet legend="Naming Settings">
+                <LoadingIndicator />
+              </FieldSet>
           }
 
           {
             !isFetching && error &&
-              <div>Unable to load Media Management settings</div>
+              <FieldSet legend="Naming Settings">
+                <div>Unable to load Media Management settings</div>
+              </FieldSet>
           }
 
           {
@@ -72,8 +79,6 @@ class MediaManagement extends Component {
                 id="mediaManagementSettings"
                 {...otherProps}
               >
-                <NamingConnector />
-
                 {
                   advancedSettings &&
                     <FieldSet legend="Folders">
@@ -369,6 +374,10 @@ class MediaManagement extends Component {
                 }
               </Form>
           }
+
+          <FieldSet legend="Root Folders">
+            <RootFoldersConnector />
+          </FieldSet>
         </PageContentBodyConnector>
       </PageContent>
     );

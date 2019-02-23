@@ -12,7 +12,7 @@ function createProviderSettingsSelector(sectionName) {
         const settings = selectSettings(Object.assign({ name: '' }, item), section.pendingChanges, section.saveError);
 
         const {
-          isFetchingSchema: isFetching,
+          isSchemaFetching: isFetching,
           isSchemaPopulated: isPopulated,
           schemaError: error,
           isSaving,

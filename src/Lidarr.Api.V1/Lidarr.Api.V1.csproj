@@ -107,6 +107,8 @@
     <Compile Include="Profiles\Metadata\MetadataValidator.cs" />
     <Compile Include="Profiles\Quality\QualityCutoffValidator.cs" />
     <Compile Include="Profiles\Quality\QualityItemsValidator.cs" />
+    <Compile Include="Profiles\Release\ReleaseProfileModule.cs" />
+    <Compile Include="Profiles\Release\ReleaseProfileResource.cs" />
     <Compile Include="ProviderTestAllResult.cs" />
     <Compile Include="TrackFiles\TrackFileListResource.cs" />
     <Compile Include="TrackFiles\MediaInfoResource.cs" />
@@ -191,8 +193,6 @@
     <Compile Include="Qualities\QualityDefinitionResource.cs" />
     <Compile Include="Queue\QueueModule.cs" />
     <Compile Include="Queue\QueueResource.cs" />
-    <Compile Include="Restrictions\RestrictionModule.cs" />
-    <Compile Include="Restrictions\RestrictionResource.cs" />
     <Compile Include="RootFolders\RootFolderModule.cs" />
     <Compile Include="RootFolders\RootFolderResource.cs" />
     <Compile Include="AlbumStudio\AlbumStudioResource.cs" />

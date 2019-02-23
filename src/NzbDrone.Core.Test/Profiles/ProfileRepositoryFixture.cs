@@ -7,12 +7,12 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.Profiles
 {
     [TestFixture]
-    public class ProfileRepositoryFixture : DbTest<ProfileRepository, Profile>
+    public class ProfileRepositoryFixture : DbTest<QualityProfileRepository, QualityProfile>
     {
         [Test]
         public void should_be_able_to_read_and_write()
         {
-            var profile = new Profile
+            var profile = new QualityProfile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192, Quality.MP3_256),
                     Cutoff = Quality.MP3_320.Id,

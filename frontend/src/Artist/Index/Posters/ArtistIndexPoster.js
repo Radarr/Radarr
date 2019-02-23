@@ -22,6 +22,7 @@ class ArtistIndexPoster extends Component {
     super(props, context);
 
     this.state = {
+      hasPosterError: false,
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false
     };
@@ -47,6 +48,18 @@ class ArtistIndexPoster extends Component {
 
   onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
+  }
+
+  onPosterLoad = () => {
+    if (this.state.hasPosterError) {
+      this.setState({ hasPosterError: false });
+    }
+  }
+
+  onPosterLoadError = () => {
+    if (!this.state.hasPosterError) {
+      this.setState({ hasPosterError: true });
+    }
   }
 
   //
@@ -90,6 +103,7 @@ class ArtistIndexPoster extends Component {
     } = statistics;
 
     const {
+      hasPosterError,
       isEditArtistModalOpen,
       isDeleteArtistModalOpen
     } = this.state;
@@ -153,7 +167,17 @@ class ArtistIndexPoster extends Component {
                 size={250}
                 lazy={false}
                 overflow={true}
+                onError={this.onPosterLoadError}
+                onLoad={this.onPosterLoad}
               />
+
+              {
+                hasPosterError &&
+                  <div className={styles.overlayTitle}>
+                    {artistName}
+                  </div>
+              }
+
             </Link>
           </div>
 

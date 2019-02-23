@@ -51,7 +51,10 @@ class PageHeader extends Component {
     return (
       <div className={styles.header}>
         <div className={styles.logoContainer}>
-          <Link to={`${window.Lidarr.urlBase}/`}>
+          <Link
+            className={styles.logoLink}
+            to={`${window.Lidarr.urlBase}/`}
+          >
             <img
               className={styles.logo}
               src={`${window.Lidarr.urlBase}/Content/Images/logo.svg`}

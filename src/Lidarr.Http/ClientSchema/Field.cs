@@ -14,7 +14,8 @@ namespace Lidarr.Http.ClientSchema
         public string Type { get; set; }
         public bool Advanced { get; set; }
         public List<SelectOption> SelectOptions { get; set; }
-        
+        public string Section { get; set; }
+
         public Field Clone()
         {
             return (Field) MemberwiseClone();

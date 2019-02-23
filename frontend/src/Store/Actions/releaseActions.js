@@ -11,6 +11,9 @@ import createHandleActions from './Creators/createHandleActions';
 // Variables
 
 export const section = 'releases';
+export const albumSection = 'releases.album';
+export const artistSection = 'releases.artist';
+
 let abortCurrentRequest = null;
 
 //
@@ -139,12 +142,21 @@ export const defaultState = {
       label: 'Rejections',
       type: filterBuilderTypes.NUMBER
     }
-  ]
+  ],
+
+  album: {
+    selectedFilterKey: 'all'
+  },
+
+  artist: {
+    selectedFilterKey: 'discography-pack'
+  }
 };
 
 export const persistState = [
   'releases.selectedFilterKey',
-  'releases.customFilters'
+  'releases.album.customFilters',
+  'releases.artist.customFilters'
 ];
 
 //
@@ -156,7 +168,8 @@ export const SET_RELEASES_SORT = 'releases/setReleasesSort';
 export const CLEAR_RELEASES = 'releases/clearReleases';
 export const GRAB_RELEASE = 'releases/grabRelease';
 export const UPDATE_RELEASE = 'releases/updateRelease';
-export const SET_RELEASES_FILTER = 'releases/setReleasesFilter';
+export const SET_ALBUM_RELEASES_FILTER = 'releases/setAlbumReleasesFilter';
+export const SET_ARTIST_RELEASES_FILTER = 'releases/setArtistReleasesFilter';
 
 //
 // Action Creators
@@ -167,7 +180,8 @@ export const setReleasesSort = createAction(SET_RELEASES_SORT);
 export const clearReleases = createAction(CLEAR_RELEASES);
 export const grabRelease = createThunk(GRAB_RELEASE);
 export const updateRelease = createAction(UPDATE_RELEASE);
-export const setReleasesFilter = createAction(SET_RELEASES_FILTER);
+export const setAlbumReleasesFilter = createAction(SET_ALBUM_RELEASES_FILTER);
+export const setArtistReleasesFilter = createAction(SET_ARTIST_RELEASES_FILTER);
 
 //
 // Helpers
@@ -231,7 +245,13 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CLEAR_RELEASES]: (state) => {
-    return Object.assign({}, state, defaultState);
+    const {
+      album,
+      artist,
+      ...otherDefaultState
+    } = defaultState;
+
+    return Object.assign({}, state, otherDefaultState);
   },
 
   [UPDATE_RELEASE]: (state, { payload }) => {
@@ -254,6 +274,7 @@ export const reducers = createHandleActions({
   },
 
   [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section),
-  [SET_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section)
+  [SET_ALBUM_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(albumSection),
+  [SET_ARTIST_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(artistSection)
 
 }, defaultState, section);

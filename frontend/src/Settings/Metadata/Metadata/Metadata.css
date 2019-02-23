@@ -10,8 +10,6 @@
   font-size: 24px;
 }
 
-.label {
-  composes: label from 'Components/Label.css';
-
-  width: 100%;
+.section {
+  margin-top: 10px;
 }

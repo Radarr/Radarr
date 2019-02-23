@@ -121,6 +121,34 @@ function scheduleRemoveCommand(command, dispatch) {
   }, 60000 * 5);
 }
 
+export function executeCommandHelper( payload, dispatch) {
+  // TODO: show a message for the user
+  if (lastCommand && isSameCommand(lastCommand, payload)) {
+    console.warn('Please wait at least 5 seconds before running this command again');
+  }
+
+  lastCommand = payload;
+
+  // clear last command after 5 seconds.
+  if (lastCommandTimeout) {
+    clearTimeout(lastCommandTimeout);
+  }
+
+  lastCommandTimeout = setTimeout(() => {
+    lastCommand = null;
+  }, 5000);
+
+  const promise = $.ajax({
+    url: '/command',
+    method: 'POST',
+    data: JSON.stringify(payload)
+  });
+
+  return promise.then((data) => {
+    dispatch(addCommand(data));
+  });
+}
+
 //
 // Action Handlers
 
@@ -128,31 +156,7 @@ export const actionHandlers = handleThunks({
   [FETCH_COMMANDS]: createFetchHandler('commands', '/command'),
 
   [EXECUTE_COMMAND]: function(getState, payload, dispatch) {
-    // TODO: show a message for the user
-    if (lastCommand && isSameCommand(lastCommand, payload)) {
-      console.warn('Please wait at least 5 seconds before running this command again');
-    }
-
-    lastCommand = payload;
-
-    // clear last command after 5 seconds.
-    if (lastCommandTimeout) {
-      clearTimeout(lastCommandTimeout);
-    }
-
-    lastCommandTimeout = setTimeout(() => {
-      lastCommand = null;
-    }, 5000);
-
-    const promise = $.ajax({
-      url: '/command',
-      method: 'POST',
-      data: JSON.stringify(payload)
-    });
-
-    promise.done((data) => {
-      dispatch(addCommand(data));
-    });
+    executeCommandHelper(payload, dispatch);
   },
 
   [CANCEL_COMMAND]: createRemoveItemHandler(section, '/command'),

@@ -8,7 +8,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import EpisodeLanguage from 'Album/EpisodeLanguage';
+import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
@@ -68,8 +68,6 @@ class ArtistHistoryRow extends Component {
       qualityCutoffNotMet,
       date,
       data,
-      fullArtist,
-      artist,
       album
     } = this.props;
 
@@ -93,7 +91,7 @@ class ArtistHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell>
-          <EpisodeLanguage
+          <TrackLanguage
             language={language}
             isCutoffNotMet={languageCutoffNotMet}
           />

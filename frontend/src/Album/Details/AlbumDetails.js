@@ -12,6 +12,7 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import AlbumCover from 'Album/AlbumCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
@@ -25,7 +26,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import AlbumDetailsMediumConnector from './AlbumDetailsMediumConnector';
 import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
-import InteractiveSearchModal from 'InteractiveSearch/InteractiveSearchModal';
+import AlbumInteractiveSearchModalConnector from 'Album/Search/AlbumInteractiveSearchModalConnector';
 import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
 import AlbumDetailsLinks from './AlbumDetailsLinks';
 import styles from './AlbumDetails.css';
@@ -39,6 +40,28 @@ function getFanartUrl(images) {
     // Remove protocol
     return fanartImage.url.replace(/^https?:/, '');
   }
+}
+
+function formatDuration(timeSpan) {
+  const duration = moment.duration(timeSpan);
+  const hours = duration.get('hours');
+  const minutes = duration.get('minutes');
+  let hoursText = 'Hours';
+  let minText = 'Minutes';
+
+  if (minutes === 1) {
+    minText = 'Minute';
+  }
+
+  if (hours === 0) {
+    return `${minutes} ${minText}`;
+  }
+
+  if (hours === 1) {
+    hoursText = 'Hour';
+  }
+
+  return `${hours} ${hoursText} ${minutes} ${minText}`;
 }
 
 function getExpandedState(newState) {
@@ -144,6 +167,7 @@ class AlbumDetails extends Component {
       foreignAlbumId,
       title,
       disambiguation,
+      duration,
       overview,
       albumType,
       statistics = {},
@@ -153,6 +177,7 @@ class AlbumDetails extends Component {
       images,
       links,
       media,
+      isSaving,
       isFetching,
       isPopulated,
       albumsError,
@@ -162,6 +187,7 @@ class AlbumDetails extends Component {
       previousAlbum,
       nextAlbum,
       isSearching,
+      onMonitorTogglePress,
       onSearchPress
     } = this.props;
 
@@ -259,9 +285,22 @@ class AlbumDetails extends Component {
               />
 
               <div className={styles.info}>
-                <div className={styles.titleContainer}>
-                  <div className={styles.title}>
-                    {title}{disambiguation ? ` (${disambiguation})` : ''}
+                <div className={styles.titleRow}>
+                  <div className={styles.titleContainer}>
+
+                    <div className={styles.toggleMonitoredContainer}>
+                      <MonitorToggleButton
+                        className={styles.monitorToggleButton}
+                        monitored={monitored}
+                        isSaving={isSaving}
+                        size={40}
+                        onPress={onMonitorTogglePress}
+                      />
+                    </div>
+
+                    <div className={styles.title}>
+                      {title}{disambiguation ? ` (${disambiguation})` : ''}
+                    </div>
                   </div>
 
                   <div className={styles.albumNavigationButtons}>
@@ -293,6 +332,13 @@ class AlbumDetails extends Component {
 
                 <div className={styles.details}>
                   <div>
+                    {
+                      !!duration &&
+                        <span className={styles.duration}>
+                          {formatDuration(duration)}
+                        </span>
+                    }
+
                     <HeartRating
                       rating={ratings.value}
                       iconSize={20}
@@ -456,9 +502,10 @@ class AlbumDetails extends Component {
             onModalClose={this.onManageTracksModalClose}
           />
 
-          <InteractiveSearchModal
+          <AlbumInteractiveSearchModalConnector
             isOpen={isInteractiveSearchModalOpen}
             albumId={id}
+            albumTitle={title}
             onModalClose={this.onInteractiveSearchModalClose}
           />
 
@@ -487,6 +534,7 @@ AlbumDetails.propTypes = {
   foreignAlbumId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
+  duration: PropTypes.number,
   overview: PropTypes.string,
   albumType: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
@@ -497,6 +545,7 @@ AlbumDetails.propTypes = {
   media: PropTypes.arrayOf(PropTypes.object).isRequired,
   monitored: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   isSearching: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,
@@ -506,6 +555,7 @@ AlbumDetails.propTypes = {
   artist: PropTypes.object,
   previousAlbum: PropTypes.object,
   nextAlbum: PropTypes.object,
+  onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func,
   onSearchPress: PropTypes.func.isRequired
 };

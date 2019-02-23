@@ -19,8 +19,10 @@ function getTagDisplayValue(value, selectedFilterBuilderProp) {
 function getValue(input, selectedFilterBuilderProp) {
   if (selectedFilterBuilderProp.valueType === filterBuilderValueTypes.BYTES) {
     const match = input.match(/^(\d+)([kmgt](i?b)?)$/i);
+
     if (match && match.length > 1) {
       const [, value, unit] = input.match(/^(\d+)([kmgt](i?b)?)$/i);
+
       switch (unit.toLowerCase()) {
         case 'k':
           return convertToBytes(value, 1, true);
@@ -118,6 +120,7 @@ class FilterBuilderRowValue extends Component {
           name: tag && tag.name
         };
       }
+
       return {
         id,
         name: getTagDisplayValue(id, selectedFilterBuilderProp)

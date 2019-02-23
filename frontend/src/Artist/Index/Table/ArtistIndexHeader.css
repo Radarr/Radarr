@@ -10,6 +10,20 @@
   flex: 4 0 110px;
 }
 
+.banner {
+  flex: 0 0 379px;
+}
+
+.bannerGrow {
+  flex-grow: 1;
+}
+
+.artistType {
+  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 100px;
+}
+
 .qualityProfileId,
 .languageProfileId,
 .metadataProfileId {
@@ -40,7 +54,6 @@
   flex: 0 0 150px;
 }
 
-.artistType,
 .trackCount {
   composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
 

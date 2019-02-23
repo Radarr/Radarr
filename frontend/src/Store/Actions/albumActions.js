@@ -189,13 +189,11 @@ export const actionHandlers = handleThunks({
       monitored
     } = payload;
 
-    const albumSection = _.last(albumEntity.split('.'));
-
     dispatch(batchActions(
       albumIds.map((albumId) => {
         return updateItem({
           id: albumId,
-          section: albumSection,
+          section: albumEntity,
           isSaving: true
         });
       })
@@ -213,7 +211,7 @@ export const actionHandlers = handleThunks({
         albumIds.map((albumId) => {
           return updateItem({
             id: albumId,
-            section: albumSection,
+            section: albumEntity,
             isSaving: false,
             monitored
           });
@@ -226,7 +224,7 @@ export const actionHandlers = handleThunks({
         albumIds.map((albumId) => {
           return updateItem({
             id: albumId,
-            section: albumSection,
+            section: albumEntity,
             isSaving: false
           });
         })

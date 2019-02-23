@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TetherComponent from 'react-tether';
 import classNames from 'classnames';
+import isMobileUtil from 'Utilities/isMobile';
 import { kinds, tooltipPositions } from 'Helpers/Props';
 import styles from './Tooltip.css';
 
@@ -67,12 +68,14 @@ class Tooltip extends Component {
   // Listeners
 
   onClick = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    if (isMobileUtil()) {
+      this.setState({ isOpen: !this.state.isOpen });
+    }
   }
 
   onMouseEnter = () => {
     if (this._closeTimeout) {
-      clearTimeout(this._closeTimeout);
+      this._closeTimeout = clearTimeout(this._closeTimeout);
     }
 
     this.setState({ isOpen: true });
@@ -105,7 +108,7 @@ class Tooltip extends Component {
       >
         <span
           className={className}
-          // onClick={this.onClick}
+          onClick={this.onClick}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >

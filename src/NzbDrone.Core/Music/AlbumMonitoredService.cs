@@ -53,37 +53,37 @@ namespace NzbDrone.Core.Music
                 }
                 else
                 {
-                    switch (monitoringOptions.SelectedOption)
+                    switch (monitoringOptions.Monitor)
                     {
-                        case MonitoringOption.All:
+                        case MonitorTypes.All:
                             ToggleAlbumsMonitoredState(albums, true);
                             break;
-                        case MonitoringOption.Future:
+                        case MonitorTypes.Future:
                             _logger.Debug("Unmonitoring Albums with Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), false);
                             _logger.Debug("Unmonitoring Albums without Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), false);
                             break;
-                        case MonitoringOption.None:
+                        case MonitorTypes.None:
                             ToggleAlbumsMonitoredState(albums, false);
                             break;
-                        case MonitoringOption.Missing:
+                        case MonitorTypes.Missing:
                             _logger.Debug("Unmonitoring Albums with Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), false);
                             _logger.Debug("Monitoring Albums without Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), true);
                             break;
-                        case MonitoringOption.Existing:
+                        case MonitorTypes.Existing:
                             _logger.Debug("Monitoring Albums with Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), true);
                             _logger.Debug("Unmonitoring Albums without Files");
                             ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), false);
                             break;
-                        case MonitoringOption.Latest:
+                        case MonitorTypes.Latest:
                             ToggleAlbumsMonitoredState(albums, false);
                             ToggleAlbumsMonitoredState(albums.OrderByDescending(e=>e.ReleaseDate).Take(1),true);
                             break;
-                        case MonitoringOption.First:
+                        case MonitorTypes.First:
                             ToggleAlbumsMonitoredState(albums, false);
                             ToggleAlbumsMonitoredState(albums.OrderBy(e => e.ReleaseDate).Take(1), true);
                             break;

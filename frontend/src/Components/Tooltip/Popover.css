@@ -100,5 +100,6 @@
 }
 
 .body {
+  overflow: auto;
   padding: 10px;
 }

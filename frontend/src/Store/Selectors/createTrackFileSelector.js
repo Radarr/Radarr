@@ -6,7 +6,7 @@ function createTrackFileSelector() {
     (state) => state.trackFiles,
     (trackFileId, trackFiles) => {
       if (!trackFileId) {
-        return null;
+        return;
       }
 
       return trackFiles.items.find((trackFile) => trackFile.id === trackFileId);

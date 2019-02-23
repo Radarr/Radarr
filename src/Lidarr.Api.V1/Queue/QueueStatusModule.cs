@@ -47,6 +47,7 @@ namespace Lidarr.Api.V1.Queue
             var resource = new QueueStatusResource
             {
                 Count = queue.Count + pending.Count,
+                UnknownCount = queue.Count(q => q.Artist == null),
                 Errors = queue.Any(q => q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
                 Warnings = queue.Any(q => q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
             };

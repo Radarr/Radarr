@@ -6,14 +6,6 @@ import Label from 'Components/Label';
 import EditMetadataModalConnector from './EditMetadataModalConnector';
 import styles from './Metadata.css';
 
-function getKind(enable) {
-  if (enable) {
-    return kinds.SUCCESS;
-  }
-
-  return kinds.DANGER;
-}
-
 class Metadata extends Component {
 
   //
@@ -49,6 +41,17 @@ class Metadata extends Component {
       fields
     } = this.props;
 
+    const metadataFields = [];
+    const imageFields = [];
+
+    fields.forEach((field) => {
+      if (field.section === 'metadata') {
+        metadataFields.push(field);
+      } else {
+        imageFields.push(field);
+      }
+    });
+
     return (
       <Card
         className={styles.metadata}
@@ -60,29 +63,71 @@ class Metadata extends Component {
         </div>
 
         <div>
-          <Label
-            kind={getKind(enable)}
-            outline={!enable}
-          >
-            Enable
-          </Label>
-        </div>
-
-        <div>
           {
-            fields.map((field) => {
-              return (
-                <Label
-                  key={field.label}
-                  kind={enable ? getKind(field.value) : kinds.DEFAULT}
-                  outline={enable && !field.value}
-                >
-                  {field.label}
-                </Label>
-              );
-            })
+            enable ?
+              <Label kind={kinds.SUCCESS}>
+                Enabled
+              </Label> :
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                Disabled
+              </Label>
           }
         </div>
+
+        {
+          enable && !!metadataFields.length &&
+            <div>
+              <div className={styles.section}>
+                Metadata
+              </div>
+
+              {
+                metadataFields.map((field) => {
+                  if (!field.value) {
+                    return null;
+                  }
+
+                  return (
+                    <Label
+                      key={field.label}
+                      kind={kinds.SUCCESS}
+                    >
+                      {field.label}
+                    </Label>
+                  );
+                })
+              }
+            </div>
+        }
+
+        {
+          enable && !!imageFields.length &&
+            <div>
+              <div className={styles.section}>
+                Images
+              </div>
+
+              {
+                imageFields.map((field) => {
+                  if (!field.value) {
+                    return null;
+                  }
+
+                  return (
+                    <Label
+                      key={field.label}
+                      kind={kinds.SUCCESS}
+                    >
+                      {field.label}
+                    </Label>
+                  );
+                })
+              }
+            </div>
+        }
 
         <EditMetadataModalConnector
           id={id}

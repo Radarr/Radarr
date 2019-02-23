@@ -38,7 +38,7 @@ namespace Lidarr.Api.V1.Queue
 
             if (artistIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Artist.Id == (int)artistIdQuery).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => q.Artist?.Id == (int)artistIdQuery).ToResource(includeSeries, includeEpisode);
             }
 
             if (albumIdsQuery.HasValue)
@@ -49,7 +49,7 @@ namespace Lidarr.Api.V1.Queue
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => albumIds.Contains(q.Album.Id)).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => q.Album != null && albumIds.Contains(q.Album.Id)).ToResource(includeSeries, includeEpisode);
             }
 
             return fullQueue.ToResource(includeSeries, includeEpisode);

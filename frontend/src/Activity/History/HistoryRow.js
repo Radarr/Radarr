@@ -6,7 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
-import EpisodeLanguage from 'Album/EpisodeLanguage';
+import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
@@ -131,7 +131,7 @@ class HistoryRow extends Component {
             if (name === 'language') {
               return (
                 <TableRowCell key={name}>
-                  <EpisodeLanguage
+                  <TrackLanguage
                     language={language}
                     isCutoffMet={languageCutoffNotMet}
                   />

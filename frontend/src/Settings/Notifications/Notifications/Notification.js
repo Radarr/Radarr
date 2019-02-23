@@ -7,18 +7,6 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditNotificationModalConnector from './EditNotificationModalConnector';
 import styles from './Notification.css';
 
-function getLabelKind(supports, enabled) {
-  if (!supports) {
-    return kinds.DEFAULT;
-  }
-
-  if (!enabled) {
-    return kinds.DANGER;
-  }
-
-  return kinds.SUCCESS;
-}
-
 class Notification extends Component {
 
   //
@@ -88,40 +76,50 @@ class Notification extends Component {
           {name}
         </div>
 
-        <Label
-          kind={getLabelKind(supportsOnGrab, onGrab)}
-          outline={supportsOnGrab && !onGrab}
-        >
-          On Grab
-        </Label>
+        {
+          supportsOnGrab && onGrab &&
+            <Label kind={kinds.SUCCESS}>
+              On Grab
+            </Label>
+        }
 
-        <Label
-          kind={getLabelKind(supportsOnAlbumDownload, onAlbumDownload)}
-          outline={supportsOnAlbumDownload && !onAlbumDownload}
-        >
-          On Album Download
-        </Label>
+        {
+          supportsOnAlbumDownload && onAlbumDownload &&
+            <Label kind={kinds.SUCCESS}>
+              On Album Download
+            </Label>
+        }
 
-        <Label
-          kind={getLabelKind(supportsOnDownload, onDownload)}
-          outline={supportsOnDownload && !onDownload}
-        >
-          On Track Download
-        </Label>
+        {
+          supportsOnDownload && onDownload &&
+            <Label kind={kinds.SUCCESS}>
+              On Download
+            </Label>
+        }
 
-        <Label
-          kind={getLabelKind(supportsOnUpgrade, onDownload && onUpgrade)}
-          outline={supportsOnUpgrade && !(onDownload && onUpgrade)}
-        >
-          On Upgrade
-        </Label>
+        {
+          supportsOnUpgrade && onDownload && onUpgrade &&
+            <Label kind={kinds.SUCCESS}>
+              On Upgrade
+            </Label>
+        }
 
-        <Label
-          kind={getLabelKind(supportsOnRename, onRename)}
-          outline={supportsOnRename && !onRename}
-        >
-          On Rename
-        </Label>
+        {
+          supportsOnRename && onRename &&
+            <Label kind={kinds.SUCCESS}>
+              On Rename
+            </Label>
+        }
+
+        {
+          !onGrab && !onAlbumDownload && !onDownload && !onRename &&
+            <Label
+              kind={kinds.DISABLED}
+              outline={true}
+            >
+              Disabled
+            </Label>
+        }
 
         <EditNotificationModalConnector
           id={id}

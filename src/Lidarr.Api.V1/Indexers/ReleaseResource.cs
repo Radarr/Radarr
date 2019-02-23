@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
@@ -28,6 +29,7 @@ namespace Lidarr.Api.V1.Indexers
         public bool Discography { get; set; }
         public bool SceneSource { get; set; }
         public Language Language { get; set; }
+        public int LanguageWeight { get; set; }
         public string AirDate { get; set; }
         public string ArtistName { get; set; }
         public string AlbumTitle { get; set; }
@@ -41,6 +43,7 @@ namespace Lidarr.Api.V1.Indexers
         public string InfoUrl { get; set; }
         public bool DownloadAllowed { get; set; }
         public int ReleaseWeight { get; set; }
+        public int PreferredWordScore { get; set; }
 
         public string MagnetUrl { get; set; }
         public string InfoHash { get; set; }
@@ -55,6 +58,16 @@ namespace Lidarr.Api.V1.Indexers
         //public bool IsAbsoluteNumbering { get; set; }
         //public bool IsPossibleSpecialEpisode { get; set; }
         //public bool Special { get; set; }
+
+        // Sent when queuing an unknown release
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        //        [JsonIgnore]
+        public int? ArtistId { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        //        [JsonIgnore]
+        public int? AlbumId { get; set; }
     }
 
     public static class ReleaseResourceMapper
@@ -95,6 +108,7 @@ namespace Lidarr.Api.V1.Indexers
                 InfoUrl = releaseInfo.InfoUrl,
                 DownloadAllowed = remoteAlbum.DownloadAllowed,
                 //ReleaseWeight
+                PreferredWordScore = remoteAlbum.PreferredWordScore,
 
 
                 MagnetUrl = torrentInfo.MagnetUrl,
@@ -107,7 +121,7 @@ namespace Lidarr.Api.V1.Indexers
                 //IsAbsoluteNumbering = parsedEpisodeInfo.IsAbsoluteNumbering,
                 //IsPossibleSpecialEpisode = parsedEpisodeInfo.IsPossibleSpecialEpisode,
                 //Special = parsedEpisodeInfo.Special,
-            };
+        };
 
         }
 

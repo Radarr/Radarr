@@ -12,7 +12,7 @@ function createMapStateToProps() {
     (state) => state.settings.languageProfiles,
     (languageProfiles) => {
       const {
-        isFetchingSchema: isFetching,
+        isSchemaFetching: isFetching,
         isSchemaPopulated: isPopulated,
         schemaError: error,
         schema

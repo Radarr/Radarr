@@ -30,8 +30,9 @@
 }
 
 .dropdownArrowContainer {
-  position: absolute;
-  right: 16px;
+  flex: 1 0 auto;
+  margin-left: 5px;
+  text-align: right;
 }
 
 .contentContainer {
@@ -67,4 +68,14 @@
   composes: input from 'Components/Form/TextInput.css';
 
   border-radius: 0;
+}
+
+.results {
+  @add-mixin scrollbar;
+  @add-mixin scrollbarTrack;
+  @add-mixin scrollbarThumb;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 165px;
 }

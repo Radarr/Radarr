@@ -75,6 +75,4 @@ TableOptionsColumnDragPreview.propTypes = {
   })
 };
 
-/* eslint-disable new-cap */
 export default DragLayer(collectDragLayer)(TableOptionsColumnDragPreview);
-/* eslint-enable new-cap */

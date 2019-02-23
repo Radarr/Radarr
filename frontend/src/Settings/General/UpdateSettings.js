@@ -6,6 +6,11 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 
+const branchValues = [
+  'develop',
+  'nightly'
+];
+
 function UpdateSettings(props) {
   const {
     advancedSettings,
@@ -39,12 +44,13 @@ function UpdateSettings(props) {
         <FormLabel>Branch</FormLabel>
 
         <FormInputGroup
-          type={inputTypes.TEXT}
+          type={inputTypes.AUTO_COMPLETE}
           name="branch"
           helpText="Branch to use to update Lidarr"
           helpLink="https://github.com/Lidarr/Lidarr/wiki/Release-Branches"
-          onChange={onInputChange}
           {...branch}
+          values={branchValues}
+          onChange={onInputChange}
         />
       </FormGroup>
 

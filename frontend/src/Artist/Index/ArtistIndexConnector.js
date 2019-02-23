@@ -9,7 +9,7 @@ import createCommandExecutingSelector from 'Store/Selectors/createCommandExecuti
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchArtist } from 'Store/Actions/artistActions';
 import scrollPositions from 'Store/scrollPositions';
-import { setArtistSort, setArtistFilter, setArtistView } from 'Store/Actions/artistIndexActions';
+import { setArtistSort, setArtistFilter, setArtistView, setArtistTableOption } from 'Store/Actions/artistIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
@@ -66,13 +66,41 @@ function createMapStateToProps() {
   );
 }
 
-const mapDispatchToProps = {
-  fetchArtist,
-  setArtistSort,
-  setArtistFilter,
-  setArtistView,
-  executeCommand
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchFetchArtist() {
+      dispatch(fetchArtist);
+    },
+
+    onTableOptionChange(payload) {
+      dispatch(setArtistTableOption(payload));
+    },
+
+    onSortSelect(sortKey) {
+      dispatch(setArtistSort({ sortKey }));
+    },
+
+    onFilterSelect(selectedFilterKey) {
+      dispatch(setArtistFilter({ selectedFilterKey }));
+    },
+
+    dispatchSetArtistView(view) {
+      dispatch(setArtistView({ view }));
+    },
+
+    onRefreshArtistPress() {
+      dispatch(executeCommand({
+        name: commandNames.REFRESH_ARTIST
+      }));
+    },
+
+    onRssSyncPress() {
+      dispatch(executeCommand({
+        name: commandNames.RSS_SYNC
+      }));
+    }
+  };
+}
 
 class ArtistIndexConnector extends Component {
 
@@ -94,24 +122,16 @@ class ArtistIndexConnector extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchArtist();
+    this.props.dispatchFetchArtist();
   }
 
   //
   // Listeners
 
-  onSortSelect = (sortKey) => {
-    this.props.setArtistSort({ sortKey });
-  }
-
-  onFilterSelect = (selectedFilterKey) => {
-    this.props.setArtistFilter({ selectedFilterKey });
-  }
-
   onViewSelect = (view) => {
     // Reset the scroll position before changing the view
     this.setState({ scrollTop: 0 }, () => {
-      this.props.setArtistView({ view });
+      this.props.dispatchSetArtistView(view);
     });
   }
 
@@ -123,18 +143,6 @@ class ArtistIndexConnector extends Component {
     });
   }
 
-  onRefreshArtistPress = () => {
-    this.props.executeCommand({
-      name: commandNames.REFRESH_ARTIST
-    });
-  }
-
-  onRssSyncPress = () => {
-    this.props.executeCommand({
-      name: commandNames.RSS_SYNC
-    });
-  }
-
   //
   // Render
 
@@ -143,12 +151,8 @@ class ArtistIndexConnector extends Component {
       <ArtistIndex
         {...this.props}
         scrollTop={this.state.scrollTop}
-        onSortSelect={this.onSortSelect}
-        onFilterSelect={this.onFilterSelect}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
-        onRefreshArtistPress={this.onRefreshArtistPress}
-        onRssSyncPress={this.onRssSyncPress}
       />
     );
   }
@@ -158,14 +162,10 @@ ArtistIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
-  fetchArtist: PropTypes.func.isRequired,
-  setArtistSort: PropTypes.func.isRequired,
-  setArtistFilter: PropTypes.func.isRequired,
-  setArtistView: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchFetchArtist: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(
-  connect(createMapStateToProps, mapDispatchToProps)(ArtistIndexConnector),
+  connect(createMapStateToProps, createMapDispatchToProps)(ArtistIndexConnector),
   'artistIndex'
 );

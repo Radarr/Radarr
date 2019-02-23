@@ -6,7 +6,7 @@ using FluentAssertions;
 using Marr.Data;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     [TestFixture]
     public class DelaySpecificationFixture : CoreTest<DelaySpecification>
     {
-        private Profile _profile;
+        private QualityProfile _profile;
         private LanguageProfile _langProfile;
         private DelayProfile _delayProfile;
         private RemoteAlbum _remoteAlbum;
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [SetUp]
         public void Setup()
         {
-            _profile = Builder<Profile>.CreateNew()
+            _profile = Builder<QualityProfile>.CreateNew()
                                        .Build();
 
             _langProfile = Builder<LanguageProfile>.CreateNew()
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                       .Build();
 
             var artist = Builder<Artist>.CreateNew()
-                                        .With(s => s.Profile = _profile)
+                                        .With(s => s.QualityProfile = _profile)
                                         .With(s => s.LanguageProfile = _langProfile)
                                         .Build();
 
@@ -54,10 +54,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                    .With(r => r.Artist = artist)
                                                    .Build();
 
-            _profile.Items = new List<ProfileQualityItem>();
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
+            _profile.Items = new List<QualityProfileQualityItem>();
+            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 });
+            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
+            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
 
             _profile.Cutoff = Quality.MP3_320.Id;
 
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenUpgradeForExistingFile()
         {
             Mocker.GetMock<IUpgradableSpecification>()
-                  .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<LanguageProfile>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<QualityModel>(), It.IsAny<Language>()))
+                  .Setup(s => s.IsUpgradable(It.IsAny<QualityProfile>(), It.IsAny<LanguageProfile>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<int>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<int>()))
                   .Returns(true);
         }
 

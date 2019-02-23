@@ -18,8 +18,8 @@ import namingExamples from './Settings/namingExamples';
 import notifications from './Settings/notifications';
 import qualityDefinitions from './Settings/qualityDefinitions';
 import qualityProfiles from './Settings/qualityProfiles';
+import releaseProfiles from './Settings/releaseProfiles';
 import remotePathMappings from './Settings/remotePathMappings';
-import restrictions from './Settings/restrictions';
 import ui from './Settings/ui';
 
 export * from './Settings/delayProfiles';
@@ -39,8 +39,8 @@ export * from './Settings/namingExamples';
 export * from './Settings/notifications';
 export * from './Settings/qualityDefinitions';
 export * from './Settings/qualityProfiles';
+export * from './Settings/releaseProfiles';
 export * from './Settings/remotePathMappings';
-export * from './Settings/restrictions';
 export * from './Settings/ui';
 
 //
@@ -71,8 +71,8 @@ export const defaultState = {
   notifications: notifications.defaultState,
   qualityDefinitions: qualityDefinitions.defaultState,
   qualityProfiles: qualityProfiles.defaultState,
+  releaseProfiles: releaseProfiles.defaultState,
   remotePathMappings: remotePathMappings.defaultState,
-  restrictions: restrictions.defaultState,
   ui: ui.defaultState
 };
 
@@ -111,8 +111,8 @@ export const actionHandlers = handleThunks({
   ...notifications.actionHandlers,
   ...qualityDefinitions.actionHandlers,
   ...qualityProfiles.actionHandlers,
+  ...releaseProfiles.actionHandlers,
   ...remotePathMappings.actionHandlers,
-  ...restrictions.actionHandlers,
   ...ui.actionHandlers
 });
 
@@ -142,8 +142,8 @@ export const reducers = createHandleActions({
   ...notifications.reducers,
   ...qualityDefinitions.reducers,
   ...qualityProfiles.reducers,
+  ...releaseProfiles.reducers,
   ...remotePathMappings.reducers,
-  ...restrictions.reducers,
   ...ui.reducers
 
 }, defaultState, section);

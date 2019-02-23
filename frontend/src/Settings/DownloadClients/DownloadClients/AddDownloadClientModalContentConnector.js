@@ -11,9 +11,9 @@ function createMapStateToProps() {
     (state) => state.settings.downloadClients,
     (downloadClients) => {
       const {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         schema
       } = downloadClients;
 
@@ -21,9 +21,9 @@ function createMapStateToProps() {
       const torrentDownloadClients = _.filter(schema, { protocol: 'torrent' });
 
       return {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         usenetDownloadClients,
         torrentDownloadClients
       };

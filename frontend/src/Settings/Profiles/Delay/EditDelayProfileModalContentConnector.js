@@ -16,6 +16,13 @@ const newDelayProfile = {
   tags: []
 };
 
+const protocolOptions = [
+  { key: 'preferUsenet', value: 'Prefer Usenet' },
+  { key: 'preferTorrent', value: 'Prefer Torrent' },
+  { key: 'onlyUsenet', value: 'Only Usenet' },
+  { key: 'onlyTorrent', value: 'Only Torrent' }
+];
+
 function createDelayProfileSelector() {
   return createSelector(
     (state, { id }) => id,
@@ -50,13 +57,6 @@ function createMapStateToProps() {
   return createSelector(
     createDelayProfileSelector(),
     (delayProfile) => {
-      const protocolOptions = [
-        { key: 'preferUsenet', value: 'Prefer Usenet' },
-        { key: 'preferTorrent', value: 'Prefer Torrent' },
-        { key: 'onlyUsenet', value: 'Only Usenet' },
-        { key: 'onlyTorrent', value: 'Only Torrent' }
-      ];
-
       const enableUsenet = delayProfile.item.enableUsenet.value;
       const enableTorrent = delayProfile.item.enableTorrent.value;
       const preferredProtocol = delayProfile.item.preferredProtocol.value;

@@ -36,6 +36,7 @@ export const defaultState = {
 export const QUEUE_LOOKUP_ARTIST = 'importArtist/queueLookupArtist';
 export const START_LOOKUP_ARTIST = 'importArtist/startLookupArtist';
 export const CANCEL_LOOKUP_ARTIST = 'importArtist/cancelLookupArtist';
+export const LOOKUP_UNSEARCHED_ARTIST = 'importArtist/lookupUnsearchedArtist';
 export const CLEAR_IMPORT_ARTIST = 'importArtist/clearImportArtist';
 export const SET_IMPORT_ARTIST_VALUE = 'importArtist/setImportArtistValue';
 export const IMPORT_ARTIST = 'importArtist/importArtist';
@@ -46,6 +47,7 @@ export const IMPORT_ARTIST = 'importArtist/importArtist';
 export const queueLookupArtist = createThunk(QUEUE_LOOKUP_ARTIST);
 export const startLookupArtist = createThunk(START_LOOKUP_ARTIST);
 export const importArtist = createThunk(IMPORT_ARTIST);
+export const lookupUnsearchedArtist = createThunk(LOOKUP_UNSEARCHED_ARTIST);
 export const clearImportArtist = createAction(CLEAR_IMPORT_ARTIST);
 export const cancelLookupArtist = createAction(CANCEL_LOOKUP_ARTIST);
 
@@ -83,7 +85,7 @@ export const actionHandlers = handleThunks({
       section,
       ...item,
       term,
-      queued: true,
+      isQueued: true,
       items: []
     }));
 
@@ -155,7 +157,7 @@ export const actionHandlers = handleThunks({
         isPopulated: true,
         error: null,
         items: data,
-        queued: false,
+        isQueued: false,
         selectedArtist: queued.selectedArtist || data[0],
         updateOnly: true
       }));
@@ -168,7 +170,7 @@ export const actionHandlers = handleThunks({
         isFetching: false,
         isPopulated: false,
         error: xhr,
-        queued: false,
+        isQueued: false,
         updateOnly: true
       }));
     });
@@ -178,6 +180,29 @@ export const actionHandlers = handleThunks({
 
       dispatch(startLookupArtist());
     });
+  },
+
+  [LOOKUP_UNSEARCHED_ARTIST]: function(getState, payload, dispatch) {
+    const state = getState().importArtist;
+
+    if (state.isLookingUpArtist) {
+      return;
+    }
+
+    state.items.forEach((item) => {
+      const id = item.id;
+
+      if (
+        !item.isPopulated &&
+        !queue.includes(id)
+      ) {
+        queue.push(item.id);
+      }
+    });
+
+    if (queue.length) {
+      dispatch(startLookupArtist({ start: true }));
+    }
   },
 
   [IMPORT_ARTIST]: function(getState, payload, dispatch) {
@@ -251,7 +276,23 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CANCEL_LOOKUP_ARTIST]: function(state) {
-    return Object.assign({}, state, { isLookingUpArtist: false });
+    queue.splice(0, queue.length);
+
+    const items = state.items.map((item) => {
+      if (item.isQueued) {
+        return {
+          ...item,
+          isQueued: false
+        };
+      }
+
+      return item;
+    });
+
+    return Object.assign({}, state, {
+      isLookingUpArtist: false,
+      items
+    });
   },
 
   [CLEAR_IMPORT_ARTIST]: function(state) {

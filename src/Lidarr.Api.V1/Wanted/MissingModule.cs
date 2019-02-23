@@ -1,6 +1,6 @@
 using System.Linq;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;

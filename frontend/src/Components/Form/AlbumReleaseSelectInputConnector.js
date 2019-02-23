@@ -44,7 +44,7 @@ class AlbumReleaseSelectInputConnector extends Component {
       albumReleases
     } = this.props;
 
-    let updatedReleases = _.map(albumReleases.value, (e) => ({ ...e, monitored: false }));
+    const updatedReleases = _.map(albumReleases.value, (e) => ({ ...e, monitored: false }));
     _.find(updatedReleases, { foreignReleaseId: value }).monitored = true;
 
     this.props.onChange({ name, value: updatedReleases });

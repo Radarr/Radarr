@@ -4,8 +4,8 @@ import createAllArtistSelector from './createAllArtistSelector';
 function createArtistCountSelector() {
   return createSelector(
     createAllArtistSelector(),
-    (series) => {
-      return series.length;
+    (artists) => {
+      return artists.length;
     }
   );
 }

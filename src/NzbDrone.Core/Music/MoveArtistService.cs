@@ -5,6 +5,7 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
 
@@ -54,6 +55,7 @@ namespace NzbDrone.Core.Music
             try
             {
                 _diskTransferService.TransferFolder(sourcePath, destinationPath, TransferMode.Move);
+
                 _logger.ProgressInfo("{0} moved successfully to {1}", artist.Name, artist.Path);
 
                 _eventAggregator.PublishEvent(new ArtistMovedEvent(artist, sourcePath, destinationPath));

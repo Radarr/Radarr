@@ -12,7 +12,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 using NzbDrone.Core.Test.Framework;
 
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
 
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.FLAC.Id })
+                         .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()

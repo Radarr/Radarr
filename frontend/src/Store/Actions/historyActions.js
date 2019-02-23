@@ -278,11 +278,13 @@ export const reducers = createHandleActions({
 
   [SET_HISTORY_TABLE_OPTION]: createSetTableOptionReducer(section),
 
-  [CLEAR_HISTORY]: createClearReducer('history', {
+  [CLEAR_HISTORY]: createClearReducer(section, {
     isFetching: false,
     isPopulated: false,
     error: null,
-    items: []
+    items: [],
+    totalPages: 0,
+    totalRecords: 0
   })
 
 }, defaultState, section);

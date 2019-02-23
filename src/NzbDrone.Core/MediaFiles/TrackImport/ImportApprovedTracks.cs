@@ -59,7 +59,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         {
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.Item.Artist.Id, (i, s) => s
-                   .OrderByDescending(c => c.Item.Quality, new QualityModelComparer(s.First().Item.Artist.Profile))
+                   .OrderByDescending(c => c.Item.Quality, new QualityModelComparer(s.First().Item.Artist.QualityProfile))
                    .ThenByDescending(c => c.Item.Language, new LanguageComparer(s.First().Item.Artist.LanguageProfile))
                    .ThenByDescending(c => c.Item.Size))
                .SelectMany(c => c)
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                     if (newDownload)
                     {
-                        //trackFile.SceneName = GetSceneName(downloadClientItem, localTrack);
+                        trackFile.SceneName = GetSceneReleaseName(downloadClientItem, localTrack);
 
                         var moveResult = _trackFileUpgrader.UpgradeTrackFile(trackFile, localTrack, copyOnly);
                         oldFiles = moveResult.OldFiles;
@@ -277,5 +277,23 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             return importResults;
         }
+
+        private string GetSceneReleaseName(DownloadClientItem downloadClientItem, LocalTrack localTrack)
+        {
+            if (downloadClientItem != null)
+            {
+                var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
+
+                var parsedTitle = Parser.Parser.ParseAlbumTitle(title);
+
+                if (parsedTitle != null)
+                {
+                    return title;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

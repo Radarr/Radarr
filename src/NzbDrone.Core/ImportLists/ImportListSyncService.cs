@@ -124,12 +124,16 @@ namespace NzbDrone.Core.ImportLists
                         },
                         Monitored = importList.ShouldMonitor,
                         RootFolderPath = importList.RootFolderPath,
-                        ProfileId = importList.ProfileId,
+                        QualityProfileId = importList.ProfileId,
                         LanguageProfileId = importList.LanguageProfileId,
                         MetadataProfileId = importList.MetadataProfileId,
                         Tags = importList.Tags,
                         AlbumFolder = true,
-                        AddOptions = new AddArtistOptions { SearchForMissingAlbums = true, Monitored = importList.ShouldMonitor, SelectedOption = 0 }
+                        AddOptions = new AddArtistOptions {
+                            SearchForMissingAlbums = importList.ShouldMonitor,
+                            Monitored = importList.ShouldMonitor,
+                            Monitor = importList.ShouldMonitor ? MonitorTypes.All : MonitorTypes.None
+                        }
                     });
                 }
 

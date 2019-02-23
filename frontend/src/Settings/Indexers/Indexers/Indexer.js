@@ -7,18 +7,6 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
 import styles from './Indexer.css';
 
-function getLabelKind(supports, enabled) {
-  if (!supports) {
-    return kinds.DEFAULT;
-  }
-
-  if (!enabled) {
-    return kinds.DANGER;
-  }
-
-  return kinds.SUCCESS;
-}
-
 class Indexer extends Component {
 
   //
@@ -84,26 +72,37 @@ class Indexer extends Component {
         </div>
 
         <div className={styles.enabled}>
-          <Label
-            kind={getLabelKind(supportsRss, enableRss)}
-            outline={supportsRss && !enableRss}
-          >
-            RSS
-          </Label>
 
-          <Label
-            kind={getLabelKind(supportsSearch, enableAutomaticSearch)}
-            outline={supportsSearch && !enableAutomaticSearch}
-          >
-            Automatic Search
-          </Label>
+          {
+            supportsRss && enableRss &&
+              <Label kind={kinds.SUCCESS}>
+                RSS
+              </Label>
+          }
 
-          <Label
-            kind={getLabelKind(supportsSearch, enableInteractiveSearch)}
-            outline={supportsSearch && !enableInteractiveSearch}
-          >
-            Interactive Search
-          </Label>
+          {
+            supportsSearch && enableAutomaticSearch &&
+              <Label kind={kinds.SUCCESS}>
+                Automatic Search
+              </Label>
+          }
+
+          {
+            supportsSearch && enableInteractiveSearch &&
+              <Label kind={kinds.SUCCESS}>
+                Interactive Search
+              </Label>
+          }
+
+          {
+            !enableRss && !enableAutomaticSearch && !enableInteractiveSearch &&
+            <Label
+              kind={kinds.DISABLED}
+              outline={true}
+            >
+              Disabled
+            </Label>
+          }
         </div>
 
         <EditIndexerModalConnector

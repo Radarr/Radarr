@@ -7,18 +7,6 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditImportListModalConnector from './EditImportListModalConnector';
 import styles from './ImportList.css';
 
-function getLabelKind(supports, enabled) {
-  if (!supports) {
-    return kinds.DEFAULT;
-  }
-
-  if (!enabled) {
-    return kinds.DANGER;
-  }
-
-  return kinds.SUCCESS;
-}
-
 class ImportList extends Component {
 
   //
@@ -80,12 +68,13 @@ class ImportList extends Component {
         </div>
 
         <div className={styles.enabled}>
-          <Label
-            kind={getLabelKind(true, enableAutomaticAdd)}
-            outline={true && !enableAutomaticAdd}
-          >
-            Automatic Add
-          </Label>
+          {
+            enableAutomaticAdd &&
+              <Label kind={kinds.SUCCESS}>
+                Automatic Add
+              </Label>
+          }
+
         </div>
 
         <EditImportListModalConnector

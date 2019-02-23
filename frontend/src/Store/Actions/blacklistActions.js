@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import { createThunk, handleThunks } from 'Store/thunks';
 import { sortDirections } from 'Helpers/Props';
+import createClearReducer from './Creators/Reducers/createClearReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
@@ -87,6 +88,7 @@ export const GOTO_BLACKLIST_PAGE = 'blacklist/gotoBlacklistPage';
 export const SET_BLACKLIST_SORT = 'blacklist/setBlacklistSort';
 export const SET_BLACKLIST_TABLE_OPTION = 'blacklist/setBlacklistTableOption';
 export const REMOVE_FROM_BLACKLIST = 'blacklist/removeFromBlacklist';
+export const CLEAR_BLACKLIST = 'blacklist/clearBlacklist';
 
 //
 // Action Creators
@@ -100,6 +102,7 @@ export const gotoBlacklistPage = createThunk(GOTO_BLACKLIST_PAGE);
 export const setBlacklistSort = createThunk(SET_BLACKLIST_SORT);
 export const setBlacklistTableOption = createAction(SET_BLACKLIST_TABLE_OPTION);
 export const removeFromBlacklist = createThunk(REMOVE_FROM_BLACKLIST);
+export const clearBlacklist = createAction(CLEAR_BLACKLIST);
 
 //
 // Action Handlers
@@ -127,6 +130,15 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [SET_BLACKLIST_TABLE_OPTION]: createSetTableOptionReducer(section)
+  [SET_BLACKLIST_TABLE_OPTION]: createSetTableOptionReducer(section),
+
+  [CLEAR_BLACKLIST]: createClearReducer(section, {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    items: [],
+    totalPages: 0,
+    totalRecords: 0
+  })
 
 }, defaultState, section);

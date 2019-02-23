@@ -6,6 +6,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
 using NzbDrone.Common.Cache;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -14,6 +15,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         private readonly IMediaFileService _mediaFileService;
         private readonly ITrackService _trackService;
         private readonly UpgradableSpecification _upgradableSpecification;
+        private readonly IPreferredWordService _preferredWordServiceCalculator;
         private readonly Logger _logger;
         private readonly ICached<bool> _missingFilesCache;
         
@@ -21,11 +23,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                                         IMediaFileService mediaFileService,
                                         ITrackService trackService,
                                         ICacheManager cacheManager,
+                                        IPreferredWordService preferredWordServiceCalculator,
                                         Logger logger)
         {
             _upgradableSpecification = qualityUpgradableSpecification;
             _mediaFileService = mediaFileService;
             _trackService = trackService;
+            _preferredWordServiceCalculator = preferredWordServiceCalculator;
             _logger = logger;
             _missingFilesCache = cacheManager.GetCache<bool>(GetType());
         }
@@ -46,14 +50,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
 
-                    if (!_upgradableSpecification.IsUpgradable(subject.Artist.Profile,
+                    if (!_upgradableSpecification.IsUpgradable(subject.Artist.QualityProfile,
                                                                subject.Artist.LanguageProfile,
                                                                lowestQuality,
                                                                trackFiles[0].Language,
+                                                               _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
                                                                subject.ParsedAlbumInfo.Quality,
-                                                               subject.ParsedAlbumInfo.Language))
+                                                               subject.ParsedAlbumInfo.Language,
+                                                               subject.PreferredWordScore))
                     {
-                        return Decision.Reject("Quality for existing file on disk is of equal or higher preference: {0}", lowestQuality);
+                        return Decision.Reject("Existing file on disk is of equal or higher preference: {0} - {1}", lowestQuality, trackFiles[0].Language);
                     }
                 }
 

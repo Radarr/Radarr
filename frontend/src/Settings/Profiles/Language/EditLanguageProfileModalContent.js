@@ -35,6 +35,7 @@ function EditLanguageProfileModalContent(props) {
   const {
     id,
     name,
+    upgradeAllowed,
     cutoff,
     languages: itemLanguages
   } = item;
@@ -58,9 +59,7 @@ function EditLanguageProfileModalContent(props) {
 
         {
           !isFetching && !error &&
-            <Form
-              {...otherProps}
-            >
+            <Form {...otherProps}>
               <FormGroup>
                 <FormLabel>Name</FormLabel>
 
@@ -73,18 +72,35 @@ function EditLanguageProfileModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Cutoff</FormLabel>
+                <FormLabel>
+                  Upgrades Allowed
+                </FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.SELECT}
-                  name="cutoff"
-                  {...cutoff}
-                  value={cutoff ? cutoff.value.id : 0}
-                  values={languages}
-                  helpText="Once this language is reached Lidarr will no longer download albums"
-                  onChange={onCutoffChange}
+                  type={inputTypes.CHECK}
+                  name="upgradeAllowed"
+                  {...upgradeAllowed}
+                  helpText="If disabled languages will not be upgraded"
+                  onChange={onInputChange}
                 />
               </FormGroup>
+
+              {
+                upgradeAllowed.value &&
+                  <FormGroup>
+                    <FormLabel>Upgrade Until</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="cutoff"
+                      {...cutoff}
+                      value={cutoff ? cutoff.value.id : 0}
+                      values={languages}
+                      helpText="Once this language is reached Sonarr will no longer download episodes"
+                      onChange={onCutoffChange}
+                    />
+                  </FormGroup>
+              }
 
               <LanguageProfileItems
                 languageProfileItems={itemLanguages.value}

@@ -4,10 +4,23 @@
   word-break: break-all;
 }
 
-.quality {
+.quality,
+.language {
   composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
   text-align: center;
+}
+
+.language {
+  width: 100px;
+}
+
+.preferredWordScore {
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
+
+  width: 55px;
+  font-weight: bold;
+  cursor: default;
 }
 
 .rejected,

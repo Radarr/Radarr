@@ -14,43 +14,43 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenDefaultProfile()
         {
-            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities() });
+            Subject = new QualityModelComparer(new QualityProfile { Items = QualityFixture.GetDefaultQualities() });
         }
 
         private void GivenCustomProfile()
         {
-            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192) });
+            Subject = new QualityModelComparer(new QualityProfile { Items = QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192) });
         }
 
         private void GivenGroupedProfile()
         {
-            var profile = new Profile
+            var profile = new QualityProfile
             {
-                Items = new List<ProfileQualityItem>
+                Items = new List<QualityProfileQualityItem>
                                       {
-                                          new ProfileQualityItem
+                                          new QualityProfileQualityItem
                                           {
                                               Allowed = false,
                                               Quality = Quality.MP3_192
                                           },
-                                          new ProfileQualityItem
+                                          new QualityProfileQualityItem
                                           {
                                               Allowed = true,
-                                              Items = new List<ProfileQualityItem>
+                                              Items = new List<QualityProfileQualityItem>
                                                       {
-                                                          new ProfileQualityItem
+                                                          new QualityProfileQualityItem
                                                           {
                                                               Allowed = true,
                                                               Quality = Quality.MP3_256
                                                           },
-                                                          new ProfileQualityItem
+                                                          new QualityProfileQualityItem
                                                           {
                                                               Allowed = true,
                                                               Quality = Quality.MP3_320
                                                           }
                                                       }
                                           },
-                                          new ProfileQualityItem
+                                          new QualityProfileQualityItem
                                           {
                                               Allowed = true,
                                               Quality = Quality.FLAC

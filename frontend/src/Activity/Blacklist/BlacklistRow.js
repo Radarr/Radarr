@@ -5,7 +5,7 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import EpisodeLanguage from 'Album/EpisodeLanguage';
+import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
@@ -90,7 +90,7 @@ class BlacklistRow extends Component {
                   key={name}
                   className={styles.language}
                 >
-                  <EpisodeLanguage
+                  <TrackLanguage
                     language={language}
                   />
                 </TableRowCell>

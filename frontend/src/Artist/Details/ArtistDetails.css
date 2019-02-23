@@ -108,6 +108,7 @@
 }
 
 .details {
+  margin-bottom: 8px;
   font-weight: 300;
   font-size: 20px;
 }
@@ -132,15 +133,11 @@
   font-size: 17px;
 }
 
-.path {
-  vertical-align: text-top;
-  font-size: $defaultFontSize;
-  font-family: $monoSpaceFontFamily;
-}
-
 .overview {
   flex: 1 0 auto;
+  margin-top: 8px;
   min-height: 0;
+  font-size: $intermediateFontSize;
 }
 
 .contentContainer {

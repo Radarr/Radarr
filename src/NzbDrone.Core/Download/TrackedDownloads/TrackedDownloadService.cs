@@ -152,10 +152,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     }
                 }
 
+                // Track it so it can be displayed in the queue even though we can't determine which artist it is for
                 if (trackedDownload.RemoteAlbum == null)
                 {
-                    _logger.Trace("No Album found for download '{0}', not tracking.", trackedDownload.DownloadItem.Title);
-                    return null;
+                    _logger.Trace("No Album found for download '{0}'", trackedDownload.DownloadItem.Title);
                 }
             }
             catch (Exception e)

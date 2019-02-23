@@ -19,9 +19,9 @@ class AddDownloadClientModalContent extends Component {
 
   render() {
     const {
-      isFetching,
-      error,
-      isPopulated,
+      isSchemaFetching,
+      isSchemaPopulated,
+      schemaError,
       usenetDownloadClients,
       torrentDownloadClients,
       onDownloadClientSelect,
@@ -31,22 +31,22 @@ class AddDownloadClientModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Add DownloadClient
+          Add Download Client
         </ModalHeader>
 
         <ModalBody>
           {
-            isFetching &&
+            isSchemaFetching &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && !!error &&
+            !isSchemaFetching && !!schemaError &&
               <div>Unable to add a new downloadClient, please try again.</div>
           }
 
           {
-            isPopulated && !error &&
+            isSchemaPopulated && !schemaError &&
               <div>
 
                 <Alert kind={kinds.INFO}>
@@ -103,9 +103,9 @@ class AddDownloadClientModalContent extends Component {
 }
 
 AddDownloadClientModalContent.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  error: PropTypes.object,
-  isPopulated: PropTypes.bool.isRequired,
+  isSchemaFetching: PropTypes.bool.isRequired,
+  isSchemaPopulated: PropTypes.bool.isRequired,
+  schemaError: PropTypes.object,
   usenetDownloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   torrentDownloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDownloadClientSelect: PropTypes.func.isRequired,

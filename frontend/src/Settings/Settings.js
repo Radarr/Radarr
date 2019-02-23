@@ -21,7 +21,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Naming and file management settings
+          Naming, file management settings and root folders
         </div>
 
         <Link
@@ -32,7 +32,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Quality, Language, Metadata, and Delay profiles
+          Quality, Language, Metadata, Delay, and Release profiles
         </div>
 
         <Link
@@ -54,7 +54,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Indexers and release restrictions
+          Indexers and indexer options
         </div>
 
         <Link

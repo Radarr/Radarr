@@ -62,7 +62,7 @@
   composes: menuContent from 'Components/Menu/MenuContent.css';
 
   white-space: nowrap;
-  font-size: 14px;
+  font-size: $defaultFontSize;
 }
 
 .actionMenuIcon {

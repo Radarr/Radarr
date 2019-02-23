@@ -135,6 +135,8 @@ class TrackFileEditorModalContent extends Component {
     const {
       isDeleting,
       isFetching,
+      isPopulated,
+      error,
       items,
       languages,
       qualities,
@@ -176,19 +178,27 @@ class TrackFileEditorModalContent extends Component {
 
         <ModalBody>
           {
-            isFetching &&
-              <LoadingIndicator />
+            isFetching && !isPopulated ?
+              <LoadingIndicator /> :
+              null
           }
 
           {
-            !isFetching && !items.length &&
+            !isFetching && error ?
+              <div>{error}</div> :
+              null
+          }
+
+          {
+            isPopulated && !items.length ?
               <div>
                 No track files to manage.
-              </div>
+              </div> :
+              null
           }
 
           {
-            !isFetching && !!items.length &&
+            isPopulated && items.length ?
               <Table
                 columns={columns}
                 selectAll={true}
@@ -210,7 +220,8 @@ class TrackFileEditorModalContent extends Component {
                     })
                   }
                 </TableBody>
-              </Table>
+              </Table> :
+              null
           }
         </ModalBody>
 
@@ -270,6 +281,8 @@ class TrackFileEditorModalContent extends Component {
 TrackFileEditorModalContent.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,

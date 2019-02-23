@@ -13,6 +13,95 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import NamingOption from './NamingOption';
 import styles from './NamingModal.css';
 
+const separatorOptions = [
+  { key: ' ', value: 'Space ( )' },
+  { key: '.', value: 'Period (.)' },
+  { key: '_', value: 'Underscore (_)' },
+  { key: '-', value: 'Dash (-)' }
+];
+
+const caseOptions = [
+  { key: 'title', value: 'Default Case' },
+  { key: 'lower', value: 'Lower Case' },
+  { key: 'upper', value: 'Upper Case' }
+];
+
+const fileNameTokens = [
+  {
+    token: '{Artist Name} - {Album Title} - {track:00} - {Track Title} {Quality Full}',
+    example: 'Artist Name - Album Title - 01 - Track Title MP3-320 Proper'
+  },
+  {
+    token: '{Artist.Name}.{Album.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
+    example: 'Artist.Name.Album.Title.01.Track.Title.MP3-320'
+  }
+];
+
+const artistTokens = [
+  { token: '{Artist Name}', example: 'Artist Name' },
+
+  { token: '{Artist NameThe}', example: 'Artist Name, The' },
+
+  { token: '{Artist CleanName}', example: 'Artist Name' }
+];
+
+const albumTokens = [
+  { token: '{Album Title}', example: 'Album Title' },
+
+  { token: '{Album TitleThe}', example: 'Album Title, The' },
+
+  { token: '{Album CleanTitle}', example: 'Album Title' },
+
+  { token: '{Album Type}', example: 'Album Type' },
+
+  { token: '{Album Disambiguation}', example: 'Disambiguation' }
+];
+
+const mediumTokens = [
+  { token: '{medium:0}', example: '1' },
+  { token: '{medium:00}', example: '01' }
+];
+
+const mediumFormatTokens = [
+  { token: '{Medium Format}', example: 'CD' }
+];
+
+const trackTokens = [
+  { token: '{track:0}', example: '1' },
+  { token: '{track:00}', example: '01' }
+];
+
+const releaseDateTokens = [
+  { token: '{Release Year}', example: '2016' }
+];
+
+const trackTitleTokens = [
+  { token: '{Track Title}', example: 'Track Title' },
+  { token: '{Track CleanTitle}', example: 'Track Title' }
+];
+
+const qualityTokens = [
+  { token: '{Quality Full}', example: 'FLAC Proper' },
+  { token: '{Quality Title}', example: 'FLAC' }
+];
+
+const mediaInfoTokens = [
+  { token: '{MediaInfo AudioCodec}', example: 'FLAC' },
+  { token: '{MediaInfo AudioChannels}', example: '2.0' },
+  { token: '{MediaInfo AudioBitsPerSample}', example: '24bit' },
+  { token: '{MediaInfo AudioSampleRate}', example: '44.1kHz' }
+];
+
+const otherTokens = [
+  { token: '{Release Group}', example: 'Rls Grp' },
+  { token: '{Preferred Words}', example: 'iNTERNAL' }
+];
+
+const originalTokens = [
+  { token: '{Original Title}', example: 'Artist.Name.S01E01.HDTV.x264-EVOLVE' },
+  { token: '{Original Filename}', example: 'artist.name.s01e01.hdtv.x264-EVOLVE' }
+];
+
 class NamingModal extends Component {
 
   //
@@ -94,94 +183,6 @@ class NamingModal extends Component {
       separator: tokenSeparator,
       case: tokenCase
     } = this.state;
-
-    const separatorOptions = [
-      { key: ' ', value: 'Space ( )' },
-      { key: '.', value: 'Period (.)' },
-      { key: '_', value: 'Underscore (_)' },
-      { key: '-', value: 'Dash (-)' }
-    ];
-
-    const caseOptions = [
-      { key: 'title', value: 'Default Case' },
-      { key: 'lower', value: 'Lower Case' },
-      { key: 'upper', value: 'Upper Case' }
-    ];
-
-    const fileNameTokens = [
-      {
-        token: '{Artist Name} - {Album Title} - {track:00} - {Track Title} {Quality Full}',
-        example: 'Artist Name - Album Title - 01 - Track Title MP3-320 Proper'
-      },
-      {
-        token: '{Artist.Name}.{Album.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
-        example: 'Artist.Name.Album.Title.01.Track.Title.MP3-320'
-      }
-    ];
-
-    const artistTokens = [
-      { token: '{Artist Name}', example: 'Artist Name' },
-
-      { token: '{Artist NameThe}', example: 'Artist Name, The' },
-
-      { token: '{Artist CleanName}', example: 'Artist Name' }
-    ];
-
-    const albumTokens = [
-      { token: '{Album Title}', example: 'Album Title' },
-
-      { token: '{Album TitleThe}', example: 'Album Title, The' },
-
-      { token: '{Album CleanTitle}', example: 'Album Title' },
-
-      { token: '{Album Type}', example: 'Album Type' },
-
-      { token: '{Album Disambiguation}', example: 'Disambiguation' }
-    ];
-
-    const mediumTokens = [
-      { token: '{medium:0}', example: '1' },
-      { token: '{medium:00}', example: '01' }
-    ];
-
-    const mediumFormatTokens = [
-      { token: '{Medium Format}', example: 'CD' }
-    ];
-
-    const trackTokens = [
-      { token: '{track:0}', example: '1' },
-      { token: '{track:00}', example: '01' }
-    ];
-
-    const releaseDateTokens = [
-      { token: '{Release Year}', example: '2016' }
-    ];
-
-    const trackTitleTokens = [
-      { token: '{Track Title}', example: 'Track Title' },
-      { token: '{Track CleanTitle}', example: 'Track Title' }
-    ];
-
-    const qualityTokens = [
-      { token: '{Quality Full}', example: 'FLAC Proper' },
-      { token: '{Quality Title}', example: 'FLAC' }
-    ];
-
-    const mediaInfoTokens = [
-      { token: '{MediaInfo AudioCodec}', example: 'FLAC' },
-      { token: '{MediaInfo AudioChannels}', example: '2.0' },
-      { token: '{MediaInfo AudioBitsPerSample}', example: '24bit' },
-      { token: '{MediaInfo AudioSampleRate}', example: '44.1kHz' }
-    ];
-
-    const releaseGroupTokens = [
-      { token: '{Release Group}', example: 'Rls Grp' }
-    ];
-
-    const originalTokens = [
-      { token: '{Original Title}', example: 'Artist.Name.S01E01.HDTV.x264-EVOLVE' },
-      { token: '{Original Filename}', example: 'artist.name.s01e01.hdtv.x264-EVOLVE' }
-    ];
 
     return (
       <Modal
@@ -451,10 +452,10 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Release Group">
+                  <FieldSet legend="Other">
                     <div className={styles.groups}>
                       {
-                        releaseGroupTokens.map(({ token, example }) => {
+                        otherTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
                               key={token}

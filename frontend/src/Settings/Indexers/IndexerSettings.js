@@ -8,7 +8,6 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import IndexersConnector from './Indexers/IndexersConnector';
 import IndexerOptionsConnector from './Options/IndexerOptionsConnector';
-import RestrictionsConnector from './Restrictions/RestrictionsConnector';
 
 class IndexerSettings extends Component {
 
@@ -84,8 +83,6 @@ class IndexerSettings extends Component {
             onChildMounted={this.onChildMounted}
             onChildStateChange={this.onChildStateChange}
           />
-
-          <RestrictionsConnector />
         </PageContentBodyConnector>
       </PageContent>
     );

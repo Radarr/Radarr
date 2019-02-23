@@ -120,7 +120,7 @@ class ImportArtistSelectArtist extends Component {
       isPopulated,
       error,
       items,
-      queued,
+      isQueued,
       isLookingUpArtist
     } = this.props;
 
@@ -142,7 +142,7 @@ class ImportArtistSelectArtist extends Component {
           onPress={this.onPress}
         >
           {
-            isLookingUpArtist && queued && !isPopulated &&
+            isLookingUpArtist && isQueued && !isPopulated &&
               <LoadingIndicator
                 className={styles.loading}
                 size={20}
@@ -170,7 +170,7 @@ class ImportArtistSelectArtist extends Component {
 
           {
             isPopulated && !selectedArtist &&
-              <div>
+              <div className={styles.noMatches}>
                 <Icon
                   className={styles.warningIcon}
                   name={icons.WARNING}
@@ -265,7 +265,7 @@ ImportArtistSelectArtist.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  queued: PropTypes.bool.isRequired,
+  isQueued: PropTypes.bool.isRequired,
   isLookingUpArtist: PropTypes.bool.isRequired,
   onSearchInputChange: PropTypes.func.isRequired,
   onArtistSelect: PropTypes.func.isRequired
@@ -275,7 +275,7 @@ ImportArtistSelectArtist.defaultProps = {
   isFetching: true,
   isPopulated: false,
   items: [],
-  queued: true
+  isQueued: true
 };
 
 export default ImportArtistSelectArtist;

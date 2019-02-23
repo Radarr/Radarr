@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Music
                                 .SetValidator(artistPathValidator)
                                 .SetValidator(artistAncestorValidator);
 
-            RuleFor(c => c.ProfileId).SetValidator(profileExistsValidator);
+            RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
 
             RuleFor(c => c.LanguageProfileId).SetValidator(languageProfileExistsValidator);
 

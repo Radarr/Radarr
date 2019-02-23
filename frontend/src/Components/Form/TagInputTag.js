@@ -33,7 +33,10 @@ class TagInputTag extends Component {
     } = this.props;
 
     return (
-      <Link onPress={this.onDelete}>
+      <Link
+        tabIndex={-1}
+        onPress={this.onDelete}
+      >
         <Label kind={kind}>
           {tag.name}
         </Label>

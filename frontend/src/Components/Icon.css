@@ -6,8 +6,16 @@
   color: inherit;
 }
 
+.disabled {
+  color: $disabledColor;
+}
+
 .info {
   color: $infoColor;
+}
+
+.pink {
+  color: $pink;
 }
 
 .success {

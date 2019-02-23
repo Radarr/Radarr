@@ -1,7 +1,5 @@
-import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
-import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
@@ -9,7 +7,7 @@ import createSetClientSideCollectionFilterReducer from './Creators/Reducers/crea
 import createHandleActions from './Creators/createHandleActions';
 import { set } from './baseActions';
 import { fetchAlbums } from './albumActions';
-import { fetchArtist, filters, filterPredicates } from './artistActions';
+import { filters, filterPredicates } from './artistActions';
 
 //
 // Variables
@@ -113,29 +111,13 @@ export const actionHandlers = handleThunks({
       monitor
     } = payload;
 
-    let monitoringOptions = null;
     const artist = [];
-    const allArtists = getState().artist.items;
 
     artistIds.forEach((id) => {
-      const s = _.find(allArtists, { id });
       const artistToUpdate = { id };
 
       if (payload.hasOwnProperty('monitored')) {
         artistToUpdate.monitored = monitored;
-      }
-
-      if (monitor) {
-        const {
-          albums,
-          options: artistMonitoringOptions
-        } = getMonitoringOptions(monitor);
-
-        if (!monitoringOptions) {
-          monitoringOptions = artistMonitoringOptions;
-        }
-
-        artistToUpdate.albums = albums;
       }
 
       artist.push(artistToUpdate);
@@ -151,7 +133,7 @@ export const actionHandlers = handleThunks({
       method: 'POST',
       data: JSON.stringify({
         artist,
-        monitoringOptions
+        monitoringOptions: { monitor }
       }),
       dataType: 'json'
     });

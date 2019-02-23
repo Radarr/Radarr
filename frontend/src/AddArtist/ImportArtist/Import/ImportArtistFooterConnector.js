@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import ImportArtistFooter from './ImportArtistFooter';
-import { cancelLookupArtist } from 'Store/Actions/importArtistActions';
+import { lookupUnsearchedArtist, cancelLookupArtist } from 'Store/Actions/importArtistActions';
 
 function isMixed(items, selectedIds, defaultValue, key) {
   return _.some(items, (artist) => {
@@ -35,6 +35,7 @@ function createMapStateToProps() {
       const isLanguageProfileIdMixed = isMixed(items, selectedIds, defaultLanguageProfileId, 'languageProfileId');
       const isMetadataProfileIdMixed = isMixed(items, selectedIds, defaultMetadataProfileId, 'metadataProfileId');
       const isAlbumFolderMixed = isMixed(items, selectedIds, defaultAlbumFolder, 'albumFolder');
+      const hasUnsearchedItems = !isLookingUpArtist && items.some((item) => !item.isPopulated);
 
       return {
         selectedCount: selectedIds.length,
@@ -49,13 +50,15 @@ function createMapStateToProps() {
         isQualityProfileIdMixed,
         isLanguageProfileIdMixed,
         isMetadataProfileIdMixed,
-        isAlbumFolderMixed
+        isAlbumFolderMixed,
+        hasUnsearchedItems
       };
     }
   );
 }
 
 const mapDispatchToProps = {
+  onLookupPress: lookupUnsearchedArtist,
   onCancelLookupPress: cancelLookupArtist
 };
 

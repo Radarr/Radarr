@@ -10,7 +10,8 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import NoArtist from 'Artist/NoArtist';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
-import Legend from './Legend/Legend';
+import CalendarOptionsModal from './Options/CalendarOptionsModal';
+import LegendConnector from './Legend/LegendConnector';
 import CalendarConnector from './CalendarConnector';
 import styles from './CalendarPage.css';
 
@@ -26,6 +27,7 @@ class CalendarPage extends Component {
 
     this.state = {
       isCalendarLinkModalOpen: false,
+      isOptionsModalOpen: false,
       width: 0
     };
   }
@@ -48,6 +50,23 @@ class CalendarPage extends Component {
     this.setState({ isCalendarLinkModalOpen: false });
   }
 
+  onOptionsPress = () => {
+    this.setState({ isOptionsModalOpen: true });
+  }
+
+  onOptionsModalClose = () => {
+    this.setState({ isOptionsModalOpen: false });
+  }
+
+  onSearchMissingPress = () => {
+    const {
+      missingAlbumIds,
+      onSearchMissingPress
+    } = this.props;
+
+    onSearchMissingPress(missingAlbumIds);
+  }
+
   //
   // Render
 
@@ -56,17 +75,20 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasArtist,
-      colorImpairedMode,
+      missingAlbumIds,
+      isSearchingForMissing,
+      useCurrentPage,
       onFilterSelect
     } = this.props;
 
+    const {
+      isCalendarLinkModalOpen,
+      isOptionsModalOpen
+    } = this.state;
+
     const isMeasured = this.state.width > 0;
 
-    let PageComponent = 'div';
-
-    if (isMeasured) {
-      PageComponent = hasArtist ? CalendarConnector : NoArtist;
-    }
+    const PageComponent = hasArtist ? CalendarConnector : NoArtist;
 
     return (
       <PageContent title="Calendar">
@@ -77,9 +99,23 @@ class CalendarPage extends Component {
               iconName={icons.CALENDAR}
               onPress={this.onGetCalendarLinkPress}
             />
+
+            <PageToolbarButton
+              label="Search for Missing"
+              iconName={icons.SEARCH}
+              isDisabled={!missingAlbumIds.length}
+              isSpinning={isSearchingForMissing}
+              onPress={this.onSearchMissingPress}
+            />
           </PageToolbarSection>
 
           <PageToolbarSection alignContent={align.RIGHT}>
+            <PageToolbarButton
+              label="Options"
+              iconName={icons.POSTER}
+              onPress={this.onOptionsPress}
+            />
+
             <FilterMenu
               alignMenu={align.RIGHT}
               isDisabled={!hasArtist}
@@ -99,19 +135,31 @@ class CalendarPage extends Component {
             whitelist={['width']}
             onMeasure={this.onMeasure}
           >
-            <PageComponent />
+            {
+              isMeasured ?
+                <PageComponent
+                  useCurrentPage={useCurrentPage}
+                /> :
+                <div />
+            }
           </Measure>
 
           {
             hasArtist &&
-            <Legend colorImpairedMode={colorImpairedMode} />
+              <LegendConnector />
           }
         </PageContentBodyConnector>
 
         <CalendarLinkModal
-          isOpen={this.state.isCalendarLinkModalOpen}
+          isOpen={isCalendarLinkModalOpen}
           onModalClose={this.onGetCalendarLinkModalClose}
         />
+
+        <CalendarOptionsModal
+          isOpen={isOptionsModalOpen}
+          onModalClose={this.onOptionsModalClose}
+        />
+
       </PageContent>
     );
   }
@@ -121,7 +169,10 @@ CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasArtist: PropTypes.bool.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired,
+  missingAlbumIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isSearchingForMissing: PropTypes.bool.isRequired,
+  useCurrentPage: PropTypes.bool.isRequired,
+  onSearchMissingPress: PropTypes.func.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired
 };

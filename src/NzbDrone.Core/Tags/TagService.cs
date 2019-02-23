@@ -4,7 +4,7 @@ using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Restrictions;
+using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Tags
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Tags
         private readonly IDelayProfileService _delayProfileService;
         private readonly IImportListFactory _importListFactory;
         private readonly INotificationFactory _notificationFactory;
-        private readonly IRestrictionService _restrictionService;
+        private readonly IReleaseProfileService _releaseProfileService;
         private readonly IArtistService _artistService;
 
         public TagService(ITagRepository repo,
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Tags
                           IDelayProfileService delayProfileService,
                           ImportListFactory importListFactory,
                           INotificationFactory notificationFactory,
-                          IRestrictionService restrictionService,
+                          IReleaseProfileService releaseProfileService,
                           IArtistService artistService)
         {
             _repo = repo;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Tags
             _delayProfileService = delayProfileService;
             _importListFactory = importListFactory;
             _notificationFactory = notificationFactory;
-            _restrictionService = restrictionService;
+            _releaseProfileService = releaseProfileService;
             _artistService = artistService;
         }
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Tags
             var delayProfiles = _delayProfileService.AllForTag(tagId);
             var importLists = _importListFactory.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
-            var restrictions = _restrictionService.AllForTag(tagId);
+            var restrictions = _releaseProfileService.AllForTag(tagId);
             var artist = _artistService.AllForTag(tagId);
 
             return new TagDetails
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Tags
             var delayProfiles = _delayProfileService.All();
             var importLists = _importListFactory.All();
             var notifications = _notificationFactory.All();
-            var restrictions = _restrictionService.All();
+            var restrictions = _releaseProfileService.All();
             var artists = _artistService.GetAllArtists();
 
             var details = new List<TagDetails>();

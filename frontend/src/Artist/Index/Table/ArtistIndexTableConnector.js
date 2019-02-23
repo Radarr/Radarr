@@ -11,7 +11,8 @@ function createMapStateToProps() {
     (dimensions, artist) => {
       return {
         isSmallScreen: dimensions.isSmallScreen,
-        ...artist
+        ...artist,
+        showBanners: artist.tableOptions.showBanners
       };
     }
   );

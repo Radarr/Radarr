@@ -17,7 +17,7 @@
 }
 
 .small {
-  width: 420px;
+  width: 460px;
 }
 
 .large {
@@ -32,6 +32,9 @@
 }
 
 .example {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
   flex: 0 0 50%;
   padding: 6px 16px;
   background-color: #ddd;

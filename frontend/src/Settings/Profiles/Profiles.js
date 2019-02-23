@@ -8,6 +8,7 @@ import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import LanguageProfilesConnector from './Language/LanguageProfilesConnector';
 import MetadataProfilesConnector from './Metadata/MetadataProfilesConnector';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
+import ReleaseProfilesConnector from './Release/ReleaseProfilesConnector';
 
 class Profiles extends Component {
 
@@ -26,6 +27,7 @@ class Profiles extends Component {
           <LanguageProfilesConnector />
           <MetadataProfilesConnector />
           <DelayProfilesConnector />
+          <ReleaseProfilesConnector />
         </PageContentBodyConnector>
       </PageContent>
     );

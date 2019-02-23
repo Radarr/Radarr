@@ -100,8 +100,8 @@ class AddNewArtist extends Component {
               name="artistLookup"
               value={term}
               placeholder="eg. Breaking Benjamin, lidarr:854a1807-025b-42a8-ba8c-2a39717f1d25"
-              onChange={this.onSearchInputChange}
               autoFocus={true}
+              onChange={this.onSearchInputChange}
             />
 
             <Button

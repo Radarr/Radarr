@@ -10,7 +10,7 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import TrackQuality from 'Album/TrackQuality';
-import EpisodeLanguage from 'Album/EpisodeLanguage';
+import TrackLanguage from 'Album/TrackLanguage';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
 import SelectTrackModal from 'InteractiveImport/Track/SelectTrackModal';
@@ -271,7 +271,7 @@ class InteractiveImportRow extends Component {
 
           {
             !showLanguagePlaceholder && !!language &&
-              <EpisodeLanguage
+              <TrackLanguage
                 className={styles.label}
                 language={language}
               />

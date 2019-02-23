@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setReleasesFilter } from 'Store/Actions/releaseActions';
+import { setAlbumReleasesFilter, setArtistReleasesFilter } from 'Store/Actions/releaseActions';
 import FilterModal from 'Components/Filter/FilterModal';
 
 function createMapStateToProps() {
@@ -20,7 +20,9 @@ function createMapStateToProps() {
 function createMapDispatchToProps(dispatch, props) {
   return {
     dispatchSetFilter(payload) {
-      const action = setReleasesFilter;
+      const action = props.type === 'album' ?
+        setAlbumReleasesFilter:
+        setArtistReleasesFilter;
 
       dispatch(action(payload));
     }

@@ -1,10 +1,15 @@
 using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
 using Lidarr.Http;
@@ -18,61 +23,93 @@ namespace Lidarr.Api.V1.Queue
         private readonly IQueueService _queueService;
         private readonly IPendingReleaseService _pendingReleaseService;
 
-        public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage, IQueueService queueService, IPendingReleaseService pendingReleaseService)
+        private readonly LanguageComparer LANGUAGE_COMPARER;
+        private readonly QualityModelComparer QUALITY_COMPARER;
+
+        public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage,
+                           IQueueService queueService,
+                           IPendingReleaseService pendingReleaseService,
+                           ILanguageProfileService languageProfileService,
+                           QualityProfileService qualityProfileService)
             : base(broadcastSignalRMessage)
         {
             _queueService = queueService;
             _pendingReleaseService = pendingReleaseService;
             GetResourcePaged = GetQueue;
+
+            LANGUAGE_COMPARER = new LanguageComparer(languageProfileService.GetDefaultProfile(string.Empty));
+            QUALITY_COMPARER = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
         }
 
         private PagingResource<QueueResource> GetQueue(PagingResource<QueueResource> pagingResource)
         {
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
+            var includeUnknownArtistItems = Request.GetBooleanQueryParameter("includeUnknownArtistItems");
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
             var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
 
-            return ApplyToPage(GetQueue, pagingSpec, (q) => MapToResource(q, includeArtist, includeAlbum));
+            return ApplyToPage((spec) => GetQueue(spec, includeUnknownArtistItems), pagingSpec, (q) => MapToResource(q, includeArtist, includeAlbum));
         }
 
-        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec)
+        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, bool includeUnknownArtistItems)
         {
             var ascending = pagingSpec.SortDirection == SortDirection.Ascending;
             var orderByFunc = GetOrderByFunc(pagingSpec);
 
             var queue = _queueService.GetQueue();
+            var filteredQueue = includeUnknownArtistItems ? queue : queue.Where(q => q.Artist != null);
             var pending = _pendingReleaseService.GetPendingQueue();
-            var fullQueue = queue.Concat(pending).ToList();
+            var fullQueue = filteredQueue.Concat(pending).ToList();
             IOrderedEnumerable<NzbDrone.Core.Queue.Queue> ordered;
 
             if (pagingSpec.SortKey == "timeleft")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Timeleft, new TimeleftComparer()) :
-                                      fullQueue.OrderByDescending(q => q.Timeleft, new TimeleftComparer());
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Timeleft, new TimeleftComparer())
+                    : fullQueue.OrderByDescending(q => q.Timeleft, new TimeleftComparer());
             }
 
             else if (pagingSpec.SortKey == "estimatedCompletionTime")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer()) :
-                                      fullQueue.OrderByDescending(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer());
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer())
+                    : fullQueue.OrderByDescending(q => q.EstimatedCompletionTime,
+                        new EstimatedCompletionTimeComparer());
             }
 
             else if (pagingSpec.SortKey == "protocol")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Protocol) :
-                    fullQueue.OrderByDescending(q => q.Protocol);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Protocol)
+                    : fullQueue.OrderByDescending(q => q.Protocol);
             }
 
             else if (pagingSpec.SortKey == "indexer")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase) :
-                    fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase)
+                    : fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
             }
 
             else if (pagingSpec.SortKey == "downloadClient")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase) :
-                    fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase)
+                    : fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
+            }
+
+            else if (pagingSpec.SortKey == "language")
+            {
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Language, LANGUAGE_COMPARER)
+                    : fullQueue.OrderByDescending(q => q.Language, LANGUAGE_COMPARER);
+            }
+
+            else if (pagingSpec.SortKey == "quality")
+            {
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Quality, QUALITY_COMPARER)
+                    : fullQueue.OrderByDescending(q => q.Quality, QUALITY_COMPARER);
             }
 
             else
@@ -98,18 +135,23 @@ namespace Lidarr.Api.V1.Queue
         {
             switch (pagingSpec.SortKey)
             {
+                case "status":
+                    return q => q.Status;
                 case "artist.sortName":
-                    return q => q.Artist.SortName;
+                    return q => q.Artist?.SortName;
                 case "album":
                     return q => q.Album;
                 case "album.title":
                     return q => q.Album.Title;
                 case "album.releaseDate":
                     return q => q.Album.ReleaseDate;
+                case "language":
+                    return q => q.Language;
                 case "quality":
                     return q => q.Quality;
                 case "progress":
-                    return q => q.Size == 0 ? 0 : 100 - q.Sizeleft / q.Size * 100;
+                    // Avoid exploding if a download's size is 0
+                    return q => 100 - q.Sizeleft / Math.Max(q.Size * 100, 1);
                 default:
                     return q => q.Timeleft;
             }

@@ -17,8 +17,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchRemotePathMappings,
-  deleteRemotePathMapping
+  dispatchFetchRemotePathMappings: fetchRemotePathMappings,
+  dispatchDeleteRemotePathMapping: deleteRemotePathMapping
 };
 
 class RemotePathMappingsConnector extends Component {
@@ -27,14 +27,14 @@ class RemotePathMappingsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchRemotePathMappings();
+    this.props.dispatchFetchRemotePathMappings();
   }
 
   //
   // Listeners
 
   onConfirmDeleteRemotePathMapping = (id) => {
-    this.props.deleteRemotePathMapping({ id });
+    this.props.dispatchDeleteRemotePathMapping({ id });
   }
 
   //
@@ -52,8 +52,8 @@ class RemotePathMappingsConnector extends Component {
 }
 
 RemotePathMappingsConnector.propTypes = {
-  fetchRemotePathMappings: PropTypes.func.isRequired,
-  deleteRemotePathMapping: PropTypes.func.isRequired
+  dispatchFetchRemotePathMappings: PropTypes.func.isRequired,
+  dispatchDeleteRemotePathMapping: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RemotePathMappingsConnector);

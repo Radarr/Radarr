@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nancy;
 using NzbDrone.Core.Datastore.Events;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;

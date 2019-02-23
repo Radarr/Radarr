@@ -41,8 +41,20 @@ class CalendarConnector extends Component {
   }
 
   componentDidMount() {
+    const {
+      useCurrentPage,
+      fetchCalendar,
+      gotoCalendarToday
+    } = this.props;
+
     registerPagePopulator(this.repopulate);
-    this.props.gotoCalendarToday();
+
+    if (useCurrentPage) {
+      fetchCalendar();
+    } else {
+      gotoCalendarToday();
+    }
+
     this.scheduleUpdate();
   }
 

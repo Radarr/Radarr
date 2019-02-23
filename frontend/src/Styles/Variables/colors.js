@@ -6,6 +6,7 @@ module.exports = {
   dimColor: '#555',
   black: '#000',
   white: '#fff',
+  offWhite: '#f5f7fa',
   blue: '#06f',
   yellow: '#FFA500',
   primaryColor: '#0b8750',
@@ -15,8 +16,7 @@ module.exports = {
   warningColor: '#ffa500',
   infoColor: lidarrGreen,
   purple: '#7a43b6',
-  nzbdronePurple: '#7932ea',
-  nzbdronePink: '#f43565',
+  pink: '#ff69b4',
   lidarrGreen,
   helpTextColor: '#909293',
   darkGray: '#888',
@@ -27,6 +27,7 @@ module.exports = {
   // Theme Colors
 
   themeBlue: lidarrGreen,
+  themeAlternateBlue: '#00a65b',
   themeRed: '#c4273c',
   themeDarkColor: '#353535',
   themeLightColor: '#1d563d',
@@ -62,6 +63,7 @@ module.exports = {
   inputErrorBoxShadowColor: 'rgba(240, 80, 80, 0.6)',
   inputWarningBorderColor: '#ffa500',
   inputWarningBoxShadowColor: 'rgba(255, 165, 0, 0.6)',
+  colorImpairedGradient: '#fcfcfc',
 
   //
   // Buttons

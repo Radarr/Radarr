@@ -10,16 +10,16 @@ function createMapStateToProps() {
     (state) => state.settings.notifications,
     (notifications) => {
       const {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         schema
       } = notifications;
 
       return {
-        isFetching,
-        error,
-        isPopulated,
+        isSchemaFetching,
+        isSchemaPopulated,
+        schemaError,
         schema
       };
     }

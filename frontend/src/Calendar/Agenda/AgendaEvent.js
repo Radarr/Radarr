@@ -49,7 +49,8 @@ class AgendaEvent extends Component {
       queueItem,
       showDate,
       timeFormat,
-      longDateFormat
+      longDateFormat,
+      colorImpairedMode
     } = this.props;
 
     const startTime = moment(releaseDate);
@@ -74,8 +75,9 @@ class AgendaEvent extends Component {
 
           <div
             className={classNames(
-              styles.status,
-              styles[statusStyle]
+              styles.eventWrapper,
+              styles[statusStyle],
+              colorImpairedMode && 'colorImpaired'
             )}
           />
 

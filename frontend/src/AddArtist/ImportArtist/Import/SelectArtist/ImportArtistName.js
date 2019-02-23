@@ -8,7 +8,6 @@ function ImportArtistName(props) {
   const {
     artistName,
     disambiguation,
-    // year,
     isExistingArtist
   } = props;
 
@@ -36,7 +35,6 @@ function ImportArtistName(props) {
 ImportArtistName.propTypes = {
   artistName: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
-  // year: PropTypes.number.isRequired,
   isExistingArtist: PropTypes.bool.isRequired
 };
 

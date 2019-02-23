@@ -5,7 +5,7 @@ import findSelectedFilters from 'Utilities/Filter/findSelectedFilters';
 import getSectionState from 'Utilities/State/getSectionState';
 import { set, updateServerSideCollection } from '../baseActions';
 
-function createFetchServerSideCollectionHandler(section, url) {
+function createFetchServerSideCollectionHandler(section, url, fetchDataAugmenter) {
   return function(getState, payload, dispatch) {
     dispatch(set({ section, isFetching: true }));
 
@@ -18,6 +18,10 @@ function createFetchServerSideCollectionHandler(section, url) {
         'sortDirection',
         'sortKey'
       ]));
+
+    if (fetchDataAugmenter) {
+      fetchDataAugmenter(getState, payload, data);
+    }
 
     const {
       selectedFilterKey,

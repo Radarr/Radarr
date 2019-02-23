@@ -4,14 +4,19 @@
   align-items: center;
   flex: 0 0 auto;
   height: $headerHeight;
-  background-color: #00a65b;
+  background-color: $themeAlternateBlue;
   color: $white;
 }
 
 .logoContainer {
   display: flex;
-  justify-content: center;
+  align-items: center;
   flex: 0 0 $sidebarWidth;
+  padding-left: 20px;
+}
+
+.logoLink {
+  line-height: 0;
 }
 
 .logo {

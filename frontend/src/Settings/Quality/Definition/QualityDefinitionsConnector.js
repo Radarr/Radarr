@@ -18,10 +18,10 @@ function createMapStateToProps() {
       });
 
       return {
-        advancedSettings,
         ...qualityDefinitions,
         items,
-        hasPendingChanges: !_.isEmpty(qualityDefinitions.pendingChanges)
+        hasPendingChanges: !_.isEmpty(qualityDefinitions.pendingChanges),
+        advancedSettings
       };
     }
   );

@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
             TrackMetadata = true;
         }
 
-        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox)]
+        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata)]
         public bool TrackMetadata { get; set; }
         
         public bool IsValid => true;

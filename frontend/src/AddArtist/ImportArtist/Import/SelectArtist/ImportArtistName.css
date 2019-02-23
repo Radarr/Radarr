@@ -1,19 +1,16 @@
 .artistNameContainer {
   display: flex;
   align-items: center;
+  flex: 0 1 auto;
+  overflow: hidden;
 }
 
 .artistName {
-  margin-right: 5px;
+  @add-mixin truncate;
 }
 
 .disambiguation {
   margin-right: 5px;
-  color: $disabledColor;
-}
-
-.year {
-  margin-left: 5px;
   color: $disabledColor;
 }
 

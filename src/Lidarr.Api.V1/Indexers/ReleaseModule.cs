@@ -83,6 +83,11 @@ namespace Lidarr.Api.V1.Indexers
                 return GetAlbumReleases(Request.Query.albumId);
             }
 
+            if (Request.Query.artistId.HasValue)
+            {
+                return GetArtistReleases(Request.Query.artistId);
+            }
+
             return GetRss();
         }
 
@@ -98,6 +103,23 @@ namespace Lidarr.Api.V1.Indexers
             catch (Exception ex)
             {
                 _logger.Error(ex, "Album search failed: " + ex.Message);
+            }
+
+            return new List<ReleaseResource>();
+        }
+
+        private List<ReleaseResource> GetArtistReleases(int artistId)
+        {
+            try
+            {
+                var decisions = _nzbSearchService.ArtistSearch(artistId, false, true, true);
+                var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
+
+                return MapDecisions(prioritizedDecisions);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Artist search failed: " + ex.Message);
             }
 
             return new List<ReleaseResource>();

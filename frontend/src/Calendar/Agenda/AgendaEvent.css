@@ -3,15 +3,18 @@
   overflow-x: hidden;
   padding: 5px;
   border-bottom: 1px solid $borderColor;
-  font-size: 14px;
+  font-size: $defaultFontSize;
 
   &:hover {
     background-color: $tableRowHoverBackgroundColor;
   }
 }
 
-.status {
-  width: 10px;
+.eventWrapper {
+  display: flex;
+  flex: 1 0 1px;
+  overflow-x: hidden;
+  padding-left: 6px;
   border-left-width: 4px;
   border-left-style: solid;
 }
@@ -24,6 +27,7 @@
 .time {
   flex: 0 0 120px;
   margin-right: 10px;
+  border: none !important;
 }
 
 .artistName,
@@ -80,16 +84,16 @@
 
 @media only screen and (max-width: $breakpointSmall) {
   .event {
-    position: relative;
-    flex-wrap: wrap;
-    padding-left: 10px;
+    flex-direction: column;
   }
 
-  .status {
-    position: absolute;
-    top: 7%;
-    left: 0;
-    height: 86%;
+  .eventWrapper {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  .date {
+    margin-left: 10px;
   }
 
   .date,

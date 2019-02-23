@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -198,6 +198,8 @@
     <Compile Include="Datastore\Migration\022_import_list_tags.cs" />
     <Compile Include="Datastore\Migration\023_add_release_groups_etc.cs" />
     <Compile Include="Datastore\Migration\024_clear_media_info.cs" />
+    <Compile Include="Datastore\Migration\025_rename_release_profiles.cs" />
+    <Compile Include="Datastore\Migration\026_rename_quality_profiles_add_upgrade_allowed.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -220,11 +222,11 @@
     <Compile Include="DecisionEngine\DownloadDecisionComparer.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionMaker.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionPriorizationService.cs" />
-    <Compile Include="DecisionEngine\IDecisionEngineSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
-    <Compile Include="DecisionEngine\SameTracksSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\SameTracksSpecification.cs" />
     <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlacklistSpecification.cs" />
@@ -247,16 +249,18 @@
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredAlbumSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\AlbumRequestedSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\Search\SeasonMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\ArtistSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\SingleAlbumSearchMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\TorrentSeedingSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\SameTracksGrabSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RawDiskSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
-    <Compile Include="DecisionEngine\UpgradableSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\UpgradableSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
+    <Compile Include="Download\Aggregation\Aggregators\AggregatePreferredWordScore.cs" />
+    <Compile Include="Download\Aggregation\Aggregators\IAggregateRemoteAlbum.cs" />
+    <Compile Include="Download\Aggregation\RemoteAlbumAggregationService.cs" />
     <Compile Include="Download\AlbumGrabbedEvent.cs" />
     <Compile Include="Download\CheckForFinishedDownloadCommand.cs" />
     <Compile Include="Download\Clients\Blackhole\ScanWatchFolder.cs" />
@@ -462,6 +466,7 @@
     <Compile Include="Extras\Metadata\Files\MetadataFile.cs" />
     <Compile Include="Extras\Metadata\Files\MetadataFileRepository.cs" />
     <Compile Include="Extras\Metadata\Files\MetadataFileService.cs" />
+    <Compile Include="Extras\Metadata\MetadataSectionType.cs" />
     <Compile Include="Extras\Others\ExistingOtherExtraImporter.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRepository.cs" />
@@ -523,6 +528,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTags.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\DeleteBadMediaCovers.cs" />
+    <Compile Include="Housekeeping\Housekeepers\EnsureValidLanguageProfileId.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureDownloadClientStatusTimes.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureImportListStatusTimes.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimes.cs" />
@@ -1000,7 +1006,7 @@
     <Compile Include="Profiles\Languages\LanguageProfileInUseException.cs" />
     <Compile Include="Profiles\Languages\LanguageProfileRepository.cs" />
     <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
-    <Compile Include="Profiles\Languages\ProfileLanguageItem.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileItem.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileService.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileInUseException.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfile.cs" />
@@ -1008,8 +1014,14 @@
     <Compile Include="Profiles\Metadata\ProfileReleaseStatusTypeItem.cs" />
     <Compile Include="Profiles\Metadata\ProfileSecondaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Metadata\ProfilePrimaryAlbumTypeItem.cs" />
-    <Compile Include="Profiles\Qualities\ProfileRepository.cs" />
+    <Compile Include="Profiles\Qualities\QualityProfileRepository.cs" />
     <Compile Include="Profiles\Qualities\QualityIndex.cs" />
+    <Compile Include="Profiles\Releases\PerlRegexFactory.cs" />
+    <Compile Include="Profiles\Releases\PreferredWordService.cs" />
+    <Compile Include="Profiles\Releases\ReleaseProfile.cs" />
+    <Compile Include="Profiles\Releases\ReleaseProfileRepository.cs" />
+    <Compile Include="Profiles\Releases\ReleaseProfileService.cs" />
+    <Compile Include="Profiles\Releases\TermMatcher.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualityDetectionSource.cs" />
     <Compile Include="Qualities\Revision.cs" />
@@ -1112,11 +1124,11 @@
     <Compile Include="Parser\FingerprintingService.cs" />
     <Compile Include="Parser\SceneChecker.cs" />
     <Compile Include="Parser\QualityParser.cs" />
-    <Compile Include="Profiles\Qualities\Profile.cs" />
-    <Compile Include="Profiles\Qualities\ProfileInUseException.cs" />
-    <Compile Include="Profiles\Qualities\ProfileQualityItem.cs" />
+    <Compile Include="Profiles\Qualities\QualityProfile.cs" />
+    <Compile Include="Profiles\Qualities\QualityProfileInUseException.cs" />
+    <Compile Include="Profiles\Qualities\QualityProfileQualityItem.cs" />
     <Compile Include="Profiles\Delay\DelayProfileRepository.cs" />
-    <Compile Include="Profiles\Qualities\ProfileService.cs" />
+    <Compile Include="Profiles\Qualities\QualityProfileService.cs" />
     <Compile Include="ProgressMessaging\CommandUpdatedEvent.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1132,11 +1144,6 @@
     <Compile Include="Queue\Queue.cs" />
     <Compile Include="Queue\QueueService.cs" />
     <Compile Include="Queue\QueueUpdatedEvent.cs" />
-    <Compile Include="Restrictions\PerlRegexFactory.cs" />
-    <Compile Include="Restrictions\Restriction.cs" />
-    <Compile Include="Restrictions\RestrictionRepository.cs" />
-    <Compile Include="Restrictions\RestrictionService.cs" />
-    <Compile Include="Restrictions\TermMatcher.cs" />
     <Compile Include="Rest\JsonNetSerializer.cs" />
     <Compile Include="Rest\RestClientFactory.cs" />
     <Compile Include="Rest\RestException.cs" />

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using Lidarr.Api.V1.Artist;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;

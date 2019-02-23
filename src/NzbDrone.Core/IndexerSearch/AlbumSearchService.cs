@@ -108,7 +108,7 @@ namespace NzbDrone.Core.IndexerSearch
 
             }
 
-            var queue = _queueService.GetQueue().Select(q => q.Album.Id);
+            var queue = _queueService.GetQueue().Where(q => q.Album != null).Select(q => q.Album.Id);
             var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingAlbums(missing, message.Trigger == CommandTrigger.Manual);
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.IndexerSearch
 
             var albums = _albumCutoffService.AlbumsWhereCutoffUnmet(pagingSpec).Records.ToList();
 
-            var queue = _queueService.GetQueue().Select(q => q.Album.Id);
+            var queue = _queueService.GetQueue().Where(q => q.Album != null).Select(q => q.Album.Id);
             var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingAlbums(missing, message.Trigger == CommandTrigger.Manual);

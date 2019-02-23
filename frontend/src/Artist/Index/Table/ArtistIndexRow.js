@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import getProgressBarKind from 'Utilities/Artist/getProgressBarKind';
 import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
+import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
 import TagListConnector from 'Components/TagListConnector';
@@ -16,6 +18,8 @@ import ArtistNameLink from 'Artist/ArtistNameLink';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
+import ArtistBanner from 'Artist/ArtistBanner';
+import hasGrowableColumns from './hasGrowableColumns';
 import ArtistStatusCell from './ArtistStatusCell';
 import styles from './ArtistIndexRow.css';
 
@@ -28,6 +32,7 @@ class ArtistIndexRow extends Component {
     super(props, context);
 
     this.state = {
+      hasBannerError: false,
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false
     };
@@ -57,6 +62,18 @@ class ArtistIndexRow extends Component {
     //
   }
 
+  onBannerLoad = () => {
+    if (this.state.hasBannerError) {
+      this.setState({ hasBannerError: false });
+    }
+  }
+
+  onBannerLoadError = () => {
+    if (!this.state.hasBannerError) {
+      this.setState({ hasBannerError: true });
+    }
+  }
+
   //
   // Render
 
@@ -80,6 +97,8 @@ class ArtistIndexRow extends Component {
       ratings,
       path,
       tags,
+      images,
+      showBanners,
       showSearchAction,
       columns,
       isRefreshingArtist,
@@ -97,6 +116,7 @@ class ArtistIndexRow extends Component {
     } = statistics;
 
     const {
+      hasBannerError,
       isEditArtistModalOpen,
       isDeleteArtistModalOpen
     } = this.state;
@@ -130,12 +150,40 @@ class ArtistIndexRow extends Component {
               return (
                 <VirtualTableRowCell
                   key={name}
-                  className={styles[name]}
+                  className={classNames(
+                    styles[name],
+                    showBanners && styles.banner,
+                    showBanners && !hasGrowableColumns(columns) && styles.bannerGrow
+                  )}
                 >
-                  <ArtistNameLink
-                    foreignArtistId={foreignArtistId}
-                    artistName={artistName}
-                  />
+                  {
+                    showBanners ?
+                      <Link
+                        className={styles.link}
+                        to={`/artist/${foreignArtistId}`}
+                      >
+                        <ArtistBanner
+                          className={styles.bannerImage}
+                          images={images}
+                          lazy={false}
+                          overflow={true}
+                          onError={this.onBannerLoadError}
+                          onLoad={this.onBannerLoad}
+                        />
+
+                        {
+                          hasBannerError &&
+                            <div className={styles.overlayTitle}>
+                              {artistName}
+                            </div>
+                        }
+                      </Link> :
+
+                      <ArtistNameLink
+                        foreignArtistId={foreignArtistId}
+                        artistName={artistName}
+                      />
+                  }
                 </VirtualTableRowCell>
               );
             }
@@ -424,6 +472,8 @@ ArtistIndexRow.propTypes = {
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
+  images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showBanners: PropTypes.bool.isRequired,
   showSearchAction: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,

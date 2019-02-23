@@ -24,7 +24,6 @@ using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Tags;
@@ -41,6 +40,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 using Marr.Data.QGen;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(s => s.ForeignArtistId)
                 .Relationship()
                 .HasOne(a => a.Metadata, a => a.ArtistMetadataId)
-                .HasOne(a => a.Profile, a => a.ProfileId)
+                .HasOne(a => a.QualityProfile, a => a.QualityProfileId)
                 .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId)
                 .HasOne(s => s.MetadataProfile, s => s.MetadataProfileId)
                 .For(a => a.Albums)
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.GroupWeight)
                   .Ignore(d => d.Weight);
 
-            Mapper.Entity<Profile>().RegisterModel("Profiles");
+            Mapper.Entity<QualityProfile>().RegisterModel("QualityProfiles");
             Mapper.Entity<LanguageProfile>().RegisterModel("LanguageProfiles");
             Mapper.Entity<MetadataProfile>().RegisterModel("MetadataProfiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<RemotePathMapping>().RegisterModel("RemotePathMappings");
             Mapper.Entity<Tag>().RegisterModel("Tags");
-            Mapper.Entity<Restriction>().RegisterModel("Restrictions");
+            Mapper.Entity<ReleaseProfile>().RegisterModel("ReleaseProfiles");
 
             Mapper.Entity<DelayProfile>().RegisterModel("DelayProfiles");
             Mapper.Entity<User>().RegisterModel("Users");
@@ -204,13 +204,14 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(bool), new BooleanIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Enum), new EnumIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Quality), new QualityIntConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileQualityItem>), new EmbeddedDocumentConverter(new QualityIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<QualityProfileQualityItem>), new EmbeddedDocumentConverter(new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<KeyValuePair<string, int>>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Language), new LanguageIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileLanguageItem>), new EmbeddedDocumentConverter(new LanguageIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<LanguageProfileItem>), new EmbeddedDocumentConverter(new LanguageIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfilePrimaryAlbumTypeItem>), new EmbeddedDocumentConverter(new PrimaryAlbumTypeIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileSecondaryAlbumTypeItem>), new EmbeddedDocumentConverter(new SecondaryAlbumTypeIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileReleaseStatusItem>), new EmbeddedDocumentConverter(new ReleaseStatusIntConverter()));

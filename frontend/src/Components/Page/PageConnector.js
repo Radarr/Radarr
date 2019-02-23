@@ -1,4 +1,3 @@
-/* eslint max-params: 0 */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -33,30 +32,45 @@ function createMapStateToProps() {
     (state) => state.artist,
     (state) => state.customFilters,
     (state) => state.tags,
-    (state) => state.settings,
+    (state) => state.settings.ui,
+    (state) => state.settings.qualityProfiles,
+    (state) => state.settings.languageProfiles,
+    (state) => state.settings.metadataProfiles,
+    (state) => state.settings.importLists,
     (state) => state.app,
     createDimensionsSelector(),
-    (artist, customFilters, tags, settings, app, dimensions) => {
+    (
+      artist,
+      customFilters,
+      tags,
+      uiSettings,
+      qualityProfiles,
+      languageProfiles,
+      metadataProfiles,
+      importLists,
+      app,
+      dimensions
+    ) => {
       const isPopulated = (
         artist.isPopulated &&
         customFilters.isPopulated &&
         tags.isPopulated &&
-        settings.qualityProfiles.isPopulated &&
-        settings.languageProfiles.isPopulated &&
-        settings.metadataProfiles.isPopulated &&
-        settings.importLists.isPopulated &&
-        settings.ui.isPopulated
+        qualityProfiles.isPopulated &&
+        languageProfiles.isPopulated &&
+        metadataProfiles.isPopulated &&
+        importLists.isPopulated &&
+        uiSettings.isPopulated
       );
 
       const hasError = !!(
         artist.error ||
         customFilters.error ||
         tags.error ||
-        settings.qualityProfiles.error ||
-        settings.languageProfiles.error ||
-        settings.metadataProfiles.error ||
-        settings.importLists.error ||
-        settings.ui.error
+        qualityProfiles.error ||
+        languageProfiles.error ||
+        metadataProfiles.error ||
+        importLists.error ||
+        uiSettings.error
       );
 
       return {
@@ -65,13 +79,14 @@ function createMapStateToProps() {
         artistError: artist.error,
         customFiltersError: tags.error,
         tagsError: tags.error,
-        qualityProfilesError: settings.qualityProfiles.error,
-        languageProfilesError: settings.languageProfiles.error,
-        metadataProfilesError: settings.metadataProfiles.error,
-        importListsError: settings.importLists.error,
-        uiSettingsError: settings.ui.error,
+        qualityProfilesError: qualityProfiles.error,
+        languageProfilesError: languageProfiles.error,
+        metadataProfilesError: metadataProfiles.error,
+        importListsError: importLists.error,
+        uiSettingsError: uiSettings.error,
         isSmallScreen: dimensions.isSmallScreen,
         isSidebarVisible: app.isSidebarVisible,
+        enableColorImpairedMode: uiSettings.item.enableColorImpairedMode,
         version: app.version,
         isUpdated: app.isUpdated,
         isDisconnected: app.isDisconnected

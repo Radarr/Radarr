@@ -24,7 +24,6 @@ function IconButton(props) {
         isDisabled && styles.isDisabled
       )}
       isDisabled={isDisabled}
-
       {...otherProps}
     >
       <Icon

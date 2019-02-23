@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
+import AutoCompleteInput from './AutoCompleteInput';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
+import KeyValueListInput from './KeyValueListInput';
 import MonitorAlbumsSelectInput from './MonitorAlbumsSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
@@ -25,6 +27,9 @@ import styles from './FormInputGroup.css';
 
 function getComponent(type) {
   switch (type) {
+    case inputTypes.AUTO_COMPLETE:
+      return AutoCompleteInput;
+
     case inputTypes.CAPTCHA:
       return CaptchaInputConnector;
 
@@ -33,6 +38,9 @@ function getComponent(type) {
 
     case inputTypes.DEVICE:
       return DeviceInputConnector;
+
+    case inputTypes.KEY_VALUE_LIST:
+      return KeyValueListInput;
 
     case inputTypes.MONITOR_ALBUMS_SELECT:
       return MonitorAlbumsSelectInput;

@@ -19,7 +19,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 
         public Decision IsSatisfiedBy(LocalTrack localTrack)
         {
-            var qualityComparer = new QualityModelComparer(localTrack.Artist.Profile);
+            var qualityComparer = new QualityModelComparer(localTrack.Artist.QualityProfile);
             var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
 
             if (localTrack.Tracks.Any(e => e.TrackFileId != 0 && qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) > 0))

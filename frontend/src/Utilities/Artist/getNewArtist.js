@@ -1,4 +1,3 @@
-import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
 
 function getNewArtist(artist, payload) {
   const {
@@ -13,11 +12,11 @@ function getNewArtist(artist, payload) {
     searchForMissingAlbums = false
   } = payload;
 
-  const {
-    options: addOptions
-  } = getMonitoringOptions(monitor);
+  const addOptions = {
+    monitor,
+    searchForMissingAlbums
+  };
 
-  addOptions.searchForMissingAlbums = searchForMissingAlbums;
   artist.addOptions = addOptions;
   artist.monitored = true;
   artist.qualityProfileId = qualityProfileId;

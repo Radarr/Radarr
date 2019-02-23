@@ -22,7 +22,7 @@
 
 .artistName {
   color: #3a3f51;
-  font-size: 14px;
+  font-size: $defaultFontSize;
 }
 
 .absoluteEpisodeNumber {
@@ -53,7 +53,7 @@
   border-left-color: $gray;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, transparent, transparent 5px, #eee 5px, #eee 10px);
+    background: repeating-linear-gradient(45deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }
 
@@ -61,7 +61,7 @@
   border-left-color: $dangerColor;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);
+    background: repeating-linear-gradient(90deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }
 
@@ -69,6 +69,6 @@
   border-left-color: $blue;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);
+    background: repeating-linear-gradient(90deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }

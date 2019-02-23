@@ -67,7 +67,7 @@ export default {
     isFetching: false,
     isPopulated: false,
     error: null,
-    isFetchingSchema: false,
+    isSchemaFetching: false,
     isSchemaPopulated: false,
     schemaError: null,
     schema: [],

@@ -19,9 +19,9 @@ class AddImportListModalContent extends Component {
 
   render() {
     const {
-      isFetching,
-      isPopulated,
-      error,
+      isSchemaFetching,
+      isSchemaPopulated,
+      schemaError,
       allLists,
       onImportListSelect,
       onModalClose
@@ -35,17 +35,17 @@ class AddImportListModalContent extends Component {
 
         <ModalBody>
           {
-            isFetching &&
+            isSchemaFetching &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && !!error &&
+            !isSchemaFetching && !!schemaError &&
               <div>Unable to add a new list, please try again.</div>
           }
 
           {
-            isPopulated && !error &&
+            isSchemaPopulated && !schemaError &&
               <div>
 
                 <Alert kind={kinds.INFO}>
@@ -85,9 +85,9 @@ class AddImportListModalContent extends Component {
 }
 
 AddImportListModalContent.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object,
+  isSchemaFetching: PropTypes.bool.isRequired,
+  isSchemaPopulated: PropTypes.bool.isRequired,
+  schemaError: PropTypes.object,
   allLists: PropTypes.arrayOf(PropTypes.object).isRequired,
   onImportListSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

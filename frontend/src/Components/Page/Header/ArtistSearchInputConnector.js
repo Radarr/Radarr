@@ -58,10 +58,10 @@ function createCleanArtistSelector() {
           })
         };
       }).sort((a, b) => {
-        if (a.cleanName < b.cleanName) {
+        if (a.sortName < b.sortName) {
           return -1;
         }
-        if (a.cleanName > b.cleanName) {
+        if (a.sortName > b.sortName) {
           return 1;
         }
 

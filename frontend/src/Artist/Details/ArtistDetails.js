@@ -11,7 +11,6 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
-import Measure from 'Components/Measure';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -35,6 +34,7 @@ import ArtistTagsConnector from './ArtistTagsConnector';
 import ArtistDetailsLinks from './ArtistDetailsLinks';
 import styles from './ArtistDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
+import ArtistInteractiveSearchModalConnector from 'Artist/Search/ArtistInteractiveSearchModalConnector';
 import Link from 'Components/Link/Link';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -71,6 +71,7 @@ class ArtistDetails extends Component {
       isDeleteArtistModalOpen: false,
       isArtistHistoryModalOpen: false,
       isInteractiveImportModalOpen: false,
+      isInteractiveSearchModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {}
@@ -102,6 +103,14 @@ class ArtistDetails extends Component {
 
   onInteractiveImportModalClose = () => {
     this.setState({ isInteractiveImportModalOpen: false });
+  }
+
+  onInteractiveSearchPress = () => {
+    this.setState({ isInteractiveSearchModalOpen: true });
+  }
+
+  onInteractiveSearchModalClose = () => {
+    this.setState({ isInteractiveSearchModalOpen: false });
   }
 
   onEditArtistPress = () => {
@@ -181,7 +190,9 @@ class ArtistDetails extends Component {
       isPopulated,
       albumsError,
       trackFilesError,
+      hasAlbums,
       hasMonitoredAlbums,
+      hasTrackFiles,
       previousArtist,
       nextArtist,
       onMonitorTogglePress,
@@ -201,6 +212,7 @@ class ArtistDetails extends Component {
       isDeleteArtistModalOpen,
       isArtistHistoryModalOpen,
       isInteractiveImportModalOpen,
+      isInteractiveSearchModalOpen,
       allExpanded,
       allCollapsed,
       expandedState
@@ -240,10 +252,19 @@ class ArtistDetails extends Component {
             <PageToolbarButton
               label="Search Monitored"
               iconName={icons.SEARCH}
-              isDisabled={!monitored || !hasMonitoredAlbums}
+              isDisabled={!monitored || !hasMonitoredAlbums || !hasAlbums}
               isSpinning={isSearching}
               title={hasMonitoredAlbums ? undefined : 'No monitored albums for this artist'}
               onPress={onSearchPress}
+            />
+
+            <PageToolbarButton
+              label="Interactive Search"
+              iconName={icons.INTERACTIVE}
+              isDisabled={!monitored || !hasMonitoredAlbums || !hasAlbums}
+              isSpinning={isSearching}
+              title={hasMonitoredAlbums ? undefined : 'No monitored albums for this artist'}
+              onPress={this.onInteractiveSearchPress}
             />
 
             <PageToolbarSeparator />
@@ -251,18 +272,21 @@ class ArtistDetails extends Component {
             <PageToolbarButton
               label="Preview Rename"
               iconName={icons.ORGANIZE}
+              isDisabled={!hasTrackFiles}
               onPress={this.onOrganizePress}
             />
 
             <PageToolbarButton
               label="Manage Tracks"
               iconName={icons.TRACK_FILE}
+              isDisabled={!hasTrackFiles}
               onPress={this.onManageTracksPress}
             />
 
             <PageToolbarButton
               label="History"
               iconName={icons.HISTORY}
+              isDisabled={!hasAlbums}
               onPress={this.onArtistHistoryPress}
             />
 
@@ -609,6 +633,12 @@ class ArtistDetails extends Component {
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
           />
+
+          <ArtistInteractiveSearchModalConnector
+            isOpen={isInteractiveSearchModalOpen}
+            artistId={id}
+            onModalClose={this.onInteractiveSearchModalClose}
+          />
         </PageContentBodyConnector>
       </PageContent>
     );
@@ -638,7 +668,9 @@ ArtistDetails.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   albumsError: PropTypes.object,
   trackFilesError: PropTypes.object,
+  hasAlbums: PropTypes.bool.isRequired,
   hasMonitoredAlbums: PropTypes.bool.isRequired,
+  hasTrackFiles: PropTypes.bool.isRequired,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,
   onMonitorTogglePress: PropTypes.func.isRequired,

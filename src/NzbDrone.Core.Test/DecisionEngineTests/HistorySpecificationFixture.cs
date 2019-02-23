@@ -11,7 +11,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Profiles.Languages;
@@ -47,9 +47,19 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        };
 
             _fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
-                         .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = LanguageFixture.GetDefaultLanguages() })
-                         .Build();
+                .With(c => c.QualityProfile = new QualityProfile
+                {
+                    UpgradeAllowed = true,
+                    Cutoff = Quality.MP3_320.Id,
+                    Items = Qualities.QualityFixture.GetDefaultQualities()
+                })
+                .With(l => l.LanguageProfile = new LanguageProfile
+                {
+                    UpgradeAllowed = true,
+                    Cutoff = Language.Spanish,
+                    Languages = LanguageFixture.GetDefaultLanguages()
+                })
+                .Build();
 
             _parseResultMulti = new RemoteAlbum
             {
@@ -162,7 +172,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_album_is_of_same_quality_as_existing()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.English);
 
@@ -174,7 +184,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.Spanish);
 
@@ -202,7 +212,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.Spanish);
 

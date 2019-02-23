@@ -142,7 +142,7 @@
     <Compile Include="DecisionEngineTests\ReleaseRestrictionsSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\PrioritizeDownloadDecisionFixture.cs" />
     <Compile Include="DecisionEngineTests\QualityAllowedByProfileSpecificationFixture.cs" />
-    <Compile Include="DecisionEngineTests\QualityUpgradeSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\UpgradeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MinimumAgeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RetentionSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\DelaySpecificationFixture.cs" />
@@ -327,6 +327,7 @@
     <Compile Include="Profiles\Metadata\MetadataProfileServiceFixture.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\Qualities\QualityIndexCompareToFixture.cs" />
+    <Compile Include="Profiles\Releases\PreferredWordService\CalculateFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
     <Compile Include="RemotePathMappingsTests\RemotePathMappingServiceFixture.cs" />

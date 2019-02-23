@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         public Decision IsSatisfiedBy(LocalAlbumRelease localAlbumRelease)
         {
             var artist = localAlbumRelease.AlbumRelease.Album.Value.Artist.Value;
-            var qualityComparer = new QualityModelComparer(artist.Profile);
+            var qualityComparer = new QualityModelComparer(artist.QualityProfile);
 
             // check if we are changing release
             var currentRelease = localAlbumRelease.AlbumRelease.Album.Value.AlbumReleases.Value.Single(x => x.Monitored);

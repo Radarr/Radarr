@@ -1,6 +1,8 @@
+export const AUTO_COMPLETE = 'autoComplete';
 export const CAPTCHA = 'captcha';
 export const CHECK = 'check';
 export const DEVICE = 'device';
+export const KEY_VALUE_LIST = 'keyValueList';
 export const MONITOR_ALBUMS_SELECT = 'monitorAlbumsSelect';
 export const NUMBER = 'number';
 export const OAUTH = 'oauth';
@@ -18,9 +20,11 @@ export const TEXT = 'text';
 export const TEXT_TAG = 'textTag';
 
 export const all = [
+  AUTO_COMPLETE,
   CAPTCHA,
   CHECK,
   DEVICE,
+  KEY_VALUE_LIST,
   MONITOR_ALBUMS_SELECT,
   NUMBER,
   OAUTH,

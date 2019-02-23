@@ -116,9 +116,11 @@ class ImportArtistFooter extends Component {
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
       isMetadataProfileIdMixed,
+      hasUnsearchedItems,
       showLanguageProfile,
       showMetadataProfile,
       onImportPress,
+      onLookupPress,
       onCancelLookupPress
     } = this.props;
 
@@ -239,6 +241,17 @@ class ImportArtistFooter extends Component {
             }
 
             {
+              hasUnsearchedItems &&
+                <Button
+                  className={styles.loadingButton}
+                  kind={kinds.SUCCESS}
+                  onPress={onLookupPress}
+                >
+                  Start Processing
+                </Button>
+            }
+
+            {
               isLookingUpArtist &&
                 <LoadingIndicator
                   className={styles.loading}
@@ -271,10 +284,12 @@ ImportArtistFooter.propTypes = {
   isLanguageProfileIdMixed: PropTypes.bool.isRequired,
   isMetadataProfileIdMixed: PropTypes.bool.isRequired,
   isAlbumFolderMixed: PropTypes.bool.isRequired,
+  hasUnsearchedItems: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired,
+  onLookupPress: PropTypes.func.isRequired,
   onCancelLookupPress: PropTypes.func.isRequired
 };
 

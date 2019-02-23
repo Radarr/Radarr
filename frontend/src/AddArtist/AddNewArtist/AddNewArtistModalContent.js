@@ -74,7 +74,8 @@ class AddNewArtistModalContent extends Component {
       showMetadataProfile,
       isSmallScreen,
       onModalClose,
-      onInputChange
+      onInputChange,
+      ...otherProps
     } = this.props;
 
     return (
@@ -86,7 +87,8 @@ class AddNewArtistModalContent extends Component {
         <ModalBody>
           <div className={styles.container}>
             {
-              !isSmallScreen &&
+              isSmallScreen ?
+                null:
                 <div className={styles.poster}>
                   <ArtistPoster
                     className={styles.poster}
@@ -97,15 +99,19 @@ class AddNewArtistModalContent extends Component {
             }
 
             <div className={styles.info}>
-              <div className={styles.overview}>
-                <TextTruncate
-                  truncateText="…"
-                  line={8}
-                  text={overview}
-                />
-              </div>
+              {
+                overview ?
+                  <div className={styles.overview}>
+                    <TextTruncate
+                      truncateText="…"
+                      line={8}
+                      text={overview}
+                    />
+                  </div> :
+                  null
+              }
 
-              <Form>
+              <Form {...otherProps}>
                 <FormGroup>
                   <FormLabel>Root Folder</FormLabel>
 

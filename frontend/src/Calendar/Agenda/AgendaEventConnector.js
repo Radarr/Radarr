@@ -15,7 +15,8 @@ function createMapStateToProps() {
         artist,
         queueItem,
         timeFormat: uiSettings.timeFormat,
-        longDateFormat: uiSettings.longDateFormat
+        longDateFormat: uiSettings.longDateFormat,
+        colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }
   );

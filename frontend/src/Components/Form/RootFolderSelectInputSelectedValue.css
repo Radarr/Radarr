@@ -14,9 +14,7 @@
 }
 
 .freeSpace {
-  @add-mixin truncate;
-
-  flex: 1 0 0;
+  flex: 0 0 auto;
   margin-left: 15px;
   color: $gray;
   text-align: right;

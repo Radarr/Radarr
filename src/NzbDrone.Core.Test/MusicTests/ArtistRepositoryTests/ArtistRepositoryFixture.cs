@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         [Test]
         public void should_lazyload_profiles()
         {
-            var profile = new Profile
+            var profile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(Quality.FLAC, Quality.MP3_192, Quality.MP3_320),
 
@@ -73,19 +73,19 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             };
 
 
-            Mocker.Resolve<ProfileRepository>().Insert(profile);
+            Mocker.Resolve<QualityProfileRepository>().Insert(profile);
             Mocker.Resolve<LanguageProfileRepository>().Insert(langProfile);
             Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
             var artist = Builder<Artist>.CreateNew().BuildNew();
-            artist.ProfileId = profile.Id;
+            artist.QualityProfileId = profile.Id;
             artist.LanguageProfileId = langProfile.Id;
             artist.MetadataProfileId = metaProfile.Id;
 
             Subject.Insert(artist);
 
 
-            StoredModel.Profile.Should().NotBeNull();
+            StoredModel.QualityProfile.Should().NotBeNull();
             StoredModel.LanguageProfile.Should().NotBeNull();
             StoredModel.MetadataProfile.Should().NotBeNull();
 

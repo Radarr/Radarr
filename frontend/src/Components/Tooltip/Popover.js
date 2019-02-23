@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TetherComponent from 'react-tether';
 import classNames from 'classnames';
+import isMobileUtil from 'Utilities/isMobile';
 import { tooltipPositions } from 'Helpers/Props';
 import styles from './Popover.css';
 
@@ -67,7 +68,9 @@ class Popover extends Component {
   // Listeners
 
   onClick = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    if (isMobileUtil()) {
+      this.setState({ isOpen: !this.state.isOpen });
+    }
   }
 
   onMouseEnter = () => {
@@ -105,7 +108,7 @@ class Popover extends Component {
       >
         <span
           className={className}
-          // onClick={this.onClick}
+          onClick={this.onClick}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >
@@ -114,28 +117,28 @@ class Popover extends Component {
 
         {
           this.state.isOpen &&
-          <div
-            className={styles.popoverContainer}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-          >
-            <div className={styles.popover}>
-              <div
-                className={classNames(
-                  styles.arrow,
-                  styles[position]
-                )}
-              />
+            <div
+              className={styles.popoverContainer}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+            >
+              <div className={styles.popover}>
+                <div
+                  className={classNames(
+                    styles.arrow,
+                    styles[position]
+                  )}
+                />
 
-              <div className={styles.title}>
-                {title}
-              </div>
+                <div className={styles.title}>
+                  {title}
+                </div>
 
-              <div className={styles.body}>
-                {body}
+                <div className={styles.body}>
+                  {body}
+                </div>
               </div>
             </div>
-          </div>
         }
       </TetherComponent>
     );

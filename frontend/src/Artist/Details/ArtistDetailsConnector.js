@@ -16,11 +16,55 @@ import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import ArtistDetails from './ArtistDetails';
 
+const selectAlbums = createSelector(
+  (state) => state.albums,
+  (albums) => {
+    const {
+      items,
+      isFetching,
+      isPopulated,
+      error
+    } = albums;
+
+    const hasAlbums = !!items.length;
+    const hasMonitoredAlbums = items.some((e) => e.monitored);
+
+    return {
+      isAlbumsFetching: isFetching,
+      isAlbumsPopulated: isPopulated,
+      albumsError: error,
+      hasAlbums,
+      hasMonitoredAlbums
+    };
+  }
+);
+
+const selectTrackFiles = createSelector(
+  (state) => state.trackFiles,
+  (trackFiles) => {
+    const {
+      items,
+      isFetching,
+      isPopulated,
+      error
+    } = trackFiles;
+
+    const hasTrackFiles = !!items.length;
+
+    return {
+      isTrackFilesFetching: isFetching,
+      isTrackFilesPopulated: isPopulated,
+      trackFilesError: error,
+      hasTrackFiles
+    };
+  }
+);
+
 function createMapStateToProps() {
   return createSelector(
     (state, { foreignArtistId }) => foreignArtistId,
-    (state) => state.albums,
-    (state) => state.trackFiles,
+    selectAlbums,
+    selectTrackFiles,
     (state) => state.settings.metadataProfiles,
     createAllArtistSelector(),
     createCommandsSelector(),
@@ -39,6 +83,21 @@ function createMapStateToProps() {
       if (!artist) {
         return {};
       }
+
+      const {
+        isAlbumsFetching,
+        isAlbumsPopulated,
+        albumsError,
+        hasAlbums,
+        hasMonitoredAlbums
+      } = albums;
+
+      const {
+        isTrackFilesFetching,
+        isTrackFilesPopulated,
+        trackFilesError,
+        hasTrackFiles
+      } = trackFiles;
 
       const sortedAlbumTypes = _.orderBy(albumTypes);
 
@@ -60,10 +119,9 @@ function createMapStateToProps() {
         isRenamingArtistCommand.body.artistIds.indexOf(artist.id) > -1
       );
 
-      const isFetching = albums.isFetching || trackFiles.isFetching;
-      const isPopulated = albums.isPopulated && trackFiles.isPopulated;
-      const albumsError = albums.error;
-      const trackFilesError = trackFiles.error;
+      const isFetching = isAlbumsFetching || isTrackFilesFetching;
+      const isPopulated = isAlbumsPopulated && isTrackFilesPopulated;
+
       const alternateTitles = _.reduce(artist.alternateTitles, (acc, alternateTitle) => {
         if ((alternateTitle.seasonNumber === -1 || alternateTitle.seasonNumber === undefined) &&
             (alternateTitle.sceneSeasonNumber === -1 || alternateTitle.sceneSeasonNumber === undefined)) {
@@ -72,8 +130,6 @@ function createMapStateToProps() {
 
         return acc;
       }, []);
-
-      const hasMonitoredAlbums = albums.items.some((e) => e.monitored);
 
       return {
         ...artist,
@@ -89,7 +145,9 @@ function createMapStateToProps() {
         isPopulated,
         albumsError,
         trackFilesError,
+        hasAlbums,
         hasMonitoredAlbums,
+        hasTrackFiles,
         previousArtist,
         nextArtist
       };

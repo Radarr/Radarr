@@ -43,7 +43,8 @@ class ArtistIndexTable extends Component {
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
-      columns
+      columns,
+      showBanners
     } = this.props;
 
     const artist = items[rowIndex];
@@ -58,6 +59,7 @@ class ArtistIndexTable extends Component {
         languageProfileId={artist.languageProfileId}
         qualityProfileId={artist.qualityProfileId}
         metadataProfileId={artist.metadataProfileId}
+        showBanners={showBanners}
       />
     );
   }
@@ -72,6 +74,7 @@ class ArtistIndexTable extends Component {
       filters,
       sortKey,
       sortDirection,
+      showBanners,
       isSmallScreen,
       scrollTop,
       contentBody,
@@ -88,11 +91,12 @@ class ArtistIndexTable extends Component {
         scrollIndex={this.state.scrollIndex}
         contentBody={contentBody}
         isSmallScreen={isSmallScreen}
-        rowHeight={38}
+        rowHeight={showBanners ? 70 : 38}
         overscanRowCount={2}
         rowRenderer={this.rowRenderer}
         header={
           <ArtistIndexHeaderConnector
+            showBanners={showBanners}
             columns={columns}
             sortKey={sortKey}
             sortDirection={sortDirection}
@@ -116,6 +120,7 @@ ArtistIndexTable.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
+  showBanners: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
   contentBody: PropTypes.object.isRequired,

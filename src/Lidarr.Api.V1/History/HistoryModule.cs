@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Lidarr.Api.V1.Albums;
@@ -55,7 +55,7 @@ namespace Lidarr.Api.V1.History
 
             if (model.Artist != null)
             {
-                resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Artist.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Artist.QualityProfile.Value, model.Quality);
                 resource.LanguageCutoffNotMet = _upgradableSpecification.LanguageCutoffNotMet(model.Artist.LanguageProfile, model.Language);
             }
 

@@ -64,6 +64,7 @@ class LanguageProfile extends Component {
     const {
       id,
       name,
+      upgradeAllowed,
       cutoff,
       languages,
       isDeleting
@@ -95,13 +96,13 @@ class LanguageProfile extends Component {
                 return null;
               }
 
-              const isCutoff = item.language.id === cutoff.id;
+              const isCutoff = upgradeAllowed && item.language.id === cutoff.id;
 
               return (
                 <Label
                   key={item.language.id}
                   kind={isCutoff ? kinds.INFO : kinds.default}
-                  title={isCutoff ? 'Cutoff' : null}
+                  title={isCutoff ? 'Upgrade until this language is met or exceeded' : null}
                 >
                   {item.language.name}
                 </Label>
@@ -135,6 +136,7 @@ class LanguageProfile extends Component {
 LanguageProfile.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
+  upgradeAllowed: PropTypes.bool.isRequired,
   cutoff: PropTypes.object.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,

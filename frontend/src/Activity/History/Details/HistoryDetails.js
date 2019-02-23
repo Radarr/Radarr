@@ -7,6 +7,7 @@ import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
+import styles from './HistoryDetails.css';
 
 function getDetailedList(statusMessages) {
   return (
@@ -60,6 +61,7 @@ function HistoryDetails(props) {
     return (
       <DescriptionList>
         <DescriptionListItem
+          descriptionClassName={styles.description}
           title="Name"
           data={sourceTitle}
         />
@@ -75,6 +77,7 @@ function HistoryDetails(props) {
         {
           !!releaseGroup &&
             <DescriptionListItem
+              descriptionClassName={styles.description}
               title="Release Group"
               data={releaseGroup}
             />
@@ -136,6 +139,7 @@ function HistoryDetails(props) {
     return (
       <DescriptionList>
         <DescriptionListItem
+          descriptionClassName={styles.description}
           title="Name"
           data={sourceTitle}
         />
@@ -160,6 +164,7 @@ function HistoryDetails(props) {
     return (
       <DescriptionList>
         <DescriptionListItem
+          descriptionClassName={styles.description}
           title="Name"
           data={sourceTitle}
         />
@@ -167,6 +172,7 @@ function HistoryDetails(props) {
         {
           !!droppedPath &&
             <DescriptionListItem
+              descriptionClassName={styles.description}
               title="Source"
               data={droppedPath}
             />
@@ -175,6 +181,7 @@ function HistoryDetails(props) {
         {
           !!importedPath &&
             <DescriptionListItem
+              descriptionClassName={styles.description}
               title="Imported To"
               data={importedPath}
             />

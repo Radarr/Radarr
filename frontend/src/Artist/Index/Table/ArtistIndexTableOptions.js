@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { inputTypes } from 'Helpers/Props';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
@@ -14,15 +14,23 @@ class ArtistIndexTableOptions extends Component {
     super(props, context);
 
     this.state = {
+      showBanners: props.showBanners,
       showSearchAction: props.showSearchAction
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { showSearchAction } = this.props;
+    const {
+      showBanners,
+      showSearchAction
+    } = this.props;
 
-    if (showSearchAction !== prevProps.showSearchAction) {
+    if (
+      showBanners !== prevProps.showBanners ||
+      showSearchAction !== prevProps.showSearchAction
+    ) {
       this.setState({
+        showBanners,
         showSearchAction
       });
     }
@@ -49,26 +57,42 @@ class ArtistIndexTableOptions extends Component {
 
   render() {
     const {
+      showBanners,
       showSearchAction
     } = this.state;
 
     return (
-      <FormGroup>
-        <FormLabel>Show Search</FormLabel>
+      <Fragment>
+        <FormGroup>
+          <FormLabel>Show Banners</FormLabel>
 
-        <FormInputGroup
-          type={inputTypes.CHECK}
-          name="showSearchAction"
-          value={showSearchAction}
-          helpText="Show search button"
-          onChange={this.onTableOptionChange}
-        />
-      </FormGroup>
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="showBanners"
+            value={showBanners}
+            helpText="Show banners instead of names"
+            onChange={this.onTableOptionChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>Show Search</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="showSearchAction"
+            value={showSearchAction}
+            helpText="Show search button on hover"
+            onChange={this.onTableOptionChange}
+          />
+        </FormGroup>
+      </Fragment>
     );
   }
 }
 
 ArtistIndexTableOptions.propTypes = {
+  showBanners: PropTypes.bool.isRequired,
   showSearchAction: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired
 };

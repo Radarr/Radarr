@@ -17,6 +17,7 @@ export function repopulatePage(reason) {
   if (!currentPopulator) {
     return;
   }
+
   if (!reason) {
     currentPopulator();
   }

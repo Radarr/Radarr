@@ -30,6 +30,15 @@
   }
 }
 
+.disabled {
+  border-color: $disabledColor;
+  background-color: $disabledColor;
+
+  &.outline {
+    color: $disabledColor;
+  }
+}
+
 .info {
   border-color: $infoColor;
   background-color: $infoColor;
@@ -92,7 +101,7 @@
 .large {
   padding: 3px 7px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $defaultFontSize;
 }
 
 /** Outline **/
