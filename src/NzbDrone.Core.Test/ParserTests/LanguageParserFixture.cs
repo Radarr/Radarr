@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Danish Girl 2015", Language.English)]
         [TestCase("Nocturnal Animals (2016) MULTi VFQ English [1080p] BluRay x264-PopHD", Language.English, Language.French)]
         [TestCase("Wonder.Woman.2017.720p.BluRay.DD5.1.x264-TayTO.CZ-FTU", Language.Czech)]
+        [TestCase("Fantastic.Beasts.The.Crimes.Of.Grindelwald.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK", Language.English)]
         public void should_parse_language(string postTitle, params Language[] languages)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
