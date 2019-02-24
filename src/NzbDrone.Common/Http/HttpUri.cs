@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -135,7 +135,7 @@ namespace NzbDrone.Common.Http
             return new HttpUri(Scheme, Host, Port, CombinePath(Path, path), Query, Fragment);
         }
 
-        private static string CombinePath(string basePath, string relativePath)
+        public static string CombinePath(string basePath, string relativePath)
         {
             if (relativePath.IsNullOrWhiteSpace())
             {
