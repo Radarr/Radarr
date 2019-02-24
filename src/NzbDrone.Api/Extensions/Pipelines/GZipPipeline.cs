@@ -23,7 +23,7 @@ namespace NzbDrone.Api.Extensions.Pipelines
             _logger = logger;
 
             // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
-            _writeGZipStream = PlatformInfo.IsMono ? WriteGZipStreamMono : (Action<Action<Stream>, Stream>)WriteGZipStream;
+            _writeGZipStream = OsInfo.IsMonoRuntime ? WriteGZipStreamMono : (Action<Action<Stream>, Stream>)WriteGZipStream;
         }
 
         public void Register(IPipelines pipelines)
