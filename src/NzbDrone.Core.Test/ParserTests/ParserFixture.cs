@@ -54,7 +54,9 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
 		[TestCase("My Movie 1999 German Bluray", "My Movie")]
         [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
-		public void should_parse_movie_title(string postTitle, string title)
+        [TestCase("Climax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Climax")]
+        [TestCase("Movie.Title.Imax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Movie Title")]
+        public void should_parse_movie_title(string postTitle, string title)
 		{
 		    Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
         }
@@ -111,6 +113,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
+        [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE","")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
