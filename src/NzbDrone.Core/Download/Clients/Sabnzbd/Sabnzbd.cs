@@ -25,8 +25,9 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                        INamingConfigService namingConfigService,
                        IDiskProvider diskProvider,
                        IRemotePathMappingService remotePathMappingService,
+                       IValidateNzbs nzbValidationService,
                        Logger logger)
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _proxy = proxy;
         }
@@ -115,17 +116,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            SabnzbdHistory sabHistory;
-
-            try
-            {
-                sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.MovieCategory, Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.MovieCategory, Settings);
 
             var historyItems = new List<DownloadClientItem>();
 
@@ -190,6 +181,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                         parent = parent.Directory;
                     }
                 }
+
 
                 historyItems.Add(historyItem);
             }
@@ -327,6 +319,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private Version ParseVersion(string version)
         {
+            if (version.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
             var parsed = VersionRegex.Match(version);
 
             int major;
@@ -364,7 +361,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
                 if (version == null)
                 {
-                    return new ValidationFailure("Version", "Unknown Version: " + version);
+                    return new ValidationFailure("Version", "Unknown Version: " + rawVersion);
                 }
 
                 if (rawVersion.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
@@ -424,7 +421,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("", "Disable 'Check before download' option in SABnzbd")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/switches/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/switches/"),
                     DetailedDescription = "Using Check before download affects Radarr ability to track new downloads. Also SABnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
@@ -443,7 +440,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 {
                     return new NzbDroneValidationFailure("MovieCategory", "Enable Job folders")
                     {
-                        InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
+                        InfoLink = _proxy.GetBaseUrl(Settings, "config/categories/"),
                         DetailedDescription = "Radarr prefers each download to have a separate folder. With * appended to the Folder/Path SABnzbd will not create these job folders. Go to SABnzbd to fix it."
                     };
                 }
@@ -454,7 +451,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 {
                     return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                     {
-                        InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
+                        InfoLink = _proxy.GetBaseUrl(Settings, "config/categories/"),
                         DetailedDescription = "The category you entered doesn't exist in SABnzbd. Go to SABnzbd to create it."
                     };
                 }
@@ -463,7 +460,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MovieCategory", "Disable TV Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable SABnzbd TV Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
@@ -471,7 +468,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MovieCategory", "Disable Movie Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable SABnzbd Movie Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
@@ -479,7 +476,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MovieCategory", "Disable Date Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable SABnzbd Date Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
