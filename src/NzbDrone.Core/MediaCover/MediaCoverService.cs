@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaCover
 
     public class MediaCoverService :
         IHandleAsync<MovieUpdatedEvent>,
-        IHandleAsync<MovieAddedEvent>,
+        //IHandleAsync<MovieAddedEvent>,
         IHandleAsync<MovieDeletedEvent>,
         IExecute<EnsureMediaCoversCommand>,
         IMapCoversToLocal
@@ -208,7 +208,7 @@ namespace NzbDrone.Core.MediaCover
         public void HandleAsync(MovieAddedEvent message)
         {
             //EnsureCovers(message.Movie);
-            _commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
+            //_commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
             //_eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
 
