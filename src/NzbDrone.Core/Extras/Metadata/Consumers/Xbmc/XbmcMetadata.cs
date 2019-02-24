@@ -162,7 +162,10 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 foreach (var poster in posters)
                 {                    
-                    details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), poster.Url));
+                    if (poster != null && poster.Url != null)
+                    {
+                        details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), poster.Url));
+                    }
                 }
 
                 if (fanarts.Count() > 0)
@@ -170,7 +173,10 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     var fanartElement = new XElement("fanart");
                     foreach (var fanart in fanarts)
                     {
-                        fanartElement.Add(new XElement("thumb", fanart.Url));
+                        if (fanart != null && fanart.Url != null)
+                        {
+                            fanartElement.Add(new XElement("thumb", fanart.Url));
+                        }
                     }
                     details.Add(fanartElement);
                 }
