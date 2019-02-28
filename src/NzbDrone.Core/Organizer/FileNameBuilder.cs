@@ -344,7 +344,7 @@ namespace NzbDrone.Core.Organizer
         {
             if (preferredWords == null)
             {
-                preferredWords = _preferredWordService.GetMatchingPreferredWords(artist, trackFile.GetSceneOrFileName(), true);
+                preferredWords = _preferredWordService.GetMatchingPreferredWords(artist, trackFile.GetSceneOrFileName());
             }
 
             tokenHandlers["{Preferred Words}"] = m => string.Join(" ", preferredWords);

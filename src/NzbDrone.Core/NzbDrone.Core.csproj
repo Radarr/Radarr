@@ -1016,12 +1016,15 @@
     <Compile Include="Profiles\Metadata\ProfilePrimaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Qualities\QualityProfileRepository.cs" />
     <Compile Include="Profiles\Qualities\QualityIndex.cs" />
+    <Compile Include="Profiles\Releases\TermMatchers\CaseInsensitiveTermMatcher.cs" />
     <Compile Include="Profiles\Releases\PerlRegexFactory.cs" />
     <Compile Include="Profiles\Releases\PreferredWordService.cs" />
     <Compile Include="Profiles\Releases\ReleaseProfile.cs" />
     <Compile Include="Profiles\Releases\ReleaseProfileRepository.cs" />
     <Compile Include="Profiles\Releases\ReleaseProfileService.cs" />
-    <Compile Include="Profiles\Releases\TermMatcher.cs" />
+    <Compile Include="Profiles\Releases\TermMatcherService.cs" />
+    <Compile Include="Profiles\Releases\TermMatchers\ITermMatcher.cs" />
+    <Compile Include="Profiles\Releases\TermMatchers\RegexTermMatcher.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualityDetectionSource.cs" />
     <Compile Include="Qualities\Revision.cs" />
