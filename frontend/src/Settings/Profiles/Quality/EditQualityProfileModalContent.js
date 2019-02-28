@@ -182,7 +182,7 @@ class EditQualityProfileModalContent extends Component {
                                 name="cutoff"
                                 {...cutoff}
                                 values={qualities}
-                                helpText="Once this quality is reached Sonarr will no longer download episodes"
+                                helpText="Once this quality is reached Lidarr will no longer download albums"
                                 onChange={onCutoffChange}
                               />
                             </FormGroup>
