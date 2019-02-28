@@ -164,6 +164,7 @@ class QueueConnector extends Component {
 }
 
 QueueConnector.propTypes = {
+  useCurrentPage: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchQueue: PropTypes.func.isRequired,
   gotoQueueFirstPage: PropTypes.func.isRequired,

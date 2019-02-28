@@ -162,6 +162,7 @@ class CutoffUnmetConnector extends Component {
 }
 
 CutoffUnmetConnector.propTypes = {
+  useCurrentPage: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchCutoffUnmet: PropTypes.func.isRequired,
   gotoCutoffUnmetFirstPage: PropTypes.func.isRequired,

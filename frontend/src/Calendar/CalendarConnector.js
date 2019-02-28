@@ -155,6 +155,7 @@ class CalendarConnector extends Component {
 }
 
 CalendarConnector.propTypes = {
+  useCurrentPage: PropTypes.bool.isRequired,
   time: PropTypes.string,
   view: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,

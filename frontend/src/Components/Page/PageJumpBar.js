@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
 import PageJumpBarItem from './PageJumpBarItem';
@@ -8,7 +8,7 @@ import styles from './PageJumpBar.css';
 
 const ITEM_HEIGHT = parseInt(dimensions.jumpBarItemHeight);
 
-class PageJumpBar extends Component {
+class PageJumpBar extends PureComponent {
 
   //
   // Lifecycle
@@ -24,13 +24,6 @@ class PageJumpBar extends Component {
 
   componentDidMount() {
     this.computeVisibleItems();
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextProps.items !== this.props.items ||
-      nextState.height !== this.state.height
-    );
   }
 
   componentDidUpdate(prevProps, prevState) {
