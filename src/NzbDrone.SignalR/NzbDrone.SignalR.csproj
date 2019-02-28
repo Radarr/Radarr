@@ -91,7 +91,6 @@
     <Compile Include="SignalRMessage.cs" />
     <Compile Include="LidarrPerformanceCounterManager.cs" />
     <Compile Include="SignalRProtectedData.cs" />
-    <Compile Include="SonarrPerformanceCounterManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
