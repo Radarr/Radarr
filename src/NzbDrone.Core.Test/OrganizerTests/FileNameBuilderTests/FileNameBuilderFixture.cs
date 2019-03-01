@@ -303,6 +303,17 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.RelativePath));
         }
+        
+        [Test]
+        public void use_file_name_when_sceneName_is_not_null()
+        {
+            _namingConfig.RenameTracks = false;
+            _trackFile.RelativePath = "Linkin Park - 06 - Test";
+            _trackFile.SceneName = "SceneName";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.RelativePath));
+        }
 
         [Test]
         public void use_path_when_sceneName_and_relative_path_are_null()
@@ -314,7 +325,6 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
-
 
         [Test]
         public void should_not_clean_track_title_if_there_is_only_one()

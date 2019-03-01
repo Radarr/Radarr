@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Organizer
 
             if (!namingConfig.RenameTracks)
             {
-                return GetOriginalTitle(trackFile);
+                return GetOriginalFileName(trackFile);
             }
 
             if (namingConfig.StandardTrackFormat.IsNullOrWhiteSpace())
