@@ -22,7 +22,8 @@ class DeleteArtistModalContent extends Component {
     super(props, context);
 
     this.state = {
-      deleteFiles: false
+      deleteFiles: false,
+      addImportListExclusion: false
     };
   }
 
@@ -33,11 +34,17 @@ class DeleteArtistModalContent extends Component {
     this.setState({ deleteFiles: value });
   }
 
+  onAddImportListExclusionChange = ({ value }) => {
+    this.setState({ addImportListExclusion: value });
+  }
+
   onDeleteArtistConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
+    const addImportListExclusion = this.state.addImportListExclusion;
 
     this.setState({ deleteFiles: false });
-    this.props.onDeletePress(deleteFiles);
+    this.setState({ addImportListExclusion: false });
+    this.props.onDeletePress(deleteFiles, addImportListExclusion);
   }
 
   //
@@ -57,6 +64,8 @@ class DeleteArtistModalContent extends Component {
     } = statistics;
 
     const deleteFiles = this.state.deleteFiles;
+    const addImportListExclusion = this.state.addImportListExclusion;
+
     let deleteFilesLabel = `Delete ${trackFileCount} Track Files`;
     let deleteFilesHelpText = 'Delete the track files and artist folder';
 
@@ -93,6 +102,19 @@ class DeleteArtistModalContent extends Component {
               helpText={deleteFilesHelpText}
               kind={kinds.DANGER}
               onChange={this.onDeleteFilesChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <FormLabel>Add List Exclusion</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="addImportListExclusion"
+              value={addImportListExclusion}
+              helpText="Prevent artist from being added to Lidarr by Import lists"
+              kind={kinds.DANGER}
+              onChange={this.onAddImportListExclusionChange}
             />
           </FormGroup>
 

@@ -24,10 +24,11 @@ class DeleteArtistModalContentConnector extends Component {
   //
   // Listeners
 
-  onDeletePress = (deleteFiles) => {
+  onDeletePress = (deleteFiles, addImportListExclusion) => {
     this.props.deleteArtist({
       id: this.props.artistId,
-      deleteFiles
+      deleteFiles,
+      addImportListExclusion
     });
 
     this.props.onModalClose(true);

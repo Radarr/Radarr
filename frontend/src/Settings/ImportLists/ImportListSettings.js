@@ -7,6 +7,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import ImportListsConnector from './ImportLists/ImportListsConnector';
+import ImportListsExclusionsConnector from './ImportListExclusions/ImportListExclusionsConnector';
 
 class ImportListSettings extends Component {
 
@@ -74,6 +75,7 @@ class ImportListSettings extends Component {
 
         <PageContentBodyConnector>
           <ImportListsConnector />
+          <ImportListsExclusionsConnector />
         </PageContentBodyConnector>
       </PageContent>
     );

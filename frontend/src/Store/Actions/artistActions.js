@@ -186,7 +186,8 @@ export const deleteArtist = createThunk(DELETE_ARTIST, (payload) => {
   return {
     ...payload,
     queryParams: {
-      deleteFiles: payload.deleteFiles
+      deleteFiles: payload.deleteFiles,
+      addImportListExclusion: payload.addImportListExclusion
     }
   };
 });

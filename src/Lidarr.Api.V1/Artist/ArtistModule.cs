@@ -171,8 +171,9 @@ namespace Lidarr.Api.V1.Artist
         private void DeleteArtist(int id)
         {
             var deleteFiles = Request.GetBooleanQueryParameter("deleteFiles");
+            var addImportListExclusion = Request.GetBooleanQueryParameter("addImportListExclusion");
 
-            _artistService.DeleteArtist(id, deleteFiles);
+            _artistService.DeleteArtist(id, deleteFiles, addImportListExclusion);
         }
 
         private void MapCoversToLocal(params ArtistResource[] artists)

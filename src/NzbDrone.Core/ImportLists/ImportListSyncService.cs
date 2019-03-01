@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.ImportLists
     {
         private readonly IImportListStatusService _importListStatusService;
         private readonly IImportListFactory _importListFactory;
+        private readonly IImportListExclusionService _importListExclusionService;
         private readonly IFetchAndParseImportList _listFetcherAndParser;
         private readonly ISearchForNewAlbum _albumSearchService;
         private readonly ISearchForNewArtist _artistSearchService;
@@ -25,6 +27,7 @@ namespace NzbDrone.Core.ImportLists
 
         public ImportListSyncService(IImportListStatusService importListStatusService,
                               IImportListFactory importListFactory,
+                              IImportListExclusionService importListExclusionService,
                               IFetchAndParseImportList listFetcherAndParser,
                               ISearchForNewAlbum albumSearchService,
                               ISearchForNewArtist artistSearchService,
@@ -35,6 +38,7 @@ namespace NzbDrone.Core.ImportLists
         {
             _importListStatusService = importListStatusService;
             _importListFactory = importListFactory;
+            _importListExclusionService = importListExclusionService;
             _listFetcherAndParser = listFetcherAndParser;
             _albumSearchService = albumSearchService;
             _artistSearchService = artistSearchService;
@@ -78,6 +82,8 @@ namespace NzbDrone.Core.ImportLists
 
             var reportNumber = 1;
 
+            var listExclusions = _importListExclusionService.All();
+
             foreach (var report in reports)
             {
                 _logger.ProgressTrace("Processing list item {0}/{1}", reportNumber, reports.Count);
@@ -112,9 +118,17 @@ namespace NzbDrone.Core.ImportLists
 
                 // Check to see if artist in DB
                 var existingArtist = _artistService.FindById(report.ArtistMusicBrainzId);
+                
+                // Check to see if artist excluded
+                var excludedArtist = listExclusions.Where(s => s.ForeignId == report.ArtistMusicBrainzId).SingleOrDefault();
+
+                if (excludedArtist != null)
+                {
+                    _logger.Debug("{0} [{1}] Rejected due to list exlcusion", report.ArtistMusicBrainzId, report.Artist);
+                }
 
                 // Append Artist if not already in DB or already on add list
-                if (existingArtist == null && artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
+                if (existingArtist == null && excludedArtist == null && artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
                 {
                     artistsToAdd.Add(new Artist
                     {

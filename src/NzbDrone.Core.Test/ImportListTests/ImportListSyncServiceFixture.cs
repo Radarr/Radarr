@@ -7,6 +7,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.ImportLists.Exclusions;
 
 namespace NzbDrone.Core.Test.ImportListTests
 {
@@ -43,6 +44,10 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.GetMock<IFetchAndParseImportList>()
                 .Setup(v => v.Fetch())
                 .Returns(_importListReports);
+
+            Mocker.GetMock<IImportListExclusionService>()
+                .Setup(v => v.All())
+                .Returns(new List<ImportListExclusion>());
         }
 
         private void WithAlbum()
@@ -65,6 +70,17 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.GetMock<IArtistService>()
                 .Setup(v => v.FindById(_importListReports.First().ArtistMusicBrainzId))
                 .Returns(new Artist{ForeignArtistId = _importListReports.First().ArtistMusicBrainzId });
+        }
+
+        private void WithExcludedArtist()
+        {
+            Mocker.GetMock<IImportListExclusionService>()
+                .Setup(v => v.All())
+                .Returns(new List<ImportListExclusion> {
+                    new ImportListExclusion {
+                        ForeignId = "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                    }
+                });
         }
 
         [Test]
@@ -123,7 +139,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_try_add_if_existing_artist()
+        public void should_not_add_if_existing_artist()
         {
             WithArtistId();
             WithAlbum();
@@ -147,6 +163,20 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<IAddArtistService>()
                 .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 1)));
+        }
+
+        [Test]
+        public void should_not_add_if_excluded_artist()
+        {
+            WithArtistId();
+            WithAlbum();
+            WithAlbumId();
+            WithExcludedArtist();
+
+            Subject.Execute(new ImportListSyncCommand());
+
+            Mocker.GetMock<IAddArtistService>()
+                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 0)));
         }
 
         [Test]

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.ImportLists.Exclusions;
 
 namespace NzbDrone.Core.Music
 {
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.Music
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
         private readonly IConfigService _configService;
+        private readonly IImportListExclusionService _importListExclusionService;
         private readonly Logger _logger;
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
@@ -41,6 +43,7 @@ namespace NzbDrone.Core.Music
                                     IDiskScanService diskScanService,
                                     ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
                                     IConfigService configService,
+                                    IImportListExclusionService importListExclusionService,
                                     Logger logger)
         {
             _artistInfo = artistInfo;
@@ -53,6 +56,7 @@ namespace NzbDrone.Core.Music
             _diskScanService = diskScanService;
             _checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
             _configService = configService;
+            _importListExclusionService = importListExclusionService;
             _logger = logger;
         }
 
@@ -75,6 +79,16 @@ namespace NzbDrone.Core.Music
             if (artist.Metadata.Value.ForeignArtistId != artistInfo.Metadata.Value.ForeignArtistId)
             {
                 _logger.Warn("Artist '{0}' (Artist {1}) was replaced with '{2}' (LidarrAPI {3}), because the original was a duplicate.", artist.Name, artist.Metadata.Value.ForeignArtistId, artistInfo.Name, artistInfo.Metadata.Value.ForeignArtistId);
+
+                // Update list exclusion if one exists
+                var importExclusion = _importListExclusionService.FindByForeignId(artist.Metadata.Value.ForeignArtistId);
+
+                if (importExclusion != null)
+                {
+                    importExclusion.ForeignId = artistInfo.Metadata.Value.ForeignArtistId;
+                    _importListExclusionService.Update(importExclusion);
+                }
+
                 artist.Metadata.Value.ForeignArtistId = artistInfo.Metadata.Value.ForeignArtistId;
             }
 

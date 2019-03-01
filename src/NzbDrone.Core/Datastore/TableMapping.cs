@@ -12,6 +12,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.MediaFiles;
@@ -191,6 +192,7 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<ImportListStatus>().RegisterModel("ImportListStatus");
 
             Mapper.Entity<CustomFilter>().RegisterModel("CustomFilters");
+            Mapper.Entity<ImportListExclusion>().RegisterModel("ImportListExclusions");
         }
 
         private static void RegisterMappers()

@@ -4,9 +4,10 @@ using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Parser;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Cache;
+using NzbDrone.Core.ImportLists.Exclusions;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Music
 {
@@ -21,7 +22,7 @@ namespace NzbDrone.Core.Music
         Artist FindByName(string title);
         Artist FindByNameInexact(string title);
         List<Artist> GetCandidates(string title);
-        void DeleteArtist(int artistId, bool deleteFiles);
+        void DeleteArtist(int artistId, bool deleteFiles, bool addImportListExclusion = false);
         List<Artist> GetAllArtists();
         List<Artist> AllForTag(int tagId);
         Artist UpdateArtist(Artist artist);
@@ -36,6 +37,7 @@ namespace NzbDrone.Core.Music
         private readonly IArtistMetadataRepository _artistMetadataRepository;
         private readonly IEventAggregator _eventAggregator;
         private readonly ITrackService _trackService;
+        private readonly IImportListExclusionService _importListExclusionService;
         private readonly IBuildArtistPaths _artistPathBuilder;
         private readonly Logger _logger;
         private readonly ICached<List<Artist>> _cache;
@@ -44,6 +46,7 @@ namespace NzbDrone.Core.Music
                              IArtistMetadataRepository artistMetadataRepository,
                              IEventAggregator eventAggregator,
                              ITrackService trackService,
+                             IImportListExclusionService importListExclusionService,
                              IBuildArtistPaths artistPathBuilder,
                              ICacheManager cacheManager,
                              Logger logger)
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.Music
             _artistMetadataRepository = artistMetadataRepository;
             _eventAggregator = eventAggregator;
             _trackService = trackService;
+            _importListExclusionService = importListExclusionService;
             _artistPathBuilder = artistPathBuilder;
             _cache = cacheManager.GetCache<List<Artist>>(GetType());
             _logger = logger;
@@ -82,12 +86,12 @@ namespace NzbDrone.Core.Music
             return _artistRepository.ArtistPathExists(folder);
         }
 
-        public void DeleteArtist(int artistId, bool deleteFiles)
+        public void DeleteArtist(int artistId, bool deleteFiles, bool addImportListExclusion = false)
         {
             _cache.Clear();
             var artist = _artistRepository.Get(artistId);
             _artistRepository.Delete(artistId);
-            _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles));
+            _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles, addImportListExclusion));
         }
 
         public Artist FindById(string spotifyId)

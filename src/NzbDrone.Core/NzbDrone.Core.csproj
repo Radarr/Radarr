@@ -194,6 +194,7 @@
     <Compile Include="Datastore\Migration\017_remove_nma.cs" />
     <Compile Include="Datastore\Migration\018_album_disambiguation.cs" />
     <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
+    <Compile Include="Datastore\Migration\027_add_import_exclusions.cs" />
     <Compile Include="Datastore\Migration\021_add_custom_filters.cs" />
     <Compile Include="Datastore\Migration\022_import_list_tags.cs" />
     <Compile Include="Datastore\Migration\023_add_release_groups_etc.cs" />
@@ -545,6 +546,10 @@
     <Compile Include="Http\HttpProxySettingsProvider.cs" />
     <Compile Include="Http\TorcacheHttpInterceptor.cs" />
     <Compile Include="ImportLists\Exceptions\ImportListException.cs" />
+    <Compile Include="ImportLists\Exclusions\ImportListExclusionExistsValidator.cs" />
+    <Compile Include="ImportLists\Exclusions\ImportListExclusionService.cs" />
+    <Compile Include="ImportLists\Exclusions\ImportListExclusionRepository.cs" />
+    <Compile Include="ImportLists\Exclusions\ImportListExclusion.cs" />
     <Compile Include="ImportLists\FetchAndParseImportListService.cs" />
     <Compile Include="ImportLists\HeadphonesImport\HeadphonesImport.cs" />
     <Compile Include="ImportLists\HeadphonesImport\HeadphonesImportApi.cs" />
@@ -1200,6 +1205,7 @@
     <Compile Include="Update\UpdateVerification.cs" />
     <Compile Include="Update\UpdateVerificationFailedException.cs" />
     <Compile Include="Validation\FolderValidator.cs" />
+    <Compile Include="Validation\GuidValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
     <Compile Include="Validation\LanguageProfileExistsValidator.cs" />
     <Compile Include="Validation\MetadataProfileExistsValidator.cs" />
