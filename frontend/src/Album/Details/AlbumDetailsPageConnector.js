@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import NotFound from 'Components/NotFound';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';

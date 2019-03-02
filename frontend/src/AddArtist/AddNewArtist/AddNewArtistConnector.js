@@ -10,7 +10,7 @@ import AddNewArtist from './AddNewArtist';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.addArtist,
-    (state) => state.routing.location,
+    (state) => state.router.location,
     (addArtist, location) => {
       const { params } = parseUrl(location.search);
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import jdu from 'jdu';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
