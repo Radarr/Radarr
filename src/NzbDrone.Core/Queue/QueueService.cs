@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Queue
             
             var queue = new Queue
             {
-                Artist = trackedDownload.RemoteAlbum.Artist,
+                Artist = trackedDownload.RemoteAlbum?.Artist,
                 Album = album,
                 Language = trackedDownload.RemoteAlbum?.ParsedAlbumInfo.Language ?? Language.Unknown,
                 Quality = trackedDownload.RemoteAlbum?.ParsedAlbumInfo.Quality ?? new QualityModel(Quality.Unknown),
@@ -101,7 +101,6 @@ namespace NzbDrone.Core.Queue
                 queue.Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId));
             }
 
-
             if (queue.Timeleft.HasValue)
             {
                 queue.EstimatedCompletionTime = DateTime.UtcNow.Add(queue.Timeleft.Value);
@@ -117,6 +116,5 @@ namespace NzbDrone.Core.Queue
 
             _eventAggregator.PublishEvent(new QueueUpdatedEvent());
         }
-
     }
 }
