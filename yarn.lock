@@ -7159,10 +7159,10 @@ react-tether@1.0.4:
     prop-types "^15.6.2"
     tether "^1.4.5"
 
-react-text-truncate@0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/react-text-truncate/-/react-text-truncate-0.13.1.tgz#0632cbf8bdd5f7826865c7cc55dc8a2c3a2c9147"
-  integrity sha1-BjLL+L3V94JoZcfMVdyKLDoskUc=
+react-text-truncate@0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-text-truncate/-/react-text-truncate-0.14.0.tgz#f33319804459f429b55bf13784de4f7125c9bba3"
+  integrity sha512-YhWfkauRl+r5/TpD7B9WSa1OHup/ptzns3cxpBSrY74RaAjwGdUT86x0i3S/+oCfAMmy0rQzySGAwpXSlXcBzg==
   dependencies:
     prop-types "^15.5.7"
 
