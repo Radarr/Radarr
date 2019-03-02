@@ -24,6 +24,8 @@ class AlbumStudioAlbum extends Component {
   render() {
     const {
       title,
+      disambiguation,
+      albumType,
       monitored,
       statistics,
       isSaving
@@ -36,7 +38,7 @@ class AlbumStudioAlbum extends Component {
     } = statistics;
 
     return (
-      <div className={styles.season}>
+      <div className={styles.album}>
         <div className={styles.info}>
           <MonitorToggleButton
             monitored={monitored}
@@ -46,7 +48,15 @@ class AlbumStudioAlbum extends Component {
 
           <span>
             {
-              `${title}`
+              disambiguation ? `${title} (${disambiguation})` : `${title}`
+            }
+          </span>
+        </div>
+
+        <div className={styles.albumType}>
+          <span>
+            {
+              `${albumType}`
             }
           </span>
         </div>
@@ -54,6 +64,7 @@ class AlbumStudioAlbum extends Component {
         <div
           className={classNames(
             styles.tracks,
+            percentOfTracks < 100 && monitored && styles.missingWanted,
             percentOfTracks === 100 && styles.allTracks
           )}
           title={`${trackFileCount}/${totalTrackCount} tracks downloaded`}
@@ -70,6 +81,8 @@ class AlbumStudioAlbum extends Component {
 AlbumStudioAlbum.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
+  albumType: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,

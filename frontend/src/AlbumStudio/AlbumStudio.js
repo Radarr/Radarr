@@ -145,7 +145,7 @@ class AlbumStudio extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load the calendar</div>
+              <div>Unable to load the Album Studio</div>
           }
 
           {

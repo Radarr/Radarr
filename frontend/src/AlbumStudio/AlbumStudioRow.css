@@ -12,7 +12,7 @@
   white-space: nowrap;
 }
 
-.seasons {
+.albums {
   composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
   display: flex;

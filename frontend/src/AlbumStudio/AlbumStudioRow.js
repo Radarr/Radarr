@@ -61,13 +61,13 @@ class AlbumStudioRow extends Component {
           />
         </TableRowCell>
 
-        <TableRowCell className={styles.seasons}>
+        <TableRowCell className={styles.albums}>
           {
-            albums.map((season) => {
+            albums.map((album) => {
               return (
                 <AlbumStudioAlbum
-                  key={season.id}
-                  {...season}
+                  key={album.id}
+                  {...album}
                   onAlbumMonitoredPress={onAlbumMonitoredPress}
                 />
               );
