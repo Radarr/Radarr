@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.QBittorrent;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
@@ -20,25 +20,29 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new QBittorrentSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              Username = "admin",
-                                              Password = "pass",
-                                              MusicCategory = "tv"
-                                          };
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                Username = "admin",
+                Password = "pass",
+                MusicCategory = "music"
+            };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
-                  .Setup(s => s.GetHashFromTorrentFile(It.IsAny<Byte[]>()))
+                  .Setup(s => s.GetHashFromTorrentFile(It.IsAny<byte[]>()))
                   .Returns("CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951");
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new Byte[0]));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new byte[0]));
 
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
-                .Returns(new QBittorrentPreferences());
+                  .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new QBittorrentPreferences { DhtEnabled = true });
+
+            Mocker.GetMock<IQBittorrentProxySelector>()
+                  .Setup(s => s.GetProxy(It.IsAny<QBittorrentSettings>(), It.IsAny<bool>()))
+                  .Returns(Mocker.GetMock<IQBittorrentProxy>().Object);
         }
 
         protected void GivenRedirectToMagnet()
@@ -48,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new Byte[0], System.Net.HttpStatusCode.SeeOther));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new byte[0], System.Net.HttpStatusCode.SeeOther));
         }
 
         protected void GivenRedirectToTorrent()
@@ -91,25 +95,27 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         protected void GivenHighPriority()
         {
-            Subject.Definition.Settings.As<QBittorrentSettings>().OlderTvPriority = (int) QBittorrentPriority.First;
-            Subject.Definition.Settings.As<QBittorrentSettings>().RecentTvPriority = (int) QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().OlderTvPriority = (int)QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().RecentTvPriority = (int)QBittorrentPriority.First;
         }
 
-    protected void GivenMaxRatio(float maxRatio, bool removeOnMaxRatio = true)
+        protected void GivenMaxRatio(float maxRatio, bool removeOnMaxRatio = true)
         {
             Mocker.GetMock<IQBittorrentProxy>()
                 .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
                 .Returns(new QBittorrentPreferences
-                         {
-                             RemoveOnMaxRatio = removeOnMaxRatio,
-                             MaxRatio = maxRatio
-                         });
+                {
+                    RemoveOnMaxRatio = removeOnMaxRatio,
+                    MaxRatio = maxRatio
+                });
         }
 
         protected virtual void GivenTorrents(List<QBittorrentTorrent> torrents)
         {
             if (torrents == null)
+            {
                 torrents = new List<QBittorrentTorrent>();
+            }
 
             Mocker.GetMock<IQBittorrentProxy>()
                 .Setup(s => s.GetTorrents(It.IsAny<QBittorrentSettings>()))
@@ -154,7 +160,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyPaused(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [TestCase("pausedUP")]
@@ -185,6 +191,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         [TestCase("queuedDL")]
         [TestCase("checkingDL")]
+        [TestCase("metaDL")]
         public void queued_item_should_have_required_properties(string state)
         {
             var torrent = new QBittorrentTorrent
@@ -202,7 +209,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyQueued(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [Test]
@@ -244,7 +251,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyWarning(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [Test]
@@ -252,9 +259,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -264,12 +271,25 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
-            remoteEpisode.Release.DownloadUrl = magnetUrl;
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().Be(expectedHash);
+        }
+
+        public void Download_should_refuse_magnet_if_dht_is_disabled()
+        {
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new QBittorrentPreferences { DhtEnabled = false });
+
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp";
+
+            Assert.Throws<NotSupportedException>(() => Subject.Download(remoteAlbum));
         }
 
         [Test]
@@ -305,7 +325,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             ExceptionVerification.ExpectedWarns(1);
         }
 
-[Test]
+        [Test]
         public void should_return_status_with_outputdirs()
         {
             var config = new QBittorrentPreferences
@@ -330,9 +350,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -343,9 +363,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -447,6 +467,56 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
+        public void should_be_removable_and_should_allow_move_files_if_overridden_max_ratio_reached_and_paused()
+        {
+            GivenMaxRatio(2.0f);
+
+            var torrent = new QBittorrentTorrent
+            {
+                Hash = "HASH",
+                Name = _title,
+                Size = 1000,
+                Progress = 1.0,
+                Eta = 8640000,
+                State = "pausedUP",
+                Label = "",
+                SavePath = "",
+                Ratio = 1.0f,
+                RatioLimit = 0.8f
+            };
+            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+
+            var item = Subject.GetItems().Single();
+            item.CanBeRemoved.Should().BeTrue();
+            item.CanMoveFiles.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_not_be_removable_if_overridden_max_ratio_not_reached_and_paused()
+        {
+            GivenMaxRatio(0.2f);
+
+            var torrent = new QBittorrentTorrent
+            {
+                Hash = "HASH",
+                Name = _title,
+                Size = 1000,
+                Progress = 1.0,
+                Eta = 8640000,
+                State = "pausedUP",
+                Label = "",
+                SavePath = "",
+                Ratio = 0.5f,
+                RatioLimit = 0.8f
+            };
+            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+
+            var item = Subject.GetItems().Single();
+            item.CanBeRemoved.Should().BeFalse();
+            item.CanMoveFiles.Should().BeFalse();
+        }
+
+        [Test]
         public void should_get_category_from_the_category_if_set()
         {
             const string category = "music-lidarr";
@@ -502,6 +572,20 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var json = "{ \"eta\": 18446744073709335000 }";
             var torrent = Newtonsoft.Json.JsonConvert.DeserializeObject<QBittorrentTorrent>(json);
             torrent.Eta.ToString().Should().Be("18446744073709335000");
+        }
+
+        [Test]
+        public void Test_should_force_api_version_check()
+        {
+            // Set TestConnection up to fail quick
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(v => v.GetApiVersion(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new Version(1, 0));
+
+            Subject.Test();
+
+            Mocker.GetMock<IQBittorrentProxySelector>()
+                  .Verify(v => v.GetProxy(It.IsAny<QBittorrentSettings>(), true), Times.Once());
         }
     }
 }

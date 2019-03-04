@@ -1,40 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     // API https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-Documentation
 
-    public interface IQBittorrentProxy
-    {
-        int GetVersion(QBittorrentSettings settings);
-        QBittorrentPreferences GetConfig(QBittorrentSettings settings);
-        List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings);
-
-        void AddTorrentFromUrl(string torrentUrl, QBittorrentSettings settings);
-        void AddTorrentFromFile(string fileName, Byte[] fileContent, QBittorrentSettings settings);
-
-        void RemoveTorrent(string hash, Boolean removeData, QBittorrentSettings settings);
-        void SetTorrentLabel(string hash, string label, QBittorrentSettings settings);
-        void MoveTorrentToTopInQueue(string hash, QBittorrentSettings settings);
-        void PauseTorrent(string hash, QBittorrentSettings settings);
-        void ResumeTorrent(string hash, QBittorrentSettings settings);
-        void SetForceStart(string hash, bool enabled, QBittorrentSettings settings);
-    }
-
-    public class QBittorrentProxy : IQBittorrentProxy
+    public class QBittorrentProxyV1 : IQBittorrentProxy
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
         private readonly ICached<Dictionary<string, string>> _authCookieCache;
 
-        public QBittorrentProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
+        public QBittorrentProxyV1(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -42,10 +25,54 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
         }
 
-        public int GetVersion(QBittorrentSettings settings)
+        public bool IsApiSupported(QBittorrentSettings settings)
         {
+            // We can do the api test without having to authenticate since v4.1 will return 404 on the request.
             var request = BuildRequest(settings).Resource("/version/api");
-            var response = ProcessRequest<int>(request, settings);
+            request.SuppressHttpError = true;
+
+            try
+            {
+                var response = _httpClient.Execute(request.Build());
+
+                // Version request will return 404 if it doesn't exist.
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+
+                if (response.StatusCode == HttpStatusCode.Forbidden)
+                {
+                    return true;
+                }
+
+                if (response.HasHttpError)
+                {
+                    throw new DownloadClientException("Failed to connect to qBittorrent, check your settings.", new HttpException(response));
+                }
+
+                return true;
+            }
+            catch (WebException ex)
+            {
+                throw new DownloadClientException("Failed to connect to qBittorrent, check your settings.", ex);
+            }
+        }
+
+        public Version GetApiVersion(QBittorrentSettings settings)
+        {
+            // Version request does not require authentication and will return 404 if it doesn't exist.
+            var request = BuildRequest(settings).Resource("/version/api");
+            var response = Version.Parse("1." + ProcessRequest(request, settings));
+
+            return response;
+        }
+
+        public string GetVersion(QBittorrentSettings settings)
+        {
+            // Version request does not require authentication.
+            var request = BuildRequest(settings).Resource("/version/qbittorrent");
+            var response = ProcessRequest(request, settings).TrimStart('v');
 
             return response;
         }
@@ -63,7 +90,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var request = BuildRequest(settings).Resource("/query/torrents")
                                                 .AddQueryParam("label", settings.MusicCategory)
                                                 .AddQueryParam("category", settings.MusicCategory);
-
             var response = ProcessRequest<List<QBittorrentTorrent>>(request, settings);
 
             return response;
@@ -94,7 +120,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        public void AddTorrentFromFile(string fileName, Byte[] fileContent, QBittorrentSettings settings)
+        public void AddTorrentFromFile(string fileName, byte[] fileContent, QBittorrentSettings settings)
         {
             var request = BuildRequest(settings).Resource("/command/upload")
                                                 .Post()
@@ -107,7 +133,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
             {
-                request.AddFormParameter("paused", true);
+                request.AddFormParameter("paused", "true");
             }
 
             var result = ProcessRequest(request, settings);
@@ -119,7 +145,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        public void RemoveTorrent(string hash, Boolean removeData, QBittorrentSettings settings)
+        public void RemoveTorrent(string hash, bool removeData, QBittorrentSettings settings)
         {
             var request = BuildRequest(settings).Resource(removeData ? "/command/deletePerm" : "/command/delete")
                                                 .Post()
@@ -138,7 +164,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 ProcessRequest(setCategoryRequest, settings);
             }
-            catch(DownloadClientException ex)
+            catch (DownloadClientException ex)
             {
                 // if setCategory fails due to method not being found, then try older setLabel command for qBittorrent < v.3.3.5
                 if (ex.InnerException is HttpException && (ex.InnerException as HttpException).Response.StatusCode == HttpStatusCode.NotFound)
@@ -151,6 +177,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     ProcessRequest(setLabelRequest, settings);
                 }
             }
+        }
+
+        public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
+        {
+            // Not supported on api v1
         }
 
         public void MoveTorrentToTopInQueue(string hash, QBittorrentSettings settings)
@@ -166,7 +197,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             catch (DownloadClientException ex)
             {
                 // qBittorrent rejects all Prio commands with 403: Forbidden if Options -> BitTorrent -> Torrent Queueing is not enabled
-                #warning FIXME: so wouldn't the reauthenticate logic trigger on Forbidden?
                 if (ex.InnerException is HttpException && (ex.InnerException as HttpException).Response.StatusCode == HttpStatusCode.Forbidden)
                 {
                     return;
@@ -182,7 +212,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var request = BuildRequest(settings).Resource("/command/pause")
                                                 .Post()
                                                 .AddFormParameter("hash", hash);
-
             ProcessRequest(request, settings);
         }
 
@@ -191,7 +220,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var request = BuildRequest(settings).Resource("/command/resume")
                                                 .Post()
                                                 .AddFormParameter("hash", hash);
-
             ProcessRequest(request, settings);
         }
 
@@ -207,12 +235,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         private HttpRequestBuilder BuildRequest(QBittorrentSettings settings)
         {
-            var requestBuilder =
-                new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port)
-                {
-                    LogResponseContent = true,
-                    NetworkCredential = new NetworkCredential(settings.Username, settings.Password)
-                };
+            var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port)
+            {
+                LogResponseContent = true,
+                NetworkCredential = new NetworkCredential(settings.Username, settings.Password)
+            };
 
             return requestBuilder;
         }

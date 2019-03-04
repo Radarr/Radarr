@@ -353,11 +353,12 @@
     <Compile Include="Download\Clients\Pneumatic\Pneumatic.cs" />
     <Compile Include="Download\Clients\Pneumatic\PneumaticSettings.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPreferences.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV1.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV2.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentState.cs" />
     <Compile Include="Download\Clients\rTorrent\RTorrentDirectoryValidator.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrent.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPriority.cs" />
-    <Compile Include="Download\Clients\QBittorrent\QBittorrentProxy.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentSettings.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentTorrent.cs" />
     <Compile Include="Download\Clients\Sabnzbd\JsonConverters\SabnzbdPriorityTypeConverter.cs" />
@@ -1228,6 +1229,7 @@
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
     <Compile Include="Datastore\Migration\008_change_quality_size_mb_to_kb.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentProxySelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
