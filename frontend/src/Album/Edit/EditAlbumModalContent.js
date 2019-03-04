@@ -34,6 +34,7 @@ class EditAlbumModalContent extends Component {
       title,
       artistName,
       albumType,
+      statistics,
       item,
       isSaving,
       onInputChange,
@@ -88,6 +89,7 @@ class EditAlbumModalContent extends Component {
                 type={inputTypes.ALBUM_RELEASE_SELECT}
                 name="releases"
                 helpText="Change release for this album"
+                isDisabled={anyReleaseOk.value && statistics.trackFileCount > 0}
                 albumReleases={releases}
                 onChange={onInputChange}
               />
@@ -120,6 +122,7 @@ EditAlbumModalContent.propTypes = {
   title: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   albumType: PropTypes.string.isRequired,
+  statistics: PropTypes.object.isRequired,
   item: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,

@@ -33,6 +33,7 @@ function createMapStateToProps() {
         title: album.title,
         artistName: artist.artistName,
         albumType: album.albumType,
+        statistics: album.statistics,
         isSaving,
         saveError,
         item: settings.settings,
