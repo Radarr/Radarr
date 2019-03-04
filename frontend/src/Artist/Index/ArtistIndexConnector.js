@@ -162,7 +162,8 @@ ArtistIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
-  dispatchFetchArtist: PropTypes.func.isRequired
+  dispatchFetchArtist: PropTypes.func.isRequired,
+  dispatchSetArtistView: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(

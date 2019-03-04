@@ -95,6 +95,7 @@ SelectAlbumModalContentConnector.propTypes = {
   fetchInteractiveImportAlbums: PropTypes.func.isRequired,
   setInteractiveImportAlbumsSort: PropTypes.func.isRequired,
   clearInteractiveImportAlbums: PropTypes.func.isRequired,
+  saveInteractiveImportItem: PropTypes.func.isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

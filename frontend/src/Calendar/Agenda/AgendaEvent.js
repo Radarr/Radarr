@@ -132,6 +132,7 @@ AgendaEvent.propTypes = {
   queueItem: PropTypes.object,
   showDate: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
+  colorImpairedMode: PropTypes.bool.isRequired,
   longDateFormat: PropTypes.string.isRequired
 };
 

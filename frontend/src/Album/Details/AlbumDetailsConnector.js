@@ -141,6 +141,7 @@ class AlbumDetailsConnector extends Component {
 
 AlbumDetailsConnector.propTypes = {
   id: PropTypes.number,
+  anyReleaseOk: PropTypes.bool,
   isAlbumFetching: PropTypes.bool,
   isAlbumPopulated: PropTypes.bool,
   foreignAlbumId: PropTypes.string.isRequired,

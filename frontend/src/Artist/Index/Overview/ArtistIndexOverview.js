@@ -268,7 +268,8 @@ ArtistIndexOverview.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
   isSearchingArtist: PropTypes.bool.isRequired,
-  onRefreshArtistPress: PropTypes.func.isRequired
+  onRefreshArtistPress: PropTypes.func.isRequired,
+  onSearchPress: PropTypes.func.isRequired
 };
 
 ArtistIndexOverview.defaultProps = {
