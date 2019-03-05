@@ -8,6 +8,7 @@ import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { toggleAlbumsMonitored, setAlbumsTableOption, setAlbumsSort } from 'Store/Actions/albumActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import ArtistDetailsSeason from './ArtistDetailsSeason';
@@ -19,7 +20,8 @@ function createMapStateToProps() {
     createArtistSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (label, albums, artist, commands, dimensions) => {
+    createUISettingsSelector(),
+    (label, albums, artist, commands, dimensions, uiSettings) => {
 
       const albumsInGroup = _.filter(albums.items, { albumType: label });
 
@@ -37,7 +39,8 @@ function createMapStateToProps() {
         sortKey: albums.sortKey,
         sortDirection: albums.sortDirection,
         artistMonitored: artist.monitored,
-        isSmallScreen: dimensions.isSmallScreen
+        isSmallScreen: dimensions.isSmallScreen,
+        uiSettings
       };
     }
   );

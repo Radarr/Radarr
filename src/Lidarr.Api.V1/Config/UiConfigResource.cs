@@ -16,6 +16,12 @@ namespace Lidarr.Api.V1.Config
         public bool ShowRelativeDates { get; set; }
 
         public bool EnableColorImpairedMode { get; set; }
+
+        public bool ExpandAlbumByDefault { get; set; }
+        public bool ExpandSingleByDefault { get; set; }
+        public bool ExpandEPByDefault { get; set; }
+        public bool ExpandBroadcastByDefault { get; set; }
+        public bool ExpandOtherByDefault { get; set; }
     }
 
     public static class UiConfigResourceMapper
@@ -33,6 +39,12 @@ namespace Lidarr.Api.V1.Config
                 ShowRelativeDates = model.ShowRelativeDates,
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
+
+                ExpandAlbumByDefault = model.ExpandAlbumByDefault,
+                ExpandSingleByDefault = model.ExpandSingleByDefault,
+                ExpandEPByDefault = model.ExpandEPByDefault,
+                ExpandBroadcastByDefault = model.ExpandBroadcastByDefault,
+                ExpandOtherByDefault = model.ExpandOtherByDefault
             };
         }
     }

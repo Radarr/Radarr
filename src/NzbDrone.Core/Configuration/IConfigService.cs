@@ -57,6 +57,12 @@ namespace NzbDrone.Core.Configuration
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
         bool EnableColorImpairedMode { get; set; }
+        
+        bool ExpandAlbumByDefault { get; set; }
+        bool ExpandSingleByDefault { get; set; }
+        bool ExpandEPByDefault { get; set; }
+        bool ExpandBroadcastByDefault { get; set; }
+        bool ExpandOtherByDefault { get; set; }
 
         //Internal
         bool CleanupMetadataImages { get; set; }

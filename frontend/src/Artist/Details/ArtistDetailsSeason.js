@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import isAfter from 'Utilities/Date/isAfter';
 import getToggledRange from 'Utilities/Table/getToggledRange';
 import { icons, sortDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
@@ -51,13 +50,16 @@ class ArtistDetailsSeason extends Component {
     const {
       name,
       onExpandPress,
-      items
+      items,
+      uiSettings
     } = this.props;
 
-    const expand = _.some(items, (item) => {
-      return isAfter(item.releaseDate) ||
-             isAfter(item.releaseDate, { days: -365 });
-    });
+    const expand = _.some(items, (item) =>
+      ((item.albumType === 'Album') && uiSettings.expandAlbumByDefault) ||
+        ((item.albumType === 'Single') && uiSettings.expandSingleByDefault) ||
+        ((item.albumType === 'EP') && uiSettings.expandEPByDefault) ||
+        ((item.albumType === 'Broadcast') && uiSettings.expandBroadcastByDefault) ||
+        ((item.albumType === 'Other') && uiSettings.expandOtherByDefault));
 
     onExpandPress(name, expand);
   }
@@ -199,7 +201,7 @@ class ArtistDetailsSeason extends Component {
                     </Table> :
 
                     <div className={styles.noAlbums}>
-                      No albums in this group
+                      No releases in this group
                     </div>
                 }
                 <div className={styles.collapseButtonContainer}>
@@ -243,7 +245,8 @@ ArtistDetailsSeason.propTypes = {
   onTableOptionChange: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
-  onMonitorAlbumPress: PropTypes.func.isRequired
+  onMonitorAlbumPress: PropTypes.func.isRequired,
+  uiSettings: PropTypes.object.isRequired
 };
 
 export default ArtistDetailsSeason;
