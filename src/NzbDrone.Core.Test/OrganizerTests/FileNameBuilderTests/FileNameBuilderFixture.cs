@@ -29,6 +29,10 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist = Builder<Artist>
                     .CreateNew()
                     .With(s => s.Name = "Linkin Park")
+                    .With(s => s.Metadata = new ArtistMetadata {
+                        Disambiguation = "US Rock Band",
+                        Name = "Linkin Park"
+                    })
                     .Build();
 
             _album = Builder<Album>
@@ -145,6 +149,15 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("Linkin.Park.1997");
+        }
+
+        [Test]
+        public void should_replace_Artist_Disambiguation()
+        {
+            _namingConfig.StandardTrackFormat = "{Artist Disambiguation}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("US Rock Band");
         }
 
         [Test]

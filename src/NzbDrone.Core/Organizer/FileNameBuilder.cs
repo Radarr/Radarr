@@ -265,6 +265,11 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Artist Name}"] = m => artist.Name;
             tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
             tokenHandlers["{Artist NameThe}"] = m => TitleThe(artist.Name);
+
+            if (artist.Metadata.Value.Disambiguation != null)
+            {
+                tokenHandlers["{Artist Disambiguation}"] = m => artist.Metadata.Value.Disambiguation;
+            }
         }
 
         private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Album album)

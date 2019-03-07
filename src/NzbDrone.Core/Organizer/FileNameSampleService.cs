@@ -33,7 +33,9 @@ namespace NzbDrone.Core.Organizer
             {
                 Metadata = new ArtistMetadata
                 {
-                    Name = "The Artist Name"
+                    Name = "The Artist Name",
+                    Disambiguation = "US Rock Band"
+                    
                 }
             };
 

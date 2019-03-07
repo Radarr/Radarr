@@ -42,7 +42,9 @@ const artistTokens = [
 
   { token: '{Artist NameThe}', example: 'Artist Name, The' },
 
-  { token: '{Artist CleanName}', example: 'Artist Name' }
+  { token: '{Artist CleanName}', example: 'Artist Name' },
+
+  { token: '{Artist Disambiguation}', example: 'Disambiguation' }
 ];
 
 const albumTokens = [
