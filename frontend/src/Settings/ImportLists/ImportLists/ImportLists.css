@@ -4,7 +4,7 @@
 }
 
 .addList {
-  composes: list from './ImportList.css';
+  composes: list from '~./ImportList.css';
 
   background-color: $cardAlternateBackgroundColor;
   color: $gray;

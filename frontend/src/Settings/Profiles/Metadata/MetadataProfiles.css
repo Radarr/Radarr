@@ -4,7 +4,7 @@
 }
 
 .addMetadataProfile {
-  composes: metadataProfile from './MetadataProfile.css';
+  composes: metadataProfile from '~./MetadataProfile.css';
 
   background-color: $cardAlternateBackgroundColor;
   color: $gray;

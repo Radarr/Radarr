@@ -76,7 +76,7 @@
 }
 
 .monitorToggleButton {
-  composes: toggleButton from 'Components/MonitorToggleButton.css';
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
 
   width: 40px;
 
@@ -95,7 +95,7 @@
 }
 
 .artistNavigationButton {
-  composes: button from 'Components/Link/IconButton.css';
+  composes: button from '~Components/Link/IconButton.css';
 
   margin-left: 5px;
   width: 30px;
@@ -118,7 +118,7 @@
 }
 
 .detailsLabel {
-  composes: label from 'Components/Label.css';
+  composes: label from '~Components/Label.css';
 
   margin: 5px 10px 5px 0;
 }

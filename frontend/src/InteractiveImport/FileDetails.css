@@ -30,7 +30,7 @@
 }
 
 .actionButton {
-  composes: button from 'Components/Link/IconButton.css';
+  composes: button from '~Components/Link/IconButton.css';
 
   width: 30px;
 }

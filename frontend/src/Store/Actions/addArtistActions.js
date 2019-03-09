@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import monitorOptions from 'Utilities/Artist/monitorOptions';
@@ -120,12 +119,12 @@ export const actionHandlers = handleThunks({
     const items = getState().addArtist.items;
     const newArtist = getNewArtist(_.cloneDeep(_.find(items, { foreignArtistId })), payload);
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/artist',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(newArtist)
-    });
+    }).request;
 
     promise.done((data) => {
       dispatch(batchActions([

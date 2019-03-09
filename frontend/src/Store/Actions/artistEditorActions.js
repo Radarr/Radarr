@@ -1,6 +1,6 @@
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
@@ -115,12 +115,12 @@ export const actionHandlers = handleThunks({
       isSaving: true
     }));
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/artist/editor',
       method: 'PUT',
       data: JSON.stringify(payload),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done((data) => {
       dispatch(batchActions([
@@ -155,12 +155,12 @@ export const actionHandlers = handleThunks({
       isDeleting: true
     }));
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/artist/editor',
       method: 'DELETE',
       data: JSON.stringify(payload),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done(() => {
       // SignalR will take care of removing the artist from the collection

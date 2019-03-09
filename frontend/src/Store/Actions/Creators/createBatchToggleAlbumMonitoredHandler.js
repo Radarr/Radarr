@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import updateAlbums from 'Utilities/Album/updateAlbums';
 import getSectionState from 'Utilities/State/getSectionState';
 
@@ -15,12 +15,12 @@ function createBatchToggleAlbumMonitoredHandler(section, fetchHandler) {
       isSaving: true
     }));
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/album/monitor',
       method: 'PUT',
       data: JSON.stringify({ albumIds, monitored }),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done(() => {
       dispatch(updateAlbums(section, state.items, albumIds, {

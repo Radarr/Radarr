@@ -19,7 +19,7 @@
 }
 
 .loading {
-  composes: loading from 'Components/Loading/LoadingIndicator.css';
+  composes: loading from '~Components/Loading/LoadingIndicator.css';
 
   margin-top: 5px;
   margin-left: auto;
@@ -50,7 +50,7 @@
 }
 
 .branch {
-  composes: label from 'Components/Label.css';
+  composes: label from '~Components/Label.css';
 
   margin-left: 10px;
   font-size: 14px;

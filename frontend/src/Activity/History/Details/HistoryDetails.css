@@ -1,5 +1,5 @@
 .description {
-  composes: title from 'Components/DescriptionList/DescriptionListItemDescription.css';
+  composes: title from '~Components/DescriptionList/DescriptionListItemDescription.css';
 
   overflow-wrap: break-word;
 }

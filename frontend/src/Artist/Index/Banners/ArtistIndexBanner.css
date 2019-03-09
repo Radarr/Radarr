@@ -24,7 +24,7 @@ $hoverScale: 1.05;
 }
 
 .link {
-  composes: link from 'Components/Link/Link.css';
+  composes: link from '~Components/Link/Link.css';
 
   display: block;
   background-color: $defaultColor;
@@ -71,7 +71,7 @@ $hoverScale: 1.05;
 }
 
 .action {
-  composes: button from 'Components/Link/IconButton.css';
+  composes: button from '~Components/Link/IconButton.css';
 
   &:hover {
     color: #ccc;
