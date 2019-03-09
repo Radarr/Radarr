@@ -16,7 +16,12 @@ namespace NzbDrone.Core.Profiles.Releases.TermMatchers
 
         public string MatchingTerm(string value)
         {
-            return _term;
+            if (value.ToLowerInvariant().Contains(_term))
+            {
+                return _term;
+            }
+
+            return null;
         }
     }
 }
