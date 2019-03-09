@@ -14,6 +14,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using System.Threading;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.Parser
 {
@@ -39,16 +40,19 @@ namespace NzbDrone.Core.Parser
         private readonly Logger _logger;
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _customerRequestBuilder;
+        private readonly ICached<AcoustId> _cache;
         
         private readonly string _fpcalcPath;
         private readonly Version _fpcalcVersion;
         private readonly string _fpcalcArgs;
 
         public FingerprintingService(Logger logger,
-                                     IHttpClient httpClient)
+                                     IHttpClient httpClient,
+                                     ICacheManager cacheManager)
         {
             _logger = logger;
             _httpClient = httpClient;
+            _cache = cacheManager.GetCache<AcoustId>(GetType());
 
             _customerRequestBuilder = new HttpRequestBuilder(_acoustIdUrl).CreateFactory();
 
@@ -211,6 +215,11 @@ namespace NzbDrone.Core.Parser
         }
 
         public AcoustId GetFingerprint(string file)
+        {
+            return _cache.Get(file, () => GetFingerprintUncached(file), TimeSpan.FromMinutes(30));
+        }
+
+        private AcoustId GetFingerprintUncached(string file)
         {
             if (IsSetup() && File.Exists(file))
             {
