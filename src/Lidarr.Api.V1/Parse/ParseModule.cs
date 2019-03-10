@@ -20,40 +20,33 @@ namespace Lidarr.Api.V1.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var path = Request.Query.Path.Value as string;
-            var parsedEpisodeInfo = path.IsNotNullOrWhiteSpace() ? Parser.ParseMusicPath(path) : Parser.ParseMusicTitle(title);
+            var parsedAlbumInfo = Parser.ParseAlbumTitle(title);
 
-            if (parsedEpisodeInfo == null)
+            if (parsedAlbumInfo == null)
             {
                 return null;
             }
 
-            return new ParseResource
+            var remoteAlbum = _parsingService.Map(parsedAlbumInfo);
+
+            if (remoteAlbum != null)
             {
-                Title = title,
-                ParsedAlbumInfo = parsedEpisodeInfo
-            };
-
-            //var remoteEpisode = null //_parsingService.Map(parsedEpisodeInfo, 0, 0);
-
-            //if (remoteEpisode != null)
-            //{
-            //    return new ParseResource
-            //    {
-            //        Title = title,
-            //        ParsedAlbumInfo = remoteEpisode.ParsedEpisodeInfo,
-            //        Artist = remoteEpisode.Series.ToResource(),
-            //        Albums = remoteEpisode.Episodes.ToResource()
-            //    };
-            //}
-            //else
-            //{
-            //    return new ParseResource
-            //    {
-            //        Title = title,
-            //        ParsedAlbumInfo = parsedEpisodeInfo
-            //    };
-            //}
+                return new ParseResource
+                {
+                    Title = title,
+                    ParsedAlbumInfo = remoteAlbum.ParsedAlbumInfo,
+                    Artist = remoteAlbum.Artist.ToResource(),
+                    Albums = remoteAlbum.Albums.ToResource()
+                };
+            }
+            else
+            {
+                return new ParseResource
+                {
+                    Title = title,
+                    ParsedAlbumInfo = parsedAlbumInfo
+                };
+            }
         }
     }
 }

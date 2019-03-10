@@ -9,7 +9,7 @@ namespace Lidarr.Api.V1.Parse
     public class ParseResource : RestResource
     {
         public string Title { get; set; }
-        public ParsedTrackInfo ParsedAlbumInfo { get; set; }
+        public ParsedAlbumInfo ParsedAlbumInfo { get; set; }
         public ArtistResource Artist { get; set; }
         public List<AlbumResource> Albums { get; set; }
     }
