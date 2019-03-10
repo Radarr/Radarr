@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Download.Pending
                 }
             }
 
-            //Return best quality release for each episode
+            //Return best quality release for each album
             var deduped = queued.GroupBy(q => q.Album.Id).Select(g =>
             {
                 var artist = g.First().Artist;

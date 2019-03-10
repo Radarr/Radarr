@@ -116,11 +116,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                     details.Add(new XElement("track_number", track.AbsoluteTrackNumber.ToString("00")));
                     details.Add(new XElement("member", string.Join(" / ", artist.Metadata.Value.Members.ConvertAll(c => c.Name + " - " + c.Instrument))));
 
-
-                    //Todo: get guest stars, writer and director
-                    //details.Add(new XElement("credits", tvdbEpisode.Writer.FirstOrDefault()));
-                    //details.Add(new XElement("director", tvdbEpisode.Directors.FirstOrDefault()));
-
                     doc.Add(details);
                     doc.Save(xw);
 

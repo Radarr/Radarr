@@ -61,10 +61,10 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_download_report_if_album_was_not_already_downloaded()
         {
             var albums = new List<Album> { GetAlbum(1) };
-            var remoteEpisode = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
@@ -248,13 +248,13 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_add_to_failed_if_failed_for_a_different_protocol()
         {
-            var episodes = new List<Album> { GetAlbum(1) };
-            var remoteEpisode = GetRemoteAlbum(episodes, new QualityModel(Quality.MP3_320), DownloadProtocol.Usenet);
-            var remoteEpisode2 = GetRemoteAlbum(episodes, new QualityModel(Quality.MP3_320), DownloadProtocol.Torrent);
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Usenet);
+            var remoteAlbum2 = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Torrent);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
-            decisions.Add(new DownloadDecision(remoteEpisode2));
+            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
 
             Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));

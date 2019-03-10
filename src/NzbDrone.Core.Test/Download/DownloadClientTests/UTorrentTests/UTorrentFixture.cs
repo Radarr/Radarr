@@ -232,9 +232,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -256,10 +256,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
-            remoteEpisode.Release.DownloadUrl = magnetUrl;
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().Be(expectedHash);
         }
@@ -355,9 +355,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -368,9 +368,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }

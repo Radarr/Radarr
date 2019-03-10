@@ -58,9 +58,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -71,9 +71,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -87,9 +87,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             GivenMusicCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -105,9 +105,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             _transmissionConfigItems["download-dir"] += "/";
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -120,9 +120,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -135,10 +135,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
-            remoteEpisode.Release.DownloadUrl = magnetUrl;
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().Be(expectedHash);
         }

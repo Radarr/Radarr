@@ -53,7 +53,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         }
 
         [Test]
-        public void should_be_able_to_get_unmonitored_episodes()
+        public void should_be_able_to_get_unmonitored_albums()
         {
             var artist = EnsureArtist("aaaa_aaaaa_asaaaaa", "Alien Ant Farm", false);
 

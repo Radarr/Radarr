@@ -22,12 +22,6 @@ namespace Lidarr.Api.V1.Config
                 StandardTrackFormat = model.StandardTrackFormat,
                 ArtistFolderFormat = model.ArtistFolderFormat,
                 AlbumFolderFormat = model.AlbumFolderFormat
-                //IncludeSeriesTitle
-                //IncludeEpisodeTitle
-                //IncludeQuality
-                //ReplaceSpaces
-                //Separator
-                //NumberStyle
             };
         }
 

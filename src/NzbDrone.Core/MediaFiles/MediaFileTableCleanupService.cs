@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unable to cleanup EpisodeFile in DB: {0}", trackFile.Id);
+                    _logger.Error(ex, "Unable to cleanup TrackFile in DB: {0}", trackFile.Id);
                 }
             }
 

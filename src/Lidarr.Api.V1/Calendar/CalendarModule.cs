@@ -27,7 +27,6 @@ namespace Lidarr.Api.V1.Calendar
             var end = DateTime.Today.AddDays(2);
             var includeUnmonitored = Request.GetBooleanQueryParameter("unmonitored");
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
-            var includeEpisodeFile = Request.GetBooleanQueryParameter("includeEpisodeFile");
 
             //TODO: Add Album Image support to AlbumModuleWithSignalR
             var includeAlbumImages = Request.GetBooleanQueryParameter("includeAlbumImages");

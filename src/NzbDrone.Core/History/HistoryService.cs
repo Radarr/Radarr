@@ -20,7 +20,7 @@ namespace NzbDrone.Core.History
     public interface IHistoryService
     {
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
-        History MostRecentForAlbum(int episodeId);
+        History MostRecentForAlbum(int albumId);
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
         List<History> GetByArtist(int artistId, HistoryEventType? eventType);

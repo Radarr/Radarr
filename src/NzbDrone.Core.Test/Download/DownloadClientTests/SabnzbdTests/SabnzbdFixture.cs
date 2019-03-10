@@ -296,10 +296,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
-            remoteEpisode.Release.Title = title;
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.Title = title;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             Mocker.GetMock<ISabnzbdProxy>()
                 .Verify(v => v.DownloadNzb(It.IsAny<byte[]>(), filename, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<SabnzbdSettings>()), Times.Once());
@@ -310,9 +310,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -351,14 +351,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                     .Setup(s => s.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()))
                     .Returns(new SabnzbdAddResponse());
 
-            var remoteEpisode = CreateRemoteAlbum();
-            remoteEpisode.Albums = Builder<Album>.CreateListOfSize(1)
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1)
                                                       .All()
                                                       .With(e => e.ReleaseDate = DateTime.Today)
                                                       .Build()
                                                       .ToList();
 
-            Subject.Download(remoteEpisode);
+            Subject.Download(remoteAlbum);
 
             Mocker.GetMock<ISabnzbdProxy>()
                   .Verify(v => v.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()), Times.Once());

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
@@ -116,9 +116,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }

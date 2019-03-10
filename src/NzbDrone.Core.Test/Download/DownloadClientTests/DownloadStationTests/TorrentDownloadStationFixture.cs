@@ -375,9 +375,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -392,9 +392,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenMusicCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -408,9 +408,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -483,13 +483,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteEpisode = CreateRemoteAlbum();
+            var remoteAlbum = CreateRemoteAlbum();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))
                   .Throws(new ApplicationException("Some unknown exception, HttpException or DownloadClientException"));
 
-            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteEpisode));
+            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteAlbum));
 
             Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), null, _settings), Times.Never());

@@ -52,8 +52,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
                     var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
-                    // The artist will be the same as the one in history since it's the same episode.
-                    // Instead of fetching the series from the DB reuse the known series.
+                    // The artist will be the same as the one in history since it's the same album.
+                    // Instead of fetching the artist from the DB reuse the known artist.
                     var preferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Artist, mostRecent.SourceTitle);
 
                     var cutoffUnmet = _upgradableSpecification.CutoffNotMet(

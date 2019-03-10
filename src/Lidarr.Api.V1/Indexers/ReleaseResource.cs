@@ -116,11 +116,6 @@ namespace Lidarr.Api.V1.Indexers
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                 Protocol = releaseInfo.DownloadProtocol,
-
-                //IsDaily = parsedEpisodeInfo.IsDaily,
-                //IsAbsoluteNumbering = parsedEpisodeInfo.IsAbsoluteNumbering,
-                //IsPossibleSpecialEpisode = parsedEpisodeInfo.IsPossibleSpecialEpisode,
-                //Special = parsedEpisodeInfo.Special,
         };
 
         }
