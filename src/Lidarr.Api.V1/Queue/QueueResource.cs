@@ -67,9 +67,9 @@ namespace Lidarr.Api.V1.Queue
             };
         }
 
-        public static List<QueueResource> ToResource(this IEnumerable<NzbDrone.Core.Queue.Queue> models, bool includeSeries, bool includeEpisode)
+        public static List<QueueResource> ToResource(this IEnumerable<NzbDrone.Core.Queue.Queue> models, bool includeArtist, bool includeAlbum)
         {
-            return models.Select((m) => ToResource(m, includeSeries, includeEpisode)).ToList();
+            return models.Select((m) => ToResource(m, includeArtist, includeAlbum)).ToList();
         }
     }
 }

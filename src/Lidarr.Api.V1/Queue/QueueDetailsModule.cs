@@ -27,8 +27,8 @@ namespace Lidarr.Api.V1.Queue
 
         private List<QueueResource> GetQueue()
         {
-            var includeSeries = Request.GetBooleanQueryParameter("includeSeries");
-            var includeEpisode = Request.GetBooleanQueryParameter("includeEpisode", true);
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum", true);
             var queue = _queueService.GetQueue();
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = queue.Concat(pending);
@@ -38,7 +38,7 @@ namespace Lidarr.Api.V1.Queue
 
             if (artistIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Artist?.Id == (int)artistIdQuery).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => q.Artist?.Id == (int)artistIdQuery).ToResource(includeArtist, includeAlbum);
             }
 
             if (albumIdsQuery.HasValue)
@@ -49,10 +49,10 @@ namespace Lidarr.Api.V1.Queue
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => q.Album != null && albumIds.Contains(q.Album.Id)).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => q.Album != null && albumIds.Contains(q.Album.Id)).ToResource(includeArtist, includeAlbum);
             }
 
-            return fullQueue.ToResource(includeSeries, includeEpisode);
+            return fullQueue.ToResource(includeArtist, includeAlbum);
         }
 
         public void Handle(QueueUpdatedEvent message)
