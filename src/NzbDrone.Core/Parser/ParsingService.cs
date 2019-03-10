@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria != null)
             {
-                albumInfo = searchCriteria.Albums.SingleOrDefault(e => e.Title == albumTitle);
+                albumInfo = searchCriteria.Albums.ExclusiveOrDefault(e => e.Title == albumTitle);
             }
 
             if (albumInfo == null)

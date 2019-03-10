@@ -362,6 +362,7 @@
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\GetArtistFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\GetAlbumsFixture.cs" />
     <Compile Include="ParserTests\PathParserFixture.cs" />
     <Compile Include="ParserTests\QualityParserFixture.cs" />
     <Compile Include="ParserTests\ReleaseGroupParserFixture.cs" />
