@@ -253,6 +253,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CreateEmptySeriesFolders", value); }
         }
 
+        public bool DeleteEmptyFolders
+        {
+            get { return GetValueBoolean("DeleteEmptyFolders", false); }
+
+            set { SetValue("DeleteEmptyFolders", value); }
+        }
+
         public FileDateType FileDate
         {
             get { return GetValueEnum("FileDate", FileDateType.None); }

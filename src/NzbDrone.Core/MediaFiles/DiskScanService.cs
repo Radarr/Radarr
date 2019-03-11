@@ -120,6 +120,9 @@ namespace NzbDrone.Core.MediaFiles
             var videoFilesStopwatch = Stopwatch.StartNew();
             var mediaFileList = FilterFiles(movie, GetVideoFiles(movie.Path)).ToList();
 
+            if (_configService.DeleteEmptyFolders && mediaFileList.Count == 0)
+                _diskProvider.DeleteFolder(movie.Path, true);
+
             videoFilesStopwatch.Stop();
             _logger.Trace("Finished getting movie files for: {0} [{1}]", movie, videoFilesStopwatch.Elapsed);
 
