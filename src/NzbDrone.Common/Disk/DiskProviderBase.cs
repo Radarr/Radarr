@@ -509,13 +509,5 @@ namespace NzbDrone.Common.Disk
                 }
             }
         }
-
-        public void RemoveEmptyFolder(string path)
-        {
-            if(GetFiles(path, SearchOption.AllDirectories).Length == 0)
-            {
-
-            }
-        }
     }
 }
