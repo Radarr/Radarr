@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Configuration
         bool AnalyticsEnabled { get; }
         string LogLevel { get; }
         string ConsoleLogLevel { get; }
+        bool FilterSentryEvents { get; }
         string Branch { get; }
         string ApiKey { get; }
         string SslCertHash { get; }
@@ -181,6 +182,7 @@ namespace NzbDrone.Core.Configuration
 
         public string LogLevel => GetValue("LogLevel", "Info");
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
+        public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
 
         public string SslCertHash => GetValue("SslCertHash", "");
 

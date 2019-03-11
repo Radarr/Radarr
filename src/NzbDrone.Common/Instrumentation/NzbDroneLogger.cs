@@ -108,7 +108,7 @@ namespace NzbDrone.Common.Instrumentation
                 Layout = "${message}"
             };
 
-            var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Warn, target);
+            var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Debug, target);
             LogManager.Configuration.AddTarget("sentryTarget", target);
             LogManager.Configuration.LoggingRules.Add(loggingRule);
 
@@ -117,7 +117,7 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration.LoggingRules.Insert(0, loggingRuleSentry);
         }
 
-    private static void RegisterDebugger()
+        private static void RegisterDebugger()
         {
             DebuggerTarget target = new DebuggerTarget();
             target.Name = "debuggerLogger";
