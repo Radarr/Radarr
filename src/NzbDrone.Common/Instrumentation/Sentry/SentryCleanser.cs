@@ -66,15 +66,20 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                 return null;
             }
 
-            var rootDir = OsInfo.IsWindows ? "\\src\\" : "/src/";
-            var index = path.IndexOf(rootDir, StringComparison.Ordinal);
-
-            if (index <= 0)
+            // the paths in the stacktrace depend on where it was compiled,
+            // not the current OS
+            var rootDirs = new [] { "\\src\\", "/src/" };
+            foreach (var rootDir in rootDirs)
             {
-                return path;
+                var index = path.IndexOf(rootDir, StringComparison.Ordinal);
+
+                if (index > 0)
+                {
+                    return path.Substring(index + rootDir.Length - 1);
+                }
             }
 
-            return path.Substring(index + rootDir.Length - 1);
+            return path;
         }
     }
 }
