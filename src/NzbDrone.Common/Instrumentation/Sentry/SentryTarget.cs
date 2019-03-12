@@ -267,7 +267,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
                         if (message.IsNotNullOrWhiteSpace() && message.Length < 200)
                         {
-                            sentryFingerprint.Add(message);
+                            // Windows gives a trailing '.' for NullReferenceException but mono doesn't
+                            sentryFingerprint.Add(message.TrimEnd('.'));
                         }
                     }
                 }

@@ -32,7 +32,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             }
 
             var fpcalcVersion = _fingerprintingService.FpcalcVersion();
-            if (fpcalcVersion == null || fpcalcVersion < new Version("1.2.0"))
+            if (fpcalcVersion == null || fpcalcVersion < new Version("1.4.3"))
             {
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, $"You have an old version of fpcalc.  Please upgrade to 1.4.3.", "#fpcalc-upgrade");
             }

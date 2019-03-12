@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Parser
         RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria = null);
         RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, int artistId, IEnumerable<int> albumIds);
         List<Album> GetAlbums(ParsedAlbumInfo parsedAlbumInfo, Artist artist, SearchCriteriaBase searchCriteria = null);
-        Album GetAlbum(Artist artist, ParsedTrackInfo parsedTrackInfo);
 
         // Music stuff here
         Album GetLocalAlbum(string filename, Artist artist);
@@ -150,7 +149,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria != null)
             {
-                albumInfo = searchCriteria.Albums.SingleOrDefault(e => e.Title == albumTitle);
+                albumInfo = searchCriteria.Albums.ExclusiveOrDefault(e => e.Title == albumTitle);
             }
 
             if (albumInfo == null)
@@ -235,51 +234,6 @@ namespace NzbDrone.Core.Parser
                 .ToList();
 
             return tracksInAlbum.Count == 1 ? _albumService.GetAlbum(tracksInAlbum.First().AlbumId) : null;
-        }
-
-        public Album GetAlbum(Artist artist, ParsedTrackInfo parsedTrackInfo)
-        {
-            Album album = null;
-
-            if (parsedTrackInfo == null)
-            {
-                return null;
-            }
-
-            if (parsedTrackInfo.ReleaseMBId.IsNotNullOrWhiteSpace())
-            {
-                album = _albumService.FindAlbumByRelease(parsedTrackInfo.ReleaseMBId);
-            }
-
-            if (album == null && parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace())
-            {
-                _logger.Debug("Album title could not be parsed for {0}", parsedTrackInfo);
-                return null;
-            }
-
-            var cleanAlbumTitle = Parser.CleanAlbumTitle(parsedTrackInfo.AlbumTitle);
-            _logger.Debug("Cleaning Album title of common matching issues. Cleaned album title is '{0}'", cleanAlbumTitle);
-
-            if (album == null)
-            {
-                album = _albumService.FindByTitle(artist.ArtistMetadataId, cleanAlbumTitle);
-            }
-
-            if (album == null)
-            {
-                _logger.Debug("Trying inexact album match for {0}", parsedTrackInfo);
-                album = _albumService.FindByTitleInexact(artist.ArtistMetadataId, cleanAlbumTitle);
-            }
-
-            if (album == null)
-            {
-                _logger.Debug("Parsed album title not found in Db for {0}", parsedTrackInfo);
-                return null;
-            }
-
-            _logger.Debug("Album {0} selected for {1}", album, parsedTrackInfo);
-
-            return album;
         }
     }
 }
