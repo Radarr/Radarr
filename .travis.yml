@@ -6,14 +6,12 @@ addons:
   apt:
     packages:
       - dos2unix
-      - nuget
       - libchromaprint-tools
     update: true
   homebrew:
     packages:
       - yarn
       - dos2unix
-      - nuget
     update: true
 solution: src/Lidarr.sln
 before_install:

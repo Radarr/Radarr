@@ -1,6 +1,8 @@
 version: '0.5.0.{build}'
 
-image: Visual Studio 2017
+image:
+  - Visual Studio 2017
+  - Ubuntu1804
 
 assembly_info:
   patch: true
@@ -11,17 +13,22 @@ assembly_info:
 
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - git submodule update --init --recursive
-  - ps: Install-Product node $env:nodejs_version
+  - cmd: powershell Install-Product node $env:nodejs_version
+  - sh: nvm install $nodejs_version
+  - sh: sudo apt update
+  - sh: sudo apt install -y libchromaprint-tools
 
 build_script:
-  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./build.sh
+  - cmd: C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./build.sh
+  - sh: ./build.sh
   
 after_build:
-  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./appveyor-package.sh
+  - cmd: C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./appveyor-package.sh
+  - sh: ./appveyor-package.sh
   - ps: Get-ChildItem .\_artifacts\*.zip | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
@@ -29,10 +36,11 @@ after_build:
 test_script:
   - node --version
   - yarn --version
-  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./test.sh Windows Unit
+  - cmd: C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./test.sh Windows Unit
+  - sh: ./test.sh Linux Unit
+  - sh: find "$APPVEYOR_BUILD_FOLDER" -type f -name 'myresults.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/nunit3/$APPVEYOR_JOB_ID"
 
 cache:
-  - '%USERPROFILE%\.nuget\packages'
   - node_modules -> package.json
   
 pull_requests:

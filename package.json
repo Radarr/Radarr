@@ -61,7 +61,6 @@
     "gulp": "4.0.0",
     "gulp-cached": "1.1.1",
     "gulp-concat": "2.6.1",
-    "gulp-flatten": "0.4.0",
     "gulp-livereload": "4.0.1",
     "gulp-postcss": "8.0.0",
     "gulp-print": "5.0.0",

@@ -20,20 +20,23 @@ if [[ -z "${APPVEYOR}" ]]; then
   NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
   NUNIT_COMMAND="$NUNIT"
   NUNIT_PARAMS="--workers=1"
-else
+elif [ "$PLATFORM" = "Windows" ]; then
   NUNIT="nunit3-console"
   NUNIT_COMMAND="$NUNIT"
   NUNIT_PARAMS="--result=myresults.xml;format=AppVeyor --workers=1"
+  unset TMP
+  unset TEMP
+else
+  NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
+  NUNIT_COMMAND="$NUNIT"
+  NUNIT_PARAMS="--result=myresults.xml --workers=1"
   unset TMP
   unset TEMP
 fi
 
 if [ "$PLATFORM" = "Windows" ]; then
   WHERE="$WHERE && cat != LINUX"
-elif [ "$PLATFORM" = "Linux" ]; then
-  WHERE="$WHERE && cat != WINDOWS"
-  NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
-elif [ "$PLATFORM" = "Mac" ]; then
+elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
   WHERE="$WHERE && cat != WINDOWS"
   NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
 else
