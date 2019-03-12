@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         private Artist _artist;
         private Album _album;
         private Album _albumSpecial;
-        private Album _albumSimilar;
         private AlbumRelease _release;
         private AlbumRepository _albumRepo;
         private ReleaseRepository _releaseRepo;
@@ -48,6 +47,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 ForeignAlbumId = "1",
                 CleanTitle = "anthology",
                 Artist = _artist,
+                ArtistMetadataId = _artist.ArtistMetadataId,
                 AlbumType = "",
                 AlbumReleases = new List<AlbumRelease> {_release },
             };
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 ForeignAlbumId = "2",
                 CleanTitle = "",
                 Artist = _artist,
-                ArtistId = _artist.ArtistMetadataId,
+                ArtistMetadataId = _artist.ArtistMetadataId,
                 AlbumType = "",
                 AlbumReleases = new List<AlbumRelease>
                 {
@@ -76,24 +76,6 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
             };
 
             _albumRepo.Insert(_albumSpecial);
-
-            _albumSimilar = new Album
-            {
-                Title = "ANThology2",
-                ForeignAlbumId = "3",
-                CleanTitle = "anthology2",
-                Artist = _artist,
-                ArtistId = _artist.ArtistMetadataId,
-                AlbumType = "",
-                AlbumReleases = new List<AlbumRelease>
-                {
-                    new AlbumRelease
-                    {
-                        ForeignReleaseId = "fake id 2"
-                    }
-                }
-                
-            };
 
         }
 
@@ -139,6 +121,26 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
             album.Should().BeNull();
         }
 
+        [Test]
+        public void should_not_find_album_when_two_albums_have_same_name()
+        {
+            var albums = Builder<Album>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Id = 0)
+                .With(x => x.Artist = _artist)
+                .With(x => x.ArtistMetadataId = _artist.ArtistMetadataId)
+                .With(x => x.Title = "Weezer")
+                .With(x => x.CleanTitle = "weezer")
+                .Build();
+            
+            _albumRepo.InsertMany(albums);
+            
+            var album = _albumRepo.FindByTitle(_artist.ArtistMetadataId, "Weezer");
+            
+            _albumRepo.All().Should().HaveCount(4);
+            album.Should().BeNull();
+        }
+        
         [Test]
         public void should_not_find_album_in_db_by_partial_releaseid()
         {

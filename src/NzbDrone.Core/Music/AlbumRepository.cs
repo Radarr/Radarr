@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -15,9 +16,7 @@ namespace NzbDrone.Core.Music
     {
         List<Album> GetAlbums(int artistId);
         List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId);
-        Album FindByName(string cleanTitle);
         Album FindByTitle(int artistMetadataId, string title);
-        Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string foreignId);
         List<Album> FindById(List<string> foreignIds);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
@@ -328,13 +327,6 @@ namespace NzbDrone.Core.Music
             mapper.ExecuteNonQuery(sql);
         }
 
-        public Album FindByName(string cleanTitle)
-        {
-            cleanTitle = cleanTitle.ToLowerInvariant();
-
-            return Query.Where(s => s.CleanTitle == cleanTitle).SingleOrDefault();
-        }
-
         public Album FindByTitle(int artistMetadataId, string title)
         {
             var cleanTitle = Parser.Parser.CleanArtistName(title);
@@ -344,18 +336,7 @@ namespace NzbDrone.Core.Music
             
             return Query.Where(s => s.CleanTitle == cleanTitle || s.Title == title)
                         .AndWhere(s => s.ArtistMetadataId == artistMetadataId)
-                        .FirstOrDefault();
-        }
-
-        public Album FindByArtistAndName(string artistName, string cleanTitle)
-        {
-            var cleanArtistName = Parser.Parser.CleanArtistName(artistName);
-            cleanTitle = cleanTitle.ToLowerInvariant();
-
-            return Query.Join<Album, Artist>(JoinType.Inner, rg => rg.Artist, (rg, artist) => rg.ArtistMetadataId == artist.ArtistMetadataId)
-                        .Where<Artist>(artist => artist.CleanName == cleanArtistName)
-                        .Where<Album>(album => album.CleanTitle == cleanTitle)
-                        .SingleOrDefault();
+                        .ExclusiveOrDefault();
         }
 
         public Album FindAlbumByRelease(string albumReleaseId)
