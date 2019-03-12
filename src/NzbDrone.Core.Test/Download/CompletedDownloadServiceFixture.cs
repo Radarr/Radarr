@@ -177,6 +177,16 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
+        public void should_not_throw_if_remotealbum_is_null()
+        {
+            _trackedDownload.RemoteAlbum = null;
+
+            Subject.Process(_trackedDownload);
+
+            AssertNoAttemptedImport();
+        }
+
+        [Test]
         public void should_mark_as_imported_if_all_tracks_were_imported()
         {
             _trackedDownload.RemoteAlbum.Albums = new List<Album>

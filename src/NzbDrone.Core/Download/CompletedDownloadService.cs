@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-                var artist = trackedDownload.RemoteAlbum.Artist;
+                var artist = trackedDownload.RemoteAlbum?.Artist;
 
                 if (artist == null)
                 {
