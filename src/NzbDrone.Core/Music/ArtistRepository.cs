@@ -2,6 +2,7 @@
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using Marr.Data.QGen;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -43,8 +44,7 @@ namespace NzbDrone.Core.Music
         {
             cleanName = cleanName.ToLowerInvariant();
 
-            return Query.Where(s => s.CleanName == cleanName)
-                        .SingleOrDefault();
+            return Query.Where(s => s.CleanName == cleanName).ExclusiveOrDefault();
         }
 
         public Artist GetArtistByMetadataId(int artistMetadataId)

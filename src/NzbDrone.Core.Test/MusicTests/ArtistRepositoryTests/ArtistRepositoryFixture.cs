@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
     {
         private ArtistRepository _artistRepo;
         private ArtistMetadataRepository _artistMetadataRepo;
+        private int _id = 1;
 
         private void AddArtist(string name)
         {
@@ -31,8 +32,9 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
-                .With(a => a.ForeignArtistId = name)
+                .With(a => a.ForeignArtistId = _id.ToString())
                 .BuildNew();
+            _id++;
 
             _artistMetadataRepo.Insert(artist);
             _artistRepo.Insert(artist);
@@ -100,6 +102,21 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
             artist.Should().NotBeNull();
             artist.Name.Should().Be(name);
+        }
+
+        [Test]
+        public void should_not_find_artist_if_multiple_artists_have_same_name()
+        {
+            GivenArtists();
+
+            string name = "Alice Cooper";
+            AddArtist(name);
+            AddArtist(name);
+
+            _artistRepo.All().Should().HaveCount(4);
+            
+            var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
+            artist.Should().BeNull();
         }
     }
 }
