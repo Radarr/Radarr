@@ -72,8 +72,7 @@ namespace NzbDrone.Core.Music
                 catch (Exception ex)
                 {
                     // Catch Import Errors for now until we get things fixed up
-                    _logger.Debug("Failed to import id: {0} - {1}", s.Metadata.Value.ForeignArtistId, s.Metadata.Value.Name);
-                    _logger.Error(ex, ex.Message);
+                    _logger.Error(ex, "Failed to import id: {0} - {1}", s.Metadata.Value.ForeignArtistId, s.Metadata.Value.Name);
                 }
                 
             }

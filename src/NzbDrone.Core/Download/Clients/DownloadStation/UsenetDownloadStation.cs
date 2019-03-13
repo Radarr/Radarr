@@ -238,7 +238,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (DownloadClientAuthenticationException ex) // User could not have permission to access to downloadstation
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
             }
             catch (Exception ex)
@@ -256,7 +256,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
                     DetailedDescription = $"Please verify your username and password. Also verify if the host running Lidarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."

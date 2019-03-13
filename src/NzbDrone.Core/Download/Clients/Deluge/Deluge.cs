@@ -210,7 +210,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Password", "Authentication failed");
             }
             catch (WebException ex)

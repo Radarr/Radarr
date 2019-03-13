@@ -69,7 +69,7 @@ namespace Lidarr.Api.V1.Indexers
             }
             catch (ReleaseDownloadException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Getting release from indexer failed");
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 
@@ -102,7 +102,7 @@ namespace Lidarr.Api.V1.Indexers
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Album search failed: " + ex.Message);
+                _logger.Error(ex, "Album search failed");
             }
 
             return new List<ReleaseResource>();
@@ -119,7 +119,7 @@ namespace Lidarr.Api.V1.Indexers
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Artist search failed: " + ex.Message);
+                _logger.Error(ex, "Artist search failed");
             }
 
             return new List<ReleaseResource>();

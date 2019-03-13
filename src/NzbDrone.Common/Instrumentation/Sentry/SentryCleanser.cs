@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using NzbDrone.Common.EnvironmentInfo;
 using Sentry;
 using Sentry.Protocol;
 
@@ -28,6 +27,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
                 foreach (var exception in sentryEvent.SentryExceptions)
                 {
+                    exception.Value = CleanseLogMessage.Cleanse(exception.Value);
                     foreach (var frame in exception.Stacktrace.Frames)
                     {
                         frame.FileName = ShortenPath(frame.FileName);

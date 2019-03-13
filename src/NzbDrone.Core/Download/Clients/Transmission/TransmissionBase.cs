@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
                     DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Lidarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
@@ -208,7 +208,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
             catch (DownloadClientUnavailableException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to connect to transmission");
                 return new NzbDroneValidationFailure("Host", "Unable to connect")
                 {
                     DetailedDescription = "Please verify the hostname and port."

@@ -9,10 +9,8 @@ using NLog;
 using NLog.Common;
 using NLog.Targets;
 using NzbDrone.Common.EnvironmentInfo;
-using System.Globalization;
 using Sentry;
 using Sentry.Protocol;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Instrumentation.Sentry
 {
@@ -48,6 +46,13 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             "Jackett.Common.IndexerException",
             // Fix openflixr being stupid with permissions
             "openflixr"
+        };
+
+        // exception types in this list will additionally have the exception message added to the
+        // sentry fingerprint.  Make sure that this message doesn't vary by exception
+        // (e.g. containing a path or a url) so that the sentry grouping is sensible
+        private static readonly HashSet<string> IncludeExceptionMessageTypes = new HashSet<string> {
+            "SQLiteException"
         };
         
         private static readonly IDictionary<LogLevel, SentryLevel> LoggingLevelMap = new Dictionary<LogLevel, SentryLevel>
@@ -137,22 +142,25 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
             var fingerPrint = new List<string>
             {
-                logEvent.Level.Ordinal.ToString(),
-                logEvent.LoggerName
+                logEvent.Level.ToString(),
+                logEvent.LoggerName,
+                logEvent.Message
             };
 
             var ex = logEvent.Exception;
 
             if (ex != null)
             {
-                var exception = ex.GetType().Name;
-
+                fingerPrint.Add(ex.GetType().FullName);
+                fingerPrint.Add(ex.TargetSite.ToString());
                 if (ex.InnerException != null)
                 {
-                    exception += ex.InnerException.GetType().Name;
+                    fingerPrint.Add(ex.InnerException.GetType().FullName);
                 }
-
-                fingerPrint.Add(exception);
+                else if (IncludeExceptionMessageTypes.Contains(ex.GetType().Name))
+                {
+                    fingerPrint.Add(ex?.Message);
+                }
             }
 
             return fingerPrint;
@@ -234,51 +242,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                     Message = logEvent.FormattedMessage,
                 };
 
-                var sentryFingerprint = new List<string> {
-                        logEvent.Level.ToString(),
-                        logEvent.LoggerName,
-                        logEvent.Message
-                };
-                
                 sentryEvent.SetExtras(extras);
-
-                if (logEvent.Exception != null)
-                {
-                    sentryFingerprint.Add(logEvent.Exception.GetType().FullName);
-                    sentryFingerprint.Add(logEvent.Exception.TargetSite.ToString());
-
-                    // only try to use the exeception message to fingerprint if there's no inner
-                    // exception and the message is short, otherwise we're in danger of getting a
-                    // stacktrace which will break the grouping
-                    if (logEvent.Exception.InnerException == null)
-                    {
-                        string message = null;
-
-                        // bodge to try to get the exception message in English
-                        // https://stackoverflow.com/questions/209133/exception-messages-in-english
-                        // There may still be some localization but this is better than nothing.
-                        var t = new Thread(() => {
-                                message = logEvent.Exception?.Message;
-                            });
-                        t.CurrentCulture = CultureInfo.InvariantCulture;
-                        t.CurrentUICulture = CultureInfo.InvariantCulture;
-                        t.Start();
-                        t.Join();
-
-                        if (message.IsNotNullOrWhiteSpace() && message.Length < 200)
-                        {
-                            // Windows gives a trailing '.' for NullReferenceException but mono doesn't
-                            sentryFingerprint.Add(message.TrimEnd('.'));
-                        }
-                    }
-                }
-
-                if (logEvent.Properties.ContainsKey("Sentry"))
-                {
-                    sentryFingerprint = ((string[])logEvent.Properties["Sentry"]).ToList();
-                }
-                
-                sentryEvent.SetFingerprint(sentryFingerprint);
+                sentryEvent.SetFingerprint(fingerPrint);
 
                 // this can't be in the constructor as at that point OsInfo won't have
                 // populated these values yet

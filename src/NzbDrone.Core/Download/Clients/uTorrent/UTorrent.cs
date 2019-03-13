@@ -241,7 +241,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
                     DetailedDescription = "Please verify your username and password."

@@ -462,7 +462,7 @@ namespace NzbDrone.Core.Extras.Metadata
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Couldn't download image {0} for {1}. {2}", image.Url, artist, ex.Message);
+                _logger.Error(ex, "Couldn't download image {0} for {1}", image.Url, artist);
             }
         }
 
