@@ -38,7 +38,9 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             // UnauthorizedAccessExceptions will just be user configuration issues
             "UnauthorizedAccessException",
             // Filter out people stuck in boot loops
-            "CorruptDatabaseException"
+            "CorruptDatabaseException",
+            // This also filters some people in boot loops
+            "TinyIoC.TinyIoCResolutionException"
         };
 
         private static readonly List<string> FilteredExceptionMessages = new List<string> {
