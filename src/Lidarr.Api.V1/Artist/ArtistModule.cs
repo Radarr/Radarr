@@ -25,6 +25,7 @@ namespace Lidarr.Api.V1.Artist
 {
     public class ArtistModule : LidarrRestModuleWithSignalR<ArtistResource, NzbDrone.Core.Music.Artist>, 
                                 IHandle<AlbumImportedEvent>,
+                                IHandle<AlbumEditedEvent>,
                                 IHandle<TrackFileDeletedEvent>,
                                 IHandle<ArtistUpdatedEvent>,       
                                 IHandle<ArtistEditedEvent>,  
@@ -240,6 +241,11 @@ namespace Lidarr.Api.V1.Artist
         public void Handle(AlbumImportedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Artist));
+        }
+
+        public void Handle(AlbumEditedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Album.Artist.Value));
         }
 
         public void Handle(TrackFileDeletedEvent message)

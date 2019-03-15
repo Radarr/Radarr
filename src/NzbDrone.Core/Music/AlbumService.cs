@@ -282,12 +282,21 @@ namespace NzbDrone.Core.Music
             var album = _albumRepository.Get(albumId);
             _albumRepository.SetMonitoredFlat(album, monitored);
 
+            // publish album edited event so artist stats update
+            _eventAggregator.PublishEvent(new AlbumEditedEvent(album, album));
+
             _logger.Debug("Monitored flag for Album:{0} was set to {1}", albumId, monitored);
         }
 
         public void SetMonitored(IEnumerable<int> ids, bool monitored)
         {
             _albumRepository.SetMonitored(ids, monitored);
+
+            // publish album edited event so artist stats update
+            foreach (var album in _albumRepository.Get(ids))
+            {
+                _eventAggregator.PublishEvent(new AlbumEditedEvent(album, album));
+            }
         }
 
         public List<Album> UpdateAlbums(List<Album> albums)
