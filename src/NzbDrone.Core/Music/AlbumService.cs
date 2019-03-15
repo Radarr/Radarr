@@ -16,9 +16,9 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(IEnumerable<int> albumIds);
         List<Album> GetAlbumsByArtist(int artistId);
         List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId);
+        List<Album> GetAlbumsForRefresh(int artistMetadataId, IEnumerable<string> foreignIds);
         Album AddAlbum(Album newAlbum, string albumArtistId);
         Album FindById(string foreignId);
-        List<Album> FindById(List<string> foreignIds);
         Album FindByTitle(int artistId, string title);
         Album FindByTitleInexact(int artistId, string title);
         List<Album> GetCandidates(int artistId, string title);
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Music
     }
 
     public class AlbumService : IAlbumService,
-                                IHandleAsync<ArtistDeletedEvent>
+                                IHandle<ArtistDeletedEvent>
     {
         private readonly IAlbumRepository _albumRepository;
         private readonly IReleaseRepository _releaseRepository;
@@ -94,11 +94,6 @@ namespace NzbDrone.Core.Music
         public Album FindById(string lidarrId)
         {
             return _albumRepository.FindById(lidarrId);
-        }
-
-        public List<Album> FindById(List<string> ids)
-        {
-            return _albumRepository.FindById(ids);
         }
 
         public Album FindByTitle(int artistId, string title)
@@ -198,6 +193,11 @@ namespace NzbDrone.Core.Music
         public List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId)
         {
             return _albumRepository.GetAlbumsByArtistMetadataId(artistMetadataId).ToList();
+        }
+
+        public List<Album> GetAlbumsForRefresh(int artistId, IEnumerable<string> foreignIds)
+        {
+            return _albumRepository.GetAlbumsForRefresh(artistId, foreignIds);
         }
 
         public Album FindAlbumByRelease(string albumReleaseId)
@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Music
             return albums;
         }
 
-        public void HandleAsync(ArtistDeletedEvent message)
+        public void Handle(ArtistDeletedEvent message)
         {
             var albums = GetAlbumsByArtistMetadataId(message.Artist.ArtistMetadataId);
             DeleteMany(albums);

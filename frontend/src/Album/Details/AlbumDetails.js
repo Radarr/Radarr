@@ -16,6 +16,7 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import AlbumCover from 'Album/AlbumCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
+import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
 import EditAlbumModalConnector from 'Album/Edit/EditAlbumModalConnector';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -82,6 +83,7 @@ class AlbumDetails extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
+      isRetagModalOpen: false,
       isArtistHistoryModalOpen: false,
       isInteractiveSearchModalOpen: false,
       isManageTracksOpen: false,
@@ -101,6 +103,14 @@ class AlbumDetails extends Component {
 
   onOrganizeModalClose = () => {
     this.setState({ isOrganizeModalOpen: false });
+  }
+
+  onRetagPress = () => {
+    this.setState({ isRetagModalOpen: true });
+  }
+
+  onRetagModalClose = () => {
+    this.setState({ isRetagModalOpen: false });
   }
 
   onEditAlbumPress = () => {
@@ -193,6 +203,7 @@ class AlbumDetails extends Component {
 
     const {
       isOrganizeModalOpen,
+      isRetagModalOpen,
       isArtistHistoryModalOpen,
       isInteractiveSearchModalOpen,
       isEditAlbumModalOpen,
@@ -233,6 +244,12 @@ class AlbumDetails extends Component {
               label="Preview Rename"
               iconName={icons.ORGANIZE}
               onPress={this.onOrganizePress}
+            />
+
+            <PageToolbarButton
+              label="Preview Retag"
+              iconName={icons.RETAG}
+              onPress={this.onRetagPress}
             />
 
             <PageToolbarButton
@@ -493,6 +510,13 @@ class AlbumDetails extends Component {
             artistId={artist.id}
             albumId={id}
             onModalClose={this.onOrganizeModalClose}
+          />
+
+          <RetagPreviewModalConnector
+            isOpen={isRetagModalOpen}
+            artistId={artist.id}
+            albumId={id}
+            onModalClose={this.onRetagModalClose}
           />
 
           <TrackFileEditorModal

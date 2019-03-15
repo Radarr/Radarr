@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     {
         private readonly IUpgradeMediaFiles _trackFileUpgrader;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IAudioTagService _audioTagService;
         private readonly ITrackService _trackService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IExtraService _extraService;
@@ -36,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
         public ImportApprovedTracks(IUpgradeMediaFiles trackFileUpgrader,
                                     IMediaFileService mediaFileService,
+                                    IAudioTagService audioTagService,
                                     ITrackService trackService,
                                     IRecycleBinProvider recycleBinProvider,
                                     IExtraService extraService,
@@ -46,6 +48,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         {
             _trackFileUpgrader = trackFileUpgrader;
             _mediaFileService = mediaFileService;
+            _audioTagService = audioTagService;
             _trackService = trackService;
             _recycleBinProvider = recycleBinProvider;
             _extraService = extraService;
@@ -202,6 +205,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                             _mediaFileService.Delete(previousFile, DeleteMediaFileReason.ManualOverride);
                         }
 
+                        _audioTagService.WriteTags(trackFile, newDownload);
                     }
 
                     filesToAdd.Add(trackFile);

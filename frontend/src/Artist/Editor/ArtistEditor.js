@@ -14,6 +14,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
 import OrganizeArtistModal from './Organize/OrganizeArtistModal';
+import RetagArtistModal from './AudioTags/RetagArtistModal';
 import ArtistEditorRowConnector from './ArtistEditorRowConnector';
 import ArtistEditorFooter from './ArtistEditorFooter';
 import ArtistEditorFilterModalConnector from './ArtistEditorFilterModalConnector';
@@ -84,6 +85,7 @@ class ArtistEditor extends Component {
       lastToggled: null,
       selectedState: {},
       isOrganizingArtistModalOpen: false,
+      isRetaggingArtistModalOpen: false,
       columns: getColumns(props.showLanguageProfile, props.showMetadataProfile)
     };
   }
@@ -142,6 +144,18 @@ class ArtistEditor extends Component {
     }
   }
 
+  onRetagArtistPress = () => {
+    this.setState({ isRetaggingArtistModalOpen: true });
+  }
+
+  onRetagArtistModalClose = (organized) => {
+    this.setState({ isRetaggingArtistModalOpen: false });
+
+    if (organized === true) {
+      this.onSelectAllChange({ value: false });
+    }
+  }
+
   //
   // Render
 
@@ -162,6 +176,7 @@ class ArtistEditor extends Component {
       isDeleting,
       deleteError,
       isOrganizingArtist,
+      isRetaggingArtist,
       showLanguageProfile,
       showMetadataProfile,
       onSortPress,
@@ -250,10 +265,12 @@ class ArtistEditor extends Component {
           isDeleting={isDeleting}
           deleteError={deleteError}
           isOrganizingArtist={isOrganizingArtist}
+          isRetaggingArtist={isRetaggingArtist}
           showLanguageProfile={showLanguageProfile}
           showMetadataProfile={showMetadataProfile}
           onSaveSelected={this.onSaveSelected}
           onOrganizeArtistPress={this.onOrganizeArtistPress}
+          onRetagArtistPress={this.onRetagArtistPress}
         />
 
         <OrganizeArtistModal
@@ -261,6 +278,13 @@ class ArtistEditor extends Component {
           artistIds={selectedArtistIds}
           onModalClose={this.onOrganizeArtistModalClose}
         />
+
+        <RetagArtistModal
+          isOpen={this.state.isRetaggingArtistModalOpen}
+          artistIds={selectedArtistIds}
+          onModalClose={this.onRetagArtistModalClose}
+        />
+
       </PageContent>
     );
   }
@@ -282,6 +306,7 @@ ArtistEditor.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
   isOrganizingArtist: PropTypes.bool.isRequired,
+  isRetaggingArtist: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,

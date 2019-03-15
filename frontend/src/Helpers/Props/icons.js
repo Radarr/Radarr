@@ -25,7 +25,9 @@ import {
   faArrowCircleLeft as fasArrowCircleLeft,
   faArrowCircleRight as fasArrowCircleRight,
   faArrowCircleUp as fasArrowCircleUp,
+  faLongArrowAltRight as fasLongArrowAltRight,
   faBackward as fasBackward,
+  faBan as fasBan,
   faBars as fasBars,
   faBolt as fasBolt,
   faBookmark as fasBookmark,
@@ -47,6 +49,7 @@ import {
   faCopy as fasCopy,
   faDesktop as fasDesktop,
   faDownload as fasDownload,
+  faEdit as fasEdit,
   faEllipsisH as fasEllipsisH,
   faExclamationCircle as fasExclamationCircle,
   faExclamationTriangle as fasExclamationTriangle,
@@ -111,8 +114,10 @@ export const ALTERNATE_TITLES = farClone;
 export const ADVANCED_SETTINGS = fasCog;
 export const ARROW_LEFT = fasArrowCircleLeft;
 export const ARROW_RIGHT = fasArrowCircleRight;
+export const ARROW_RIGHT_NO_CIRCLE = fasLongArrowAltRight;
 export const ARROW_UP = fasArrowCircleUp;
 export const BACKUP = farFileArchive;
+export const BAN = fasBan;
 export const BUG = fasBug;
 export const CALENDAR = fasCalendarAlt;
 export const CALENDAR_O = farCalendar;
@@ -176,9 +181,10 @@ export const QUEUED = fasCloud;
 export const QUICK = fasRocket;
 export const REFRESH = fasSync;
 export const REMOVE = fasTimes;
+export const REORDER = fasBars;
 export const RESTART = fasRedoAlt;
 export const RESTORE = fasHistory;
-export const REORDER = fasBars;
+export const RETAG = fasEdit;
 export const RSS = fasRss;
 export const SAVE = fasSave;
 export const SCHEDULED = farClock;

@@ -8,25 +8,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Languages;
-using TagLib;
-using TagLib.Id3v2;
-using NzbDrone.Common.Serializer;
-using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Parser
 {
     public static class Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
-
-        private static readonly JsonSerializerSettings SerializerSettings;
-
-        static Parser()
-        {
-            SerializerSettings = Json.GetSerializerSettings();
-            SerializerSettings.Formatting = Formatting.None;
-        }
 
         private static readonly Regex[] ReportMusicTitleRegex = new[]
         {
@@ -229,34 +216,10 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
 
-            ParsedTrackInfo result;
+            ParsedTrackInfo result = null;
 
-            if (MediaFiles.MediaFileExtensions.Extensions.Contains(fileInfo.Extension))
-            {
-                try
-                {
-                    result = ParseAudioTags(path);
-                }
-                catch(TagLib.CorruptFileException)
-                {
-                    Logger.Debug("Caught exception parsing {0}", path);
-                    result = null;
-                }
-            }
-            else
-            {
-                result = null;
-            }
-
-            // TODO: Check if it is common that we might need to fallback to parser to gather details
-            //var result = ParseMusicTitle(fileInfo.Name);
-
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse track info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseMusicTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
-            }
+            Logger.Debug("Attempting to parse track info using directory and file names. {0}", fileInfo.Directory.Name);
+            result = ParseMusicTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
 
             if (result == null)
             {
@@ -617,93 +580,6 @@ namespace NzbDrone.Core.Parser
             }
 
             return intermediateTitle;
-        }
-
-        private static ParsedTrackInfo ParseAudioTags(string path)
-        {
-            using(var file = TagLib.File.Create(path))
-            {
-                Logger.Debug("Starting Tag Parse for {0}", file.Name);
-
-                var artist = file.Tag.FirstAlbumArtist;
-
-                if (artist.IsNullOrWhiteSpace())
-                {
-                    artist = file.Tag.FirstPerformer;
-                }
-
-                var artistTitleInfo = new ArtistTitleInfo
-                {
-                    Title = artist,
-                    Year = (int)file.Tag.Year
-                };
-
-                var result = new ParsedTrackInfo
-                {
-                    Language = Language.English, //TODO Parse from Tag/Mediainfo
-                    AlbumTitle = file.Tag.Album,
-                    ArtistTitle = artist,
-                    ArtistMBId = file.Tag.MusicBrainzArtistId,
-                    AlbumMBId = file.Tag.MusicBrainzReleaseGroupId,
-                    ReleaseMBId = file.Tag.MusicBrainzReleaseId,
-                    // SIC: the recording ID is stored in this field.
-                    // See https://picard.musicbrainz.org/docs/mappings/
-                    RecordingMBId = file.Tag.MusicBrainzTrackId,
-                    DiscNumber = (int) file.Tag.Disc,
-                    DiscCount = (int) file.Tag.DiscCount,
-                    Duration = file.Properties.Duration,
-                    Year = file.Tag.Year,
-                    Label = file.Tag.Publisher,
-                    TrackNumbers = new [] { (int) file.Tag.Track },
-                    ArtistTitleInfo = artistTitleInfo,
-                    Title = file.Tag.Title,
-                    CleanTitle = file.Tag.Title?.CleanTrackTitle(),
-                    Country = IsoCountries.Find(file.Tag.MusicBrainzReleaseCountry)
-                };
-
-                // custom tags varying by format
-                if ((file.TagTypesOnDisk & TagTypes.Id3v2) == TagTypes.Id3v2)
-                {
-                    var tag = (TagLib.Id3v2.Tag) file.GetTag(TagTypes.Id3v2);
-                    result.CatalogNumber = UserTextInformationFrame.Get(tag, "CATALOGNUMBER", false)?.Text.ExclusiveOrDefault();
-                    // this one was invented for beets
-                    result.Disambiguation = UserTextInformationFrame.Get(tag, "MusicBrainz Album Comment", false)?.Text.ExclusiveOrDefault();
-                    result.TrackMBId =  UserTextInformationFrame.Get(tag, "MusicBrainz Release Track Id", false)?.Text.ExclusiveOrDefault();
-                }
-                else if ((file.TagTypesOnDisk & TagTypes.Xiph) == TagTypes.Xiph)
-                {
-                    var tag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
-                    result.CatalogNumber = tag.GetField("CATALOGNUMBER").ExclusiveOrDefault();
-                    result.Disambiguation = tag.GetField("MUSICBRAINZ_ALBUMCOMMENT").ExclusiveOrDefault();
-                    result.TrackMBId = tag.GetField("MUSICBRAINZ_RELEASETRACKID").ExclusiveOrDefault();
-                }
-            
-                Logger.Debug("File Tags Parsed: {0}", JsonConvert.SerializeObject(result, SerializerSettings));
-
-                foreach (ICodec codec in file.Properties.Codecs)
-                {
-                    IAudioCodec acodec = codec as IAudioCodec;
-
-                    if (acodec != null && (acodec.MediaTypes & MediaTypes.Audio) != MediaTypes.None)
-                    {
-                        Logger.Debug("Audio Properties : " + acodec.Description + ", Bitrate: " + acodec.AudioBitrate + ", Sample Size: " +
-                                     file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
-
-                        result.Quality = QualityParser.ParseQuality(file.Name, acodec.Description, acodec.AudioBitrate, file.Properties.BitsPerSample);
-                        Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                        result.MediaInfo = new MediaInfoModel {
-                            AudioFormat = acodec.Description,
-                            AudioBitrate = acodec.AudioBitrate,
-                            AudioChannels = acodec.AudioChannels,
-                            AudioBits = file.Properties.BitsPerSample,
-                            AudioSampleRate = acodec.AudioSampleRate
-                        };
-                    }
-                }
-                
-                return result;
-            }
         }
 
         private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)

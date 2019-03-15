@@ -19,6 +19,8 @@ function getIconName(eventType) {
       return icons.DELETE;
     case 'trackFileRenamed':
       return icons.ORGANIZE;
+    case 'trackFileRetagged':
+      return icons.RETAG;
     case 'albumImportIncomplete':
       return icons.DOWNLOADED;
     case 'downloadImported':
@@ -53,6 +55,8 @@ function getTooltip(eventType, data) {
       return 'Track file deleted';
     case 'trackFileRenamed':
       return 'Track file renamed';
+    case 'trackFileRetagged':
+      return 'Track file tags updated';
     case 'albumImportIncomplete':
       return 'Files downloaded but not all could be imported';
     case 'downloadImported':

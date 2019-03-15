@@ -2,10 +2,12 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using Marr.Data;
 using NzbDrone.Common.Extensions;
+using System;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Music
 {
-    public class Track : ModelBase
+    public class Track : ModelBase, IEquatable<Track>
     {
         public Track()
         {
@@ -40,6 +42,73 @@ namespace NzbDrone.Core.Music
         public override string ToString()
         {
             return string.Format("[{0}]{1}", ForeignTrackId, Title.NullSafe());
+        }
+
+        public bool Equals(Track other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Id == other.Id &&
+                ForeignTrackId == other.ForeignTrackId &&
+                ForeignRecordingId == other.ForeignRecordingId &&
+                AlbumReleaseId == other.AlbumReleaseId &&
+                ArtistMetadataId == other.ArtistMetadataId &&
+                TrackNumber == other.TrackNumber &&
+                AbsoluteTrackNumber == other.AbsoluteTrackNumber &&
+                Title == other.Title &&
+                Duration == other.Duration &&
+                Explicit == other.Explicit &&
+                Ratings?.ToJson() == other.Ratings?.ToJson() &&
+                MediumNumber == other.MediumNumber &&
+                TrackFileId == other.TrackFileId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as Track;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(other);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + Id;
+                hash = hash * 23 + ForeignTrackId.GetHashCode();
+                hash = hash * 23 + ForeignRecordingId.GetHashCode();
+                hash = hash * 23 + AlbumReleaseId;
+                hash = hash * 23 + ArtistMetadataId;
+                hash = hash * 23 + TrackNumber?.GetHashCode() ?? 0;
+                hash = hash * 23 + AbsoluteTrackNumber;
+                hash = hash * 23 + Title?.GetHashCode() ?? 0;
+                hash = hash * 23 + Duration;
+                hash = hash * 23 + Explicit.GetHashCode();
+                hash = hash * 23 + Ratings?.GetHashCode() ?? 0;
+                hash = hash * 23 + MediumNumber;
+                hash = hash * 23 + TrackFileId;
+                return hash;
+            }
         }
     }
 }

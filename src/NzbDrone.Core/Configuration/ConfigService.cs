@@ -265,6 +265,20 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("MetadataSource", value); }
         }
 
+        public WriteAudioTagsType WriteAudioTags
+        {
+            get { return GetValueEnum("WriteAudioTags", WriteAudioTagsType.No); }
+
+            set { SetValue("WriteAudioTags", value); }
+        }
+
+        public bool ScrubAudioTags
+        {
+            get { return GetValueBoolean("ScrubAudioTags", false); }
+
+            set { SetValue("ScrubAudioTags", value); }
+        }
+
         public int FirstDayOfWeek
         {
             get { return GetValueInt("FirstDayOfWeek", (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek); }

@@ -11,6 +11,8 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Test.Common;
+using FluentAssertions;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
@@ -54,13 +56,13 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns(_artist);
 
             Mocker.GetMock<IReleaseService>()
-                .Setup(s => s.GetReleasesByAlbum(album1.Id))
+                .Setup(s => s.GetReleasesForRefresh(album1.Id, It.IsAny<IEnumerable<string>>()))
                 .Returns(new List<AlbumRelease> { release });
 
-            Mocker.GetMock<IReleaseService>()
-                .Setup(s => s.GetReleasesByForeignReleaseId(It.IsAny<List<string>>()))
-                .Returns(new List<AlbumRelease> { release });
-            
+            Mocker.GetMock<IArtistMetadataRepository>()
+                .Setup(s => s.FindById(It.IsAny<List<string>>()))
+                .Returns(new List<ArtistMetadata>());
+
             Mocker.GetMock<IProvideAlbumInfo>()
                 .Setup(s => s.GetAlbumInfo(It.IsAny<string>()))
                   .Callback(() => { throw new AlbumNotFoundException(album1.ForeignAlbumId); });
@@ -80,7 +82,7 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_log_error_if_musicbrainz_id_not_found()
         {
-            Subject.RefreshAlbumInfo(_albums, false);
+            Subject.RefreshAlbumInfo(_albums, false, false);
 
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.UpdateMany(It.IsAny<List<Album>>()), Times.Never());
@@ -97,12 +99,56 @@ namespace NzbDrone.Core.Test.MusicTests
 
             GivenNewAlbumInfo(newAlbumInfo);
 
-            Subject.RefreshAlbumInfo(_albums, false);
+            Subject.RefreshAlbumInfo(_albums, false, false);
 
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.UpdateMany(It.Is<List<Album>>(s => s.First().ForeignAlbumId == newAlbumInfo.ForeignAlbumId)));
 
             ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void two_equivalent_releases_should_be_equal()
+        {
+            var release = Builder<AlbumRelease>.CreateNew().Build();
+            var release2 = Builder<AlbumRelease>.CreateNew().Build();
+
+            ReferenceEquals(release, release2).Should().BeFalse();
+            release.Equals(release2).Should().BeTrue();
+
+            release.Label?.ToJson().Should().Be(release2.Label?.ToJson());
+            release.Country?.ToJson().Should().Be(release2.Country?.ToJson());
+            release.Media?.ToJson().Should().Be(release2.Media?.ToJson());
+                                    
+        }
+
+        [Test]
+        public void two_equivalent_tracks_should_be_equal()
+        {
+            var track = Builder<Track>.CreateNew().Build();
+            var track2 = Builder<Track>.CreateNew().Build();
+
+            ReferenceEquals(track, track2).Should().BeFalse();
+            track.Equals(track2).Should().BeTrue();
+        }
+
+        [Test]
+        public void two_equivalent_metadata_should_be_equal()
+        {
+            var meta = Builder<ArtistMetadata>.CreateNew().Build();
+            var meta2 = Builder<ArtistMetadata>.CreateNew().Build();
+
+            ReferenceEquals(meta, meta2).Should().BeFalse();
+            meta.Equals(meta2).Should().BeTrue();
+        }
+
+        [Test]
+        public void should_remove_items_from_list()
+        {
+            var releases = Builder<AlbumRelease>.CreateListOfSize(2).Build();
+            var release = releases[0];
+            releases.Remove(release);
+            releases.Should().HaveCount(1);
         }
     }
 }

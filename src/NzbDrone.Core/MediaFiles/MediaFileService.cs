@@ -20,6 +20,7 @@ namespace NzbDrone.Core.MediaFiles
         void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
+        List<TrackFile> GetFilesByRelease(int releaseId);
         List<string> FilterExistingFiles(List<string> files, Artist artist);
         TrackFile Get(int id);
         List<TrackFile> Get(IEnumerable<int> ids);
@@ -113,6 +114,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesByAlbum(int albumId)
         {
             return _mediaFileRepository.GetFilesByAlbum(albumId);
+        }
+
+        public List<TrackFile> GetFilesByRelease(int releaseId)
+        {
+            return _mediaFileRepository.GetFilesByRelease(releaseId);
         }
 
         public void UpdateMediaInfo(List<TrackFile> trackFiles)

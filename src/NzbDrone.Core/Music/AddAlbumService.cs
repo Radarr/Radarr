@@ -47,7 +47,10 @@ namespace NzbDrone.Core.Music
             _logger.ProgressInfo("Adding Album {0}", newAlbum.Title);
             _artistMetadataRepository.UpsertMany(tuple.Item3);
             _albumService.AddAlbum(newAlbum, tuple.Item1);
-            _refreshTrackService.RefreshTrackInfo(newAlbum);
+
+            // make sure releases are populated for tag writing in the track refresh
+            newAlbum.AlbumReleases.Value.ForEach(x => x.Album = newAlbum);
+            _refreshTrackService.RefreshTrackInfo(newAlbum, false);
 
             return newAlbum;
         }
@@ -66,7 +69,10 @@ namespace NzbDrone.Core.Music
                 _logger.ProgressInfo("Adding Album {0}", newAlbum.Title);
                 _artistMetadataRepository.UpsertMany(tuple.Item3);
                 album = _albumService.AddAlbum(album, tuple.Item1);
-                _refreshTrackService.RefreshTrackInfo(album);
+
+                // make sure releases are populated for tag writing in the track refresh
+                album.AlbumReleases.Value.ForEach(x => x.Album = album);
+                _refreshTrackService.RefreshTrackInfo(album, false);
                 albumsToAdd.Add(album);
             }
 

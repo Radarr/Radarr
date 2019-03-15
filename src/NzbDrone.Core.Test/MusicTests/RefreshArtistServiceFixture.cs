@@ -46,13 +46,9 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns(_artist);
 
             Mocker.GetMock<IAlbumService>()
-                .Setup(s => s.GetAlbumsByArtist(It.IsAny<int>()))
+                .Setup(s => s.GetAlbumsForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
                 .Returns(new List<Album>());
 
-            Mocker.GetMock<IAlbumService>()
-                .Setup(s => s.FindById(It.IsAny<List<string>>()))
-                .Returns(new List<Album>());
-            
             Mocker.GetMock<IProvideArtistInfo>()
                   .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<int>()))
                   .Callback(() => { throw new ArtistNotFoundException(_artist.ForeignArtistId); });

@@ -74,7 +74,6 @@ class OrganizePreviewModalContent extends Component {
       isPopulated,
       error,
       items,
-      renameTracks,
       trackFormat,
       path,
       onModalClose
@@ -107,13 +106,7 @@ class OrganizePreviewModalContent extends Component {
 
           {
             !isFetching && isPopulated && !items.length &&
-              <div>
-                {
-                  renameTracks ?
-                    <div>Success! My work is done, no files to rename.</div> :
-                    <div>Renaming is disabled, nothing to rename</div>
-                }
-              </div>
+              <div>Success! My work is done, no files to rename.</div>
           }
 
           {
@@ -191,7 +184,6 @@ OrganizePreviewModalContent.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   path: PropTypes.string.isRequired,
-  renameTracks: PropTypes.bool,
   trackFormat: PropTypes.string,
   onOrganizePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -13,23 +12,6 @@ namespace NzbDrone.Core.Parser
     public class QualityParser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityParser));
-
-        private static readonly Regex SourceRegex = new Regex(@"\b(?:
-                                                                (?<bluray>BluRay|Blu-Ray|HDDVD|BD)|
-                                                                (?<webdl>WEB[-_. ]DL|WEBDL|WebRip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
-                                                                (?<hdtv>HDTV)|
-                                                                (?<bdrip>BDRip)|
-                                                                (?<brrip>BRRip)|
-                                                                (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
-                                                                (?<dsr>WS[-_. ]DSR|DSR)|
-                                                                (?<pdtv>PDTV)|
-                                                                (?<sdtv>SDTV)|
-                                                                (?<tvrip>TVRip)
-                                                                )\b",
-                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-
-        private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
-                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper|repack|rerip)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -54,7 +36,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SampleSizeRegex = new Regex(@"\b(?:(?<S24>24[ ]bit|24bit|[\[\(].*24bit.*[\]\)]))");
 
-        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP3VBR>MP3.*VBR|MPEG Version 1 Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d+ Audio, Layer 3)|(?<FLAC>flac)|(?<WAVPACK>wavpack|wv)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|AAC|mp4a)|(?<OGG>OGG|Vorbis))\b|(?<APE>monkey's audio|[\[|\(].*ape.*[\]|\)])",
+        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP1>MPEG Version \d(.5)? Audio, Layer 1|MP1)|(?<MP2>MPEG Version \d(.5)? Audio, Layer 2|MP2)|(?<MP3VBR>MP3.*VBR|MPEG Version \d(.5)? Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d(.5)? Audio, Layer 3)|(?<FLAC>flac)|(?<WAVPACK>wavpack|wv)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|M4P|M4B|AAC|mp4a|MPEG-4 Audio(?!.*alac))|(?<OGG>OGG|OGA|Vorbis))\b|(?<APE>monkey's audio|[\[|\(].*ape.*[\]|\)])|(?<OPUS>Opus)",
                                                                   RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static QualityModel ParseQuality(string name, string desc, int fileBitrate, int fileSampleSize = 0)
@@ -67,6 +49,7 @@ namespace NzbDrone.Core.Parser
             if (desc.IsNotNullOrWhiteSpace())
             {
                 var descCodec = ParseCodec(desc, "");
+                Logger.Trace($"Got codec {descCodec}");
 
                 result.Quality = FindQuality(descCodec, fileBitrate, fileSampleSize);
 
@@ -83,6 +66,10 @@ namespace NzbDrone.Core.Parser
 
             switch(codec)
             {
+                case Codec.MP1:
+                case Codec.MP2:
+                    result.Quality = Quality.Unknown;
+                    break;
                 case Codec.MP3VBR:
                     if (bitrate == BitRate.VBRV0) { result.Quality = Quality.MP3_VBR; }
                     else if (bitrate == BitRate.VBRV2) { result.Quality = Quality.MP3_VBR_V2; }
@@ -126,6 +113,7 @@ namespace NzbDrone.Core.Parser
                     result.Quality = Quality.AAC_VBR;
                     break;
                 case Codec.OGG:
+                case Codec.OPUS:
                     if (bitrate == BitRate.B160) { result.Quality = Quality.VORBIS_Q5; }
                     else if (bitrate == BitRate.B192) { result.Quality = Quality.VORBIS_Q6; }
                     else if (bitrate == BitRate.B224) { result.Quality = Quality.VORBIS_Q7; }
@@ -175,6 +163,9 @@ namespace NzbDrone.Core.Parser
             if (match.Groups["WAV"].Success) { return Codec.WAV; }
             if (match.Groups["AAC"].Success) { return Codec.AAC; }
             if (match.Groups["OGG"].Success) { return Codec.OGG; }
+            if (match.Groups["OPUS"].Success) { return Codec.OPUS; }
+            if (match.Groups["MP1"].Success) { return Codec.MP1; }
+            if (match.Groups["MP2"].Success) { return Codec.MP2; }
             if (match.Groups["MP3VBR"].Success) { return Codec.MP3VBR; }
             if (match.Groups["MP3CBR"].Success) { return Codec.MP3CBR; }
             if (match.Groups["WAVPACK"].Success) { return Codec.WAVPACK; }
@@ -218,6 +209,9 @@ namespace NzbDrone.Core.Parser
         {
             switch (codec)
             {
+                case Codec.MP1:
+                case Codec.MP2:
+                    return Quality.Unknown;
                 case Codec.MP3VBR:
                     return Quality.MP3_VBR;
                 case Codec.MP3CBR:
@@ -265,6 +259,14 @@ namespace NzbDrone.Core.Parser
                     if (bitrate == 320) { return Quality.VORBIS_Q9; }
                     if (bitrate == 500) { return Quality.VORBIS_Q10; }
                     return  Quality.Unknown;
+                case Codec.OPUS:
+                    if (bitrate < 130) { return Quality.Unknown; }
+                    if (bitrate < 180) { return Quality.VORBIS_Q5; }
+                    if (bitrate < 205) { return Quality.VORBIS_Q6; }
+                    if (bitrate < 240) { return Quality.VORBIS_Q7; }
+                    if (bitrate < 290) { return Quality.VORBIS_Q8; }
+                    if (bitrate < 410) { return Quality.VORBIS_Q9; }
+                    return Quality.VORBIS_Q10;
                 default:
                     return Quality.Unknown;
             }
@@ -301,6 +303,8 @@ namespace NzbDrone.Core.Parser
 
     public enum Codec
     {
+        MP1,
+        MP2,
         MP3CBR,
         MP3VBR,
         FLAC,
@@ -311,6 +315,7 @@ namespace NzbDrone.Core.Parser
         AAC,
         AACVBR,
         OGG,
+        OPUS,
         WAV,
         Unknown
     }

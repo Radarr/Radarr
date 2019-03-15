@@ -17,18 +17,21 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IAudioTagService _audioTagService;
         private readonly IMoveTrackFiles _trackFileMover;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         public UpgradeMediaFileService(IRecycleBinProvider recycleBinProvider,
                                        IMediaFileService mediaFileService,
+                                       IAudioTagService audioTagService,
                                        IMoveTrackFiles trackFileMover,
                                        IDiskProvider diskProvider,
                                        Logger logger)
         {
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
+            _audioTagService = audioTagService;
             _trackFileMover = trackFileMover;
             _diskProvider = diskProvider;
             _logger = logger;
@@ -75,6 +78,8 @@ namespace NzbDrone.Core.MediaFiles
             {
                 moveFileResult.TrackFile = _trackFileMover.MoveTrackFile(trackFile, localTrack);
             }
+
+            _audioTagService.WriteTags(trackFile, true);
 
             return moveFileResult;
         }

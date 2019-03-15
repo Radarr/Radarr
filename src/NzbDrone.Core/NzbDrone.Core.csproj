@@ -141,6 +141,7 @@
     <Compile Include="Configuration\InvalidConfigFileException.cs" />
     <Compile Include="Configuration\RescanAfterRefreshType.cs" />
     <Compile Include="Configuration\AllowFingerprinting.cs" />
+    <Compile Include="Configuration\WriteAudioTagsType.cs" />
     <Compile Include="Configuration\ResetApiKeyCommand.cs" />
     <Compile Include="CustomFilters\CustomFilter.cs" />
     <Compile Include="CustomFilters\CustomFilterRepository.cs" />
@@ -723,14 +724,19 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedAlbumsScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
+    <Compile Include="MediaFiles\Commands\RetagArtistCommand.cs" />
     <Compile Include="MediaFiles\Events\AlbumImportedEvent.cs" />
     <Compile Include="MediaFiles\Events\AlbumImportIncompleteEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileRenamedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackFileRetaggedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportFailedEvent.cs" />
+    <Compile Include="MediaFiles\AudioTag.cs" />
+    <Compile Include="MediaFiles\AudioTagService.cs" />
     <Compile Include="MediaFiles\MediaFileDeletionService.cs" />
     <Compile Include="MediaFiles\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
+    <Compile Include="MediaFiles\RetagTrackFilePreview.cs" />
     <Compile Include="MediaFiles\RenameTrackFileService.cs" />
     <Compile Include="MediaFiles\TrackFileMovingService.cs" />
     <Compile Include="MediaFiles\TrackFileMoveResult.cs" />
@@ -742,6 +748,7 @@
     <Compile Include="MediaFiles\TrackImport\Aggregation\AggregationService.cs" />
     <Compile Include="MediaFiles\TrackImport\Aggregation\AggregationFailedException.cs" />
     <Compile Include="MediaFiles\Commands\RenameFilesCommand.cs" />
+    <Compile Include="MediaFiles\Commands\RetagFilesCommand.cs" />
     <Compile Include="MediaFiles\DeleteMediaFileReason.cs" />
     <Compile Include="MediaFiles\DiskScanService.cs">
       <SubType>Code</SubType>

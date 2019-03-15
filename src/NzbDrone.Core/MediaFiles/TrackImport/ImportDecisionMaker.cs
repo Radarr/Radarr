@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IEnumerable<IImportDecisionEngineSpecification<LocalTrack>> _trackSpecifications;
         private readonly IEnumerable<IImportDecisionEngineSpecification<LocalAlbumRelease>> _albumSpecifications;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IAudioTagService _audioTagService;
         private readonly IAugmentingService _augmentingService;
         private readonly IIdentificationService _identificationService;
         private readonly IAlbumService _albumService;
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification<LocalTrack>> trackSpecifications,
                                    IEnumerable<IImportDecisionEngineSpecification<LocalAlbumRelease>> albumSpecifications,
                                    IMediaFileService mediaFileService,
+                                   IAudioTagService audioTagService,
                                    IAugmentingService augmentingService,
                                    IIdentificationService identificationService,
                                    IAlbumService albumService,
@@ -48,6 +50,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _trackSpecifications = trackSpecifications;
             _albumSpecifications = albumSpecifications;
             _mediaFileService = mediaFileService;
+            _audioTagService = audioTagService;
             _augmentingService = augmentingService;
             _identificationService = identificationService;
             _albumService = albumService;
@@ -95,7 +98,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     DownloadClientAlbumInfo = downloadClientItemInfo,
                     FolderTrackInfo = folderInfo,
                     Path = file,
-                    FileTrackInfo = Parser.Parser.ParseMusicPath(file),
+                    FileTrackInfo = _audioTagService.ReadTags(file)
                 };
 
                 try

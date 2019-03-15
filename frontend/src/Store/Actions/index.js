@@ -14,6 +14,7 @@ import * as importArtist from './importArtistActions';
 import * as interactiveImportActions from './interactiveImportActions';
 import * as oAuth from './oAuthActions';
 import * as organizePreview from './organizePreviewActions';
+import * as retagPreview from './retagPreviewActions';
 import * as paths from './pathActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
@@ -46,6 +47,7 @@ export default [
   interactiveImportActions,
   oAuth,
   organizePreview,
+  retagPreview,
   paths,
   queue,
   releases,

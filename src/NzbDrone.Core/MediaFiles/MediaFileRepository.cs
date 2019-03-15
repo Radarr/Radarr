@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -12,6 +10,7 @@ namespace NzbDrone.Core.MediaFiles
     {
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
+        List<TrackFile> GetFilesByRelease(int releaseId);
         List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath);
     }
 
@@ -27,10 +26,10 @@ namespace NzbDrone.Core.MediaFiles
         // needed more often than not so better to load it all now
         protected override QueryBuilder<TrackFile> Query =>
             DataMapper.Query<TrackFile>()
-            .Join<TrackFile, Track>(JoinType.Inner, t => t.Tracks, (t, x) => t.Id == x.TrackFileId)
-            .Join<TrackFile, Album>(JoinType.Inner, t => t.Album, (t, a) => t.AlbumId == a.Id)
-            .Join<TrackFile, Artist>(JoinType.Inner, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
-            .Join<Artist, ArtistMetadata>(JoinType.Inner, a => a.Metadata, (a, m) => a.ArtistMetadataId == m.Id);
+            .Join<TrackFile, Track>(JoinType.Left, t => t.Tracks, (t, x) => t.Id == x.TrackFileId)
+            .Join<TrackFile, Album>(JoinType.Left, t => t.Album, (t, a) => t.AlbumId == a.Id)
+            .Join<TrackFile, Artist>(JoinType.Left, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
+            .Join<Artist, ArtistMetadata>(JoinType.Left, a => a.Metadata, (a, m) => a.ArtistMetadataId == m.Id);
 
         public List<TrackFile> GetFilesByArtist(int artistId)
         {
@@ -47,6 +46,14 @@ namespace NzbDrone.Core.MediaFiles
                 .Where(f => f.AlbumId == albumId)
                 .ToList();
         }
+
+        public List<TrackFile> GetFilesByRelease(int releaseId)
+        {
+            return Query
+                .Where<Track>(x => x.AlbumReleaseId == releaseId)
+                .ToList();
+        }
+
         
         public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
         {

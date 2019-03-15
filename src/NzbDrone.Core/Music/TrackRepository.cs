@@ -11,8 +11,7 @@ namespace NzbDrone.Core.Music
         List<Track> GetTracksByAlbum(int albumId);
         List<Track> GetTracksByRelease(int albumReleaseId);
         List<Track> GetTracksByReleases(List<int> albumReleaseId);
-        List<Track> GetTracksByForeignReleaseId(string foreignReleaseId);
-        List<Track> GetTracksByForeignTrackIds(List<string> foreignTrackId);
+        List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds);
         List<Track> GetTracksByFileId(int fileId);
         List<Track> TracksWithFiles(int artistId);
         List<Track> TracksWithoutFiles(int albumId);
@@ -73,25 +72,12 @@ namespace NzbDrone.Core.Music
                 .ToList();
         }
 
-        public List<Track> GetTracksByForeignReleaseId(string foreignReleaseId)
+        public List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds)
         {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM AlbumReleases " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "WHERE AlbumReleases.ForeignReleaseId = '{0}'",
-                                         foreignReleaseId);
-
-            return Query.QueryText(query).ToList();
-        }
-
-        public List<Track> GetTracksByForeignTrackIds(List<string> ids)
-        {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Tracks " +
-                                         "WHERE ForeignTrackId IN ('{0}')",
-                                         string.Join("', '", ids));
-
-            return Query.QueryText(query).ToList();
+            return Query
+                .Where(t => t.AlbumReleaseId == albumReleaseId)
+                .OrWhere($"[ForeignTrackId] IN ('{string.Join("', '", foreignTrackIds)}')")
+                .ToList();
         }
 
         public List<Track> GetTracksByFileId(int fileId)

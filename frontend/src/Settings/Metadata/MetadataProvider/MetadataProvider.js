@@ -8,6 +8,13 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 
+const writeAudioTagOptions = [
+  { key: 'sync', value: 'All files; keep in sync with MusicBrainz' },
+  { key: 'allFiles', value: 'All files; initial import only' },
+  { key: 'newFiles', value: 'For new downloads only' },
+  { key: 'no', value: 'Never' }
+];
+
 function MetadataProvider(props) {
   const {
     advancedSettings,
@@ -54,6 +61,35 @@ function MetadataProvider(props) {
                 </FormGroup>
               </FieldSet>
             }
+
+            <FieldSet legend="Write Metadata to Audio Files">
+              <FormGroup>
+                <FormLabel>Tag Audio Files with Metadata</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.SELECT}
+                  name="writeAudioTags"
+                  helpTextWarning="Selecting 'All files' will alter existing files when they are imported."
+                  helpLink="https://github.com/Lidarr/Lidarr/wiki/Write-Tags"
+                  values={writeAudioTagOptions}
+                  onChange={onInputChange}
+                  {...settings.writeAudioTags}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Scrub Existing Tags</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="scrubAudioTags"
+                  helpText="Remove existing tags from files, leaving only those added by Lidarr."
+                  onChange={onInputChange}
+                  {...settings.scrubAudioTags}
+                />
+              </FormGroup>
+
+            </FieldSet>
           </Form>
       }
     </div>

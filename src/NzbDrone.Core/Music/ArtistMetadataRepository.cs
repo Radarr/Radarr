@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Music
         Artist Upsert(Artist artist);
         void UpdateMany(List<Artist> artists);
         ArtistMetadata FindById(string ArtistId);
+        List<ArtistMetadata> FindById(List<string> foreignIds);
         void UpsertMany(List<ArtistMetadata> artists);
         void UpsertMany(List<Artist> artists);
     }
@@ -85,6 +86,11 @@ namespace NzbDrone.Core.Music
         public ArtistMetadata FindById(string artistId)
         {
             return Query.Where(a => a.ForeignArtistId == artistId).SingleOrDefault();
+        }
+
+        public List<ArtistMetadata> FindById(List<string> foreignIds)
+        {
+            return Query.Where($"[ForeignArtistId] IN ('{string.Join("','", foreignIds)}')").ToList();
         }
 
         public void UpsertMany(List<ArtistMetadata> artists)

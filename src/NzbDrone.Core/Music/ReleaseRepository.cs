@@ -9,10 +9,11 @@ namespace NzbDrone.Core.Music
 {
     public interface IReleaseRepository : IBasicRepository<AlbumRelease>
     {
+        AlbumRelease FindByForeignReleaseId(string foreignReleaseId);
         List<AlbumRelease> FindByAlbum(int id);
         List<AlbumRelease> FindByRecordingId(List<string> recordingIds);
+        List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds);
         List<AlbumRelease> SetMonitored(AlbumRelease release);
-        List<AlbumRelease> FindByForeignReleaseId(List<string> foreignReleaseIds);
     }
 
     public class ReleaseRepository : BasicRepository<AlbumRelease>, IReleaseRepository
@@ -20,6 +21,21 @@ namespace NzbDrone.Core.Music
         public ReleaseRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
+        }
+
+        public AlbumRelease FindByForeignReleaseId(string foreignReleaseId)
+        {
+            return Query
+                .Where(x => x.ForeignReleaseId == foreignReleaseId)
+                .SingleOrDefault();
+        }
+
+        public List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds)
+        {
+            return Query
+                .Where(r => r.AlbumId == albumId)
+                .OrWhere($"[ForeignReleaseId] IN ('{string.Join("', '", foreignReleaseIds)}')")
+                .ToList();
         }
 
         public List<AlbumRelease> FindByAlbum(int id)
@@ -30,15 +46,6 @@ namespace NzbDrone.Core.Music
                 .Join<AlbumRelease, Album>(JoinType.Left, r => r.Album, (r, a) => r.AlbumId == a.Id)
                 .Join<Album, ArtistMetadata>(JoinType.Left, a => a.ArtistMetadata, (a, m) => a.ArtistMetadataId == m.Id)
                 .Where<AlbumRelease>(r => r.AlbumId == id)
-                .ToList();
-        }
-
-        public List<AlbumRelease> FindByForeignReleaseId(List<string> foreignReleaseIds)
-        {
-            return Query
-                .Join<AlbumRelease, Album>(JoinType.Left, r => r.Album, (r, a) => r.AlbumId == a.Id)
-                .Join<Album, ArtistMetadata>(JoinType.Left, a => a.ArtistMetadata, (a, m) => a.ArtistMetadataId == m.Id)
-                .Where($"[ForeignReleaseId] IN ('{string.Join("', '", foreignReleaseIds)}')")
                 .ToList();
         }
 

@@ -173,6 +173,17 @@ export const defaultState = {
           type: filterTypes.EQUAL
         }
       ]
+    },
+    {
+      key: 'retagged',
+      label: 'Retagged',
+      filters: [
+        {
+          key: 'eventType',
+          value: '9',
+          type: filterTypes.EQUAL
+        }
+      ]
     }
   ]
 

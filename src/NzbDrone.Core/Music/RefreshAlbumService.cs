@@ -4,23 +4,20 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
-using NzbDrone.Core.Organizer;
 using System.Linq;
-using System.Text;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music.Commands;
-
-
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Music
 {
     public interface IRefreshAlbumService
     {
-        void RefreshAlbumInfo(Album album);
-        void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh);
+        void RefreshAlbumInfo(Album album, bool forceUpdateFileTags);
+        void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags);
     }
 
     public class RefreshAlbumService : IRefreshAlbumService, IExecute<RefreshAlbumCommand>
@@ -31,6 +28,7 @@ namespace NzbDrone.Core.Music
         private readonly IReleaseService _releaseService;
         private readonly IProvideAlbumInfo _albumInfo;
         private readonly IRefreshTrackService _refreshTrackService;
+        private readonly IAudioTagService _audioTagService;
         private readonly IEventAggregator _eventAggregator;
         private readonly ICheckIfAlbumShouldBeRefreshed _checkIfAlbumShouldBeRefreshed;
         private readonly Logger _logger;
@@ -41,6 +39,7 @@ namespace NzbDrone.Core.Music
                                    IReleaseService releaseService,
                                    IProvideAlbumInfo albumInfo,
                                    IRefreshTrackService refreshTrackService,
+                                   IAudioTagService audioTagService,
                                    IEventAggregator eventAggregator,
                                    ICheckIfAlbumShouldBeRefreshed checkIfAlbumShouldBeRefreshed,
                                    Logger logger)
@@ -51,23 +50,24 @@ namespace NzbDrone.Core.Music
             _releaseService = releaseService;
             _albumInfo = albumInfo;
             _refreshTrackService = refreshTrackService;
+            _audioTagService = audioTagService;
             _eventAggregator = eventAggregator;
             _checkIfAlbumShouldBeRefreshed = checkIfAlbumShouldBeRefreshed;
             _logger = logger;
         }
 
-        public void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh)
+        public void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags)
         {
             foreach (var album in albums)
             {
                 if (forceAlbumRefresh || _checkIfAlbumShouldBeRefreshed.ShouldRefresh(album))
                 {
-                    RefreshAlbumInfo(album);
+                    RefreshAlbumInfo(album, forceUpdateFileTags);
                 }
             }
         }
 
-        public void RefreshAlbumInfo(Album album)
+        public void RefreshAlbumInfo(Album album, bool forceUpdateFileTags)
         {
             _logger.ProgressInfo("Updating Info for {0}", album.Title);
 
@@ -79,13 +79,43 @@ namespace NzbDrone.Core.Music
             }
             catch (AlbumNotFoundException)
             {
-                _logger.Error(
-                    "Album '{0}' (LidarrAPI {1}) was not found, it may have been removed from Metadata sources.",
-                    album.Title, album.ForeignAlbumId);
+                _logger.Error($"{album} was not found, it may have been removed from Metadata sources.");
                 return;
             }
 
-            _artistMetadataRepository.UpsertMany(tuple.Item3);
+            var remoteMetadata = tuple.Item3.DistinctBy(x => x.ForeignArtistId).ToList();
+            var existingMetadata = _artistMetadataRepository.FindById(remoteMetadata.Select(x => x.ForeignArtistId).ToList());
+            var updateMetadataList = new List<ArtistMetadata>();
+            var addMetadataList = new List<ArtistMetadata>();
+            var upToDateMetadataCount = 0;
+
+            foreach (var meta in remoteMetadata)
+            {
+                var existing = existingMetadata.SingleOrDefault(x => x.ForeignArtistId == meta.ForeignArtistId);
+                if (existing != null)
+                {
+                    meta.Id = existing.Id;
+                    if (!meta.Equals(existing))
+                    {
+                        updateMetadataList.Add(meta);
+                    }
+                    else
+                    {
+                        upToDateMetadataCount++;
+                    }
+                }
+                else
+                {
+                    addMetadataList.Add(meta);
+                }
+            }
+
+            _logger.Debug($"{album}: {upToDateMetadataCount} artist metadata up to date; Updating {updateMetadataList.Count}, Adding {addMetadataList.Count} artist metadata entries.");
+
+            _artistMetadataRepository.UpdateMany(updateMetadataList);
+            _artistMetadataRepository.InsertMany(addMetadataList);
+
+            forceUpdateFileTags |= updateMetadataList.Any();
 
             var albumInfo = tuple.Item2;
 
@@ -96,6 +126,9 @@ namespace NzbDrone.Core.Music
                     album.Title, album.ForeignAlbumId, albumInfo.Title, albumInfo.ForeignAlbumId);
                 album.ForeignAlbumId = albumInfo.ForeignAlbumId;
             }
+
+            // the only thing written to tags from the album object is the title
+            forceUpdateFileTags |= album.Title != (albumInfo.Title ?? "Unknown");
 
             album.LastInfoSync = DateTime.UtcNow;
             album.CleanTitle = albumInfo.CleanTitle;
@@ -112,28 +145,34 @@ namespace NzbDrone.Core.Music
             album.AlbumReleases = new List<AlbumRelease>();
 
             var remoteReleases = albumInfo.AlbumReleases.Value.DistinctBy(m => m.ForeignReleaseId).ToList();
-
-            // Search both ways to make sure we properly deal with releases that have been moved from one album to another
-            // as well as deleting any releases that have been removed from an album.
-            // note that under normal circumstances, a release would be captured by both queries.
-            var existingReleasesByAlbum = _releaseService.GetReleasesByAlbum(album.Id);
-            var existingReleasesById = _releaseService.GetReleasesByForeignReleaseId(remoteReleases.Select(x => x.ForeignReleaseId).ToList());
-            var existingReleases = existingReleasesByAlbum.Union(existingReleasesById).DistinctBy(x => x.Id).ToList();
-
+            var existingReleases = _releaseService.GetReleasesForRefresh(album.Id, remoteReleases.Select(x => x.ForeignReleaseId));
             var newReleaseList = new List<AlbumRelease>();
             var updateReleaseList = new List<AlbumRelease>();
+            var upToDateCount = 0;
 
             foreach (var release in remoteReleases)
             {
                 release.AlbumId = album.Id;
+                release.Album = album;
                 var releaseToRefresh = existingReleases.SingleOrDefault(r => r.ForeignReleaseId == release.ForeignReleaseId);
 
                 if (releaseToRefresh != null)
                 {
                     existingReleases.Remove(releaseToRefresh);
+
+                    // copy across the db keys and check for equality
                     release.Id = releaseToRefresh.Id;
+                    release.AlbumId = releaseToRefresh.AlbumId;
                     release.Monitored = releaseToRefresh.Monitored;
-                    updateReleaseList.Add(release);
+                    
+                    if (!releaseToRefresh.Equals(release))
+                    {
+                        updateReleaseList.Add(release);
+                    }
+                    else
+                    {
+                        upToDateCount++;
+                    }
                 }
                 else
                 {
@@ -143,10 +182,11 @@ namespace NzbDrone.Core.Music
                 album.AlbumReleases.Value.Add(release);
             }
 
-            _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} releases",
-                          album, existingReleases.Count, updateReleaseList.Count, newReleaseList.Count);
+            _logger.Debug($"{album} {upToDateCount} releases up to date; Deleting {existingReleases.Count}, Updating {updateReleaseList.Count}, Adding {newReleaseList.Count} releases.");
 
-            // Delete first to avoid hitting distinct constraints
+            // before deleting anything, remove musicbrainz ids for things we are deleting
+            _audioTagService.RemoveMusicBrainzTags(existingReleases);
+
             _releaseService.DeleteMany(existingReleases);
             _releaseService.UpdateMany(updateReleaseList);
             _releaseService.InsertMany(newReleaseList);
@@ -158,7 +198,10 @@ namespace NzbDrone.Core.Music
                 _releaseService.UpdateMany(new List<AlbumRelease> { toMonitor });
             }
 
-            _refreshTrackService.RefreshTrackInfo(album);
+            // if we have updated a monitored release, refresh all file tags
+            forceUpdateFileTags |= updateReleaseList.Any(x => x.Monitored);
+
+            _refreshTrackService.RefreshTrackInfo(album, forceUpdateFileTags);
             _albumService.UpdateMany(new List<Album>{album});
 
             _logger.Debug("Finished album refresh for {0}", album.Title);
@@ -171,7 +214,7 @@ namespace NzbDrone.Core.Music
             {
                 var album = _albumService.GetAlbum(message.AlbumId.Value);
                 var artist = _artistService.GetArtistByMetadataId(album.ArtistMetadataId);
-                RefreshAlbumInfo(album);
+                RefreshAlbumInfo(album, false);
                 _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
             }
 

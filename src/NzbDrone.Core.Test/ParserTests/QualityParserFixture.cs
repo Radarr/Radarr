@@ -183,12 +183,14 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("", "MPEG-4 Audio (mp4a)", 320)]
+        [TestCase("", "MPEG-4 Audio (drms)", 320)]
         public void should_parse_aac_320_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.AAC_320);
         }
 
-        
+        [TestCase("", "MPEG-4 Audio (mp4a)", 321)]
+        [TestCase("", "MPEG-4 Audio (drms)", 321)]
         public void should_parse_aac_vbr_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.AAC_VBR);
@@ -196,12 +198,14 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Kirlian Camera - The Ice Curtain - Album 1998 - Ogg-Vorbis Q10", null, 0)]
         [TestCase("", "Vorbis Version 0 Audio", 500)]
+        [TestCase("", "Opus Version 1 Audio", 501)]
         public void should_parse_vorbis_q10_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q10);
         }
 
         [TestCase("", "Vorbis Version 0 Audio", 320)]
+        [TestCase("", "Opus Version 1 Audio", 321)]
         public void should_parse_vorbis_q9_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q9);
@@ -209,6 +213,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Various Artists - No New York [1978/Ogg/q8]", null, 0)]
         [TestCase("", "Vorbis Version 0 Audio", 256)]
+        [TestCase("", "Opus Version 1 Audio", 257)]
         public void should_parse_vorbis_q8_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q8);
@@ -216,18 +221,21 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Masters_At_Work-Nuyorican_Soul-.Talkin_Loud.-1997-OGG.Q7", null, 0)]
         [TestCase("", "Vorbis Version 0 Audio", 224)]
+        [TestCase("", "Opus Version 1 Audio", 225)]
         public void should_parse_vorbis_q7_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q7);
         }
 
         [TestCase("", "Vorbis Version 0 Audio", 192)]
+        [TestCase("", "Opus Version 1 Audio", 193)]
         public void should_parse_vorbis_q6_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q6);
         }
 
         [TestCase("", "Vorbis Version 0 Audio", 160)]
+        [TestCase("", "Opus Version 1 Audio", 161)]
         public void should_parse_vorbis_q5_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.VORBIS_Q5);

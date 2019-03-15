@@ -16,8 +16,7 @@ namespace NzbDrone.Core.Music
         List<Track> GetTracksByAlbum(int albumId);
         List<Track> GetTracksByRelease(int albumReleaseId);
         List<Track> GetTracksByReleases(List<int> albumReleaseIds);
-        List<Track> GetTracksByForeignReleaseId(string foreignReleaseId);
-        List<Track> GetTracksByForeignTrackIds(List<string> ids);
+        List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds);
         List<Track> TracksWithFiles(int artistId);
         List<Track> TracksWithoutFiles(int albumId);
         List<Track> GetTracksByFileId(int trackFileId);
@@ -29,7 +28,7 @@ namespace NzbDrone.Core.Music
     }
 
     public class TrackService : ITrackService,
-                                IHandleAsync<ReleaseDeletedEvent>,
+                                IHandle<ReleaseDeletedEvent>,
                                 IHandle<TrackFileDeletedEvent>
     {
         private readonly ITrackRepository _trackRepository;
@@ -74,14 +73,9 @@ namespace NzbDrone.Core.Music
             return _trackRepository.GetTracksByReleases(albumReleaseIds);
         }
 
-        public List<Track> GetTracksByForeignReleaseId(string foreignReleaseId)
+        public List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds)
         {
-            return _trackRepository.GetTracksByForeignReleaseId(foreignReleaseId);
-        }
-
-        public List<Track> GetTracksByForeignTrackIds(List<string> ids)
-        {
-            return _trackRepository.GetTracksByForeignTrackIds(ids);
+            return _trackRepository.GetTracksForRefresh(albumReleaseId, foreignTrackIds);
         }
 
         public List<Track> TracksWithFiles(int artistId)
@@ -124,7 +118,7 @@ namespace NzbDrone.Core.Music
             _trackRepository.SetFileId(tracks);
         }
 
-        public void HandleAsync(ReleaseDeletedEvent message)
+        public void Handle(ReleaseDeletedEvent message)
         {
             var tracks = GetTracksByRelease(message.Release.Id);
             _trackRepository.DeleteMany(tracks);

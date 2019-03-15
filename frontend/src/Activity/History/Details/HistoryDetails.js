@@ -7,6 +7,8 @@ import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
+import { icons } from 'Helpers/Props';
+import Icon from 'Components/Icon';
 import styles from './HistoryDetails.css';
 
 function getDetailedList(statusMessages) {
@@ -33,6 +35,19 @@ function getDetailedList(statusMessages) {
         })
       }
     </div>
+  );
+}
+
+function formatMissing(value) {
+  if (value === undefined || value === 0 || value === '0') {
+    return (<Icon name={icons.BAN} size={12} />);
+  }
+  return value;
+}
+
+function formatChange(oldValue, newValue) {
+  return (
+    <div> {formatMissing(oldValue)} <Icon name={icons.ARROW_RIGHT_NO_CIRCLE} size={12} /> {formatMissing(newValue)} </div>
   );
 }
 
@@ -254,6 +269,37 @@ function HistoryDetails(props) {
         <DescriptionListItem
           title="Destination Relative Path"
           data={relativePath}
+        />
+      </DescriptionList>
+    );
+  }
+
+  if (eventType === 'trackFileRetagged') {
+    const {
+      diff,
+      tagsScrubbed
+    } = data;
+
+    return (
+      <DescriptionList>
+        <DescriptionListItem
+          title="Path"
+          data={sourceTitle}
+        />
+        {
+          JSON.parse(diff).map(({ field, oldValue, newValue }) => {
+            return (
+              <DescriptionListItem
+                key={field}
+                title={field}
+                data={formatChange(oldValue, newValue)}
+              />
+            );
+          })
+        }
+        <DescriptionListItem
+          title="Existing tags scrubbed"
+          data={tagsScrubbed === 'True' ? <Icon name={icons.CHECK} /> : <Icon name={icons.REMOVE} />}
         />
       </DescriptionList>
     );

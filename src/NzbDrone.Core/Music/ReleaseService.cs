@@ -7,17 +7,18 @@ namespace NzbDrone.Core.Music
     public interface IReleaseService
     {
         AlbumRelease GetRelease(int id);
+        AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId);
         void InsertMany(List<AlbumRelease> releases);
         void UpdateMany(List<AlbumRelease> releases);
         void DeleteMany(List<AlbumRelease> releases);
+        List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds);
         List<AlbumRelease> GetReleasesByAlbum(int releaseGroupId);
-        List<AlbumRelease> GetReleasesByForeignReleaseId(List<string> foreignReleaseIds);
         List<AlbumRelease> GetReleasesByRecordingIds(List<string> recordingIds);
         List<AlbumRelease> SetMonitored(AlbumRelease release);
     }
 
     public class ReleaseService : IReleaseService,
-                                  IHandleAsync<AlbumDeletedEvent>
+                                  IHandle<AlbumDeletedEvent>
     {
         private readonly IReleaseRepository _releaseRepository;
         private readonly IEventAggregator _eventAggregator;
@@ -32,6 +33,11 @@ namespace NzbDrone.Core.Music
         public AlbumRelease GetRelease(int id)
         {
             return _releaseRepository.Get(id);
+        }
+
+        public AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId)
+        {
+            return _releaseRepository.FindByForeignReleaseId(foreignReleaseId);
         }
 
         public void InsertMany(List<AlbumRelease> releases)
@@ -53,16 +59,16 @@ namespace NzbDrone.Core.Music
             }
         }
 
+        public List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds)
+        {
+            return _releaseRepository.GetReleasesForRefresh(albumId, foreignReleaseIds);
+        }
+
         public List<AlbumRelease> GetReleasesByAlbum(int releaseGroupId)
         {
             return _releaseRepository.FindByAlbum(releaseGroupId);
         }
 
-        public List<AlbumRelease> GetReleasesByForeignReleaseId(List<string> foreignReleaseIds)
-        {
-            return _releaseRepository.FindByForeignReleaseId(foreignReleaseIds);
-        }
-        
         public List<AlbumRelease> GetReleasesByRecordingIds(List<string> recordingIds)
         {
             return _releaseRepository.FindByRecordingId(recordingIds);
@@ -73,7 +79,7 @@ namespace NzbDrone.Core.Music
             return _releaseRepository.SetMonitored(release);
         }
 
-        public void HandleAsync(AlbumDeletedEvent message)
+        public void Handle(AlbumDeletedEvent message)
         {
             var releases = GetReleasesByAlbum(message.Album.Id);
             DeleteMany(releases);

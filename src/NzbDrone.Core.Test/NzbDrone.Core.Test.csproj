@@ -87,6 +87,10 @@
     <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
     </Reference>
+    <Reference Include="taglib-sharp, Version=2.2.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagLibSharp.2.2.0-beta\lib\netstandard2.0\taglib-sharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -281,6 +285,7 @@
     <Compile Include="MediaCoverTests\CoverExistsSpecificationFixture.cs" />
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
+    <Compile Include="MediaFiles\AudioTagServiceFixture.cs" />
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
     <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedTracksImportServiceFixture.cs" />
@@ -502,13 +507,25 @@
     <Content Include="Files\LongOverview.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Files\Media\H264_sample.mp4">
+    <Content Include="Files\Media\nin.mp2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\Media\nin.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\Media\nin.flac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Media\nin.m4a">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Media\nin.wma">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Media\nin.ape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Media\nin.opus">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\Nzbget\JsonError.txt">

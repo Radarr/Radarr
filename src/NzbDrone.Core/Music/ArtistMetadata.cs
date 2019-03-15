@@ -1,17 +1,13 @@
-using Marr.Data;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Profiles.Languages;
-using NzbDrone.Core.Profiles.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Music
 {
-    public class ArtistMetadata : ModelBase
+    public class ArtistMetadata : ModelBase, IEquatable<ArtistMetadata>
     {
         public ArtistMetadata()
         {
@@ -51,6 +47,71 @@ namespace NzbDrone.Core.Music
             Genres = otherArtist.Genres;
             Ratings = otherArtist.Ratings;
             Members = otherArtist.Members;
+        }
+
+        public bool Equals(ArtistMetadata other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Id == other.Id &&
+                ForeignArtistId == other.ForeignArtistId &&
+                Name == other.Name &&
+                Overview == other.Overview &&
+                Disambiguation == other.Disambiguation &&
+                Type == other.Type &&
+                Status == other.Status &&
+                Images?.ToJson() == other.Images?.ToJson() &&
+                Links?.ToJson() == other.Links?.ToJson() &&
+                (Genres?.SequenceEqual(other.Genres) ?? true) &&
+                Ratings?.ToJson() == other.Ratings?.ToJson() &&
+                Members?.ToJson() == other.Members?.ToJson())
+            {
+                return true;
+            }
+            
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as ArtistMetadata;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(other);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + Id;
+                hash = hash * 23 + ForeignArtistId.GetHashCode();
+                hash = hash * 23 + Name?.GetHashCode() ?? 0;
+                hash = hash * 23 + Overview?.GetHashCode() ?? 0;
+                hash = hash * 23 + Disambiguation?.GetHashCode() ?? 0;
+                hash = hash * 23 + Type?.GetHashCode() ?? 0;
+                hash = hash * 23 + (int)Status;
+                hash = hash * 23 + Images?.GetHashCode() ?? 0;
+                hash = hash * 23 + Links?.GetHashCode() ?? 0;
+                hash = hash * 23 + Genres?.GetHashCode() ?? 0;
+                hash = hash * 23 + Ratings?.GetHashCode() ?? 0;
+                hash = hash * 23 + Members?.GetHashCode() ?? 0;
+                return hash;
+            }
         }
     }
 }

@@ -55,11 +55,11 @@ class MetadataSettings extends Component {
         />
 
         <PageContentBodyConnector>
-          <MetadatasConnector />
           <MetadataProviderConnector
             onChildMounted={this.onChildMounted}
             onChildStateChange={this.onChildStateChange}
           />
+          <MetadatasConnector />
         </PageContentBodyConnector>
       </PageContent>
     );

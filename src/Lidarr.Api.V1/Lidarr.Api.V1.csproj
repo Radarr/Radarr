@@ -160,6 +160,8 @@
     <Compile Include="Tracks\TrackResource.cs" />
     <Compile Include="Tracks\RenameTrackModule.cs" />
     <Compile Include="Tracks\RenameTrackResource.cs" />
+    <Compile Include="Tracks\RetagTrackModule.cs" />
+    <Compile Include="Tracks\RetagTrackResource.cs" />
     <Compile Include="Health\HealthModule.cs" />
     <Compile Include="Health\HealthResource.cs" />
     <Compile Include="History\HistoryModule.cs" />

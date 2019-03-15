@@ -1,35 +1,43 @@
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Music
 {
     public interface IRefreshTrackService
     {
-        void RefreshTrackInfo(Album rg);
+        void RefreshTrackInfo(Album rg, bool forceUpdateFileTags);
     }
 
     public class RefreshTrackService : IRefreshTrackService
     {
         private readonly ITrackService _trackService;
         private readonly IAlbumService _albumService;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly IAudioTagService _audioTagService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public RefreshTrackService(ITrackService trackService, IAlbumService albumService, IEventAggregator eventAggregator, Logger logger)
+        public RefreshTrackService(ITrackService trackService,
+                                   IAlbumService albumService,
+                                   IMediaFileService mediaFileService,
+                                   IAudioTagService audioTagService,
+                                   IEventAggregator eventAggregator,
+                                   Logger logger)
         {
             _trackService = trackService;
             _albumService = albumService;
+            _mediaFileService = mediaFileService;
+            _audioTagService = audioTagService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
-        public void RefreshTrackInfo(Album album)
+        public void RefreshTrackInfo(Album album, bool forceUpdateFileTags)
         {
             _logger.Info("Starting track info refresh for: {0}", album);
             var successCount = 0;
@@ -37,47 +45,49 @@ namespace NzbDrone.Core.Music
 
             foreach (var release in album.AlbumReleases.Value)
             {
-                var dupeFreeRemoteTracks = release.Tracks.Value.DistinctBy(m => new { m.ForeignTrackId, m.TrackNumber }).ToList();
-                
-                // Search both ways to make sure we properly deal with tracks that have been moved from one release to another
-                // as well as deleting any tracks that have been removed from a release.
-                // note that under normal circumstances, a track would be captured by both queries.
-                var existingTracksByRelease = _trackService.GetTracksByForeignReleaseId(release.ForeignReleaseId);
-                var existingTracksById = _trackService.GetTracksByForeignTrackIds(dupeFreeRemoteTracks.Select(x => x.ForeignTrackId).ToList());
-                var existingTracks = existingTracksByRelease.Union(existingTracksById).DistinctBy(x => x.Id).ToList();
+                var remoteTracks = release.Tracks.Value.DistinctBy(m => m.ForeignTrackId).ToList();
+                var existingTracks = _trackService.GetTracksForRefresh(release.Id, remoteTracks.Select(x => x.ForeignTrackId));
 
                 var updateList = new List<Track>();
                 var newList = new List<Track>();
+                var upToDateList = new List<Track>();
 
-                foreach (var track in OrderTracks(dupeFreeRemoteTracks))
+                foreach (var track in remoteTracks)
                 {
+                    track.AlbumRelease = release;
+                    track.AlbumReleaseId = release.Id;
+                    // the artist metadata will have been inserted by RefreshAlbumInfo so the Id will now be populated
+                    track.ArtistMetadataId = track.ArtistMetadata.Value.Id;
+                    
                     try
                     {
-                        var trackToUpdate = GetTrackToUpdate(track, existingTracks);
-
+                        var trackToUpdate = existingTracks.SingleOrDefault(e => e.ForeignTrackId == track.ForeignTrackId);
                         if (trackToUpdate != null)
                         {
                             existingTracks.Remove(trackToUpdate);
-                            updateList.Add(trackToUpdate);
+
+                            // populate albumrelease for later
+                            trackToUpdate.AlbumRelease = release;
+                            
+                            // copy across the db keys to the remote track and check if we need to update
+                            track.Id = trackToUpdate.Id;
+                            track.TrackFileId = trackToUpdate.TrackFileId;
+                            // make sure title is not null
+                            track.Title = track.Title ?? "Unknown";
+
+                            if (!trackToUpdate.Equals(track))
+                            {
+                                updateList.Add(track);
+                            }
+                            else
+                            {
+                                upToDateList.Add(track);
+                            }
                         }
                         else
                         {
-                            trackToUpdate = new Track();
-                            trackToUpdate.Id = track.Id;
-                            newList.Add(trackToUpdate);
+                            newList.Add(track);
                         }
-
-                        // TODO: Use object mapper to automatically handle this
-                        trackToUpdate.ForeignTrackId = track.ForeignTrackId;
-                        trackToUpdate.ForeignRecordingId = track.ForeignRecordingId;
-                        trackToUpdate.AlbumReleaseId = release.Id;
-                        trackToUpdate.ArtistMetadataId = track.ArtistMetadata.Value.Id;
-                        trackToUpdate.TrackNumber = track.TrackNumber;
-                        trackToUpdate.AbsoluteTrackNumber = track.AbsoluteTrackNumber;
-                        trackToUpdate.Title = track.Title ?? "Unknown";
-                        trackToUpdate.Explicit = track.Explicit;
-                        trackToUpdate.Duration = track.Duration;
-                        trackToUpdate.MediumNumber = track.MediumNumber;
 
                         successCount++;
                     }
@@ -88,8 +98,19 @@ namespace NzbDrone.Core.Music
                     }
                 }
 
-                _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} tracks",
-                              release, existingTracks.Count, updateList.Count, newList.Count);
+                // if any tracks with files are deleted, strip out the MB tags from the metadata
+                // so that we stand a chance of matching next time
+                _audioTagService.RemoveMusicBrainzTags(existingTracks);
+
+                var tagsToUpdate = updateList;
+                if (forceUpdateFileTags)
+                {
+                    _logger.Debug("Forcing tag update due to Artist/Album/Release updates");
+                    tagsToUpdate = updateList.Concat(upToDateList).ToList();
+                }
+                _audioTagService.SyncTags(tagsToUpdate);
+                
+                _logger.Debug($"{release}: {upToDateList.Count} tracks up to date; Deleting {existingTracks.Count}, Updating {updateList.Count}, Adding {newList.Count} tracks.");
 
                 _trackService.DeleteMany(existingTracks);
                 _trackService.UpdateMany(updateList);
@@ -105,17 +126,6 @@ namespace NzbDrone.Core.Music
             {
                 _logger.Info("Finished track refresh for album: {0}.", album);
             }
-        }
-
-        private Track GetTrackToUpdate(Track track, List<Track> existingTracks)
-        {
-            var result = existingTracks.FirstOrDefault(e => e.ForeignTrackId == track.ForeignTrackId && e.TrackNumber == track.TrackNumber);
-            return result;
-        }
-
-        private IEnumerable<Track> OrderTracks(List<Track> tracks)
-        {
-            return tracks.OrderBy(e => e.AlbumReleaseId).ThenBy(e => e.TrackNumber);
         }
     }
 }

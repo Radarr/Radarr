@@ -145,9 +145,11 @@ class ArtistEditorFooter extends Component {
       isSaving,
       isDeleting,
       isOrganizingArtist,
+      isRetaggingArtist,
       showLanguageProfile,
       showMetadataProfile,
-      onOrganizeArtistPress
+      onOrganizeArtistPress,
+      onRetagArtistPress
     } = this.props;
 
     const {
@@ -288,19 +290,29 @@ class ArtistEditorFooter extends Component {
                   className={styles.organizeSelectedButton}
                   kind={kinds.WARNING}
                   isSpinning={isOrganizingArtist}
-                  isDisabled={!selectedCount || isOrganizingArtist}
+                  isDisabled={!selectedCount || isOrganizingArtist || isRetaggingArtist}
                   onPress={onOrganizeArtistPress}
                 >
                   Rename Files
                 </SpinnerButton>
 
                 <SpinnerButton
+                  className={styles.organizeSelectedButton}
+                  kind={kinds.WARNING}
+                  isSpinning={isRetaggingArtist}
+                  isDisabled={!selectedCount || isOrganizingArtist || isRetaggingArtist}
+                  onPress={onRetagArtistPress}
+                >
+                  Write Metadata Tags
+                </SpinnerButton>
+
+                <SpinnerButton
                   className={styles.tagsButton}
                   isSpinning={isSaving && savingTags}
-                  isDisabled={!selectedCount || isOrganizingArtist}
+                  isDisabled={!selectedCount || isOrganizingArtist || isRetaggingArtist}
                   onPress={this.onTagsPress}
                 >
-                  Set Tags
+                  Set Lidarr Tags
                 </SpinnerButton>
               </div>
 
@@ -350,10 +362,12 @@ ArtistEditorFooter.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
   isOrganizingArtist: PropTypes.bool.isRequired,
+  isRetaggingArtist: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
-  onOrganizeArtistPress: PropTypes.func.isRequired
+  onOrganizeArtistPress: PropTypes.func.isRequired,
+  onRetagArtistPress: PropTypes.func.isRequired
 };
 
 export default ArtistEditorFooter;

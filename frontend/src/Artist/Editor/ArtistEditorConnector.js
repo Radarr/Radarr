@@ -16,9 +16,11 @@ function createMapStateToProps() {
     (state) => state.settings.metadataProfiles,
     createClientSideCollectionSelector('artist', 'artistEditor'),
     createCommandExecutingSelector(commandNames.RENAME_ARTIST),
-    (languageProfiles, metadataProfiles, artist, isOrganizingArtist) => {
+    createCommandExecutingSelector(commandNames.RETAG_ARTIST),
+    (languageProfiles, metadataProfiles, artist, isOrganizingArtist, isRetaggingArtist) => {
       return {
         isOrganizingArtist,
+        isRetaggingArtist,
         showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         ...artist

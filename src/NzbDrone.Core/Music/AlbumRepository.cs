@@ -16,9 +16,9 @@ namespace NzbDrone.Core.Music
     {
         List<Album> GetAlbums(int artistId);
         List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId);
+        List<Album> GetAlbumsForRefresh(int artistId, IEnumerable<string> foreignIds);
         Album FindByTitle(int artistMetadataId, string title);
         Album FindById(string foreignId);
-        List<Album> FindById(List<string> foreignIds);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         PagingSpec<Album> AlbumsWhereCutoffUnmet(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
@@ -53,19 +53,17 @@ namespace NzbDrone.Core.Music
             return Query.Where(s => s.ArtistMetadataId == artistMetadataId);
         }
 
+        public List<Album> GetAlbumsForRefresh(int artistMetadataId, IEnumerable<string> foreignIds)
+        {
+            return Query
+                .Where(a => a.ArtistMetadataId == artistMetadataId)
+                .OrWhere($"[ForeignAlbumId] IN ('{string.Join("', '", foreignIds)}')")
+                .ToList();
+        }
+
         public Album FindById(string foreignAlbumId)
         {
             return Query.Where(s => s.ForeignAlbumId == foreignAlbumId).SingleOrDefault();
-        }
-
-        public List<Album> FindById(List<string> ids)
-        {
-            string query = string.Format("SELECT Albums.* " +
-                                         "FROM Albums " +
-                                         "WHERE ForeignAlbumId IN ('{0}')",
-                                         string.Join("', '", ids));
-
-            return Query.QueryText(query).ToList();
         }
 
         public PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec)
