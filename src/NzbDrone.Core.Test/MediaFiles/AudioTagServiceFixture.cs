@@ -11,6 +11,7 @@ using System.Collections;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using System.Collections.Generic;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 {
@@ -141,7 +142,11 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                     {
                         var val1 = (IEnumerable) property.GetValue(a, null);
                         var val2 = (IEnumerable) property.GetValue(b, null);
-                        val1.Should().BeEquivalentTo(val2, $"{property.Name} should be equal");
+                        
+                        if (val1 != null || val2 != null)
+                        {
+                            val1.Should().BeEquivalentTo(val2, $"{property.Name} should be equal");
+                        }
                     }
                 }
             }
@@ -207,6 +212,72 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             tag.MusicBrainzTrackId.Should().BeNull();
             tag.MusicBrainzAlbumComment.Should().BeNull();
             tag.MusicBrainzReleaseTrackId.Should().BeNull();
+        }
+        
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void should_read_audiotag_from_file_with_no_tags(string filename, string[] skipProperties)
+        {
+            GivenFileCopy(filename);
+            var path = copiedFile;
+
+            Subject.RemoveAllTags(path);
+
+            var tag = Subject.ReadAudioTag(path);
+            var expected = new AudioTag() {
+                Performers = new string[0],
+                AlbumArtists = new string[0]
+            };
+
+            VerifySame(tag, expected, skipProperties);
+            tag.Quality.Should().NotBeNull();
+            tag.MediaInfo.Should().NotBeNull();
+        }
+        
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void should_read_parsedtrackinfo_from_file_with_no_tags(string filename, string[] skipProperties)
+        {
+            GivenFileCopy(filename);
+            var path = copiedFile;
+
+            Subject.RemoveAllTags(path);
+
+            var tag = Subject.ReadTags(path);
+
+            tag.Quality.Should().NotBeNull();
+            tag.MediaInfo.Should().NotBeNull();
+        }
+        
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void should_set_quality_and_mediainfo_for_corrupt_file(string filename, string[] skipProperties)
+        {
+            // use missing to simulate corrupt
+            var tag = Subject.ReadAudioTag(filename.Replace("nin", "missing"));
+            var expected = new AudioTag();
+
+            VerifySame(tag, expected, skipProperties);
+            tag.Quality.Should().NotBeNull();
+            tag.MediaInfo.Should().NotBeNull();
+            
+            ExceptionVerification.ExpectedErrors(1);
+        }
+        
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void should_read_file_with_only_title_tag(string filename, string[] ignored)
+        {
+            GivenFileCopy(filename);
+            var path = copiedFile;
+
+            Subject.RemoveAllTags(path);
+            
+            var nametag = new AudioTag();
+            nametag.Title = "test";
+            nametag.Write(path);
+
+            var tag = Subject.ReadTags(path);
+            tag.Title.Should().Be("test");
+            
+            tag.Quality.Should().NotBeNull();
+            tag.MediaInfo.Should().NotBeNull();
         }
     }
 }
