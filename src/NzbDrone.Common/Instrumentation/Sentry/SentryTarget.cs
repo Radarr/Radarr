@@ -40,10 +40,10 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             // Filter out people stuck in boot loops
             "CorruptDatabaseException",
             // This also filters some people in boot loops
-            "TinyIoC.TinyIoCResolutionException"
+            "TinyIoCResolutionException"
         };
 
-        private static readonly List<string> FilteredExceptionMessages = new List<string> {
+        public static readonly List<string> FilteredExceptionMessages = new List<string> {
             // Swallow the many, many exceptions flowing through from Jackett
             "Jackett.Common.IndexerException",
             // Fix openflixr being stupid with permissions
@@ -115,6 +115,11 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                      });
             
             _debounce = new SentryDebounce();
+
+            // initialize to true and reconfigure later
+            // Otherwise it will default to false and any errors occuring
+            // before config file gets read will not be filtered
+            FilterEvents = true;
         }
 
         private void OnError(Exception ex)
@@ -168,7 +173,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             return fingerPrint;
         }
 
-        private bool IsSentryMessage(LogEventInfo logEvent)
+        public bool IsSentryMessage(LogEventInfo logEvent)
         {
             if (logEvent.Properties.ContainsKey("Sentry"))
             {
