@@ -8,6 +8,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Test.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -65,8 +66,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(
                         profile,
                         langProfile,
-                        new QualityModel(current, new Revision(version: currentVersion)),
-                        Language.English,
+                        new List<QualityModel> { new QualityModel(current, new Revision(version: currentVersion)) },
+                        new List<Language> { Language.English },
                         NoPreferredWordScore,
                         new QualityModel(newQuality, new Revision(version: newVersion)),
                         Language.English,
@@ -96,8 +97,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(
                         profile,
                         langProfile,
-                        new QualityModel(current, new Revision(version: currentVersion)),
-                        currentLanguage,
+                        new List<QualityModel> { new QualityModel(current, new Revision(version: currentVersion)) },
+                        new List<Language> { currentLanguage },
                         NoPreferredWordScore,
                         new QualityModel(newQuality, new Revision(version: newVersion)),
                         newLanguage,
@@ -125,8 +126,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(
                         profile,
                         langProfile,
-                        new QualityModel(Quality.MP3_256, new Revision(version: 2)),
-                        Language.English,
+                        new List<QualityModel> { new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                        new List<Language> { Language.English },
                         NoPreferredWordScore,
                         new QualityModel(Quality.MP3_256, new Revision(version: 1)),
                         Language.English,

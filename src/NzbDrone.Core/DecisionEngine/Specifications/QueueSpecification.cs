@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Releases;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
@@ -41,34 +44,48 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             foreach (var queueItem in matchingAlbum)
             {
                 var remoteAlbum = queueItem.RemoteAlbum;
-                
+                var qualityProfile = subject.Artist.QualityProfile.Value;
+                var languageProfile = subject.Artist.LanguageProfile.Value;
+
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
                 var queuedItemPreferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Artist, queueItem.Title);
 
-                if (!_upgradableSpecification.CutoffNotMet(subject.Artist.QualityProfile,
-                                                           subject.Artist.LanguageProfile,
-                                                           remoteAlbum.ParsedAlbumInfo.Quality,
-                                                           remoteAlbum.ParsedAlbumInfo.Language,
+                if (!_upgradableSpecification.CutoffNotMet(qualityProfile,
+                                                           languageProfile,
+                                                           new List<QualityModel> { remoteAlbum.ParsedAlbumInfo.Quality },
+                                                           new List<Language> { remoteAlbum.ParsedAlbumInfo.Language },
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedAlbumInfo.Quality,
                                                            subject.PreferredWordScore))
 
                 {
-                    return Decision.Reject("Quality for release in queue already meets cutoff: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
+                    return Decision.Reject("Release in queue already meets cutoff: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
                 }
 
-                _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
+                _logger.Debug("Checking if release is higher quality than queued release. Queued: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
 
-                if (!_upgradableSpecification.IsUpgradable(subject.Artist.QualityProfile,
-                                                           subject.Artist.LanguageProfile,
-                                                           remoteAlbum.ParsedAlbumInfo.Quality,
-                                                           remoteAlbum.ParsedAlbumInfo.Language,
+                if (!_upgradableSpecification.IsUpgradable(qualityProfile,
+                                                           languageProfile,
+                                                           new List<QualityModel> { remoteAlbum.ParsedAlbumInfo.Quality },
+                                                           new List<Language> { remoteAlbum.ParsedAlbumInfo.Language },
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedAlbumInfo.Quality,
                                                            subject.ParsedAlbumInfo.Language,
                                                            subject.PreferredWordScore))
                 {
-                    return Decision.Reject("Quality for release in queue is of equal or higher preference: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
+                    return Decision.Reject("Release in queue is of equal or higher preference: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
+                }
+
+                _logger.Debug("Checking if profiles allow upgrading. Queued: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
+
+                if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
+                                                               languageProfile,
+                                                               new List<QualityModel> { remoteAlbum.ParsedAlbumInfo.Quality },
+                                                               new List<Language> { remoteAlbum.ParsedAlbumInfo.Language },
+                                                               subject.ParsedAlbumInfo.Quality,
+                                                               subject.ParsedAlbumInfo.Language))
+                {
+                    return Decision.Reject("Another release is queued and the Quality or Language profile does not allow upgrades");
                 }
             }
 

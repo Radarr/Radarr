@@ -3,16 +3,18 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public interface IUpgradableSpecification
     {
-        bool IsUpgradable(QualityProfile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, int currentScore, QualityModel newQuality, Language newLanguage, int newScore);
+        bool IsUpgradable(QualityProfile profile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, int currentScore, QualityModel newQuality, Language newLanguage, int newScore);
         bool QualityCutoffNotMet(QualityProfile profile, QualityModel currentQuality, QualityModel newQuality = null);
         bool LanguageCutoffNotMet(LanguageProfile languageProfile, Language currentLanguage);
-        bool CutoffNotMet(QualityProfile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, int currentScore, QualityModel newQuality = null, int newScore = 0);
+        bool CutoffNotMet(QualityProfile profile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, int currentScore, QualityModel newQuality = null, int newScore = 0);
         bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality);
+        bool IsUpgradeAllowed(QualityProfile qualityProfile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, QualityModel newQuality, Language newLanguage);
     }
 
     public class UpgradableSpecification : IUpgradableSpecification
@@ -24,32 +26,60 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
-        private bool IsLanguageUpgradable(LanguageProfile profile, Language currentLanguage, Language newLanguage = null) 
+        private ProfileComparisonResult IsLanguageUpgradable(LanguageProfile profile, List<Language> currentLanguages, Language newLanguage = null) 
         {
             if (newLanguage != null)
             {
-                var compare = new LanguageComparer(profile).Compare(newLanguage, currentLanguage);
-                if (compare <= 0)
+                var totalCompare = 0;
+
+                foreach (var language in currentLanguages)
                 {
-                    return false;
+                    var compare = new LanguageComparer(profile).Compare(newLanguage, language);
+                    
+                    totalCompare += compare;
+
+                    // Not upgradable if new language is a downgrade for any current lanaguge
+                    if (compare < 0)
+                    {
+                        return ProfileComparisonResult.Downgrade;
+                    }
+                }
+
+                // Not upgradable if new language is equal to all current languages
+                if (totalCompare == 0)
+                {
+                    return ProfileComparisonResult.Equal;
                 }
             }
-            return true;
+            return ProfileComparisonResult.Upgrade;
         }
 
-        private bool IsQualityUpgradable(QualityProfile profile, QualityModel currentQuality, QualityModel newQuality = null)
+        private ProfileComparisonResult IsQualityUpgradable(QualityProfile profile, List<QualityModel> currentQualities, QualityModel newQuality = null)
         {
             if (newQuality != null)
             {
-                var compare = new QualityModelComparer(profile).Compare(newQuality, currentQuality);
+                var totalCompare = 0;
 
-                if (compare <= 0)
+                foreach (var quality in currentQualities)
                 {
-                    _logger.Debug("Existing item has better quality, skipping");
-                    return false;
+                    var compare = new QualityModelComparer(profile).Compare(newQuality, quality);
+
+                    totalCompare += compare;
+
+                    if (compare < 0)
+                    {
+                        // Not upgradable if new quality is a downgrade for any current quality
+                        return ProfileComparisonResult.Downgrade;
+                    }
+                }
+
+                // Not upgradable if new quality is equal to all current qualities
+                if (totalCompare == 0) {
+                    return ProfileComparisonResult.Equal;
                 }
             }
-            return true;
+
+            return ProfileComparisonResult.Upgrade;
         }
 
         private bool IsPreferredWordUpgradable(int currentScore, int newScore)
@@ -57,33 +87,32 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return newScore > currentScore;
         }
 
-        public bool IsUpgradable(QualityProfile qualityProfile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, int currentScore, QualityModel newQuality, Language newLanguage, int newScore)
+        public bool IsUpgradable(QualityProfile qualityProfile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, int currentScore, QualityModel newQuality, Language newLanguage, int newScore)
         {
-            if (IsQualityUpgradable(qualityProfile, currentQuality, newQuality) && qualityProfile.UpgradeAllowed)
+
+            var qualityUpgrade = IsQualityUpgradable(qualityProfile, currentQualities, newQuality);
+
+            if (qualityUpgrade == ProfileComparisonResult.Upgrade)
             {
                 return true;
             }
 
-            if (new QualityModelComparer(qualityProfile).Compare(newQuality, currentQuality) < 0)
+            if (qualityUpgrade == ProfileComparisonResult.Downgrade)
             {
                 _logger.Debug("Existing item has better quality, skipping");
                 return false;
             }
 
-            if (IsLanguageUpgradable(languageProfile, currentLanguage, newLanguage) && languageProfile.UpgradeAllowed)
+            var languageUpgrade = IsLanguageUpgradable(languageProfile, currentLanguages, newLanguage);
+
+            if (languageUpgrade == ProfileComparisonResult.Upgrade)
             {
                 return true;
             }
 
-            if (new LanguageComparer(languageProfile).Compare(newLanguage, currentLanguage) < 0)
+            if (languageUpgrade == ProfileComparisonResult.Downgrade)
             {
                 _logger.Debug("Existing item has better language, skipping");
-                return false;
-            }
-
-            if (!IsPreferredWordUpgradable(currentScore, newScore))
-            {
-                _logger.Debug("Existing item has a better preferred word score, skipping");
                 return false;
             }
 
@@ -120,18 +149,24 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return languageCompare < 0;
         }
 
-        public bool CutoffNotMet(QualityProfile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, int currentScore, QualityModel newQuality = null, int newScore = 0)
+        public bool CutoffNotMet(QualityProfile profile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, int currentScore, QualityModel newQuality = null, int newScore = 0)
         {
             // If we can upgrade the language (it is not the cutoff) then the quality doesn't
             // matter as we can always get same quality with prefered language.
-            if (LanguageCutoffNotMet(languageProfile, currentLanguage))
+            foreach (var language in currentLanguages)
             {
-                return true;
+                if (LanguageCutoffNotMet(languageProfile, language))
+                {
+                    return true;
+                }
             }
 
-            if (QualityCutoffNotMet(profile, currentQuality, newQuality))
+            foreach (var quality in currentQualities)
             {
-                return true;
+                if (QualityCutoffNotMet(profile, quality, newQuality))
+                {
+                    return true;
+                }
             }
 
             if (IsPreferredWordUpgradable(currentScore, newScore))
@@ -156,6 +191,45 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return false;
+        }
+
+        public bool IsUpgradeAllowed(QualityProfile qualityProfile, LanguageProfile languageProfile, List<QualityModel> currentQualities, List<Language> currentLanguages, QualityModel newQuality, Language newLanguage)
+        {
+            var isQualityUpgrade = IsQualityUpgradable(qualityProfile, currentQualities, newQuality);
+            var isLanguageUpgrade = IsLanguageUpgradable(languageProfile, currentLanguages, newLanguage);
+
+            return CheckUpgradeAllowed(qualityProfile, languageProfile, isQualityUpgrade, isLanguageUpgrade);
+        }
+
+        private bool CheckUpgradeAllowed (QualityProfile qualityProfile, LanguageProfile languageProfile, ProfileComparisonResult isQualityUpgrade, ProfileComparisonResult isLanguageUpgrade)
+        {
+            if (isQualityUpgrade == ProfileComparisonResult.Upgrade && qualityProfile.UpgradeAllowed ||
+                isLanguageUpgrade == ProfileComparisonResult.Upgrade && languageProfile.UpgradeAllowed)
+            {
+                _logger.Debug("At least one profile allows upgrading");
+                return true;
+            }
+
+            if (isQualityUpgrade == ProfileComparisonResult.Upgrade && !qualityProfile.UpgradeAllowed)
+            {
+                _logger.Debug("Quality profile does not allow upgrades, skipping");
+                return false;
+            }
+
+            if (isLanguageUpgrade == ProfileComparisonResult.Upgrade && !languageProfile.UpgradeAllowed)
+            {
+                _logger.Debug("Language profile does not allow upgrades, skipping");
+                return false;
+            }
+
+            return true;
+        }
+
+        private enum ProfileComparisonResult
+        {
+            Downgrade = -1,
+            Equal = 0,
+            Upgrade = 1
         }
     }
 }

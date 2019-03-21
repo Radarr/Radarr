@@ -7,6 +7,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Profiles.Releases;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -39,8 +40,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
-
-            var profile = subject.Artist.QualityProfile.Value;
+            var qualityProfile = subject.Artist.QualityProfile.Value;
+            var languageProfile = subject.Artist.LanguageProfile.Value;
 
             foreach (var album in subject.Albums)
             {
@@ -50,23 +51,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 if (!tracksMissing && trackFiles.Any())
                 {
-                    var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
+                    // Get a distinct list of all current track qualities and languages for a given album
+                    var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
+                    var currentLanguages = trackFiles.Select(c => c.Language).Distinct().ToList();
 
-                    _logger.Debug("Comparing file quality and language with report. Existing file is {0}", lowestQuality.Quality);
+                    _logger.Debug("Comparing file quality and language with report. Existing files contain {0} : {1}", currentQualities.ConcatToString(), currentLanguages.ConcatToString());
 
-                    if (!_upgradableSpecification.CutoffNotMet(profile,
-                                                               subject.Artist.LanguageProfile,
-                                                               lowestQuality,
-                                                               trackFiles[0].Language,
+                    if (!_upgradableSpecification.CutoffNotMet(qualityProfile,
+                                                               languageProfile,
+                                                               currentQualities,
+                                                               currentLanguages,
                                                                _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
                                                                subject.ParsedAlbumInfo.Quality,
                                                                subject.PreferredWordScore))
                     {
-                        _logger.Debug("Cutoff already met, rejecting.");
-                        var qualityCutoffIndex = profile.GetIndex(profile.Cutoff);
-                        var qualityCutoff = profile.Items[qualityCutoffIndex.Index];
+                        _logger.Debug("Cutoff already met by existing files, rejecting.");
 
-                        return Decision.Reject("Existing file meets cutoff: {0} - {1}", qualityCutoff, subject.Artist.LanguageProfile.Value.Cutoff);
+                        var qualityCutoffIndex = qualityProfile.GetIndex(qualityProfile.Cutoff);
+                        var qualityCutoff = qualityProfile.Items[qualityCutoffIndex.Index];
+
+                        return Decision.Reject("Existing files meets cutoff: {0} - {1}", qualityCutoff, languageProfile.Cutoff);
                     }
 
                 }

@@ -7,6 +7,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Test.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -30,7 +31,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                  Languages = LanguageFixture.GetDefaultLanguages(Language.English),
                  Cutoff = Language.English
              },
-             new QualityModel(Quality.MP3_192, new Revision(version: 2)), Language.English, NoPreferredWordScore).Should().BeTrue();
+             new List<QualityModel> { new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+             new List<Language> { Language.English }, NoPreferredWordScore).Should().BeTrue();
         }
 
         [Test]
@@ -47,7 +49,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Languages = LanguageFixture.GetDefaultLanguages(Language.English),
                 Cutoff = Language.English
             },
-            new QualityModel(Quality.MP3_256, new Revision(version: 2)), Language.English, NoPreferredWordScore).Should().BeFalse();
+            new List<QualityModel> { new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+            new List<Language> { Language.English }, NoPreferredWordScore).Should().BeFalse();
         }
 
         [Test]
@@ -65,7 +68,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Languages = LanguageFixture.GetDefaultLanguages(Language.English),
                 Cutoff = Language.English
             },
-            new QualityModel(Quality.MP3_320, new Revision(version: 2)), Language.English, NoPreferredWordScore).Should().BeFalse();
+            new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+            new List<Language> { Language.English }, NoPreferredWordScore).Should().BeFalse();
         }
 
         [Test]
@@ -83,8 +87,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Languages = LanguageFixture.GetDefaultLanguages(Language.English),
                 Cutoff = Language.English
             },
-            new QualityModel(Quality.MP3_320, new Revision(version: 1)),
-            Language.English,
+            new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 1)) },
+            new List<Language> { Language.English },
             NoPreferredWordScore,
             new QualityModel(Quality.MP3_320, new Revision(version: 2))).Should().BeTrue();
 
@@ -105,7 +109,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Languages = LanguageFixture.GetDefaultLanguages(Language.English),
                 Cutoff = Language.English
             },
-            new QualityModel(Quality.MP3_320, new Revision(version: 2)), Language.English,
+            new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+            new List<Language> { Language.English },
             NoPreferredWordScore,
             new QualityModel(Quality.FLAC, new Revision(version: 2))).Should().BeFalse();
         }
@@ -128,8 +133,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.CutoffNotMet(_profile,
                 _langProfile,
-                 new QualityModel(Quality.MP3_320, new Revision(version: 2)),
-                 Language.English,
+                 new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                 new List<Language> { Language.English },
                  NoPreferredWordScore,
                  new QualityModel(Quality.FLAC, new Revision(version: 2))).Should().BeTrue();
         }
@@ -153,8 +158,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
                 _profile,
                 _langProfile,
-                new QualityModel(Quality.MP3_320, new Revision(version: 2)),
-                Language.Spanish,
+                new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                new List<Language> { Language.Spanish },
                 NoPreferredWordScore,
                 new QualityModel(Quality.FLAC, new Revision(version: 2))).Should().BeFalse();
         }
@@ -178,8 +183,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
                 _profile,
                 _langProfile,
-                new QualityModel(Quality.MP3_320, new Revision(version: 2)),
-                Language.French,
+                new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                new List<Language> { Language.French },
                 NoPreferredWordScore,
                 new QualityModel(Quality.FLAC, new Revision(version: 2))).Should().BeFalse();
         }
@@ -203,8 +208,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
                 _profile,
                 _langProfile,
-                new QualityModel(Quality.MP3_256, new Revision(version: 2)),
-                Language.French,
+                new List<QualityModel> { new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                new List<Language> { Language.French },
                 NoPreferredWordScore,
                 new QualityModel(Quality.FLAC, new Revision(version: 2))).Should().BeTrue();
         }
@@ -228,8 +233,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
                 _profile,
                 _langProfile,
-                new QualityModel(Quality.MP3_256, new Revision(version: 2)),
-                Language.French, NoPreferredWordScore).Should().BeTrue();
+                new List<QualityModel> { new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                new List<Language> { Language.French },
+                NoPreferredWordScore).Should().BeTrue();
         }
 
         [Test]
@@ -250,8 +256,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
                 _profile,
                 _langProfile,
-                new QualityModel(Quality.MP3_320, new Revision(version: 2)),
-                Language.Spanish,
+                new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                new List<Language> { Language.Spanish },
                 NoPreferredWordScore,
                 new QualityModel(Quality.FLAC, new Revision(version: 2)),
                 10).Should().BeTrue();

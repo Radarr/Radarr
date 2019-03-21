@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Releases;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
@@ -59,8 +62,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     var cutoffUnmet = _upgradableSpecification.CutoffNotMet(
                         subject.Artist.QualityProfile,
                         subject.Artist.LanguageProfile,
-                        mostRecent.Quality,
-                        mostRecent.Language,
+                        new List<QualityModel> { mostRecent.Quality },
+                        new List<Language> { mostRecent.Language },
                         preferredWordScore,
                         subject.ParsedAlbumInfo.Quality,
                         subject.PreferredWordScore);
@@ -68,8 +71,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     var upgradeable = _upgradableSpecification.IsUpgradable(
                         subject.Artist.QualityProfile,
                         subject.Artist.LanguageProfile,
-                        mostRecent.Quality,
-                        mostRecent.Language,
+                        new List<QualityModel> { mostRecent.Quality },
+                        new List<Language> { mostRecent.Language },
                         preferredWordScore,
                         subject.ParsedAlbumInfo.Quality,
                         subject.ParsedAlbumInfo.Language,

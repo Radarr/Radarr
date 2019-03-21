@@ -69,11 +69,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
                     if (trackFiles.Any())
                     {
-                        var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
+                        var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
+                        var currentLanguages = trackFiles.Select(c => c.Language).Distinct().ToList();
+
                         var upgradable = _upgradableSpecification.IsUpgradable(qualityProfile,
                                                                                languageProfile,
-                                                                               lowestQuality,
-                                                                               trackFiles[0].Language,
+                                                                               currentQualities,
+                                                                               currentLanguages,
                                                                                _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
                                                                                subject.ParsedAlbumInfo.Quality,
                                                                                subject.ParsedAlbumInfo.Language,

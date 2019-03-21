@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenUpgradeForExistingFile()
         {
             Mocker.GetMock<IUpgradableSpecification>()
-                  .Setup(s => s.IsUpgradable(It.IsAny<QualityProfile>(), It.IsAny<LanguageProfile>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<int>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<int>()))
+                  .Setup(s => s.IsUpgradable(It.IsAny<QualityProfile>(), It.IsAny<LanguageProfile>(), It.IsAny<List<QualityModel>>(), It.IsAny<List<Language>>(), It.IsAny<int>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<int>()))
                   .Returns(true);
         }
 
