@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Artist _artist;
         private Album _album;
+        private Medium _medium;
         private AlbumRelease _release;
         private Track _track1;
         private TrackFile _trackFile;
@@ -35,16 +36,22 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     })
                     .Build();
 
-            _album = Builder<Album>
-                    .CreateNew()
-                    .With(s => s.Title = "Hybrid Theory")
-                    .With(s => s.AlbumType = "Album")
-                    .With(s => s.Disambiguation = "The Best Album")
-                    .Build();
+            _medium = Builder<Medium>
+                .CreateNew()
+                .With(m => m.Number = 3)
+                .Build();
 
             _release = Builder<AlbumRelease>
                 .CreateNew()
-                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .With(s => s.Media = new List<Medium> { _medium })
+                .With(s => s.Monitored = true)
+                .Build();
+
+            _album = Builder<Album>
+                .CreateNew()
+                .With(s => s.Title = "Hybrid Theory")
+                .With(s => s.AlbumType = "Album")
+                .With(s => s.Disambiguation = "The Best Album")
                 .Build();
 
 
@@ -59,6 +66,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                             .With(e => e.Title = "City Sushi")
                             .With(e => e.AbsoluteTrackNumber = 6)
                             .With(e => e.AlbumRelease = _release)
+                            .With(e => e.MediumNumber = _medium.Number)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
@@ -287,6 +295,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("01");
+        }
+
+        [Test]
+        public void should_replace_medium_number_with_single_digit()
+        {
+            _namingConfig.StandardTrackFormat = "{medium}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("3");
+        }
+
+        [Test]
+        public void should_replace_medium00_number_with_two_digits()
+        {
+            _namingConfig.StandardTrackFormat = "{medium:00}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("03");
         }
 
         [Test]
