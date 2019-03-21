@@ -138,7 +138,7 @@ namespace Lidarr.Api.V1.History
             {
                 int albumId = Convert.ToInt32(queryAlbumId.Value);
 
-                return _historyService.GetByAlbum(artistId, albumId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
+                return _historyService.GetByAlbum(albumId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
             }
 
             return _historyService.GetByArtist(artistId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();

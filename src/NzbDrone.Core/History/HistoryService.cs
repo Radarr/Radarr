@@ -24,7 +24,7 @@ namespace NzbDrone.Core.History
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
         List<History> GetByArtist(int artistId, HistoryEventType? eventType);
-        List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType);
+        List<History> GetByAlbum(int albumId, HistoryEventType? eventType);
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
@@ -75,9 +75,9 @@ namespace NzbDrone.Core.History
             return _historyRepository.GetByArtist(artistId, eventType);
         }
 
-        public List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType)
+        public List<History> GetByAlbum(int albumId, HistoryEventType? eventType)
         {
-            return _historyRepository.GetByAlbum(artistId, albumId, eventType);
+            return _historyRepository.GetByAlbum(albumId, eventType);
         }
 
         public List<History> Find(string downloadId, HistoryEventType eventType)

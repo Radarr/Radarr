@@ -225,6 +225,7 @@
     <Compile Include="DecisionEngine\DownloadDecisionComparer.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionMaker.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionPriorizationService.cs" />
+    <Compile Include="DecisionEngine\Specifications\AlreadyImportedSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
