@@ -11,6 +11,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Common.EnsureThat;
 
 namespace NzbDrone.Core.Music
 {
@@ -146,14 +147,23 @@ namespace NzbDrone.Core.Music
 
             var remoteReleases = albumInfo.AlbumReleases.Value.DistinctBy(m => m.ForeignReleaseId).ToList();
             var existingReleases = _releaseService.GetReleasesForRefresh(album.Id, remoteReleases.Select(x => x.ForeignReleaseId));
+            // Keep track of which existing release we want to end up monitored
+            var existingToMonitor = existingReleases.Where(x => x.Monitored).OrderByDescending(x => x.TrackCount).FirstOrDefault();
+
             var newReleaseList = new List<AlbumRelease>();
             var updateReleaseList = new List<AlbumRelease>();
-            var upToDateCount = 0;
+            var upToDateReleaseList = new List<AlbumRelease>();
 
             foreach (var release in remoteReleases)
             {
                 release.AlbumId = album.Id;
                 release.Album = album;
+
+                // force to unmonitored, then fix monitored one later
+                // once we have made sure that it's unique.  This make sure
+                // that we unmonitor anything in database that shouldn't be monitored.
+                release.Monitored = false;
+
                 var releaseToRefresh = existingReleases.SingleOrDefault(r => r.ForeignReleaseId == release.ForeignReleaseId);
 
                 if (releaseToRefresh != null)
@@ -163,7 +173,6 @@ namespace NzbDrone.Core.Music
                     // copy across the db keys and check for equality
                     release.Id = releaseToRefresh.Id;
                     release.AlbumId = releaseToRefresh.AlbumId;
-                    release.Monitored = releaseToRefresh.Monitored;
                     
                     if (!releaseToRefresh.Equals(release))
                     {
@@ -171,18 +180,38 @@ namespace NzbDrone.Core.Music
                     }
                     else
                     {
-                        upToDateCount++;
+                        upToDateReleaseList.Add(release);
                     }
                 }
                 else
                 {
-                    release.Monitored = false;
                     newReleaseList.Add(release);
                 }
+                
                 album.AlbumReleases.Value.Add(release);
             }
-
-            _logger.Debug($"{album} {upToDateCount} releases up to date; Deleting {existingReleases.Count}, Updating {updateReleaseList.Count}, Adding {newReleaseList.Count} releases.");
+            
+            var refreshedToMonitor = remoteReleases.SingleOrDefault(x => x.ForeignReleaseId == existingToMonitor?.ForeignReleaseId) ??
+                remoteReleases.OrderByDescending(x => x.TrackCount).First();
+            refreshedToMonitor.Monitored = true;
+            
+            if (upToDateReleaseList.Contains(refreshedToMonitor))
+            {
+                // we weren't going to update, but have changed monitored so now need to
+                upToDateReleaseList.Remove(refreshedToMonitor);
+                updateReleaseList.Add(refreshedToMonitor);
+            }
+            else if (updateReleaseList.Contains(refreshedToMonitor) && refreshedToMonitor.Equals(existingToMonitor))
+            {
+                // we were going to update because Monitored was incorrect but now it matches
+                // and so no need to update
+                updateReleaseList.Remove(refreshedToMonitor);
+                upToDateReleaseList.Add(refreshedToMonitor);
+            }
+            
+            Ensure.That(album.AlbumReleases.Value.Count(x => x.Monitored) == 1).IsTrue();
+            
+            _logger.Debug($"{album} {upToDateReleaseList.Count} releases up to date; Deleting {existingReleases.Count}, Updating {updateReleaseList.Count}, Adding {newReleaseList.Count} releases.");
 
             // before deleting anything, remove musicbrainz ids for things we are deleting
             _audioTagService.RemoveMusicBrainzTags(existingReleases);
@@ -191,13 +220,6 @@ namespace NzbDrone.Core.Music
             _releaseService.UpdateMany(updateReleaseList);
             _releaseService.InsertMany(newReleaseList);
 
-            if (album.AlbumReleases.Value.Count(x => x.Monitored) == 0)
-            {
-                var toMonitor = album.AlbumReleases.Value.OrderByDescending(x => x.TrackCount).First();
-                toMonitor.Monitored = true;
-                _releaseService.UpdateMany(new List<AlbumRelease> { toMonitor });
-            }
-
             // if we have updated a monitored release, refresh all file tags
             forceUpdateFileTags |= updateReleaseList.Any(x => x.Monitored);
 
@@ -205,7 +227,6 @@ namespace NzbDrone.Core.Music
             _albumService.UpdateMany(new List<Album>{album});
 
             _logger.Debug("Finished album refresh for {0}", album.Title);
-
         }
 
         public void Execute(RefreshAlbumCommand message)

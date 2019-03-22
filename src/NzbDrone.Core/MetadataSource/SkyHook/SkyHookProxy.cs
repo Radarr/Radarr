@@ -311,7 +311,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             if (resource.Releases != null)
             {
                 album.AlbumReleases = resource.Releases.Select(x => MapRelease(x, artistDict)).ToList();
-                album.AlbumReleases.Value.OrderByDescending(x => x.TrackCount).First().Monitored = true;
             }
 
             album.AnyReleaseOk = true;

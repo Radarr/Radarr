@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbumsByArtist(int artistId);
         List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId);
         List<Album> GetAlbumsForRefresh(int artistMetadataId, IEnumerable<string> foreignIds);
-        Album AddAlbum(Album newAlbum, string albumArtistId);
+        Album AddAlbum(Album newAlbum);
         Album FindById(string foreignId);
         Album FindByTitle(int artistId, string title);
         Album FindByTitleInexact(int artistId, string title);
@@ -44,41 +44,22 @@ namespace NzbDrone.Core.Music
                                 IHandle<ArtistDeletedEvent>
     {
         private readonly IAlbumRepository _albumRepository;
-        private readonly IReleaseRepository _releaseRepository;
-        private readonly IArtistMetadataRepository _artistMetadataRepository;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ITrackService _trackService;
         private readonly Logger _logger;
 
         public AlbumService(IAlbumRepository albumRepository,
-                            IReleaseRepository releaseRepository,
-                            IArtistMetadataRepository artistMetadataRepository,
                             IEventAggregator eventAggregator,
-                            ITrackService trackService,
                             Logger logger)
         {
             _albumRepository = albumRepository;
-            _releaseRepository = releaseRepository;
-            _artistMetadataRepository = artistMetadataRepository;
             _eventAggregator = eventAggregator;
-            _trackService = trackService;
             _logger = logger;
         }
 
-        public Album AddAlbum(Album newAlbum, string albumArtistId)
+        public Album AddAlbum(Album newAlbum)
         {
             _albumRepository.Insert(newAlbum);
-            
-            foreach (var release in newAlbum.AlbumReleases.Value)
-            {
-                release.AlbumId = newAlbum.Id;
-            }
-            _releaseRepository.InsertMany(newAlbum.AlbumReleases.Value);
-            
-            newAlbum.ArtistMetadata = _artistMetadataRepository.FindById(albumArtistId);
-            newAlbum.ArtistMetadataId = newAlbum.ArtistMetadata.Value.Id;
-            
-            _albumRepository.Update(newAlbum);
+
             //_eventAggregator.PublishEvent(new AlbumAddedEvent(GetAlbum(newAlbum.Id)));
 
             return newAlbum;

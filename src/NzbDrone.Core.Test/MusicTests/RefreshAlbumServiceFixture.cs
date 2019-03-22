@@ -143,12 +143,235 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_remove_items_from_list()
+        public void should_not_add_duplicate_releases()
         {
-            var releases = Builder<AlbumRelease>.CreateListOfSize(2).Build();
-            var release = releases[0];
-            releases.Remove(release);
-            releases.Should().HaveCount(1);
+            var newAlbum = Builder<Album>.CreateNew().Build();
+            // this is required because RefreshAlbumInfo will edit the album passed in
+            var albumCopy = Builder<Album>.CreateNew().Build();
+
+            var releases = Builder<AlbumRelease>.CreateListOfSize(10)
+                .All()
+                .With(x => x.AlbumId = newAlbum.Id)
+                .With(x => x.Monitored = true)
+                .TheFirst(4)
+                .With(x => x.ForeignReleaseId = "DuplicateId1")
+                .TheLast(1)
+                .With(x => x.ForeignReleaseId = "DuplicateId2")
+                .Build() as List<AlbumRelease>;
+
+            newAlbum.AlbumReleases = releases;
+            albumCopy.AlbumReleases = releases;
+
+            var existingReleases = Builder<AlbumRelease>.CreateListOfSize(1)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "DuplicateId2")
+                .With(x => x.Monitored = true)
+                .Build() as List<AlbumRelease>;
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(x => x.GetReleasesForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
+                .Returns(existingReleases);
+
+            Mocker.GetMock<IProvideAlbumInfo>()
+                .Setup(x => x.GetAlbumInfo(It.IsAny<string>()))
+                .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
+
+            Subject.RefreshAlbumInfo(newAlbum, false);
+            
+            newAlbum.AlbumReleases.Value.Should().HaveCount(7);
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.DeleteMany(It.Is<List<AlbumRelease>>(l => l.Count == 0)), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.UpdateMany(It.Is<List<AlbumRelease>>(l => l.Count == 1 && l.Select(r => r.ForeignReleaseId).Distinct().Count() == 1)), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.InsertMany(It.Is<List<AlbumRelease>>(l => l.Count == 6 &&
+                                                                    l.Select(r => r.ForeignReleaseId).Distinct().Count() == l.Count &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("DuplicateId2"))),
+                        Times.Once());
+        }
+        
+        [TestCase(true, true, 1)]
+        [TestCase(true, false, 0)]
+        [TestCase(false, true, 1)]
+        [TestCase(false, false, 0)]
+        public void should_only_leave_one_release_monitored(bool skyhookMonitored, bool existingMonitored, int expectedUpdates)
+        {
+            var newAlbum = Builder<Album>.CreateNew().Build();
+            // this is required because RefreshAlbumInfo will edit the album passed in
+            var albumCopy = Builder<Album>.CreateNew().Build();
+
+            var releases = Builder<AlbumRelease>.CreateListOfSize(10)
+                .All()
+                .With(x => x.AlbumId = newAlbum.Id)
+                .With(x => x.Monitored = skyhookMonitored)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "ExistingId2")
+                .Build() as List<AlbumRelease>;
+
+            newAlbum.AlbumReleases = releases;
+            albumCopy.AlbumReleases = releases;
+
+            var existingReleases = Builder<AlbumRelease>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Monitored = existingMonitored)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "ExistingId2")
+                .Build() as List<AlbumRelease>;
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(x => x.GetReleasesForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
+                .Returns(existingReleases);
+
+            Mocker.GetMock<IProvideAlbumInfo>()
+                .Setup(x => x.GetAlbumInfo(It.IsAny<string>()))
+                .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
+
+            Subject.RefreshAlbumInfo(newAlbum, false);
+            
+            newAlbum.AlbumReleases.Value.Should().HaveCount(10);
+            newAlbum.AlbumReleases.Value.Where(x => x.Monitored).Should().HaveCount(1);
+            
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.DeleteMany(It.Is<List<AlbumRelease>>(l => l.Count == 0)), Times.Once());
+            
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.UpdateMany(It.Is<List<AlbumRelease>>(l => l.Count == expectedUpdates && l.Select(r => r.ForeignReleaseId).Distinct().Count() == expectedUpdates)), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.InsertMany(It.Is<List<AlbumRelease>>(l => l.Count == 8 &&
+                                                                    l.Select(r => r.ForeignReleaseId).Distinct().Count() == l.Count &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId1") &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId2"))),
+                        Times.Once());
+        }
+
+        [Test]
+        public void refreshing_album_should_not_change_monitored_release_if_monitored_release_not_deleted()
+        {
+            var newAlbum = Builder<Album>.CreateNew().Build();
+            // this is required because RefreshAlbumInfo will edit the album passed in
+            var albumCopy = Builder<Album>.CreateNew().Build();
+
+            // only ExistingId1 is monitored from dummy skyhook
+            var releases = Builder<AlbumRelease>.CreateListOfSize(10)
+                .All()
+                .With(x => x.AlbumId = newAlbum.Id)
+                .With(x => x.Monitored = false)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .With(x => x.Monitored = true)
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "ExistingId2")
+                .Build() as List<AlbumRelease>;
+
+            newAlbum.AlbumReleases = releases;
+            albumCopy.AlbumReleases = releases;
+
+            // ExistingId2 is monitored in DB
+            var existingReleases = Builder<AlbumRelease>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Monitored = false)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "ExistingId2")
+                .With(x => x.Monitored = true)
+                .Build() as List<AlbumRelease>;
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(x => x.GetReleasesForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
+                .Returns(existingReleases);
+
+            Mocker.GetMock<IProvideAlbumInfo>()
+                .Setup(x => x.GetAlbumInfo(It.IsAny<string>()))
+                .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
+
+            Subject.RefreshAlbumInfo(newAlbum, false);
+
+            newAlbum.AlbumReleases.Value.Should().HaveCount(10);
+            newAlbum.AlbumReleases.Value.Where(x => x.Monitored).Should().HaveCount(1);
+            newAlbum.AlbumReleases.Value.Single(x => x.Monitored).ForeignReleaseId.Should().Be("ExistingId2");
+            
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.DeleteMany(It.Is<List<AlbumRelease>>(l => l.Count == 0)), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.UpdateMany(It.Is<List<AlbumRelease>>(l => l.Count == 0)), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.InsertMany(It.Is<List<AlbumRelease>>(l => l.Count == 8 &&
+                                                                    l.Select(r => r.ForeignReleaseId).Distinct().Count() == l.Count &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId1") &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId2"))),
+                        Times.Once());
+        }
+        
+        [Test]
+        public void refreshing_album_should_change_monitored_release_if_monitored_release_deleted()
+        {
+            var newAlbum = Builder<Album>.CreateNew().Build();
+            // this is required because RefreshAlbumInfo will edit the album passed in
+            var albumCopy = Builder<Album>.CreateNew().Build();
+            
+            // Only existingId1 monitored in skyhook.  ExistingId2 is missing
+            var releases = Builder<AlbumRelease>.CreateListOfSize(10)
+                .All()
+                .With(x => x.AlbumId = newAlbum.Id)
+                .With(x => x.Monitored = false)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .With(x => x.Monitored = true)
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "NotExistingId2")
+                .Build() as List<AlbumRelease>;
+
+            newAlbum.AlbumReleases = releases;
+            albumCopy.AlbumReleases = releases;
+
+            // ExistingId2 is monitored but will be deleted
+            var existingReleases = Builder<AlbumRelease>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Monitored = false)
+                .TheFirst(1)
+                .With(x => x.ForeignReleaseId = "ExistingId1")
+                .TheNext(1)
+                .With(x => x.ForeignReleaseId = "ExistingId2")
+                .With(x => x.Monitored = true)
+                .Build() as List<AlbumRelease>;
+
+            Mocker.GetMock<IReleaseService>()
+                .Setup(x => x.GetReleasesForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
+                .Returns(existingReleases);
+
+            Mocker.GetMock<IProvideAlbumInfo>()
+                .Setup(x => x.GetAlbumInfo(It.IsAny<string>()))
+                .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
+
+            Subject.RefreshAlbumInfo(newAlbum, false);
+
+            newAlbum.AlbumReleases.Value.Should().HaveCount(10);
+            newAlbum.AlbumReleases.Value.Where(x => x.Monitored).Should().HaveCount(1);
+            newAlbum.AlbumReleases.Value.Single(x => x.Monitored).ForeignReleaseId.Should().NotBe("ExistingId2");
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.DeleteMany(It.Is<List<AlbumRelease>>(l => l.Single().ForeignReleaseId == "ExistingId2")), Times.Once());
+
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.UpdateMany(It.Is<List<AlbumRelease>>(l => l.Count == 0)), Times.Once());
+            
+            Mocker.GetMock<IReleaseService>()
+                .Verify(x => x.InsertMany(It.Is<List<AlbumRelease>>(l => l.Count == 9 &&
+                                                                    l.Select(r => r.ForeignReleaseId).Distinct().Count() == l.Count &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId1") &&
+                                                                    !l.Select(r => r.ForeignReleaseId).Contains("ExistingId2"))),
+                        Times.Once());
         }
     }
 }
