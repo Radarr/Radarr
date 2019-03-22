@@ -79,6 +79,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 request.AddFormParameter("category", settings.MovieCategory);
             }
+            
+            if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
+            {
+                request.AddFormParameter("paused", true);
+            }
 
             var result = ProcessRequest(request, settings);
 
@@ -98,6 +103,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             if (settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
                 request.AddFormParameter("category", settings.MovieCategory);
+            }
+            
+            if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
+            {
+                request.AddFormParameter("paused", true);
             }
 
             var result = ProcessRequest(request, settings);
