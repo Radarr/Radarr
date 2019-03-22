@@ -23,12 +23,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         public override string Link => "https://www.plex.tv/";
         public override string Name => "Plex Media Server";
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            UpdateIfEnabled(message.Artist);
-        }
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             UpdateIfEnabled(message.Artist);
         }
@@ -36,6 +31,11 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         public override void OnRename(Artist artist)
         {
             UpdateIfEnabled(artist);
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            UpdateIfEnabled(message.Artist);
         }
 
         private void UpdateIfEnabled(Artist artist)

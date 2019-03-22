@@ -10,15 +10,19 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.HealthCheck;
+using System.IO;
 
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
         : IHandle<AlbumGrabbedEvent>,
-          IHandle<TrackImportedEvent>,
           IHandle<AlbumImportedEvent>,
-          IHandle<ArtistRenamedEvent>
+          IHandle<ArtistRenamedEvent>,
+          IHandle<HealthCheckFailedEvent>,
+          IHandle<DownloadFailedEvent>,
+          IHandle<AlbumImportIncompleteEvent>,
+          IHandle<TrackFileRetaggedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -47,30 +51,31 @@ namespace NzbDrone.Core.Notifications
                                     qualityString);
         }
 
-        private string GetTrackMessage(Artist artist, List<Track> tracks, QualityModel quality)
-        {
-            var qualityString = quality.Quality.ToString();
-
-            if (quality.Revision.Version > 1)
-            {
-                qualityString += " Proper";
-            }
-
-
-            var trackTitles = string.Join(" + ", tracks.Select(e => e.Title));
-
-            return string.Format("{0} - {1} - [{2}]",
-                                    artist.Name,
-                                    trackTitles,
-                                    qualityString);
-        }
-
         private string GetAlbumDownloadMessage(Artist artist, Album album, List<TrackFile> tracks)
         {
             return string.Format("{0} - {1} ({2} Tracks Imported)",
                 artist.Name,
                 album.Title,
                 tracks.Count);
+        }
+
+        private string GetAlbumIncompleteImportMessage(string source)
+        {
+            return string.Format("Lidarr failed to Import all tracks for {0}",
+                source);
+        }
+
+        private string FormatMissing(object value)
+        {
+            var text = value?.ToString();
+            return text.IsNullOrWhiteSpace() ? "<missing>" : text;
+        }
+
+        private string GetTrackRetagMessage(Artist artist, TrackFile trackFile, Dictionary<string, Tuple<string, string>> diff)
+        {
+            return string.Format("{0}:\n{1}",
+                                 Path.Combine(artist.Path, trackFile.RelativePath),
+                                 string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
         }
 
         private bool ShouldHandleArtist(ProviderDefinition definition, Artist artist)
@@ -89,6 +94,21 @@ namespace NzbDrone.Core.Notifications
 
             //TODO: this message could be more clear
             _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent.", definition.Name, artist.Name);
+            return false;
+        }
+
+        private bool ShouldHandleHealthFailure(HealthCheck.HealthCheck healthCheck, bool includeWarnings)
+        {
+            if (healthCheck.Type == HealthCheckResult.Error)
+            {
+                return true;
+            }
+
+            if (healthCheck.Type == HealthCheckResult.Warning && includeWarnings)
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -119,47 +139,6 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(TrackImportedEvent message)
-        {
-            if (!message.NewDownload)
-            {
-                return;
-            }
-
-            var downloadMessage = new TrackDownloadMessage
-
-            {
-                Message = GetTrackMessage(message.TrackInfo.Artist, message.TrackInfo.Tracks, message.TrackInfo.Quality),
-                Artist = message.TrackInfo.Artist,
-                Album = message.TrackInfo.Album,
-                Release = message.TrackInfo.Release,
-                TrackFile = message.ImportedTrack,
-                OldFiles = message.OldFiles,
-                SourcePath = message.TrackInfo.Path,
-                DownloadClient = message.DownloadClient,
-                DownloadId = message.DownloadId
-            };
-
-            foreach (var notification in _notificationFactory.OnDownloadEnabled())
-            {
-                try
-                {
-                    if (ShouldHandleArtist(notification.Definition, message.TrackInfo.Artist))
-                    {
-                        if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
-                        {
-                            notification.OnDownload(downloadMessage);
-                        }
-                    }
-                }
-
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
-                }
-            }
-        }
-
         public void Handle(AlbumImportedEvent message)
         {
             if (!message.NewDownload)
@@ -180,19 +159,22 @@ namespace NzbDrone.Core.Notifications
                 OldFiles = message.OldFiles,
             };
 
-            foreach (var notification in _notificationFactory.OnAlbumDownloadEnabled())
+            foreach (var notification in _notificationFactory.OnReleaseImportEnabled())
             {
                 try
                 {
                     if (ShouldHandleArtist(notification.Definition, message.Artist))
                     {
-                        notification.OnAlbumDownload(downloadMessage);
+                        if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
+                        {
+                            notification.OnReleaseImport(downloadMessage);
+                        }
                     }
                 }
 
                 catch (Exception ex)
                 {
-                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                    _logger.Warn(ex, "Unable to send OnReleaseImport notification to: " + notification.Definition.Name);
                 }
             }
         }
@@ -212,6 +194,86 @@ namespace NzbDrone.Core.Notifications
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(HealthCheckFailedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnHealthIssueEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
+                    {
+                        notification.OnHealthIssue(message.HealthCheck);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(DownloadFailedEvent message)
+        {
+            var downloadFailedMessage = new DownloadFailedMessage
+            {
+                DownloadId = message.DownloadId,
+                DownloadClient = message.DownloadClient,
+                Quality = message.Quality,
+                Language = message.Language,
+                SourceTitle = message.SourceTitle,
+                Message = message.Message
+                
+            };
+
+            foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                {
+                    notification.OnDownloadFailure(downloadFailedMessage);
+                }
+            }
+        }
+
+        public void Handle(AlbumImportIncompleteEvent message)
+        {
+            // TODO: Build out this message so that we can pass on what failed and what was successful
+            var downloadMessage = new AlbumDownloadMessage
+            {
+                Message = GetAlbumIncompleteImportMessage(message.TrackedDownload.RemoteAlbum.Release.Title),
+            };
+
+            foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                {
+                    notification.OnImportFailure(downloadMessage);
+                }
+            }
+        }
+
+        public void Handle(TrackFileRetaggedEvent message)
+        {
+            var retagMessage = new TrackRetagMessage
+            {
+                Message = GetTrackRetagMessage(message.Artist, message.TrackFile, message.Diff),
+                Artist = message.Artist,
+                Album = message.TrackFile.Album,
+                Release = message.TrackFile.Tracks.Value.First().AlbumRelease.Value,
+                TrackFile = message.TrackFile,
+                Diff = message.Diff,
+                Scrubbed = message.Scrubbed
+            };
+
+            foreach (var notification in _notificationFactory.OnTrackRetagEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.Artist))
+                {
+                    notification.OnTrackRetag(retagMessage);
                 }
             }
         }

@@ -28,14 +28,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             Notify(Settings, header, grabMessage.Message);
         }
 
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
-        {
-            const string header = "Lidarr - Downloaded";
-
-            Notify(Settings, header, message.Message);
-        }
-
-        public override void OnDownload(TrackDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             const string header = "Lidarr - Downloaded";
 
@@ -48,13 +41,23 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateAndClean(artist);
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            UpdateAndClean(message.Artist);
+        }
+
         public override string Name => "Kodi (XBMC)";
 
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
 
-            failures.AddIfNotNull(_xbmcService.Test(Settings, "Success! XBMC has been successfully configured!"));
+            failures.AddIfNotNull(_xbmcService.Test(Settings, "Success! Kodi has been successfully configured!"));
 
             return new ValidationResult(failures);
         }
@@ -70,7 +73,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (SocketException ex)
             {
-                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
+                var logMessage = string.Format("Unable to connect to Kodi Host: {0}:{1}", Settings.Host, Settings.Port);
                 _logger.Debug(ex, logMessage);
             }
         }
@@ -91,7 +94,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (SocketException ex)
             {
-                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
+                var logMessage = string.Format("Unable to connect to Kodi Host: {0}:{1}", Settings.Host, Settings.Port);
                 _logger.Debug(ex, logMessage);
             }
         }

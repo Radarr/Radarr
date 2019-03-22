@@ -2,53 +2,51 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Notifications.Slack.Payloads;
-using NzbDrone.Core.Rest;
+using NzbDrone.Core.Notifications.Discord.Payloads;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation;
 
-
-namespace NzbDrone.Core.Notifications.Slack
+namespace NzbDrone.Core.Notifications.Discord
 {
-    public class Slack : NotificationBase<SlackSettings>
+    public class Discord : NotificationBase<DiscordSettings>
     {
-        private readonly ISlackProxy _proxy;
+        private readonly IDiscordProxy _proxy;
 
-        public Slack(ISlackProxy proxy)
+        public Discord(IDiscordProxy proxy)
         {
             _proxy = proxy;
         }
 
-        public override string Name => "Slack";
-        public override string Link => "https://my.slack.com/services/new/incoming-webhook/";
+        public override string Name => "Discord";
+        public override string Link => "https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks";
 
         public override void OnGrab(GrabMessage message)
         {
-            var attachments = new List<Attachment>
+            var embeds = new List<Embed>
                               {
-                                  new Attachment
+                                  new Embed
                                   {
-                                      Fallback = message.Message,
+                                      Description = message.Message,
                                       Title = message.Artist.Name,
                                       Text = message.Message,
-                                      Color = "warning"
+                                      Color = (int)DiscordColors.Warning
                                   }
                               };
-            var payload = CreatePayload($"Grabbed: {message.Message}", attachments);
+            var payload = CreatePayload($"Grabbed: {message.Message}", embeds);
 
             _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
             {
-                new Attachment
+                new Embed
                 {
-                    Fallback = message.Message,
+                    Description = message.Message,
                     Title = message.Artist.Name,
                     Text = message.Message,
-                    Color = "good"
+                    Color = (int)DiscordColors.Success
                 }
             };
             var payload = CreatePayload($"Imported: {message.Message}", attachments);
@@ -58,9 +56,9 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnRename(Artist artist)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
                               {
-                                  new Attachment
+                                  new Embed
                                   {
                                       Title = artist.Name,
                                   }
@@ -73,13 +71,13 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
                               {
-                                  new Attachment
+                                  new Embed
                                   {
                                       Title = healthCheck.Source.Name,
                                       Text = healthCheck.Message,
-                                      Color = healthCheck.Type == HealthCheck.HealthCheckResult.Warning ? "warning" : "danger"
+                                      Color = healthCheck.Type == HealthCheck.HealthCheckResult.Warning ? (int)DiscordColors.Warning : (int)DiscordColors.Danger
                                   }
                               };
 
@@ -90,30 +88,30 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnTrackRetag(TrackRetagMessage message)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
                               {
-                                  new Attachment
+                                  new Embed
                                   {
                                       Title = TRACK_RETAGGED_TITLE,
                                       Text = message.Message
                                   }
                               };
 
-            var payload = CreatePayload(TRACK_RETAGGED_TITLE, attachments);
+            var payload = CreatePayload($"Track file tags updated: {message.Message}", attachments);
 
             _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnDownloadFailure(DownloadFailedMessage message)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
             {
-                new Attachment
+                new Embed
                 {
-                    Fallback = message.Message,
+                    Description = message.Message,
                     Title = message.SourceTitle,
                     Text = message.Message,
-                    Color = "danger"
+                    Color = (int)DiscordColors.Danger
                 }
             };
             var payload = CreatePayload($"Download Failed: {message.Message}", attachments);
@@ -123,14 +121,14 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnImportFailure(AlbumDownloadMessage message)
         {
-            var attachments = new List<Attachment>
+            var attachments = new List<Embed>
             {
-                new Attachment
+                new Embed
                 {
-                    Fallback = message.Message,
+                    Description = message.Message,
                     Title = message.Album.Title,
                     Text = message.Message,
-                    Color = "warning"
+                    Color = (int)DiscordColors.Warning
                 }
             };
             var payload = CreatePayload($"Import Failed: {message.Message}", attachments);
@@ -157,7 +155,7 @@ namespace NzbDrone.Core.Notifications.Slack
                 _proxy.SendPayload(payload, Settings);
 
             }
-            catch (SlackExeption ex)
+            catch (DiscordException ex)
             {
                 return new NzbDroneValidationFailure("Unable to post", ex.Message);
             }
@@ -165,34 +163,25 @@ namespace NzbDrone.Core.Notifications.Slack
             return null;
         }
 
-        private SlackPayload CreatePayload(string message, List<Attachment> attachments = null)
+        private DiscordPayload CreatePayload(string message, List<Embed> embeds = null)
         {
-            var icon = Settings.Icon;
-            var channel = Settings.Channel;
+            var avatar = Settings.Avatar;
 
-            var payload = new SlackPayload
+            var payload = new DiscordPayload
             {
                 Username = Settings.Username,
-                Text = message,
-                Attachments = attachments
+                Content = message,
+                Embeds = embeds
             };
 
-            if (icon.IsNotNullOrWhiteSpace())
+            if (avatar.IsNotNullOrWhiteSpace())
             {
-                // Set the correct icon based on the value
-                if (icon.StartsWith(":") && icon.EndsWith(":"))
-                {
-                    payload.IconEmoji = icon;
-                }
-                else
-                {
-                    payload.IconUrl = icon;
-                }
+                payload.AvatarUrl = avatar;
             }
 
-            if (channel.IsNotNullOrWhiteSpace())
+            if (Settings.Username.IsNotNullOrWhiteSpace())
             {
-                payload.Channel = channel;
+                payload.Username = Settings.Username;
             }
 
             return payload;

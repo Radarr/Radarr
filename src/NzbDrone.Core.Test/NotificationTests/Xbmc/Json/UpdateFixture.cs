@@ -24,10 +24,12 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
                                              .Build();
 
             _xbmcArtist = Builder<KodiArtist>.CreateListOfSize(3)
-                                         .TheFirst(1)
-                                         .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString()})
-                                         .Build()
-                                         .ToList();
+                .TheFirst(1)
+                .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString()})
+                .TheNext(2)
+                .With(s => s.MusicbrainzArtistId = new List<string>())
+                .Build()
+                .ToList();
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Setup(s => s.GetArtist(_settings))

@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_remove_old_episodes_on_upgrade()
         {
-            Subject.OnAlbumDownload(_upgrade);
+            Subject.OnReleaseImport(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.DeleteFile(@"C:\Test\file1.S01E01.mkv".AsOsAgnostic()), Times.Once());
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_add_new_episode_on_upgrade()
         {
-            Subject.OnAlbumDownload(_upgrade);
+            Subject.OnReleaseImport(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.AddFile(@"C:\Test\file1.S01E01E02.mkv".AsOsAgnostic()), Times.Once());

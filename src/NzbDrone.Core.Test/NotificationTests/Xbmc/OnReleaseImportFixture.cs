@@ -12,9 +12,9 @@ using NzbDrone.Core.Music;
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
     [TestFixture]
-    public class OnDownloadFixture : CoreTest<Notifications.Xbmc.Xbmc>
+    public class OnReleaseImportFixture : CoreTest<Notifications.Xbmc.Xbmc>
     {
-        private TrackDownloadMessage _trackDownloadMessage;
+        private AlbumDownloadMessage _albumDownloadMessage;
         
         [SetUp]
         public void Setup()
@@ -25,11 +25,11 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             var trackFile = Builder<TrackFile>.CreateNew()
                                                    .Build();
 
-            _trackDownloadMessage = Builder<TrackDownloadMessage>.CreateNew()
-                                                       .With(d => d.Artist = artist)
-                                                       .With(d => d.TrackFile = trackFile)
-                                                       .With(d => d.OldFiles = new List<TrackFile>())
-                                                       .Build();
+            _albumDownloadMessage = Builder<AlbumDownloadMessage>.CreateNew()
+                .With(d => d.Artist = artist)
+                .With(d => d.TrackFiles = new List<TrackFile> { trackFile })
+                .With(d => d.OldFiles = new List<TrackFile>())
+                .Build();
 
             Subject.Definition = new NotificationDefinition();
             Subject.Definition.Settings = new XbmcSettings
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
         private void GivenOldFiles()
         {
-            _trackDownloadMessage.OldFiles = Builder<TrackFile>.CreateListOfSize(1)
+            _albumDownloadMessage.OldFiles = Builder<TrackFile>.CreateListOfSize(1)
                                                             .Build()
                                                             .ToList();
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         [Test]
         public void should_not_clean_if_no_episode_was_replaced()
         {
-            Subject.OnDownload(_trackDownloadMessage);
+            Subject.OnReleaseImport(_albumDownloadMessage);
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Never());
         }
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         public void should_clean_if_episode_was_replaced()
         {
             GivenOldFiles();
-            Subject.OnDownload(_trackDownloadMessage);
+            Subject.OnReleaseImport(_albumDownloadMessage);
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Once());
         }

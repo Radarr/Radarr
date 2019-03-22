@@ -30,7 +30,6 @@ using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.Extras.Metadata;
@@ -73,10 +72,13 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)
-                  .Ignore(i => i.SupportsOnDownload)
-                  .Ignore(i => i.SupportsOnAlbumDownload)
+                  .Ignore(i => i.SupportsOnReleaseImport)
                   .Ignore(i => i.SupportsOnUpgrade)
-                  .Ignore(i => i.SupportsOnRename);
+                  .Ignore(i => i.SupportsOnRename)
+                  .Ignore(i => i.SupportsOnHealthIssue)
+                  .Ignore(i => i.SupportsOnDownloadFailure)
+                  .Ignore(i => i.SupportsOnImportFailure)
+                  .Ignore(i => i.SupportsOnTrackRetag);
             
             Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata")
                   .Ignore(d => d.Tags);

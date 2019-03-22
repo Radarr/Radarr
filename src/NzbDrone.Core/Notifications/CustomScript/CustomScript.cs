@@ -6,6 +6,7 @@ using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Processes;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation;
 
@@ -55,52 +56,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            var artist = message.Artist;
-            var album = message.Album;
-            var release = message.Release;
-            var trackFile = message.TrackFile;
-            var sourcePath = message.SourcePath;
-            var environmentVariables = new StringDictionary();
-
-            environmentVariables.Add("Lidarr_EventType", "Download");
-            environmentVariables.Add("Lidarr_IsUpgrade", message.OldFiles.Any().ToString());
-            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
-            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
-            environmentVariables.Add("Lidarr_Album_Title", album.Title);
-            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
-            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
-            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_RelativePath", trackFile.RelativePath);
-            environmentVariables.Add("Lidarr_TrackFile_Path", Path.Combine(artist.Path, trackFile.RelativePath));
-            environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
-            environmentVariables.Add("Lidarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
-            environmentVariables.Add("Lidarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
-            environmentVariables.Add("Lidarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_ReleaseGroup", trackFile.ReleaseGroup ?? string.Empty);
-            environmentVariables.Add("Lidarr_TrackFile_SceneName", trackFile.SceneName ?? string.Empty);
-            environmentVariables.Add("Lidarr_TrackFile_SourcePath", sourcePath);
-            environmentVariables.Add("Lidarr_TrackFile_SourceFolder", Path.GetDirectoryName(sourcePath));
-            environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
-            environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
-
-            if (message.OldFiles.Any())
-            {
-                environmentVariables.Add("Lidarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
-                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
-            }
-
-            ExecuteScript(environmentVariables);
-        }
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             var artist = message.Artist;
             var album = message.Album;
@@ -150,6 +106,53 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            var artist = message.Artist;
+            var album = message.Album;
+            var release = message.Release;
+            var trackFile = message.TrackFile;
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Lidarr_EventType", "TrackRetag");
+            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
+            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
+            environmentVariables.Add("Lidarr_Album_Title", album.Title);
+            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
+            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
+            environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
+            environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
+            environmentVariables.Add("Lidarr_TrackFile_RelativePath", trackFile.RelativePath);
+            environmentVariables.Add("Lidarr_TrackFile_Path", Path.Combine(artist.Path, trackFile.RelativePath));
+            environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
+            environmentVariables.Add("Lidarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
+            environmentVariables.Add("Lidarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
+            environmentVariables.Add("Lidarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Lidarr_TrackFile_ReleaseGroup", trackFile.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Lidarr_TrackFile_SceneName", trackFile.SceneName ?? string.Empty);
+            environmentVariables.Add("Lidarr_Tags_Diff", message.Diff.ToJson());
+            environmentVariables.Add("Lidarr_Tags_Scrubbed", message.Scrubbed.ToString());
+
+            ExecuteScript(environmentVariables);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Lidarr_EventType", "HealthIssue");
+            environmentVariables.Add("Lidarr_Health_Issue_Level", nameof(healthCheck.Type));
+            environmentVariables.Add("Lidarr_Health_Issue_Message", healthCheck.Message);
+            environmentVariables.Add("Lidarr_Health_Issue_Type", healthCheck.Source.Name);
+            environmentVariables.Add("Lidarr_Health_Issue_Wiki", healthCheck.WikiUrl.ToString() ?? string.Empty);
+
+            ExecuteScript(environmentVariables);
+        }
 
         public override ValidationResult Test()
         {

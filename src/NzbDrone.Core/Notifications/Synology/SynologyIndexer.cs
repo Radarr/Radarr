@@ -20,8 +20,7 @@ namespace NzbDrone.Core.Notifications.Synology
         public override string Link => "https://www.synology.com";
         public override string Name => "Synology Indexer";
 
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             if (Settings.UpdateLibrary)
             {
@@ -49,6 +48,13 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            if (Settings.UpdateLibrary)
+            {
+                _indexerProxy.UpdateFolder(message.Artist.Path);
+            }
+        }
 
         public override ValidationResult Test()
         {

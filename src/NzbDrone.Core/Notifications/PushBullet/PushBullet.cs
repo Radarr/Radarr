@@ -24,14 +24,24 @@ namespace NzbDrone.Core.Notifications.PushBullet
             _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            _proxy.SendNotification(TRACK_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
-        }
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message, Settings);
+        }
+
+        public override void OnDownloadFailure(DownloadFailedMessage message)
+        {
+            _proxy.SendNotification(DOWNLOAD_FAILURE_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnImportFailure(AlbumDownloadMessage message)
+        {
+            _proxy.SendNotification(IMPORT_FAILURE_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()

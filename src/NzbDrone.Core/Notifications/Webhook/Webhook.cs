@@ -41,23 +41,23 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            var trackFile = message.TrackFile;
+            var trackFiles = message.TrackFiles;
 
             var payload = new WebhookImportPayload
 
             {
                 EventType = "Download",
                 Artist = new WebhookArtist(message.Artist),
-                Tracks = trackFile.Tracks.Value.ConvertAll(x => new WebhookTrack(x)
+                Tracks = trackFiles.SelectMany(x => x.Tracks.Value.Select(y => new WebhookTrack(y)
                 {
                     // TODO: Stop passing these parameters inside an episode v3
-                    Quality = trackFile.Quality.Quality.Name,
-                    QualityVersion = trackFile.Quality.Revision.Version,
-                    ReleaseGroup = trackFile.ReleaseGroup
-                }),
-                TrackFile = new WebhookTrackFile(trackFile),
+                    Quality = x.Quality.Quality.Name,
+                    QualityVersion = x.Quality.Revision.Version,
+                    ReleaseGroup = x.ReleaseGroup
+                })).ToList(),
+                TrackFiles = trackFiles.ConvertAll(x => new WebhookTrackFile(x)),
                 IsUpgrade = message.OldFiles.Any()
             };
 
@@ -70,6 +70,17 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = "Rename",
                 Artist = new WebhookArtist(artist)
+            };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            var payload = new WebhookPayload
+            {
+                EventType = "Retag",
+                Artist = new WebhookArtist(message.Artist)
             };
 
             _proxy.SendWebhook(payload, Settings);

@@ -25,18 +25,26 @@ namespace NzbDrone.Core.Notifications.Email
             _emailService.SendEmail(Settings, ALBUM_GRABBED_TITLE_BRANDED, body);
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            var body = $"{message.Message} Downloaded and sorted.";
-
-            _emailService.SendEmail(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, body);
-        }
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             var body = $"{message.Message} Downloaded and sorted.";
 
             _emailService.SendEmail(Settings, ALBUM_DOWNLOADED_TITLE_BRANDED, body);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _emailService.SendEmail(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);
+        }
+
+        public override void OnDownloadFailure(DownloadFailedMessage message)
+        {
+            _emailService.SendEmail(Settings, DOWNLOAD_FAILURE_TITLE_BRANDED, message.Message);
+        }
+
+        public override void OnImportFailure(AlbumDownloadMessage message)
+        {
+            _emailService.SendEmail(Settings, IMPORT_FAILURE_TITLE_BRANDED, message.Message);
         }
 
         public override ValidationResult Test()

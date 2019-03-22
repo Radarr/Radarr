@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             if (Settings.Notify)
             {
@@ -39,14 +39,6 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            if (Settings.Notify)
-            {
-                _mediaBrowserService.Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
-            }
-        }
-
         public override void OnRename(Artist artist)
         {
             if (Settings.UpdateLibrary)
@@ -55,6 +47,21 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);
+            }
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, TRACK_RETAGGED_TITLE_BRANDED, message.Message);
+            }
+        }
 
         public override ValidationResult Test()
         {

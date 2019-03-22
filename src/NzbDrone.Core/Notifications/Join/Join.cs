@@ -22,14 +22,14 @@ namespace NzbDrone.Core.Notifications.Join
             _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, message.Message, Settings);
         }
 
-        public override void OnDownload(TrackDownloadMessage message)
-        {
-            _proxy.SendNotification(TRACK_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
-        }
-
-        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()
