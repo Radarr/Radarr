@@ -54,7 +54,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             IsValid = true;
         }
-        
+
         public AudioTag(string path)
         {
             Read(path);
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.MediaFiles
                 MusicBrainzReleaseArtistId = tag.MusicBrainzReleaseArtistId;
                 MusicBrainzReleaseGroupId = tag.MusicBrainzReleaseGroupId;
                 MusicBrainzTrackId = tag.MusicBrainzTrackId;
-                
+
                 DateTime tempDate;
 
                 // Do the ones that aren't handled by the generic taglib implementation
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.MediaFiles
                     MusicBrainzAlbumComment = appletag.GetDashBox("com.apple.iTunes", "MusicBrainz Album Comment");
                     MusicBrainzReleaseTrackId = appletag.GetDashBox("com.apple.iTunes", "MusicBrainz Release Track Id");
                 }
-                
+
                 OriginalYear = OriginalReleaseDate.HasValue ? (uint)OriginalReleaseDate?.Year : 0;
 
                 foreach (ICodec codec in file.Properties.Codecs)
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.MediaFiles
                             // Taglib can't read bitrate for Opus.
                             bitrate = EstimateBitrate(file, path);
                         }
-                        
+
                         Logger.Debug("Audio Properties: " + acodec.Description + ", Bitrate: " + bitrate + ", Sample Size: " +
                                      file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
 
@@ -200,16 +200,20 @@ namespace NzbDrone.Core.MediaFiles
                     // Log as error so it goes to sentry with correct fingerprint
                     Logger.Error(ex, "Tag reading failed for {0}", path);
                 }
-
-                // make sure these are initialized to avoid errors later on
-                Quality = QualityParser.ParseQuality(path, null, EstimateBitrate(file, path));
-                Logger.Debug($"Quality parsed: {Quality}, Source: {Quality.QualityDetectionSource}");
-                MediaInfo = new MediaInfoModel();
             }
             finally
             {
                 file?.Dispose();
             }
+
+            // make sure these are initialized to avoid errors later on
+            if (Quality == null)
+            {
+                Quality = QualityParser.ParseQuality(path, null, EstimateBitrate(file, path));
+                Logger.Debug($"Unable to parse qulity from tag, Quality parsed from file path: {Quality}, Source: {Quality.QualityDetectionSource}");
+            }
+
+            MediaInfo = MediaInfo ?? new MediaInfoModel();
         }
 
         private int EstimateBitrate(TagLib.File file, string path)
@@ -227,14 +231,14 @@ namespace NzbDrone.Core.MediaFiles
             catch
             {
             }
-            
+
             return bitrate;
         }
 
         private DateTime? ReadId3Date(TagLib.Id3v2.Tag tag, string dateTag)
         {
             string date = tag.GetTextAsString(dateTag);
-            
+
             if (tag.Version == 4)
             {
                 // the unabused TDRC/TDOR tags
@@ -251,7 +255,7 @@ namespace NzbDrone.Core.MediaFiles
                 return Int32.TryParse(date, out int year) ? new DateTime(year, 1, 1) : default(DateTime?);
             }
         }
-        
+
         private void RemoveId3UserTextFrame(TagLib.Id3v2.Tag tag, string ident)
         {
             var frame = UserTextInformationFrame.Get(tag, ident, false);
@@ -261,7 +265,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             tag.RemoveFrames(ident);
         }
-        
+
         private void WriteId3Date(TagLib.Id3v2.Tag tag, string v4field, string v3yyyy, string v3ddmm, DateTime? date)
         {
             if (date.HasValue)
@@ -286,11 +290,11 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
         }
-        
+
         private void WriteId3Tag(TagLib.Id3v2.Tag tag, string id, string value)
         {
             var frame = UserTextInformationFrame.Get(tag, id, true);
-                
+
             if (value.IsNotNullOrWhiteSpace())
             {
                 frame.Text = value.Split(';');
@@ -300,7 +304,7 @@ namespace NzbDrone.Core.MediaFiles
                 tag.RemoveFrame(frame);
             }
         }
-        
+
 		private static ReadOnlyByteVector FixAppleId(ByteVector id)
 		{
 			if (id.Count == 4) {
@@ -325,7 +329,7 @@ namespace NzbDrone.Core.MediaFiles
             // WMA with null performers/albumartists
             Performers = Performers ?? new string[0];
             AlbumArtists = AlbumArtists ?? new string[0];
-            
+
             TagLib.File file = null;
             try
             {
@@ -369,7 +373,7 @@ namespace NzbDrone.Core.MediaFiles
                     tag.Track = 0;
 
                     var flactag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
-                    
+
                     if (Date.HasValue)
                     {
                         flactag.SetField("DATE", Date.Value.ToString("yyyy-MM-dd"));
@@ -396,7 +400,7 @@ namespace NzbDrone.Core.MediaFiles
                 else if (file.TagTypes.HasFlag(TagTypes.Ape))
                 {
                     var apetag = (TagLib.Ape.Tag) file.GetTag(TagTypes.Ape);
-                    
+
                     if (Date.HasValue)
                     {
                         apetag.SetValue("Year", Date.Value.ToString("yyyy-MM-dd"));
@@ -406,7 +410,7 @@ namespace NzbDrone.Core.MediaFiles
                         apetag.SetValue("Original Date", OriginalReleaseDate.Value.ToString("yyyy-MM-dd"));
                         apetag.SetValue("Original Year", OriginalReleaseDate.Value.Year.ToString());
                     }
-                    
+
                     apetag.SetValue("Media", Media);
                     apetag.SetValue("Label", Publisher);
                     apetag.SetValue("MUSICBRAINZ_ALBUMCOMMENT", MusicBrainzAlbumComment);
@@ -415,7 +419,7 @@ namespace NzbDrone.Core.MediaFiles
                 else if (file.TagTypes.HasFlag(TagTypes.Asf))
                 {
                     var asftag = (TagLib.Asf.Tag) file.GetTag(TagTypes.Asf);
-                    
+
                     if (Date.HasValue)
                     {
                         asftag.SetDescriptorString(Date.Value.ToString("yyyy-MM-dd"), "WM/Year");
@@ -434,7 +438,7 @@ namespace NzbDrone.Core.MediaFiles
                 else if (file.TagTypes.HasFlag(TagTypes.Apple))
                 {
                     var appletag = (TagLib.Mpeg4.AppleTag) file.GetTag(TagTypes.Apple);
-                    
+
                     if (Date.HasValue)
                     {
                         appletag.SetText(FixAppleId("day"), Date.Value.ToString("yyyy-MM-dd"));
@@ -444,7 +448,7 @@ namespace NzbDrone.Core.MediaFiles
                         appletag.SetDashBox("com.apple.iTunes", "Original Date", OriginalReleaseDate.Value.ToString("yyyy-MM-dd"));
                         appletag.SetDashBox("com.apple.iTunes", "Original Year", OriginalReleaseDate.Value.Year.ToString());
                     }
-                    
+
                     appletag.SetDashBox("com.apple.iTunes", "MEDIA", Media);
                     appletag.SetDashBox("com.apple.iTunes", "MusicBrainz Album Comment", MusicBrainzAlbumComment);
                     appletag.SetDashBox("com.apple.iTunes", "MusicBrainz Release Track Id", MusicBrainzReleaseTrackId);
@@ -588,7 +592,7 @@ namespace NzbDrone.Core.MediaFiles
                 Title = artist,
                 Year = (int)tag.Year
             };
-                
+
             return new ParsedTrackInfo {
                 Language = Language.English,
                 AlbumTitle = tag.Album,
