@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Music
         List<Artist> GetArtists(IEnumerable<int> artistIds);
         Artist AddArtist(Artist newArtist);
         List<Artist> AddArtists(List<Artist> newArtists);
-        Artist FindById(string spotifyId);
+        Artist FindById(string foreignArtistId);
         Artist FindByName(string title);
         Artist FindByNameInexact(string title);
         List<Artist> GetCandidates(string title);
@@ -94,9 +94,9 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles, addImportListExclusion));
         }
 
-        public Artist FindById(string spotifyId)
+        public Artist FindById(string foreignArtistId)
         {
-            return _artistRepository.FindById(spotifyId);
+            return _artistRepository.FindById(foreignArtistId);
         }
 
         public Artist FindByName(string title)
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Music
         {
             var artists = GetAllArtists();
             var output = new List<Artist>();
-            
+
             foreach (var func in ArtistScoringFunctions(title, title.CleanArtistName()))
             {
                 output.AddRange(FindByStringInexact(artists, func.Item1, func.Item2));

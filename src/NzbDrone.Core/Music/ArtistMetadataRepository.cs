@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Music
         Artist Update(Artist artist);
         Artist Upsert(Artist artist);
         void UpdateMany(List<Artist> artists);
-        ArtistMetadata FindById(string ArtistId);
+        ArtistMetadata FindById(string foreignArtistId);
         List<ArtistMetadata> FindById(List<string> foreignIds);
         void UpsertMany(List<ArtistMetadata> artists);
         void UpsertMany(List<Artist> artists);
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Music
     public class ArtistMetadataRepository : BasicRepository<ArtistMetadata>, IArtistMetadataRepository
     {
         private readonly Logger _logger;
-        
+
         public ArtistMetadataRepository(IMainDatabase database, IEventAggregator eventAggregator, Logger logger)
             : base(database, eventAggregator)
         {
@@ -83,9 +83,9 @@ namespace NzbDrone.Core.Music
             UpdateMany(artists.Select(x => x.Metadata.Value).ToList());
         }
 
-        public ArtistMetadata FindById(string artistId)
+        public ArtistMetadata FindById(string foreignArtistId)
         {
-            return Query.Where(a => a.ForeignArtistId == artistId).SingleOrDefault();
+            return Query.Where(a => a.ForeignArtistId == foreignArtistId).SingleOrDefault();
         }
 
         public List<ArtistMetadata> FindById(List<string> foreignIds)
