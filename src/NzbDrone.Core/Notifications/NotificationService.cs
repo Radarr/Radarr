@@ -227,7 +227,6 @@ namespace NzbDrone.Core.Notifications
                 Language = message.Language,
                 SourceTitle = message.SourceTitle,
                 Message = message.Message
-                
             };
 
             foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
@@ -247,7 +246,7 @@ namespace NzbDrone.Core.Notifications
                 Message = GetAlbumIncompleteImportMessage(message.TrackedDownload.DownloadItem.Title),
             };
 
-            foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
+            foreach (var notification in _notificationFactory.OnImportFailureEnabled())
             {
                 if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
                 {
