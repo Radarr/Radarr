@@ -57,7 +57,7 @@ namespace Lidarr.Api.V1.Albums
         {
             if (model == null) return null;
 
-            var selectedRelease = model.AlbumReleases.Value.Where(x => x.Monitored).SingleOrDefault();
+            var selectedRelease = model.AlbumReleases?.Value.Where(x => x.Monitored).SingleOrDefault();
 
             return new AlbumResource
             {
@@ -75,12 +75,12 @@ namespace Lidarr.Api.V1.Albums
                 Images = model.Images,
                 Links = model.Links,
                 Ratings = model.Ratings,
-                Duration = selectedRelease.Duration,
+                Duration = selectedRelease?.Duration ?? 0,
                 AlbumType = model.AlbumType,
                 SecondaryTypes = model.SecondaryTypes.Select(s => s.Name).ToList(),
-                Releases = model.AlbumReleases.Value.ToResource(),
-                Media = selectedRelease.Media.ToResource(),
-                Artist = model.Artist.Value.ToResource()
+                Releases = model.AlbumReleases?.Value.ToResource() ?? new List<AlbumReleaseResource>(),
+                Media = selectedRelease?.Media.ToResource() ?? new List<MediumResource>(),
+                Artist = model.Artist?.Value.ToResource()
             };
         }
 
