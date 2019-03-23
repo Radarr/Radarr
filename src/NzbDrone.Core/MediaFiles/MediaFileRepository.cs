@@ -34,7 +34,7 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesByArtist(int artistId)
         {
             return Query
-                .Join<Album, AlbumRelease>(JoinType.Inner, a => a.AlbumReleases, (a, r) => a.Id == r.AlbumId)
+                .Join<Track, AlbumRelease>(JoinType.Inner, t => t.AlbumRelease, (t, r) => t.AlbumReleaseId == r.Id)
                 .Where<AlbumRelease>(r => r.Monitored == true)
                 .AndWhere(t => t.Artist.Value.Id == artistId)
                 .ToList();
@@ -58,10 +58,9 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
         {
             return Query
-                .Join<Album, AlbumRelease>(JoinType.Inner, a => a.AlbumReleases, (a, r) => a.Id == r.AlbumId)
+                .Join<Track, AlbumRelease>(JoinType.Inner, t => t.AlbumRelease, (t, r) => t.AlbumReleaseId == r.Id)
                 .Where<AlbumRelease>(r => r.Monitored == true)
-                .AndWhere(t => t.Artist.Value.Id == artistId)
-                .AndWhere(t => t.RelativePath == relativePath)
+                .AndWhere(t => t.Artist.Value.Id == artistId && t.RelativePath == relativePath)
                 .ToList();
         }
     }

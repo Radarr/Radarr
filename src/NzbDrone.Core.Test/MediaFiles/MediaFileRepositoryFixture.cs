@@ -35,23 +35,31 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
             Db.Insert(album);
             
-            var release = Builder<AlbumRelease>.CreateNew()
+            var releases = Builder<AlbumRelease>.CreateListOfSize(2)
+                .All()
                 .With(a => a.Id = 0)
                 .With(a => a.AlbumId = album.Id)
+                .TheFirst(1)
                 .With(a => a.Monitored = true)
+                .TheNext(1)
+                .With(a => a.Monitored = false)
                 .Build();
-            Db.Insert(release);
+            Db.InsertMany(releases);
             
             var files = Builder<TrackFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
                 .With(c => c.Quality =new QualityModel(Quality.MP3_192))
-                .TheFirst(4)
+                .TheFirst(5)
                 .With(c => c.AlbumId = album.Id)
                 .BuildListOfNew();
             Db.InsertMany(files);
             
             var track = Builder<Track>.CreateListOfSize(10)
+                .All()
+                .With(a => a.Id = 0)
+                .TheFirst(4)
+                .With(a => a.AlbumReleaseId = releases[0].Id)
                 .TheFirst(1)
                 .With(a => a.TrackFileId = files[0].Id)
                 .TheNext(1)
@@ -60,11 +68,11 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(a => a.TrackFileId = files[2].Id)
                 .TheNext(1)
                 .With(a => a.TrackFileId = files[3].Id)
-                .TheNext(6)
+                .TheNext(1)
+                .With(a => a.TrackFileId = files[4].Id)
+                .With(a => a.AlbumReleaseId = releases[1].Id)
+                .TheNext(5)
                 .With(a => a.TrackFileId = 0)
-                .All()
-                .With(a => a.Id = 0)
-                .With(a => a.AlbumReleaseId = release.Id)
                 .Build();
             Db.InsertMany(track);
         }
@@ -76,8 +84,17 @@ namespace NzbDrone.Core.Test.MediaFiles
             var artistFiles = Subject.GetFilesByArtist(artist.Id);
             VerifyEagerLoaded(artistFiles);
 
-            artistFiles.Should().HaveCount(4);
             artistFiles.Should().OnlyContain(c => c.Artist.Value.Id == artist.Id);
+        }
+
+        [Test]
+        public void get_files_by_artist_should_only_return_tracks_for_monitored_releases()
+        {
+            VerifyData();
+            var artistFiles = Subject.GetFilesByArtist(artist.Id);
+            VerifyEagerLoaded(artistFiles);
+
+            artistFiles.Should().HaveCount(4);
         }
 
         [Test]
@@ -86,9 +103,9 @@ namespace NzbDrone.Core.Test.MediaFiles
             VerifyData();
             var files = Subject.GetFilesByAlbum(album.Id);
             VerifyEagerLoaded(files);
-            
-            files.Should().HaveCount(4);
+
             files.Should().OnlyContain(c => c.AlbumId == album.Id);
+            files.Should().HaveCount(5);
         }
 
         [Test]
@@ -98,9 +115,19 @@ namespace NzbDrone.Core.Test.MediaFiles
             var files = Subject.GetFilesWithRelativePath(artist.Id, "RelativePath2");
             VerifyEagerLoaded(files);
             
-            files.Should().HaveCount(1);
             files.Should().OnlyContain(c => c.AlbumId == album.Id);
             files.Should().OnlyContain(c => c.RelativePath == "RelativePath2");
+        }
+        
+        [Test]
+        public void get_files_by_relative_path_should_only_contain_monitored_releases()
+        {
+            VerifyData();
+            
+            // file 5 is linked to an unmonitored release
+            var files = Subject.GetFilesWithRelativePath(artist.Id, "RelativePath5");
+            
+            files.Should().BeEmpty();
         }
 
         private void VerifyData()
