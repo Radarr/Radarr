@@ -26,4 +26,17 @@ PublishArtifacts()
     fi
 }
 
+PublishSourceMaps()
+{
+    # Only create release on develop
+    # Secure SENTRY_AUTH_TOKEN will only be decoded on branch builds, not PRs
+    if [ "${CI_WINDOWS}" = "True" ] && [ "${APPVEYOR_REPO_BRANCH}" = "develop" ] && [ ! -z "${SENTRY_AUTH_TOKEN}" ]; then
+        echo "Uploading source maps to sentry"
+        yarn sentry-cli releases new -p lidarr -p lidarr-ui -p lidarr-update "${APPVEYOR_BUILD_VERSION}-debug"
+        yarn sentry-cli releases -p lidarr-ui files "${APPVEYOR_BUILD_VERSION}-debug" upload-sourcemaps _output/UI/ --rewrite
+        yarn sentry-cli releases set-commits --auto "${APPVEYOR_BUILD_VERSION}-debug"
+    fi
+}
+
 PublishArtifacts
+PublishSourceMaps

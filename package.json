@@ -123,5 +123,8 @@
     "webpack": "4.29.6",
     "webpack-stream": "5.2.1"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "devDependencies": {
+    "@sentry/cli": "1.40.0"
+  }
 }
