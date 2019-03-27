@@ -27,13 +27,15 @@ export const defaultState = {
   sortKey: 'releaseWeight',
   sortDirection: sortDirections.ASCENDING,
   sortPredicates: {
+    age: function(item, direction) {
+      return item.ageMinutes;
+    },
     peers: function(item, direction) {
       const seeders = item.seeders || 0;
       const leechers = item.leechers || 0;
 
       return seeders * 1000000 + leechers;
     },
-
     rejections: function(item, direction) {
       const rejections = item.rejections;
       const releaseWeight = item.releaseWeight;
