@@ -15,7 +15,7 @@ environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   nodejs_version: "10"
   SENTRY_AUTH_TOKEN:
-    secure: D+iHTh2B+5AcM2GOW9r3oc+ablqKGSdxezltLHFQ7G2SioBdn8lZz/bObNTNgvcBXmY2x3Fhjc6pZaC5OK+0LMRrkEFsffH2WuXFJfK9Ino=
+    secure: dIzaGkyqP8JefC+GyXH2RtBHCufpzegoJnxvwGenCsMZNgaVbnoNo4ZMnPY2WYpstCcdXmZb7hbPYmu4FRkKQ8xDQ34YNGlKRKnlFuOQoq8=
   SENTRY_ORG: "lidarr"
 
 install:
