@@ -43,7 +43,9 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesByAlbum(int albumId)
         {
             return Query
-                .Where(f => f.AlbumId == albumId)
+                .Join<Track, AlbumRelease>(JoinType.Inner, t => t.AlbumRelease, (t, r) => t.AlbumReleaseId == r.Id)
+                .Where<AlbumRelease>(r => r.Monitored == true)
+                .AndWhere(f => f.AlbumId == albumId)
                 .ToList();
         }
 
