@@ -38,7 +38,7 @@ if [ "$PLATFORM" = "Windows" ]; then
   mkdir -p "$ProgramData/Lidarr"
   WHERE="$WHERE && cat != LINUX"
 elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
-  mkdir -p "~/.config/Lidarr"
+  mkdir -p ~/.config/Lidarr
   WHERE="$WHERE && cat != WINDOWS"
   NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
 else
