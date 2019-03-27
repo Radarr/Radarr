@@ -279,5 +279,51 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             tag.Quality.Should().NotBeNull();
             tag.MediaInfo.Should().NotBeNull();
         }
+        
+        private TrackFile GivenPopulatedTrackfile()
+        {
+            var meta = Builder<ArtistMetadata>.CreateNew().Build();
+            var artist = Builder<Artist>.CreateNew()
+                .With(x => x.Metadata = meta)
+                .Build();
+            
+            var album = Builder<Album>.CreateNew()
+                .With(x => x.Artist = artist)
+                .Build();
+
+            var media = Builder<Medium>.CreateListOfSize(2).Build() as List<Medium>;
+            var release = Builder<AlbumRelease>.CreateNew()
+                .With(x => x.Album = album)
+                .With(x => x.Media = media)
+                .With(x => x.Country = new List<string>())
+                .With(x => x.Label = new List<string>())
+                .Build();
+            
+            var tracks = Builder<Track>.CreateListOfSize(10)
+                .All()
+                .With(x => x.AlbumRelease = release)
+                .With(x => x.ArtistMetadata = meta)
+                .TheFirst(5)
+                .With(x => x.MediumNumber = 1)
+                .TheNext(5)
+                .With(x => x.MediumNumber = 2)
+                .Build() as List<Track>;
+            release.Tracks = tracks;
+
+            var file = Builder<TrackFile>.CreateNew()
+                .With(x => x.Tracks = new List<Track> { tracks[0] })
+                .Build();
+
+            return file;
+        }
+
+        [Test]
+        public void get_metadata_should_not_fail_with_missing_country()
+        {
+            var file = GivenPopulatedTrackfile();
+            var tag = Subject.GetTrackMetadata(file);
+        
+            tag.MusicBrainzReleaseCountry.Should().BeNull();
+        }
     }
 }

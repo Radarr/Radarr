@@ -67,7 +67,7 @@ namespace NzbDrone.Core.MediaFiles
             return new AudioTag(path);
         }
 
-        private AudioTag GetTrackMetadata(TrackFile trackfile)
+        public AudioTag GetTrackMetadata(TrackFile trackfile)
         {
             var track = trackfile.Tracks.Value[0];
             var release = track.AlbumRelease.Value;
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.MediaFiles
                 OriginalReleaseDate = album.ReleaseDate,
                 OriginalYear = (uint)album.ReleaseDate?.Year,
                 Publisher = release.Label.FirstOrDefault(),
-                MusicBrainzReleaseCountry = IsoCountries.Find(release.Country.FirstOrDefault()).TwoLetterCode,
+                MusicBrainzReleaseCountry = IsoCountries.Find(release.Country.FirstOrDefault())?.TwoLetterCode,
                 MusicBrainzReleaseStatus = release.Status.ToLower(),
                 MusicBrainzReleaseType = album.AlbumType.ToLower(),
                 MusicBrainzReleaseId = release.ForeignReleaseId,
