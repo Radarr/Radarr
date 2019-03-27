@@ -256,37 +256,24 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        private void RemoveId3UserTextFrame(TagLib.Id3v2.Tag tag, string ident)
-        {
-            var frame = UserTextInformationFrame.Get(tag, ident, false);
-            if (frame != null)
-            {
-                tag.RemoveFrame(frame);
-            }
-            tag.RemoveFrames(ident);
-        }
-
         private void WriteId3Date(TagLib.Id3v2.Tag tag, string v4field, string v3yyyy, string v3ddmm, DateTime? date)
         {
-            if (date.HasValue)
+            if (tag.Version == 4)
             {
-                if (tag.Version == 4)
+                tag.SetTextFrame(v3yyyy, default(string));
+                if (v3ddmm.IsNotNullOrWhiteSpace())
                 {
-                    RemoveId3UserTextFrame(tag, v3yyyy);
-                    if (v3ddmm.IsNotNullOrWhiteSpace())
-                    {
-                        RemoveId3UserTextFrame(tag, v3ddmm);
-                    }
-                    tag.SetTextFrame(v4field, date.Value.ToString("yyyy-MM-dd"));
+                    tag.SetTextFrame(v3ddmm, default(string));
                 }
-                else
+                tag.SetTextFrame(v4field, date.HasValue ? date.Value.ToString("yyyy-MM-dd") : null);
+            }
+            else
+            {
+                tag.SetTextFrame(v4field, default(string));
+                tag.SetTextFrame(v3yyyy, date.HasValue ? date.Value.ToString("yyyy") : null);
+                if (v3ddmm.IsNotNullOrWhiteSpace())
                 {
-                    RemoveId3UserTextFrame(tag, v4field);
-                    tag.SetTextFrame(v3yyyy, date.Value.ToString("yyyy"));
-                    if (v3ddmm.IsNotNullOrWhiteSpace())
-                    {
-                        tag.SetTextFrame(v3ddmm, date.Value.ToString("ddMM"));
-                    }
+                    tag.SetTextFrame(v3ddmm, date.HasValue ? date.Value.ToString("ddMM") : null);
                 }
             }
         }
@@ -374,16 +361,9 @@ namespace NzbDrone.Core.MediaFiles
 
                     var flactag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
 
-                    if (Date.HasValue)
-                    {
-                        flactag.SetField("DATE", Date.Value.ToString("yyyy-MM-dd"));
-                    }
-                    if (OriginalReleaseDate.HasValue)
-                    {
-                        flactag.SetField("ORIGINALDATE", OriginalReleaseDate.Value.ToString("yyyy-MM-dd"));
-                        flactag.SetField("ORIGINALYEAR", OriginalReleaseDate.Value.Year.ToString());
-                    }
-
+                    flactag.SetField("DATE", Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
+                    flactag.SetField("ORIGINALDATE", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
+                    flactag.SetField("ORIGINALYEAR", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null);
                     flactag.SetField("TRACKTOTAL", TrackCount);
                     flactag.SetField("TOTALTRACKS", TrackCount);
                     flactag.SetField("TRACKNUMBER", Track);
@@ -401,16 +381,9 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     var apetag = (TagLib.Ape.Tag) file.GetTag(TagTypes.Ape);
 
-                    if (Date.HasValue)
-                    {
-                        apetag.SetValue("Year", Date.Value.ToString("yyyy-MM-dd"));
-                    }
-                    if (OriginalReleaseDate.HasValue)
-                    {
-                        apetag.SetValue("Original Date", OriginalReleaseDate.Value.ToString("yyyy-MM-dd"));
-                        apetag.SetValue("Original Year", OriginalReleaseDate.Value.Year.ToString());
-                    }
-
+                    apetag.SetValue("Year", Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
+                    apetag.SetValue("Original Date", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
+                    apetag.SetValue("Original Year", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null);
                     apetag.SetValue("Media", Media);
                     apetag.SetValue("Label", Publisher);
                     apetag.SetValue("MUSICBRAINZ_ALBUMCOMMENT", MusicBrainzAlbumComment);
@@ -420,16 +393,9 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     var asftag = (TagLib.Asf.Tag) file.GetTag(TagTypes.Asf);
 
-                    if (Date.HasValue)
-                    {
-                        asftag.SetDescriptorString(Date.Value.ToString("yyyy-MM-dd"), "WM/Year");
-                    }
-                    if (OriginalReleaseDate.HasValue)
-                    {
-                        asftag.SetDescriptorString(OriginalReleaseDate.Value.ToString("yyyy-MM-dd"), "WM/OriginalReleaseTime");
-                        asftag.SetDescriptorString(OriginalReleaseDate.Value.Year.ToString(), "WM/OriginalReleaseYear");
-                    }
-
+                    asftag.SetDescriptorString(Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null, "WM/Year");
+                    asftag.SetDescriptorString(OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null, "WM/OriginalReleaseTime");
+                    asftag.SetDescriptorString(OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null, "WM/OriginalReleaseYear");
                     asftag.SetDescriptorString(Media, "WM/Media");
                     asftag.SetDescriptorString(Publisher, "WM/Publisher");
                     asftag.SetDescriptorString(MusicBrainzAlbumComment, "MusicBrainz/Album Comment");
@@ -439,16 +405,9 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     var appletag = (TagLib.Mpeg4.AppleTag) file.GetTag(TagTypes.Apple);
 
-                    if (Date.HasValue)
-                    {
-                        appletag.SetText(FixAppleId("day"), Date.Value.ToString("yyyy-MM-dd"));
-                    }
-                    if (OriginalReleaseDate.HasValue)
-                    {
-                        appletag.SetDashBox("com.apple.iTunes", "Original Date", OriginalReleaseDate.Value.ToString("yyyy-MM-dd"));
-                        appletag.SetDashBox("com.apple.iTunes", "Original Year", OriginalReleaseDate.Value.Year.ToString());
-                    }
-
+                    appletag.SetText(FixAppleId("day"), Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
+                    appletag.SetDashBox("com.apple.iTunes", "Original Date", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
+                    appletag.SetDashBox("com.apple.iTunes", "Original Year", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.Year.ToString() : null);
                     appletag.SetDashBox("com.apple.iTunes", "MEDIA", Media);
                     appletag.SetDashBox("com.apple.iTunes", "MusicBrainz Album Comment", MusicBrainzAlbumComment);
                     appletag.SetDashBox("com.apple.iTunes", "MusicBrainz Release Track Id", MusicBrainzReleaseTrackId);

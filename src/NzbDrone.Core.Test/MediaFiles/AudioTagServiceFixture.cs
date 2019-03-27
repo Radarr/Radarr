@@ -280,6 +280,25 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             tag.MediaInfo.Should().NotBeNull();
         }
         
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void should_remove_date_from_tags_when_not_in_metadata(string filename, string[] ignored)
+        {
+            GivenFileCopy(filename);
+            var path = copiedFile;
+            
+            testTags.Write(path);
+            
+            testTags.Date = null;
+            testTags.OriginalReleaseDate = null;
+            
+            testTags.Write(path);
+            
+            var onDisk = Subject.ReadAudioTag(path);
+            
+            onDisk.Date.HasValue.Should().BeFalse();
+            onDisk.OriginalReleaseDate.HasValue.Should().BeFalse();
+        }
+        
         private TrackFile GivenPopulatedTrackfile()
         {
             var meta = Builder<ArtistMetadata>.CreateNew().Build();
