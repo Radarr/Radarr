@@ -252,7 +252,7 @@ namespace NzbDrone.Core.MediaFiles
             else
             {
                 // taglib maps the v3 TORY to TDRC so we just get a year
-                return Int32.TryParse(date, out int year) ? new DateTime(year, 1, 1) : default(DateTime?);
+                return Int32.TryParse(date, out int year) && year >= 1860 && year <= DateTime.UtcNow.Year + 1 ? new DateTime(year, 1, 1) : default(DateTime?);
             }
         }
 

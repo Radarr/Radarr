@@ -298,7 +298,23 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             onDisk.Date.HasValue.Should().BeFalse();
             onDisk.OriginalReleaseDate.HasValue.Should().BeFalse();
         }
-        
+
+        [Test]
+        public void should_ignore_non_parsable_id3v23_date()
+        {
+            GivenFileCopy("nin.mp2");
+
+            using(var file = TagLib.File.Create(copiedFile))
+            {
+                var id3tag = (TagLib.Id3v2.Tag) file.GetTag(TagLib.TagTypes.Id3v2);
+                id3tag.SetTextFrame("TORY", "0");
+                file.Save();
+            }
+
+            var tag = Subject.ReadAudioTag(copiedFile);
+            tag.OriginalReleaseDate.HasValue.Should().BeFalse();
+        }
+
         private TrackFile GivenPopulatedTrackfile()
         {
             var meta = Builder<ArtistMetadata>.CreateNew().Build();
