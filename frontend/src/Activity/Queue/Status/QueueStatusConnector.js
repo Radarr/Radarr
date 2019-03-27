@@ -12,8 +12,12 @@ function createMapStateToProps() {
     (state) => state.queue.options.includeUnknownArtistItems,
     (app, status, includeUnknownArtistItems) => {
       const {
+        errors,
+        warnings,
+        unknownErrors,
+        unknownWarnings,
         count,
-        unknownCount
+        totalCount
       } = status.item;
 
       return {
@@ -21,7 +25,9 @@ function createMapStateToProps() {
         isReconnecting: app.isReconnecting,
         isPopulated: status.isPopulated,
         ...status.item,
-        count: includeUnknownArtistItems ? count : count - unknownCount
+        count: includeUnknownArtistItems ? totalCount : count,
+        errors: includeUnknownArtistItems ? errors || unknownErrors : errors,
+        warnings: includeUnknownArtistItems ? warnings || unknownWarnings : warnings
       };
     }
   );

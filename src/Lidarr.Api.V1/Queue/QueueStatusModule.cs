@@ -46,10 +46,13 @@ namespace Lidarr.Api.V1.Queue
 
             var resource = new QueueStatusResource
             {
-                Count = queue.Count + pending.Count,
+                TotalCount = queue.Count + pending.Count,
+                Count = queue.Count(q => q.Artist != null) + pending.Count,
                 UnknownCount = queue.Count(q => q.Artist == null),
-                Errors = queue.Any(q => q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
-                Warnings = queue.Any(q => q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
+                Errors = queue.Any(q => q.Artist != null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
+                Warnings = queue.Any(q => q.Artist != null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase)),
+                UnknownErrors = queue.Any(q => q.Artist == null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
+                UnknownWarnings = queue.Any(q => q.Artist == null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
             };
 
             _broadcastDebounce.Resume();
