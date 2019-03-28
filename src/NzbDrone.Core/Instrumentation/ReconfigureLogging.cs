@@ -3,7 +3,6 @@ using System.Linq;
 using NLog;
 using NLog.Config;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Instrumentation.Sentry;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -40,9 +39,6 @@ namespace NzbDrone.Core.Instrumentation
             SetMinimumLogLevel(rules, "appFileInfo", minimumLogLevel <= LogLevel.Info ? LogLevel.Info : LogLevel.Off);
             SetMinimumLogLevel(rules, "appFileDebug", minimumLogLevel <= LogLevel.Debug ? LogLevel.Debug : LogLevel.Off);
             SetMinimumLogLevel(rules, "appFileTrace", minimumLogLevel <= LogLevel.Trace ? LogLevel.Trace : LogLevel.Off);
-
-            // Sentry filtering
-            LogManager.Configuration.FindTargetByName<SentryTarget>("sentryTarget").FilterEvents = _configFileProvider.FilterSentryEvents;
 
             LogManager.ReconfigExistingLoggers();
         }

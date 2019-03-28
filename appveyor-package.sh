@@ -35,7 +35,7 @@ PublishSourceMaps()
         yarn sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${APPVEYOR_BUILD_VERSION}-debug"
         yarn sentry-cli releases -p lidarr-ui files "${APPVEYOR_BUILD_VERSION}-debug" upload-sourcemaps _output/UI/ --rewrite
         yarn sentry-cli releases set-commits --auto "${APPVEYOR_BUILD_VERSION}-debug"
-        yarn sentry-cli releases deploys "${APPVEYOR_BUILD_VERSION}-debug" new -e production
+        yarn sentry-cli releases deploys "${APPVEYOR_BUILD_VERSION}-debug" new -e nightly
     fi
 }
 

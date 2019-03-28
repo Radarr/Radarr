@@ -84,6 +84,9 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         private bool _unauthorized;
 
         public bool FilterEvents { get; set; }
+        public string UpdateBranch { get; set; }
+        public Version DatabaseVersion { get; set; }
+        public int DatabaseMigration { get; set; }
         
         public SentryTarget(string dsn)
         {
@@ -95,7 +98,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                       o.SendDefaultPii = true;
                                       o.Debug = false;
                                       o.DiagnosticsLevel = SentryLevel.Debug;
-                                      o.Environment = RuntimeInfo.IsProduction ? "production" : "development";
                                       o.Release = BuildInfo.Release;
                                       o.BeforeSend = x => SentryCleanser.CleanseEvent(x);
                                       o.BeforeBreadcrumb = x => SentryCleanser.CleanseBreadcrumb(x);
@@ -112,6 +114,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                          scope.SetTag("culture", Thread.CurrentThread.CurrentCulture.Name);
                                          scope.SetTag("branch", BuildInfo.Branch);
                                          scope.SetTag("version", BuildInfo.Version.ToString());
+                                         scope.SetTag("production", RuntimeInfo.IsProduction.ToString());
                                      });
             
             _debounce = new SentryDebounce();
@@ -247,6 +250,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                     Level = LoggingLevelMap[logEvent.Level],
                     Logger = logEvent.LoggerName,
                     Message = logEvent.FormattedMessage,
+                    Environment = UpdateBranch
                 };
 
                 sentryEvent.SetExtras(extras);
@@ -261,6 +265,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                 sentryEvent.SetTag("os_name", osName);
                 sentryEvent.SetTag("os_version", $"{osName} {osVersion}");
                 sentryEvent.SetTag("runtime_version", $"{PlatformInfo.PlatformName} {runTimeVersion}");
+                sentryEvent.SetTag("sqlite_version", $"{DatabaseVersion}");
+                sentryEvent.SetTag("database_migration", $"{DatabaseMigration}");
 
                 SentrySdk.CaptureEvent(sentryEvent);
             }

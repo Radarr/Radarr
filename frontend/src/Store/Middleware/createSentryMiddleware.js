@@ -76,15 +76,15 @@ export default function createSentryMiddleware() {
 
   sentry.init({
     dsn,
-    environment: isProduction ? 'production' : 'development',
+    environment: branch,
     release,
     sendDefaultPii: true,
     beforeSend: cleanseData
   });
 
   sentry.configureScope((scope) => {
-    scope.setTag('branch', branch);
     scope.setTag('version', version);
+    scope.setTag('production', isProduction);
   });
 
   return createMiddleware();
