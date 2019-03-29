@@ -9,7 +9,6 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Common.Security;
 
 namespace NzbDrone.Common.Http.Dispatchers
 {
@@ -83,11 +82,6 @@ namespace NzbDrone.Common.Http.Dispatchers
             }
             catch (WebException e)
             {
-                if (e.Status == WebExceptionStatus.SecureChannelFailure && OsInfo.IsWindows)
-                {
-                    SecurityProtocolPolicy.DisableTls12();
-                }
-
                 httpWebResponse = (HttpWebResponse)e.Response;
 
                 if (httpWebResponse == null)
