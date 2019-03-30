@@ -128,7 +128,6 @@ namespace NzbDrone.Core.Notifications.Slack
                 new Attachment
                 {
                     Fallback = message.Message,
-                    Title = message.Album.Title,
                     Text = message.Message,
                     Color = "warning"
                 }
