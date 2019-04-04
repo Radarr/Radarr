@@ -56,11 +56,20 @@ namespace NzbDrone.Core.Parser
 
             _customerRequestBuilder = new HttpRequestBuilder(_acoustIdUrl).CreateFactory();
 
-            _fpcalcPath = GetFpcalcPath();
-            if (_fpcalcPath.IsNotNullOrWhiteSpace())
+            // An exception here will cause Lidarr to fail to start, so catch any errors
+            try
             {
-                _fpcalcVersion = GetFpcalcVersion();
-                _fpcalcArgs = GetFpcalcArgs();
+                _fpcalcPath = GetFpcalcPath();
+
+                if (_fpcalcPath.IsNotNullOrWhiteSpace())
+                {
+                    _fpcalcVersion = GetFpcalcVersion();
+                    _fpcalcArgs = GetFpcalcArgs();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Somthing went wrong detecting fpcalc");
             }
         }
 
@@ -77,17 +86,19 @@ namespace NzbDrone.Core.Parser
 
                 // check that the command exists
                 Process p = new Process();
-                p.StartInfo.FileName = "which";
-                p.StartInfo.Arguments = $"{path}";
+                p.StartInfo.FileName = path;
+                p.StartInfo.Arguments = "-version";
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
 
-                p.Start();
-                // To avoid deadlocks, always read the output stream first and then wait.  
-                string output = p.StandardOutput.ReadToEnd();  
-                p.WaitForExit(1000);
-
-                if (p.ExitCode != 0)
+                try
+                {
+                    p.Start();
+                    // To avoid deadlocks, always read the output stream first and then wait.
+                    string output = p.StandardOutput.ReadToEnd();
+                    p.WaitForExit(1000);
+                }
+                catch
                 {
                     _logger.Debug("fpcalc not found");
                     return null;
