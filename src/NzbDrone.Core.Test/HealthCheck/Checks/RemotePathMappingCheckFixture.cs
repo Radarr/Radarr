@@ -4,7 +4,9 @@ using System.IO;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
@@ -22,6 +24,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         private DownloadClientInfo clientStatus;
         private DownloadClientItem downloadItem;
+        private Mock<IDownloadClient> downloadClient;
 
         [SetUp]
         public void Setup()
@@ -37,7 +40,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                         OutputRootFolders = new List<OsPath> { new OsPath(downloadRootPath) }
             };
 
-            var downloadClient = Mocker.GetMock<IDownloadClient>();
+            downloadClient = Mocker.GetMock<IDownloadClient>();
             downloadClient.Setup(s => s.Definition)
                 .Returns(new DownloadClientDefinition { Name = "Test" });
 
@@ -53,11 +56,17 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(x => x.FolderExists(It.IsAny<string>()))
-                .Returns(false);
+                .Returns((string path) => {
+                        Ensure.That(path, () => path).IsValidPath();
+                        return false;
+                    });
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(x => x.FileExists(It.IsAny<string>()))
-                .Returns(false);
+                .Returns((string path) => {
+                        Ensure.That(path, () => path).IsValidPath();
+                        return false;
+                    });
         }
 
         private void GivenFolderExists(string folder)
@@ -95,11 +104,38 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
+        public void should_return_mapping_error_if_remote_client_root_path_invalid()
+        {
+            clientStatus.IsLocalhost = false;
+            clientStatus.OutputRootFolders = new List<OsPath> { new OsPath("An invalid path") };
+
+            Subject.Check().ShouldBeError(wikiFragment: "bad-remote-path-mapping");
+        }
+
+        [Test]
+        public void should_return_download_client_error_if_local_client_root_path_invalid()
+        {
+            clientStatus.IsLocalhost = true;
+            clientStatus.OutputRootFolders = new List<OsPath> { new OsPath("An invalid path") };
+
+            Subject.Check().ShouldBeError(wikiFragment: "bad-download-client-settings");
+        }
+
+        [Test]
         public void should_return_path_mapping_error_if_remote_client_download_root_missing()
         {
             clientStatus.IsLocalhost = false;
 
             Subject.Check().ShouldBeError(wikiFragment: "bad-remote-path-mapping");
+        }
+
+        [Test]
+        public void should_return_ok_if_client_unavailable()
+        {
+            downloadClient.Setup(s => s.GetStatus())
+                .Throws(new DownloadClientUnavailableException("error"));
+            
+            Subject.Check().ShouldBeOk();
         }
 
         [Test]
@@ -159,6 +195,26 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
+        public void should_return_mapping_error_on_track_import_failed_event_for_remote_client_if_path_invalid()
+        {
+            clientStatus.IsLocalhost = false;
+            downloadItem.OutputPath = new OsPath("an invalid path");
+            var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
+
+            Subject.Check(importEvent).ShouldBeError(wikiFragment: "bad-remote-path-mapping");
+        }
+
+        [Test]
+        public void should_return_download_client_error_on_track_import_failed_event_for_remote_client_if_path_invalid()
+        {
+            clientStatus.IsLocalhost = true;
+            downloadItem.OutputPath = new OsPath("an invalid path");
+            var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
+
+            Subject.Check(importEvent).ShouldBeError(wikiFragment: "bad-download-client-settings");
+        }
+
+        [Test]
         [Explicit("Only works if running inside a docker container")]
         public void should_return_docker_mapping_error_on_track_import_failed_event_inside_docker_if_folder_does_not_exist()
         {
@@ -166,6 +222,17 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
 
             Subject.Check(importEvent).ShouldBeError(wikiFragment: "docker-bad-remote-path-mapping");
+        }
+        
+        [Test]
+        public void should_return_ok_on_import_failed_event_if_client_unavailable()
+        {
+            downloadClient.Setup(s => s.GetStatus())
+                .Throws(new DownloadClientUnavailableException("error"));
+            
+            var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
+            
+            Subject.Check(importEvent).ShouldBeOk();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -6,6 +7,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider.Events;
@@ -23,14 +25,17 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IDiskProvider _diskProvider;
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly Logger _logger;
+        private readonly IOsInfo _osInfo;
 
         public RemotePathMappingCheck(IDiskProvider diskProvider,
                                       IProvideDownloadClient downloadClientProvider,
+                                      IOsInfo osInfo,
                                       Logger logger)
         {
             _diskProvider = diskProvider;
             _downloadClientProvider = downloadClientProvider;
             _logger = logger;
+            _osInfo = osInfo;
         }
 
         public override HealthCheck Check()
@@ -39,27 +44,55 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             foreach (var client in clients)
             {
-                var folders = client.GetStatus().OutputRootFolders;
-                if (folders != null)
+                try
                 {
-                    foreach (var folder in folders)
+                    var status = client.GetStatus();
+                    var folders = status.OutputRootFolders;
+                    if (folders != null)
                     {
-                        if (!_diskProvider.FolderExists(folder.FullPath))
+                        foreach (var folder in folders)
                         {
-                            if (OsInfo.IsDocker)
+                            if (!folder.IsValid)
                             {
-                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
+                                if (!status.IsLocalhost)
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad-remote-path-mapping");
+                                }
+                                else if (OsInfo.IsDocker)
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker-bad-remote-path-mapping");
+                                }
+                                else
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Local download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your download client settings.", "#bad-download-client-settings");
+                                }
                             }
-                            else if (!client.GetStatus().IsLocalhost)
+
+                            if (!_diskProvider.FolderExists(folder.FullPath))
                             {
-                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist.  Likely missing or incorrect remote path mapping.", "#bad-remote-path-mapping");
-                            }
-                            else
-                            {
-                                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} places downloads in {folder.FullPath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                                if (OsInfo.IsDocker)
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
+                                }
+                                else if (!status.IsLocalhost)
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist.  Likely missing or incorrect remote path mapping.", "#bad-remote-path-mapping");
+                                }
+                                else
+                                {
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} places downloads in {folder.FullPath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                                }
                             }
                         }
                     }
+                }
+                catch (DownloadClientUnavailableException ex)
+                {
+                    _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
                 }
             }
             return new HealthCheck(GetType());
@@ -90,34 +123,64 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 // If the previous case did not match then the failure occured in DownloadedTracksImportService,
                 // while trying to locate the files reported by the download client
                 var client = _downloadClientProvider.GetDownloadClients().FirstOrDefault(x => x.Definition.Name == failureMessage.DownloadClient);
-                var dlpath = client?.GetItems().FirstOrDefault(x => x.DownloadId == failureMessage.DownloadId)?.OutputPath.FullPath;
-
-                // If dlpath is null then there's not much useful we can report.  Give a generic message so
-                // that the user realises something is wrong.
-                if (dlpath.IsNullOrWhiteSpace())
+                try
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr failed to import a track.  Check your logs for details.");
-                }
+                    var status = client.GetStatus();
+                    var dlpath = client?.GetItems().FirstOrDefault(x => x.DownloadId == failureMessage.DownloadId)?.OutputPath.FullPath;
 
-                if (_diskProvider.FolderExists(dlpath))
-                {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions-error");
-                }
+                    // If dlpath is null then there's not much useful we can report.  Give a generic message so
+                    // that the user realises something is wrong.
+                    if (dlpath.IsNullOrWhiteSpace())
+                    {
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr failed to import a track.  Check your logs for details.");
+                    }
+
+                    if (!dlpath.IsPathValid())
+                    {
+                        if (!status.IsLocalhost)
+                        {
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad-remote-path-mapping");
+                        }
+                        else if (OsInfo.IsDocker)
+                        {
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker-bad-remote-path-mapping");
+                        }
+                        else
+                        {
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"Local download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your download client settings.", "#bad-download-client-settings");
+                        }
+                    }
+
+                    if (_diskProvider.FolderExists(dlpath))
+                    {
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions-error");
+                    }
                 
-                // if it's a remote client/docker, likely missing path mappings
-                if (OsInfo.IsDocker)
-                {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
+                    // if it's a remote client/docker, likely missing path mappings
+                    if (OsInfo.IsDocker)
+                    {
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
+                    }
+                    else if (!status.IsLocalhost)
+                    {
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist.  Likely missing remote path mapping.", "#bad-remote-path-mapping");
+                    }
+                    else
+                    {
+                        // path mappings shouldn't be needed locally so probably a permissions issue
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                    }
                 }
-                else if (!client.GetStatus().IsLocalhost)
+                catch (DownloadClientUnavailableException ex)
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist.  Likely missing remote path mapping.", "#bad-remote-path-mapping");
+                    _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }
-                else
+                catch (Exception ex)
                 {
-                    // path mappings shouldn't be needed locally so probably a permissions issue
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                    _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
                 }
+
+                return new HealthCheck(GetType());
             }
             else
             {
