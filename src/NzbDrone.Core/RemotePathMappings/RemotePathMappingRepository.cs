@@ -16,6 +16,13 @@ namespace NzbDrone.Core.RemotePathMappings
         {
         }
 
+        public new void Delete(int id)
+        {
+            var model = Get(id);
+            base.Delete(id);
+            ModelDeleted(model);
+        }
+
         protected override bool PublishModelEvents => true;
     }
 }

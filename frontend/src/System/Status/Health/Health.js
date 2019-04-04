@@ -27,6 +27,7 @@ function getInternalLink(source) {
       );
     case 'DownloadClientCheck':
     case 'ImportMechanismCheck':
+    case 'RemotePathMappingCheck':
       return (
         <IconButton
           name={icons.SETTINGS}

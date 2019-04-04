@@ -14,7 +14,8 @@ namespace NzbDrone.Common.EnvironmentInfo
         public static bool IsLinux => Os == Os.Linux;
         public static bool IsOsx => Os == Os.Osx;
         public static bool IsWindows => Os == Os.Windows;
-
+        public static bool IsDocker { get; }
+        
         public string Version { get; }
         public string Name { get; }
         public string FullName { get; }
@@ -44,6 +45,10 @@ namespace NzbDrone.Common.EnvironmentInfo
                         else
                         {
                             Os = Os.Linux;
+                            if (File.Exists("/proc/1/cgroup") && File.ReadAllText("/proc/1/cgroup").Contains("/docker/"))
+                            {
+                                IsDocker = true;
+                            }
                         }
                         break;
                     }

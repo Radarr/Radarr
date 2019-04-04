@@ -6,7 +6,9 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
@@ -28,15 +30,17 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IParsingService _parsingService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedTracks _importApprovedTracks;
+        private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public DownloadedTracksImportService(IDiskProvider diskProvider,
-                                               IDiskScanService diskScanService,
-                                               IArtistService artistService,
-                                               IParsingService parsingService,
-                                               IMakeImportDecision importDecisionMaker,
-                                               IImportApprovedTracks importApprovedTracks,
-                                               Logger logger)
+                                             IDiskScanService diskScanService,
+                                             IArtistService artistService,
+                                             IParsingService parsingService,
+                                             IMakeImportDecision importDecisionMaker,
+                                             IImportApprovedTracks importApprovedTracks,
+                                             IEventAggregator eventAggregator,
+                                             Logger logger)
         {
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
@@ -44,6 +48,7 @@ namespace NzbDrone.Core.MediaFiles
             _parsingService = parsingService;
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
+            _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
@@ -93,6 +98,8 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}", path);
+            _eventAggregator.PublishEvent(new TrackImportFailedEvent(null, null, true, downloadClientItem));
+            
             return new List<ImportResult>();
         }
 
