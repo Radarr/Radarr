@@ -65,6 +65,7 @@ class SelectAlbumModalContentConnector extends Component {
       this.props.updateInteractiveImportItem({
         id,
         album,
+        albumReleaseId: undefined,
         tracks: [],
         rejections: []
       });

@@ -17,10 +17,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         public Decision IsSatisfiedBy(LocalAlbumRelease localAlbumRelease)
         {
             var existingRelease = localAlbumRelease.AlbumRelease.Album.Value.AlbumReleases.Value.Single(x => x.Monitored);
+            var existingTrackCount = existingRelease.Tracks.Value.Count(x => x.HasFile);
             if (localAlbumRelease.AlbumRelease.Id != existingRelease.Id &&
-                localAlbumRelease.TrackCount < existingRelease.Tracks.Value.Count(x => x.HasFile))
+                localAlbumRelease.TrackCount < existingTrackCount)
             {
-                _logger.Debug("This release has fewer tracks than the existing one. Skipping {0}", localAlbumRelease);
+                _logger.Debug($"This release has fewer tracks ({localAlbumRelease.TrackCount}) than existing {existingRelease} ({existingTrackCount}). Skipping {localAlbumRelease}");
                 return Decision.Reject("Has fewer tracks than existing release");
             }
 

@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles
             CleanMediaFiles(artist, mediaFileList);
 
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist);
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist, false);
             decisionsStopwatch.Stop();
             _logger.Debug("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
             

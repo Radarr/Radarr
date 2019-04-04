@@ -19,13 +19,13 @@
 .centerButtons,
 .rightButtons {
   display: flex;
-  flex: 1 2 25%;
+  flex: 1 2 20%;
   flex-wrap: wrap;
 }
 
 .centerButtons {
   justify-content: center;
-  flex: 2 1 50%;
+  flex: 2 1 60%;
 }
 
 .rightButtons {

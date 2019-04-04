@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getProviderState from 'Utilities/State/getProviderState';
-import { set, updateItem } from '../baseActions';
+import { set, updateItem, removeItem } from '../baseActions';
 
 const abortCurrentRequests = {};
 
@@ -15,7 +16,7 @@ export function createCancelSaveProviderHandler(section) {
   };
 }
 
-function createSaveProviderHandler(section, url, options = {}) {
+function createSaveProviderHandler(section, url, options = {}, removeStale = false) {
   return function(getState, payload, dispatch) {
     dispatch(set({ section, isSaving: true }));
 
@@ -50,8 +51,13 @@ function createSaveProviderHandler(section, url, options = {}) {
       if (!Array.isArray(data)) {
         data = [data];
       }
+
+      const toRemove = removeStale && Array.isArray(id) ? _.difference(id, _.map(data, 'id')) : [];
+
       dispatch(batchActions(
         data.map((item) => updateItem({ section, ...item })).concat(
+          toRemove.map((item) => removeItem({ section, id: item }))
+        ).concat(
           set({
             section,
             isSaving: false,

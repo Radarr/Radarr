@@ -789,6 +789,7 @@
     <Compile Include="MediaFiles\TrackImport\Specifications\NoMissingOrUnmatchedTracksSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\ReleaseWantedSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Identification\TrackGroupingService.cs" />
+    <Compile Include="MediaFiles\TrackImport\Identification\CandidateAlbumRelease.cs" />
     <Compile Include="MediaFiles\TrackImport\Identification\IdentificationService.cs" />
     <Compile Include="MediaFiles\TrackImport\Identification\IdentificationTestCase.cs" />
     <Compile Include="MediaFiles\TrackImport\Identification\Distance.cs" />

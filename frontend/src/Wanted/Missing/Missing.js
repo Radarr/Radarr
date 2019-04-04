@@ -271,6 +271,7 @@ class Missing extends Component {
           <InteractiveImportModal
             isOpen={isInteractiveImportModalOpen}
             onModalClose={this.onInteractiveImportModalClose}
+            showReplaceExistingFiles={true}
           />
         </PageContentBodyConnector>
       </PageContent>

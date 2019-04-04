@@ -17,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public QualityModel Quality { get; set; }
         public Language Language { get; set; }
         public string DownloadId { get; set; }
+        public bool DisableReleaseSwitching { get; set; }
 
         public bool Equals(ManualImportFile other)
         {

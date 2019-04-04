@@ -11,5 +11,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public override bool RequiresDiskAccess => true;
 
         public ImportMode ImportMode { get; set; }
+        public bool ReplaceExistingFiles { get; set; }
     }
 }

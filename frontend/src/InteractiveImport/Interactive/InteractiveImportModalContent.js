@@ -22,6 +22,8 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
+import SelectAlbumReleaseModal from 'InteractiveImport/AlbumRelease/SelectAlbumReleaseModal';
+import ConfirmImportModal from 'InteractiveImport/Confirmation/ConfirmImportModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
 
@@ -80,6 +82,11 @@ const filterExistingFilesOptions = {
   NEW: 'new'
 };
 
+const replaceExistingFilesOptions = {
+  COMBINE: 'combine',
+  DELETE: 'delete'
+};
+
 class InteractiveImportModalContent extends Component {
 
   //
@@ -95,8 +102,34 @@ class InteractiveImportModalContent extends Component {
       selectedState: {},
       invalidRowsSelected: [],
       isSelectArtistModalOpen: false,
-      isSelectAlbumModalOpen: false
+      isSelectAlbumModalOpen: false,
+      isSelectAlbumReleaseModalOpen: false,
+      albumsImported: [],
+      isConfirmImportModalOpen: false,
+      showClearTracks: false,
+      inconsistentAlbumReleases: false
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const selectedIds = this.getSelectedIds();
+    const selectedItems = _.filter(this.props.items, (x) => _.includes(selectedIds, x.id));
+    const selectionHasTracks = _.some(selectedItems, (x) => x.tracks.length);
+
+    if (this.state.showClearTracks !== selectionHasTracks) {
+      this.setState({ showClearTracks: selectionHasTracks });
+    }
+
+    const inconsistent = _(selectedItems)
+      .map((x) => ({ albumId: x.album ? x.album.id : 0, releaseId: x.albumReleaseId }))
+      .groupBy('albumId')
+      .mapValues((album) => _(album).groupBy((x) => x.releaseId).values().value().length)
+      .values()
+      .some((x) => x !== undefined && x > 1);
+
+    if (inconsistent !== this.state.inconsistentAlbumReleases) {
+      this.setState({ inconsistentAlbumReleases: inconsistent });
+    }
   }
 
   //
@@ -120,20 +153,38 @@ class InteractiveImportModalContent extends Component {
   }
 
   onValidRowChange = (id, isValid) => {
-    this.setState((state) => {
-      if (isValid) {
-        return {
-          invalidRowsSelected: _.without(state.invalidRowsSelected, id)
-        };
-      }
-
-      return {
-        invalidRowsSelected: [...state.invalidRowsSelected, id]
-      };
+    this.setState((state, props) => {
+      // make sure to exclude any invalidRows that are no longer present in props
+      const diff = _.difference(state.invalidRowsSelected, _.map(props.items, 'id'));
+      const currentInvalid = _.difference(state.invalidRowsSelected, diff);
+      const newstate = isValid ? _.without(currentInvalid, id) : _.union(currentInvalid, [id]);
+      return { invalidRowsSelected: newstate };
     });
   }
 
   onImportSelectedPress = () => {
+    if (!this.props.replaceExistingFiles) {
+      this.onConfirmImportPress();
+      return;
+    }
+
+    // potentially deleting files
+    const selectedIds = this.getSelectedIds();
+    const albumsImported = _(this.props.items)
+      .filter((x) => _.includes(selectedIds, x.id))
+      .keyBy((x) => x.album.id)
+      .map((x) => x.album)
+      .value();
+
+    console.log(albumsImported);
+
+    this.setState({
+      albumsImported,
+      isConfirmImportModalOpen: true
+    });
+  }
+
+  onConfirmImportPress = () => {
     const {
       downloadId,
       showImportMode,
@@ -151,6 +202,10 @@ class InteractiveImportModalContent extends Component {
     this.props.onFilterExistingFilesChange(value !== filterExistingFilesOptions.ALL);
   }
 
+  onReplaceExistingFilesChange = (value) => {
+    this.props.onReplaceExistingFilesChange(value === replaceExistingFilesOptions.DELETE);
+  }
+
   onImportModeChange = ({ value }) => {
     this.props.onImportModeChange(value);
   }
@@ -161,6 +216,10 @@ class InteractiveImportModalContent extends Component {
 
   onSelectAlbumPress = () => {
     this.setState({ isSelectAlbumModalOpen: true });
+  }
+
+  onSelectAlbumReleasePress = () => {
+    this.setState({ isSelectAlbumReleaseModalOpen: true });
   }
 
   onClearTrackMappingPress = () => {
@@ -175,12 +234,24 @@ class InteractiveImportModalContent extends Component {
     });
   }
 
+  onGetTrackMappingPress = () => {
+    this.props.saveInteractiveImportItem({ id: this.getSelectedIds() });
+  }
+
   onSelectArtistModalClose = () => {
     this.setState({ isSelectArtistModalOpen: false });
   }
 
   onSelectAlbumModalClose = () => {
     this.setState({ isSelectAlbumModalOpen: false });
+  }
+
+  onSelectAlbumReleaseModalClose = () => {
+    this.setState({ isSelectAlbumReleaseModalOpen: false });
+  }
+
+  onConfirmImportModalClose = () => {
+    this.setState({ isConfirmImportModalOpen: false });
   }
 
   //
@@ -191,12 +262,15 @@ class InteractiveImportModalContent extends Component {
       downloadId,
       allowArtistChange,
       showFilterExistingFiles,
+      showReplaceExistingFiles,
       showImportMode,
       filterExistingFiles,
+      replaceExistingFiles,
       title,
       folder,
       isFetching,
       isPopulated,
+      isSaving,
       error,
       items,
       sortKey,
@@ -213,7 +287,12 @@ class InteractiveImportModalContent extends Component {
       selectedState,
       invalidRowsSelected,
       isSelectArtistModalOpen,
-      isSelectAlbumModalOpen
+      isSelectAlbumModalOpen,
+      isSelectAlbumReleaseModalOpen,
+      albumsImported,
+      isConfirmImportModalOpen,
+      showClearTracks,
+      inconsistentAlbumReleases
     } = this.state;
 
     const selectedIds = this.getSelectedIds();
@@ -232,43 +311,78 @@ class InteractiveImportModalContent extends Component {
         </ModalHeader>
 
         <ModalBody>
-          {
-            showFilterExistingFiles &&
-            <div className={styles.filterContainer}>
-              <Menu alignMenu={align.RIGHT}>
-                <MenuButton>
-                  <Icon
-                    name={icons.FILTER}
-                    size={22}
-                  />
+          <div className={styles.filterContainer}>
+            {
+              showFilterExistingFiles &&
+                <Menu alignMenu={align.RIGHT}>
+                  <MenuButton>
+                    <Icon
+                      name={icons.FILTER}
+                      size={22}
+                    />
 
-                  <div className={styles.filterText}>
-                    {
-                      filterExistingFiles ? 'Unmapped Files Only' : 'All Files'
-                    }
-                  </div>
-                </MenuButton>
+                    <div className={styles.filterText}>
+                      {
+                        filterExistingFiles ? 'Unmapped Files Only' : 'All Files'
+                      }
+                    </div>
+                  </MenuButton>
 
-                <MenuContent>
-                  <SelectedMenuItem
-                    name={filterExistingFilesOptions.ALL}
-                    isSelected={!filterExistingFiles}
-                    onPress={this.onFilterExistingFilesChange}
-                  >
-                    All Files
-                  </SelectedMenuItem>
+                  <MenuContent>
+                    <SelectedMenuItem
+                      name={filterExistingFilesOptions.ALL}
+                      isSelected={!filterExistingFiles}
+                      onPress={this.onFilterExistingFilesChange}
+                    >
+                      All Files
+                    </SelectedMenuItem>
 
-                  <SelectedMenuItem
-                    name={filterExistingFilesOptions.NEW}
-                    isSelected={filterExistingFiles}
-                    onPress={this.onFilterExistingFilesChange}
-                  >
-                    Unmapped Files Only
-                  </SelectedMenuItem>
-                </MenuContent>
-              </Menu>
-            </div>
-          }
+                    <SelectedMenuItem
+                      name={filterExistingFilesOptions.NEW}
+                      isSelected={filterExistingFiles}
+                      onPress={this.onFilterExistingFilesChange}
+                    >
+                      Unmapped Files Only
+                    </SelectedMenuItem>
+                  </MenuContent>
+                </Menu>
+            }
+            {
+              showReplaceExistingFiles &&
+                <Menu alignMenu={align.RIGHT}>
+                  <MenuButton>
+                    <Icon
+                      name={icons.CLONE}
+                      size={22}
+                    />
+
+                    <div className={styles.filterText}>
+                      {
+                        replaceExistingFiles ? 'Existing files will be deleted' : 'Combine with existing files'
+                      }
+                    </div>
+                  </MenuButton>
+
+                  <MenuContent>
+                    <SelectedMenuItem
+                      name={replaceExistingFiles.COMBINE}
+                      isSelected={!replaceExistingFiles}
+                      onPress={this.onReplaceExistingFilesChange}
+                    >
+                      Combine With Existing Files
+                    </SelectedMenuItem>
+
+                    <SelectedMenuItem
+                      name={replaceExistingFilesOptions.DELETE}
+                      isSelected={replaceExistingFiles}
+                      onPress={this.onReplaceExistingFilesChange}
+                    >
+                      Replace Existing Files
+                    </SelectedMenuItem>
+                  </MenuContent>
+                </Menu>
+            }
+          </div>
 
           {
             isFetching &&
@@ -299,6 +413,7 @@ class InteractiveImportModalContent extends Component {
                         <InteractiveImportRow
                           key={item.id}
                           isSelected={selectedState[item.id]}
+                          isSaving={isSaving}
                           {...item}
                           allowArtistChange={allowArtistChange}
                           onSelectedChange={this.onSelectedChange}
@@ -349,9 +464,30 @@ class InteractiveImportModalContent extends Component {
               Select Album
             </Button>
 
-            <Button onPress={this.onClearTrackMappingPress}>
-              Clear Track Mapping
+            <Button
+              onPress={this.onSelectAlbumReleasePress}
+              isDisabled={!selectedIds.length}
+            >
+              Select Release
             </Button>
+
+            {
+              showClearTracks ? (
+                <Button
+                  onPress={this.onClearTrackMappingPress}
+                  isDisabled={!selectedIds.length}
+                >
+                  Clear Tracks
+                </Button>
+              ) : (
+                <Button
+                  onPress={this.onGetTrackMappingPress}
+                  isDisabled={!selectedIds.length}
+                >
+                  Map Tracks
+                </Button>
+              )
+            }
           </div>
 
           <div className={styles.rightButtons}>
@@ -366,7 +502,7 @@ class InteractiveImportModalContent extends Component {
 
             <Button
               kind={kinds.SUCCESS}
-              isDisabled={!selectedIds.length || !!invalidRowsSelected.length}
+              isDisabled={!selectedIds.length || !!invalidRowsSelected.length || inconsistentAlbumReleases}
               onPress={this.onImportSelectedPress}
             >
               Import
@@ -387,6 +523,20 @@ class InteractiveImportModalContent extends Component {
           onModalClose={this.onSelectAlbumModalClose}
         />
 
+        <SelectAlbumReleaseModal
+          isOpen={isSelectAlbumReleaseModalOpen}
+          importIdsByAlbum={_.chain(items).filter((x) => x.album).groupBy((x) => x.album.id).mapValues((x) => x.map((y) => y.id)).value()}
+          albums={_.chain(items).filter((x) => x.album).keyBy((x) => x.album.id).mapValues((x) => ({ matchedReleaseId: x.albumReleaseId, album: x.album })).values().value()}
+          onModalClose={this.onSelectAlbumReleaseModalClose}
+        />
+
+        <ConfirmImportModal
+          isOpen={isConfirmImportModalOpen}
+          albums={albumsImported}
+          onModalClose={this.onConfirmImportModalClose}
+          onConfirmImportPress={this.onConfirmImportPress}
+        />
+
       </ModalContent>
     );
   }
@@ -397,12 +547,15 @@ InteractiveImportModalContent.propTypes = {
   allowArtistChange: PropTypes.bool.isRequired,
   showImportMode: PropTypes.bool.isRequired,
   showFilterExistingFiles: PropTypes.bool.isRequired,
+  showReplaceExistingFiles: PropTypes.bool.isRequired,
   filterExistingFiles: PropTypes.bool.isRequired,
+  replaceExistingFiles: PropTypes.bool.isRequired,
   importMode: PropTypes.string.isRequired,
   title: PropTypes.string,
   folder: PropTypes.string,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
@@ -410,8 +563,10 @@ InteractiveImportModalContent.propTypes = {
   interactiveImportErrorMessage: PropTypes.string,
   onSortPress: PropTypes.func.isRequired,
   onFilterExistingFilesChange: PropTypes.func.isRequired,
+  onReplaceExistingFilesChange: PropTypes.func.isRequired,
   onImportModeChange: PropTypes.func.isRequired,
   onImportSelectedPress: PropTypes.func.isRequired,
+  saveInteractiveImportItem: PropTypes.func.isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
@@ -419,6 +574,7 @@ InteractiveImportModalContent.propTypes = {
 InteractiveImportModalContent.defaultProps = {
   allowArtistChange: true,
   showFilterExistingFiles: false,
+  showReplaceExistingFiles: false,
   showImportMode: true,
   importMode: 'move'
 };

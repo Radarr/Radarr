@@ -3,38 +3,39 @@ using System.Linq;
 using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
 using Lidarr.Http.Extensions;
-using NzbDrone.SignalR;
 using NzbDrone.Core.Music;
 using NLog;
 using Nancy;
+using Lidarr.Http;
 
 namespace Lidarr.Api.V1.ManualImport
 {
-    public class ManualImportModule : ManualImportModuleWithSignalR
+    public class ManualImportModule : LidarrRestModule<ManualImportResource>
     {
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IReleaseService _releaseService;
+        private readonly IManualImportService _manualImportService;
+        private readonly Logger _logger;
 
         public ManualImportModule(IManualImportService manualImportService,
                                   IArtistService artistService,
                                   IAlbumService albumService,
                                   IReleaseService releaseService,
-                                  IBroadcastSignalRMessage signalRBroadcaster,
                                   Logger logger)
-        : base(manualImportService, signalRBroadcaster, logger)
         {
             _artistService = artistService;
             _albumService = albumService;
             _releaseService = releaseService;
+            _manualImportService = manualImportService;
+            _logger = logger;
 
             GetResourceAll = GetMediaFiles;
             
             Put["/"] = options =>
                 {
                     var resource = Request.Body.FromJson<List<ManualImportResource>>();
-                    UpdateImportItems(resource);
-                    return GetManualImportItems(resource.Select(x => x.Id)).AsResponse(HttpStatusCode.Accepted);
+                    return UpdateImportItems(resource).AsResponse(HttpStatusCode.Accepted);
                 };
         }
 
@@ -43,8 +44,9 @@ namespace Lidarr.Api.V1.ManualImport
             var folder = (string)Request.Query.folder;
             var downloadId = (string)Request.Query.downloadId;
             var filterExistingFiles = Request.GetBooleanQueryParameter("filterExistingFiles", true);
+            var replaceExistingFiles = Request.GetBooleanQueryParameter("replaceExistingFiles", true);
 
-            return _manualImportService.GetMediaFiles(folder, downloadId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
+            return _manualImportService.GetMediaFiles(folder, downloadId, filterExistingFiles, replaceExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)
@@ -59,7 +61,7 @@ namespace Lidarr.Api.V1.ManualImport
             return item;
         }
 
-        private void UpdateImportItems(List<ManualImportResource> resources)
+        private List<ManualImportResource> UpdateImportItems(List<ManualImportResource> resources)
         {
             var items = new List<ManualImportItem>();
             foreach (var resource in resources)
@@ -76,12 +78,14 @@ namespace Lidarr.Api.V1.ManualImport
                         Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
                         Quality = resource.Quality,
                         Language = resource.Language,
-                        DownloadId = resource.DownloadId
+                        DownloadId = resource.DownloadId,
+                        AdditionalFile = resource.AdditionalFile,
+                        ReplaceExistingFiles = resource.ReplaceExistingFiles,
+                        DisableReleaseSwitching = resource.DisableReleaseSwitching
                     });
             }
             
-            //recalculate import and broadcast
-            _manualImportService.UpdateItems(items);
+            return _manualImportService.UpdateItems(items).Select(x => x.ToResource()).ToList();
         }
     }
 }

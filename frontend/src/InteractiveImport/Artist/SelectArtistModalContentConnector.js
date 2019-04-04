@@ -41,16 +41,20 @@ class SelectArtistModalContentConnector extends Component {
   onArtistSelect = (artistId) => {
     const artist = _.find(this.props.items, { id: artistId });
 
-    this.props.ids.forEach((id) => {
+    const ids = this.props.ids;
+
+    ids.forEach((id) => {
       this.props.updateInteractiveImportItem({
         id,
         artist,
         album: undefined,
+        albumReleaseId: undefined,
         tracks: [],
         rejections: []
       });
-      this.props.saveInteractiveImportItem({ id });
     });
+
+    this.props.saveInteractiveImportItem({ id: ids });
 
     this.props.onModalClose(true);
   }

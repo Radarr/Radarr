@@ -9,6 +9,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
+import Tooltip from 'Components/Tooltip/Tooltip';
 import TrackQuality from 'Album/TrackQuality';
 import TrackLanguage from 'Album/TrackLanguage';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
@@ -17,6 +18,7 @@ import SelectTrackModal from 'InteractiveImport/Track/SelectTrackModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import styles from './InteractiveImportRow.css';
 
 class InteractiveImportRow extends Component {
@@ -174,7 +176,9 @@ class InteractiveImportRow extends Component {
       size,
       rejections,
       audioTags,
+      additionalFile,
       isSelected,
+      isSaving,
       onSelectedChange
     } = this.props;
 
@@ -196,12 +200,29 @@ class InteractiveImportRow extends Component {
 
     const showArtistPlaceholder = isSelected && !artist;
     const showAlbumNumberPlaceholder = isSelected && !!artist && !album;
-    const showTrackNumbersPlaceholder = isSelected && !!album && !tracks.length;
+    const showTrackNumbersPlaceholder = !isSaving && isSelected && !!album && !tracks.length;
+    const showTrackNumbersLoading = isSaving && !tracks.length;
     const showQualityPlaceholder = isSelected && !quality;
     const showLanguagePlaceholder = isSelected && !language;
 
+    const pathCellContents = (
+      <div>
+        {relativePath}
+      </div>
+    );
+
+    const pathCell = additionalFile ? (
+      <Tooltip
+        anchor={pathCellContents}
+        tooltip='This file is already in your library for a release you are currently importing'
+        position={tooltipPositions.TOP}
+      />
+    ) : pathCellContents;
+
     return (
-      <TableRow>
+      <TableRow
+        className={additionalFile ? styles.additionalFile : undefined}
+      >
         <TableSelectCell
           id={id}
           isSelected={isSelected}
@@ -212,7 +233,7 @@ class InteractiveImportRow extends Component {
           className={styles.relativePath}
           title={relativePath}
         >
-          {relativePath}
+          {pathCell}
         </TableRowCell>
 
         <TableRowCellButton
@@ -237,6 +258,9 @@ class InteractiveImportRow extends Component {
           isDisabled={!artist || !album}
           onPress={this.onSelectTrackPress}
         >
+          {
+            showTrackNumbersLoading && <LoadingIndicator size={20} className={styles.loading} />
+          }
           {
             showTrackNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : trackNumbers
           }
@@ -372,7 +396,9 @@ InteractiveImportRow.propTypes = {
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   audioTags: PropTypes.object.isRequired,
+  additionalFile: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
+  isSaving: PropTypes.bool.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onValidRowChange: PropTypes.func.isRequired
 };

@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 GivenFingerprints(testcase.Fingerprints);
             }
 
-            var result = Subject.Identify(tracks, specifiedArtist, null, null, testcase.NewDownload, testcase.SingleRelease);
+            var result = Subject.Identify(tracks, specifiedArtist, null, null, testcase.NewDownload, testcase.SingleRelease, false);
 
             TestLogger.Debug($"Found releases:\n{result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease?.ForeignReleaseId).ToJson()}");
 

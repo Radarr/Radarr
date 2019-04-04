@@ -16,3 +16,15 @@
 
   cursor: pointer;
 }
+
+.loading {
+  composes: loading from '~Components/Loading/LoadingIndicator.css';
+
+  margin-top: 0;
+}
+
+.additionalFile {
+  composes: row from '~Components/Table/TableRow.css';
+
+  color: $disabledColor;
+}

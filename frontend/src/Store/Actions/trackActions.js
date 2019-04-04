@@ -19,7 +19,7 @@ export const defaultState = {
   isPopulated: false,
   error: null,
   sortKey: 'mediumNumber',
-  sortDirection: sortDirections.DESCENDING,
+  sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'absoluteTrackNumber',
   secondarySortDirection: sortDirections.ASCENDING,
   items: [],

@@ -16,9 +16,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 {
     public interface IMakeImportDecision
     {
-        List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist);
+        List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, bool includeExisting);
         List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
-        List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, Album album, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool newDownload, bool singleRelease);
+        List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, Album album, AlbumRelease albumRelease, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool newDownload, bool singleRelease, bool includeExisting);
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -60,22 +60,22 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _logger = logger;
         }
 
-        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist)
+        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, bool includeExisting)
         {
-            return GetImportDecisions(musicFiles, artist, null, null, null, false, false, false);
+            return GetImportDecisions(musicFiles, artist, null, null, null, null, false, false, false, true);
         }
 
         public List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
         {
-            return GetImportDecisions(musicFiles, artist, null, null, folderInfo, false, true, false);
+            return GetImportDecisions(musicFiles, artist, null, null, null, folderInfo, false, true, false, false);
         }
 
-        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, Album album, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool newDownload, bool singleRelease)
+        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<string> musicFiles, Artist artist, Album album, AlbumRelease albumRelease, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, bool filterExistingFiles, bool newDownload, bool singleRelease, bool includeExisting)
         {
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
-            
-            var files = filterExistingFiles && (artist != null) ? _mediaFileService.FilterExistingFiles(musicFiles.ToList(), artist) : musicFiles.ToList();
+
+            var files = filterExistingFiles && (artist != null) ? _mediaFileService.FilterExistingFiles(musicFiles, artist) : musicFiles;
 
             _logger.Debug("Analyzing {0}/{1} files.", files.Count, musicFiles.Count);
 
@@ -98,7 +98,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     DownloadClientAlbumInfo = downloadClientItemInfo,
                     FolderTrackInfo = folderInfo,
                     Path = file,
-                    FileTrackInfo = _audioTagService.ReadTags(file)
+                    FileTrackInfo = _audioTagService.ReadTags(file),
+                    ExistingFile = !newDownload,
+                    AdditionalFile = false
                 };
 
                 try
@@ -121,7 +123,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             _logger.Debug($"Tags parsed for {files.Count} files in {watch.ElapsedMilliseconds}ms");
 
-            var releases = _identificationService.Identify(localTracks, artist, album, null, newDownload, singleRelease);
+            var releases = _identificationService.Identify(localTracks, artist, album, albumRelease, newDownload, singleRelease, includeExisting);
 
             foreach (var release in releases)
             {
@@ -133,7 +135,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     if (releaseDecision.Approved)
                     {
                         decisions.AddIfNotNull(GetDecision(localTrack));
-
                     }
                     else
                     {
