@@ -105,7 +105,16 @@ namespace NzbDrone.Core.Test.MediaFiles
             VerifyEagerLoaded(files);
 
             files.Should().OnlyContain(c => c.AlbumId == album.Id);
-            files.Should().HaveCount(5);
+        }
+
+        [Test]
+        public void get_files_by_album_should_only_return_tracks_for_monitored_releases()
+        {
+            VerifyData();
+            var files = Subject.GetFilesByAlbum(album.Id);
+            VerifyEagerLoaded(files);
+            
+            files.Should().HaveCount(4);
         }
 
         [Test]
