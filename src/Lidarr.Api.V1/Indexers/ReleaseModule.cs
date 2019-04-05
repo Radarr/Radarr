@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using Nancy;
 using Nancy.ModelBinding;
@@ -13,6 +14,7 @@ using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using Lidarr.Http.Extensions;
+using Lidarr.Http.REST;
 using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Lidarr.Api.V1.Indexers
@@ -25,6 +27,7 @@ namespace Lidarr.Api.V1.Indexers
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
+        private ResourceValidator<ReleaseResource> _releaseValidator;
 
         private readonly ICached<RemoteAlbum> _remoteAlbumCache;
 
@@ -43,17 +46,25 @@ namespace Lidarr.Api.V1.Indexers
             _downloadService = downloadService;
             _logger = logger;
 
+            _releaseValidator = new ResourceValidator<ReleaseResource>();
+            _releaseValidator.RuleFor(s => s.IndexerId).ValidId();
+            _releaseValidator.RuleFor(s => s.Guid).NotEmpty();
+
             GetResourceAll = GetReleases;
             Post["/"] = x => DownloadRelease(this.Bind<ReleaseResource>());
-
-            PostValidator.RuleFor(s => s.IndexerId).ValidId();
-            PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             _remoteAlbumCache = cacheManager.GetCache<RemoteAlbum>(GetType(), "remoteAlbums");
         }
 
         private Response DownloadRelease(ReleaseResource release)
         {
+            var validationFailures = _releaseValidator.Validate(release).Errors;
+
+            if (validationFailures.Any())
+            {
+                throw new ValidationException(validationFailures);
+            }
+
             var remoteAlbum = _remoteAlbumCache.Find(GetCacheKey(release));
 
             if (remoteAlbum == null)

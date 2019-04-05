@@ -54,11 +54,6 @@ namespace Lidarr.Api.V1.Indexers
         //TODO: besides a test I don't think this is used...
         public DownloadProtocol DownloadProtocol { get; set; }
 
-        //public bool IsDaily { get; set; }
-        //public bool IsAbsoluteNumbering { get; set; }
-        //public bool IsPossibleSpecialEpisode { get; set; }
-        //public bool Special { get; set; }
-
         // Sent when queuing an unknown release
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
