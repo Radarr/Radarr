@@ -98,6 +98,7 @@ class GeneralSettings extends Component {
       isResettingApiKey,
       isMono,
       isWindows,
+      isDocker,
       mode,
       onInputChange,
       onConfirmResetApiKey,
@@ -161,6 +162,7 @@ class GeneralSettings extends Component {
                   advancedSettings={advancedSettings}
                   settings={settings}
                   isMono={isMono}
+                  isDocker={isDocker}
                   onInputChange={onInputChange}
                 />
 
@@ -202,6 +204,7 @@ GeneralSettings.propTypes = {
   hasSettings: PropTypes.bool.isRequired,
   isMono: PropTypes.bool.isRequired,
   isWindows: PropTypes.bool.isRequired,
+  isDocker: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onConfirmResetApiKey: PropTypes.func.isRequired,

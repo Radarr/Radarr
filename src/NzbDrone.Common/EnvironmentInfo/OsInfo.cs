@@ -14,7 +14,9 @@ namespace NzbDrone.Common.EnvironmentInfo
         public static bool IsLinux => Os == Os.Linux;
         public static bool IsOsx => Os == Os.Osx;
         public static bool IsWindows => Os == Os.Windows;
-        public static bool IsDocker { get; }
+
+        // this needs to not be static so we can mock it
+        public bool IsDocker { get; }
         
         public string Version { get; }
         public string Name { get; }
@@ -45,10 +47,6 @@ namespace NzbDrone.Common.EnvironmentInfo
                         else
                         {
                             Os = Os.Linux;
-                            if (File.Exists("/proc/1/cgroup") && File.ReadAllText("/proc/1/cgroup").Contains("/docker/"))
-                            {
-                                IsDocker = true;
-                            }
                         }
                         break;
                     }
@@ -88,8 +86,14 @@ namespace NzbDrone.Common.EnvironmentInfo
                 FullName = Name;
             }
 
+            if (IsLinux && File.Exists("/proc/1/cgroup") && File.ReadAllText("/proc/1/cgroup").Contains("/docker/"))
+            {
+                IsDocker = true;
+            }
+
             Environment.SetEnvironmentVariable("OS_NAME", Name);
             Environment.SetEnvironmentVariable("OS_VERSION", Version);
+            Environment.SetEnvironmentVariable("OS_IS_DOCKER", IsDocker.ToString());
         }
     }
 
@@ -98,6 +102,8 @@ namespace NzbDrone.Common.EnvironmentInfo
         string Version { get; }
         string Name { get; }
         string FullName { get; }
+
+        bool IsDocker { get; }
     }
 
     public enum Os

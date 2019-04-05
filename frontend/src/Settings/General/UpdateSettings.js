@@ -16,6 +16,7 @@ function UpdateSettings(props) {
     advancedSettings,
     settings,
     isMono,
+    isDocker,
     onInputChange
   } = props;
 
@@ -34,6 +35,14 @@ function UpdateSettings(props) {
     { key: 'builtIn', value: 'Built-In' },
     { key: 'script', value: 'Script' }
   ];
+
+  if (isDocker) {
+    return (
+      <FieldSet legend="Updates">
+        <div>Updating is disabled inside a docker container.  Update the container image instead.</div>
+      </FieldSet>
+    );
+  }
 
   return (
     <FieldSet legend="Updates">
@@ -117,6 +126,7 @@ UpdateSettings.propTypes = {
   advancedSettings: PropTypes.bool.isRequired,
   settings: PropTypes.object.isRequired,
   isMono: PropTypes.bool.isRequired,
+  isDocker: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 

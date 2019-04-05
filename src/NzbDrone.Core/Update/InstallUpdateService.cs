@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Update
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IBackupService _backupService;
+        private readonly IOsInfo _osInfo;
 
 
         public InstallUpdateService(ICheckUpdateService checkUpdateService,
@@ -46,6 +47,7 @@ namespace NzbDrone.Core.Update
                                     IConfigFileProvider configFileProvider,
                                     IRuntimeInfo runtimeInfo,
                                     IBackupService backupService,
+                                    IOsInfo osInfo,
                                     Logger logger)
         {
             if (configFileProvider == null)
@@ -64,6 +66,7 @@ namespace NzbDrone.Core.Update
             _configFileProvider = configFileProvider;
             _runtimeInfo = runtimeInfo;
             _backupService = backupService;
+            _osInfo = osInfo;
             _logger = logger;
         }
 
@@ -202,6 +205,11 @@ namespace NzbDrone.Core.Update
             {
                 _logger.ProgressDebug("No update available");
                 return;
+            }
+
+            if (_osInfo.IsDocker)
+            {
+                throw new CommandFailedException("Updating is disabled inside a docker container.  Please update the container image.");
             }
 
             if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && message.Trigger != CommandTrigger.Manual)

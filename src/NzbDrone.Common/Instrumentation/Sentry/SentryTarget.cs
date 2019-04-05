@@ -260,10 +260,12 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                 // populated these values yet
                 var osName = Environment.GetEnvironmentVariable("OS_NAME");
                 var osVersion = Environment.GetEnvironmentVariable("OS_VERSION");
+                var isDocker = Environment.GetEnvironmentVariable("OS_IS_DOCKER");
                 var runTimeVersion = Environment.GetEnvironmentVariable("RUNTIME_VERSION");
 
                 sentryEvent.SetTag("os_name", osName);
                 sentryEvent.SetTag("os_version", $"{osName} {osVersion}");
+                sentryEvent.SetTag("is_docker", isDocker);
                 sentryEvent.SetTag("runtime_version", $"{PlatformInfo.PlatformName} {runTimeVersion}");
                 sentryEvent.SetTag("sqlite_version", $"{DatabaseVersion}");
                 sentryEvent.SetTag("database_migration", $"{DatabaseMigration}");

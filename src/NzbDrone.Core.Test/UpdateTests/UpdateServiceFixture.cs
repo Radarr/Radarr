@@ -88,6 +88,16 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
+        public void should_not_update_if_inside_docker()
+        {
+            Mocker.GetMock<IOsInfo>().Setup(x => x.IsDocker).Returns(true);
+            
+            Subject.Invoking(x => x.Execute(new ApplicationUpdateCommand()))
+                .ShouldThrow<CommandFailedException>()
+                .WithMessage("Updating is disabled inside a docker container.  Please update the container image.");
+        }
+
+        [Test]
         public void should_delete_sandbox_before_update_if_folder_exists()
         {
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(_sandboxFolder)).Returns(true);

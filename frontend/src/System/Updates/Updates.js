@@ -24,6 +24,7 @@ class Updates extends Component {
       error,
       items,
       isInstallingUpdate,
+      isDocker,
       shortDateFormat,
       onInstallLatestPress
     } = this.props;
@@ -48,24 +49,34 @@ class Updates extends Component {
 
           {
             hasUpdateToInstall &&
-            <div className={styles.updateAvailable}>
-              <SpinnerButton
-                className={styles.updateAvailable}
-                kind={kinds.PRIMARY}
-                isSpinning={isInstallingUpdate}
-                onPress={onInstallLatestPress}
-              >
-                Install Latest
-              </SpinnerButton>
+              <div className={styles.updateAvailable}>
+                {
+                  !isDocker &&
+                  <SpinnerButton
+                    className={styles.updateAvailable}
+                    kind={kinds.PRIMARY}
+                    isSpinning={isInstallingUpdate}
+                    onPress={onInstallLatestPress}
+                  >
+                    Install Latest
+                  </SpinnerButton>
+                }
 
-              {
-                isFetching &&
-                  <LoadingIndicator
-                    className={styles.loading}
-                    size={20}
-                  />
-              }
-            </div>
+                {
+                  isDocker &&
+                    <div className={styles.upToDateMessage}>
+                      An update is available.  Please update your Docker image and re-create the container.
+                    </div>
+                }
+
+                {
+                  isFetching &&
+                    <LoadingIndicator
+                      className={styles.loading}
+                      size={20}
+                    />
+                }
+              </div>
           }
 
           {
@@ -162,6 +173,7 @@ Updates.propTypes = {
   error: PropTypes.object,
   items: PropTypes.array.isRequired,
   isInstallingUpdate: PropTypes.bool.isRequired,
+  isDocker: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   onInstallLatestPress: PropTypes.func.isRequired
 };

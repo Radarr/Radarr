@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.HealthCheck.Checks;
@@ -86,7 +87,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         private void GivenDocker()
         {
-            //
+            Mocker.GetMock<IOsInfo>()
+                .Setup(x => x.IsDocker)
+                .Returns(true);
         }
 
         [Test]
@@ -139,9 +142,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        [Explicit("Only works if running inside a docker container")]
         public void should_return_docker_path_mapping_error_if_on_docker_and_root_missing()
         {
+            GivenDocker();
+            
             Subject.Check().ShouldBeError(wikiFragment: "docker-bad-remote-path-mapping");
         }
 
@@ -215,9 +219,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        [Explicit("Only works if running inside a docker container")]
         public void should_return_docker_mapping_error_on_track_import_failed_event_inside_docker_if_folder_does_not_exist()
         {
+            GivenDocker();
+            
             clientStatus.IsLocalhost = false;
             var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
 

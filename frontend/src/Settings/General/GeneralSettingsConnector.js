@@ -26,6 +26,7 @@ function createMapStateToProps() {
         isResettingApiKey,
         isMono: systemStatus.isMono,
         isWindows: systemStatus.isWindows,
+        isDocker: systemStatus.isDocker,
         mode: systemStatus.mode,
         ...sectionSettings
       };

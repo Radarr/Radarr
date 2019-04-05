@@ -58,7 +58,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 {
                                     return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad-remote-path-mapping");
                                 }
-                                else if (OsInfo.IsDocker)
+                                else if (_osInfo.IsDocker)
                                 {
                                     return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker-bad-remote-path-mapping");
                                 }
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                             if (!_diskProvider.FolderExists(folder.FullPath))
                             {
-                                if (OsInfo.IsDocker)
+                                if (_osInfo.IsDocker)
                                 {
                                     return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
                                 }
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         {
                             return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad-remote-path-mapping");
                         }
-                        else if (OsInfo.IsDocker)
+                        else if (_osInfo.IsDocker)
                         {
                             return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker-bad-remote-path-mapping");
                         }
@@ -157,7 +157,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     }
                 
                     // if it's a remote client/docker, likely missing path mappings
-                    if (OsInfo.IsDocker)
+                    if (_osInfo.IsDocker)
                     {
                         return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker-bad-remote-path-mapping");
                     }
