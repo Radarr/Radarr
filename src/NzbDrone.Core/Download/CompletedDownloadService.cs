@@ -50,7 +50,8 @@ namespace NzbDrone.Core.Download
 
         public void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false)
         {
-            if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed)
+            if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed ||
+                trackedDownload.RemoteAlbum == null)
             {
                 return;
             }
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-                var artist = trackedDownload.RemoteAlbum?.Artist;
+                var artist = trackedDownload.RemoteAlbum.Artist;
 
                 if (artist == null)
                 {

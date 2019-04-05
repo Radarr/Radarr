@@ -156,6 +156,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 if (trackedDownload.RemoteAlbum == null)
                 {
                     _logger.Trace("No Album found for download '{0}'", trackedDownload.DownloadItem.Title);
+                    trackedDownload.Warn("No Album found for download '{0}'", trackedDownload.DownloadItem.Title);
                 }
             }
             catch (Exception e)
