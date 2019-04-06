@@ -193,7 +193,8 @@ export const persistState = [
   'history.pageSize',
   'history.sortKey',
   'history.sortDirection',
-  'history.selectedFilterKey'
+  'history.selectedFilterKey',
+  'history.columns'
 ];
 
 //
