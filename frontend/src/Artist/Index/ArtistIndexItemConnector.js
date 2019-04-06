@@ -48,6 +48,16 @@ function createMapStateToProps() {
       showSearchAction,
       executingCommands
     ) => {
+
+      // If an artist is deleted this selector may fire before the parent
+      // selectors, which will result in an undefined artist, if that happens
+      // we want to return early here and again in the render function to avoid
+      // trying to show an artist that has no information available.
+
+      if (!artist) {
+        return {};
+      }
+
       const isRefreshingArtist = executingCommands.some((command) => {
         return (
           command.name === commandNames.REFRESH_ARTIST &&
@@ -106,13 +116,19 @@ class ArtistIndexItemConnector extends Component {
 
   render() {
     const {
+      id,
       component: ItemComponent,
       ...otherProps
     } = this.props;
 
+    if (!id) {
+      return null;
+    }
+
     return (
       <ItemComponent
         {...otherProps}
+        id={id}
         onRefreshArtistPress={this.onRefreshArtistPress}
         onSearchPress={this.onSearchPress}
       />
@@ -121,7 +137,7 @@ class ArtistIndexItemConnector extends Component {
 }
 
 ArtistIndexItemConnector.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.number,
   component: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
