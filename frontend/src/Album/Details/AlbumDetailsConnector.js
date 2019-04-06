@@ -16,11 +16,32 @@ import AlbumDetails from './AlbumDetails';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 
+const selectTrackFiles = createSelector(
+  (state) => state.trackFiles,
+  (trackFiles) => {
+    const {
+      items,
+      isFetching,
+      isPopulated,
+      error
+    } = trackFiles;
+
+    const hasTrackFiles = !!items.length;
+
+    return {
+      isTrackFilesFetching: isFetching,
+      isTrackFilesPopulated: isPopulated,
+      trackFilesError: error,
+      hasTrackFiles
+    };
+  }
+);
+
 function createMapStateToProps() {
   return createSelector(
     (state, { foreignAlbumId }) => foreignAlbumId,
     (state) => state.tracks,
-    (state) => state.trackFiles,
+    selectTrackFiles,
     (state) => state.albums,
     createAllArtistSelector(),
     createCommandsSelector(),
@@ -35,14 +56,20 @@ function createMapStateToProps() {
         return {};
       }
 
+      const {
+        isTrackFilesFetching,
+        isTrackFilesPopulated,
+        trackFilesError,
+        hasTrackFiles
+      } = trackFiles;
+
       const previousAlbum = sortedAlbums[albumIndex - 1] || _.last(sortedAlbums);
       const nextAlbum = sortedAlbums[albumIndex + 1] || _.first(sortedAlbums);
       const isSearching = !!findCommand(commands, { name: commandNames.ALBUM_SEARCH });
 
-      const isFetching = tracks.isFetching || trackFiles.isFetching;
-      const isPopulated = tracks.isPopulated && trackFiles.isPopulated;
+      const isFetching = tracks.isFetching || isTrackFilesFetching;
+      const isPopulated = tracks.isPopulated && isTrackFilesPopulated;
       const tracksError = tracks.error;
-      const trackFilesError = trackFiles.error;
 
       return {
         ...album,
@@ -53,6 +80,7 @@ function createMapStateToProps() {
         isPopulated,
         tracksError,
         trackFilesError,
+        hasTrackFiles,
         previousAlbum,
         nextAlbum
       };

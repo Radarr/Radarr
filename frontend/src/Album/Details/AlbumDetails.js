@@ -192,6 +192,7 @@ class AlbumDetails extends Component {
       isPopulated,
       albumsError,
       trackFilesError,
+      hasTrackFiles,
       shortDateFormat,
       artist,
       previousAlbum,
@@ -243,18 +244,21 @@ class AlbumDetails extends Component {
             <PageToolbarButton
               label="Preview Rename"
               iconName={icons.ORGANIZE}
+              isDisabled={!hasTrackFiles}
               onPress={this.onOrganizePress}
             />
 
             <PageToolbarButton
               label="Preview Retag"
               iconName={icons.RETAG}
+              isDisabled={!hasTrackFiles}
               onPress={this.onRetagPress}
             />
 
             <PageToolbarButton
               label="Manage Tracks"
               iconName={icons.TRACK_FILE}
+              isDisabled={!hasTrackFiles}
               onPress={this.onManageTracksPress}
             />
 
@@ -576,6 +580,7 @@ AlbumDetails.propTypes = {
   albumsError: PropTypes.object,
   tracksError: PropTypes.object,
   trackFilesError: PropTypes.object,
+  hasTrackFiles: PropTypes.bool.isRequired,
   artist: PropTypes.object,
   previousAlbum: PropTypes.object,
   nextAlbum: PropTypes.object,
