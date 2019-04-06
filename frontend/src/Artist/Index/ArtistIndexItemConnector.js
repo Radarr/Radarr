@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { isCommandExecuting } from 'Utilities/Command';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createExecutingCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
 import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
 import createMetadataProfileSelector from 'Store/Selectors/createMetadataProfileSelector';
@@ -40,28 +39,26 @@ function createMapStateToProps() {
     createLanguageProfileSelector(),
     createMetadataProfileSelector(),
     selectShowSearchAction(),
-    createCommandsSelector(),
+    createExecutingCommandsSelector(),
     (
       artist,
       qualityProfile,
       languageProfile,
       metadataProfile,
       showSearchAction,
-      commands
+      executingCommands
     ) => {
-      const isRefreshingArtist = commands.some((command) => {
+      const isRefreshingArtist = executingCommands.some((command) => {
         return (
           command.name === commandNames.REFRESH_ARTIST &&
-          command.body.artistId === artist.id &&
-          isCommandExecuting(command)
+          command.body.artistId === artist.id
         );
       });
 
-      const isSearchingArtist = commands.some((command) => {
+      const isSearchingArtist = executingCommands.some((command) => {
         return (
           command.name === commandNames.ARTIST_SEARCH &&
-          command.body.artistId === artist.id &&
-          isCommandExecuting(command)
+          command.body.artistId === artist.id
         );
       });
 
