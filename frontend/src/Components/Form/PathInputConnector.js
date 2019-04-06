@@ -28,8 +28,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchPaths,
-  clearPaths
+  dispatchFetchPaths: fetchPaths,
+  dispatchClearPaths: clearPaths
 };
 
 class PathInputConnector extends Component {
@@ -38,11 +38,19 @@ class PathInputConnector extends Component {
   // Listeners
 
   onFetchPaths = (path) => {
-    this.props.fetchPaths({ path });
+    const {
+      includeFiles,
+      dispatchFetchPaths
+    } = this.props;
+
+    dispatchFetchPaths({
+      path,
+      includeFiles
+    });
   }
 
   onClearPaths = () => {
-    this.props.clearPaths();
+    this.props.dispatchClearPaths();
   }
 
   //
@@ -60,8 +68,13 @@ class PathInputConnector extends Component {
 }
 
 PathInputConnector.propTypes = {
-  fetchPaths: PropTypes.func.isRequired,
-  clearPaths: PropTypes.func.isRequired
+  includeFiles: PropTypes.bool.isRequired,
+  dispatchFetchPaths: PropTypes.func.isRequired,
+  dispatchClearPaths: PropTypes.func.isRequired
+};
+
+PathInputConnector.defaultProps = {
+  includeFiles: false
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(PathInputConnector);
