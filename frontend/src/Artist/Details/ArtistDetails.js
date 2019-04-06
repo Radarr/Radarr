@@ -290,6 +290,7 @@ class ArtistDetails extends Component {
             <PageToolbarButton
               label="Preview Retag"
               iconName={icons.RETAG}
+              isDisabled={!hasTrackFiles}
               onPress={this.onRetagPress}
             />
 
