@@ -348,6 +348,10 @@ class ArtistIndex extends Component {
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
                     contentBody={contentBody}
+                    items={items}
+                    filters={filters}
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
                     scrollTop={scrollTop}
                     jumpToCharacter={jumpToCharacter}
                     onRender={this.onRender}
