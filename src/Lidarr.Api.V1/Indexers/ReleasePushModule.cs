@@ -3,7 +3,6 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Nancy;
-using Nancy.ModelBinding;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
@@ -12,10 +11,6 @@ using Lidarr.Http.Extensions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Indexers;
-using Lidarr.Http.REST;
-using System;
-using NzbDrone.Core.Exceptions;
-using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Lidarr.Api.V1.Indexers
 {
@@ -25,7 +20,6 @@ namespace Lidarr.Api.V1.Indexers
         private readonly IProcessDownloadDecisions _downloadDecisionProcessor;
         private readonly IIndexerFactory _indexerFactory;
         private readonly Logger _logger;
-        private ResourceValidator<ReleaseResource> _releaseValidator;
 
         public ReleasePushModule(IMakeDownloadDecision downloadDecisionMaker,
                                  IProcessDownloadDecisions downloadDecisionProcessor,
@@ -37,39 +31,19 @@ namespace Lidarr.Api.V1.Indexers
             _indexerFactory = indexerFactory;
             _logger = logger;
 
-            _releaseValidator = new ResourceValidator<ReleaseResource>();
-            _releaseValidator.RuleFor(s => s.Title).NotEmpty();
-            _releaseValidator.RuleFor(s => s.DownloadUrl).NotEmpty();
-            _releaseValidator.RuleFor(s => s.DownloadProtocol).NotEmpty();
-            _releaseValidator.RuleFor(s => s.PublishDate).NotEmpty();
+            Post["/push"] = x => ProcessRelease(ReadResourceFromRequest());
 
-            Post["/push"] = x => ProcessRelease();
+            PostValidator.RuleFor(s => s.Title).NotEmpty();
+            PostValidator.RuleFor(s => s.DownloadUrl).NotEmpty();
+            PostValidator.RuleFor(s => s.DownloadProtocol).NotEmpty();
+            PostValidator.RuleFor(s => s.PublishDate).NotEmpty();
         }
 
-        private Response ProcessRelease()
+        private Response ProcessRelease(ReleaseResource release)
         {
+            _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl);
 
-            var resource = new ReleaseResource();
-
-            try
-            {
-                resource = Request.Body.FromJson<ReleaseResource>();
-            }
-            catch (Exception ex)
-            {
-                throw new NzbDroneClientException(HttpStatusCode.BadRequest, ex.Message);
-            }
-
-            var validationFailures = _releaseValidator.Validate(resource).Errors;
-
-            if (validationFailures.Any())
-            {
-                throw new ValidationException(validationFailures);
-            }
-
-            _logger.Info("Release pushed: {0} - {1}", resource.Title, resource.DownloadUrl);
-
-            var info = resource.ToModel();
+            var info = release.ToModel();
 
             info.Guid = "PUSH-" + info.DownloadUrl;
 
@@ -82,7 +56,7 @@ namespace Lidarr.Api.V1.Indexers
 
             if (firstDecision?.RemoteAlbum.ParsedAlbumInfo == null)
             {
-                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", resource.Title) });
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
             return MapDecisions(new[] { firstDecision }).AsResponse();

@@ -5,6 +5,7 @@ using FluentValidation;
 using Nancy;
 using NzbDrone.Core.Datastore;
 using Lidarr.Http.Extensions;
+using Newtonsoft.Json;
 
 namespace Lidarr.Http.REST
 {
@@ -194,8 +195,16 @@ namespace Lidarr.Http.REST
 
         protected TResource ReadResourceFromRequest(bool skipValidate = false)
         {
-            //TODO: handle when request is null
-            var resource = Request.Body.FromJson<TResource>();
+            var resource = new TResource();
+
+            try
+            {
+                resource = Request.Body.FromJson<TResource>();
+            }
+            catch (JsonReaderException ex)
+            {
+                throw new BadRequestException(ex.Message);
+            }
 
             if (resource == null)
             {
