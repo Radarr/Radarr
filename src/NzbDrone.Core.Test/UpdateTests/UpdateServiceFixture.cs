@@ -91,10 +91,11 @@ namespace NzbDrone.Core.Test.UpdateTests
         public void should_not_update_if_inside_docker()
         {
             Mocker.GetMock<IOsInfo>().Setup(x => x.IsDocker).Returns(true);
-            
-            Subject.Invoking(x => x.Execute(new ApplicationUpdateCommand()))
-                .ShouldThrow<CommandFailedException>()
-                .WithMessage("Updating is disabled inside a docker container.  Please update the container image.");
+
+            Subject.Execute(new ApplicationUpdateCommand());
+
+            Mocker.GetMock<IProcessProvider>()
+                .Verify(c => c.Start(It.IsAny<string>(), It.Is<string>(s => s.StartsWith("12")), null, null, null), Times.Never());
         }
 
         [Test]
