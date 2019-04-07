@@ -225,7 +225,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                         if (existingAlbum == null)
                         {
-                            return new List<Album> { GetAlbumInfo(searchGuid.ToString()).Item2 };
+                            var data = GetAlbumInfo(searchGuid.ToString());
+                            var album = data.Item2;
+                            album.Artist = _artistService.FindById(data.Item1) ?? new Artist {
+                                Metadata = data.Item3.Single(x => x.ForeignArtistId == data.Item1)
+                            };
+
+                            return new List<Album> { album };
                         }
 
                         existingAlbum.Artist = _artistService.GetArtist(existingAlbum.ArtistId);
