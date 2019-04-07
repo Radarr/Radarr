@@ -4,6 +4,7 @@ using Nancy.Authentication.Forms;
 using Nancy.Extensions;
 using Nancy.ModelBinding;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 
@@ -24,16 +25,19 @@ namespace Lidarr.Http.Authentication
 
         private Response Login(LoginResource resource)
         {
-            Ensure.That(resource.Username, () => resource.Username).IsNotNullOrWhiteSpace();
+            var username = resource.Username;
+            var password = resource.Password;
 
-            Ensure.That(resource.Password, () => resource.Password).IsNotNullOrWhiteSpace();
+            if (username.IsNullOrWhiteSpace() || password.IsNullOrWhiteSpace())
+            {
+                return LoginFailed();
+            }
 
-            var user = _userService.FindUser(resource.Username, resource.Password);
+            var user = _userService.FindUser(username, password);
 
             if (user == null)
             {
-                var returnUrl = (string)Request.Query.returnUrl;
-                return Context.GetRedirect($"~/login?returnUrl={returnUrl}&loginFailed=true");
+                return LoginFailed();
             }
 
             DateTime? expiry = null;
@@ -49,6 +53,12 @@ namespace Lidarr.Http.Authentication
         private Response Logout()
         {
             return this.LogoutAndRedirect(_configFileProvider.UrlBase + "/");
+        }
+
+        private Response LoginFailed()
+        {
+            var returnUrl = (string)Request.Query.returnUrl;
+            return Context.GetRedirect($"~/login?returnUrl={returnUrl}&loginFailed=true");
         }
     }
 }
