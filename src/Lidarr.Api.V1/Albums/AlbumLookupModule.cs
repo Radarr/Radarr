@@ -20,13 +20,11 @@ namespace Lidarr.Api.V1.Albums
             Get["/"] = x => Search();
         }
 
-
         private Response Search()
         {
             var searchResults = _searchProxy.SearchForNewAlbum((string)Request.Query.term, null);
-            return MapToResource(searchResults).AsResponse();
+            return MapToResource(searchResults).ToList().AsResponse();
         }
-
 
         private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Album> albums)
         {
