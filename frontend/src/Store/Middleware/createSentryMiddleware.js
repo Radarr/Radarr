@@ -64,6 +64,7 @@ export default function createSentryMiddleware() {
     branch,
     version,
     release,
+    userHash,
     isProduction
   } = window.Lidarr;
 
@@ -83,6 +84,7 @@ export default function createSentryMiddleware() {
   });
 
   sentry.configureScope((scope) => {
+    scope.setUser({ username: userHash });
     scope.setTag('version', version);
     scope.setTag('production', isProduction);
   });
