@@ -159,6 +159,9 @@ CreateMdbs()
             tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.exe
           fi
         done
+
+        echo "Removing PDBs"
+        find $path -name "*.pdb" -exec rm "{}" \;
     fi
 }
 
@@ -173,9 +176,6 @@ PackageMono()
 
     echo "Creating MDBs"
     CreateMdbs $outputFolderLinux
-
-    echo "Removing PDBs"
-    find $outputFolderLinux -name "*.pdb" -exec rm "{}" \;
 
     echo "Removing Service helpers"
     rm -f $outputFolderLinux/ServiceUninstall.*
@@ -276,9 +276,6 @@ PackageTests()
     rm -f $testPackageFolder/*.log.config
 
     CleanFolder $testPackageFolder true
-
-    echo "Adding Lidarr.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $testPackageFolder
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
