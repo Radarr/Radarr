@@ -925,6 +925,11 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\TmdbConfigurationService.cs" />
     <Compile Include="NetImport\NetImportSyncCommand.cs" />
+    <Compile Include="Notifications\Gotify\InvalidResponseException.cs" />
+    <Compile Include="Notifications\Gotify\Gotify.cs" />
+    <Compile Include="Notifications\Gotify\GotifyPriority.cs" />
+    <Compile Include="Notifications\Gotify\GotifyService.cs" />
+    <Compile Include="Notifications\Gotify\GotifySettings.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
