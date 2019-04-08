@@ -26,6 +26,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         private DownloadClientInfo clientStatus;
         private DownloadClientItem downloadItem;
         private Mock<IDownloadClient> downloadClient;
+        
+        static Exception[] DownloadClientExceptions = {
+            new DownloadClientUnavailableException("error"),
+            new DownloadClientAuthenticationException("error"),
+            new DownloadClientException("error")
+        };
 
         [SetUp]
         public void Setup()
@@ -132,13 +138,15 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Check().ShouldBeError(wikiFragment: "bad-remote-path-mapping");
         }
 
-        [Test]
-        public void should_return_ok_if_client_unavailable()
+        [Test, TestCaseSource("DownloadClientExceptions")]
+        public void should_return_ok_if_client_throws_downloadclientexception(Exception ex)
         {
             downloadClient.Setup(s => s.GetStatus())
-                .Throws(new DownloadClientUnavailableException("error"));
+                .Throws(ex);
             
             Subject.Check().ShouldBeOk();
+            
+            ExceptionVerification.ExpectedErrors(0);
         }
 
         [Test]
@@ -228,16 +236,18 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             Subject.Check(importEvent).ShouldBeError(wikiFragment: "docker-bad-remote-path-mapping");
         }
-        
-        [Test]
-        public void should_return_ok_on_import_failed_event_if_client_unavailable()
+
+        [Test, TestCaseSource("DownloadClientExceptions")]
+        public void should_return_ok_on_import_failed_event_if_client_throws_downloadclientexception(Exception ex)
         {
             downloadClient.Setup(s => s.GetStatus())
-                .Throws(new DownloadClientUnavailableException("error"));
+                .Throws(ex);
             
             var importEvent = new TrackImportFailedEvent(null, null, true, downloadItem);
             
             Subject.Check(importEvent).ShouldBeOk();
+
+            ExceptionVerification.ExpectedErrors(0);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         }
                     }
                 }
-                catch (DownloadClientUnavailableException ex)
+                catch (DownloadClientException ex)
                 {
                     _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }
@@ -171,7 +171,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
                     }
                 }
-                catch (DownloadClientUnavailableException ex)
+                catch (DownloadClientException ex)
                 {
                     _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }
