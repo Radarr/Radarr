@@ -55,7 +55,10 @@ class AlbumDetailsPageConnector extends Component {
   populate = () => {
     const foreignAlbumId = this.props.foreignAlbumId;
     this.setState({ hasMounted: true });
-    this.props.fetchAlbums({ foreignAlbumId });
+    this.props.fetchAlbums({
+      foreignAlbumId,
+      includeAllArtistAlbums: true
+    });
   }
 
   unpopulate = () => {

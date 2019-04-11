@@ -42,6 +42,7 @@ namespace Lidarr.Api.V1.Albums
             var artistIdQuery = Request.Query.ArtistId;
             var albumIdsQuery = Request.Query.AlbumIds;
             var foreignIdQuery = Request.Query.ForeignAlbumId;
+            var includeAllArtistAlbumsQuery = Request.Query.IncludeAllArtistAlbums;
 
             if (!Request.Query.ArtistId.HasValue && !albumIdsQuery.HasValue && !foreignIdQuery.HasValue)
             {
@@ -57,9 +58,18 @@ namespace Lidarr.Api.V1.Albums
 
             if (foreignIdQuery.HasValue)
             {
-                int artistId = _albumService.FindById(foreignIdQuery.Value).ArtistId;
+                string foreignAlbumId = foreignIdQuery.Value.ToString();
 
-                return MapToResource(_albumService.GetAlbumsByArtist(artistId), false);
+                var album = _albumService.FindById(foreignAlbumId);
+
+                if (includeAllArtistAlbumsQuery.HasValue && Convert.ToBoolean(includeAllArtistAlbumsQuery.Value))
+                {
+                    return MapToResource(_albumService.GetAlbumsByArtist(album.ArtistId), false);
+                }
+                else
+                {
+                    return MapToResource(new List<Album> { album }, false);
+                }
             }
 
             string albumIdsValue = albumIdsQuery.Value.ToString();
