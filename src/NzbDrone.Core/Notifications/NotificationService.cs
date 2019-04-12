@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Notifications
         private string GetMessage(Movie movie, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
-            var ImdbUrl = "http://www.imdb.com/title/" + movie.ImdbId + "/";
+            var ImdbUrl = "https://www.imdb.com/title/" + movie.ImdbId + "/";
 
             if (quality.Revision.Version > 1)
             {

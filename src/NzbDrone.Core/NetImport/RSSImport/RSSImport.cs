@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 EnableAuto = true,
                 ProfileId = 1,
                 Implementation = GetType().Name,
-                Settings = new RSSImportSettings { Link = "http://rss.imdb.com/list/YOURLISTID" },
+                Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
             };
             yield return new NetImportDefinition
             {
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 EnableAuto = true,
                 ProfileId = 1,
                 Implementation = GetType().Name,
-                Settings = new RSSImportSettings { Link = "http://rss.imdb.com/user/IMDBUSERID/watchlist" },
+                Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },
             };
         }
 

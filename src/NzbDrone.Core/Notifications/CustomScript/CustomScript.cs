@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Release_Title", remoteMovie.Release.Title);
-            environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer);
+            environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer ?? string.Empty);
             environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
             environmentVariables.Add("Radarr_Release_ReleaseGroup", remoteMovie.ParsedMovieInfo.ReleaseGroup ?? string.Empty);
             environmentVariables.Add("Radarr_Release_Quality", quality.Quality.Name);

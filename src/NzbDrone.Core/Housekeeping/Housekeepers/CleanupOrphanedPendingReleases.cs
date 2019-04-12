@@ -13,14 +13,16 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
+                mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
                                      WHERE Id IN (
                                      SELECT PendingReleases.Id FROM PendingReleases
                                      LEFT OUTER JOIN Movies
                                      ON PendingReleases.MovieId = Movies.Id
                                      WHERE Movies.Id IS NULL)");
+            }
         }
     }
 }

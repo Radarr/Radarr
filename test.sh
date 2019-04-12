@@ -9,7 +9,7 @@ if [ -d "$TEST_DIR/_tests" ]; then
   TEST_DIR="$TEST_DIR/_tests"
 fi
 
-NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe"
+NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe"
 NUNIT_COMMAND="$NUNIT"
 NUNIT_PARAMS="--result=$TEST_DIR/reports/junit/results-$TYPE.xml;transform=.circleci/nunit3-junit.xslt --agents=12 --config=Debug"
 
@@ -17,7 +17,7 @@ if [ "$PLATFORM" = "Windows" ]; then
   WHERE="$WHERE && cat != LINUX"
 elif [ "$PLATFORM" = "Linux" ]; then
   WHERE="$WHERE && cat != WINDOWS"
-  NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
+  NUNIT_COMMAND="mono --debug $NUNIT"
 elif [ "$PLATFORM" = "Mac" ]; then
   WHERE="$WHERE && cat != WINDOWS"
   NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"

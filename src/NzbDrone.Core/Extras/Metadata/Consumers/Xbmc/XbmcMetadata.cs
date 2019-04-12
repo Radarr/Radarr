@@ -127,11 +127,24 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     {
                         details.Add(new XElement("rating", movie.Ratings.Value));
                     }
-
+                    
                     details.Add(new XElement("plot", movie.Overview));
                     details.Add(new XElement("id", movie.ImdbId));
-                    details.Add(new XElement("year", movie.Year));
 
+                    if (movie.ImdbId.IsNotNullOrWhiteSpace())
+                    {
+                        var imdbId = new XElement("uniqueid", movie.ImdbId);
+                        imdbId.SetAttributeValue("type", "imdb");
+                        imdbId.SetAttributeValue("default", true);
+                        details.Add(imdbId);
+                    }
+
+                    var uniqueId = new XElement("uniqueid", movie.TmdbId);
+                    uniqueId.SetAttributeValue("type", "tmdb");
+                    details.Add(uniqueId);
+
+                    details.Add(new XElement("year", movie.Year));
+                    
                     if (movie.InCinemas.HasValue)
                     {
                         details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));

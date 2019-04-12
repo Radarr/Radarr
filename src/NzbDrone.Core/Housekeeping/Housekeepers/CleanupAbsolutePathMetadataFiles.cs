@@ -13,9 +13,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+            using (var mapper = _database.GetDataMapper())
+            {
+                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE RelativePath
@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                          OR RelativePath
                                          LIKE '/%'
                                      )");
+            }
         }
     }
 }

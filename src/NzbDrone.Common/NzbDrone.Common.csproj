@@ -81,7 +81,7 @@
     <Compile Include="Cache\CachedDictionary.cs" />
     <Compile Include="Cache\ICached.cs" />
     <Compile Include="Cache\ICachedDictionary.cs" />
-    <Compile Include="Cloud\SonarrCloudRequestBuilder.cs" />
+    <Compile Include="Cloud\RadarrCloudRequestBuilder.cs" />
     <Compile Include="Composition\Container.cs" />
     <Compile Include="Composition\ContainerBuilderBase.cs" />
     <Compile Include="Composition\IContainer.cs" />

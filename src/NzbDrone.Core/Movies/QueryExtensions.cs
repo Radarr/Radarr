@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Movies
     {
         public static Movie FirstWithYear(this SortBuilder<Movie> query, int? year)
         {
-            return year.HasValue ? query.FirstOrDefault(movie => movie.Year == year || movie.SecondaryYear == year) : query.FirstOrDefault();
+            return year.HasValue ? query.AndWhere(movie => movie.Year == year || movie.SecondaryYear == year).FirstOrDefault() : query.FirstOrDefault();
         }
     }
 

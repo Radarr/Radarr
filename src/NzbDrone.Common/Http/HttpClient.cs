@@ -226,11 +226,13 @@ namespace NzbDrone.Common.Http
                 _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
 
                 var stopWatch = Stopwatch.StartNew();
-                var webClient = new GZipWebClient();
-                webClient.Headers.Add(HttpRequestHeader.UserAgent, UserAgentBuilder.UserAgent);
-                webClient.DownloadFile(url, fileName);
-                stopWatch.Stop();
-                _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
+                using (var webClient = new GZipWebClient())
+                {
+                    webClient.Headers.Add(HttpRequestHeader.UserAgent, UserAgentBuilder.UserAgent);
+                    webClient.DownloadFile(url, fileName);
+                    stopWatch.Stop();
+                    _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
+                }
             }
             catch (WebException e)
             {

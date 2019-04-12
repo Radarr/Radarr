@@ -31,12 +31,6 @@ namespace NzbDrone.Core.MediaCover
                 return false;
             }
 
-            if (!_diskProvider.IsValidGDIPlusImage(path))
-            {
-                _diskProvider.DeleteFile(path);
-                return false;
-            }
-
             var headers = _httpClient.Head(new HttpRequest(url)).Headers;
             var fileSize = _diskProvider.GetFileSize(path);
             return fileSize == headers.ContentLength;

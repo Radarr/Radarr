@@ -221,9 +221,9 @@ PackageTests()
     find $sourceFolder -path $testSearchPattern -exec cp -r -u -T "{}" $testPackageFolder \;
 
     if [ $runtime = "dotnet" ] ; then
-        $nuget install NUnit.Runners -Version 3.2.1 -Output $testPackageFolder
+        $nuget install NUnit.Runners -Version 3.9.0 -Output $testPackageFolder
     else
-        mono $nuget install NUnit.Runners -Version 3.2.1 -Output $testPackageFolder
+        mono $nuget install NUnit.Runners -Version 3.9.0 -Output $testPackageFolder
     fi
 
     cp $outputFolder/*.dll $testPackageFolder

@@ -154,6 +154,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     case "stalledUP": // torrent is being seeded, but no connection were made
                     case "queuedUP": // queuing is enabled and torrent is queued for upload
                     case "checkingUP": // torrent has finished downloading and is being checked
+                    case "forcedUP": // torrent is beeing seeded by force
                         item.Status = DownloadItemStatus.Completed;
                         item.RemainingTime = TimeSpan.Zero; // qBittorrent sends eta=8640000 for completed torrents
                         break;
@@ -164,7 +165,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         break;
 
                     case "downloading": // torrent is being downloaded and data is being transfered
+                        item.Status = DownloadItemStatus.Downloading;
+                        break;
+
                     default: // new status in API? default to downloading
+                        item.Message = "Unknown download state: " + torrent.State;
+                        _logger.Warn(item.Message);
                         item.Status = DownloadItemStatus.Downloading;
                         break;
                 }

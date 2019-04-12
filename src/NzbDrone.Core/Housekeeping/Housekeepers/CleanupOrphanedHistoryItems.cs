@@ -18,14 +18,16 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void CleanupOrphanedByMovie()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.ExecuteNonQuery(@"DELETE FROM History
+                mapper.ExecuteNonQuery(@"DELETE FROM History
                                      WHERE Id IN (
                                      SELECT History.Id FROM History
                                      LEFT OUTER JOIN Movies
                                      ON History.MovieId = Movies.Id
                                      WHERE Movies.Id IS NULL)");
+            }
         }
     }
 }

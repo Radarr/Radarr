@@ -26,6 +26,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[ www.Torrenting.com ] - Revenge.S03E14.720p.HDTV.X264-DIMENSION", "DIMENSION")]
         [TestCase("Seed S02E09 HDTV x264-2HD [eztv]-[rarbg.com]", "2HD")]
         [TestCase("7s-atlantis-s02e01-720p.mkv", null)]
+        [TestCase("The.Middle.720p.HEVC.x265-MeGusta-Pre", "MeGusta")]
+        [TestCase("Haunted.Hayride.2018.720p.WEBRip.DDP5.1.x264-NTb-postbot", "NTb")]
+        [TestCase("Haunted.Hayride.2018.720p.WEBRip.DDP5.1.x264-NTb-xpost", "NTb")]
         //[TestCase("", "")]
         public void should_parse_release_group(string title, string expected)
         {

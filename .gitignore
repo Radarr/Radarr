@@ -104,7 +104,7 @@ _TeamCity*
 # Radarr
 Backups/
 logs/
-MediaCover/
+#MediaCover/
 UpdateLogs/
 xdg/
 config.xml

@@ -30,12 +30,12 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
 
         public bool IsMovieExcluded(int tmdbid)
         {
-            return Query.Where(ex => ex.TmdbId == tmdbid).Any();
+            return Query(q => q.Where(ex => ex.TmdbId == tmdbid).Any());
         }
 
         public ImportExclusion GetByTmdbid(int tmdbid)
         {
-            return Query.Where(ex => ex.TmdbId == tmdbid).First();
+            return Query(q => q.Where(ex => ex.TmdbId == tmdbid).First());
         }
     }
 }
