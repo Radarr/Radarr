@@ -15,8 +15,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void should_have_utc_date()
         {
             var body = new Dictionary<string, object>();
-            body.Add("guid", "sdfsdfsdf");
             body.Add("title", "The Artist - The Album (2008) [FLAC]");
+            body.Add("protocol", "Torrent");
+            body.Add("downloadUrl", "https://lidarr.audio/test.torrent");
             body.Add("publishDate", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ssZ", CultureInfo.InvariantCulture));
 
             var request = ReleasePush.BuildRequest();
