@@ -154,6 +154,36 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        public void should_be_accepted_if_release_torrent_hash_is_null()
+        {
+            var downloadId = Guid.NewGuid().ToString().ToUpper();
+
+            GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.Grabbed);
+            GivenHistoryItem(downloadId, TITLE, _flac, HistoryEventType.DownloadImported);
+
+            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+                                                         .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
+                                                         .With(t => t.InfoHash = null)
+                                                         .Build();
+
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_be_accepted_if_release_torrent_hash_is_null_and_downloadId_is_null()
+        {
+            GivenHistoryItem(null, TITLE, _mp3, HistoryEventType.Grabbed);
+            GivenHistoryItem(null, TITLE, _flac, HistoryEventType.DownloadImported);
+
+            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+                                                         .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
+                                                         .With(t => t.InfoHash = null)
+                                                         .Build();
+
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
         public void should_be_rejected_if_release_title_matches_grabbed_event_source_title()
         {
             var downloadId = Guid.NewGuid().ToString().ToUpper();

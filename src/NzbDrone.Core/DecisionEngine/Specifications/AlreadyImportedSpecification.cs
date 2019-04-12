@@ -77,13 +77,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                var release = subject.Release;
+                var release = subject.Release;                
 
                 if (release.DownloadProtocol == DownloadProtocol.Torrent)
                 {
                     var torrentInfo = release as TorrentInfo;
 
-                    if (torrentInfo != null && torrentInfo.InfoHash.ToUpper() == lastGrabbed.DownloadId)
+                    if (torrentInfo?.InfoHash != null && torrentInfo.InfoHash.ToUpper() == lastGrabbed.DownloadId)
                     {
                         _logger.Debug("Has same torrent hash as a grabbed and imported release");
                         return Decision.Reject("Has same torrent hash as a grabbed and imported release");
