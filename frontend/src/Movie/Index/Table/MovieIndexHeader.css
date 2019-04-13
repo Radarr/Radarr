@@ -1,23 +1,23 @@
 .status {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 60px;
 }
 
 .sortTitle {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 4 0 110px;
 }
 
 .studio {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 2 0 90px;
 }
 
 .qualityProfileId {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 1 0 125px;
 }
@@ -25,43 +25,43 @@
 .added,
 .inCinemas,
 .genres {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 180px;
 }
 
 .certification {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 100px;
 }
 
 .path {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 1 0 150px;
 }
 
 .sizeOnDisk {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 120px;
 }
 
 .ratings {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 80px;
 }
 
 .tags {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 1 0 60px;
 }
 
 .actions {
-  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 1 90px;
 }

@@ -12,7 +12,7 @@ import SeriesEditor from './SeriesEditor';
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector('series', 'movieEditor'),
+    createClientSideCollectionSelector('movies', 'movieEditor'),
     createCommandExecutingSelector(commandNames.RENAME_SERIES),
     (series, isOrganizingSeries) => {
       return {

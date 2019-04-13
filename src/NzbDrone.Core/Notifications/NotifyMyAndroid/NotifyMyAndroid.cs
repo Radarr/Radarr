@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
@@ -36,8 +36,6 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
         }
 		
         public override string Name => "Notify My Android";
-
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {

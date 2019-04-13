@@ -46,10 +46,21 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
             UpdateMovieLibrary(settings, movie);
         }
-
-
+        
         public void Clean(XbmcSettings settings)
         {
+            if (!settings.AlwaysUpdate)
+            {
+                _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
+                var activePlayers = GetActivePlayers(settings);
+
+                if (activePlayers.Any(a => a.Type.Equals("video")))
+                {
+                    _logger.Debug("Video is currently playing, skipping library cleaning");
+                    return;
+                }
+            }
+
             _proxy.CleanLibrary(settings);
         }
 

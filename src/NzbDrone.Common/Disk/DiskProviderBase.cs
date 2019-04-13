@@ -215,6 +215,11 @@ namespace NzbDrone.Common.Disk
                 throw new IOException(string.Format("Source and destination can't be the same {0}", source));
             }
 
+            CopyFileInternal(source, destination, overwrite);
+        }
+
+        protected virtual void CopyFileInternal(string source, string destination, bool overwrite = false)
+        {
             File.Copy(source, destination, overwrite);
         }
 
@@ -234,7 +239,7 @@ namespace NzbDrone.Common.Disk
             }
 
             RemoveReadOnly(source);
-            File.Move(source, destination);
+            MoveFileInternal(source, destination);
         }
 
         public void MoveFolder(string source, string destination, bool overwrite = false)
@@ -254,6 +259,11 @@ namespace NzbDrone.Common.Disk
 
             RemoveReadOnlyFolder(source);
             Directory.Move(source, destination);
+        }
+
+        protected virtual void MoveFileInternal(string source, string destination)
+        {
+            File.Move(source, destination);
         }
 
         public abstract bool TryCreateHardLink(string source, string destination);
@@ -458,7 +468,12 @@ namespace NzbDrone.Common.Disk
             return new FileStream(path, FileMode.Create);
         }
 
-        public virtual List<IMount> GetMounts()
+        public List<IMount> GetMounts()
+        {
+            return GetAllMounts().Where(d => !IsSpecialMount(d)).ToList();
+        }
+
+        protected virtual List<IMount> GetAllMounts()
         {
             return GetDriveInfoMounts().Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable)
                                        .Select(d => new DriveInfoMount(d))
@@ -466,11 +481,16 @@ namespace NzbDrone.Common.Disk
                                        .ToList();
         }
 
+        protected virtual bool IsSpecialMount(IMount mount)
+        {
+            return false;
+        }
+
         public virtual IMount GetMount(string path)
         {
             try
             {
-                var mounts = GetMounts();
+                var mounts = GetAllMounts();
 
                 return mounts.Where(drive => drive.RootDirectory.PathEquals(path) ||
                                              drive.RootDirectory.IsParentPath(path))

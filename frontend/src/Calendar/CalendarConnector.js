@@ -49,8 +49,20 @@ class CalendarConnector extends Component {
   }
 
   componentDidMount() {
+    const {
+      useCurrentPage,
+      fetchCalendar,
+      gotoCalendarToday
+    } = this.props;
+
     registerPagePopulator(this.repopulate);
-    this.props.gotoCalendarToday();
+
+    if (useCurrentPage) {
+      fetchCalendar();
+    } else {
+      gotoCalendarToday();
+    }
+
     this.scheduleUpdate();
   }
 
@@ -163,6 +175,7 @@ class CalendarConnector extends Component {
 }
 
 CalendarConnector.propTypes = {
+  useCurrentPage: PropTypes.bool.isRequired,
   time: PropTypes.string,
   view: PropTypes.string.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,

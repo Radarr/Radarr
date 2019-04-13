@@ -1,0 +1,19 @@
+.missing {
+  padding-left: 2px;
+  border-left: 4px solid $dangerColor;
+}
+
+.downloaded {
+  padding-left: 2px;
+  border-left: 4px solid $dangerColor;
+}
+
+.unaired {
+  padding-left: 2px;
+  border-left: 4px solid $gray;
+}
+
+.unmonitored {
+  padding-left: 2px;
+  border-left: 4px solid $warningColor;
+}

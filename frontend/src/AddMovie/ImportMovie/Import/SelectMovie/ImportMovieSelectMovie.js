@@ -34,6 +34,8 @@ class ImportMovieSelectMovie extends Component {
     super(props, context);
 
     this._movieLookupTimeout = null;
+    this._buttonRef = {};
+    this._contentRef = {};
 
     this.state = {
       term: props.id,
@@ -43,14 +45,6 @@ class ImportMovieSelectMovie extends Component {
 
   //
   // Control
-
-  _setButtonRef = (ref) => {
-    this._buttonRef = ref;
-  }
-
-  _setContentRef = (ref) => {
-    this._contentRef = ref;
-  }
 
   _addListener() {
     window.addEventListener('click', this.onWindowClick);
@@ -64,14 +58,18 @@ class ImportMovieSelectMovie extends Component {
   // Listeners
 
   onWindowClick = (event) => {
-    const button = ReactDOM.findDOMNode(this._buttonRef);
-    const content = ReactDOM.findDOMNode(this._contentRef);
+    const button = ReactDOM.findDOMNode(this._buttonRef.current);
+    const content = ReactDOM.findDOMNode(this._contentRef.current);
 
-    if (!button) {
+    if (!button || !content) {
       return;
     }
 
-    if (!button.contains(event.target) && content && !content.contains(event.target) && this.state.isOpen) {
+    if (
+      !button.contains(event.target) &&
+      !content.contains(event.target) &&
+      this.state.isOpen
+    ) {
       this.setState({ isOpen: false });
       this._removeListener();
     }
@@ -120,7 +118,7 @@ class ImportMovieSelectMovie extends Component {
       isPopulated,
       error,
       items,
-      queued,
+      isQueued,
       isLookingUpMovie
     } = this.props;
 
@@ -134,124 +132,145 @@ class ImportMovieSelectMovie extends Component {
           element: styles.tether
         }}
         {...tetherOptions}
-      >
-        <Link
-          ref={this._setButtonRef}
-          className={styles.button}
-          component="div"
-          onPress={this.onPress}
-        >
-          {
-            isLookingUpMovie && queued && !isPopulated &&
-              <LoadingIndicator
-                className={styles.loading}
-                size={20}
-              />
-          }
+        renderTarget={
+          (ref) => {
+            this._buttonRef = ref;
 
-          {
-            isPopulated && selectedMovie && isExistingMovie &&
-              <Icon
-                className={styles.warningIcon}
-                name={icons.WARNING}
-                kind={kinds.WARNING}
-              />
-          }
+            return (
+              <div ref={ref}>
+                <Link
+                  className={styles.button}
+                  component="div"
+                  onPress={this.onPress}
+                >
+                  {
+                    isLookingUpMovie && isQueued && !isPopulated ?
+                      <LoadingIndicator
+                        className={styles.loading}
+                        size={20}
+                      /> :
+                      null
+                  }
 
-          {
-            isPopulated && selectedMovie &&
-              <ImportMovieTitle
-                title={selectedMovie.title}
-                year={selectedMovie.year}
-                network={selectedMovie.network}
-                isExistingMovie={isExistingMovie}
-              />
-          }
+                  {
+                    isPopulated && selectedMovie && isExistingMovie ?
+                      <Icon
+                        className={styles.warningIcon}
+                        name={icons.WARNING}
+                        kind={kinds.WARNING}
+                      /> :
+                      null
+                  }
 
-          {
-            isPopulated && !selectedMovie &&
-              <div>
-                <Icon
-                  className={styles.warningIcon}
-                  name={icons.WARNING}
-                  kind={kinds.WARNING}
-                />
+                  {
+                    isPopulated && selectedMovie ?
+                      <ImportMovieTitle
+                        title={selectedMovie.title}
+                        year={selectedMovie.year}
+                        network={selectedMovie.network}
+                        isExistingMovie={isExistingMovie}
+                      /> :
+                      null
+                  }
+
+                  {
+                    isPopulated && !selectedMovie ?
+                      <div>
+                        <Icon
+                          className={styles.warningIcon}
+                          name={icons.WARNING}
+                          kind={kinds.WARNING}
+                        />
 
                 No match found!
-              </div>
-          }
+                      </div> :
+                      null
+                  }
 
-          {
-            !isFetching && !!error &&
-              <div>
-                <Icon
-                  className={styles.warningIcon}
-                  title={errorMessage}
-                  name={icons.WARNING}
-                  kind={kinds.WARNING}
-                />
+                  {
+                    !isFetching && !!error ?
+                      <div>
+                        <Icon
+                          className={styles.warningIcon}
+                          title={errorMessage}
+                          name={icons.WARNING}
+                          kind={kinds.WARNING}
+                        />
 
                 Search failed, please try again later.
+                      </div> :
+                      null
+                  }
+
+                  <div className={styles.dropdownArrowContainer}>
+                    <Icon
+                      name={icons.CARET_DOWN}
+                    />
+                  </div>
+                </Link>
               </div>
+            );
           }
+        }
+        renderElement={
+          (ref) => {
+            this._contentRef = ref;
 
-          <div className={styles.dropdownArrowContainer}>
-            <Icon
-              name={icons.CARET_DOWN}
-            />
-          </div>
-        </Link>
+            if (!this.state.isOpen) {
+              return;
+            }
 
-        {
-          this.state.isOpen &&
-            <div
-              ref={this._setContentRef}
-              className={styles.contentContainer}
-            >
-              <div className={styles.content}>
-                <div className={styles.searchContainer}>
-                  <div className={styles.searchIconContainer}>
-                    <Icon name={icons.SEARCH} />
+            return (
+              <div
+                ref={ref}
+                className={styles.contentContainer}
+              >
+                <div className={styles.content}>
+                  <div className={styles.searchContainer}>
+                    <div className={styles.searchIconContainer}>
+                      <Icon name={icons.SEARCH} />
+                    </div>
+
+                    <TextInput
+                      className={styles.searchInput}
+                      name={`${name}_textInput`}
+                      value={this.state.term}
+                      onChange={this.onSearchInputChange}
+                    />
+
+                    <FormInputButton
+                      kind={kinds.DEFAULT}
+                      spinnerIcon={icons.REFRESH}
+                      canSpin={true}
+                      isSpinning={isFetching}
+                      onPress={this.onRefreshPress}
+                    >
+                      <Icon name={icons.REFRESH} />
+                    </FormInputButton>
                   </div>
 
-                  <TextInput
-                    className={styles.searchInput}
-                    name={`${name}_textInput`}
-                    value={this.state.term}
-                    onChange={this.onSearchInputChange}
-                  />
-
-                  <FormInputButton
-                    kind={kinds.DEFAULT}
-                    spinnerIcon={icons.REFRESH}
-                    canSpin={true}
-                    isSpinning={isFetching}
-                    onPress={this.onRefreshPress}
-                  >
-                    <Icon name={icons.REFRESH} />
-                  </FormInputButton>
-                </div>
-
-                <div className={styles.results}>
-                  {
-                    items.map((item) => {
-                      return (
-                        <ImportMovieSearchResultConnector
-                          key={item.tmdbId}
-                          tmdbId={item.tmdbId}
-                          title={item.title}
-                          year={item.year}
-                          studio={item.studio}
-                          onPress={this.onMovieSelect}
-                        />
-                      );
-                    })
-                  }
+                  <div className={styles.results}>
+                    {
+                      items.map((item) => {
+                        return (
+                          <ImportMovieSearchResultConnector
+                            key={item.tmdbId}
+                            tmdbId={item.tmdbId}
+                            title={item.title}
+                            year={item.year}
+                            studio={item.studio}
+                            onPress={this.onMovieSelect}
+                          />
+                        );
+                      })
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
+            );
+          }
         }
-      </TetherComponent>
+      />
     );
   }
 }
@@ -264,7 +283,7 @@ ImportMovieSelectMovie.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  queued: PropTypes.bool.isRequired,
+  isQueued: PropTypes.bool.isRequired,
   isLookingUpMovie: PropTypes.bool.isRequired,
   onSearchInputChange: PropTypes.func.isRequired,
   onMovieSelect: PropTypes.func.isRequired
@@ -274,7 +293,7 @@ ImportMovieSelectMovie.defaultProps = {
   isFetching: true,
   isPopulated: false,
   items: [],
-  queued: true
+  isQueued: true
 };
 
 export default ImportMovieSelectMovie;

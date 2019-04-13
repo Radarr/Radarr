@@ -6,9 +6,13 @@ const messages = [
   // TODO Add some messages here
 ];
 
+let message = null;
+
 function LoadingMessage() {
-  const index = Math.floor(Math.random() * messages.length);
-  const message = messages[index];
+  if (!message) {
+    const index = Math.floor(Math.random() * messages.length);
+    message = messages[index];
+  }
 
   return (
     <div className={styles.loadingMessage}>

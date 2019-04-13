@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
@@ -39,20 +39,23 @@ namespace NzbDrone.Core.NetImport
 
         public virtual ProviderMessage Message => null;
 
-        public virtual IEnumerable<ProviderDefinition> GetDefaultDefinitions()
+        public virtual IEnumerable<ProviderDefinition> DefaultDefinitions
         {
-            var config = (IProviderConfig)new TSettings();
-
-            yield return new NetImportDefinition
+            get
             {
-                Name = this.Name,
-                Enabled = config.Validate().IsValid && Enabled,
-                EnableAuto = true,
-                ProfileId = 1,
-                MinimumAvailability = MovieStatusType.Announced,
-                Implementation = GetType().Name,
-                Settings = config
-            };
+                var config = (IProviderConfig)new TSettings();
+
+                yield return new NetImportDefinition
+                {
+                    Name = this.Name,
+                    Enabled = config.Validate().IsValid && Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
+                    MinimumAvailability = MovieStatusType.Announced,
+                    Implementation = GetType().Name,
+                    Settings = config
+                };
+            }
         }
 
         public virtual ProviderDefinition Definition { get; set; }

@@ -1,5 +1,5 @@
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
@@ -149,7 +149,8 @@ export const persistState = [
   'history.pageSize',
   'history.sortKey',
   'history.sortDirection',
-  'history.selectedFilterKey'
+  'history.selectedFilterKey',
+  'history.columns'
 ];
 
 //
@@ -210,13 +211,13 @@ export const actionHandlers = handleThunks({
       isMarkingAsFailed: true
     }));
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/history/failed',
       method: 'POST',
       data: {
         id
       }
-    });
+    }).request;
 
     promise.done(() => {
       dispatch(updateItem({

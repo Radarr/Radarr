@@ -8,6 +8,7 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Security;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Configuration
@@ -427,6 +428,8 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CleanupMetadataImages", value); }
         }
 
+        public string PlexClientIdentifier => GetValue("PlexClientIdentifier", Guid.NewGuid().ToString(), true);
+
         public string RijndaelPassphrase => GetValue("RijndaelPassphrase", Guid.NewGuid().ToString(), true);
 
         public string HmacPassphrase => GetValue("HmacPassphrase", Guid.NewGuid().ToString(), true);
@@ -456,6 +459,9 @@ namespace NzbDrone.Core.Configuration
         public int BackupInterval => GetValueInt("BackupInterval", 7);
 
         public int BackupRetention => GetValueInt("BackupRetention", 28);
+
+        public CertificateValidationType CertificateValidation =>
+            GetValueEnum("CertificateValidation", CertificateValidationType.Enabled);
 
         private string GetValue(string key)
         {

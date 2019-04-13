@@ -58,6 +58,15 @@ class CalendarPage extends Component {
     this.setState({ isOptionsModalOpen: false });
   }
 
+  onSearchMissingPress = () => {
+    const {
+      missingEpisodeIds,
+      onSearchMissingPress
+    } = this.props;
+
+    onSearchMissingPress(missingEpisodeIds);
+  }
+
   //
   // Render
 
@@ -65,7 +74,10 @@ class CalendarPage extends Component {
     const {
       selectedFilterKey,
       filters,
-      hasSeries,
+      hasMovie,
+      missingEpisodeIds,
+      isSearchingForMissing,
+      useCurrentPage,
       onFilterSelect
     } = this.props;
 
@@ -75,11 +87,7 @@ class CalendarPage extends Component {
     } = this.state;
 
     const isMeasured = this.state.width > 0;
-    let PageComponent = 'div';
-
-    if (isMeasured) {
-      PageComponent = hasSeries ? CalendarConnector : NoMovie;
-    }
+    const PageComponent = hasMovie ? CalendarConnector : NoMovie;
 
     return (
       <PageContent title="Calendar">
@@ -89,6 +97,14 @@ class CalendarPage extends Component {
               label="iCal Link"
               iconName={icons.CALENDAR}
               onPress={this.onGetCalendarLinkPress}
+            />
+
+            <PageToolbarButton
+              label="Search for Missing"
+              iconName={icons.SEARCH}
+              isDisabled={!missingEpisodeIds.length}
+              isSpinning={isSearchingForMissing}
+              onPress={this.onSearchMissingPress}
             />
           </PageToolbarSection>
 
@@ -101,7 +117,7 @@ class CalendarPage extends Component {
 
             <FilterMenu
               alignMenu={align.RIGHT}
-              isDisabled={!hasSeries}
+              isDisabled={!hasMovie}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={[]}
@@ -118,11 +134,17 @@ class CalendarPage extends Component {
             whitelist={['width']}
             onMeasure={this.onMeasure}
           >
-            <PageComponent />
+            {
+              isMeasured ?
+                <PageComponent
+                  useCurrentPage={useCurrentPage}
+                /> :
+                <div />
+            }
           </Measure>
 
           {
-            hasSeries &&
+            hasMovie &&
               <LegendConnector />
           }
         </PageContentBodyConnector>
@@ -144,7 +166,11 @@ class CalendarPage extends Component {
 CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
-  hasSeries: PropTypes.bool.isRequired,
+  hasMovie: PropTypes.bool.isRequired,
+  missingEpisodeIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isSearchingForMissing: PropTypes.bool.isRequired,
+  useCurrentPage: PropTypes.bool.isRequired,
+  onSearchMissingPress: PropTypes.func.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired
 };

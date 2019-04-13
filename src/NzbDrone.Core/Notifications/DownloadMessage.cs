@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Notifications
         public MovieFile MovieFile { get; set; }
         public List<MovieFile> OldMovieFiles { get; set; }
         public string SourcePath { get; set; }
+        public string DownloadClient { get; set; }
         public string DownloadId { get; set; }
 
         public override string ToString()

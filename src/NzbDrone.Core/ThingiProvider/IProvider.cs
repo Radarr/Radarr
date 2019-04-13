@@ -9,9 +9,7 @@ namespace NzbDrone.Core.ThingiProvider
         string Name { get; }
         Type ConfigContract { get; }
         ProviderMessage Message { get; }
-
-        IEnumerable<ProviderDefinition> GetDefaultDefinitions();
-
+        IEnumerable<ProviderDefinition> DefaultDefinitions { get; }
         ProviderDefinition Definition { get; set; }
         ValidationResult Test();
         object RequestAction(string stage, IDictionary<string, string> query);

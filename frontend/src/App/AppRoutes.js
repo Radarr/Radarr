@@ -17,6 +17,7 @@ import Settings from 'Settings/Settings';
 import MediaManagementConnector from 'Settings/MediaManagement/MediaManagementConnector';
 import Profiles from 'Settings/Profiles/Profiles';
 import Quality from 'Settings/Quality/Quality';
+import CustomFormatsConnector from 'Settings/CustomFormats/CustomFormatsConnector';
 import IndexerSettingsConnector from 'Settings/Indexers/IndexerSettingsConnector';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
 import NetImportSettingsConnector from 'Settings/NetImport/NetImportSettingsConnector';
@@ -137,6 +138,11 @@ function AppRoutes(props) {
       <Route
         path="/settings/quality"
         component={Quality}
+      />
+
+      <Route
+        path="/settings/customformats"
+        component={CustomFormatsConnector}
       />
 
       <Route

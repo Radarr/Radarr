@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Growl
 {
     public class Growl : NotificationBase<GrowlSettings>
     {
         private readonly IGrowlService _growlService;
+
+        public override string Name => "Growl";
+
 
         public Growl(IGrowlService growlService)
         {
@@ -18,25 +20,14 @@ namespace NzbDrone.Core.Notifications.Growl
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Movie Grabbed";
-
-            _growlService.SendNotification(title, grabMessage.Message, "GRAB", Settings.Host, Settings.Port, Settings.Password);
+            _growlService.SendNotification(MOVIE_GRABBED_TITLE, grabMessage.Message, "GRAB", Settings.Host, Settings.Port, Settings.Password);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Movie Downloaded";
-
-            _growlService.SendNotification(title, message.Message, "DOWNLOAD", Settings.Host, Settings.Port, Settings.Password);
+            _growlService.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, "DOWNLOAD", Settings.Host, Settings.Port, Settings.Password);
         }
 
-        public override void OnMovieRename(Movie movie)
-        {
-        }
-		
-        public override string Name => "Growl";
-
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {

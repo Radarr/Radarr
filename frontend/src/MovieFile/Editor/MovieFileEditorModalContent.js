@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import { kinds } from 'Helpers/Props';
@@ -64,8 +66,10 @@ class MovieFileEditorModalContent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.items !== this.props.items) {
-      this.onSelectAllChange({ value: false });
+    if (hasDifferentItems(prevProps.items, this.props.items)) {
+      this.setState((state) => {
+        return removeOldSelectedState(state, prevProps.items);
+      });
     }
   }
 

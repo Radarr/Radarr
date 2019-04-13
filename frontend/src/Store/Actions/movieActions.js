@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 // import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
 import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
@@ -215,7 +215,7 @@ export const actionHandlers = handleThunks({
       isSaving: true
     }));
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: `/movie/${id}`,
       method: 'PUT',
       data: JSON.stringify({
@@ -223,7 +223,7 @@ export const actionHandlers = handleThunks({
         monitored
       }),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done((data) => {
       dispatch(updateItem({

@@ -6,6 +6,7 @@ import AutoCompleteInput from './AutoCompleteInput';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
+import KeyValueListInput from './KeyValueListInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
@@ -33,6 +34,9 @@ function getComponent(type) {
 
     case inputTypes.DEVICE:
       return DeviceInputConnector;
+
+    case inputTypes.KEY_VALUE_LIST:
+      return KeyValueListInput;
 
     case inputTypes.NUMBER:
       return NumberInput;

@@ -1,8 +1,8 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 
-namespace NzbDrone.Core.Notifications.MediaBrowser
+namespace NzbDrone.Core.Notifications.Emby
 {
     public class MediaBrowserProxy
     {
@@ -66,7 +66,8 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
         private HttpRequest BuildRequest(string path, MediaBrowserSettings settings)
         {
-            var url = string.Format(@"http://{0}/mediabrowser", settings.Address);
+            var scheme = settings.UseSsl ? "https" : "http";
+            var url = $@"{scheme}://{settings.Address}/mediabrowser";
             
             return new HttpRequestBuilder(url).Resource(path).Build();
         }

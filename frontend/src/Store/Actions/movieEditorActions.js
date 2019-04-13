@@ -1,6 +1,6 @@
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
@@ -80,41 +80,41 @@ export const persistState = [
 //
 // Actions Types
 
-export const SET_SERIES_EDITOR_SORT = 'movieEditor/setSeriesEditorSort';
-export const SET_SERIES_EDITOR_FILTER = 'movieEditor/setSeriesEditorFilter';
-export const SAVE_SERIES_EDITOR = 'movieEditor/saveSeriesEditor';
-export const BULK_DELETE_SERIES = 'movieEditor/bulkDeleteSeries';
+export const SET_MOVIE_EDITOR_SORT = 'movieEditor/setMovieEditorSort';
+export const SET_MOVIE_EDITOR_FILTER = 'movieEditor/setMovieEditorFilter';
+export const SAVE_MOVIE_EDITOR = 'movieEditor/saveMovieEditor';
+export const BULK_DELETE_MOVIE = 'movieEditor/bulkDeleteMovie';
 //
 // Action Creators
 
-export const setSeriesEditorSort = createAction(SET_SERIES_EDITOR_SORT);
-export const setSeriesEditorFilter = createAction(SET_SERIES_EDITOR_FILTER);
-export const saveSeriesEditor = createThunk(SAVE_SERIES_EDITOR);
-export const bulkDeleteSeries = createThunk(BULK_DELETE_SERIES);
+export const setMovieEditorSort = createAction(SET_MOVIE_EDITOR_SORT);
+export const setMovieEditorFilter = createAction(SET_MOVIE_EDITOR_FILTER);
+export const saveMovieEditor = createThunk(SAVE_MOVIE_EDITOR);
+export const bulkDeleteMovie = createThunk(BULK_DELETE_MOVIE);
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
-  [SAVE_SERIES_EDITOR]: function(getState, payload, dispatch) {
+  [SAVE_MOVIE_EDITOR]: function(getState, payload, dispatch) {
     dispatch(set({
       section,
       isSaving: true
     }));
 
-    const promise = $.ajax({
-      url: '/series/editor',
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
       method: 'PUT',
       data: JSON.stringify(payload),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done((data) => {
       dispatch(batchActions([
-        ...data.map((series) => {
+        ...data.map((movie) => {
           return updateItem({
-            id: series.id,
-            section: 'series',
-            ...series
+            id: movie.id,
+            section: 'movies',
+            ...movie
           });
         }),
 
@@ -135,18 +135,18 @@ export const actionHandlers = handleThunks({
     });
   },
 
-  [BULK_DELETE_SERIES]: function(getState, payload, dispatch) {
+  [BULK_DELETE_MOVIE]: function(getState, payload, dispatch) {
     dispatch(set({
       section,
       isDeleting: true
     }));
 
-    const promise = $.ajax({
-      url: '/series/editor',
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
       method: 'DELETE',
       data: JSON.stringify(payload),
       dataType: 'json'
-    });
+    }).request;
 
     promise.done(() => {
       // SignaR will take care of removing the series from the collection
@@ -173,7 +173,7 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [SET_SERIES_EDITOR_SORT]: createSetClientSideCollectionSortReducer(section),
-  [SET_SERIES_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(section)
+  [SET_MOVIE_EDITOR_SORT]: createSetClientSideCollectionSortReducer(section),
+  [SET_MOVIE_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(section)
 
 }, defaultState, section);

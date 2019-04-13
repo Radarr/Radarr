@@ -97,7 +97,7 @@ class ImportMovie extends Component {
     } = this.state;
 
     return (
-      <PageContent title="Import Series">
+      <PageContent title="Import Movies">
         <PageContentBodyConnector
           ref={this.setContentBodyRef}
           onScroll={this.onScroll}
@@ -115,7 +115,7 @@ class ImportMovie extends Component {
           {
             !rootFoldersError && rootFoldersPopulated && !unmappedFolders.length &&
               <div>
-                All series in {path} have been imported
+                All movies in {path} have been imported
               </div>
           }
 

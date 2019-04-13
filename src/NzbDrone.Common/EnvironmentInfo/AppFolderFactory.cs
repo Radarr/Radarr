@@ -58,6 +58,8 @@ namespace NzbDrone.Common.EnvironmentInfo
             {
                 throw new RadarrStartupException("AppFolder {0} is not writable", _appFolderInfo.AppDataFolder);
             }
+
+            InitializeMonoApplicationData();
         }
 
         private void SetPermissions()
@@ -109,6 +111,37 @@ namespace NzbDrone.Common.EnvironmentInfo
                 throw new RadarrStartupException("Unable to migrate DB from nzbdrone.db to {1}. Migrate manually", _appFolderInfo.GetDatabase());
             }
         }
+
+        private void InitializeMonoApplicationData()
+        {
+            if (OsInfo.IsWindows) return;
+
+            try
+            {
+                var configHome = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if (configHome == "/.config" ||
+                    configHome.EndsWith("/.config") && !_diskProvider.FolderExists(configHome.GetParentPath()) ||
+                    !_diskProvider.FolderExists(configHome))
+                {
+                    // Tell mono to use appData/.config as ApplicationData folder.
+                    Environment.SetEnvironmentVariable("XDG_CONFIG_HOME", Path.Combine(_appFolderInfo.AppDataFolder, ".config"));
+                }
+
+                var dataHome = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                if (dataHome == "/.local/share" ||
+                    dataHome.EndsWith("/.local/share") && !_diskProvider.FolderExists(dataHome.GetParentPath().GetParentPath()) ||
+                    !_diskProvider.FolderExists(dataHome))
+                {
+                    // Tell mono to use appData/.config/share as LocalApplicationData folder.
+                    Environment.SetEnvironmentVariable("XDG_DATA_HOME", Path.Combine(_appFolderInfo.AppDataFolder, ".config/share"));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to initialize the mono config directory.");
+            }
+        }
+
         private void CleanupSqLiteRollbackFiles()
         {
             _diskProvider.GetFiles(_appFolderInfo.AppDataFolder, SearchOption.TopDirectoryOnly)

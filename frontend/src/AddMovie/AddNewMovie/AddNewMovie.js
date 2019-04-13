@@ -99,7 +99,7 @@ class AddNewMovie extends Component {
               className={styles.searchInput}
               name="movieLookup"
               value={term}
-              placeholder="eg. Some Movie, tmdb:####, imdb:####"
+              placeholder="eg. The Dark Knight, tmdb:155, imdb:tt0468569"
               onChange={this.onSearchInputChange}
             />
 

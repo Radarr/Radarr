@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
@@ -194,22 +193,22 @@ export const actionHandlers = handleThunks({
       // Make sure we have a selected series and
       // the same series hasn't been added yet.
       if (selectedMovie && !_.some(acc, { tmdbId: selectedMovie.tmdbId })) {
-        const newSeries = getNewMovie(_.cloneDeep(selectedMovie), item);
-        newSeries.path = item.path;
+        const newMovie = getNewMovie(_.cloneDeep(selectedMovie), item);
+        newMovie.path = item.path;
 
         addedIds.push(id);
-        acc.push(newSeries);
+        acc.push(newMovie);
       }
 
       return acc;
     }, []);
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/movie/import',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(allNewMovies)
-    });
+    }).request;
 
     promise.done((data) => {
       dispatch(batchActions([
@@ -219,7 +218,7 @@ export const actionHandlers = handleThunks({
           isImported: true
         }),
 
-        ...data.map((series) => updateItem({ section: 'movies', ...series })),
+        ...data.map((movie) => updateItem({ section: 'movies', ...movie })),
 
         ...addedIds.map((id) => removeItem({ section, id }))
       ]));

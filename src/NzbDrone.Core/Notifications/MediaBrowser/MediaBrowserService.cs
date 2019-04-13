@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Core.Rest;
 using NzbDrone.Core.Movies;
 
-namespace NzbDrone.Core.Notifications.MediaBrowser
+namespace NzbDrone.Core.Notifications.Emby
 {
     public interface IMediaBrowserService
     {
@@ -35,7 +35,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             _proxy.UpdateMovies(settings, movie.Path, updateType);
         }
 
-
         public ValidationFailure Test(MediaBrowserSettings settings)
         {
             try
@@ -48,12 +47,12 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    return new ValidationFailure("ApiKey", "API key is incorrect");
+                    return new ValidationFailure("ApiKey", "API Key is incorrect");
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message");
                 return new ValidationFailure("Host", "Unable to send test message: " + ex.Message);
             }
 

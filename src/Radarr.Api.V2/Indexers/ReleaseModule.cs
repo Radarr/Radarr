@@ -44,9 +44,8 @@ namespace Radarr.Api.V2.Indexers
             _logger = logger;
 
             GetResourceAll = GetReleases;
-            Post["/"] = x => DownloadRelease(this.Bind<ReleaseResource>());
+            Post["/"] = x => DownloadRelease(ReadResourceFromRequest());
 
-            PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 

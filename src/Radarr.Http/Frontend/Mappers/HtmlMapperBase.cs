@@ -12,7 +12,7 @@ namespace Radarr.Http.Frontend.Mappers
     {
         private readonly IDiskProvider _diskProvider;
         private readonly Func<ICacheBreakerProvider> _cacheBreakProviderFactory;
-        private static readonly Regex ReplaceRegex = new Regex(@"(?:(?<attribute>href|src)=\"")(?<path>.*?(?<extension>css|js|png|ico|ics|svg))(?:\"")(?:\s(?<nohash>data-no-hash))?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ReplaceRegex = new Regex(@"(?:(?<attribute>href|src|json)=\"")(?<path>.*?(?<extension>css|js|png|ico|ics|svg))(?:\"")(?:\s(?<nohash>data-no-hash))?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private string _generatedContent;
 

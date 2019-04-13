@@ -123,7 +123,7 @@ class AgendaEvent extends Component {
 
 AgendaEvent.propTypes = {
   id: PropTypes.number.isRequired,
-  episodeFile: PropTypes.object,
+  movieFile: PropTypes.object,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   inCinemas: PropTypes.string.isRequired,

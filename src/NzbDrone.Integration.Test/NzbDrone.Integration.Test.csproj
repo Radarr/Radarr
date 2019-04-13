@@ -139,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Api\NzbDrone.Api.csproj">
-      <Project>{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}</Project>
+      <Project>{fd286df8-2d3a-4394-8ad5-443fade55fb2}</Project>
       <Name>NzbDrone.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">

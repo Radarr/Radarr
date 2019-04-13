@@ -93,6 +93,8 @@ namespace NzbDrone.Core.Notifications.Join
             request.AddParameter("title", title);
             request.AddParameter("text", message);
             request.AddParameter("icon", "https://cdn.rawgit.com/Radarr/Radarr/develop/Logo/256.png"); // Use the Radarr logo.
+            request.AddParameter("smallicon", "https://cdn.rawgit.com/Radarr/Radarr/develop/Logo/96-Outline-White.png"); // 96x96px with outline at 88x88px on a transparent background.
+            request.AddParameter("priority", settings.Priority);
 
             var response = client.ExecuteAndValidate(request);
             var res = Json.Deserialize<JoinResponseModel>(response.Content);

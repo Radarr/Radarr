@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Gotify
 {
@@ -22,23 +21,13 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Movie Grabbed";
-
-            _proxy.SendNotification(title, grabMessage.Message, Settings);
+            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Movie Downloaded";
-
-            _proxy.SendNotification(title, message.Message, Settings);
+            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
         }
-
-        public override void OnMovieRename(Movie movie)
-        {
-        }
-
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {

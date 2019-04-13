@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
 import dimensions from 'Styles/Variables/dimensions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -39,18 +39,18 @@ function getScrollTop(view, scrollTop, isSmallScreen) {
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector('movies', 'movieIndex'),
+    createMovieClientSideCollectionItemsSelector('movieIndex'),
     createCommandExecutingSelector(commandNames.REFRESH_MOVIE),
     createCommandExecutingSelector(commandNames.RSS_SYNC),
     createDimensionsSelector(),
     (
-      series,
+      movies,
       isRefreshingMovie,
       isRssSyncExecuting,
       dimensionsState
     ) => {
       return {
-        ...series,
+        ...movies,
         isRefreshingMovie,
         isRssSyncExecuting,
         isSmallScreen: dimensionsState.isSmallScreen

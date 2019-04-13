@@ -159,6 +159,14 @@ class CalendarHeader extends Component {
 
                   <MenuContent>
                     <ViewMenuItem
+                      name={calendarViews.WEEK}
+                      selectedView={view}
+                      onPress={this.onViewChange}
+                    >
+                      Week
+                    </ViewMenuItem>
+
+                    <ViewMenuItem
                       name={calendarViews.FORECAST}
                       selectedView={view}
                       onPress={this.onViewChange}
@@ -189,6 +197,27 @@ class CalendarHeader extends Component {
                     view={calendarViews.MONTH}
                     selectedView={view}
                     buttonGroupPosition={align.LEFT}
+                    onPress={this.onViewChange}
+                  />
+
+                  <CalendarHeaderViewButton
+                    view={calendarViews.WEEK}
+                    selectedView={view}
+                    buttonGroupPosition={align.CENTER}
+                    onPress={this.onViewChange}
+                  />
+
+                  <CalendarHeaderViewButton
+                    view={calendarViews.FORECAST}
+                    selectedView={view}
+                    buttonGroupPosition={align.CENTER}
+                    onPress={this.onViewChange}
+                  />
+
+                  <CalendarHeaderViewButton
+                    view={calendarViews.DAY}
+                    selectedView={view}
+                    buttonGroupPosition={align.CENTER}
                     onPress={this.onViewChange}
                   />
 

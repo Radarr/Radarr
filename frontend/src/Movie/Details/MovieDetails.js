@@ -10,7 +10,8 @@ import fonts from 'Styles/Variables/fonts';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
-import Label from 'Components/Label';
+import InfoLabel from 'Components/InfoLabel';
+import MovieStatusLabel from './MovieStatusLabel';
 import Measure from 'Components/Measure';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -21,7 +22,6 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
-import Tooltip from 'Components/Tooltip/Tooltip';
 import MovieFileEditorModal from 'MovieFile/Editor/MovieFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
@@ -30,10 +30,11 @@ import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
 import MovieAlternateTitles from './MovieAlternateTitles';
-import MovieTagsConnector from './MovieTagsConnector';
 import MovieDetailsLinks from './MovieDetailsLinks';
+// import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
@@ -174,9 +175,10 @@ class MovieDetails extends Component {
       monitored,
       studio,
       overview,
+      inCinemas,
       images,
       alternateTitles,
-      tags,
+      // tags,
       isSaving,
       isRefreshing,
       isSearching,
@@ -276,7 +278,7 @@ class MovieDetails extends Component {
               <MoviePoster
                 className={styles.poster}
                 images={images}
-                size={500}
+                size={250}
                 lazy={false}
               />
 
@@ -315,9 +317,9 @@ class MovieDetails extends Component {
                     }
                   </div>
 
-                  <div className={styles.seriesNavigationButtons}>
+                  <div className={styles.movieNavigationButtons}>
                     <IconButton
-                      className={styles.seriesNavigationButton}
+                      className={styles.movieNavigationButton}
                       name={icons.ARROW_LEFT}
                       size={30}
                       title={`Go to ${previousMovie.title}`}
@@ -325,7 +327,7 @@ class MovieDetails extends Component {
                     />
 
                     <IconButton
-                      className={styles.seriesNavigationButton}
+                      className={styles.movieNavigationButton}
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextMovie.title}`}
@@ -334,63 +336,51 @@ class MovieDetails extends Component {
                   </div>
                 </div>
 
-                <div className={styles.details}>
-                  <div>
-                    {
-                      !!runtime &&
-                        <span className={styles.runtime}>
-                          {runtime} Minutes
-                        </span>
-                    }
-
-                    <HeartRating
-                      rating={ratings.value}
-                      iconSize={20}
-                    />
-                  </div>
-                </div>
-
                 <div className={styles.detailsLabels}>
-                  <Label
-                    className={styles.detailsLabel}
+
+                  <InfoLabel
+                    className={styles.detailsInfoLabel}
+                    title="Runtime"
                     size={sizes.LARGE}
                   >
-                    <Icon
-                      name={icons.FOLDER}
-                      size={17}
-                    />
-
-                    <span className={styles.path}>
-                      {path}
+                    <span className={styles.runtime}>
+                      {runtime} Minutes
                     </span>
-                  </Label>
+                  </InfoLabel>
 
-                  <Label
-                    className={styles.detailsLabel}
+                  <InfoLabel
+                    className={styles.detailsInfoLabel}
+                    title="Rating"
                     size={sizes.LARGE}
                   >
-                    <Icon
-                      name={icons.DRIVE}
-                      size={17}
-                    />
+                    <div>
+                      <HeartRating
+                        rating={ratings.value}
+                        iconSize={16}
+                      />
+                    </div>
+                  </InfoLabel>
 
-                    <span className={styles.sizeOnDisk}>
-                      {
-                        formatBytes(sizeOnDisk)
-                      }
+                  <InfoLabel
+                    className={styles.detailsInfoLabel}
+                    title="Status"
+                    kind={kinds.DELETE}
+                    size={sizes.LARGE}
+                  >
+                    <span className={styles.statusName}>
+                      <MovieStatusLabel
+                        hasMovieFiles={hasMovieFiles}
+                        monitored={monitored}
+                        inCinemas={inCinemas}
+                      />
                     </span>
-                  </Label>
+                  </InfoLabel>
 
-                  <Label
-                    className={styles.detailsLabel}
+                  <InfoLabel
+                    className={styles.detailsInfoLabel}
                     title="Quality Profile"
                     size={sizes.LARGE}
                   >
-                    <Icon
-                      name={icons.PROFILE}
-                      size={17}
-                    />
-
                     <span className={styles.qualityProfileName}>
                       {
                         <QualityProfileNameConnector
@@ -398,89 +388,31 @@ class MovieDetails extends Component {
                         />
                       }
                     </span>
-                  </Label>
+                  </InfoLabel>
 
-                  <Label
-                    className={styles.detailsLabel}
+                  <InfoLabel
+                    className={styles.detailsInfoLabel}
+                    title="Filesize"
                     size={sizes.LARGE}
                   >
-                    <Icon
-                      name={monitored ? icons.MONITORED : icons.UNMONITORED}
-                      size={17}
-                    />
-
-                    <span className={styles.qualityProfileName}>
-                      {monitored ? 'Monitored' : 'Unmonitored'}
+                    <span className={styles.sizeOnDisk}>
+                      {
+                        formatBytes(sizeOnDisk)
+                      }
                     </span>
-                  </Label>
+                  </InfoLabel>
 
                   {
                     !!studio &&
-                      <Label
-                        className={styles.detailsLabel}
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
                         title="Studio"
                         size={sizes.LARGE}
                       >
-                        <Icon
-                          name={icons.STUDIO}
-                          size={17}
-                        />
-
-                        <span className={styles.qualityProfileName}>
+                        <span className={styles.studio}>
                           {studio}
                         </span>
-                      </Label>
-                  }
-
-                  <Tooltip
-                    anchor={
-                      <Label
-                        className={styles.detailsLabel}
-                        size={sizes.LARGE}
-                      >
-                        <Icon
-                          name={icons.EXTERNAL_LINK}
-                          size={17}
-                        />
-
-                        <span className={styles.links}>
-                          Links
-                        </span>
-                      </Label>
-                    }
-                    tooltip={
-                      <MovieDetailsLinks
-                        tmdbId={tmdbId}
-                        imdbId={imdbId}
-                      />
-                    }
-                    kind={kinds.INVERSE}
-                    position={tooltipPositions.BOTTOM}
-                  />
-
-                  {
-                    !!tags.length &&
-                      <Tooltip
-                        anchor={
-                          <Label
-                            className={styles.detailsLabel}
-                            size={sizes.LARGE}
-                          >
-                            <Icon
-                              name={icons.TAGS}
-                              size={17}
-                            />
-
-                            <span className={styles.tags}>
-                              Tags
-                            </span>
-                          </Label>
-                        }
-                        tooltip={<MovieTagsConnector seriesId={id} />}
-                        kind={kinds.INVERSE}
-                        position={tooltipPositions.BOTTOM}
-                      />
-
+                      </InfoLabel>
                   }
                 </div>
 
@@ -492,6 +424,21 @@ class MovieDetails extends Component {
                     />
                   </div>
                 </Measure>
+
+                <InfoLabel
+                  className={styles.detailsInfoLabel}
+                  title="Links"
+                  size={sizes.LARGE}
+                >
+                  <span className={styles.links}>
+                    {
+                      <MovieDetailsLinks
+                        tmdbId={tmdbId}
+                        imdbId={imdbId}
+                      />
+                    }
+                  </span>
+                </InfoLabel>
               </div>
             </div>
           </div>
@@ -506,6 +453,56 @@ class MovieDetails extends Component {
               !isFetching && movieFilesError &&
                 <div>Loading movie files failed</div>
             }
+
+            <Tabs>
+              <TabList
+                className={styles.tabList}
+              >
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  History
+                </Tab>
+
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Search
+                </Tab>
+
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Files
+                </Tab>
+
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Titles
+                </Tab>
+              </TabList>
+
+              <TabPanel>
+                <h2>Any content 1</h2>
+              </TabPanel>
+
+              <TabPanel>
+                <h2>Any content 2</h2>
+              </TabPanel>
+
+              <TabPanel>
+                <h2>Any content 3</h2>
+              </TabPanel>
+
+              <TabPanel>
+                <h2>Any content 4</h2>
+              </TabPanel>
+            </Tabs>
 
           </div>
 
@@ -567,6 +564,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  inCinemas: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -587,7 +585,8 @@ MovieDetails.propTypes = {
 
 MovieDetails.defaultProps = {
   tag: [],
-  isSaving: false
+  isSaving: false,
+  sizeOnDisk: 0
 };
 
 export default MovieDetails;

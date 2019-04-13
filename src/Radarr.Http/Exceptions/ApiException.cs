@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Nancy;
 using Nancy.Responses;
 using Radarr.Http.ErrorManagement;
@@ -30,7 +30,7 @@ namespace Radarr.Http.Exceptions
 
             if (content != null)
             {
-                result = result + " :" + content;
+                result = $"{result}: {content}";
             }
 
             return result;

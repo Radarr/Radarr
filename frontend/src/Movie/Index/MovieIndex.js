@@ -17,10 +17,10 @@ import MovieIndexPosterOptionsModal from './Posters/Options/MovieIndexPosterOpti
 import MovieIndexPostersConnector from './Posters/MovieIndexPostersConnector';
 import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOverviewOptionsModal';
 import MovieIndexOverviewsConnector from './Overview/MovieIndexOverviewsConnector';
-import MovieIndexFooter from './MovieIndexFooter';
 import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
+import MovieIndexFooterConnector from './MovieIndexFooterConnector';
 import styles from './MovieIndex.css';
 
 function getViewComponent(view) {
@@ -301,15 +301,17 @@ class MovieIndex extends Component {
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
                     contentBody={contentBody}
+                    items={items}
+                    filters={filters}
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
                     scrollTop={scrollTop}
                     jumpToCharacter={jumpToCharacter}
                     onRender={this.onRender}
                     {...otherProps}
                   />
 
-                  <MovieIndexFooter
-                    movies={items}
-                  />
+                  <MovieIndexFooterConnector />
                 </div>
             }
 

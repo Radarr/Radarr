@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
@@ -35,8 +35,6 @@ namespace NzbDrone.Core.Notifications.Pushalot
         }
 		
         public override string Name => "Pushalot";
-
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {

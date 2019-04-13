@@ -17,30 +17,33 @@ namespace NzbDrone.Core.NetImport.RSSImport
             : base(httpClient, configService, parsingService, logger)
         { }
 
-        public override IEnumerable<ProviderDefinition> GetDefaultDefinitions()
+        public override IEnumerable<ProviderDefinition> DefaultDefinitions
         {
-            foreach (var def in base.GetDefaultDefinitions())
+            get
             {
-                yield return def;
+                foreach (var def in base.DefaultDefinitions)
+                {
+                    yield return def;
+                }
+                yield return new NetImportDefinition
+                {
+                    Name = "IMDb List",
+                    Enabled = Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
+                    Implementation = GetType().Name,
+                    Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
+                };
+                yield return new NetImportDefinition
+                {
+                    Name = "IMDb Watchlist",
+                    Enabled = Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
+                    Implementation = GetType().Name,
+                    Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },
+                };
             }
-            yield return new NetImportDefinition
-            {
-                Name = "IMDb List",
-                Enabled = Enabled,
-                EnableAuto = true,
-                ProfileId = 1,
-                Implementation = GetType().Name,
-                Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
-            };
-            yield return new NetImportDefinition
-            {
-                Name = "IMDb Watchlist",
-                Enabled = Enabled,
-                EnableAuto = true,
-                ProfileId = 1,
-                Implementation = GetType().Name,
-                Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },
-            };
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()

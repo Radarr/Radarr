@@ -252,7 +252,8 @@ MovieIndexOverview.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,
-  onRefreshMoviePress: PropTypes.func.isRequired
+  onRefreshMoviePress: PropTypes.func.isRequired,
+  onSearchPress: PropTypes.func.isRequired
 };
 
 export default MovieIndexOverview;

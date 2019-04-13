@@ -6,7 +6,7 @@
 
 .section {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   flex-grow: 1;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .overflowMenuButton {
-  composes: menuButton from 'Components/Menu/ToolbarMenuButton.css';
+  composes: menuButton from '~Components/Menu/ToolbarMenuButton.css';
 }
 
 .overflowMenuItemIcon {

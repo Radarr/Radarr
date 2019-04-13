@@ -5,7 +5,7 @@
 .header {
   position: relative;
   width: 100%;
-  height: 425px;
+  height: 350px;
 }
 
 .backdrop {
@@ -35,8 +35,8 @@
 .poster {
   flex-shrink: 0;
   margin-right: 35px;
-  width: 250px;
-  height: 368px;
+  width: 200px;
+  height: 294px;
 }
 
 .info {
@@ -69,7 +69,7 @@
 }
 
 .monitorToggleButton {
-  composes: toggleButton from 'Components/MonitorToggleButton.css';
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
 
   width: 40px;
 
@@ -83,12 +83,12 @@
   margin-left: 20px;
 }
 
-.seriesNavigationButtons {
+.movieNavigationButtons {
   white-space: nowrap;
 }
 
-.seriesNavigationButton {
-  composes: button from 'Components/Link/IconButton.css';
+.movieNavigationButton {
+  composes: button from '~Components/Link/IconButton.css';
 
   margin-left: 5px;
   width: 30px;
@@ -111,7 +111,13 @@
 }
 
 .detailsLabel {
-  composes: label from 'Components/Label.css';
+  composes: label from '~Components/Label.css';
+
+  margin: 5px 10px 5px 0;
+}
+
+.detailsInfoLabel {
+  composes: label from '~Components/InfoLabel.css';
 
   margin: 5px 10px 5px 0;
 }
@@ -119,10 +125,10 @@
 .path,
 .sizeOnDisk,
 .qualityProfileName,
-.network,
+.statusName,
+.studio,
 .links,
 .tags {
-  margin-left: 8px;
   font-weight: 300;
   font-size: 17px;
 }
@@ -136,6 +142,31 @@
 
 .contentContainer {
   padding: 20px;
+}
+
+.tabList {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid $lightGray;
+}
+
+.tab {
+  position: relative;
+  bottom: -1px;
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-top: none;
+  list-style: none;
+  cursor: pointer;
+}
+
+.selectedTab {
+  border-bottom: 4px solid $linkColor;
+}
+
+.tabContent {
+  margin-top: 20px;
 }
 
 @media only screen and (max-width: $breakpointSmall) {

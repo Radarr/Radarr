@@ -91,6 +91,7 @@
     <Compile Include="Disk\FileSystemLookupService.cs" />
     <Compile Include="Disk\DriveInfoMount.cs" />
     <Compile Include="Disk\IMount.cs" />
+    <Compile Include="Disk\MountOptions.cs" />
     <Compile Include="Disk\RelativeFileSystemModel.cs" />
     <Compile Include="Disk\FileSystemModel.cs" />
     <Compile Include="Disk\FileSystemResult.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Crypto\HashConverter.cs" />
     <Compile Include="Extensions\Int64Extensions.cs" />
+    <Compile Include="Extensions\IpAddressExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\UrlExtensions.cs" />
@@ -221,8 +223,6 @@
     <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="Extensions\ResourceExtensions.cs" />
-    <Compile Include="Security\SecurityProtocolPolicy.cs" />
-    <Compile Include="Security\X509CertificateValidationPolicy.cs" />
     <Compile Include="Serializer\HttpUriConverter.cs" />
     <Compile Include="Serializer\IntConverter.cs" />
     <Compile Include="Serializer\Json.cs" />

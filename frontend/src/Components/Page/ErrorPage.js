@@ -11,7 +11,8 @@ function ErrorPage(props) {
     customFiltersError,
     tagsError,
     qualityProfilesError,
-    uiSettingsError
+    uiSettingsError,
+    systemStatusError
   } = props;
 
   let errorMessage = 'Failed to load Radarr';
@@ -28,6 +29,8 @@ function ErrorPage(props) {
     errorMessage = getErrorMessage(qualityProfilesError, 'Failed to load quality profiles from API');
   } else if (uiSettingsError) {
     errorMessage = getErrorMessage(uiSettingsError, 'Failed to load UI settings from API');
+  } else if (systemStatusError) {
+    errorMessage = getErrorMessage(uiSettingsError, 'Failed to load system status from API');
   }
 
   return (
@@ -50,7 +53,8 @@ ErrorPage.propTypes = {
   customFiltersError: PropTypes.object,
   tagsError: PropTypes.object,
   qualityProfilesError: PropTypes.object,
-  uiSettingsError: PropTypes.object
+  uiSettingsError: PropTypes.object,
+  systemStatusError: PropTypes.object
 };
 
 export default ErrorPage;

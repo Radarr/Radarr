@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Email
 {
     public class Email : NotificationBase<EmailSettings>
     {
         private readonly IEmailService _emailService;
+
+        public override string Name => "Email";
+
 
         public Email(IEmailService emailService)
         {
@@ -18,27 +20,18 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string subject = "Radarr [Movie] - Grabbed";
-            var body = string.Format("{0} sent to queue.", grabMessage.Message);
+            var body = $"{grabMessage.Message} sent to queue.";
 
-            _emailService.SendEmail(Settings, subject, body);
+            _emailService.SendEmail(Settings, MOVIE_GRABBED_TITLE_BRANDED, body);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string subject = "Radarr [Movie] - Downloaded";
-            var body = string.Format("{0} Downloaded and sorted.", message.Message);
+            var body = $"{message.Message} Downloaded and sorted.";
 
-            _emailService.SendEmail(Settings, subject, body);
+            _emailService.SendEmail(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, body);
         }
-		
-        public override void OnMovieRename(Movie movie)
-        {
-        }
-		
-        public override string Name => "Email";
 
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {

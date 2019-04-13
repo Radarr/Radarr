@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
-namespace NzbDrone.Core.Notifications.MediaBrowser
+namespace NzbDrone.Core.Notifications.Emby
 {
     public class MediaBrowser : NotificationBase<MediaBrowserSettings>
     {
@@ -14,25 +14,23 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             _mediaBrowserService = mediaBrowserService;
         }
 
-        public override string Link => "http://mediabrowser.tv/";
+        public override string Link => "https://emby.media/";
+        public override string Name => "Emby";
+
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Radarr - Movie Grabbed";
-
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, title, grabMessage.Message);
+                _mediaBrowserService.Notify(Settings, MOVIE_GRABBED_TITLE_BRANDED, grabMessage.Message);
             }
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Radarr - Movie Downloaded";
-
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, title, message.Message);
+                _mediaBrowserService.Notify(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, message.Message);
             }
 
             if (Settings.UpdateLibrary)
@@ -49,7 +47,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             }
         }
 
-        public override string Name => "Emby (Media Browser)";
 
         public override ValidationResult Test()
         {

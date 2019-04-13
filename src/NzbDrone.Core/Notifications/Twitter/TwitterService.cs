@@ -24,9 +24,6 @@ namespace NzbDrone.Core.Notifications.Twitter
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-//        private static string _consumerKey = "5jSR8a3cp0ToOqSMLMv5GtMQD";
-//        private static string _consumerSecret = "dxoZjyMq4BLsC8KxyhSOrIndhCzJ0Dik2hrLzqyJcqoGk4Pfsp";
-
         public TwitterService(IHttpClient httpClient, Logger logger)
         {
             _httpClient = httpClient;
@@ -131,7 +128,7 @@ namespace NzbDrone.Core.Notifications.Twitter
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message");
                 return new ValidationFailure("Host", "Unable to send test message");
             }
             return null;

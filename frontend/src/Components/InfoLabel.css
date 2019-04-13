@@ -1,0 +1,40 @@
+.label {
+  display: inline-block;
+  margin: 2px;
+  color: $white;
+  /** text-align: center; **/
+  white-space: nowrap;
+  line-height: 1;
+  cursor: default;
+}
+
+.title {
+  margin-bottom: 2px;
+  color: $helpTextColor;
+  font-size: 10px;
+}
+
+/** Kinds **/
+
+/** Sizes **/
+
+.small {
+  padding: 1px 3px;
+  font-size: 11px;
+}
+
+.medium {
+  padding: 2px 5px;
+  font-size: 12px;
+}
+
+.large {
+  padding: 3px 7px;
+  font-size: 14px;
+}
+
+/** Outline **/
+
+.outline {
+  background-color: $white;
+}

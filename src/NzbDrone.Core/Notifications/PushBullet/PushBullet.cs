@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.PushBullet
 {
@@ -14,29 +16,18 @@ namespace NzbDrone.Core.Notifications.PushBullet
             _proxy = proxy;
         }
 
+        public override string Name => "Pushbullet";
         public override string Link => "https://www.pushbullet.com/";
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Radarr - Movie Grabbed";
-
-            _proxy.SendNotification(title, grabMessage.Message, Settings);
+            _proxy.SendNotification(MOVIE_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Radarr - Movie Downloaded";
-
-            _proxy.SendNotification(title, message.Message, Settings);
+            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
         }
-
-        public override void OnMovieRename(Movie movie)
-        {
-        }
-
-        public override string Name => "Pushbullet";
-
-        public override bool SupportsOnRename => false;
 
         public override ValidationResult Test()
         {
@@ -45,6 +36,37 @@ namespace NzbDrone.Core.Notifications.PushBullet
             failures.AddIfNotNull(_proxy.Test(Settings));
 
             return new ValidationResult(failures);
+        }
+
+        public override object RequestAction(string action, IDictionary<string, string> query)
+        {
+            if (action == "getDevices")
+            {
+                // Return early if there is not an API key
+                if (Settings.ApiKey.IsNullOrWhiteSpace())
+                {
+                    return new
+                           {
+                               devices = new List<object>()
+                           };
+                }
+
+                Settings.Validate().Filter("ApiKey").ThrowOnError();
+                var devices = _proxy.GetDevices(Settings);
+
+                return new
+                       {
+                           devices = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
+                                            .OrderBy(d => d.Nickname, StringComparer.InvariantCultureIgnoreCase)
+                                            .Select(d => new
+                                                         {
+                                                             id = d.Id,
+                                                             name = d.Nickname
+                                                         })
+                };
+            }
+
+            return new { };
         }
     }
 }

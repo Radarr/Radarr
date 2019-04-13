@@ -38,18 +38,21 @@ namespace NzbDrone.Core.Indexers
 
         public virtual ProviderMessage Message => null;
 
-        public virtual IEnumerable<ProviderDefinition> GetDefaultDefinitions()
+        public virtual IEnumerable<ProviderDefinition> DefaultDefinitions
         {
-            var config = (IProviderConfig)new TSettings();
-
-            yield return new IndexerDefinition
+            get
             {
-                Name = GetType().Name,
-                EnableRss = config.Validate().IsValid && SupportsRss,
-                EnableSearch = config.Validate().IsValid && SupportsSearch,
-                Implementation = GetType().Name,
-                Settings = config
-            };
+                var config = (IProviderConfig)new TSettings();
+
+            	yield return new IndexerDefinition
+            	{
+                	Name = GetType().Name,
+                	EnableRss = config.Validate().IsValid && SupportsRss,
+                	EnableSearch = config.Validate().IsValid && SupportsSearch,
+                	Implementation = GetType().Name,
+                	Settings = config
+            	};
+			}
         }
 
         public virtual ProviderDefinition Definition { get; set; }

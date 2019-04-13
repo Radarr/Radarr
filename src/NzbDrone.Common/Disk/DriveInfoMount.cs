@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Disk
@@ -8,10 +9,11 @@ namespace NzbDrone.Common.Disk
         private readonly DriveInfo _driveInfo;
         private readonly DriveType _driveType;
 
-        public DriveInfoMount(DriveInfo driveInfo, DriveType driveType = DriveType.Unknown)
+        public DriveInfoMount(DriveInfo driveInfo, DriveType driveType = DriveType.Unknown, MountOptions mountOptions = null)
         {
             _driveInfo = driveInfo;
             _driveType = driveType;
+            MountOptions = mountOptions;
         }
 
         public long AvailableFreeSpace => _driveInfo.AvailableFreeSpace;
@@ -33,6 +35,8 @@ namespace NzbDrone.Common.Disk
 
         public bool IsReady => _driveInfo.IsReady;
 
+        public MountOptions MountOptions { get; private set; }
+
         public string Name => _driveInfo.Name;
 
         public string RootDirectory => _driveInfo.RootDirectory.FullName;
@@ -47,7 +51,7 @@ namespace NzbDrone.Common.Disk
         {
             get
             {
-                if (VolumeLabel.IsNullOrWhiteSpace())
+                if (VolumeLabel.IsNullOrWhiteSpace() || VolumeLabel.StartsWith("UUID=") || Name == VolumeLabel)
                 {
                     return Name;
                 }

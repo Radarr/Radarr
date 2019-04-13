@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import jdu from 'jdu';
+import Fuse from 'fuse.js';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
@@ -9,6 +9,21 @@ import MovieSearchResult from './MovieSearchResult';
 import styles from './MovieSearchInput.css';
 
 const ADD_NEW_TYPE = 'addNew';
+
+const fuseOptions = {
+  shouldSort: true,
+  includeMatches: true,
+  threshold: 0.3,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    'title',
+    'alternateTitles.title',
+    'tags.label'
+  ]
+};
 
 class MovieSearchInput extends Component {
 
@@ -69,16 +84,15 @@ class MovieSearchInput extends Component {
 
     return (
       <MovieSearchResult
-        query={query}
-        cleanQuery={jdu.replace(query).toLowerCase()}
-        {...item}
+        {...item.item}
+        match={item.matches[0]}
       />
     );
   }
 
-  goToMovie(movie) {
+  goToMovie(item) {
     this.setState({ value: '' });
-    this.props.onGoToMovie(movie.titleSlug);
+    this.props.onGoToMovie(item.item.titleSlug);
   }
 
   reset() {
@@ -140,26 +154,8 @@ class MovieSearchInput extends Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    const lowerCaseValue = jdu.replace(value).toLowerCase();
-
-    const suggestions = this.props.movie.filter((movie) => {
-      // Check the title first and if there isn't a match fallback to
-      // the alternate titles and finally the tags.
-
-      if (value.length === 1) {
-        return (
-          movie.cleanTitle.startsWith(lowerCaseValue) ||
-          movie.alternateTitles.some((alternateTitle) => alternateTitle.cleanTitle.startsWith(lowerCaseValue)) ||
-          movie.tags.some((tag) => tag.cleanLabel.startsWith(lowerCaseValue))
-        );
-      }
-
-      return (
-        movie.cleanTitle.contains(lowerCaseValue) ||
-        movie.alternateTitles.some((alternateTitle) => alternateTitle.cleanTitle.contains(lowerCaseValue)) ||
-        movie.tags.some((tag) => tag.cleanLabel.contains(lowerCaseValue))
-      );
-    });
+    const fuse = new Fuse(this.props.movies, fuseOptions);
+    const suggestions = fuse.search(value);
 
     this.setState({ suggestions });
   }
@@ -209,7 +205,7 @@ class MovieSearchInput extends Component {
     const inputProps = {
       ref: this.setInputRef,
       className: styles.input,
-      name: 'seriesSearch',
+      name: 'movieSearch',
       value,
       placeholder: 'Search',
       autoComplete: 'off',
@@ -255,7 +251,7 @@ class MovieSearchInput extends Component {
 }
 
 MovieSearchInput.propTypes = {
-  movie: PropTypes.arrayOf(PropTypes.object).isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onGoToMovie: PropTypes.func.isRequired,
   onGoToAddNewMovie: PropTypes.func.isRequired,
   bindShortcut: PropTypes.func.isRequired

@@ -99,6 +99,8 @@ namespace Radarr.Api.V2.Queue
             {
                 case "movie.sortTitle":
                     return q => q.Movie.SortTitle;
+                case "title":
+                    return q => q.Title;
                 case "quality":
                     return q => q.Quality;
                 case "progress":

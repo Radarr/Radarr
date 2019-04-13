@@ -27,54 +27,103 @@ function testLocalStorage() {
   }
 }
 
+const selectAppProps = createSelector(
+  (state) => state.app.isSidebarVisible,
+  (state) => state.app.version,
+  (state) => state.app.isUpdated,
+  (state) => state.app.isDisconnected,
+  (isSidebarVisible, version, isUpdated, isDisconnected) => {
+    return {
+      isSidebarVisible,
+      version,
+      isUpdated,
+      isDisconnected
+    };
+  }
+);
+
+const selectIsPopulated = createSelector(
+  (state) => state.movies.isPopulated,
+  (state) => state.customFilters.isPopulated,
+  (state) => state.tags.isPopulated,
+  (state) => state.settings.ui.isPopulated,
+  (state) => state.settings.qualityProfiles.isPopulated,
+  (state) => state.system.status.isPopulated,
+  (
+    moviesIsPopulated,
+    customFiltersIsPopulated,
+    tagsIsPopulated,
+    uiSettingsIsPopulated,
+    qualityProfilesIsPopulated,
+    systemStatusIsPopulated
+  ) => {
+    return (
+      moviesIsPopulated &&
+      customFiltersIsPopulated &&
+      tagsIsPopulated &&
+      uiSettingsIsPopulated &&
+      qualityProfilesIsPopulated &&
+      systemStatusIsPopulated
+    );
+  }
+);
+
+const selectErrors = createSelector(
+  (state) => state.movies.error,
+  (state) => state.customFilters.error,
+  (state) => state.tags.error,
+  (state) => state.settings.ui.error,
+  (state) => state.settings.qualityProfiles.error,
+  (state) => state.system.status.error,
+  (
+    moviesError,
+    customFiltersError,
+    tagsError,
+    uiSettingsError,
+    qualityProfilesError,
+    systemStatusError
+  ) => {
+    const hasError = !!(
+      moviesError ||
+      customFiltersError ||
+      tagsError ||
+      uiSettingsError ||
+      qualityProfilesError ||
+      systemStatusError
+    );
+
+    return {
+      hasError,
+      moviesError,
+      customFiltersError,
+      tagsError,
+      uiSettingsError,
+      qualityProfilesError,
+      systemStatusError
+    };
+  }
+);
+
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.movies,
-    (state) => state.customFilters,
-    (state) => state.tags,
-    (state) => state.settings.ui,
-    (state) => state.settings.qualityProfiles,
-    (state) => state.app,
+    (state) => state.settings.ui.item.enableColorImpairedMode,
+    selectIsPopulated,
+    selectErrors,
+    selectAppProps,
     createDimensionsSelector(),
     (
-      movies,
-      customFilters,
-      tags,
-      uiSettings,
-      qualityProfiles,
+      enableColorImpairedMode,
+      isPopulated,
+      errors,
       app,
       dimensions
     ) => {
-      const isPopulated = (
-        movies.isPopulated &&
-        customFilters.isPopulated &&
-        tags.isPopulated &&
-        qualityProfiles.isPopulated &&
-        uiSettings.isPopulated
-      );
-
-      const hasError = !!(
-        movies.error ||
-        customFilters.error ||
-        tags.error ||
-        qualityProfiles.error ||
-        uiSettings.error
-      );
-
       return {
+        ...app,
+        ...errors,
         isPopulated,
-        hasError,
-        moviesError: movies.error,
-        customFiltersError: tags.error,
-        tagsError: tags.error,
-        qualityProfilesError: qualityProfiles.error,
-        uiSettingsError: uiSettings.error,
         isSmallScreen: dimensions.isSmallScreen,
-        isSidebarVisible: app.isSidebarVisible,
-        enableColorImpairedMode: uiSettings.item.enableColorImpairedMode,
-        version: app.version,
-        isUpdated: app.isUpdated,
-        isDisconnected: app.isDisconnected
+        enableColorImpairedMode
       };
     }
   );

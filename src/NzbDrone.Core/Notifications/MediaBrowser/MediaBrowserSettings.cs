@@ -1,10 +1,10 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.Notifications.MediaBrowser
+namespace NzbDrone.Core.Notifications.Emby
 {
     public class MediaBrowserSettingsValidator : AbstractValidator<MediaBrowserSettings>
     {
@@ -30,17 +30,20 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
         [FieldDefinition(1, Label = "Port")]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "API Key")]
+        [FieldDefinition(2, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Connect to Emby over HTTPS instead of HTTP")]
+        public bool UseSsl { get; set; }
+
+        [FieldDefinition(3, Label = "API Key")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "Send Notifications", HelpText = "Have MediaBrowser send notfications to configured providers", Type = FieldType.Checkbox)]
+        [FieldDefinition(4, Label = "Send Notifications", HelpText = "Have MediaBrowser send notfications to configured providers", Type = FieldType.Checkbox)]
         public bool Notify { get; set; }
 
-        [FieldDefinition(4, Label = "Update Library", HelpText = "Update Library on Download & Rename?", Type = FieldType.Checkbox)]
+        [FieldDefinition(5, Label = "Update Library", HelpText = "Update Library on Download & Rename?", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
 
         [JsonIgnore]
-        public string Address => string.Format("{0}:{1}", Host, Port);
+        public string Address => $"{Host}:{Port}";
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Host) && Port > 0;
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -28,9 +28,11 @@ namespace NzbDrone.Core.NetImport.Radarr
             _httpClient = httpClient;
         }
 
-        public override IEnumerable<ProviderDefinition> GetDefaultDefinitions()
+        public override IEnumerable<ProviderDefinition> DefaultDefinitions
         {
-                foreach (var def in base.GetDefaultDefinitions())
+            get
+            {
+                foreach (var def in base.DefaultDefinitions)
                 {
                     yield return def;
                 }
@@ -62,8 +64,7 @@ namespace NzbDrone.Core.NetImport.Radarr
                     Implementation = GetType().Name,
                     Settings = new RadarrSettings { Path = "/imdb/list?listId=LISTID" },
                 };
-
-
+            }
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()

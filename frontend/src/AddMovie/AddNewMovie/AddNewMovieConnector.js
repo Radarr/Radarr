@@ -10,7 +10,7 @@ import AddNewMovie from './AddNewMovie';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.addMovie,
-    (state) => state.routing.location,
+    (state) => state.router.location,
     (addMovie, location) => {
       const { params } = parseUrl(location.search);
 

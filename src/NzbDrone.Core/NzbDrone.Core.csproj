@@ -160,6 +160,7 @@
     <Compile Include="Download\TrackedDownloads\TrackedDownloadsRemovedEvent.cs" />
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcNfoDetector.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
+    <Compile Include="HealthCheck\Checks\MountCheck.cs" />
     <Compile Include="HealthCheck\Checks\PTPOldSettingsCheck.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
     <Compile Include="MediaCover\EnsureMediaCoversCommand.cs" />
@@ -939,6 +940,7 @@
     <Compile Include="Notifications\Gotify\GotifySettings.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
+    <Compile Include="Notifications\Join\JoinPriority.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
     <Compile Include="Notifications\Join\Join.cs" />
     <Compile Include="Notifications\Join\JoinException.cs" />
@@ -949,18 +951,32 @@
     <Compile Include="Notifications\Boxcar\BoxcarProxy.cs" />
     <Compile Include="Notifications\Boxcar\BoxcarSettings.cs" />
     <Compile Include="Notifications\GrabMessage.cs" />
-    <Compile Include="Notifications\Plex\Models\PlexIdentity.cs" />
-    <Compile Include="Notifications\Plex\Models\PlexResponse.cs" />
-    <Compile Include="Notifications\Plex\Models\PlexPreferences.cs" />
-    <Compile Include="Notifications\Plex\Models\PlexSectionItem.cs" />
-    <Compile Include="Notifications\Plex\Models\PlexSection.cs" />
+    <Compile Include="Notifications\Plex\HomeTheater\PlexClient.cs" />
+    <Compile Include="Notifications\Plex\HomeTheater\PlexClientService.cs" />
+    <Compile Include="Notifications\Plex\HomeTheater\PlexClientSettings.cs" />
+    <Compile Include="Notifications\Plex\HomeTheater\PlexHomeTheater.cs" />
+    <Compile Include="Notifications\Plex\HomeTheater\PlexHomeTheaterSettings.cs" />
     <Compile Include="Notifications\Plex\PlexAuthenticationException.cs" />
     <Compile Include="Notifications\CustomScript\CustomScript.cs" />
     <Compile Include="Notifications\CustomScript\CustomScriptSettings.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvPinResponse.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvPinUrlResponse.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvProxy.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvService.cs" />
+    <Compile Include="Notifications\Plex\PlexTv\PlexTvSignInUrlResponse.cs" />
     <Compile Include="Notifications\Plex\PlexVersionException.cs" />
-    <Compile Include="Notifications\Plex\PlexHomeTheater.cs" />
-    <Compile Include="Notifications\Plex\PlexHomeTheaterSettings.cs" />
-    <Compile Include="Notifications\Plex\PlexClientService.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexError.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexIdentity.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexPreferences.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexResponse.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexSection.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexSectionItem.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexServer.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexServerProxy.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexServerService.cs" />
+    <Compile Include="Notifications\Plex\Server\PlexServerSettings.cs" />
+    <Compile Include="Notifications\PushBullet\PushBulletDevice.cs" />
+    <Compile Include="Notifications\PushBullet\PushBulletDevicesResponse.cs" />
     <Compile Include="Notifications\PushBullet\PushBulletException.cs" />
     <Compile Include="Notifications\Slack\Payloads\Attachment.cs" />
     <Compile Include="Notifications\Slack\Payloads\SlackPayload.cs" />
@@ -1059,17 +1075,7 @@
     <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidPriority.cs" />
     <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidProxy.cs" />
     <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidSettings.cs" />
-    <Compile Include="Notifications\Plex\PlexClient.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Notifications\Plex\PlexClientSettings.cs" />
-    <Compile Include="Notifications\Plex\PlexError.cs" />
     <Compile Include="Notifications\Plex\PlexException.cs" />
-    <Compile Include="Notifications\Plex\PlexServer.cs" />
-    <Compile Include="Notifications\Plex\PlexServerProxy.cs" />
-    <Compile Include="Notifications\Plex\PlexServerSettings.cs" />
-    <Compile Include="Notifications\Plex\PlexServerService.cs" />
-    <Compile Include="Notifications\Plex\PlexUser.cs" />
     <Compile Include="Notifications\Prowl\InvalidApiKeyException.cs" />
     <Compile Include="Notifications\Prowl\Prowl.cs">
       <SubType>Code</SubType>
@@ -1166,7 +1172,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RootFolders\UnmappedFolder.cs" />
-    <Compile Include="Security.cs" />
+    <Compile Include="Hashing.cs" />
+    <Compile Include="Security\CertificateValidationType.cs" />
+    <Compile Include="Security\X509CertificateValidationService.cs" />
     <Compile Include="Tags\Tag.cs" />
     <Compile Include="Tags\TagDetails.cs" />
     <Compile Include="Tags\TagRepository.cs" />

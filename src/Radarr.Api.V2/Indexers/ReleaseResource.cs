@@ -44,8 +44,6 @@ namespace Radarr.Api.V2.Indexers
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
 
-        //TODO: besides a test I don't think this is used...
-        public DownloadProtocol DownloadProtocol { get; set; }
 
         public bool IsDaily { get; set; }
         public bool IsAbsoluteNumbering { get; set; }
@@ -127,7 +125,7 @@ namespace Radarr.Api.V2.Indexers
             model.CommentUrl = resource.CommentUrl;
             model.IndexerId = resource.IndexerId;
             model.Indexer = resource.Indexer;
-            model.DownloadProtocol = resource.DownloadProtocol;
+            model.DownloadProtocol = resource.Protocol;
             model.ImdbId = resource.ImdbId;
             model.PublishDate = resource.PublishDate.ToUniversalTime();
 

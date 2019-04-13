@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import getSectionState from 'Utilities/State/getSectionState';
@@ -114,14 +113,14 @@ export const actionHandlers = handleThunks({
 
     const tmdbId = payload.tmdbId;
     const items = getState().addMovie.items;
-    const newSeries = getNewMovie(_.cloneDeep(_.find(items, { tmdbId })), payload);
+    const newMovie = getNewMovie(_.cloneDeep(_.find(items, { tmdbId })), payload);
 
-    const promise = $.ajax({
+    const promise = createAjaxRequest({
       url: '/movie',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(newSeries)
-    });
+      data: JSON.stringify(newMovie)
+    }).request;
 
     promise.done((data) => {
       dispatch(batchActions([
