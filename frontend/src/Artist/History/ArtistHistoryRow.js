@@ -16,13 +16,24 @@ import styles from './ArtistHistoryRow.css';
 
 function getTitle(eventType) {
   switch (eventType) {
-    case 'grabbed': return 'Grabbed';
-    case 'artistFolderImported': return 'Artist Folder Imported';
-    case 'trackFileImported': return 'Download Folder Imported';
-    case 'downloadFailed': return 'Download Failed';
-    case 'trackFileDeleted': return 'Track File Deleted';
-    case 'trackFileRenamed': return 'Track File Renamed';
-    default: return 'Unknown';
+    case 'grabbed':
+      return 'Grabbed';
+    case 'downloadImported':
+      return 'Download Completed';
+    case 'trackFileImported':
+      return 'Track Imported';
+    case 'downloadFailed':
+      return 'Download Failed';
+    case 'trackFileDeleted':
+      return 'Track File Deleted';
+    case 'trackFileRenamed':
+      return 'Track File Renamed';
+    case 'trackFileRetagged':
+      return 'Track File Tags Updated';
+    case 'albumImportIncomplete':
+      return 'Album Import Incomplete';
+    default:
+      return 'Unknown';
   }
 }
 
