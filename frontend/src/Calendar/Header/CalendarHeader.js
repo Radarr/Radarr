@@ -84,6 +84,7 @@ class CalendarHeader extends Component {
       end,
       longDateFormat,
       isSmallScreen,
+      collapseViewButtons,
       onTodayPress,
       onPreviousPress,
       onNextPress
@@ -146,7 +147,7 @@ class CalendarHeader extends Component {
             }
 
             {
-              isSmallScreen ?
+              collapseViewButtons ?
                 <Menu
                   className={styles.viewMenu}
                   alignMenu={align.RIGHT}
@@ -159,6 +160,18 @@ class CalendarHeader extends Component {
                   </MenuButton>
 
                   <MenuContent>
+                    {
+                      isSmallScreen ?
+                        null :
+                        <ViewMenuItem
+                          name={calendarViews.MONTH}
+                          selectedView={view}
+                          onPress={this.onViewChange}
+                        >
+                          Month
+                        </ViewMenuItem>
+                    }
+
                     <ViewMenuItem
                       name={calendarViews.WEEK}
                       selectedView={view}
@@ -244,6 +257,7 @@ CalendarHeader.propTypes = {
   end: PropTypes.string.isRequired,
   view: PropTypes.oneOf(calendarViews.all).isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  collapseViewButtons: PropTypes.bool.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   onViewChange: PropTypes.func.isRequired,
   onTodayPress: PropTypes.func.isRequired,
