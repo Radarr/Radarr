@@ -86,8 +86,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings)
         {
-            var request = BuildRequest(settings).Resource("/api/v2/torrents/info")
-                                                .AddQueryParam("category", settings.MusicCategory);
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/info");
+            if (settings.MusicCategory.IsNotNullOrWhiteSpace())
+            {
+                request.AddQueryParam("category", settings.MusicCategory);
+            }
+
             var response = ProcessRequest<List<QBittorrentTorrent>>(request, settings);
 
             return response;
