@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -42,7 +43,7 @@ namespace NzbDrone.Core.Datastore
             Environment.SetEnvironmentVariable("No_PreLoadSQLite", "true");
         }
 
-    public static void RegisterDatabase(IContainer container)
+        public static void RegisterDatabase(IContainer container)
         {
             var mainDb = new MainDatabase(container.Resolve<IDbFactory>().Create());
 
@@ -127,6 +128,10 @@ namespace NzbDrone.Core.Datastore
 
                 throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Lidarr/Lidarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);
             }
+            catch (Exception e)
+            {
+                throw new LidarrStartupException(e, "Error creating main database");
+            }
         }
 
         private void CreateLog(string connectionString, MigrationContext migrationContext)
@@ -154,6 +159,10 @@ namespace NzbDrone.Core.Datastore
                 }
 
                 _migrationController.Migrate(connectionString, migrationContext);
+            }
+            catch (Exception e)
+            {
+                throw new LidarrStartupException(e, "Error creating log database");
             }
         }
     }
