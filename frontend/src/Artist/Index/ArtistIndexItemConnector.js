@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import createExecutingCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
 import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
 import createMetadataProfileSelector from 'Store/Selectors/createMetadataProfileSelector';
