@@ -411,6 +411,16 @@ function HistoryDetails(props) {
       </DescriptionList>
     );
   }
+
+  return (
+    <DescriptionList>
+      <DescriptionListItem
+        descriptionClassName={styles.description}
+        title="Name"
+        data={sourceTitle}
+      />
+    </DescriptionList>
+  );
 }
 
 HistoryDetails.propTypes = {
