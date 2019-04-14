@@ -111,6 +111,12 @@ export const defaultState = {
         isVisible: false
       },
       {
+        name: 'title',
+        label: 'Release Title',
+        isSortable: true,
+        isVisible: false
+      },
+      {
         name: 'estimatedCompletionTime',
         label: 'Timeleft',
         isSortable: true,
