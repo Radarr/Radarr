@@ -10,6 +10,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public class ManualImportItem : ModelBase
     {
+        public ManualImportItem()
+        {
+            Tracks = new List<Track>();
+        }
+
         public string Path { get; set; }
         public string RelativePath { get; set; }
         public string FolderName { get; set; }
