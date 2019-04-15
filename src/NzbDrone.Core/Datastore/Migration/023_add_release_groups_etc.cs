@@ -88,6 +88,13 @@ namespace NzbDrone.Core.Datastore.Migration
                                                 JOIN Albums ON AlbumReleases.AlbumId = Albums.Id
                                                 WHERE Albums.Id = Tracks.AlbumId)");
 
+            // Set metadata ID
+            Execute.Sql(@"UPDATE Tracks
+                          SET ArtistMetadataId = (SELECT ArtistMetadata.Id 
+                                                  FROM ArtistMetadata 
+                                                  JOIN Albums ON ArtistMetadata.Id = Albums.ArtistMetadataId
+                                                  WHERE Tracks.AlbumId = Albums.Id)");
+
             // CLEAR OUT OLD COLUMNS
 
             // Remove the columns in Artists now in ArtistMetadata

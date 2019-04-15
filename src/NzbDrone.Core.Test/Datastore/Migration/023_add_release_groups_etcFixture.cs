@@ -95,8 +95,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                                          "JOIN AlbumReleases ON Tracks.AlbumReleaseId = AlbumReleases.Id " +
                                          "JOIN Albums ON AlbumReleases.AlbumId = Albums.Id " +
                                          "WHERE Albums.Id = " + albumId).ToList();
+
+            var album = db.Query<Album>("SELECT * FROM Albums WHERE Albums.Id = " + albumId).ToList().Single();
+
             tracks.Count.Should().Be(expectedCount);
             tracks.First().AlbumReleaseId.Should().Be(albumReleaseId);
+            tracks.All(t => t.ArtistMetadataId == album.ArtistMetadataId).Should().BeTrue();
         }
         
         [Test]
