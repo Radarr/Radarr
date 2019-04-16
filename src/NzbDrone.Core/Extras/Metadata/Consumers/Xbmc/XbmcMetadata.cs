@@ -237,9 +237,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         public override List<ImageFileResult> MovieImages(Movie movie)
         {
             if (!Settings.MovieImages)
-            {
                 return new List<ImageFileResult>();
-            }
 
             return ProcessMovieImages(movie).ToList();
         }
