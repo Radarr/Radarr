@@ -319,7 +319,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             if (resource.Releases != null)
             {
-                album.AlbumReleases = resource.Releases.Select(x => MapRelease(x, artistDict)).ToList();
+                album.AlbumReleases = resource.Releases.Select(x => MapRelease(x, artistDict)).Where(x => x.TrackCount > 0).ToList();
             }
 
             album.AnyReleaseOk = true;

@@ -86,6 +86,13 @@ namespace NzbDrone.Core.Music
         private Album AddAlbum(Tuple<string, Album, List<ArtistMetadata>> skyHookData)
         {
             var newAlbum = skyHookData.Item2;
+
+            if (newAlbum.AlbumReleases.Value.Count == 0)
+            {
+                _logger.Debug($"Skipping album with no valid releases {newAlbum}");
+                return null;
+            }
+
             _logger.ProgressInfo("Adding Album {0}", newAlbum.Title);
             
             _artistMetadataRepository.UpsertMany(skyHookData.Item3);

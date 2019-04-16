@@ -139,8 +139,6 @@ namespace NzbDrone.Core.Music
                 }
             }
 
-            _artistService.UpdateArtist(artist);
-            
             _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} albums",
                           artist, existingAlbums.Count, updateAlbumsList.Count, newAlbumsList.Count);
 
@@ -157,10 +155,12 @@ namespace NzbDrone.Core.Music
 
             _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh, forceUpdateFileTags);
 
-            _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
+            // Do this last so artist only marked as refreshed if refresh of tracks / albums completed successfully
+            _artistService.UpdateArtist(artist);
 
-            _logger.Debug("Finished artist refresh for {0}", artist.Name);
+            _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+            _logger.Debug("Finished artist refresh for {0}", artist.Name);
         }
 
         private List<Album> UpdateAlbums(Artist artist, List<Album> albumsToUpdate)

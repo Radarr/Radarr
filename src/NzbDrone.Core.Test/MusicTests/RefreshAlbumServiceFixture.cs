@@ -108,6 +108,21 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
+        public void should_remove_album_with_no_valid_releases()
+        {
+            var album = _albums.First();
+            album.AlbumReleases = new List<AlbumRelease>();
+
+            GivenNewAlbumInfo(album);
+
+            Subject.RefreshAlbumInfo(album, false);
+            
+            Mocker.GetMock<IAlbumService>()
+                .Verify(x => x.DeleteMany(It.Is<List<Album>>(y => y.Count == 1 && y.First().ForeignAlbumId == album.ForeignAlbumId)),
+                        Times.Once());
+        }
+
+        [Test]
         public void two_equivalent_releases_should_be_equal()
         {
             var release = Builder<AlbumRelease>.CreateNew().Build();

@@ -90,6 +90,30 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
+        public void should_not_add_if_no_releases()
+        {
+            _fakeAlbum.AlbumReleases = new List<AlbumRelease>();
+            GivenValidAlbum(_fakeAlbum.ForeignAlbumId);
+
+            Subject.AddAlbum(_fakeAlbum).Should().BeNull();
+            
+            Mocker.GetMock<IAlbumService>()
+                .Verify(x => x.AddAlbum(It.IsAny<Album>()), Times.Never());
+        }
+        
+        [Test]
+        public void should_not_add_item_in_list_if_no_releases()
+        {
+            _fakeAlbum.AlbumReleases = new List<AlbumRelease>();
+            GivenValidAlbum(_fakeAlbum.ForeignAlbumId);
+
+            Subject.AddAlbums(new List<Album> { _fakeAlbum }).Should().BeEquivalentTo(new List<Album> { null });
+            
+            Mocker.GetMock<IAlbumService>()
+                .Verify(x => x.AddAlbum(It.IsAny<Album>()), Times.Never());
+        }
+
+        [Test]
         public void should_not_add_duplicate_releases()
         {
             var newAlbum = Builder<Album>.CreateNew().Build();
