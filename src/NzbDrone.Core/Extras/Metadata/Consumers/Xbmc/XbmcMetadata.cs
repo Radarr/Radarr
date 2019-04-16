@@ -102,7 +102,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
         {
- 
             var xmlResult = string.Empty;
             if (Settings.MovieMetadata)
             {
@@ -221,7 +220,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
             if (Settings.MovieMetadataURL)
             {
-
                 xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;
                 xmlResult += Environment.NewLine;
 
@@ -237,7 +235,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         public override List<ImageFileResult> MovieImages(Movie movie)
         {
             if (!Settings.MovieImages)
+            {
                 return new List<ImageFileResult>();
+            }
 
             return ProcessMovieImages(movie).ToList();
         }
