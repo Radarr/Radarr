@@ -6,7 +6,7 @@
 #define AppURL "https://lidarr.audio/"
 #define ForumsURL "https://forums.lidarr.audio/"
 #define AppExeName "Lidarr.exe"
-#define BaseVersion "0.6.0"
+#define BaseVersion "0.6.1"
 #define BuildNumber GetEnv('APPVEYOR_BUILD_NUMBER')
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
 #define BranchName GetEnv('APPVEYOR_REPO_BRANCH')
