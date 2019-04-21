@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public static string FormatAudioSampleRate(MediaInfoModel mediaInfo)
         {
-            return $"{mediaInfo.AudioSampleRate / 1000:0.#}kHz";
+            return $"{(double)mediaInfo.AudioSampleRate / 1000:0.#}kHz";
         }
 
         public static decimal FormatAudioChannels(MediaInfoModel mediaInfo)

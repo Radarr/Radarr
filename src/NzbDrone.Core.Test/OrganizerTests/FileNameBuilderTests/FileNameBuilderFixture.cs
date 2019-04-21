@@ -375,7 +375,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{MediaInfo AudioSampleRate}";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be("44kHz");
+                   .Should().Be("44.1kHz");
         }
 
         [Test]
