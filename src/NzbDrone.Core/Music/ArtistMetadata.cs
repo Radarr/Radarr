@@ -38,11 +38,11 @@ namespace NzbDrone.Core.Music
         {
             ForeignArtistId = otherArtist.ForeignArtistId;
             Name = otherArtist.Name;
-            Overview = otherArtist.Overview;
+            Overview = otherArtist.Overview.IsNullOrWhiteSpace() ? Overview : otherArtist.Overview;
             Disambiguation = otherArtist.Disambiguation;
             Type = otherArtist.Type;
             Status = otherArtist.Status;
-            Images = otherArtist.Images;
+            Images = otherArtist.Images.Any() ? otherArtist.Images : Images;
             Links = otherArtist.Links;
             Genres = otherArtist.Genres;
             Ratings = otherArtist.Ratings;

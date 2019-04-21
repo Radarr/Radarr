@@ -141,12 +141,12 @@ namespace NzbDrone.Core.Music
             album.LastInfoSync = DateTime.UtcNow;
             album.CleanTitle = albumInfo.CleanTitle;
             album.Title = albumInfo.Title ?? "Unknown";
-            album.Overview = albumInfo.Overview;
+            album.Overview = albumInfo.Overview.IsNullOrWhiteSpace() ? album.Overview : albumInfo.Overview;
             album.Disambiguation = albumInfo.Disambiguation;
             album.AlbumType = albumInfo.AlbumType;
             album.SecondaryTypes = albumInfo.SecondaryTypes;
             album.Genres = albumInfo.Genres;
-            album.Images = albumInfo.Images;
+            album.Images = albumInfo.Images.Any() ? albumInfo.Images : album.Images;
             album.Links = albumInfo.Links;
             album.ReleaseDate = albumInfo.ReleaseDate;
             album.Ratings = albumInfo.Ratings;
