@@ -69,7 +69,16 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                             .With(e => e.MediumNumber = _medium.Number)
                             .Build();
 
-            _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
+            _trackFile = Builder<TrackFile>.CreateNew()
+                .With(e => e.Quality = new QualityModel(Quality.MP3_256))
+                .With(e => e.ReleaseGroup = "LidarrTest")
+                .With(e => e.MediaInfo = new Parser.Model.MediaInfoModel {
+                    AudioBitrate = 320,
+                    AudioBits = 16,
+                    AudioChannels = 2,
+                    AudioFormat = "Flac Audio",
+                    AudioSampleRate = 44100
+                }).Build();
             
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))
@@ -322,6 +331,51 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("MP3-256");
+        }
+
+        [Test]
+        public void should_replace_media_info_audio_codec()
+        {
+            _namingConfig.StandardTrackFormat = "{MediaInfo AudioCodec}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("FLAC");
+        }
+
+        [Test]
+        public void should_replace_media_info_audio_bitrate()
+        {
+            _namingConfig.StandardTrackFormat = "{MediaInfo AudioBitRate}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("320 kbps");
+        }
+
+        [Test]
+        public void should_replace_media_info_audio_channels()
+        {
+            _namingConfig.StandardTrackFormat = "{MediaInfo AudioChannels}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("2.0");
+        }
+
+        [Test]
+        public void should_replace_media_info_bits_per_sample()
+        {
+            _namingConfig.StandardTrackFormat = "{MediaInfo AudioBitsPerSample}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("16bit");
+        }
+
+        [Test]
+        public void should_replace_media_info_sample_rate()
+        {
+            _namingConfig.StandardTrackFormat = "{MediaInfo AudioSampleRate}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                   .Should().Be("44kHz");
         }
 
         [Test]
