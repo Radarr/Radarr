@@ -90,6 +90,7 @@ const qualityTokens = [
 const mediaInfoTokens = [
   { token: '{MediaInfo AudioCodec}', example: 'FLAC' },
   { token: '{MediaInfo AudioChannels}', example: '2.0' },
+  { token: '{MediaInfo AudioBitRate}', example: '320kbps' },
   { token: '{MediaInfo AudioBitsPerSample}', example: '24bit' },
   { token: '{MediaInfo AudioSampleRate}', example: '44.1kHz' }
 ];
@@ -100,8 +101,8 @@ const otherTokens = [
 ];
 
 const originalTokens = [
-  { token: '{Original Title}', example: 'Artist.Name.S01E01.HDTV.x264-EVOLVE' },
-  { token: '{Original Filename}', example: 'artist.name.s01e01.hdtv.x264-EVOLVE' }
+  { token: '{Original Title}', example: 'Artist.Name.Album.Name.2018.FLAC-EVOLVE' },
+  { token: '{Original Filename}', example: '01 - track name' }
 ];
 
 class NamingModal extends Component {
