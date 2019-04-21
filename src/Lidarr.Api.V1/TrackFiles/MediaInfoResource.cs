@@ -9,6 +9,8 @@ namespace Lidarr.Api.V1.TrackFiles
         public decimal AudioChannels { get; set; }
         public string AudioBitRate { get; set; }
         public string AudioCodec { get; set; }
+        public string AudioBits { get; set; }
+        public string AudioSampleRate { get; set; }
     }
 
     public static class MediaInfoResourceMapper
@@ -24,7 +26,9 @@ namespace Lidarr.Api.V1.TrackFiles
                    {
                        AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
                        AudioCodec = MediaInfoFormatter.FormatAudioCodec(model),
-                       AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model)
+                       AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model),
+                       AudioBits = MediaInfoFormatter.FormatAudioBitsPerSample(model),
+                       AudioSampleRate = MediaInfoFormatter.FormatAudioSampleRate(model)
                     };
         }
     }

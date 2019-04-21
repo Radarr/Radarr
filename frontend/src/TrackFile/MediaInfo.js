@@ -8,7 +8,8 @@ function MediaInfo(props) {
     audioChannels,
     audioCodec,
     audioBitRate,
-    videoCodec
+    audioBits,
+    audioSampleRate
   } = props;
 
   if (type === mediaInfoTypes.AUDIO) {
@@ -38,14 +39,26 @@ function MediaInfo(props) {
           !!audioBitRate &&
             audioBitRate
         }
-      </span>
-    );
-  }
 
-  if (type === mediaInfoTypes.VIDEO) {
-    return (
-      <span>
-        {videoCodec}
+        {
+          ((!!audioCodec && !!audioSampleRate) || (!!audioChannels && !!audioSampleRate) || (!!audioBitRate && !!audioSampleRate)) &&
+          ' - '
+        }
+
+        {
+          !!audioSampleRate &&
+          audioSampleRate
+        }
+
+        {
+          ((!!audioCodec && !!audioBits) || (!!audioChannels && !!audioBits) || (!!audioBitRate && !!audioBits) || (!!audioSampleRate && !!audioBits)) &&
+          ' - '
+        }
+
+        {
+          !!audioBits &&
+          audioBits
+        }
       </span>
     );
   }
@@ -58,7 +71,8 @@ MediaInfo.propTypes = {
   audioChannels: PropTypes.number,
   audioCodec: PropTypes.string,
   audioBitRate: PropTypes.string,
-  videoCodec: PropTypes.string
+  audioBits: PropTypes.string,
+  audioSampleRate: PropTypes.string
 };
 
 export default MediaInfo;
