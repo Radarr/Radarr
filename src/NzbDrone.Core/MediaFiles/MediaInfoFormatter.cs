@@ -19,6 +19,11 @@ namespace NzbDrone.Core.MediaFiles
 
         public static string FormatAudioBitsPerSample(MediaInfoModel mediaInfo)
         {
+            if (mediaInfo.AudioBits == 0)
+            {
+                return string.Empty;
+            }
+
             return mediaInfo.AudioBits + "bit";
         }
 
