@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public override List<ImageFileResult> ArtistImages(Artist artist)
         {
-            if (!Settings.AlbumImages)
+            if (!Settings.ArtistImages)
             {
                 return new List<ImageFileResult>();
             }
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             if (image == null)
             {
                 _logger.Trace("Failed to find suitable Artist image for artist {0}.", artist.Name);
-                return null;
+                return new List<ImageFileResult>(); ;
             }
 
             var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
