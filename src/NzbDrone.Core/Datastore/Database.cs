@@ -34,8 +34,11 @@ namespace NzbDrone.Core.Datastore
         {
             get
             {
-                var version = _datamapperFactory().ExecuteScalar("SELECT sqlite_version()").ToString();
-                return new Version(version);
+                using (var db = _datamapperFactory())
+                {
+                    var version = db.ExecuteScalar("SELECT sqlite_version()").ToString();
+                    return new Version(version);
+                }
             }
         }
 
@@ -44,7 +47,10 @@ namespace NzbDrone.Core.Datastore
             try
             {
                 _logger.Info("Vacuuming {0} database", _databaseName);
-                _datamapperFactory().ExecuteNonQuery("Vacuum;");
+                using (var db = _datamapperFactory())
+                {
+                    db.ExecuteNonQuery("Vacuum;");
+                }
                 _logger.Info("{0} database compressed", _databaseName);
             }
             catch (Exception e)

@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Update
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public UpdatePackageProvider(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder)
+        public UpdatePackageProvider(IHttpClient httpClient, IRadarrCloudRequestBuilder requestBuilder)
         {
             _httpClient = httpClient;
             _requestBuilder = requestBuilder.Services;

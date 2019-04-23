@@ -59,6 +59,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(9, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
         public int OlderMoviePriority { get; set; }
 
+        [FieldDefinition(10, Label = "Don't start download automatically", Type = FieldType.Checkbox, Advanced = true, HelpText = "Add Download in a stopped state. This is useful for letting a Queue manager like pyrotorque automatically start the download.")]
+        public bool DontStartAutomatically { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

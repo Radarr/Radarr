@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Movies
 
         public bool MoviePathExists(string path)
         {
-            return Query.Where(c => c.Path == path).Any();
+            return Query(q => q.Where(c => c.Path == path).Any());
         }
 
         public Movie FindByTitle(string cleanTitle)
@@ -57,12 +57,12 @@ namespace NzbDrone.Core.Movies
         public Movie FindByImdbId(string imdbid)
         {
             var imdbIdWithPrefix = Parser.Parser.NormalizeImdbId(imdbid);
-            return Query.Where(s => s.ImdbId == imdbIdWithPrefix).SingleOrDefault();
+            return Query(q => q.Where(s => s.ImdbId == imdbIdWithPrefix).SingleOrDefault());
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)
         {
-            return Query.Where(m => m.MovieFileId == fileId).ToList();
+            return Query(q => q.Where(m => m.MovieFileId == fileId).ToList());
         }
 
         public void SetFileId(int fileId, int movieId)
@@ -72,32 +72,37 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitleSlug(string slug)
         {
-            return Query.FirstOrDefault(m => m.TitleSlug == slug);
+            return Query(q => q.Where(m => m.TitleSlug == slug).FirstOrDefault());
         }
 
         public List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
         {
-            var query = Query.Where(m => (m.InCinemas >= start && m.InCinemas <= end) || (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
-
-            if (!includeUnmonitored)
+            return Query(q =>
             {
-                query.AndWhere(e => e.Monitored == true);
-            }
+                var query = q.Where(m =>
+                        (m.InCinemas >= start && m.InCinemas <= end) ||
+                        (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
+                
+                if (!includeUnmonitored)
+                {
+                    query.AndWhere(e => e.Monitored == true);
+                }
 
-            return query.ToList();
+                return query.ToList();
+            });
         }
 
         public List<Movie> MoviesWithFiles(int movieId)
         {
-            return Query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, mf) => m.MovieFileId == mf.Id)
-                        .Where(m => m.Id == movieId);
+            return Query(q => q.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, mf) => m.MovieFileId == mf.Id)
+                        .Where(m => m.Id == movieId).ToList());
         }
 
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
         {
 
-            pagingSpec.TotalRecords = GetMoviesWithoutFilesQuery(pagingSpec).GetRowCount();
-            pagingSpec.Records = GetMoviesWithoutFilesQuery(pagingSpec).ToList();
+            pagingSpec.TotalRecords = Query(q => GetMoviesWithoutFilesQuery(q, pagingSpec).GetRowCount());
+            pagingSpec.Records = Query(q => GetMoviesWithoutFilesQuery(q, pagingSpec).ToList());
 
             return pagingSpec;
         }
@@ -157,7 +162,7 @@ namespace NzbDrone.Core.Movies
             return newQuery;
         }*/
 
-        public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
+        public SortBuilder<Movie> GetMoviesWithoutFilesQuery(QueryBuilder<Movie> Query, PagingSpec<Movie> pagingSpec)
         {
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
@@ -168,13 +173,13 @@ namespace NzbDrone.Core.Movies
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-            pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
-            pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+            pagingSpec.TotalRecords = Query(q => MoviesWhereCutoffUnmetQuery(q, pagingSpec, qualitiesBelowCutoff).GetRowCount());
+            pagingSpec.Records = Query(q => MoviesWhereCutoffUnmetQuery(q, pagingSpec, qualitiesBelowCutoff).ToList());
 
             return pagingSpec;
         }
 
-        private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(QueryBuilder<Movie> Query, PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
 		{
             return Query.Where(pagingSpec.FilterExpression)
                  .AndWhere(m => m.MovieFileId != 0)
@@ -229,12 +234,16 @@ namespace NzbDrone.Core.Movies
                 cleanTitleWithArabicNumbers = cleanTitleWithArabicNumbers.Replace(romanNumber, arabicNumber);
             }
 
-            Movie result = Query.Where(s => s.CleanTitle == cleanTitle).FirstWithYear(year);
-
+            Movie result = Query(q =>
+            {
+                return q.Where(s => s.CleanTitle == cleanTitle).FirstWithYear(year);
+            });
+            
             if (result == null)
             {
-                result = Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year) ??
-                              Query.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+                result =
+                    Query(q => q.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year)) ??
+                    Query(q => q.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year));
 
                 if (result == null)
                 {
@@ -249,14 +258,17 @@ namespace NzbDrone.Core.Movies
                                           altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers)).FirstWithYear(year);*/
 
                     //result = Query.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m._newAltTitles,
-                        //(m, t) => m.Id == t.MovieId && (t.CleanTitle == cleanTitle)).FirstWithYear(year);
-                    result = Query.Where<AlternativeTitle>(t =>
-                        t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers
-                        || t.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+                    //(m, t) => m.Id == t.MovieId && (t.CleanTitle == cleanTitle)).FirstWithYear(year);
+                    result = Query(q => q.Where<AlternativeTitle>(t =>
+                            t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers
+                                                       || t.CleanTitle == cleanTitleWithRomanNumbers)
+                        .FirstWithYear(year));
 
                 }
             }
+
             return result;
+
             /*return year.HasValue
                 ? results?.FirstOrDefault(movie => movie.Year == year.Value)
 
@@ -264,7 +276,7 @@ namespace NzbDrone.Core.Movies
               : results?.FirstOrDefault();*/
         }
 
-        protected override QueryBuilder<Movie> AddJoinQueries(QueryBuilder<Movie> baseQuery)
+        protected override QueryBuilder<TActual> AddJoinQueries<TActual>(QueryBuilder<TActual> baseQuery)
         {
             baseQuery = base.AddJoinQueries(baseQuery);
             baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
@@ -276,7 +288,7 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTmdbId(int tmdbid)
         {
-            return Query.Where(m => m.TmdbId == tmdbid).FirstOrDefault();
+            return Query(q => q.Where(m => m.TmdbId == tmdbid).FirstOrDefault());
         }
     }
 }

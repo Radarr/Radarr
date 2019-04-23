@@ -9,7 +9,7 @@ var view = Marionette.ItemView.extend({
 
 		slider    : {
 				min  : 0,
-				max  : 200,
+				max  : 400,
 				step : 0.1
 		},
 

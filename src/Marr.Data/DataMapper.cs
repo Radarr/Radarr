@@ -941,21 +941,21 @@ namespace Marr.Data
         {
             if (disposing)
             {
-                if (Command.Transaction != null)
+                if (_command != null)
                 {
-                    Command.Transaction.Dispose();
-                    Command.Transaction = null;
-                }
+                    if (_command.Transaction != null)
+                    {
+                        _command.Transaction.Dispose();
+                        _command.Transaction = null;
+                    }
 
-                if (Command.Connection != null)
-                {
-                    Command.Connection.Dispose();
-                    Command.Connection = null;
-                }
+                    if (_command.Connection != null)
+                    {
+                        _command.Connection.Dispose();
+                        _command.Connection = null;
+                    }
 
-                if (Command != null)
-                {
-                    Command.Dispose();
+                    _command.Dispose();
                     _command = null;
                 }
             }

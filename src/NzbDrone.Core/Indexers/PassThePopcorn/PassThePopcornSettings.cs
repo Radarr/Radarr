@@ -14,9 +14,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public PassThePopcornSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
-            RuleFor(c => c.Username).NotEmpty();
-            RuleFor(c => c.Password).NotEmpty();
-            RuleFor(c => c.Passkey).NotEmpty();
+            RuleFor(c => c.Username).Empty();
+            RuleFor(c => c.Password).Empty();
+            RuleFor(c => c.Passkey).Empty();
+            RuleFor(c => c.APIUser).NotEmpty();
+            RuleFor(c => c.APIKey).NotEmpty();
         }
     }
 
@@ -33,22 +35,28 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "Username", HelpText = "PTP Username")]
+        [FieldDefinition(1, Label = "APIUser", HelpText = "These settings are found in your PassThePopcorn security settings (Edit Profile > Security).")]
+        public string APIUser { get; set; }
+        
+        [FieldDefinition(2, Label = "APIKey", Type = FieldType.Password)]
+        public string APIKey { get; set; }
+
+        [FieldDefinition(3, Label = "DEPRECATED: User", HelpText = "Please use APIKey & APIUser instead. PTP Username")]
         public string Username { get; set; }
 
-        [FieldDefinition(2, Label = "Password", Type = FieldType.Password, HelpText = "PTP Password")]
+        [FieldDefinition(4, Label = "DEPRECATED: Pass", Type = FieldType.Password, HelpText = "Please use APIKey & APIUser instead. PTP Password")]
         public string Password { get; set; }
 
-        [FieldDefinition(3, Label = "Passkey",  HelpText = "PTP Passkey")]
+        [FieldDefinition(5, Label = "DEPRECATED: Passkey",  HelpText = "Please use APIKey & APIUser instead. PTP Passkey")]
         public string Passkey { get; set; }
               
-        [FieldDefinition(4, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
-        [FieldDefinition(5, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        [FieldDefinition(7, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()

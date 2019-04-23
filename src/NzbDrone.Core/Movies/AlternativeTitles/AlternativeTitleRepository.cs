@@ -25,17 +25,17 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public AlternativeTitle FindBySourceId(int sourceId)
         {
-            return Query.Where(t => t.SourceId == sourceId).FirstOrDefault();
+            return Query(q => q.Where(t => t.SourceId == sourceId).FirstOrDefault());
         }
 
         public List<AlternativeTitle> FindBySourceIds(List<int> sourceIds)
         {
-            return Query.Where(t => t.SourceId.In(sourceIds)).ToList();
+            return Query(q => q.Where(t => t.SourceId.In(sourceIds)).ToList());
         }
 
         public List<AlternativeTitle> FindByMovieId(int movieId)
         {
-            return Query.Where(t => t.MovieId == movieId).ToList();
+            return Query(q => q.Where(t => t.MovieId == movieId).ToList());
         }
     }
 }

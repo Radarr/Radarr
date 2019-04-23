@@ -12,6 +12,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Organizer;
+using System.Globalization;
 
 namespace NzbDrone.Core.Download.Clients.Nzbget
 {
@@ -27,8 +28,9 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                       INamingConfigService namingConfigService,
                       IDiskProvider diskProvider,
                       IRemotePathMappingService remotePathMappingService,
+                      IValidateNzbs nzbValidationService,
                       Logger logger)
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _proxy = proxy;
         }
@@ -53,19 +55,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         private IEnumerable<DownloadClientItem> GetQueue()
         {
-            NzbgetGlobalStatus globalStatus;
-            List<NzbgetQueueItem> queue;
-
-            try
-            {
-                globalStatus = _proxy.GetGlobalStatus(Settings);
-                queue = _proxy.GetQueue(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var globalStatus = _proxy.GetGlobalStatus(Settings);
+            var queue = _proxy.GetQueue(Settings);
 
             var queueItems = new List<DownloadClientItem>();
 
@@ -121,17 +112,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            List<NzbgetHistoryItem> history;
-
-            try
-            {
-                history = _proxy.GetHistory(Settings).Take(_configService.DownloadClientHistoryLimit).ToList();
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var history = _proxy.GetHistory(Settings).Take(_configService.DownloadClientHistoryLimit).ToList();
 
             var historyItems = new List<DownloadClientItem>();
 
@@ -307,7 +288,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             {
                 return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings),
                     DetailedDescription = "The category you entered doesn't exist in NZBGet. Go to NZBGet to create it."
                 };
             }
@@ -319,13 +300,22 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var config = _proxy.GetConfig(Settings);
 
-            var keepHistory = config.GetValueOrDefault("KeepHistory");
-            if (keepHistory == "0")
+            var keepHistory = config.GetValueOrDefault("KeepHistory", "7");
+            int value;
+            if (!int.TryParse(keepHistory, NumberStyles.None, CultureInfo.InvariantCulture, out value) || value == 0)
             {
-                return new NzbDroneValidationFailure(string.Empty, "NZBGet setting KeepHistory should be greater than 0")
+                return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be greater than 0")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "NZBGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
+                    InfoLink = _proxy.GetBaseUrl(Settings),
+                    DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
+                };
+            }
+            else if (value > 25000)
+            {
+                return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be less than 25000")
+                {
+                    InfoLink = _proxy.GetBaseUrl(Settings),
+                    DetailedDescription = "NzbGet setting KeepHistory is set too high."
                 };
             }
 

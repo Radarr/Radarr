@@ -207,6 +207,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Elysium]Lucky.Star.01(BD.720p.AAC.DA)[0BB96AD8].mkv", false)]
         [TestCase("Battlestar.Galactica.S01E01.33.720p.HDDVD.x264-SiNNERS.mkv", false)]
         [TestCase("The.Expanse.S01E07.RERIP.720p.BluRay.x264-DEMAND", true)]
+        [TestCase("John.Carpenter.Live.Retrospective.2016.2018.720p.MBluRay.x264-CRUELTY.mkv", false)]
+        [TestCase("Heart.Live.In.Atlantic.City.2019.720p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
+        [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.720p.MBluRay.x264-TREBLE.mkv", false)]
         public void should_parse_bluray720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R720P);
@@ -221,6 +224,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Zurako] Log Horizon - 01 - The Apocalypse (BD 1080p AAC) [7AE12174].mkv", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.1080p.Blu-ray.AC3.-HELLYWOOD.avi", false)]
         [TestCase("[Coalgirls]_Durarara!!_01_(1920x1080_Blu-ray_FLAC)_[8370CB8F].mkv", false)]
+        [TestCase("John.Carpenter.Live.Retrospective.2016.2018.1080p.MBluRay.x264-CRUELTY.mkv", false)]
+        [TestCase("Heart.Live.In.Atlantic.City.2019.1080p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
+        [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.1080p.MBluRay.x264-TREBLE.mkv", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080P);

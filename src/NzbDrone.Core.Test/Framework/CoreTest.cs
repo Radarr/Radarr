@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<CurlHttpDispatcher>(new CurlHttpDispatcher(Mocker.Resolve<IHttpProxySettingsProvider>(), Mocker.Resolve<NLog.Logger>()));
             Mocker.SetConstant<IHttpProvider>(new HttpProvider(TestLogger));
             Mocker.SetConstant<IHttpClient>(new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<CacheManager>(), Mocker.Resolve<RateLimitService>(), Mocker.Resolve<FallbackHttpDispatcher>(), TestLogger));
-            Mocker.SetConstant<ISonarrCloudRequestBuilder>(new SonarrCloudRequestBuilder());
+            Mocker.SetConstant<IRadarrCloudRequestBuilder>(new RadarrCloudRequestBuilder());
         }
 
         //Used for tests that rely on parsing working correctly.

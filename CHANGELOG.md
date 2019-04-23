@@ -3,6 +3,37 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Use APIKey & APIUser for authenticating to PassThePopcorn. ([#3264](https://github.com/Radarr/Radarr/issues/3264)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Support for forcedUP status ([#3277](https://github.com/Radarr/Radarr/issues/3277)) [<a href="https://github.com/Swizzy">Swizzy</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) rTorrent - Don't start download automatically ([#3222](https://github.com/Radarr/Radarr/issues/3222)) [<a href="https://github.com/lps-rocks">lps-rocks</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Remove Pre, postbot, xpost suffixes from release groups ([#3220](https://github.com/Radarr/Radarr/issues/3220)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Secure URLs for Links and Services ([#3219](https://github.com/Radarr/Radarr/issues/3219)) [<a href="https://github.com/Qstick">Qstick</a>]
+
+### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Another IDisposable leak when lazy loading properties. [<a href="https://github.com/Taloth Saldono">Taloth Saldono</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaCoverService tests and stupidly forgetting to open the database connection for logging. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaCovers resizing potentially leaking memory when concurrently executing. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Stream leakage inside CurlHttpDispatcher. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Apparently Microsoft thinks that you should cast to IDisposable first. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Invalid SQLite cache size. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Resource leakage inside HttpClient. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Typo that could probably lead to an infinite loop. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Resource leakage inside ManagedHttpDispatcher. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Leaking of objects when logging something to the database. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) DataMapper potentially leaking stuff when being disposed. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) DataMapper not being disposed, leading to resource leakage. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Memory leak due to unmanaged Bitmaps leaking. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Unable to parse movies from 1800s. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) OSX Packages not getting correct version info. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) npm start not working with node 10. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Hopefully fixed issue where a null downloadId or title would cause no downloads to be tracked. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Bump default version to prevent update running from source ([#3199](https://github.com/Radarr/Radarr/issues/3199)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaInfo Unit Test Failing due to AudioAdditionalFeatures ([#3221](https://github.com/Radarr/Radarr/issues/3221)) [<a href="https://github.com/Qstick">Qstick</a>]
+
+
+## v0.2.0.1216 (2018-11-07)
+
+### **New features**
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) 64bit mediainfo.dll to 32bit to resolve issue: https://github.com/Radarr/Radarr/issues/3138. [<a href="https://github.com/geogolem">geogolem</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Refactor MediaInfo tokens (fixes old tokens adds new stuff) ([#3058](https://github.com/Radarr/Radarr/issues/3058)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
 - ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Don't hide custom formats behind advanced settings when editing quality. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
