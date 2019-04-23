@@ -29,7 +29,6 @@ require.config({
         'messenger'               : 'JsLibraries/messenger',
         'jquery'                  : 'JsLibraries/jquery',
         'typeahead'               : 'JsLibraries/typeahead',
-        'zero.clipboard'          : 'JsLibraries/zero.clipboard',
         'libs'                    : 'JsLibraries/'
     },
 
