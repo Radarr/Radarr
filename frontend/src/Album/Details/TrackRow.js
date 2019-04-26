@@ -6,6 +6,7 @@ import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
 import TrackFileLanguageConnector from 'TrackFile/TrackFileLanguageConnector';
 import MediaInfoConnector from 'TrackFile/MediaInfoConnector';
+import TrackActionsCell from './TrackActionsCell';
 import * as mediaInfoTypes from 'TrackFile/mediaInfoTypes';
 
 import styles from './TrackRow.css';
@@ -36,6 +37,7 @@ class TrackRow extends Component {
   render() {
     const {
       id,
+      albumId,
       mediumNumber,
       trackFileId,
       absoluteTrackNumber,
@@ -163,6 +165,16 @@ class TrackRow extends Component {
                     trackFileId={trackFileId}
                   />
                 </TableRowCell>
+              );
+            }
+
+            if (name === 'actions') {
+              return (
+                <TrackActionsCell
+                  key={name}
+                  albumId={albumId}
+                  id={id}
+                />
               );
             }
 
