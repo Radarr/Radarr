@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             
             if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                destDir = string.Format("{0}/.{1}", destDir, Settings.MusicCategory);
+                destDir = string.Format("{0}/{1}", destDir, Settings.MusicCategory);
             }
 
             return new DownloadClientInfo
