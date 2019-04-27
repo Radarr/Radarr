@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -121,7 +121,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             using (var xw = XmlWriter.Create(sb, xws))
             {
                 var doc = new XDocument();
-                var image = movie.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
+                var thumbnail = movie.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
+                var posters = movie.Images.Where(i => i.CoverType == MediaCoverTypes.Poster);
+                var fanarts = movie.Images.Where(i => i.CoverType == MediaCoverTypes.Fanart);
 
                 var details = new XElement("movie");
 
@@ -161,14 +163,35 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 details.Add(new XElement("studio", movie.Studio));
 
-                if (image == null)
+                if (thumbnail == null)
                 {
                     details.Add(new XElement("thumb"));
                 }
 
                 else
                 {
-                    details.Add(new XElement("thumb", image.Url));
+                    details.Add(new XElement("thumb", thumbnail.Url));
+                }
+
+                foreach (var poster in posters)
+                {                    
+                    if (poster != null && poster.Url != null)
+                    {
+                        details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), poster.Url));
+                    }
+                }
+
+                if (fanarts.Count() > 0)
+                {
+                    var fanartElement = new XElement("fanart");
+                    foreach (var fanart in fanarts)
+                    {
+                        if (fanart != null && fanart.Url != null)
+                        {
+                            fanartElement.Add(new XElement("thumb", fanart.Url));
+                        }
+                    }
+                    details.Add(fanartElement);
                 }
 
                 details.Add(new XElement("watched", watched));
