@@ -117,6 +117,12 @@ export const defaultState = {
         isVisible: false
       },
       {
+        name: 'outputPath',
+        label: 'Output Path',
+        isSortable: false,
+        isVisible: false
+      },
+      {
         name: 'estimatedCompletionTime',
         label: 'Timeleft',
         isSortable: true,

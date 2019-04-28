@@ -32,6 +32,7 @@ namespace Lidarr.Api.V1.Queue
         public DownloadProtocol Protocol { get; set; }
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }
+        public string OutputPath { get; set; }
         public bool DownloadForced { get; set; }
     }
 
@@ -63,6 +64,7 @@ namespace Lidarr.Api.V1.Queue
                 Protocol = model.Protocol,
                 DownloadClient = model.DownloadClient,
                 Indexer = model.Indexer,
+                OutputPath = model.OutputPath,
                 DownloadForced = model.DownloadForced
             };
         }

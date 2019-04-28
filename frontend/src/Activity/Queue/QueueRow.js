@@ -77,6 +77,7 @@ class QueueRow extends Component {
       quality,
       protocol,
       indexer,
+      outputPath,
       downloadClient,
       downloadForced,
       estimatedCompletionTime,
@@ -238,6 +239,14 @@ class QueueRow extends Component {
               );
             }
 
+            if (name === 'outputPath') {
+              return (
+                <TableRowCell key={name}>
+                  {outputPath}
+                </TableRowCell>
+              );
+            }
+
             if (name === 'estimatedCompletionTime') {
               return (
                 <TimeleftCell
@@ -359,6 +368,7 @@ QueueRow.propTypes = {
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,
+  outputPath: PropTypes.string,
   downloadClient: PropTypes.string,
   downloadForced: PropTypes.bool.isRequired,
   estimatedCompletionTime: PropTypes.string,
