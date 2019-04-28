@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 function createMetadataProfileSelector() {
@@ -6,7 +5,9 @@ function createMetadataProfileSelector() {
     (state, { metadataProfileId }) => metadataProfileId,
     (state) => state.settings.metadataProfiles.items,
     (metadataProfileId, metadataProfiles) => {
-      return _.find(metadataProfiles, { id: metadataProfileId });
+      return metadataProfiles.find((profile) => {
+        return profile.id === metadataProfileId;
+      });
     }
   );
 }

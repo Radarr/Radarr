@@ -13,7 +13,8 @@ function ErrorPage(props) {
     qualityProfilesError,
     languageProfilesError,
     metadataProfilesError,
-    uiSettingsError
+    uiSettingsError,
+    systemStatusError
   } = props;
 
   let errorMessage = 'Failed to load Lidarr';
@@ -34,6 +35,8 @@ function ErrorPage(props) {
     errorMessage = getErrorMessage(metadataProfilesError, 'Failed to load metadata profiles from API');
   } else if (uiSettingsError) {
     errorMessage = getErrorMessage(uiSettingsError, 'Failed to load UI settings from API');
+  } else if (systemStatusError) {
+    errorMessage = getErrorMessage(uiSettingsError, 'Failed to load system status from API');
   }
 
   return (
@@ -58,7 +61,8 @@ ErrorPage.propTypes = {
   qualityProfilesError: PropTypes.object,
   languageProfilesError: PropTypes.object,
   metadataProfilesError: PropTypes.object,
-  uiSettingsError: PropTypes.object
+  uiSettingsError: PropTypes.object,
+  systemStatusError: PropTypes.object
 };
 
 export default ErrorPage;

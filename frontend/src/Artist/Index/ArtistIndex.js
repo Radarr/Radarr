@@ -21,7 +21,7 @@ import ArtistIndexBannerOptionsModal from './Banners/Options/ArtistIndexBannerOp
 import ArtistIndexBannersConnector from './Banners/ArtistIndexBannersConnector';
 import ArtistIndexOverviewOptionsModal from './Overview/Options/ArtistIndexOverviewOptionsModal';
 import ArtistIndexOverviewsConnector from './Overview/ArtistIndexOverviewsConnector';
-import ArtistIndexFooter from './ArtistIndexFooter';
+import ArtistIndexFooterConnector from './ArtistIndexFooterConnector';
 import ArtistIndexFilterMenu from './Menus/ArtistIndexFilterMenu';
 import ArtistIndexSortMenu from './Menus/ArtistIndexSortMenu';
 import ArtistIndexViewMenu from './Menus/ArtistIndexViewMenu';
@@ -358,9 +358,7 @@ class ArtistIndex extends Component {
                     {...otherProps}
                   />
 
-                  <ArtistIndexFooter
-                    artist={items}
-                  />
+                  <ArtistIndexFooterConnector />
                 </div>
             }
 

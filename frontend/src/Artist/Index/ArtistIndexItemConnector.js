@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
-import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
-import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
-import createMetadataProfileSelector from 'Store/Selectors/createMetadataProfileSelector';
+import createArtistQualityProfileSelector from 'Store/Selectors/createArtistQualityProfileSelector';
+import createArtistLanguageProfileSelector from 'Store/Selectors/createArtistLanguageProfileSelector';
+import createArtistMetadataProfileSelector from 'Store/Selectors/createArtistMetadataProfileSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 
@@ -35,9 +35,9 @@ function selectShowSearchAction() {
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
-    createQualityProfileSelector(),
-    createLanguageProfileSelector(),
-    createMetadataProfileSelector(),
+    createArtistQualityProfileSelector(),
+    createArtistLanguageProfileSelector(),
+    createArtistMetadataProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
     (
@@ -89,7 +89,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  executeCommand
+  dispatchExecuteCommand: executeCommand
 };
 
 class ArtistIndexItemConnector extends Component {
@@ -98,14 +98,14 @@ class ArtistIndexItemConnector extends Component {
   // Listeners
 
   onRefreshArtistPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_ARTIST,
       artistId: this.props.id
     });
   }
 
   onSearchPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.ARTIST_SEARCH,
       artistId: this.props.id
     });
@@ -139,7 +139,7 @@ class ArtistIndexItemConnector extends Component {
 ArtistIndexItemConnector.propTypes = {
   id: PropTypes.number,
   component: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchExecuteCommand: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(ArtistIndexItemConnector);
