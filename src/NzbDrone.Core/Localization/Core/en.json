@@ -239,6 +239,7 @@
   "Studio": "Studio",
   "Style": "Style",
   "System": "System",
+  "SystemTimeCheckMessage": "System time is off by more than 1 day. Scheduled tasks may not run correctly until the time is corrected",
   "TableOptions": "Table Options",
   "TableOptionsColumnsMessage": "Choose which columns are visible and which order they appear in",
   "Tags": "Tags",
