@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import jdu from 'jdu';
+import Fuse from 'fuse.js';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
@@ -9,6 +9,20 @@ import ArtistSearchResult from './ArtistSearchResult';
 import styles from './ArtistSearchInput.css';
 
 const ADD_NEW_TYPE = 'addNew';
+
+const fuseOptions = {
+  shouldSort: true,
+  includeMatches: true,
+  threshold: 0.3,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    'artistName',
+    'tags.label'
+  ]
+};
 
 class ArtistSearchInput extends Component {
 
@@ -69,16 +83,15 @@ class ArtistSearchInput extends Component {
 
     return (
       <ArtistSearchResult
-        query={query}
-        cleanQuery={jdu.replace(query).toLowerCase()}
-        {...item}
+        {...item.item}
+        match={item.matches[0]}
       />
     );
   }
 
-  goToArtist(artist) {
+  goToArtist(item) {
     this.setState({ value: '' });
-    this.props.onGoToArtist(artist.foreignArtistId);
+    this.props.onGoToArtist(item.item.foreignArtistId);
   }
 
   reset() {
@@ -140,24 +153,8 @@ class ArtistSearchInput extends Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    const lowerCaseValue = jdu.replace(value).toLowerCase();
-
-    const suggestions = this.props.artist.filter((artist) => {
-      // Check the title first and if there isn't a match fallback to
-      // the alternate titles and finally the tags.
-
-      if (value.length === 1) {
-        return (
-          artist.cleanName.startsWith(lowerCaseValue) ||
-          artist.tags.some((tag) => tag.cleanLabel.startsWith(lowerCaseValue))
-        );
-      }
-
-      return (
-        artist.cleanName.contains(lowerCaseValue) ||
-        artist.tags.some((tag) => tag.cleanLabel.contains(lowerCaseValue))
-      );
-    });
+    const fuse = new Fuse(this.props.artists, fuseOptions);
+    const suggestions = fuse.search(value).slice(0, 15);
 
     this.setState({ suggestions });
   }
@@ -253,7 +250,7 @@ class ArtistSearchInput extends Component {
 }
 
 ArtistSearchInput.propTypes = {
-  artist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  artists: PropTypes.arrayOf(PropTypes.object).isRequired,
   onGoToArtist: PropTypes.func.isRequired,
   onGoToAddNewArtist: PropTypes.func.isRequired,
   bindShortcut: PropTypes.func.isRequired

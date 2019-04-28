@@ -5,38 +5,18 @@ import Label from 'Components/Label';
 import ArtistPoster from 'Artist/ArtistPoster';
 import styles from './ArtistSearchResult.css';
 
-// function findMatchingAlternateTitle(alternateTitles, cleanQuery) {
-//   return alternateTitles.find((alternateTitle) => {
-//     return alternateTitle.cleanTitle.contains(cleanQuery);
-//   });
-// }
-
-function getMatchingTag(tags, cleanQuery) {
-  return tags.find((tag) => {
-    return tag.cleanLabel.contains(cleanQuery);
-  });
-}
-
 function ArtistSearchResult(props) {
   const {
-    cleanQuery,
+    match,
     artistName,
-    cleanName,
     images,
-    // alternateTitles,
     tags
   } = props;
 
-  const titleContains = cleanName.contains(cleanQuery);
-  // let alternateTitle = null;
   let tag = null;
 
-  // if (!titleContains) {
-  //   alternateTitle = findMatchingAlternateTitle(alternateTitles, cleanQuery);
-  // }
-
-  if (!titleContains) { // && !alternateTitle) {
-    tag = getMatchingTag(tags, cleanQuery);
+  if (match.key === 'tags.label') {
+    tag = tags[match.arrayIndex];
   }
 
   return (
@@ -55,14 +35,7 @@ function ArtistSearchResult(props) {
         </div>
 
         {
-          // !!alternateTitle &&
-          // <div className={styles.alternateTitle}>
-          //   {alternateTitle.title}
-          // </div>
-        }
-
-        {
-          !!tag &&
+          tag ?
             <div className={styles.tagContainer}>
               <Label
                 key={tag.id}
@@ -70,7 +43,8 @@ function ArtistSearchResult(props) {
               >
                 {tag.label}
               </Label>
-            </div>
+            </div> :
+            null
         }
       </div>
     </div>
@@ -78,12 +52,10 @@ function ArtistSearchResult(props) {
 }
 
 ArtistSearchResult.propTypes = {
-  cleanQuery: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  // alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  cleanName: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.object).isRequired
+  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  match: PropTypes.object.isRequired
 };
 
 export default ArtistSearchResult;

@@ -1,35 +1,14 @@
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
-import jdu from 'jdu';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import ArtistSearchInput from './ArtistSearchInput';
 
-function createCleanTagsSelector() {
-  return createSelector(
-    createTagsSelector(),
-    (tags) => {
-      return tags.map((tag) => {
-        const {
-          id,
-          label
-        } = tag;
-
-        return {
-          id,
-          label,
-          cleanLabel: jdu.replace(label).toLowerCase()
-        };
-      });
-    }
-  );
-}
-
 function createCleanArtistSelector() {
   return createSelector(
     createAllArtistSelector(),
-    createCleanTagsSelector(),
+    createTagsSelector(),
     (allArtists, allTags) => {
       return allArtists.map((artist) => {
         const {
@@ -46,26 +25,10 @@ function createCleanArtistSelector() {
           sortName,
           foreignArtistId,
           images,
-          cleanName: jdu.replace(artistName).toLowerCase(),
-          // alternateTitles: alternateTitles.map((alternateTitle) => {
-          //   return {
-          //     title: alternateTitle.title,
-          //     cleanTitle: jdu.replace(alternateTitle.title).toLowerCase()
-          //   };
-          // }),
           tags: tags.map((id) => {
             return allTags.find((tag) => tag.id === id);
           })
         };
-      }).sort((a, b) => {
-        if (a.sortName < b.sortName) {
-          return -1;
-        }
-        if (a.sortName > b.sortName) {
-          return 1;
-        }
-
-        return 0;
       });
     }
   );
@@ -74,9 +37,9 @@ function createCleanArtistSelector() {
 function createMapStateToProps() {
   return createSelector(
     createCleanArtistSelector(),
-    (artist) => {
+    (artists) => {
       return {
-        artist
+        artists
       };
     }
   );
