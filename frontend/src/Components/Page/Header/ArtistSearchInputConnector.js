@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import ArtistSearchInput from './ArtistSearchInput';
 
@@ -16,7 +17,6 @@ function createCleanArtistSelector() {
           sortName,
           images,
           foreignArtistId,
-          // alternateTitles,
           tags = []
         } = artist;
 
@@ -35,7 +35,7 @@ function createCleanArtistSelector() {
 }
 
 function createMapStateToProps() {
-  return createSelector(
+  return createDeepEqualSelector(
     createCleanArtistSelector(),
     (artists) => {
       return {
