@@ -284,6 +284,12 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseQuality(title, null, 0).QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
         }
 
+        [Test]
+        public void should_parse_null_quality_description_as_unknown()
+        {
+            QualityParser.ParseCodec(null, null).Should().Be(Codec.Unknown);
+        }
+
         private void ParseAndVerifyQuality(string name, string desc, int bitrate, Quality quality, int sampleSize = 0)
         {
             var result = QualityParser.ParseQuality(name, desc, bitrate, sampleSize);

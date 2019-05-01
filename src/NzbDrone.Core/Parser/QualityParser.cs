@@ -154,6 +154,11 @@ namespace NzbDrone.Core.Parser
 
         public static Codec ParseCodec(string name, string origName)
         {
+            if (name.IsNullOrWhiteSpace())
+            {
+                return Codec.Unknown;
+            }
+
             var match = CodecRegex.Match(name);
 
             if (!match.Success) { return Codec.Unknown; }
