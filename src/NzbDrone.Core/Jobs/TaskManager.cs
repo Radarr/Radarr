@@ -71,7 +71,6 @@ namespace NzbDrone.Core.Jobs
 
             var defaultTasks = new[]
                 {
-                    new ScheduledTask{ Interval = 1, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 1*60, TypeName = typeof(PreDBSyncCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
@@ -97,6 +96,12 @@ namespace NzbDrone.Core.Jobs
                     { 
                         Interval = _configService.DownloadedMoviesScanInterval,
                         TypeName = typeof(DownloadedMoviesScanCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = Math.Max(_configService.CheckForFinishedDownloadInterval, 1),
+                        TypeName = typeof(CheckForFinishedDownloadCommand).FullName
                     },
                 };
 
@@ -184,7 +189,10 @@ namespace NzbDrone.Core.Jobs
             var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
             netImport.Interval = _configService.NetImportSyncInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport });
+            var checkForFinishedDownloads = _scheduledTaskRepository.GetDefinition(typeof(CheckForFinishedDownloadCommand));
+            checkForFinishedDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
+
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport, checkForFinishedDownloads });
         }
     }
 }

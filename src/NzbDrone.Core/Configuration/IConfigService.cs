@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Configuration
         string DownloadClientWorkingFolders { get; set; }
         int DownloadedMoviesScanInterval { get; set; }
         int DownloadClientHistoryLimit { get; set; }
+        int CheckForFinishedDownloadInterval { get; set; }
 
         //Completed/Failed Download Handling (Download client)
         bool EnableCompletedDownloadHandling { get; set; }
