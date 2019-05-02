@@ -118,6 +118,7 @@ namespace NzbDrone.Core.NetImport
                 m.ProfileId = ((NetImportDefinition) Definition).ProfileId;
                 m.Monitored = ((NetImportDefinition) Definition).ShouldMonitor;
 		        m.MinimumAvailability = ((NetImportDefinition) Definition).MinimumAvailability;
+                m.Tags = ((NetImportDefinition) Definition).Tags;
                 return m;
             }).ToList();
         }
@@ -170,6 +171,5 @@ namespace NzbDrone.Core.NetImport
             return null;
         }
     }
-    
 
 }
