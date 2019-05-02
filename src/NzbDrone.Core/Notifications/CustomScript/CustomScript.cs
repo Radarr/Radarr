@@ -46,6 +46,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Release_Quality", quality.Quality.Name);
             environmentVariables.Add("Radarr_Release_QualityVersion", quality.Revision.Version.ToString());
             environmentVariables.Add("Radarr_IndexerFlags", remoteMovie.Release.IndexerFlags.ToString());
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }
