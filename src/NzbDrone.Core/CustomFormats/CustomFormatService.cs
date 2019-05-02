@@ -191,8 +191,8 @@ namespace NzbDrone.Core.CustomFormats
                     {
                         "Easy", new List<CustomFormat>
                         {
-                            new CustomFormat("x264", @"C_RX_(x|h\.?)264"),
-                            new CustomFormat("x265", @"C_RX_(((x|h\.?)265)|(HEVC))"),
+                            new CustomFormat("x264", @"C_RX_(x|h)\.?264"),
+                            new CustomFormat("x265", @"C_RX_(((x|h)\.?265)|(HEVC))"),
                             new CustomFormat("Simple Hardcoded Subs", "C_RX_subs?"),
                             new CustomFormat("Multi Language", "L_English", "L_French")
                         }
