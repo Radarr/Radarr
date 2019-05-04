@@ -3,6 +3,43 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Tags support to NetImport (Lists) ([#3127](https://github.com/Radarr/Radarr/issues/3127)) [<a href="https://github.com/Ricardo Amaral">Ricardo Amaral</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Improved templates for h264 & h265 custom formats ([#3432](https://github.com/Radarr/Radarr/issues/3432)) [<a href="https://github.com/RhinoRhys">RhinoRhys</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Logo-256.png to a transparent version so it looks better in Android notifications. ([#3479](https://github.com/Radarr/Radarr/issues/3479)) [<a href="https://github.com/jwildman16">jwildman16</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Radarr_Download_Id and Radarr_Download_Client to the environment ([#3276](https://github.com/Radarr/Radarr/issues/3276)) [<a href="https://github.com/Logan">Logan</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Allow CheckForFinishedDownloadInterval to be set from the UI ([#3233](https://github.com/Radarr/Radarr/issues/3233)) [<a href="https://github.com/Steven Crouchman">Steven Crouchman</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Added support for Gotify notifications ([#3474](https://github.com/Radarr/Radarr/issues/3474)) [<a href="https://github.com/stephanrenggli">stephanrenggli</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Remote poster and fanart references to Kodi metadata file ([#2837](https://github.com/Radarr/Radarr/issues/2837)) ([#3302](https://github.com/Radarr/Radarr/issues/3302)) [<a href="https://github.com/RobinQ124274">RobinQ124274</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Support Krypton Kodi Unique Ids ([#3388](https://github.com/Radarr/Radarr/issues/3388)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) Adjust Max Slider Value for Qualities ([#3393](https://github.com/Radarr/Radarr/issues/3393)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) README.md ([#3409](https://github.com/Radarr/Radarr/issues/3409)) [<a href="https://github.com/hotio">hotio</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Nzb Validation and Nzbget/SAB URLBase ([#3380](https://github.com/Radarr/Radarr/issues/3380)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) README.md. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) docker link in README. [<a href="https://github.com/hotio">hotio</a>]
+
+### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Solve ambiguous naming ([#3417](https://github.com/Radarr/Radarr/issues/3417)) [<a href="https://github.com/Viserius">Viserius</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Copy to clipboard not working with calendar feed ([#3495](https://github.com/Radarr/Radarr/issues/3495)) [<a href="https://github.com/Michael Poutre">Michael Poutre</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Edition Tags Not Showing in UI ([#3389](https://github.com/Radarr/Radarr/issues/3389)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Support new feed url format IPTorrents ([#573](https://github.com/Radarr/Radarr/issues/573)) ([#3390](https://github.com/Radarr/Radarr/issues/3390)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaCovers Race condition which leads to fanart not being downloaded. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Cannot Add ITA or ITALIAN custom format ([#3385](https://github.com/Radarr/Radarr/issues/3385)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) OsInfo for real this time. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Error in unicode cleanup code removing most non-latin characters instead of just invalid ones. ([#3383](https://github.com/Radarr/Radarr/issues/3383)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Forced Subs not parsed by SubtitleLanguageRegex ([#3384](https://github.com/Radarr/Radarr/issues/3384)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) OsInfo being renamed to PlatformInfo. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Word Boundary on Edition ([#3382](https://github.com/Radarr/Radarr/issues/3382)) [<a href="https://github.com/Qstick">Qstick</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Mis-classification of releases as being Czech ([#3378](https://github.com/Radarr/Radarr/issues/3378)) [<a href="https://github.com/Václav Slavík">Václav Slavík</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Match MBluray releases ([#3358](https://github.com/Radarr/Radarr/issues/3358)) [<a href="https://github.com/Pieter Janssens">Pieter Janssens</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Mono bug causing memory leakage when http connections use gzip compression. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Build errors due to dotnet library. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Emby library update ([#3318](https://github.com/Radarr/Radarr/issues/3318)) [<a href="https://github.com/hatharry">hatharry</a>]
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Prevent NullRef in CustomScript on Grab for Indexer ([#3323](https://github.com/Radarr/Radarr/issues/3323)) [<a href="https://github.com/tobsen987">tobsen987</a>]
+
+
+## v0.2.0.1293 (2019-01-10)
+
+### **New features**
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Use APIKey & APIUser for authenticating to PassThePopcorn. ([#3264](https://github.com/Radarr/Radarr/issues/3264)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Support for forcedUP status ([#3277](https://github.com/Radarr/Radarr/issues/3277)) [<a href="https://github.com/Swizzy">Swizzy</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) rTorrent - Don't start download automatically ([#3222](https://github.com/Radarr/Radarr/issues/3222)) [<a href="https://github.com/lps-rocks">lps-rocks</a>]
@@ -10,6 +47,7 @@
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Secure URLs for Links and Services ([#3219](https://github.com/Radarr/Radarr/issues/3219)) [<a href="https://github.com/Qstick">Qstick</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Hopefully fixed sqlite errors when finding by title. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Another IDisposable leak when lazy loading properties. [<a href="https://github.com/Taloth Saldono">Taloth Saldono</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaCoverService tests and stupidly forgetting to open the database connection for logging. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) MediaCovers resizing potentially leaking memory when concurrently executing. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]

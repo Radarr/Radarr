@@ -4,8 +4,6 @@ var CommandController = require('../../Commands/CommandController');
 var AsModelBoundView = require('../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../Mixins/AsValidatedView');
 
-require('../../Mixins/CopyToClipboard');
-
 var view = Marionette.ItemView.extend({
     template : 'Settings/General/GeneralViewTemplate',
 
@@ -14,6 +12,7 @@ var view = Marionette.ItemView.extend({
         'change .x-proxy'            : '_setProxyOptionsVisibility',
         'change .x-ssl'              : '_setSslOptionsVisibility',
         'click .x-reset-api-key'     : '_resetApiKey',
+        'click .x-copy-api-key'      : '_copyApiKeyToClipboard',
         'change .x-update-mechanism' : '_setScriptGroupVisibility'
     },
 
@@ -57,11 +56,12 @@ var view = Marionette.ItemView.extend({
             command : {
                 name : 'resetApiKey'
             }
-        });
+            });
     },
-
-    onShow : function() {
-        this.ui.copyApiKey.copyToClipboard(this.ui.apiKeyInput);
+   
+    _copyApiKeyToClipboard : function() {
+        this.ui.apiKeyInput.select();
+        document.execCommand("copy");
     },
 
     _setAuthOptionsVisibility : function() {

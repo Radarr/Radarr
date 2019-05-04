@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Api.NetImport
@@ -10,5 +11,6 @@ namespace NzbDrone.Api.NetImport
         public string RootFolderPath { get; set; }
         public int ProfileId { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
+        public HashSet<int> Tags { get; set; }
     }
 }

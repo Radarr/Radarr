@@ -72,7 +72,9 @@ namespace NzbDrone.Core.Notifications
                 Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality),
                 Quality = message.Movie.ParsedMovieInfo.Quality,
                 Movie = message.Movie.Movie,
-                RemoteMovie = message.Movie
+                RemoteMovie = message.Movie,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             foreach (var notification in _notificationFactory.OnGrabEnabled())

@@ -1,6 +1,5 @@
 var Marionette = require('marionette');
 var StatusModel = require('../System/StatusModel');
-require('../Mixins/CopyToClipboard');
 require('../Mixins/TagInput');
 
 module.exports = Marionette.Layout.extend({
@@ -18,14 +17,19 @@ module.exports = Marionette.Layout.extend({
     events : {
         'click .x-includeUnmonitored' : '_updateUrl',
         'click .x-premiersOnly'       : '_updateUrl',
+        'click .x-ical-copy'          : '_copyIcalToClipboard',
         'itemAdded .x-tags'           : '_updateUrl',
         'itemRemoved .x-tags'         : '_updateUrl'
     },
 
     onShow : function() {
         this._updateUrl();
-        this.ui.icalCopy.copyToClipboard(this.ui.icalUrl);
         this.ui.tags.tagInput({ allowNew: false });
+    },
+
+    _copyIcalToClipboard: function () {
+        this.ui.icalUrl.select();
+        document.execCommand("copy");
     },
 
     _updateUrl : function() {
