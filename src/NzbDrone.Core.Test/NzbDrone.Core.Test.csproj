@@ -87,8 +87,8 @@
     <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
     </Reference>
-    <Reference Include="taglib-sharp, Version=2.2.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\TagLibSharp.2.2.0-beta\lib\netstandard2.0\taglib-sharp.dll</HintPath>
+    <Reference Include="TagLibSharp, Version=2.2.0.19, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagLibSharp-Lidarr.2.2.0.19\lib\netstandard2.0\TagLibSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
