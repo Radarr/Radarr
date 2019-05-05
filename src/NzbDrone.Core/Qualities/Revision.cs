@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace NzbDrone.Core.Qualities
@@ -9,14 +9,16 @@ namespace NzbDrone.Core.Qualities
         {
         }
         
-        public Revision(int version = 1, int real = 0)
+        public Revision(int version = 1, int real = 0, bool isRepack = false)
         {
             Version = version;
             Real = real;
+            IsRepack = isRepack;
         }
 
         public int Version { get; set; }
         public int Real { get; set; }
+        public bool IsRepack { get; set; }
 
         public bool Equals(Revision other)
         {

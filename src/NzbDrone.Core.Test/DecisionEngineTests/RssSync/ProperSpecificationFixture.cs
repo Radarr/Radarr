@@ -35,8 +35,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
             _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
 
-            var singleEpisodeList = new List<Album> { new Album {}, new Album {} };
-            var doubleEpisodeList = new List<Album> { new Album {}, new Album {}, new Album {} };
+            var singleAlbumList = new List<Album> { new Album {}, new Album {} };
+            var doubleAlbumList = new List<Album> { new Album {}, new Album {}, new Album {} };
 
 
             var fakeArtist = Builder<Artist>.CreateNew()
@@ -51,27 +51,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             {
                 Artist = fakeArtist,
                 ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
-                Albums = doubleEpisodeList
+                Albums = doubleAlbumList
             };
 
             _parseResultSingle = new RemoteAlbum
             {
                 Artist = fakeArtist,
                 ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
-                Albums = singleEpisodeList
+                Albums = singleAlbumList
             };
         }
 
         private void WithFirstFileUpgradable()
         {
             _firstFile.Quality = new QualityModel(Quality.MP3_192);
-        }
-
-        private void GivenAutoDownloadPropers()
-        {
-            Mocker.GetMock<IConfigService>()
-                  .Setup(s => s.AutoDownloadPropers)
-                  .Returns(true);
         }
 
         [Test]
@@ -124,6 +117,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_proper_but_auto_download_propers_is_false()
         {
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.DownloadPropersAndRepacks)
+                .Returns(ProperDownloadTypes.DoNotUpgrade);
+
             _firstFile.Quality.Quality = Quality.MP3_256;
 
             _firstFile.DateAdded = DateTime.Today;
@@ -133,7 +130,22 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_true_when_trackFile_was_added_today()
         {
-            GivenAutoDownloadPropers();
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
+
+            _firstFile.Quality.Quality = Quality.MP3_256;
+
+            _firstFile.DateAdded = DateTime.Today;
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_true_when_propers_are_not_preferred()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
 
             _firstFile.Quality.Quality = Quality.MP3_256;
 

@@ -5,35 +5,50 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
     public class UpgradeSpecification : IImportDecisionEngineSpecification<LocalTrack>
     {
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public UpgradeSpecification(Logger logger)
+        public UpgradeSpecification(IConfigService configService, Logger logger)
         {
+            _configService = configService;
             _logger = logger;
         }
 
         public Decision IsSatisfiedBy(LocalTrack localTrack)
         {
+            var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
             var qualityComparer = new QualityModelComparer(localTrack.Artist.QualityProfile);
             var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
 
-            if (localTrack.Tracks.Any(e => e.TrackFileId != 0 && qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) > 0))
+            foreach (var track in localTrack.Tracks.Where(e => e.TrackFileId > 0))
             {
-                _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
-                return Decision.Reject("Not an upgrade for existing track file(s)");
-            }
+                var trackFile = track.TrackFile.Value;
+                var qualityCompare = qualityComparer.Compare(localTrack.Quality.Quality, trackFile.Quality.Quality);
 
-            if (localTrack.Tracks.Any(e => e.TrackFileId != 0 &&
-                                      languageComparer.Compare(e.TrackFile.Value.Language, localTrack.Language) > 0 &&
-                                      qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) == 0))
-            {
-                _logger.Debug("This file isn't a language upgrade for all tracks. Skipping {0}", localTrack.Path);
-                return Decision.Reject("Not an upgrade for existing track file(s)");
+                if (qualityCompare < 0)
+                {
+                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
+                    return Decision.Reject("Not an upgrade for existing track file(s)");
+                }
+
+                if (qualityCompare == 0 && downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
+                    localTrack.Quality.Revision.CompareTo(trackFile.Quality.Revision) < 0)
+                {
+                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
+                    return Decision.Reject("Not an upgrade for existing track file(s)");
+                }
+
+                if (languageComparer.Compare(localTrack.Language, trackFile.Language) < 0 && qualityCompare == 0)
+                {
+                    _logger.Debug("This file isn't a language upgrade for all tracks. Skipping {0}", localTrack.Path);
+                    return Decision.Reject("Not an upgrade for existing track file(s)");
+                }
             }
 
             return Decision.Accept();

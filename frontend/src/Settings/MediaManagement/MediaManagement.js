@@ -25,6 +25,12 @@ const allowFingerprintingOptions = [
   { key: 'never', value: 'Never' }
 ];
 
+const downloadPropersAndRepacksOptions = [
+  { key: 'preferAndUpgrade', value: 'Prefer and Upgrade' },
+  { key: 'doNotUpgrade', value: 'Do not Upgrade Automatically' },
+  { key: 'doNotPrefer', value: 'Do not Prefer' }
+];
+
 const fileDateOptions = [
   { key: 'none', value: 'None' },
   { key: 'albumReleaseDate', value: 'Album Release Date' }
@@ -209,14 +215,23 @@ class MediaManagement extends Component {
                     isAdvanced={true}
                     size={sizes.MEDIUM}
                   >
-                    <FormLabel>Download Propers</FormLabel>
+                    <FormLabel>Propers and Repacks</FormLabel>
 
                     <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="autoDownloadPropers"
-                      helpText="Should Lidarr automatically upgrade to propers when available?"
+                      type={inputTypes.SELECT}
+                      name="downloadPropersAndRepacks"
+                      helpTexts={[
+                        'Whether or not to automatically upgrade to Propers/Repacks',
+                        'Use \'Do not Prefer\' to sort by preferred word score over propers/repacks'
+                      ]}
+                      helpTextWarning={
+                        settings.downloadPropersAndRepacks.value === 'doNotPrefer' ?
+                          'Use preferred words for automatic upgrades to propers/repacks' :
+                          undefined
+                      }
+                      values={downloadPropersAndRepacksOptions}
                       onChange={onInputChange}
-                      {...settings.autoDownloadPropers}
+                      {...settings.downloadPropersAndRepacks}
                     />
                   </FormGroup>
 

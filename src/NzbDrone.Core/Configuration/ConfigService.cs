@@ -8,6 +8,7 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -112,11 +113,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("MinimumAge", value); }
         }
 
-        public bool AutoDownloadPropers
+        public ProperDownloadTypes DownloadPropersAndRepacks
         {
-            get { return GetValueBoolean("AutoDownloadPropers", true); }
+            get { return GetValueEnum("DownloadPropersAndRepacks", ProperDownloadTypes.PreferAndUpgrade); }
 
-            set { SetValue("AutoDownloadPropers", value); }
+            set { SetValue("DownloadPropersAndRepacks", value); }
         }
 
         public bool EnableCompletedDownloadHandling

@@ -1,6 +1,7 @@
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Config
 {
@@ -8,7 +9,7 @@ namespace Lidarr.Api.V1.Config
     {
         public bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         public string RecycleBin { get; set; }
-        public bool AutoDownloadPropers { get; set; }
+        public ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
         public bool CreateEmptyArtistFolders { get; set; }
         public bool DeleteEmptyFolders { get; set; }
         public FileDateType FileDate { get; set; }
@@ -35,7 +36,7 @@ namespace Lidarr.Api.V1.Config
             {
                 AutoUnmonitorPreviouslyDownloadedTracks = model.AutoUnmonitorPreviouslyDownloadedTracks,
                 RecycleBin = model.RecycleBin,
-                AutoDownloadPropers = model.AutoDownloadPropers,
+                DownloadPropersAndRepacks = model.DownloadPropersAndRepacks,
                 CreateEmptyArtistFolders = model.CreateEmptyArtistFolders,
                 DeleteEmptyFolders = model.DeleteEmptyFolders,
                 FileDate = model.FileDate,

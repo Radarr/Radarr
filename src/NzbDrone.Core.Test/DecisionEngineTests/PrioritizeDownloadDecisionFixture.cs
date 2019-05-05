@@ -17,6 +17,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Test.Languages;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -411,7 +412,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_put_higher_quality_before_lower_allways()
+        public void should_put_higher_quality_before_lower_always()
         {
             var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.French);
             var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.German);
@@ -422,6 +423,89 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
             qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.MP3_320);
+        }
+
+
+        [Test]
+        public void should_prefer_higher_score_over_lower_score()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC), Language.English);
+
+            remoteAlbum1.PreferredWordScore = 10;
+            remoteAlbum2.PreferredWordScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.PreferredWordScore.Should().Be(10);
+        }
+
+        [Test]
+        public void should_prefer_proper_over_score_when_download_propers_is_prefer_and_upgrade()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
+
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(1)), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(2)), Language.English);
+
+            remoteAlbum1.PreferredWordScore = 10;
+            remoteAlbum2.PreferredWordScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(2);
+        }
+
+        [Test]
+        public void should_prefer_proper_over_score_when_download_propers_is_do_not_upgrade()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotUpgrade);
+
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(1)), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(2)), Language.English);
+
+            remoteAlbum1.PreferredWordScore = 10;
+            remoteAlbum2.PreferredWordScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(2);
+        }
+
+        [Test]
+        public void should_prefer_score_over_proper_when_download_propers_is_do_not_prefer()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(1)), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC, new Revision(2)), Language.English);
+
+            remoteAlbum1.PreferredWordScore = 10;
+            remoteAlbum2.PreferredWordScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.FLAC);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(1);
+            qualifiedReports.First().RemoteAlbum.PreferredWordScore.Should().Be(10);
         }
     }
 }

@@ -1,20 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
     public class DownloadDecisionComparer : IComparer<DownloadDecision>
     {
+        private readonly IConfigService _configService;
         private readonly IDelayProfileService _delayProfileService;
+
         public delegate int CompareDelegate(DownloadDecision x, DownloadDecision y);
         public delegate int CompareDelegate<TSubject, TValue>(DownloadDecision x, DownloadDecision y);
 
-        public DownloadDecisionComparer(IDelayProfileService delayProfileService)
+        public DownloadDecisionComparer(IConfigService configService, IDelayProfileService delayProfileService)
         {
+            _configService = configService;
             _delayProfileService = delayProfileService;
         }
 
@@ -57,6 +62,12 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
+            if (_configService.DownloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
+            {
+                return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.QualityProfile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
+                    CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real));
+            }
+
             return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.QualityProfile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version));

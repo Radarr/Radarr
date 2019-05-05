@@ -1,9 +1,11 @@
 using NLog;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -19,10 +21,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
     public class UpgradableSpecification : IUpgradableSpecification
     {
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public UpgradableSpecification(Logger logger)
+        public UpgradableSpecification(IConfigService configService, Logger logger)
         {
+            _configService = configService;
             _logger = logger;
         }
 
@@ -75,6 +79,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 // Not upgradable if new quality is equal to all current qualities
                 if (totalCompare == 0) {
+                    return ProfileComparisonResult.Equal;
+                }
+
+                // Quality Treated as Equal if Propers are not Prefered
+                if (_configService.DownloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer &&
+                    newQuality.Revision.CompareTo(currentQualities.Min(q => q.Revision)) > 0)
+                {
                     return ProfileComparisonResult.Equal;
                 }
             }

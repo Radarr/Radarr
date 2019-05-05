@@ -5,6 +5,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
@@ -33,32 +34,34 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
+            var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
+
+            if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
+            {
+                _logger.Debug("Propers are not preferred, skipping check");
+                return Decision.Accept();
+            }
+
             foreach (var album in subject.Albums)
             {
                 var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
-                if (trackFiles.Any())
+                foreach (var file in trackFiles)
                 {
-                    var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
-                    var dateAdded = trackFiles[0].DateAdded;
-
-                    _logger.Debug("Comparing file quality with report. Existing file is {0}", lowestQuality);
-
-                    if (_qualityUpgradableSpecification.IsRevisionUpgrade(lowestQuality, subject.ParsedAlbumInfo.Quality))
+                    if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedAlbumInfo.Quality))
                     {
-                        if (dateAdded < DateTime.Today.AddDays(-7))
-                        {
-                            _logger.Debug("Proper for old file, rejecting: {0}", subject);
-                            return Decision.Reject("Proper for old file");
-                        }
-
-                        if (!_configService.AutoDownloadPropers)
+                        if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotUpgrade)
                         {
                             _logger.Debug("Auto downloading of propers is disabled");
                             return Decision.Reject("Proper downloading is disabled");
                         }
-                    }
 
+                        if (file.DateAdded < DateTime.Today.AddDays(-7))
+                        {
+                            _logger.Debug("Proper for old file, rejecting: {0}", subject);
+                            return Decision.Reject("Proper for old file");
+                        }
+                    }
                 }
             }
 

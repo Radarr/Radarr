@@ -298,6 +298,16 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseCodec(null, null).Should().Be(Codec.Unknown);
         }
 
+        [TestCase("Artist Title - Album Title 2017 REPACK FLAC aAF", true)]
+        [TestCase("Artist Title - Album Title 2017 RERIP FLAC aAF", true)]
+        [TestCase("Artist Title - Album Title 2017 PROPER FLAC aAF", false)]
+        public void should_be_able_to_parse_repack(string title, bool isRepack)
+        {
+            var result = QualityParser.ParseQuality(title, null, 0);
+            result.Revision.Version.Should().Be(2);
+            result.Revision.IsRepack.Should().Be(isRepack);
+        }
+
         private void ParseAndVerifyQuality(string name, string desc, int bitrate, Quality quality, int sampleSize = 0)
         {
             var result = QualityParser.ParseQuality(name, desc, bitrate, sampleSize);

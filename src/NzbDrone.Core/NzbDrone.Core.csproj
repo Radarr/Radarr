@@ -173,6 +173,7 @@
     <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtime.cs" />
     <Compile Include="Datastore\Migration\031_add_artistmetadataid_constraint.cs" />
     <Compile Include="Datastore\Migration\032_old_ids_and_artist_alias.cs" />
+    <Compile Include="Datastore\Migration\033_download_propers_config.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
+    <Compile Include="DecisionEngine\Specifications\RepackSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\SameTracksSpecification.cs" />
     <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
@@ -1034,6 +1036,7 @@
     <Compile Include="Profiles\Releases\TermMatchers\ITermMatcher.cs" />
     <Compile Include="Profiles\Releases\TermMatchers\RegexTermMatcher.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
+    <Compile Include="Qualities\ProperDownloadTypes.cs" />
     <Compile Include="Qualities\QualityDetectionSource.cs" />
     <Compile Include="Qualities\Revision.cs" />
     <Compile Include="Queue\EstimatedCompletionTimeComparer.cs" />

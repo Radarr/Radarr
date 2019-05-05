@@ -12,6 +12,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 {
@@ -19,6 +20,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
     public class UpgradeSpecificationFixture : CoreTest<UpgradeSpecification>
     {
         private Artist _artist;
+        private Album _album;
         private LocalTrack _localTrack;
 
         [SetUp]
@@ -35,12 +37,15 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                          Cutoff = Language.Spanish,
                                      }).Build();
 
+            _album = Builder<Album>.CreateNew().Build();
+
             _localTrack = new LocalTrack
             {
                 Path = @"C:\Test\Imagine Dragons\Imagine.Dragons.Song.1.mp3",
                 Quality = new QualityModel(Quality.MP3_256, new Revision(version: 1)),
                 Language = Language.Spanish,
-                Artist = _artist
+                Artist = _artist,
+                Album = _album
             };
         }
 
@@ -214,6 +219,72 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                                      .ToList();
 
             Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
+        }
+
+
+        [Test]
+        public void should_return_false_if_not_a_revision_upgrade_and_prefers_propers()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
+
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
+                                                     .All()
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                         new TrackFile
+                                                         {
+                                                             Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2))
+                                                         }))
+                                                     .Build()
+                                                     .ToList();
+
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_if_not_a_revision_upgrade_and_does_not_prefer_propers()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
+                                                     .All()
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                         new TrackFile
+                                                         {
+                                                             Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2))
+                                                         }))
+                                                     .Build()
+                                                     .ToList();
+
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_true_when_comparing_to_a_lower_quality_proper()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            _localTrack.Quality = new QualityModel(Quality.FLAC);
+
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
+                                                     .All()
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                         new TrackFile
+                                                         {
+                                                             Quality = new QualityModel(Quality.FLAC, new Revision(version: 2))
+                                                         }))
+                                                     .Build()
+                                                     .ToList();
+
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
     }
 }

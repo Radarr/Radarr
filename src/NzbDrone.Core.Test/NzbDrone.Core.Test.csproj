@@ -103,6 +103,7 @@
     <Compile Include="DecisionEngineTests\ReleaseRestrictionsSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\PrioritizeDownloadDecisionFixture.cs" />
     <Compile Include="DecisionEngineTests\QualityAllowedByProfileSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\RepackSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeAllowedSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MinimumAgeSpecificationFixture.cs" />
