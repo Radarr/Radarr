@@ -936,6 +936,11 @@
     <Compile Include="Music\TrackService.cs" />
     <Compile Include="Notifications\AlbumDownloadMessage.cs" />
     <Compile Include="Notifications\DownloadFailedMessage.cs" />
+    <Compile Include="Notifications\Gotify\Gotify.cs" />
+    <Compile Include="Notifications\Gotify\GotifyPriority.cs" />
+    <Compile Include="Notifications\Gotify\GotifyProxy.cs" />
+    <Compile Include="Notifications\Gotify\GotifySettings.cs" />
+    <Compile Include="Notifications\Gotify\InvalidResponseException.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinPriority.cs" />
