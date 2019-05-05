@@ -455,6 +455,7 @@
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
     <Compile Include="Exceptions\ArtistNotFoundException.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
+    <Compile Include="Exceptions\DownloadClientRejectedReleaseException.cs" />
     <Compile Include="Exceptions\DownstreamException.cs" />
     <Compile Include="Exceptions\NzbDroneClientException.cs" />
     <Compile Include="Exceptions\ReleaseUnavailableException.cs" />
