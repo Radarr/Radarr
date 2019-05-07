@@ -21,17 +21,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly Logger _logger;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
-        private readonly IHttpRequestBuilderFactory _requestBuilder;
+        private readonly IMetadataRequestBuilder _requestBuilder;
         private readonly IConfigService _configService;
         private readonly IMetadataProfileService _metadataProfileService;
 
         private static readonly List<string> nonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
         private static readonly List<string> skippedTracks = new List<string> { "[data track]" };
 
-        private IHttpRequestBuilderFactory _customerRequestBuilder;
-
         public SkyHookProxy(IHttpClient httpClient,
-                            ILidarrCloudRequestBuilder requestBuilder,
+                            IMetadataRequestBuilder requestBuilder,
                             IArtistService artistService,
                             IAlbumService albumService,
                             Logger logger,
@@ -41,7 +39,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _httpClient = httpClient;
             _configService = configService;
             _metadataProfileService = metadataProfileService;
-            _requestBuilder = requestBuilder.Search;
+            _requestBuilder = requestBuilder;
             _artistService = artistService;
             _albumService = albumService;
             _logger = logger;
@@ -52,15 +50,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
-            SetCustomProvider();
-
             var metadataProfile = _metadataProfileService.Exists(metadataProfileId) ? _metadataProfileService.Get(metadataProfileId) : _metadataProfileService.All().First();
 
             var primaryTypes = metadataProfile.PrimaryAlbumTypes.Where(s => s.Allowed).Select(s => s.PrimaryAlbumType.Name);
             var secondaryTypes = metadataProfile.SecondaryAlbumTypes.Where(s => s.Allowed).Select(s => s.SecondaryAlbumType.Name);
             var releaseStatuses = metadataProfile.ReleaseStatuses.Where(s => s.Allowed).Select(s => s.ReleaseStatus.Name);
 
-            var httpRequest = _customerRequestBuilder.Create()
+            var httpRequest = _requestBuilder.GetRequestBuilder().Create()
                                             .SetSegment("route", "artist/" + foreignArtistId)
                                             .AddQueryParam("primTypes", string.Join("|", primaryTypes))
                                             .AddQueryParam("secTypes", string.Join("|", secondaryTypes))
@@ -101,10 +97,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public Tuple<string, Album, List<ArtistMetadata>> GetAlbumInfo(string foreignAlbumId)
         {
             _logger.Debug("Getting Album with LidarrAPI.MetadataID of {0}", foreignAlbumId);
-
-            SetCustomProvider();
-
-            var httpRequest = _customerRequestBuilder.Create()
+            
+            var httpRequest = _requestBuilder.GetRequestBuilder().Create()
                 .SetSegment("route", "album/" + foreignAlbumId)
                 .Build();
 
@@ -173,9 +167,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-                SetCustomProvider();
-
-                var httpRequest = _customerRequestBuilder.Create()
+                var httpRequest = _requestBuilder.GetRequestBuilder().Create()
                                     .SetSegment("route", "search")
                                     .AddQueryParam("type", "artist")
                                     .AddQueryParam("query", title.ToLower().Trim())
@@ -244,9 +236,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-                SetCustomProvider();
-
-                var httpRequest = _customerRequestBuilder.Create()
+                var httpRequest = _requestBuilder.GetRequestBuilder().Create()
                                     .SetSegment("route", "search")
                                     .AddQueryParam("type", "album")
                                     .AddQueryParam("query", title.ToLower().Trim())
@@ -506,18 +496,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     return SecondaryAlbumType.Demo;
                 default:
                     return SecondaryAlbumType.Studio;
-            }
-        }
-
-        private void SetCustomProvider()
-        {
-            if (_configService.MetadataSource.IsNotNullOrWhiteSpace())
-            {
-                _customerRequestBuilder = new HttpRequestBuilder(_configService.MetadataSource.TrimEnd("/") + "/{route}").CreateFactory();
-            }
-            else
-            {
-                _customerRequestBuilder = _requestBuilder;
             }
         }
     }

@@ -716,6 +716,7 @@
     <Compile Include="Languages\Language.cs" />
     <Compile Include="Languages\LanguageComparer.cs" />
     <Compile Include="Languages\LanguagesBelowCutoff.cs" />
+    <Compile Include="MetadataSource\IMetadataRequestBuilder.cs" />
     <Compile Include="Notifications\Discord\Discord.cs" />
     <Compile Include="Notifications\Discord\DiscordColors.cs" />
     <Compile Include="Notifications\Discord\DiscordException.cs" />

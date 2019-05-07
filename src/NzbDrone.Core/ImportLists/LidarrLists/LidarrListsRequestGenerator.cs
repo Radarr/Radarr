@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NzbDrone.Common.Http;
+using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.ImportLists.LidarrLists
 {
@@ -7,13 +7,11 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
     {
         public LidarrListsSettings Settings { get; set; }
 
-        public int MaxPages { get; set; }
-        public int PageSize { get; set; }
+        private readonly IMetadataRequestBuilder _requestBulder;
 
-        public LidarrListsRequestGenerator()
+        public LidarrListsRequestGenerator(IMetadataRequestBuilder requestBuilder)
         {
-            MaxPages = 1;
-            PageSize = 10;
+            _requestBulder = requestBuilder;
         }
 
         public virtual ImportListPageableRequestChain GetListItems()
@@ -27,8 +25,12 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
 
         private IEnumerable<ImportListRequest> GetPagedRequests()
         {
-            yield return new ImportListRequest(string.Format("{0}{1}", Settings.BaseUrl, Settings.ListId), HttpAccept.Json);
-        }
+            var request = _requestBulder.GetRequestBuilder()
+                                        .Create()
+                                        .SetSegment("route", "chart/" + Settings.ListId)
+                                        .Build();
 
+            yield return new ImportListRequest(request);
+        }
     }
 }

@@ -8,7 +8,6 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
     {
         public LidarrListsSettingsValidator()
         {
-            RuleFor(c => c.BaseUrl).ValidRootUrl();
         }
     }
 
@@ -18,7 +17,7 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
 
         public LidarrListsSettings()
         {
-            BaseUrl = "https://api.lidarr.audio/api/v0.3/chart/";
+            BaseUrl = "";
         }
 
         public string BaseUrl { get; set; }
