@@ -353,7 +353,7 @@ class ArtistDetails extends Component {
               <ArtistPoster
                 className={styles.poster}
                 images={images}
-                size={500}
+                size={250}
                 lazy={false}
               />
 

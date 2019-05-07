@@ -10,6 +10,7 @@ function getUrl(image, coverType, size) {
   if (image) {
     // Remove protocol
     let url = image.url.replace(/^https?:/, '');
+
     url = url.replace(`${coverType}.jpg`, `${coverType}-${size}.jpg`);
 
     return url;
@@ -24,7 +25,7 @@ class ArtistImage extends Component {
   constructor(props, context) {
     super(props, context);
 
-    const pixelRatio = Math.floor(window.devicePixelRatio);
+    const pixelRatio = Math.ceil(window.devicePixelRatio);
 
     const {
       images,

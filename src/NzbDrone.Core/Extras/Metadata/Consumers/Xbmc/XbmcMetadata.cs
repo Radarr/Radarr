@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             foreach (var image in artist.Metadata.Value.Images)
             {
-                var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
+                var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType);
                 var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
                 if (image.CoverType == MediaCoverTypes.Poster)
                 {

@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
                   .Returns(true);
 
-            Subject.ConvertToLocalUrls(12, covers);
+            Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
 
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg?lastWrite=1234");
@@ -75,10 +75,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
                   .Returns(true);
 
-            Subject.ConvertToLocalUrls(12, covers, 6);
+            Subject.ConvertToLocalUrls(6, MediaCoverEntity.Album, covers);
 
 
-            covers.Single().Url.Should().Be("/MediaCover/12/6/disc.jpg?lastWrite=1234");
+            covers.Single().Url.Should().Be("/MediaCover/Albums/6/disc.jpg?lastWrite=1234");
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                 };
 
 
-            Subject.ConvertToLocalUrls(12, covers);
+            Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
 
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg");
@@ -103,6 +103,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(false);
 
+            Mocker.GetMock<IAlbumService>()
+                  .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
+                  .Returns(new List<Album> { _album });
+
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(true);
@@ -110,7 +114,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
         }
 
         [Test]
@@ -120,6 +124,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(true);
 
+            Mocker.GetMock<IAlbumService>()
+                  .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
+                  .Returns(new List<Album> { _album });
+
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(false);
@@ -127,7 +135,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
         }
 
         [Test]
@@ -140,6 +148,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(true);
+
+            Mocker.GetMock<IAlbumService>()
+                  .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
+                  .Returns(new List<Album> { _album });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
@@ -162,6 +174,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(true);
 
+            Mocker.GetMock<IAlbumService>()
+                  .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
+                  .Returns(new List<Album> { _album });
+
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
                   .Returns(0);
@@ -169,7 +185,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
         }
 
         [Test]
@@ -183,6 +199,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(false);
 
+            Mocker.GetMock<IAlbumService>()
+                  .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
+                  .Returns(new List<Album> { _album });
+
             Mocker.GetMock<IImageResizer>()
                   .Setup(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                   .Throws<ApplicationException>();
@@ -190,7 +210,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
         }
     }
 }

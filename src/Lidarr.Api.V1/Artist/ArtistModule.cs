@@ -181,7 +181,7 @@ namespace Lidarr.Api.V1.Artist
         {
             foreach (var artistResource in artists)
             {
-                _coverMapper.ConvertToLocalUrls(artistResource.Id, artistResource.Images);
+                _coverMapper.ConvertToLocalUrls(artistResource.Id, MediaCoverEntity.Artist, artistResource.Images);
             }
         }
 

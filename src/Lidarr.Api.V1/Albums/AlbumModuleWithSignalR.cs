@@ -7,6 +7,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 using Lidarr.Http;
+using NzbDrone.Core.MediaCover;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -15,15 +16,18 @@ namespace Lidarr.Api.V1.Albums
         protected readonly IAlbumService _albumService;
         protected readonly IArtistStatisticsService _artistStatisticsService;
         protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
+        protected readonly IMapCoversToLocal _coverMapper;
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
+                                           IMapCoversToLocal coverMapper,
                                            IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
             _albumService = albumService;
             _artistStatisticsService = artistStatisticsService;
+            _coverMapper = coverMapper;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetAlbum;
@@ -62,6 +66,7 @@ namespace Lidarr.Api.V1.Albums
             }
 
             FetchAndLinkAlbumStatistics(resource);
+            MapCoversToLocal(resource);
 
             return resource;
         }
@@ -86,6 +91,7 @@ namespace Lidarr.Api.V1.Albums
             
             var artistStats = _artistStatisticsService.ArtistStatistics();
             LinkArtistStatistics(result, artistStats);
+            MapCoversToLocal(result.ToArray());
 
             return result;
         }
@@ -112,6 +118,14 @@ namespace Lidarr.Api.V1.Albums
 
                 resource.Statistics = dictAlbumStats.GetValueOrDefault(resource.Id).ToResource();
 
+            }
+        }
+
+        private void MapCoversToLocal(params AlbumResource[] albums)
+        {
+            foreach (var albumResource in albums)
+            {
+                _coverMapper.ConvertToLocalUrls(albumResource.Id, MediaCoverEntity.Album, albumResource.Images);
             }
         }
     }

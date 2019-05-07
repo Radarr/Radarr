@@ -12,6 +12,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaCover;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -23,13 +24,14 @@ namespace Lidarr.Api.V1.Albums
 
     {
         protected readonly IReleaseService _releaseService;
-        
+
         public AlbumModule(IAlbumService albumService,
                            IReleaseService releaseService,
                            IArtistStatisticsService artistStatisticsService,
+                           IMapCoversToLocal coverMapper,
                            IUpgradableSpecification upgradableSpecification,
                            IBroadcastSignalRMessage signalRBroadcaster)
-        : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster)
+        : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
         {
             _releaseService = releaseService;
             GetResourceAll = GetAlbums;

@@ -16,6 +16,12 @@ namespace NzbDrone.Core.MediaCover
         Logo = 8
     }
 
+    public enum MediaCoverEntity
+    {
+        Artist = 0,
+        Album = 1
+    }
+
     public class MediaCover : IEmbeddedDocument
     {
         public MediaCoverTypes CoverType { get; set; }

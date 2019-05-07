@@ -301,7 +301,7 @@ class AlbumDetails extends Component {
               <AlbumCover
                 className={styles.cover}
                 images={images}
-                size={500}
+                size={250}
                 lazy={false}
               />
 
