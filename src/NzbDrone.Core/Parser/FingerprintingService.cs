@@ -360,7 +360,18 @@ namespace NzbDrone.Core.Parser
             httpRequest.Headers.ContentType = "application/x-www-form-urlencoded";
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Post<LookupResponse>(httpRequest);
+            HttpResponse<LookupResponse> httpResponse;
+
+            try
+            {
+                httpResponse = _httpClient.Post<LookupResponse>(httpRequest);
+            }
+            catch (UnexpectedHtmlContentException e)
+            {
+                _logger.Warn(e, "AcoustId API gave invalid response");
+                return;
+            }
+
             var response = httpResponse.Resource;
 
             // The API will give errors if fingerprint isn't found or is invalid.
@@ -407,33 +418,33 @@ namespace NzbDrone.Core.Parser
             _logger.Debug($"*** FingerprintingService TestCaseGenerator ***\n{JsonConvert.SerializeObject(output, SerializerSettings)}");
         }
 
-        private class LookupResponse
+        public class LookupResponse
         {
             public string Status { get; set; }
             public LookupError Error { get; set; }
             public List<LookupResultListItem> Fingerprints { get; set; }
         }
 
-        private class LookupError
+        public class LookupError
         {
             public string Message { get; set; }
             public int Code { get; set; }
         }
 
-        private class LookupResultListItem
+        public class LookupResultListItem
         {
             public int index { get; set; }
             public List<LookupResult> Results { get; set; }
         }
 
-        private class LookupResult
+        public class LookupResult
         {
             public string Id { get; set; }
             public double Score { get; set; }
             public List<RecordingResult> Recordings { get; set; }
         }
 
-        private class RecordingResult
+        public class RecordingResult
         {
             public string Id { get; set; }
         }

@@ -7,6 +7,11 @@ using System.IO;
 using System.Linq;
 using NzbDrone.Core.Parser.Model;
 using System;
+using NzbDrone.Common.Http;
+using Moq;
+using static NzbDrone.Core.Parser.FingerprintingService;
+using NzbDrone.Test.Common;
+using System.Net;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -180,6 +185,20 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             idpairs[0].Item1.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
             idpairs[1].Item1.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
             idpairs[2].Item1.AcoustIdResults.Should().BeNull();
+        }
+
+        [Test]
+        public void should_not_throw_if_api_returns_html()
+        {
+            Mocker.GetMock<IHttpClient>().Setup(x => x.Post<LookupResponse>(It.IsAny<HttpRequest>()))
+                                         .Callback<HttpRequest>(req => throw new UnexpectedHtmlContentException(new HttpResponse(req, req.Headers, "html content", HttpStatusCode.Accepted)));
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
+            var localTrack = new LocalTrack { Path = path };
+            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            localTrack.AcoustIdResults.Should().BeNull();
+
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }
