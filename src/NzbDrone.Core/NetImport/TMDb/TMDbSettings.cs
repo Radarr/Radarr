@@ -69,6 +69,10 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(0, Label = "TMDb API URL", HelpText = "Link to to TMDb API URL, do not change unless you know what you are doing.")]
         public string Link { get; set; }
 
+        [FieldDefinition(0, Label = "Account ID", HelpText = "Your account ID for Radarr API.")]
+//        I have built a simple tool at https://github.com/elChapoSing/tmdb_account_id to get it but not sure how to integrate it.
+        public string AccountID { get; set; }
+
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TMDbListType), HelpText = "Type of list your seeking to import from")]
         public int ListType { get; set; }
 

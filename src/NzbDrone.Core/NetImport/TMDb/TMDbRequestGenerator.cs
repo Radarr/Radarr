@@ -29,6 +29,7 @@ namespace NzbDrone.Core.NetImport.TMDb
             var includeGenreIds = Settings.IncludeGenreIds;
             var excludeGenreIds = Settings.ExcludeGenreIds;
             var languageCode = (TMDbLanguageCodes)Settings.LanguageCode;
+            var accountId = Settings.AccountID;
 
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
@@ -57,6 +58,12 @@ namespace NzbDrone.Core.NetImport.TMDb
                 case (int)TMDbListType.Upcoming:
                     tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
+                case (int)TMDbListType.Watchlist:
+                    tmdbParams = $"/4/account/{accountId}/watchlist/movies?api_key=1a7373301961d03f97f853a876dd1212";
+                    break;
+                case (int)TMDbListType.Favorites:
+                    tmdbParams = $"/4/account/{accountId}/favorite/movies?api_key=1a7373301961d03f97f853a876dd1212";
+                    break;
             }
 
             var pageableRequests = new NetImportPageableRequestChain();
@@ -72,6 +79,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                 requestBuilder.Resource(tmdbParams);
 
                 var request = requestBuilder
+                    .SetHeader("Bearer","NEED RADARR API Read Access Token (v4 auth) HERE")
                     // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
                     .Accept(HttpAccept.Json)
                     .Build();
