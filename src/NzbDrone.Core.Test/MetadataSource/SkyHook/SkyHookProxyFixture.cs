@@ -10,6 +10,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Test.Common.Categories;
 using Moq;
 using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
@@ -17,12 +18,14 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
     [IntegrationTest]
     public class SkyHookProxyFixture : CoreTest<SkyHookProxy>
     {
+        private MetadataProfile _metadataProfile;
+
         [SetUp]
         public void Setup()
         {
             UseRealHttp();
 
-            var _metadataProfile = new MetadataProfile
+            _metadataProfile = new MetadataProfile
             {
                 PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
                 {
@@ -30,7 +33,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                     {
                         PrimaryAlbumType = PrimaryAlbumType.Album,
                         Allowed = true
-                        
                     }
                 },
                 SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>
@@ -59,6 +61,30 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                 .Setup(s => s.Exists(It.IsAny<int>()))
                 .Returns(true);
         }
+        
+        public List<AlbumResource> GivenExampleAlbums()
+        {
+            var result = new List<AlbumResource>();
+            
+            foreach (var primaryType in PrimaryAlbumType.All)
+            {
+                foreach (var secondaryType in SecondaryAlbumType.All)
+                {
+                    var secondaryTypes = secondaryType.Name == "Studio" ? new List<string>() : new List<string> { secondaryType.Name };
+                    foreach (var releaseStatus in ReleaseStatus.All)
+                    {
+                        var releaseStatuses = new List<string> { releaseStatus.Name };
+                        result.Add(new AlbumResource {
+                                Type = primaryType.Name,
+                                SecondaryTypes = secondaryTypes,
+                                ReleaseStatuses = releaseStatuses
+                            });
+                    }
+                }
+            }
+            
+            return result;
+        }
 
         [TestCase("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
         [TestCase("66c662b6-6e2f-4930-8610-912e24c63ed1", "AC/DC")]
@@ -67,9 +93,63 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             var details = Subject.GetArtistInfo(mbId, 1);
 
             ValidateArtist(details);
-            ValidateAlbums(details.Albums.Value);
+            ValidateAlbums(details.Albums.Value, true);
 
             details.Name.Should().Be(name);
+        }
+
+        [TestCaseSource(typeof(PrimaryAlbumType), "All")]
+        public void should_filter_albums_by_primary_release_type(PrimaryAlbumType type)
+        {
+            _metadataProfile.PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem> {
+                    new ProfilePrimaryAlbumTypeItem
+                    {
+                        PrimaryAlbumType = type,
+                        Allowed = true
+                    }
+            };
+
+
+            var albums = GivenExampleAlbums();
+            Subject.FilterAlbums(albums, 1).Select(x => x.Type).Distinct()
+                   .Should().BeEquivalentTo(new List<string> { type.Name });
+        }
+        
+        [TestCaseSource(typeof(SecondaryAlbumType), "All")]
+        public void should_filter_albums_by_secondary_release_type(SecondaryAlbumType type)
+        {
+            _metadataProfile.SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem> {
+                    new ProfileSecondaryAlbumTypeItem
+                    {
+                        SecondaryAlbumType = type,
+                        Allowed = true
+                    }
+            };
+
+            var albums = GivenExampleAlbums();
+            var filtered = Subject.FilterAlbums(albums, 1);
+            TestLogger.Debug(filtered.Count());
+            
+            filtered.SelectMany(x => x.SecondaryTypes.Select(SkyHookProxy.MapSecondaryTypes))
+                    .Select(x => x.Name)
+                    .Distinct()
+                    .Should().BeEquivalentTo(type.Name == "Studio" ? new List<string>() : new List<string> { type.Name });
+        }
+
+        [TestCaseSource(typeof(ReleaseStatus), "All")]
+        public void should_filter_albums_by_release_status(ReleaseStatus type)
+        {
+            _metadataProfile.ReleaseStatuses = new List<ProfileReleaseStatusItem> {
+                    new ProfileReleaseStatusItem
+                    {
+                        ReleaseStatus = type,
+                        Allowed = true
+                    }
+            };
+
+            var albums = GivenExampleAlbums();
+            Subject.FilterAlbums(albums, 1).SelectMany(x => x.ReleaseStatuses).Distinct()
+                   .Should().BeEquivalentTo(new List<string> { type.Name });
         }
         
         [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "Hysteria")]
@@ -130,16 +210,24 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             artist.ForeignArtistId.Should().NotBeNullOrWhiteSpace();
         }
 
-        private void ValidateAlbums(List<Album> albums)
+        private void ValidateAlbums(List<Album> albums, bool idOnly = false)
         {
             albums.Should().NotBeEmpty();
 
             foreach (var album in albums)
             {
-                ValidateAlbum(album);
+                album.ForeignAlbumId.Should().NotBeNullOrWhiteSpace();
+                if (!idOnly)
+                {
+                    ValidateAlbum(album);
+                }
 
-                //if atleast one album has title it means parse it working.
-                albums.Should().Contain(c => !string.IsNullOrWhiteSpace(c.Title));
+            }
+            
+            //if atleast one album has title it means parse it working.
+            if (!idOnly)
+            {
+                albums.Should().Contain(c => !string.IsNullOrWhiteSpace(c.Title));                
             }
         }
 

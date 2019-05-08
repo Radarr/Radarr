@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
@@ -20,5 +18,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<string> SecondaryTypes { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
+        public List<string> ReleaseStatuses { get; set; }
     }
 }
