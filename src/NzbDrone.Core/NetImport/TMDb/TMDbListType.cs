@@ -15,8 +15,8 @@ namespace NzbDrone.Core.NetImport.TMDb
         [EnumMember(Value = "Upcoming")]
         Upcoming = 4,
         [EnumMember(Value = "Watchlist")]
-        Upcoming = 5,
+        Watchlist = 5,
         [EnumMember(Value = "Favorites")]
-        Upcoming = 6
+        Favorites = 6
     }
 }
