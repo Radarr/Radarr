@@ -9,10 +9,10 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.DownloadStation;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 {
@@ -188,6 +188,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Setup(s => s.RemapToFullPath(It.IsAny<OsPath>(), It.IsAny<DownloadStationSettings>(), It.IsAny<string>()))
                   .Returns<OsPath, DownloadStationSettings, string>((path, setttings, serial) => _physicalPath);
         }
+
+        protected void GivenSharedFolder(string share)
+        {
+            Mocker.GetMock<ISharedFolderResolver>()
+                  .Setup(s => s.RemapToFullPath(It.IsAny<OsPath>(), It.IsAny<DownloadStationSettings>(), It.IsAny<string>()))
+                  .Throws(new DownloadClientException("There is no matching shared folder"));
+
+            Mocker.GetMock<ISharedFolderResolver>()
+                  .Setup(s => s.RemapToFullPath(It.Is<OsPath>(x => x.FullPath == share), It.IsAny<DownloadStationSettings>(), It.IsAny<string>()))
+                  .Returns<OsPath, DownloadStationSettings, string>((path, setttings, serial) => _physicalPath);
+        }
+
 
         protected void GivenSerialNumber()
         {
@@ -372,6 +384,41 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
             Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), null, _settings), Times.Never());
+        }
+        
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_default()
+        {
+            GivenSerialNumber();
+            GivenSharedFolder("/somepath");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
+        }
+
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_destination()
+        {
+            GivenSerialNumber();
+            GivenTvDirectory();
+            GivenSharedFolder($"/{_musicDirectory}");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
+        }
+
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_category()
+        {
+            GivenSerialNumber();
+            GivenMusicCategory();
+            GivenSharedFolder($"/somepath/{_category}");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
         }
 
         [Test]
