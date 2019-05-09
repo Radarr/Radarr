@@ -9,6 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -36,16 +37,14 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
         {
             var category = Settings.MusicCategory;
-
             var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
             var addpaused = Settings.AddPaused;
-
             var response = _proxy.DownloadNzb(fileContent, filename, category, priority, addpaused, Settings);
 
             if (response == null)
             {
-                throw new DownloadClientException("Failed to add nzb {0}", filename);
+                throw new DownloadClientRejectedReleaseException(remoteAlbum.Release, "NZBGet rejected the NZB for an unknown reason");
             }
 
             return response;
@@ -132,7 +131,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 historyItem.CanMoveFiles = true;
                 historyItem.CanBeRemoved = true;
 
-                if (item.DeleteStatus == "MANUAL")
+                if (item.DeleteStatus == "MANUAL" || item.DeleteStatus == "COPY")
                 {
                     continue;
                 }
