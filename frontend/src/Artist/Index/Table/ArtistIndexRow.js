@@ -139,6 +139,7 @@ class ArtistIndexRow extends Component {
                 <ArtistStatusCell
                   key={name}
                   className={styles[name]}
+                  artistType={artistType}
                   monitored={monitored}
                   status={status}
                   component={VirtualTableRowCell}

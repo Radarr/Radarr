@@ -191,6 +191,7 @@ class ArtistDetails extends Component {
       overview,
       links,
       images,
+      artistType,
       alternateTitles,
       tags,
       isSaving,
@@ -230,6 +231,7 @@ class ArtistDetails extends Component {
     } = this.state;
 
     const continuing = status === 'continuing';
+    const endedString = artistType === 'Person' ? 'Deceased' : 'Ended';
 
     let trackFilesCountMessage = 'No track files';
 
@@ -504,7 +506,7 @@ class ArtistDetails extends Component {
                     />
 
                     <span className={styles.qualityProfileName}>
-                      {continuing ? 'Continuing' : 'Ended'}
+                      {continuing ? 'Continuing' : endedString}
                     </span>
                   </Label>
 
@@ -678,6 +680,7 @@ ArtistDetails.propTypes = {
   statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
+  artistType: PropTypes.string.isRequired,
   albumTypes: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,

@@ -29,6 +29,7 @@ class ArtistEditorRow extends Component {
       status,
       foreignArtistId,
       artistName,
+      artistType,
       monitored,
       languageProfile,
       metadataProfile,
@@ -50,6 +51,7 @@ class ArtistEditorRow extends Component {
         />
 
         <ArtistStatusCell
+          artistType={artistType}
           monitored={monitored}
           status={status}
         />
@@ -107,6 +109,7 @@ ArtistEditorRow.propTypes = {
   status: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
+  artistType: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   languageProfile: PropTypes.object.isRequired,
   metadataProfile: PropTypes.object.isRequired,
