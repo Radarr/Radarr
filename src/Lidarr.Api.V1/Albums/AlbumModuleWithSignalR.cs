@@ -35,6 +35,7 @@ namespace Lidarr.Api.V1.Albums
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
+                                           IMapCoversToLocal coverMapper,
                                            IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
@@ -42,6 +43,7 @@ namespace Lidarr.Api.V1.Albums
         {
             _albumService = albumService;
             _artistStatisticsService = artistStatisticsService;
+            _coverMapper = coverMapper;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetAlbum;

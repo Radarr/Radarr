@@ -7,6 +7,7 @@ using NzbDrone.SignalR;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
+using NzbDrone.Core.MediaCover;
 
 namespace Lidarr.Api.V1.Wanted
 {
@@ -14,9 +15,10 @@ namespace Lidarr.Api.V1.Wanted
     {
         public MissingModule(IAlbumService albumService,
                              IArtistStatisticsService artistStatisticsService,
+                             IMapCoversToLocal coverMapper,
                              IUpgradableSpecification upgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster, "wanted/missing")
+            : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
             GetResourcePaged = GetMissingAlbums;
         }

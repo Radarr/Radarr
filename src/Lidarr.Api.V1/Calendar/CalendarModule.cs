@@ -7,6 +7,7 @@ using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Http.Extensions;
+using NzbDrone.Core.MediaCover;
 
 namespace Lidarr.Api.V1.Calendar
 {
@@ -14,9 +15,10 @@ namespace Lidarr.Api.V1.Calendar
     {
         public CalendarModule(IAlbumService albumService,
                               IArtistStatisticsService artistStatisticsService,
+                              IMapCoversToLocal coverMapper,
                               IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, upgradableSpecification, signalRBroadcaster, "calendar")
+            : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }
