@@ -13,6 +13,7 @@ namespace NzbDrone.Api.Config
         public FileDateType FileDate { get; set; }
         public bool AutoRenameFolders { get; set; }
         public bool PathsDefaultStatic { get; set; }
+        public int RefreshMovieInterval { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
         public string FileChmod { get; set; }
@@ -40,6 +41,7 @@ namespace NzbDrone.Api.Config
                 FileDate = model.FileDate,
                 AutoRenameFolders = model.AutoRenameFolders,
                 PathsDefaultStatic = model.PathsDefaultStatic,
+                RefreshMovieInterval = model.RefreshMovieInterval,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,
