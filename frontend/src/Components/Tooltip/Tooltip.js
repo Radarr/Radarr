@@ -1,47 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import TetherComponent from 'react-tether';
+import { Manager, Popper, Reference } from 'react-popper';
 import classNames from 'classnames';
 import isMobileUtil from 'Utilities/isMobile';
 import { kinds, tooltipPositions } from 'Helpers/Props';
+import Portal from 'Components/Portal';
 import styles from './Tooltip.css';
-
-const baseTetherOptions = {
-  skipMoveElement: true,
-  constraints: [
-    {
-      to: 'window',
-      attachment: 'together',
-      pin: true
-    }
-  ]
-};
-
-const tetherOptions = {
-  [tooltipPositions.TOP]: {
-    ...baseTetherOptions,
-    attachment: 'bottom center',
-    targetAttachment: 'top center'
-  },
-
-  [tooltipPositions.RIGHT]: {
-    ...baseTetherOptions,
-    attachment: 'middle left',
-    targetAttachment: 'middle right'
-  },
-
-  [tooltipPositions.BOTTOM]: {
-    ...baseTetherOptions,
-    attachment: 'top center',
-    targetAttachment: 'bottom center'
-  },
-
-  [tooltipPositions.LEFT]: {
-    ...baseTetherOptions,
-    attachment: 'middle right',
-    targetAttachment: 'middle left'
-  }
-};
 
 class Tooltip extends Component {
 
@@ -51,11 +15,18 @@ class Tooltip extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._scheduleUpdate = null;
+    this._closeTimeout = null;
+
     this.state = {
       isOpen: false
     };
+  }
 
-    this._closeTimeout = null;
+  componentDidUpdate() {
+    if (this._scheduleUpdate && this.state.isOpen) {
+      this._scheduleUpdate();
+    }
   }
 
   componentWillUnmount() {
@@ -66,6 +37,10 @@ class Tooltip extends Component {
 
   //
   // Listeners
+
+  onMeasure = ({ width }) => {
+    this.setState({ width });
+  }
 
   onClick = () => {
     if (isMobileUtil()) {
@@ -93,6 +68,7 @@ class Tooltip extends Component {
   render() {
     const {
       className,
+      bodyClassName,
       anchor,
       tooltip,
       kind,
@@ -100,55 +76,81 @@ class Tooltip extends Component {
     } = this.props;
 
     return (
-      <TetherComponent
-        classes={{
-          element: styles.tether
-        }}
-        {...tetherOptions[position]}
-      >
-        <span
-          className={className}
-          onClick={this.onClick}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-        >
-          {anchor}
-        </span>
-
-        {
-          this.state.isOpen &&
-            <div
-              className={styles.tooltipContainer}
+      <Manager>
+        <Reference>
+          {({ ref }) => (
+            <span
+              ref={ref}
+              className={className}
+              onClick={this.onClick}
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseLeave}
             >
-              <div
-                className={classNames(
-                  styles.tooltip,
-                  styles[kind]
-                )}
-              >
-                <div
-                  className={classNames(
-                    styles.arrow,
-                    styles[kind],
-                    styles[position]
-                  )}
-                />
+              {anchor}
+            </span>
+          )}
+        </Reference>
 
-                <div className={styles.body}>
-                  {tooltip}
+        <Portal>
+          <Popper
+            placement={position}
+            // Disable events to improve performance when many tooltips
+            // are shown (Quality Definitions for example).
+            eventsEnabled={false}
+            modifiers={{
+              preventOverflow: {
+              // Fixes positioning for tooltips in the queue
+              // and likely others.
+                escapeWithReference: true
+              }
+            }}
+          >
+            {({ ref, style, placement, scheduleUpdate }) => {
+              this._scheduleUpdate = scheduleUpdate;
+
+              return (
+                <div
+                  ref={ref}
+                  className={styles.tooltipContainer}
+                  style={style}
+                  onMouseEnter={this.onMouseEnter}
+                  onMouseLeave={this.onMouseLeave}
+                >
+                  {
+                    this.state.isOpen ?
+                      <div
+                        className={classNames(
+                          styles.tooltip,
+                          styles[kind]
+                        )}
+                      >
+                        <div
+                          className={classNames(
+                            styles.arrow,
+                            styles[kind],
+                            styles[placement.split('-')[0]]
+                          )}
+                        />
+
+                        <div className={bodyClassName}>
+                          {tooltip}
+                        </div>
+                      </div> :
+                      null
+                  }
                 </div>
-              </div>
-            </div>
-        }
-      </TetherComponent>
+              );
+            }}
+          </Popper>
+        </Portal>
+      </Manager>
     );
   }
 }
 
 Tooltip.propTypes = {
   className: PropTypes.string,
+  bodyClassName: PropTypes.string.isRequired,
   anchor: PropTypes.node.isRequired,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   kind: PropTypes.oneOf([kinds.DEFAULT, kinds.INVERSE]),
@@ -156,6 +158,7 @@ Tooltip.propTypes = {
 };
 
 Tooltip.defaultProps = {
+  bodyClassName: styles.body,
   kind: kinds.DEFAULT,
   position: tooltipPositions.TOP
 };

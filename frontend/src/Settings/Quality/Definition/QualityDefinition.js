@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import ReactSlider from 'react-slider';
 import formatBytes from 'Utilities/Number/formatBytes';
 import roundNumber from 'Utilities/Number/roundNumber';
-import { kinds } from 'Helpers/Props';
+import { kinds, tooltipPositions } from 'Helpers/Props';
 import Label from 'Components/Label';
 import NumberInput from 'Components/Form/NumberInput';
 import TextInput from 'Components/Form/TextInput';
+import Popover from 'Components/Tooltip/Popover';
+import QualityDefinitionLimits from './QualityDefinitionLimits';
 import styles from './QualityDefinition.css';
 
 const MIN = 0;
@@ -141,13 +143,8 @@ class QualityDefinition extends Component {
     const minBytes = minSize * 128;
     const maxBytes = maxSize && maxSize * 128;
 
-    // Calculates the bytes used by a twenty minute EP
-    const minTwenty = formatBytes(minBytes * 20 * 60, 2);
-    const maxTwenty = maxBytes ? formatBytes(maxBytes * 20 * 60, 2) : 'Unlimited';
-
-    // Calculates the bytes used by a forty-five minute LP
-    const minFortyFive = formatBytes(minBytes * 45 * 60, 2);
-    const maxFortyFive = maxBytes ? formatBytes(maxBytes * 45 * 60, 2) : 'Unlimited';
+    const minRate = `${formatBytes(minBytes, true)}/s`;
+    const maxRate = maxBytes ? `${formatBytes(maxBytes, true)}/s` : 'Unlimited';
 
     return (
       <div className={styles.qualityDefinition}>
@@ -181,13 +178,35 @@ class QualityDefinition extends Component {
 
           <div className={styles.sizes}>
             <div>
-              <Label title={'Minimum size for a 20 minute EP'} kind={kinds.WARNING}>{minTwenty}</Label>
-              <Label title={'Minimum size for a 45 minute LP'} kind={kinds.INFO}>{minFortyFive}</Label>
+              <Popover
+                anchor={
+                  <Label kind={kinds.INFO}>{minRate}</Label>
+                }
+                title="Minimum Limits"
+                body={
+                  <QualityDefinitionLimits
+                    bytes={minBytes}
+                    message="No minimum for any runtime"
+                  />
+                }
+                position={tooltipPositions.BOTTOM}
+              />
             </div>
 
             <div>
-              <Label title={'Maximum size for a 20 minute EP'} kind={kinds.WARNING}>{maxTwenty}</Label>
-              <Label title={'Maximum size for a 45 minute LP'} kind={kinds.INFO}>{maxFortyFive}</Label>
+              <Popover
+                anchor={
+                  <Label kind={kinds.WARNING}>{maxRate}</Label>
+                }
+                title="Maximum Limits"
+                body={
+                  <QualityDefinitionLimits
+                    bytes={maxBytes}
+                    message="No limit for any runtime"
+                  />
+                }
+                position={tooltipPositions.BOTTOM}
+              />
             </div>
           </div>
         </div>

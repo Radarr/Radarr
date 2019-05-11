@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import TetherComponent from 'react-tether';
+import { Manager, Popper, Reference } from 'react-popper';
 import classNames from 'classnames';
+import getUniqueElememtId from 'Utilities/getUniqueElementId';
 import isMobileUtil from 'Utilities/isMobile';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import { icons, scrollDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import Portal from 'Components/Portal';
 import Link from 'Components/Link/Link';
 import Measure from 'Components/Measure';
 import Modal from 'Components/Modal/Modal';
@@ -16,19 +17,6 @@ import Scroller from 'Components/Scroller/Scroller';
 import EnhancedSelectInputSelectedValue from './EnhancedSelectInputSelectedValue';
 import EnhancedSelectInputOption from './EnhancedSelectInputOption';
 import styles from './EnhancedSelectInput.css';
-
-const tetherOptions = {
-  skipMoveElement: true,
-  constraints: [
-    {
-      to: 'window',
-      attachment: 'together',
-      pin: true
-    }
-  ],
-  attachment: 'top left',
-  targetAttachment: 'bottom left'
-};
 
 function isArrowKey(keyCode) {
   return keyCode === keyCodes.UP_ARROW || keyCode === keyCodes.DOWN_ARROW;
@@ -87,6 +75,10 @@ class EnhancedSelectInput extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._scheduleUpdate = null;
+    this._buttonId = getUniqueElememtId();
+    this._optionsId = getUniqueElememtId();
+
     this.state = {
       isOpen: false,
       selectedIndex: getSelectedIndex(props),
@@ -96,6 +88,10 @@ class EnhancedSelectInput extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (this._scheduleUpdate) {
+      this._scheduleUpdate();
+    }
+
     if (prevProps.value !== this.props.value) {
       this.setState({
         selectedIndex: getSelectedIndex(this.props)
@@ -105,14 +101,6 @@ class EnhancedSelectInput extends Component {
 
   //
   // Control
-
-  _setButtonRef = (ref) => {
-    this._buttonRef = ref;
-  }
-
-  _setOptionsRef = (ref) => {
-    this._optionsRef = ref;
-  }
 
   _addListener() {
     window.addEventListener('click', this.onWindowClick);
@@ -125,9 +113,26 @@ class EnhancedSelectInput extends Component {
   //
   // Listeners
 
+  onComputeMaxHeight = (data) => {
+    const {
+      top,
+      bottom
+    } = data.offsets.reference;
+
+    const windowHeight = window.innerHeight;
+
+    if ((/^botton/).test(data.placement)) {
+      data.styles.maxHeight = windowHeight - bottom;
+    } else {
+      data.styles.maxHeight = top;
+    }
+
+    return data;
+  }
+
   onWindowClick = (event) => {
-    const button = ReactDOM.findDOMNode(this._buttonRef);
-    const options = ReactDOM.findDOMNode(this._optionsRef);
+    const button = document.getElementById(this._buttonId);
+    const options = document.getElementById(this._optionsId);
 
     if (!button || this.state.isMobile) {
       return;
@@ -271,80 +276,110 @@ class EnhancedSelectInput extends Component {
 
     return (
       <div>
-        <TetherComponent
-          classes={{
-            element: styles.tether
-          }}
-          {...tetherOptions}
-        >
-          <Measure
-            whitelist={['width']}
-            onMeasure={this.onMeasure}
-          >
-            <Link
-              ref={this._setButtonRef}
-              className={classNames(
-                className,
-                hasError && styles.hasError,
-                hasWarning && styles.hasWarning,
-                isDisabled && disabledClassName
-              )}
-              isDisabled={isDisabled}
-              onBlur={this.onBlur}
-              onKeyDown={this.onKeyDown}
-              onPress={this.onPress}
-            >
-              <SelectedValueComponent
-                {...selectedValueOptions}
-                {...selectedOption}
-                isDisabled={isDisabled}
-              >
-                {selectedOption ? selectedOption.value : null}
-              </SelectedValueComponent>
-
+        <Manager>
+          <Reference>
+            {({ ref }) => (
               <div
-                className={isDisabled ?
-                  styles.dropdownArrowContainerDisabled :
-                  styles.dropdownArrowContainer
+                ref={ref}
+                id={this._buttonId}
+              >
+                <Measure
+                  whitelist={['width']}
+                  onMeasure={this.onMeasure}
+                >
+                  <Link
+                    className={classNames(
+                      className,
+                      hasError && styles.hasError,
+                      hasWarning && styles.hasWarning,
+                      isDisabled && disabledClassName
+                    )}
+                    isDisabled={isDisabled}
+                    onBlur={this.onBlur}
+                    onKeyDown={this.onKeyDown}
+                    onPress={this.onPress}
+                  >
+                    <SelectedValueComponent
+                      {...selectedValueOptions}
+                      {...selectedOption}
+                      isDisabled={isDisabled}
+                    >
+                      {selectedOption ? selectedOption.value : null}
+                    </SelectedValueComponent>
+
+                    <div
+                      className={isDisabled ?
+                        styles.dropdownArrowContainerDisabled :
+                        styles.dropdownArrowContainer
+                      }
+                    >
+                      <Icon
+                        name={icons.CARET_DOWN}
+                      />
+                    </div>
+                  </Link>
+                </Measure>
+              </div>
+            )}
+          </Reference>
+          <Portal>
+            <Popper
+              placement="bottom-start"
+              modifiers={{
+                computeMaxHeight: {
+                  order: 851,
+                  enabled: true,
+                  fn: this.onComputeMaxHeight
                 }
-              >
-                <Icon
-                  name={icons.CARET_DOWN}
-                />
-              </div>
-            </Link>
-          </Measure>
+              }}
+            >
+              {({ ref, style, scheduleUpdate }) => {
+                this._scheduleUpdate = scheduleUpdate;
 
-          {
-            isOpen && !isMobile &&
-              <div
-                ref={this._setOptionsRef}
-                className={styles.optionsContainer}
-                style={{
-                  minWidth: width
-                }}
-              >
-                <div className={styles.options}>
-                  {
-                    values.map((v, index) => {
-                      return (
-                        <OptionComponent
-                          key={v.key}
-                          id={v.key}
-                          isSelected={index === selectedIndex}
-                          {...v}
-                          isMobile={false}
-                          onSelect={this.onSelect}
+                return (
+                  <div
+                    ref={ref}
+                    id={this._optionsId}
+                    className={styles.optionsContainer}
+                    style={{
+                      ...style,
+                      minWidth: width
+                    }}
+                  >
+                    {
+                      isOpen && !isMobile ?
+                        <Scroller
+                          className={styles.options}
+                          style={{
+                            maxHeight: style.maxHeight
+                          }}
                         >
-                          {v.value}
-                        </OptionComponent>
-                      );
-                    })
-                  }
-                </div>
-              </div>
-          }
-        </TetherComponent>
+                          {
+                            values.map((v, index) => {
+                              return (
+                                <OptionComponent
+                                  key={v.key}
+                                  id={v.key}
+                                  isSelected={index === selectedIndex}
+                                  {...v}
+                                  isMobile={false}
+                                  onSelect={this.onSelect}
+                                >
+                                  {v.value}
+                                </OptionComponent>
+                              );
+                            })
+                          }
+                        </Scroller> :
+                        null
+                    }
+                  </div>
+                );
+              }
+              }
+            </Popper>
+          </Portal>
+        </Manager>
 
         {
           isMobile &&

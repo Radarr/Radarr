@@ -238,6 +238,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           isDisabled={!allowArtistChange}
+          title={allowArtistChange ? 'Click to change artist' : undefined}
           onPress={this.onSelectArtistPress}
         >
           {
@@ -247,6 +248,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           isDisabled={!artist}
+          title={artist ? 'Click to change album' : undefined}
           onPress={this.onSelectAlbumPress}
         >
           {
@@ -256,6 +258,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           isDisabled={!artist || !album}
+          title={artist && album ? 'Click to change track' : undefined}
           onPress={this.onSelectTrackPress}
         >
           {
@@ -268,6 +271,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.quality}
+          title="Click to change quality"
           onPress={this.onSelectQualityPress}
         >
           {
@@ -286,6 +290,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.language}
+          title="Click to change language"
           onPress={this.onSelectLanguagePress}
         >
           {

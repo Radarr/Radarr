@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import TetherComponent from 'react-tether';
+import { Manager, Popper, Reference } from 'react-popper';
+import getUniqueElememtId from 'Utilities/getUniqueElementId';
 import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import Portal from 'Components/Portal';
 import FormInputButton from 'Components/Form/FormInputButton';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -11,19 +12,6 @@ import TextInput from 'Components/Form/TextInput';
 import ImportArtistSearchResultConnector from './ImportArtistSearchResultConnector';
 import ImportArtistName from './ImportArtistName';
 import styles from './ImportArtistSelectArtist.css';
-
-const tetherOptions = {
-  skipMoveElement: true,
-  constraints: [
-    {
-      to: 'window',
-      attachment: 'together',
-      pin: true
-    }
-  ],
-  attachment: 'top center',
-  targetAttachment: 'bottom center'
-};
 
 class ImportArtistSelectArtist extends Component {
 
@@ -34,6 +22,9 @@ class ImportArtistSelectArtist extends Component {
     super(props, context);
 
     this._artistLookupTimeout = null;
+    this._scheduleUpdate = null;
+    this._buttonId = getUniqueElememtId();
+    this._contentId = getUniqueElememtId();
 
     this.state = {
       term: props.id,
@@ -41,16 +32,14 @@ class ImportArtistSelectArtist extends Component {
     };
   }
 
+  componentDidUpdate() {
+    if (this._scheduleUpdate) {
+      this._scheduleUpdate();
+    }
+  }
+
   //
   // Control
-
-  _setButtonRef = (ref) => {
-    this._buttonRef = ref;
-  }
-
-  _setContentRef = (ref) => {
-    this._contentRef = ref;
-  }
 
   _addListener() {
     window.addEventListener('click', this.onWindowClick);
@@ -64,14 +53,18 @@ class ImportArtistSelectArtist extends Component {
   // Listeners
 
   onWindowClick = (event) => {
-    const button = ReactDOM.findDOMNode(this._buttonRef);
-    const content = ReactDOM.findDOMNode(this._contentRef);
+    const button = document.getElementById(this._buttonId);
+    const content = document.getElementById(this._contentId);
 
-    if (!button) {
+    if (!button || !content) {
       return;
     }
 
-    if (!button.contains(event.target) && content && !content.contains(event.target) && this.state.isOpen) {
+    if (
+      !button.contains(event.target) &&
+      !content.contains(event.target) &&
+      this.state.isOpen
+    ) {
       this.setState({ isOpen: false });
       this._removeListener();
     }
@@ -129,130 +122,159 @@ class ImportArtistSelectArtist extends Component {
       error.responseJSON.message;
 
     return (
-      <TetherComponent
-        classes={{
-          element: styles.tether
-        }}
-        {...tetherOptions}
-      >
-        <Link
-          ref={this._setButtonRef}
-          className={styles.button}
-          component="div"
-          onPress={this.onPress}
-        >
-          {
-            isLookingUpArtist && isQueued && !isPopulated &&
-              <LoadingIndicator
-                className={styles.loading}
-                size={20}
-              />
-          }
-
-          {
-            isPopulated && selectedArtist && isExistingArtist &&
-              <Icon
-                className={styles.warningIcon}
-                name={icons.WARNING}
-                kind={kinds.WARNING}
-              />
-          }
-
-          {
-            isPopulated && selectedArtist &&
-              <ImportArtistName
-                artistName={selectedArtist.artistName}
-                disambiguation={selectedArtist.disambiguation}
-                // year={selectedArtist.year}
-                isExistingArtist={isExistingArtist}
-              />
-          }
-
-          {
-            isPopulated && !selectedArtist &&
-              <div className={styles.noMatches}>
-                <Icon
-                  className={styles.warningIcon}
-                  name={icons.WARNING}
-                  kind={kinds.WARNING}
-                />
-
-                No match found!
-              </div>
-          }
-
-          {
-            !isFetching && !!error &&
-              <div>
-                <Icon
-                  className={styles.warningIcon}
-                  title={errorMessage}
-                  name={icons.WARNING}
-                  kind={kinds.WARNING}
-                />
-
-                Search failed, please try again later.
-              </div>
-          }
-
-          <div className={styles.dropdownArrowContainer}>
-            <Icon
-              name={icons.CARET_DOWN}
-            />
-          </div>
-        </Link>
-
-        {
-          this.state.isOpen &&
+      <Manager>
+        <Reference>
+          {({ ref }) => (
             <div
-              ref={this._setContentRef}
-              className={styles.contentContainer}
+              ref={ref}
+              id={this._buttonId}
             >
-              <div className={styles.content}>
-                <div className={styles.searchContainer}>
-                  <div className={styles.searchIconContainer}>
-                    <Icon name={icons.SEARCH} />
-                  </div>
+              <Link
+                ref={ref}
+                className={styles.button}
+                component="div"
+                onPress={this.onPress}
+              >
+                {
+                  isLookingUpArtist && isQueued && !isPopulated ?
+                    <LoadingIndicator
+                      className={styles.loading}
+                      size={20}
+                    /> :
+                    null
+                }
 
-                  <TextInput
-                    className={styles.searchInput}
-                    name={`${name}_textInput`}
-                    value={this.state.term}
-                    onChange={this.onSearchInputChange}
+                {
+                  isPopulated && selectedArtist && isExistingArtist ?
+                    <Icon
+                      className={styles.warningIcon}
+                      name={icons.WARNING}
+                      kind={kinds.WARNING}
+                    /> :
+                    null
+                }
+
+                {
+                  isPopulated && selectedArtist ?
+                    <ImportArtistName
+                      artistName={selectedArtist.artistName}
+                      disambiguation={selectedArtist.disambiguation}
+                      // year={selectedArtist.year}
+                      isExistingArtist={isExistingArtist}
+                    /> :
+                    null
+                }
+
+                {
+                  isPopulated && !selectedArtist ?
+                    <div className={styles.noMatches}>
+                      <Icon
+                        className={styles.warningIcon}
+                        name={icons.WARNING}
+                        kind={kinds.WARNING}
+                      />
+
+                      No match found!
+                    </div> :
+                    null
+                }
+
+                {
+                  !isFetching && !!error ?
+                    <div>
+                      <Icon
+                        className={styles.warningIcon}
+                        title={errorMessage}
+                        name={icons.WARNING}
+                        kind={kinds.WARNING}
+                      />
+
+                        Search failed, please try again later.
+                    </div> :
+                    null
+                }
+
+                <div className={styles.dropdownArrowContainer}>
+                  <Icon
+                    name={icons.CARET_DOWN}
                   />
-
-                  <FormInputButton
-                    kind={kinds.DEFAULT}
-                    spinnerIcon={icons.REFRESH}
-                    canSpin={true}
-                    isSpinning={isFetching}
-                    onPress={this.onRefreshPress}
-                    title="Refresh"
-                  >
-                    <Icon name={icons.REFRESH} />
-                  </FormInputButton>
                 </div>
-
-                <div className={styles.results}>
-                  {
-                    items.map((item) => {
-                      return (
-                        <ImportArtistSearchResultConnector
-                          key={item.foreignArtistId}
-                          foreignArtistId={item.foreignArtistId}
-                          artistName={item.artistName}
-                          disambiguation={item.disambiguation}
-                          // year={item.year}
-                          onPress={this.onArtistSelect}
-                        />
-                      );
-                    })
-                  }
-                </div>
-              </div>
+              </Link>
             </div>
-        }
-      </TetherComponent>
+          )}
+        </Reference>
+
+        <Portal>
+          <Popper
+            placement="bottom"
+            modifiers={{
+              preventOverflow: {
+                boundariesElement: 'viewport'
+              }
+            }}
+          >
+            {({ ref, style, scheduleUpdate }) => {
+              this._scheduleUpdate = scheduleUpdate;
+
+              return (
+                <div
+                  ref={ref}
+                  id={this._contentId}
+                  className={styles.contentContainer}
+                  style={style}
+                >
+                  {
+                    this.state.isOpen ?
+                      <div className={styles.content}>
+                        <div className={styles.searchContainer}>
+                          <div className={styles.searchIconContainer}>
+                            <Icon name={icons.SEARCH} />
+                          </div>
+
+                          <TextInput
+                            className={styles.searchInput}
+                            name={`${name}_textInput`}
+                            value={this.state.term}
+                            onChange={this.onSearchInputChange}
+                          />
+
+                          <FormInputButton
+                            kind={kinds.DEFAULT}
+                            spinnerIcon={icons.REFRESH}
+                            canSpin={true}
+                            isSpinning={isFetching}
+                            onPress={this.onRefreshPress}
+                          >
+                            <Icon name={icons.REFRESH} />
+                          </FormInputButton>
+                        </div>
+
+                        <div className={styles.results}>
+                          {
+                            items.map((item) => {
+                              return (
+                                <ImportArtistSearchResultConnector
+                                  key={item.foreignArtistId}
+                                  foreignArtistId={item.foreignArtistId}
+                                  artistName={item.artistName}
+                                  disambiguation={item.disambiguation}
+                                  // year={item.year}
+                                  onPress={this.onArtistSelect}
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </div> :
+                      null
+                  }
+
+                </div>
+              );
+            }}
+          </Popper>
+        </Portal>
+      </Manager>
     );
   }
 }
