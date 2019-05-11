@@ -707,7 +707,7 @@ ArtistDetails.propTypes = {
 
 ArtistDetails.defaultProps = {
   statistics: {},
-  tag: [],
+  tags: [],
   isSaving: false
 };
 
