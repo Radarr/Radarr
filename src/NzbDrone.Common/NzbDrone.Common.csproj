@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Common</RootNamespace>
     <AssemblyName>Lidarr.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -55,7 +55,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Sentry, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sentry.1.1.2\lib\net461\Sentry.dll</HintPath>
+      <HintPath>..\packages\Sentry.1.1.2\lib\netstandard2.0\Sentry.dll</HintPath>
     </Reference>
     <Reference Include="Sentry.Protocol, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sentry.Protocol.1.0.3\lib\net46\Sentry.Protocol.dll</HintPath>
