@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             requestBuilder.LogResponseContent = true;
             
             requestBuilder.Resource("json");
-            requestBuilder.PostProcess += r => r.RequestTimeout = TimeSpan.FromSeconds(15);
+            requestBuilder.PostProcess += r => r.RequestTimeout = TimeSpan.FromSeconds(60);
 
             AuthenticateClient(requestBuilder, settings);
 
