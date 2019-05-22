@@ -195,13 +195,28 @@ namespace NzbDrone.Core.Movies
 
             foreach (var profile in qualitiesBelowCutoff)
             {
-                foreach (var belowCutoff in profile.QualityIds)
+                foreach (var belowCutoff in profile.DoesntMeetCutoffIds)
                 {
-                    clauses.Add(string.Format("([t0].[ProfileId] = {0} AND [t2].[Quality] LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+                    clauses.Add($"([t0].[ProfileId] = {profile.ProfileId} AND [t2].[Quality] LIKE '%_quality_: {belowCutoff},%')");
+                }
+
+                foreach (var belowCutoff in profile.MeetsCutoffIds)
+                {
+                    if (profile.MeetsCustomFormatIds.Any())
+                    {
+                        var clause = $"[t0].[ProfileId] = {profile.ProfileId} AND [t2].[Quality] LIKE '%_quality_: {belowCutoff},%'";
+
+                        foreach (var customFormatBelowCutoff in profile.MeetsCustomFormatIds)
+                        {
+                            clause += $" AND [t2].[Quality] NOT LIKE '%_customFormats_:%[%{customFormatBelowCutoff}%]%'";
+                        }
+
+                        clauses.Add($"({clause})");
+                    }
                 }
             }
 
-            return string.Format("({0})", string.Join(" OR ", clauses));
+            return $"({string.Join(" OR ", clauses)})";
         }
 
 		private string BuildQualityCutoffWhereClauseSpecial(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
@@ -210,7 +225,7 @@ namespace NzbDrone.Core.Movies
 
 			foreach (var profile in qualitiesBelowCutoff)
 			{
-				foreach (var belowCutoff in profile.QualityIds)
+				foreach (var belowCutoff in profile.DoesntMeetCutoffIds)
 				{
 					clauses.Add(string.Format("(Movies.ProfileId = {0} AND MovieFiles.Quality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
 				}
