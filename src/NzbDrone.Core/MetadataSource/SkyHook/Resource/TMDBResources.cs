@@ -5,7 +5,6 @@ using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-
     public class FindRoot
     {
         public MovieResult[] movie_results { get; set; }
@@ -177,4 +176,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string original_name { get; set; }
     }
 
+    public class CollectionResponseRoot
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string overview { get; set; }
+        public string poster_path { get; set; }
+        public string backdrop_path { get; set; }
+        public MovieResult[] parts { get; set; }
+    }
 }
