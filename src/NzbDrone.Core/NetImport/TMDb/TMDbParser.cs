@@ -35,46 +35,72 @@ namespace NzbDrone.Core.NetImport.TMDb
                 return movies;
             }
 
-            if (_settings.ListType != (int)TMDbListType.List)
+            switch (_settings.ListType)
             {
-                var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
-
-                // no movies were return
-                if (jsonResponse == null)
+                case (int) TMDbListType.List:
                 {
-                    return movies;
-                }
-
-                return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
-            }
-            else
-            {
-                var jsonResponse = JsonConvert.DeserializeObject<ListResponseRoot>(_importResponse.Content);
-
-                // no movies were return
-                if (jsonResponse == null)
-                {
-                    return movies;
-                }
-
-                foreach (var movie in jsonResponse.items)
-                {
-                    // Skip non-movie things
-                    if (movie.media_type != "movie")
+                    var jsonResponse = JsonConvert.DeserializeObject<ListResponseRoot>(_importResponse.Content);
+                    // no movies were return
+                    if (jsonResponse == null)
                     {
-                        continue;
+                        return movies;
                     }
 
-                    // Movies with no Year Fix
-                    if (string.IsNullOrWhiteSpace(movie.release_date))
+                    foreach (var movie in jsonResponse.items)
                     {
-                        continue;
+                        // Skip non-movie things
+                        if (movie.media_type != "movie")
+                        {
+                            continue;
+                        }
+
+                        // Movies with no Year Fix
+                        if (string.IsNullOrWhiteSpace(movie.release_date))
+                        {
+                            continue;
+                        }
+
+                        movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
                     }
 
-                    movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
+                    break;
+                }
+
+                case (int) TMDbListType.Collection:
+                {
+                    var jsonResponse = JsonConvert.DeserializeObject<CollectionResponseRoot>(_importResponse.Content);
+                    // no movies were return
+                    if (jsonResponse == null)
+                    {
+                        return movies;
+                    }
+
+                    foreach (var movie in jsonResponse.parts)
+                    {
+                        // Movies with no Year Fix
+                        if (string.IsNullOrWhiteSpace(movie.release_date))
+                        {
+                            continue;
+                        }
+
+                        movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
+                    }
+
+                    break;
+                }
+
+                default:
+                {
+                    var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
+                    // no movies were return
+                    if (jsonResponse == null)
+                    {
+                        return movies;
+                    }
+
+                    return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
                 }
             }
-
 
             return movies;
         }
@@ -83,17 +109,21 @@ namespace NzbDrone.Core.NetImport.TMDb
         {
             if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new NetImportException(indexerResponse, "Indexer API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+                throw new NetImportException(indexerResponse,
+                    "Indexer API call resulted in an unexpected StatusCode [{0}]",
+                    indexerResponse.HttpResponse.StatusCode);
             }
 
-            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
-                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
+            if (indexerResponse.HttpResponse.Headers.ContentType != null &&
+                indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
+                indexerResponse.HttpRequest.Headers.Accept != null &&
+                !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
             {
-                throw new NetImportException(indexerResponse, "Indexer responded with html content. Site is likely blocked or unavailable.");
+                throw new NetImportException(indexerResponse,
+                    "Indexer responded with html content. Site is likely blocked or unavailable.");
             }
 
             return true;
         }
-
     }
 }
