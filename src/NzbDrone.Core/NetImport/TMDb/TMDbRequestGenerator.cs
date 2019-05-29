@@ -28,12 +28,10 @@ namespace NzbDrone.Core.NetImport.TMDb
             var ceritification = Settings.Ceritification;
             var includeGenreIds = Settings.IncludeGenreIds;
             var excludeGenreIds = Settings.ExcludeGenreIds;
-            var languageCode = (TMDbLanguageCodes)Settings.LanguageCode;
-
+            var languageCode = (TMDbLanguageCodes) Settings.LanguageCode;
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
             var threeMonthsFromNow = DateTime.Parse(todaysDate).AddMonths(3).ToString("yyyy-MM-dd");
-
             if (ceritification.IsNotNullOrWhiteSpace())
             {
                 ceritification = $"&certification_country=US&certification={ceritification}";
@@ -42,77 +40,89 @@ namespace NzbDrone.Core.NetImport.TMDb
             var tmdbParams = "";
             switch (Settings.ListType)
             {
-                case (int)TMDbListType.List:
+                case (int) TMDbListType.List:
                     tmdbParams = $"/3/list/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
                     break;
-                case (int)TMDbListType.Theaters:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                case (int) TMDbListType.Theaters:
+                    tmdbParams =
+                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
-                case (int)TMDbListType.Popular:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=popularity.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                case (int) TMDbListType.Popular:
+                    tmdbParams =
+                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=popularity.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
-                case (int)TMDbListType.Top:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=vote_average.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                case (int) TMDbListType.Top:
+                    tmdbParams =
+                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=vote_average.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
-                case (int)TMDbListType.Upcoming:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                case (int) TMDbListType.Upcoming:
+                    tmdbParams =
+                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    break;
+                case (int) TMDbListType.Collection:
+                    tmdbParams = $"/3/collection/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
                     break;
             }
 
             var pageableRequests = new NetImportPageableRequestChain();
-            if (Settings.ListType != (int)TMDbListType.List)
+            switch (Settings.ListType)
             {
-                // First query to get the total_Pages
-                var requestBuilder = new HttpRequestBuilder($"{Settings.Link.TrimEnd("/")}")
-                {
-                    LogResponseContent = true
-                };
-
-                requestBuilder.Method = HttpMethod.GET;
-                requestBuilder.Resource(tmdbParams);
-
-                var request = requestBuilder
-                    // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
-                    .Accept(HttpAccept.Json)
-                    .Build();
-
-                var response = HttpClient.Execute(request);
-                var result = Json.Deserialize<MovieSearchRoot>(response.Content);
-
-                // @TODO Prolly some error handling to do here
-                pageableRequests.Add(GetMovies(tmdbParams, result.total_pages));
-                return pageableRequests;
+                case (int) TMDbListType.List:
+                case (int) TMDbListType.Collection:
+                    pageableRequests.Add(GetMovies(tmdbParams, 0));
+                    return pageableRequests;
+                default:
+                    // First query to get the total_Pages
+                    var requestBuilder = new HttpRequestBuilder($"{Settings.Link.TrimEnd("/")}")
+                    {
+                        LogResponseContent = true
+                    };
+                    requestBuilder.Method = HttpMethod.GET;
+                    requestBuilder.Resource(tmdbParams);
+                    var request = requestBuilder
+                        // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
+                        .Accept(HttpAccept.Json)
+                        .Build();
+                    var response = HttpClient.Execute(request);
+                    var result = Json.Deserialize<MovieSearchRoot>(response.Content);
+                    // @TODO Prolly some error handling to do here
+                    pageableRequests.Add(GetMovies(tmdbParams, result.total_pages));
+                    return pageableRequests;
             }
-
-            pageableRequests.Add(GetMovies(tmdbParams, 0));
-            return pageableRequests;
         }
 
         private IEnumerable<NetImportRequest> GetMovies(string tmdbParams, int totalPages)
         {
             var baseUrl = $"{Settings.Link.TrimEnd("/")}{tmdbParams}";
-            if (Settings.ListType != (int)TMDbListType.List)
+            switch (Settings.ListType)
             {
-                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++)
+                case (int) TMDbListType.List:
+                case (int) TMDbListType.Collection:
                 {
-                    // Limit the amount of pages
-                    if (pageNumber >= MaxPages + 1)
+                    Logger.Info($"Importing TMDb movies from: {baseUrl}");
+                    yield return new NetImportRequest($"{baseUrl}", HttpAccept.Json);
+                    break;
+                }
+
+                default:
+                {
+                    for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++)
                     {
-                        Logger.Info(
-                            $"Found more than {MaxPages} pages, skipping the {totalPages - (MaxPages + 1)} remaining pages");
-                        break;
+                        // Limit the amount of pages
+                        if (pageNumber >= MaxPages + 1)
+                        {
+                            Logger.Info(
+                                $"Found more than {MaxPages} pages, skipping the {totalPages - (MaxPages + 1)} remaining pages");
+                            break;
+                        }
+
+                        Logger.Info($"Importing TMDb movies from: {baseUrl}&page={pageNumber}");
+                        yield return new NetImportRequest($"{baseUrl}&page={pageNumber}", HttpAccept.Json);
                     }
 
-                    Logger.Info($"Importing TMDb movies from: {baseUrl}&page={pageNumber}");
-                    yield return new NetImportRequest($"{baseUrl}&page={pageNumber}", HttpAccept.Json);
+                    break;
                 }
             }
-            else
-            {
-                Logger.Info($"Importing TMDb movies from: {baseUrl}");
-                yield return new NetImportRequest($"{baseUrl}", HttpAccept.Json);
-            }
-
         }
     }
 }
