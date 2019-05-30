@@ -261,6 +261,10 @@ var Collection = PageableCollection.extend({
       this.fetch();
     },
 
+    isFiltered : function() {
+        return this.state.filterKey && this.state.filterKey !== 'all';
+    },
+
     comparator: function (model) {
 		return model.get('sortTitle');
     }
