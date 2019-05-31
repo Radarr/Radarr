@@ -64,14 +64,11 @@ namespace NzbDrone.Core.NetImport.TMDb
             MinVoteAverage = "5";
             MinVotes = "1";
             LanguageCode = (int)TMDbLanguageCodes.en;
+            AccountID = "https://github.com/elChapoSing/tmdb_account_id"
         }
 
         [FieldDefinition(0, Label = "TMDb API URL", HelpText = "Link to to TMDb API URL, do not change unless you know what you are doing.")]
         public string Link { get; set; }
-
-        [FieldDefinition(0, Label = "Account ID", HelpText = "Your account ID for Radarr API.")]
-//        I have built a simple tool at https://github.com/elChapoSing/tmdb_account_id to get it but not sure how to integrate it.
-        public string AccountID { get; set; }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TMDbListType), HelpText = "Type of list your seeking to import from")]
         public int ListType { get; set; }
@@ -96,6 +93,9 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
         public int LanguageCode { get; set; }
+
+        [FieldDefinition(9, Label = "Account ID", HelpText = "Your account ID for Radarr API. Use the link to get it.")]
+        public string AccountID { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
