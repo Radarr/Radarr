@@ -64,7 +64,7 @@ namespace NzbDrone.Core.NetImport.TMDb
             MinVoteAverage = "5";
             MinVotes = "1";
             LanguageCode = (int)TMDbLanguageCodes.en;
-            AccountID = "https://github.com/elChapoSing/tmdb_account_id"
+            AccountID = "https://github.com/elChapoSing/tmdb_account_id";
         }
 
         [FieldDefinition(0, Label = "TMDb API URL", HelpText = "Link to to TMDb API URL, do not change unless you know what you are doing.")]
