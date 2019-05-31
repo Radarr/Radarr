@@ -10,6 +10,7 @@ namespace NzbDrone.Core.NetImport.TMDb
 {
     public class TMDbRequestGenerator : INetImportRequestGenerator
     {
+        private const string ApiKey = "1a7373301961d03f97f853a876dd1212";
         public TMDbSettings Settings { get; set; }
         public IHttpClient HttpClient { get; set; }
         public Logger Logger { get; set; }
@@ -37,70 +38,80 @@ namespace NzbDrone.Core.NetImport.TMDb
                 ceritification = $"&certification_country=US&certification={ceritification}";
             }
 
-            var tmdbParams = "";
+            var requestBuilder = new HttpRequestBuilder(Settings.Link.TrimEnd("/"))
+                {
+                    LogResponseContent = true
+                }
+                .AddQueryParam("api_key", ApiKey);
             switch (Settings.ListType)
             {
                 case (int) TMDbListType.List:
-                    tmdbParams = $"/3/list/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
-                    break;
-                case (int) TMDbListType.Theaters:
-                    tmdbParams =
-                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
-                    break;
-                case (int) TMDbListType.Popular:
-                    tmdbParams =
-                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=popularity.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
-                    break;
-                case (int) TMDbListType.Top:
-                    tmdbParams =
-                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=vote_average.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
-                    break;
-                case (int) TMDbListType.Upcoming:
-                    tmdbParams =
-                        $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    requestBuilder = requestBuilder.Resource($"/3/list/{Settings.ListId}");
                     break;
                 case (int) TMDbListType.Collection:
-                    tmdbParams = $"/3/collection/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
+                    requestBuilder = requestBuilder.Resource($"/3/collection/{Settings.ListId}");
+                    break;
+                case (int) TMDbListType.Theaters:
+                    requestBuilder = requestBuilder.Resource("/3/discover/movie")
+                        .AddQueryParam("primary_release.gte", threeMonthsAgo)
+                        .AddQueryParam("primary_release_date.lte", todaysDate);
+                    break;
+                case (int) TMDbListType.Popular:
+                    requestBuilder = requestBuilder.Resource("/3/discover/movie")
+                        .AddQueryParam("sort_by", "popularity.desc")
+                        .AddQueryParam("vote_count.gte", minVoteCount);
+                    break;
+                case (int) TMDbListType.Top:
+                    requestBuilder = requestBuilder.Resource("/3/discover/movie")
+                        .AddQueryParam("sort_by", "vote_average.desc")
+                        .AddQueryParam("vote_count.gte", minVoteCount);
+                    break;
+                case (int) TMDbListType.Upcoming:
+                    requestBuilder = requestBuilder.Resource("/3/discover/movie")
+                        .AddQueryParam("primary_release.gte", todaysDate)
+                        .AddQueryParam("primary_release_date.lte", threeMonthsFromNow);
                     break;
             }
 
             var pageableRequests = new NetImportPageableRequestChain();
+            var totalPages = 0;
             switch (Settings.ListType)
             {
                 case (int) TMDbListType.List:
                 case (int) TMDbListType.Collection:
-                    pageableRequests.Add(GetMovies(tmdbParams, 0));
-                    return pageableRequests;
+                    break;
                 default:
-                    // First query to get the total_Pages
-                    var requestBuilder = new HttpRequestBuilder($"{Settings.Link.TrimEnd("/")}")
-                    {
-                        LogResponseContent = true
-                    };
-                    requestBuilder.Method = HttpMethod.GET;
-                    requestBuilder.Resource(tmdbParams);
-                    var request = requestBuilder
-                        // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
-                        .Accept(HttpAccept.Json)
-                        .Build();
+                    requestBuilder = requestBuilder
+                        .AddQueryParam("vote_count.gte", minVoteCount)
+                        .AddQueryParam("vote_average.gte", minVoteAverage)
+                        .AddQueryParam("with_genres", includeGenreIds)
+                        .AddQueryParam("without_genres", excludeGenreIds)
+                        .AddQueryParam("certification_country", "US")
+                        .AddQueryParam("certification", ceritification)
+                        .AddQueryParam("with_original_language", languageCode)
+                        .Accept(HttpAccept.Json);
+                    var request = requestBuilder.Build();
+                    request.Method = HttpMethod.GET;
                     var response = HttpClient.Execute(request);
                     var result = Json.Deserialize<MovieSearchRoot>(response.Content);
-                    // @TODO Prolly some error handling to do here
-                    pageableRequests.Add(GetMovies(tmdbParams, result.total_pages));
-                    return pageableRequests;
+                    totalPages = result.total_pages;
+                    break;
             }
+
+            var url = requestBuilder.Build().Url.ToString();
+            pageableRequests.Add(GetMovies(requestBuilder.Build().Url.ToString(), totalPages));
+            return pageableRequests;
         }
 
-        private IEnumerable<NetImportRequest> GetMovies(string tmdbParams, int totalPages)
+        private IEnumerable<NetImportRequest> GetMovies(string url, int totalPages)
         {
-            var baseUrl = $"{Settings.Link.TrimEnd("/")}{tmdbParams}";
             switch (Settings.ListType)
             {
                 case (int) TMDbListType.List:
                 case (int) TMDbListType.Collection:
                 {
-                    Logger.Info($"Importing TMDb movies from: {baseUrl}");
-                    yield return new NetImportRequest($"{baseUrl}", HttpAccept.Json);
+                    Logger.Info($"Importing TMDb movies from: {url}");
+                    yield return new NetImportRequest($"{url}", HttpAccept.Json);
                     break;
                 }
 
@@ -116,8 +127,8 @@ namespace NzbDrone.Core.NetImport.TMDb
                             break;
                         }
 
-                        Logger.Info($"Importing TMDb movies from: {baseUrl}&page={pageNumber}");
-                        yield return new NetImportRequest($"{baseUrl}&page={pageNumber}", HttpAccept.Json);
+                        Logger.Info($"Importing TMDb movies from: {url}&page={pageNumber}");
+                        yield return new NetImportRequest($"{url}&page={pageNumber}", HttpAccept.Json);
                     }
 
                     break;
