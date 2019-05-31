@@ -8,6 +8,27 @@ namespace NzbDrone.Core.Indexers.Rarbg
 {
     public class RarbgRequestGenerator : IIndexerRequestGenerator
     {
+        static readonly public Dictionary<int, string> Categories = new Dictionary<int, string>()
+        {
+            {14, "Movies/XVID"},
+            {48, "Movies/XVID/720"},
+            {17, "Movies/x264"},
+            {44, "Movies/x264/1080"},
+            {45, "Movies/x264/720"},
+            {47, "Movies/x264/3D"},
+            {50, "Movies/x264/4k"},
+            {51, "Movies/x265/4k"},
+            {52, "Movs/x265/4k/HDR"},
+            {42, "Movies/Full BD"},
+            {46, "Movies/BD Remux"}
+        };
+        static private string _categoryParam
+        {
+            get
+            {
+                return string.Join(";", Categories.Keys);
+            }
+        }
         private readonly IRarbgTokenProvider _tokenProvider;
 
         public RarbgSettings Settings { get; set; }
@@ -60,7 +81,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "movies");
+            requestBuilder.AddQueryParam("category", _categoryParam);
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
@@ -91,14 +112,14 @@ namespace NzbDrone.Core.Indexers.Rarbg
             {
                 requestBuilder.AddQueryParam("search_string", $"{searchCriteria.Movie.Title} {searchCriteria.Movie.Year}");
             }
-            
+
 
             if (!Settings.RankedOnly)
             {
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "movies");
+            requestBuilder.AddQueryParam("category", _categoryParam);
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
@@ -106,7 +127,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             yield return new IndexerRequest(requestBuilder.Build());
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
