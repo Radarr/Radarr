@@ -17,8 +17,8 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 function getUrls(state) {
   const {
     unmonitored,
-    premieresOnly,
-    asAllDay,
+    pastDays,
+    futureDays,
     tags
   } = state;
 
@@ -28,19 +28,11 @@ function getUrls(state) {
     icalUrl += 'unmonitored=true&';
   }
 
-  if (premieresOnly) {
-    icalUrl += 'premieresOnly=true&';
-  }
-
-  if (asAllDay) {
-    icalUrl += 'asAllDay=true&';
-  }
-
   if (tags.length) {
     icalUrl += `tags=${tags.toString()}&`;
   }
 
-  icalUrl += `apikey=${window.Lidarr.apiKey}`;
+  icalUrl += `pastDays=${pastDays}&futureDays=${futureDays}&apikey=${window.Lidarr.apiKey}`;
 
   const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
   const iCalWebCalUrl = `webcal://${icalUrl}`;
@@ -61,8 +53,8 @@ class CalendarLinkModalContent extends Component {
 
     const defaultState = {
       unmonitored: false,
-      premieresOnly: false,
-      asAllDay: false,
+      pastDays: 7,
+      futureDays: 28,
       tags: []
     };
 
@@ -105,8 +97,8 @@ class CalendarLinkModalContent extends Component {
 
     const {
       unmonitored,
-      premieresOnly,
-      asAllDay,
+      pastDays,
+      futureDays,
       tags,
       iCalHttpUrl,
       iCalWebCalUrl
@@ -133,25 +125,25 @@ class CalendarLinkModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Season Premieres Only</FormLabel>
+              <FormLabel>Past Days</FormLabel>
 
               <FormInputGroup
-                type={inputTypes.CHECK}
-                name="premieresOnly"
-                value={premieresOnly}
-                helpText="Only the first album from an artist will be in the feed"
+                type={inputTypes.NUMBER}
+                name="pastDays"
+                value={pastDays}
+                helpText="Days for iCal feed to look into the past"
                 onChange={this.onInputChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show as All-Day Events</FormLabel>
+              <FormLabel>Future Days</FormLabel>
 
               <FormInputGroup
-                type={inputTypes.CHECK}
-                name="asAllDay"
-                value={asAllDay}
-                helpText="Events will appear as all-day events in your calendar"
+                type={inputTypes.NUMBER}
+                name="futureDays"
+                value={futureDays}
+                helpText="Days for iCal feed to look into the future"
                 onChange={this.onInputChange}
               />
             </FormGroup>
