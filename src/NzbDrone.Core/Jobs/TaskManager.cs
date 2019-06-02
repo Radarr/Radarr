@@ -76,7 +76,6 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
                     // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
                     new ScheduledTask{ Interval = 7*24*60, TypeName = typeof(BackupCommand).FullName},
 
@@ -102,6 +101,12 @@ namespace NzbDrone.Core.Jobs
                     {
                         Interval = Math.Max(_configService.CheckForFinishedDownloadInterval, 1),
                         TypeName = typeof(CheckForFinishedDownloadCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = GetRefreshMovieInterval(),
+                        TypeName = typeof(RefreshMovieCommand).FullName
                     },
                 };
 
@@ -166,6 +171,18 @@ namespace NzbDrone.Core.Jobs
 
             return interval;
         }
+		
+        private int GetRefreshMovieInterval()
+        {
+            var interval = _configService.RefreshMovieInterval*24*60;
+
+            if (interval < 0)
+            {
+                return 0;
+            }
+
+            return interval;
+        }
 
         public void Handle(CommandExecutedEvent message)
         {
@@ -192,7 +209,10 @@ namespace NzbDrone.Core.Jobs
             var checkForFinishedDownloads = _scheduledTaskRepository.GetDefinition(typeof(CheckForFinishedDownloadCommand));
             checkForFinishedDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport, checkForFinishedDownloads });
+            var refreshMovie = _scheduledTaskRepository.GetDefinition(typeof(RefreshMovieCommand));
+            refreshMovie.Interval = _configService.RefreshMovieInterval*24*60;
+
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport, checkForFinishedDownloads, refreshMovie });
         }
     }
 }
