@@ -71,7 +71,7 @@ class DeleteArtistModalContent extends Component {
 
     if (trackFileCount === 0) {
       deleteFilesLabel = 'Delete Artist Folder';
-      deleteFilesHelpText = 'Delete the artist folder and it\'s contents';
+      deleteFilesHelpText = 'Delete the artist folder and its contents';
     }
 
     return (
@@ -121,7 +121,7 @@ class DeleteArtistModalContent extends Component {
           {
             deleteFiles &&
               <div className={styles.deleteFilesMessage}>
-                <div>The artist folder <strong>{path}</strong> and all it's content will be deleted.</div>
+                <div>The artist folder <strong>{path}</strong> and all of its content will be deleted.</div>
 
                 {
                   !!trackFileCount &&
