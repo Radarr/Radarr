@@ -54,7 +54,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteBook.ParsedBookInfo.Quality);
 
-                var queuedItemPreferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Author, queueItem.Title);
+                var queuedItemPreferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Author, queueItem.Title, subject.Release?.IndexerId ?? 0);
 
                 if (!_upgradableSpecification.CutoffNotMet(qualityProfile,
                                                            new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },

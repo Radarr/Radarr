@@ -10,6 +10,7 @@ import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
 import EnhancedSelectInput from './EnhancedSelectInput';
 import FormInputHelpText from './FormInputHelpText';
+import IndexerSelectInputConnector from './IndexerSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
 import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
 import MonitorBooksSelectInput from './MonitorBooksSelectInput';
@@ -68,6 +69,9 @@ function getComponent(type) {
 
     case inputTypes.BOOK_EDITION_SELECT:
       return BookEditionSelectInputConnector;
+
+    case inputTypes.INDEXER_SELECT:
+      return IndexerSelectInputConnector;
 
     case inputTypes.ROOT_FOLDER_SELECT:
       return RootFolderSelectInputConnector;

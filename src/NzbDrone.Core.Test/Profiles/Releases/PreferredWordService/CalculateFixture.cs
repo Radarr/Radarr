@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
             });
 
             Mocker.GetMock<IReleaseProfileService>()
-                  .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
+                  .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(_releaseProfiles);
         }
 
@@ -51,10 +51,10 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         public void should_return_0_when_there_are_no_release_profiles()
         {
             Mocker.GetMock<IReleaseProfileService>()
-                  .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
+                  .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>());
 
-            Subject.Calculate(_artist, _title).Should().Be(0);
+            Subject.Calculate(_artist, _title, 0).Should().Be(0);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms();
 
-            Subject.Calculate(_artist, _title).Should().Be(0);
+            Subject.Calculate(_artist, _title, 0).Should().Be(0);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms("24bit");
 
-            Subject.Calculate(_artist, _title).Should().Be(5);
+            Subject.Calculate(_artist, _title, 0).Should().Be(5);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms("16bit");
 
-            Subject.Calculate(_artist, _title).Should().Be(-10);
+            Subject.Calculate(_artist, _title, 0).Should().Be(-10);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
 
             GivenMatchingTerms("24bit");
 
-            Subject.Calculate(_artist, _title).Should().Be(10);
+            Subject.Calculate(_artist, _title, 0).Should().Be(10);
         }
     }
 }

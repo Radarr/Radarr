@@ -36,15 +36,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                _logger.Debug("Comparing file quality and language with report. Existing file is {0}", file.Quality);
-
-                if (!_upgradableSpecification.IsUpgradable(subject.Author.QualityProfile,
-                                                           new List<QualityModel> { file.Quality },
-                                                           _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName()),
-                                                           subject.ParsedBookInfo.Quality,
-                                                           subject.PreferredWordScore))
-                {
-                    return Decision.Reject("Existing file on disk is of equal or higher preference: {0}", file.Quality);
+                    if (!_upgradableSpecification.IsUpgradable(subject.Author.QualityProfile,
+                                                               currentQualities,
+                                                               _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName(), subject.Release?.IndexerId ?? 0),
+                                                               subject.ParsedBookInfo.Quality,
+                                                               subject.PreferredWordScore))
+                    {
+                        return Decision.Reject("Existing files on disk is of equal or higher preference: {0}", currentQualities.ConcatToString());
+                    }
                 }
             }
 

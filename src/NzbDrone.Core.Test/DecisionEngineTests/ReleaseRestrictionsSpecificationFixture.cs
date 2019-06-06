@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private void GivenRestictions(string required, string ignored)
         {
             Mocker.GetMock<IReleaseProfileService>()
-                  .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
+                  .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>
                            {
                                new ReleaseProfile()
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_be_true_when_restrictions_are_empty()
         {
             Mocker.GetMock<IReleaseProfileService>()
-                  .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
+                  .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>());
 
             Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteBook.Release.Title = "[ www.Speed.cd ] - Katy Perry - Witness (2017) MP3 [320 kbps] ";
 
             Mocker.GetMock<IReleaseProfileService>()
-                  .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
+                  .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>
                            {
                                new ReleaseProfile { Required = "320", Ignored = "www.Speed.cd" }

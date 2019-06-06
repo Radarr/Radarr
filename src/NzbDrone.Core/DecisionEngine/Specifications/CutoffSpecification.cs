@@ -40,7 +40,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 if (!_upgradableSpecification.CutoffNotMet(qualityProfile,
                                                            currentQualities,
-                                                           _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName()),
+                                                           _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName(), subject.Release.IndexerId),
                                                            subject.ParsedBookInfo.Quality,
                                                            subject.PreferredWordScore))
                 {
