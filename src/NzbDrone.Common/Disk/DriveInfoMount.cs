@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Disk
 {
     public class DriveInfoMount : IMount
     {
-        private readonly DriveInfo _driveInfo;
+        private readonly IDriveInfo _driveInfo;
         private readonly DriveType _driveType;
 
-        public DriveInfoMount(DriveInfo driveInfo, DriveType driveType = DriveType.Unknown, MountOptions mountOptions = null)
+        public DriveInfoMount(IDriveInfo driveInfo, DriveType driveType = DriveType.Unknown, MountOptions mountOptions = null)
         {
             _driveInfo = driveInfo;
             _driveType = driveType;

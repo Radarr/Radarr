@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -17,9 +18,9 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IDownloadedTracksImportService
     {
-        List<ImportResult> ProcessRootFolder(DirectoryInfo directoryInfo);
+        List<ImportResult> ProcessRootFolder(IDirectoryInfo directoryInfo);
         List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Artist artist = null, DownloadClientItem downloadClientItem = null);
-        bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Artist artist);
+        bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Artist artist);
     }
 
     public class DownloadedTracksImportService : IDownloadedTracksImportService
@@ -52,19 +53,19 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public List<ImportResult> ProcessRootFolder(DirectoryInfo directoryInfo)
+        public List<ImportResult> ProcessRootFolder(IDirectoryInfo directoryInfo)
         {
             var results = new List<ImportResult>();
 
-            foreach (var subFolder in _diskProvider.GetDirectories(directoryInfo.FullName))
+            foreach (var subFolder in _diskProvider.GetDirectoryInfos(directoryInfo.FullName))
             {
-                var folderResults = ProcessFolder(new DirectoryInfo(subFolder), ImportMode.Auto, null);
+                var folderResults = ProcessFolder(subFolder, ImportMode.Auto, null);
                 results.AddRange(folderResults);
             }
 
             foreach (var audioFile in _diskScanService.GetAudioFiles(directoryInfo.FullName, false))
             {
-                var fileResults = ProcessFile(new FileInfo(audioFile), ImportMode.Auto, null);
+                var fileResults = ProcessFile(audioFile, ImportMode.Auto, null);
                 results.AddRange(fileResults);
             }
 
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (_diskProvider.FolderExists(path))
             {
-                var directoryInfo = new DirectoryInfo(path);
+                var directoryInfo = _diskProvider.GetDirectoryInfo(path);
 
                 if (artist == null)
                 {
@@ -87,7 +88,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (_diskProvider.FileExists(path))
             {
-                var fileInfo = new FileInfo(path);
+                var fileInfo = _diskProvider.GetFileInfo(path);
 
                 if (artist == null)
                 {
@@ -103,14 +104,14 @@ namespace NzbDrone.Core.MediaFiles
             return new List<ImportResult>();
         }
 
-        public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Artist artist)
+        public bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Artist artist)
         {
             var audioFiles = _diskScanService.GetAudioFiles(directoryInfo.FullName);
             var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
 
             foreach (var audioFile in audioFiles)
             {
-                var albumParseResult = Parser.Parser.ParseMusicTitle(Path.GetFileName(audioFile));
+                var albumParseResult = Parser.Parser.ParseMusicTitle(audioFile.Name);
 
                 if (albumParseResult == null)
                 {
@@ -131,7 +132,7 @@ namespace NzbDrone.Core.MediaFiles
             return true;
         }
 
-        private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
         {
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
             var artist = _parsingService.GetArtist(cleanedUpName);
@@ -149,7 +150,7 @@ namespace NzbDrone.Core.MediaFiles
             return ProcessFolder(directoryInfo, importMode, artist, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
         {
             if (_artistService.ArtistPathExists(directoryInfo.FullName))
             {
@@ -185,17 +186,17 @@ namespace NzbDrone.Core.MediaFiles
             {
                 foreach (var audioFile in audioFiles)
                 {
-                    if (_diskProvider.IsFileLocked(audioFile))
+                    if (_diskProvider.IsFileLocked(audioFile.FullName))
                     {
                         return new List<ImportResult>
                                {
-                                   FileIsLockedResult(audioFile)
+                                   FileIsLockedResult(audioFile.FullName)
                                };
                     }
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles.ToList(), artist, trackInfo);
+            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles, artist, trackInfo);
             var importResults = _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
 
             if (importMode == ImportMode.Auto)
@@ -214,7 +215,7 @@ namespace NzbDrone.Core.MediaFiles
             return importResults;
         }
 
-        private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
         {
             var artist = _parsingService.GetArtist(Path.GetFileNameWithoutExtension(fileInfo.Name));
 
@@ -231,7 +232,7 @@ namespace NzbDrone.Core.MediaFiles
             return ProcessFile(fileInfo, importMode, artist, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
         {
             if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
             {
@@ -254,7 +255,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, artist, null);
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<IFileInfo>() { fileInfo }, artist, null);
 
             return _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
         }

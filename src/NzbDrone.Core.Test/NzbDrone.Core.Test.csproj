@@ -91,6 +91,12 @@
       <HintPath>..\packages\TagLibSharp-Lidarr.2.2.0.19\lib\netstandard2.0\TagLibSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Abstractions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.4.0.11\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.TestingHelpers.4.0.11\lib\net40\System.IO.Abstractions.TestingHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -127,6 +133,7 @@
     <Compile Include="Datastore\MarrDataLazyLoadingFixture.cs" />
     <Compile Include="Datastore\Migration\004_add_various_qualities_in_profileFixture.cs" />
     <Compile Include="Datastore\Migration\023_add_release_groups_etcFixture.cs" />
+    <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtimeFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />
@@ -206,6 +213,7 @@
     <Compile Include="Extras\Metadata\Consumers\Xbmc\FindMetadataFileFixture.cs" />
     <Compile Include="FluentTest.cs" />
     <Compile Include="Framework\CoreTest.cs" />
+    <Compile Include="Framework\FileSystemTest.cs" />
     <Compile Include="Framework\DbTest.cs" />
     <Compile Include="Framework\DirectDataMapper.cs" />
     <Compile Include="Framework\MigrationTest.cs" />
@@ -431,6 +439,14 @@
     <ProjectReference Include="..\NzbDrone.Test.Common\NzbDrone.Test.Common.csproj">
       <Project>{CADDFCE0-7509-4430-8364-2074E1EEFCA2}</Project>
       <Name>NzbDrone.Test.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NzbDrone.Mono\NzbDrone.Mono.csproj">
+      <Project>{15AD7579-A314-4626-B556-663F51D97CD1}</Project>
+      <Name>NzbDrone.Mono</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NzbDrone.Windows\NzbDrone.Windows.csproj">
+      <Project>{911284D3-F130-459E-836C-2430B6FBF21D}</Project>
+      <Name>NzbDrone.Windows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

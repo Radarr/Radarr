@@ -117,28 +117,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             files.Should().HaveCount(4);
         }
 
-        [Test]
-        public void get_files_by_relative_path()
-        {
-            VerifyData();
-            var files = Subject.GetFilesWithRelativePath(artist.Id, "RelativePath2");
-            VerifyEagerLoaded(files);
-            
-            files.Should().OnlyContain(c => c.AlbumId == album.Id);
-            files.Should().OnlyContain(c => c.RelativePath == "RelativePath2");
-        }
-        
-        [Test]
-        public void get_files_by_relative_path_should_only_contain_monitored_releases()
-        {
-            VerifyData();
-            
-            // file 5 is linked to an unmonitored release
-            var files = Subject.GetFilesWithRelativePath(artist.Id, "RelativePath5");
-            
-            files.Should().BeEmpty();
-        }
-
         private void VerifyData()
         {
             Db.All<Artist>().Should().HaveCount(1);

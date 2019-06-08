@@ -391,28 +391,27 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void use_file_name_when_sceneName_is_null()
         {
             _namingConfig.RenameTracks = false;
-            _trackFile.RelativePath = "Linkin Park - 06 - Test";
+            _trackFile.Path = "Linkin Park - 06 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.RelativePath));
+                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
         
         [Test]
         public void use_file_name_when_sceneName_is_not_null()
         {
             _namingConfig.RenameTracks = false;
-            _trackFile.RelativePath = "Linkin Park - 06 - Test";
+            _trackFile.Path = "Linkin Park - 06 - Test";
             _trackFile.SceneName = "SceneName";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.RelativePath));
+                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
         [Test]
         public void use_path_when_sceneName_and_relative_path_are_null()
         {
             _namingConfig.RenameTracks = false;
-            _trackFile.RelativePath = null;
             _trackFile.Path = @"C:\Test\Unsorted\Artist - 01 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
@@ -447,7 +446,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{Artist Name} - {Original Title} - {Track Title}";
 
             _trackFile.SceneName = "Linkin.Park.Meteora.320-LOL";
-            _trackFile.RelativePath = "30 Rock - 01 - Test";
+            _trackFile.Path = "30 Rock - 01 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("Linkin Park - Linkin.Park.Meteora.320-LOL - City Sushi");
@@ -520,10 +519,10 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{Original Title}";
 
             _trackFile.SceneName = null;
-            _trackFile.RelativePath = "existing.file.mkv";
+            _trackFile.Path = "existing.file.mkv";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
-                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.RelativePath));
+                   .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
         [Test]
@@ -533,7 +532,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{Original Title}";
 
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
-            _trackFile.RelativePath = "30 Rock - S01E01 - Test";
+            _trackFile.Path = "30 Rock - S01E01 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("30.Rock.S01E01.xvid-LOL");
@@ -599,7 +598,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{Artist Name} - {Original Filename}";
 
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
-            _trackFile.RelativePath = "30 Rock - S01E01 - Test";
+            _trackFile.Path = "30 Rock - S01E01 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("30 Rock - 30 Rock - S01E01 - Test");
@@ -612,7 +611,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardTrackFormat = "{Original Filename}";
 
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
-            _trackFile.RelativePath = "30 Rock - S01E01 - Test";
+            _trackFile.Path = "30 Rock - S01E01 - Test";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("30 Rock - S01E01 - Test");

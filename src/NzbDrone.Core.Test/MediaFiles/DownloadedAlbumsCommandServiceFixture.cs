@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles;
@@ -14,11 +13,12 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using System.IO.Abstractions.TestingHelpers;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
-    public class DownloadedAlbumsCommandServiceFixture : CoreTest<DownloadedAlbumsCommandService>
+    public class DownloadedAlbumsCommandServiceFixture : FileSystemTest<DownloadedAlbumsCommandService>
     {
         private string _downloadFolder = "c:\\drop_other\\Show.S01E01\\".AsOsAgnostic();
         private string _downloadFile = "c:\\drop_other\\Show.S01E01.mkv".AsOsAgnostic();
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
 
             Mocker.GetMock<IDownloadedTracksImportService>()
-                .Setup(v => v.ProcessRootFolder(It.IsAny<DirectoryInfo>()))
+                .Setup(v => v.ProcessRootFolder(It.IsAny<IDirectoryInfo>()))
                 .Returns(new List<ImportResult>());
 
             Mocker.GetMock<IDownloadedTracksImportService>()
@@ -56,14 +56,12 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void GivenExistingFolder(string path)
         {
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(It.IsAny<string>()))
-                    .Returns(true);
+            FileSystem.AddDirectory(path);
         }
 
         private void GivenExistingFile(string path)
         {
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
-                    .Returns(true);
+            FileSystem.AddFile(path, new MockFileData(string.Empty));
         }
 
         private void GivenValidQueueItem()
@@ -78,7 +76,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             Assert.Throws<ArgumentException>(() => Subject.Execute(new DownloadedAlbumsScanCommand()));
 
-            Mocker.GetMock<IDownloadedTracksImportService>().Verify(c => c.ProcessRootFolder(It.IsAny<DirectoryInfo>()), Times.Never());
+            Mocker.GetMock<IDownloadedTracksImportService>().Verify(c => c.ProcessRootFolder(It.IsAny<IDirectoryInfo>()), Times.Never());
 
         }
 

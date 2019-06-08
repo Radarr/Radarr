@@ -84,7 +84,7 @@ namespace NzbDrone.Core.MediaFiles
             {
                 var file = f;
                 var tracksInFile = tracks.Where(e => e.TrackFileId == file.Id).ToList();
-                var trackFilePath = Path.Combine(artist.Path, file.RelativePath);
+                var trackFilePath = file.Path;
 
                 if (!tracksInFile.Any())
                 {
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.MediaFiles
                         AlbumId = album.Id,
                         TrackNumbers = tracksInFile.Select(e => e.AbsoluteTrackNumber).ToList(),
                         TrackFileId = file.Id,
-                        ExistingPath = file.RelativePath,
+                        ExistingPath = artist.Path.GetRelativePath(file.Path),
                         NewPath = artist.Path.GetRelativePath(newPath)
                     };
                 }
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var trackFile in trackFiles)
             {
-                var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+                var trackFilePath = trackFile.Path;
 
                 try
                 {

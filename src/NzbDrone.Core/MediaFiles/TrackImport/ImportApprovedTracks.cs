@@ -92,12 +92,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     
                     foreach (var previousFile in previousFiles)
                     {
-                        var trackFilePath = Path.Combine(artist.Path, previousFile.RelativePath);
-                        var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
-                        if (_diskProvider.FileExists(trackFilePath))
+                        var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(previousFile.Path));
+                        if (_diskProvider.FileExists(previousFile.Path))
                         {
                             _logger.Debug("Removing existing track file: {0}", previousFile);
-                            _recycleBinProvider.DeleteFile(trackFilePath, subfolder);
+                            _recycleBinProvider.DeleteFile(previousFile.Path, subfolder);
                         }
                         _mediaFileService.Delete(previousFile, DeleteMediaFileReason.Upgrade);
                     }
@@ -154,7 +153,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     
                     var trackFile = new TrackFile {
                         Path = localTrack.Path.CleanFilePath(),
-                        Size = _diskProvider.GetFileSize(localTrack.Path),
+                        Size = localTrack.Size,
+                        Modified = localTrack.Modified,
                         DateAdded = DateTime.UtcNow,
                         ReleaseGroup = localTrack.ReleaseGroup,
                         Quality = localTrack.Quality,
@@ -190,12 +190,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     }
                     else
                     {
-                        trackFile.RelativePath = localTrack.Artist.Path.GetRelativePath(trackFile.Path);
-
                         // Delete existing files from the DB mapped to this path
-                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localTrack.Artist.Id, trackFile.RelativePath);
+                        var previousFile = _mediaFileService.GetFileWithPath(trackFile.Path);
 
-                        foreach (var previousFile in previousFiles)
+                        if (previousFile != null)
                         {
                             _mediaFileService.Delete(previousFile, DeleteMediaFileReason.ManualOverride);
                         }

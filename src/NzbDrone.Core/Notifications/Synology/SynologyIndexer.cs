@@ -26,14 +26,14 @@ namespace NzbDrone.Core.Notifications.Synology
             {
                 foreach (var oldFile in message.OldFiles)
                 {
-                    var fullPath = Path.Combine(message.Artist.Path, oldFile.RelativePath);
+                    var fullPath = oldFile.Path;
 
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
                 foreach (var newFile in message.TrackFiles)
                 {
-                    var fullPath = Path.Combine(message.Artist.Path, newFile.RelativePath);
+                    var fullPath = newFile.Path;
 
                     _indexerProxy.AddFile(fullPath);
                 }

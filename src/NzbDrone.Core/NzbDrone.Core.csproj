@@ -92,6 +92,9 @@
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Abstractions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.4.0.11\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -204,6 +207,7 @@
     <Compile Include="Datastore\Migration\025_rename_release_profiles.cs" />
     <Compile Include="Datastore\Migration\026_rename_quality_profiles_add_upgrade_allowed.cs" />
     <Compile Include="Datastore\Migration\028_clean_artistmetadata_table.cs" />
+    <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtime.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -805,6 +809,7 @@
     <Compile Include="MediaFiles\Events\TrackFileDeletedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportedEvent.cs" />
     <Compile Include="MediaFiles\FileDateType.cs" />
+    <Compile Include="MediaFiles\FilterFilesType.cs" />
     <Compile Include="MediaFiles\MediaFileAttributeService.cs" />
     <Compile Include="MediaFiles\MediaFileExtensions.cs" />
     <Compile Include="MediaFiles\MediaFileRepository.cs" />

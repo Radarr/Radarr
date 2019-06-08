@@ -7,6 +7,7 @@ using NzbDrone.Core.Music;
 using NLog;
 using Nancy;
 using Lidarr.Http;
+using NzbDrone.Core.MediaFiles;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -43,10 +44,10 @@ namespace Lidarr.Api.V1.ManualImport
         {
             var folder = (string)Request.Query.folder;
             var downloadId = (string)Request.Query.downloadId;
-            var filterExistingFiles = Request.GetBooleanQueryParameter("filterExistingFiles", true);
+            var filter = Request.GetBooleanQueryParameter("filterExistingFiles", true) ? FilterFilesType.Matched : FilterFilesType.None;
             var replaceExistingFiles = Request.GetBooleanQueryParameter("replaceExistingFiles", true);
 
-            return _manualImportService.GetMediaFiles(folder, downloadId, filterExistingFiles, replaceExistingFiles).ToResource().Select(AddQualityWeight).ToList();
+            return _manualImportService.GetMediaFiles(folder, downloadId, filter, replaceExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

@@ -177,9 +177,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         {
             var localTracks = trackfiles.Select(x => new LocalTrack {
                     Path = x.Path,
+                    Size = x.Size,
+                    Modified = x.Modified,
                     FileTrackInfo = _audioTagService.ReadTags(x.Path),
                     ExistingFile = true,
-                    AdditionalFile = true
+                    AdditionalFile = true,
+                    Quality = x.Quality
                 })
                 .ToList();
 
@@ -334,15 +337,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             var albumTracks = releases.Select(x => x.AlbumId)
                 .Distinct()
                 .ToDictionary(id => id, id => includeExisting ? _mediaFileService.GetFilesByAlbum(id) : new List<TrackFile>());
-
-            // populate the path.  Artist will have been returned by mediaFileService
-            foreach (var trackfiles in albumTracks.Values)
-            {
-                foreach (var trackfile in trackfiles)
-                {
-                    trackfile.Path = Path.Combine(trackfile.Artist.Value.Path, trackfile.RelativePath);
-                }
-            }
 
             return releases.Select(x => new CandidateAlbumRelease {
                     AlbumRelease = x,

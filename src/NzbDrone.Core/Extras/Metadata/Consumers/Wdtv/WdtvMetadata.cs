@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
         {
-            var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
             if (metadataFile.Type == MetadataType.TrackMetadata)
             {
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                 return null;
             }
 
-            _logger.Debug("Generating Track Metadata for: {0}", Path.Combine(artist.Path, trackFile.RelativePath));
+            _logger.Debug("Generating Track Metadata for: {0}", trackFile.Path);
 
             var xmlResult = string.Empty;
             foreach (var track in trackFile.Tracks.Value)
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                 }
             }
 
-            var filename = GetTrackMetadataFilename(trackFile.RelativePath);
+            var filename = GetTrackMetadataFilename(artist.Path.GetRelativePath(trackFile.Path));
 
             return new MetadataFileResult(filename, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }

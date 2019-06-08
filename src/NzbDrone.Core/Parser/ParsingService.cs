@@ -220,16 +220,13 @@ namespace NzbDrone.Core.Parser
 
         public Album GetLocalAlbum(string filename, Artist artist)
         {
-            
             if (Path.HasExtension(filename))
             {
                 filename = Path.GetDirectoryName(filename);
             }
 
-            filename = artist.Path.GetRelativePath(filename);
-
             var tracksInAlbum = _mediaFileService.GetFilesByArtist(artist.Id)
-                .FindAll(s => Path.GetDirectoryName(s.RelativePath) == filename)
+                .FindAll(s => Path.GetDirectoryName(s.Path) == filename)
                 .DistinctBy(s => s.AlbumId)
                 .ToList();
 

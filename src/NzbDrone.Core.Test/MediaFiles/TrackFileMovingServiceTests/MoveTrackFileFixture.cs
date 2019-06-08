@@ -14,6 +14,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using System.IO;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 {
@@ -33,7 +34,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 
             _trackFile = Builder<TrackFile>.CreateNew()
                                                .With(f => f.Path = null)
-                                               .With(f => f.RelativePath = @"Album\File.mp3")
+                                               .With(f => f.Path = Path.Combine(_artist.Path, @"Album\File.mp3"))
                                                .Build();
 
             _localtrack = Builder<LocalTrack>.CreateNew()

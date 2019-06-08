@@ -13,9 +13,9 @@ namespace NzbDrone.Core.MediaFiles
     public class TrackFile : ModelBase
     {
         // these are model properties
-        public string RelativePath { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
+        public DateTime Modified { get; set; }
         public DateTime DateAdded { get; set; }
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public override string ToString()
         {
-            return string.Format("[{0}] {1}", Id, RelativePath);
+            return string.Format("[{0}] {1}", Id, Path);
         }
 
         public string GetSceneOrFileName()
@@ -39,11 +39,6 @@ namespace NzbDrone.Core.MediaFiles
             if (SceneName.IsNotNullOrWhiteSpace())
             {
                 return SceneName;
-            }
-
-            if (RelativePath.IsNotNullOrWhiteSpace())
-            {
-                return System.IO.Path.GetFileName(RelativePath);
             }
 
             if (Path.IsNotNullOrWhiteSpace())

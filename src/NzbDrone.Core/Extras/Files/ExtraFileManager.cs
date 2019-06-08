@@ -50,8 +50,8 @@ namespace NzbDrone.Core.Extras.Files
 
         protected TExtraFile ImportFile(Artist artist, TrackFile trackFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(artist.Path, trackFile.RelativePath));
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.RelativePath));
+            var newFolder = Path.GetDirectoryName(trackFile.Path);
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.Path));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {
@@ -82,8 +82,8 @@ namespace NzbDrone.Core.Extras.Files
 
         protected TExtraFile MoveFile(Artist artist, TrackFile trackFile, TExtraFile extraFile, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(artist.Path, trackFile.RelativePath));
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.RelativePath));
+            var newFolder = Path.GetDirectoryName(trackFile.Path);
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.Path));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {

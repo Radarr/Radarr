@@ -63,9 +63,10 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        private void RefreshArtistInfo(Artist artist, bool forceAlbumRefresh)
+        private bool RefreshArtistInfo(Artist artist, bool forceAlbumRefresh)
         {
             _logger.ProgressInfo("Updating Info for {0}", artist.Name);
+            bool updated = false;
 
             Artist artistInfo;
 
@@ -76,10 +77,11 @@ namespace NzbDrone.Core.Music
             catch (ArtistNotFoundException)
             {
                 _logger.Error($"Artist {artist} was not found, it may have been removed from Metadata sources.");
-                return;
+                return updated;
             }
 
             var forceUpdateFileTags = artist.Name != artistInfo.Name;
+            updated |= forceUpdateFileTags;
 
             if (artist.Metadata.Value.ForeignArtistId != artistInfo.Metadata.Value.ForeignArtistId)
             {
@@ -96,6 +98,7 @@ namespace NzbDrone.Core.Music
 
                 artist.Metadata.Value.ForeignArtistId = artistInfo.Metadata.Value.ForeignArtistId;
                 forceUpdateFileTags = true;
+                updated = true;
             }
 
             artist.Metadata.Value.ApplyChanges(artistInfo.Metadata.Value);
@@ -153,14 +156,23 @@ namespace NzbDrone.Core.Music
             newAlbumsList = UpdateAlbums(artist, newAlbumsList);
             _addAlbumService.AddAlbums(newAlbumsList);
 
-            _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh, forceUpdateFileTags);
+            updated |= existingAlbums.Any() || newAlbumsList.Any();
+
+            updated |= _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh, forceUpdateFileTags);
 
             // Do this last so artist only marked as refreshed if refresh of tracks / albums completed successfully
             _artistService.UpdateArtist(artist);
 
             _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
-            _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+
+            if (updated)
+            {
+                _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+            }
+
             _logger.Debug("Finished artist refresh for {0}", artist.Name);
+
+            return updated;
         }
 
         private List<Album> UpdateAlbums(Artist artist, List<Album> albumsToUpdate)
@@ -174,26 +186,26 @@ namespace NzbDrone.Core.Music
             return albumsToUpdate;
         }
 
-        private void RescanArtist(Artist artist, bool isNew, CommandTrigger trigger)
+        private void RescanArtist(Artist artist, bool isNew, CommandTrigger trigger, bool infoUpdated)
         {
             var rescanAfterRefresh = _configService.RescanAfterRefresh;
             var shouldRescan = true;
 
             if (isNew)
             {
-                _logger.Trace("Forcing refresh of {0}. Reason: New artist", artist);
+                _logger.Trace("Forcing rescan of {0}. Reason: New artist", artist);
                 shouldRescan = true;
             }
 
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: never recan after refresh", artist);
+                _logger.Trace("Skipping rescan of {0}. Reason: never recan after refresh", artist);
                 shouldRescan = false;
             }
 
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: not after automatic scans", artist);
+                _logger.Trace("Skipping rescan of {0}. Reason: not after automatic scans", artist);
                 shouldRescan = false;
             }
 
@@ -204,7 +216,10 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                _diskScanService.Scan(artist);
+                // If some metadata has been updated then rescan unmatched files.
+                // Otherwise only scan files that haven't been seen before.
+                var filter = infoUpdated ? FilterFilesType.Matched : FilterFilesType.Known;
+                _diskScanService.Scan(artist, filter);
             }
             catch (Exception e)
             {
@@ -221,16 +236,16 @@ namespace NzbDrone.Core.Music
             if (message.ArtistId.HasValue)
             {
                 var artist = _artistService.GetArtist(message.ArtistId.Value);
-
+                bool updated = false;
                 try
                 {
-                    RefreshArtistInfo(artist, true);
-                    RescanArtist(artist, isNew, trigger);
+                    updated = RefreshArtistInfo(artist, true);
+                    RescanArtist(artist, isNew, trigger, updated);
                 }
                 catch (Exception e)
                 {
                     _logger.Error(e, "Couldn't refresh info for {0}", artist);
-                    RescanArtist(artist, isNew, trigger);
+                    RescanArtist(artist, isNew, trigger, updated);
                     throw;
                 }
             }
@@ -244,22 +259,23 @@ namespace NzbDrone.Core.Music
 
                     if (manualTrigger || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
                     {
+                        bool updated = false;
                         try
                         {
-                            RefreshArtistInfo(artist, manualTrigger);
+                            updated = RefreshArtistInfo(artist, manualTrigger);
                         }
                         catch (Exception e)
                         {
                             _logger.Error(e, "Couldn't refresh info for {0}", artist);
                         }
 
-                        RescanArtist(artist, false, trigger);
+                        RescanArtist(artist, false, trigger, updated);
                     }
 
                     else
                     {
                         _logger.Info("Skipping refresh of artist: {0}", artist.Name);
-                        RescanArtist(artist, false, trigger);
+                        RescanArtist(artist, false, trigger, false);
                     }
                 }
             }

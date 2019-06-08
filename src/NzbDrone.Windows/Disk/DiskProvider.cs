@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Runtime.InteropServices;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -22,6 +23,16 @@ namespace NzbDrone.Windows.Disk
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
+
+        public DiskProvider()
+        : this(new FileSystem())
+        {
+        }
+
+        public DiskProvider(IFileSystem fileSystem)
+        : base(fileSystem)
+        {
+        }
 
         public override long? GetAvailableSpace(string path)
         {

@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Extras.Lyrics
 
                     if (groupCount > 1)
                     {
-                        _logger.Warn("Multiple lyric files found with the same language and extension for {0}", Path.Combine(artist.Path, trackFile.RelativePath));
+                        _logger.Warn("Multiple lyric files found with the same language and extension for {0}", trackFile.Path);
                     }
 
                     foreach (var subtitleFile in group)

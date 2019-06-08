@@ -66,7 +66,7 @@ namespace NzbDrone.Core.MediaFiles
             var tracks = _trackService.GetTracksByFileId(trackFile.Id);
             var album = _albumService.GetAlbum(trackFile.AlbumId);
             var newFileName = _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile);
-            var filePath = _buildFileNames.BuildTrackFilePath(artist, album, newFileName, Path.GetExtension(trackFile.RelativePath));
+            var filePath = _buildFileNames.BuildTrackFilePath(artist, album, newFileName, Path.GetExtension(trackFile.Path));
 
             EnsureTrackFolder(trackFile, artist, album, filePath);
 
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.MediaFiles
             Ensure.That(artist, () => artist).IsNotNull();
             Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
 
-            var trackFilePath = trackFile.Path ?? Path.Combine(artist.Path, trackFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
             if (!_diskProvider.FileExists(trackFilePath))
             {
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _diskTransferService.TransferFile(trackFilePath, destinationFilePath, mode);
 
-            trackFile.RelativePath = artist.Path.GetRelativePath(destinationFilePath);
+            trackFile.Path = destinationFilePath;
 
             _updateTrackFileService.ChangeFileDateForFile(trackFile, artist, tracks);
 

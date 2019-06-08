@@ -79,14 +79,12 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             if (message.TrackFiles.Any())
             {
-                environmentVariables.Add("Lidarr_AddedTrackRelativePaths", string.Join("|", message.TrackFiles.Select(e => e.RelativePath)));
-                environmentVariables.Add("Lidarr_AddedTrackPaths", string.Join("|", message.TrackFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
+                environmentVariables.Add("Lidarr_AddedTrackPaths", string.Join("|", message.TrackFiles.Select(e => e.Path)));
             }
 
             if (message.OldFiles.Any())
             {
-                environmentVariables.Add("Lidarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
-                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
+                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => e.Path)));
             }
 
             ExecuteScript(environmentVariables);
@@ -127,8 +125,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
             environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_RelativePath", trackFile.RelativePath);
-            environmentVariables.Add("Lidarr_TrackFile_Path", Path.Combine(artist.Path, trackFile.RelativePath));
+            environmentVariables.Add("Lidarr_TrackFile_Path", trackFile.Path);
             environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
             environmentVariables.Add("Lidarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
             environmentVariables.Add("Lidarr_TrackFile_Quality", trackFile.Quality.Quality.Name);

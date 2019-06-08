@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
         {
-            var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
             if (metadataFile.Type == MetadataType.TrackMetadata)
             {
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 return null;
             }
             
-            _logger.Debug("Generating Track Metadata for: {0}", trackFile.RelativePath);
+            _logger.Debug("Generating Track Metadata for: {0}", trackFile.Path);
 
             var xmlResult = string.Empty;
             foreach (var track in trackFile.Tracks.Value)
@@ -148,7 +148,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 }
             }
 
-            return new MetadataFileResult(GetTrackMetadataFilename(trackFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+            return new MetadataFileResult(GetTrackMetadataFilename(artist.Path.GetRelativePath(trackFile.Path)), xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
         public override List<ImageFileResult> ArtistImages(Artist artist)

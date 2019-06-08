@@ -19,7 +19,7 @@ namespace NzbDrone.Test.Common
         private TSubject _subject;
 
         [SetUp]
-        public void CoreTestSetup()
+        public virtual void CoreTestSetup()
         {
             _subject = null;
 

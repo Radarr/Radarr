@@ -90,10 +90,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesWithRelativePath(It.IsAny<int>(), It.IsAny<string>()))
-                .Returns(new List<TrackFile>());
-
-            Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
                 .Returns(new List<TrackFile>());
 
@@ -220,8 +216,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void should_delete_existing_trackfiles_with_the_same_path()
         {
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesWithRelativePath(It.IsAny<int>(), It.IsAny<string>()))
-                .Returns(Builder<TrackFile>.CreateListOfSize(1).BuildList());
+                .Setup(s => s.GetFileWithPath(It.IsAny<string>()))
+                .Returns(Builder<TrackFile>.CreateNew().Build());
 
             var track = _approvedDecisions.First();
             track.Item.ExistingFile = true;

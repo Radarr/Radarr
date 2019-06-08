@@ -3,6 +3,7 @@ using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using System;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Parser.Model
 
         public string Path { get; set; }
         public long Size { get; set; }
+        public DateTime Modified { get; set; }
         public ParsedTrackInfo FileTrackInfo { get; set; }
         public ParsedTrackInfo FolderTrackInfo { get; set; }
         public ParsedAlbumInfo DownloadClientAlbumInfo { get; set; }
@@ -26,7 +28,6 @@ namespace NzbDrone.Core.Parser.Model
         public Distance Distance { get; set; }
         public QualityModel Quality { get; set; }
         public Language Language { get; set; }
-        public MediaInfoModel MediaInfo { get; set; }
         public bool ExistingFile { get; set; }
         public bool AdditionalFile { get; set; }
         public bool SceneSource { get; set; }

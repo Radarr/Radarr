@@ -1,10 +1,10 @@
 using System;
-using System.IO;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using Lidarr.Http.REST;
+using NzbDrone.Common.Extensions;
 
 namespace Lidarr.Api.V1.TrackFiles
 {
@@ -38,8 +38,8 @@ namespace Lidarr.Api.V1.TrackFiles
 
                 ArtistId = model.Artist.Value.Id,
                 AlbumId = model.AlbumId,
-                RelativePath = model.RelativePath,
-                //Path
+                RelativePath = model.Artist.Value.Path.GetRelativePath(model.Path),
+                Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                // SceneName = model.SceneName,
@@ -61,8 +61,8 @@ namespace Lidarr.Api.V1.TrackFiles
 
                 ArtistId = artist.Id,
                 AlbumId = model.AlbumId,
-                RelativePath = model.RelativePath,
-                Path = Path.Combine(artist.Path, model.RelativePath),
+                Path = model.Path,
+                RelativePath = artist.Path.GetRelativePath(model.Path),
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 //SceneName = model.SceneName,

@@ -47,7 +47,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void DeleteTrackFile(Artist artist, TrackFile trackFile)
         {
-            var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
+            var fullPath = trackFile.Path;
             var rootFolder = _diskProvider.GetParentFolder(artist.Path);
 
             if (!_diskProvider.FolderExists(rootFolder))

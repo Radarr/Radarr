@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using Mono.Unix;
 using Mono.Unix.Native;
@@ -23,7 +24,16 @@ namespace NzbDrone.Mono.Disk
         // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
         private const uint UNCHANGED_ID = uint.MaxValue;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
+        public DiskProvider(IProcMountProvider procMountProvider,
+                            ISymbolicLinkResolver symLinkResolver)
+        : this(new FileSystem(), procMountProvider, symLinkResolver)
+        {
+        }
+        
+        public DiskProvider(IFileSystem fileSystem,
+                            IProcMountProvider procMountProvider,
+                            ISymbolicLinkResolver symLinkResolver)
+        : base(fileSystem)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
@@ -39,6 +49,8 @@ namespace NzbDrone.Mono.Disk
         public override long? GetAvailableSpace(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
+
+            Logger.Debug($"path: {path}");
 
             var mount = GetMount(path);
 
@@ -57,9 +69,9 @@ namespace NzbDrone.Mono.Disk
 
             try
             {
-                var fs = File.GetAccessControl(filename);
+                var fs = _fileSystem.File.GetAccessControl(filename);
                 fs.SetAccessRuleProtection(false, false);
-                File.SetAccessControl(filename, fs);
+                _fileSystem.File.SetAccessControl(filename, fs);
             }
             catch (NotImplementedException)
             {

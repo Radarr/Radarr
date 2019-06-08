@@ -17,8 +17,8 @@ namespace NzbDrone.Core.Music
 {
     public interface IRefreshAlbumService
     {
-        void RefreshAlbumInfo(Album album, bool forceUpdateFileTags);
-        void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags);
+        bool RefreshAlbumInfo(Album album, bool forceUpdateFileTags);
+        bool RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags);
     }
 
     public class RefreshAlbumService : IRefreshAlbumService, IExecute<RefreshAlbumCommand>
@@ -57,20 +57,23 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public void RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags)
+        public bool RefreshAlbumInfo(List<Album> albums, bool forceAlbumRefresh, bool forceUpdateFileTags)
         {
+            bool updated = false;
             foreach (var album in albums)
             {
                 if (forceAlbumRefresh || _checkIfAlbumShouldBeRefreshed.ShouldRefresh(album))
                 {
-                    RefreshAlbumInfo(album, forceUpdateFileTags);
+                    updated |= RefreshAlbumInfo(album, forceUpdateFileTags);
                 }
             }
+            return updated;
         }
 
-        public void RefreshAlbumInfo(Album album, bool forceUpdateFileTags)
+        public bool RefreshAlbumInfo(Album album, bool forceUpdateFileTags)
         {
             _logger.ProgressInfo("Updating Info for {0}", album.Title);
+            bool updated = false;
 
             Tuple<string, Album, List<ArtistMetadata>> tuple;
 
@@ -81,14 +84,14 @@ namespace NzbDrone.Core.Music
             catch (AlbumNotFoundException)
             {
                 _logger.Error($"{album} was not found, it may have been removed from Metadata sources.");
-                return;
+                return updated;
             }
 
             if (tuple.Item2.AlbumReleases.Value.Count == 0)
             {
                 _logger.Debug($"{album} has no valid releases, removing.");
                 _albumService.DeleteMany(new List<Album> { album });
-                return;
+                return true;
             }
 
             var remoteMetadata = tuple.Item3.DistinctBy(x => x.ForeignArtistId).ToList();
@@ -124,6 +127,7 @@ namespace NzbDrone.Core.Music
             _artistMetadataRepository.InsertMany(addMetadataList);
 
             forceUpdateFileTags |= updateMetadataList.Any();
+            updated |= updateMetadataList.Any() || addMetadataList.Any();
 
             var albumInfo = tuple.Item2;
 
@@ -137,6 +141,7 @@ namespace NzbDrone.Core.Music
 
             // the only thing written to tags from the album object is the title
             forceUpdateFileTags |= album.Title != (albumInfo.Title ?? "Unknown");
+            updated |= forceUpdateFileTags;
 
             album.LastInfoSync = DateTime.UtcNow;
             album.CleanTitle = albumInfo.CleanTitle;
@@ -229,11 +234,14 @@ namespace NzbDrone.Core.Music
 
             // if we have updated a monitored release, refresh all file tags
             forceUpdateFileTags |= updateReleaseList.Any(x => x.Monitored);
+            updated |= existingReleases.Any() || updateReleaseList.Any() || newReleaseList.Any();
 
-            _refreshTrackService.RefreshTrackInfo(album, forceUpdateFileTags);
+            updated |= _refreshTrackService.RefreshTrackInfo(album, forceUpdateFileTags);
             _albumService.UpdateMany(new List<Album>{album});
 
             _logger.Debug("Finished album refresh for {0}", album.Title);
+
+            return updated;
         }
 
         public void Execute(RefreshAlbumCommand message)
@@ -242,10 +250,12 @@ namespace NzbDrone.Core.Music
             {
                 var album = _albumService.GetAlbum(message.AlbumId.Value);
                 var artist = _artistService.GetArtistByMetadataId(album.ArtistMetadataId);
-                RefreshAlbumInfo(album, false);
-                _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+                var updated = RefreshAlbumInfo(album, false);
+                if (updated)
+                {
+                    _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+                }
             }
-
         }
     }
 }

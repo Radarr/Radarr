@@ -150,7 +150,6 @@ namespace Lidarr.Api.V1.TrackFiles
             }
 
             var artist = trackFile.Artist.Value;
-            var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
 
             _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
         }
@@ -163,8 +162,6 @@ namespace Lidarr.Api.V1.TrackFiles
 
             foreach (var trackFile in trackFiles)
             {
-                var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
-
                 _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
             }
 
@@ -173,6 +170,12 @@ namespace Lidarr.Api.V1.TrackFiles
 
         public void Handle(TrackFileAddedEvent message)
         {
+            // don't process files that are added but not matched
+            if (message.TrackFile.AlbumId == 0)
+            {
+                return;
+            }
+
             BroadcastResourceChange(ModelAction.Updated, message.TrackFile.ToResource(message.TrackFile.Artist.Value, _upgradableSpecification));
         }
 

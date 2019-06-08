@@ -147,7 +147,6 @@ namespace NzbDrone.Core.Datastore
                           .SingleOrDefault());
 
             Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
-                .Ignore(f => f.Path)
                 .Relationship()
                 .HasOne(f => f.Album, f => f.AlbumId)
                 .For(f => f.Tracks)

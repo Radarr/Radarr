@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 files.AddIfNotNull(ProcessArtistMetadata(consumer, artist, consumerFiles));
                 files.AddRange(ProcessArtistImages(consumer, artist, consumerFiles));
                 
-                var albumGroups = trackFiles.GroupBy(s => Path.GetDirectoryName(s.RelativePath)).ToList();
+                var albumGroups = trackFiles.GroupBy(s => Path.GetDirectoryName(s.Path)).ToList();
 
                 foreach (var group in albumGroups)
                 {
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Extras.Metadata
         {
             var metadataFiles = _metadataFileService.GetFilesByArtist(artist.Id);
             var movedFiles = new List<MetadataFile>();
-            var distinctTrackFilePaths = trackFiles.DistinctBy(s => Path.GetDirectoryName(s.RelativePath)).ToList();
+            var distinctTrackFilePaths = trackFiles.DistinctBy(s => Path.GetDirectoryName(s.Path)).ToList();
 
             // TODO: Move EpisodeImage and EpisodeMetadata metadata files, instead of relying on consumers to do it
             // (Xbmc's EpisodeImage is more than just the extension)
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
                     foreach (var metadataFile in metadataFilesForConsumer)
                     {
-                        var newFileName = consumer.GetFilenameAfterMove(artist, Path.GetDirectoryName(filePath.RelativePath), metadataFile);
+                        var newFileName = consumer.GetFilenameAfterMove(artist, Path.GetDirectoryName(filePath.Path), metadataFile);
                         var existingFileName = Path.Combine(artist.Path, metadataFile.RelativePath);
 
                         if (newFileName.PathNotEquals(existingFileName))

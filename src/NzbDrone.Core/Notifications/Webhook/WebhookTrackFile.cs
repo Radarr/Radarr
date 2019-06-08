@@ -9,7 +9,6 @@ namespace NzbDrone.Core.Notifications.Webhook
         public WebhookTrackFile(TrackFile trackFile)
         {
             Id = trackFile.Id;
-            RelativePath = trackFile.RelativePath;
             Path = trackFile.Path;
             Quality = trackFile.Quality.Quality.Name;
             QualityVersion = trackFile.Quality.Revision.Version;
@@ -18,7 +17,6 @@ namespace NzbDrone.Core.Notifications.Webhook
         }
 
         public int Id { get; set; }
-        public string RelativePath { get; set; }
         public string Path { get; set; }
         public string Quality { get; set; }
         public int QualityVersion { get; set; }

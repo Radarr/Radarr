@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IRefreshTrackService
     {
-        void RefreshTrackInfo(Album rg, bool forceUpdateFileTags);
+        bool RefreshTrackInfo(Album rg, bool forceUpdateFileTags);
     }
 
     public class RefreshTrackService : IRefreshTrackService
@@ -37,11 +37,12 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public void RefreshTrackInfo(Album album, bool forceUpdateFileTags)
+        public bool RefreshTrackInfo(Album album, bool forceUpdateFileTags)
         {
             _logger.Info("Starting track info refresh for: {0}", album);
             var successCount = 0;
             var failCount = 0;
+            bool updated = false;
 
             foreach (var release in album.AlbumReleases.Value)
             {
@@ -115,6 +116,8 @@ namespace NzbDrone.Core.Music
                 _trackService.DeleteMany(existingTracks);
                 _trackService.UpdateMany(updateList);
                 _trackService.InsertMany(newList);
+
+                updated |= existingTracks.Any() || updateList.Any() || newList.Any();
             }
 
             if (failCount != 0)
@@ -126,6 +129,8 @@ namespace NzbDrone.Core.Music
             {
                 _logger.Info("Finished track refresh for album: {0}.", album);
             }
+
+            return updated;
         }
     }
 }

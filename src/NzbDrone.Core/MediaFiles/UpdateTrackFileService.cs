@@ -49,7 +49,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private bool ChangeFileDate(TrackFile trackFile, Artist artist, List<Track> tracks)
         {
-            var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
             switch (_configService.FileDate)
             {

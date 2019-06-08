@@ -119,11 +119,11 @@ namespace NzbDrone.Core.Test.Instrumentation
         public void null_string_as_arg_should_not_fail()
         {
             var epFile = new TrackFile();
-            _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.RelativePath);
+            _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.Path);
 
             Thread.Sleep(600);
 
-            epFile.RelativePath.Should().BeNull();
+            epFile.Path.Should().BeNull();
         }
 
 

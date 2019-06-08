@@ -56,7 +56,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             {
                 foreach (var missingTrackFile in missingTrackFiles)
                 {
-                    _logger.Trace("Track file {0} is missing from disk.", missingTrackFile.RelativePath);
+                    _logger.Trace("Track file {0} is missing from disk.", missingTrackFile.Path);
                 }
 
                 _logger.Debug("Files for this album exist in the database but not on disk, will be unmonitored on next diskscan. skipping.");
@@ -68,9 +68,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
         private bool IsTrackFileMissing(Artist artist, TrackFile trackFile)
         {
-            var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
-
-            return !_diskProvider.FileExists(fullPath);
+            return !_diskProvider.FileExists(trackFile.Path);
         }
     }
 }

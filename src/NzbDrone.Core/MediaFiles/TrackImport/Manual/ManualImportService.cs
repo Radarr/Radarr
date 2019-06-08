@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -20,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public interface IManualImportService
     {
-        List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles, bool replaceExistingFiles);
+        List<ManualImportItem> GetMediaFiles(string path, string downloadId, FilterFilesType filter, bool replaceExistingFiles);
         List<ManualImportItem> UpdateItems(List<ManualImportItem> item);
     }
 
@@ -72,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _logger = logger;
         }
 
-        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles, bool replaceExistingFiles)
+        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, FilterFilesType filter, bool replaceExistingFiles)
         {
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -93,16 +94,16 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     return new List<ManualImportItem>();
                 }
 
-                var decision = _importDecisionMaker.GetImportDecisions(new List<string> { path }, null, null, null, null, null, false, true, false, !replaceExistingFiles);
+                var decision = _importDecisionMaker.GetImportDecisions(new List<IFileInfo> { _diskProvider.GetFileInfo(path) }, null, null, null, null, null, FilterFilesType.None, true, false, !replaceExistingFiles);
                 var result = MapItem(decision.First(), Path.GetDirectoryName(path), downloadId, replaceExistingFiles, false);
 
                 return new List<ManualImportItem> { result };
             }
 
-            return ProcessFolder(path, downloadId, filterExistingFiles, replaceExistingFiles);
+            return ProcessFolder(path, downloadId, filter, replaceExistingFiles);
         }
 
-        private List<ManualImportItem> ProcessFolder(string folder, string downloadId, bool filterExistingFiles, bool replaceExistingFiles)
+        private List<ManualImportItem> ProcessFolder(string folder, string downloadId, FilterFilesType filter, bool replaceExistingFiles)
         {
             var directoryInfo = new DirectoryInfo(folder);
             var artist = _parsingService.GetArtist(directoryInfo.Name);
@@ -115,11 +116,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
             var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, null, null, null, folderInfo, filterExistingFiles, true, false, !replaceExistingFiles);
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, null, null, null, folderInfo, filter, true, false, !replaceExistingFiles);
 
             // paths will be different for new and old files which is why we need to map separately
             var newFiles = artistFiles.Join(decisions,
-                                            f => f,
+                                            f => f.FullName,
                                             d => d.Item.Path,
                                             (f, d) => new { File = f, Decision = d },
                                             PathEqualityComparer.Instance);
@@ -145,7 +146,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
                 var disableReleaseSwitching = group.First().DisableReleaseSwitching;
 
-                var decisions = _importDecisionMaker.GetImportDecisions(group.Select(x => x.Path).ToList(), group.First().Artist, group.First().Album, group.First().Release, null, null, false, true, true, !replaceExistingFiles);
+                var decisions = _importDecisionMaker.GetImportDecisions(group.Select(x => _diskProvider.GetFileInfo(x.Path)).ToList(), group.First().Artist, group.First().Album, group.First().Release, null, null, FilterFilesType.None, true, true, !replaceExistingFiles);
 
                 var existingItems = group.Join(decisions,
                                                i => i.Path,
@@ -260,7 +261,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                         ExistingFile = artist.Path.IsParentPath(file.Path),
                         Tracks = tracks,
                         FileTrackInfo = fileTrackInfo,
-                        MediaInfo = fileTrackInfo.MediaInfo,
                         Path = file.Path,
                         Quality = file.Quality,
                         Language = file.Language,
@@ -305,7 +305,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
                 {
                     if (_downloadedTracksImportService.ShouldDeleteFolder(
-                            new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
+                            _diskProvider.GetDirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
                             trackedDownload.RemoteAlbum.Artist) && trackedDownload.DownloadItem.CanMoveFiles)
                     {
                         _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);

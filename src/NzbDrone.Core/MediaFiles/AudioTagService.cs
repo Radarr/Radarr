@@ -15,6 +15,7 @@ using NLog.Fluent;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using TagLib;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -176,7 +177,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var newTags = GetTrackMetadata(trackfile);
-            var path = Path.Combine(trackfile.Artist.Value.Path, trackfile.RelativePath);
+            var path = trackfile.Path;
 
             var diff = ReadAudioTag(path).Diff(newTags);
 
@@ -270,7 +271,7 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            var path = Path.Combine(trackfile.Artist.Value.Path, trackfile.RelativePath);
+            var path = trackfile.Path;
             _logger.Debug($"Removing MusicBrainz tags for {path}");
 
             RemoveMusicBrainzTags(path);
@@ -312,7 +313,7 @@ namespace NzbDrone.Core.MediaFiles
                     continue;
                 }
 
-                var oldTags = ReadAudioTag(Path.Combine(f.Artist.Value.Path, f.RelativePath));
+                var oldTags = ReadAudioTag(f.Path);
                 var newTags = GetTrackMetadata(f);
                 var diff = oldTags.Diff(newTags);
 
@@ -323,7 +324,7 @@ namespace NzbDrone.Core.MediaFiles
                         AlbumId = file.Album.Value.Id,
                         TrackNumbers = file.Tracks.Value.Select(e => e.AbsoluteTrackNumber).ToList(),
                         TrackFileId = file.Id,
-                        RelativePath = file.RelativePath,
+                        RelativePath = file.Artist.Value.Path.GetRelativePath(file.Path),
                         Changes = diff
                     };
                 }

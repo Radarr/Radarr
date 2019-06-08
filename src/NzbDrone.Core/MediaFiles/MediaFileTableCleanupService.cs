@@ -39,7 +39,7 @@ namespace NzbDrone.Core.MediaFiles
             foreach (var artistFile in artistFiles)
             {
                 var trackFile = artistFile;
-                var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+                var trackFilePath = trackFile.Path;
 
                 try
                 {
@@ -49,15 +49,7 @@ namespace NzbDrone.Core.MediaFiles
                         _mediaFileService.Delete(artistFile, DeleteMediaFileReason.MissingFromDisk);
                         continue;
                     }
-
-                    if (tracks.None(e => e.TrackFileId == trackFile.Id))
-                    {
-                        _logger.Debug("File [{0}] is not assigned to any artist, removing from db", trackFilePath);
-                        _mediaFileService.Delete(trackFile, DeleteMediaFileReason.NoLinkedEpisodes);
-                        continue;
-                    }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unable to cleanup TrackFile in DB: {0}", trackFile.Id);

@@ -88,14 +88,14 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             foreach (var audioFile in _diskScanService.FilterFiles(watchFolder, _diskScanService.GetAudioFiles(watchFolder, false)))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(audioFile));
+                var title = FileNameBuilder.CleanFileName(audioFile.Name);
 
                 var newWatchItem = new WatchFolderItem
                 {
-                    DownloadId = Path.GetFileName(audioFile) + "_" + _diskProvider.FileGetLastWrite(audioFile).Ticks,
+                    DownloadId = audioFile.Name + "_" + audioFile.LastWriteTimeUtc.Ticks,
                     Title = title,
 
-                    OutputPath = new OsPath(audioFile),
+                    OutputPath = new OsPath(audioFile.FullName),
 
                     Status = DownloadItemStatus.Completed,
                     RemainingTime = TimeSpan.Zero
@@ -105,10 +105,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                 if (PreCheckWatchItemExpiry(newWatchItem, oldWatchItem))
                 {
-                    newWatchItem.TotalSize = _diskProvider.GetFileSize(audioFile);
-                    newWatchItem.Hash = GetHash(audioFile);
+                    newWatchItem.TotalSize = audioFile.Length;
+                    newWatchItem.Hash = GetHash(audioFile.FullName);
 
-                    if (_diskProvider.IsFileLocked(audioFile))
+                    if (_diskProvider.IsFileLocked(audioFile.FullName))
                     {
                         newWatchItem.Status = DownloadItemStatus.Downloading;
                     }

@@ -7,6 +7,7 @@ using NzbDrone.Core.Notifications.Synology;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using System.IO;
 
 namespace NzbDrone.Core.Test.NotificationTests
 {
@@ -15,13 +16,14 @@ namespace NzbDrone.Core.Test.NotificationTests
     {
         private Artist _artist;
         private AlbumDownloadMessage _upgrade;
+        private string rootPath = @"C:\Test\".AsOsAgnostic();
 
         [SetUp]
         public void SetUp()
         {
             _artist = new Artist()
             {
-                Path = @"C:\Test\".AsOsAgnostic()
+                Path = rootPath,
             };
 
             _upgrade = new AlbumDownloadMessage()
@@ -32,7 +34,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 {
                     new TrackFile
                     {
-                        RelativePath = "file1.S01E01E02.mkv"
+                        Path = Path.Combine(rootPath, "file1.S01E01E02.mkv")
                     }
                     
                 },
@@ -41,11 +43,11 @@ namespace NzbDrone.Core.Test.NotificationTests
                 {
                     new TrackFile
                     {
-                        RelativePath = "file1.S01E01.mkv"
+                        Path = Path.Combine(rootPath, "file1.S01E01.mkv")
                     },
                     new TrackFile
                     {
-                        RelativePath = "file1.S01E02.mkv"
+                        Path = Path.Combine(rootPath, "file1.S01E02.mkv")
                     }
                 }
             };

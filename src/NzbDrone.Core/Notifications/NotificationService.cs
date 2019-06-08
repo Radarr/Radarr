@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Notifications
         private string GetTrackRetagMessage(Artist artist, TrackFile trackFile, Dictionary<string, Tuple<string, string>> diff)
         {
             return string.Format("{0}:\n{1}",
-                                 Path.Combine(artist.Path, trackFile.RelativePath),
+                                 trackFile.Path,
                                  string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
         }
 

@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Test.DiskTests;
 using NzbDrone.Mono.Disk;
 

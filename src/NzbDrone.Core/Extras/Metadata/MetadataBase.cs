@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Extras.Metadata
         {
             var existingFilename = Path.Combine(artist.Path, metadataFile.RelativePath);
             var extension = Path.GetExtension(existingFilename).TrimStart('.');
-            var newFileName = Path.ChangeExtension(Path.Combine(artist.Path, trackFile.RelativePath), extension);
+            var newFileName = Path.ChangeExtension(trackFile.Path, extension);
 
             return newFileName;
         }

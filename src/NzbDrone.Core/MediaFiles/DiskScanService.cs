@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -15,18 +16,17 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Common;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IDiskScanService
     {
-        void Scan(Artist artist);
-        string[] GetAudioFiles(string path, bool allDirectories = true);
+        void Scan(Artist artist, FilterFilesType filter = FilterFilesType.Known);
+        IFileInfo[] GetAudioFiles(string path, bool allDirectories = true);
         string[] GetNonAudioFiles(string path, bool allDirectories = true);
+        List<IFileInfo> FilterFiles(string basePath, IEnumerable<IFileInfo> files);
         List<string> FilterFiles(string basePath, IEnumerable<string> files);
     }
 
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.MediaFiles
         private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$|^\.DS_store$|\.partial~$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public void Scan(Artist artist)
+        public void Scan(Artist artist, FilterFilesType filter = FilterFilesType.Known)
         {
             var rootFolder = _rootFolderService.GetBestRootFolderPath(artist.Path);
 
@@ -113,44 +113,70 @@ namespace NzbDrone.Core.MediaFiles
             var mediaFileList = FilterFiles(artist.Path, GetAudioFiles(artist.Path)).ToList();
             musicFilesStopwatch.Stop();
             _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
-
-            CleanMediaFiles(artist, mediaFileList);
+            
+            CleanMediaFiles(artist, mediaFileList.Select(x => x.FullName).ToList());
 
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist, filter, true);
             decisionsStopwatch.Stop();
             _logger.Debug("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
             
             var importStopwatch = Stopwatch.StartNew();
             _importApprovedTracks.Import(decisions, false);
+
+            // decisions may have been filtered to just new files.  Anything new and approved will have been inserted.
+            // Now we need to make sure anything new but not approved gets inserted
+            // Note that knownFiles will include anything imported just now
+            var knownFiles = _mediaFileService.GetFilesWithBasePath(artist.Path);
+            
+            var newFiles = decisions
+                .ExceptBy(x => x.Item.Path, knownFiles, x => x.Path, PathEqualityComparer.Instance)
+                .Select(decision => new TrackFile {
+                        Path = decision.Item.Path,
+                        Size = decision.Item.Size,
+                        Modified = decision.Item.Modified,
+                        DateAdded = DateTime.UtcNow,
+                        Quality = decision.Item.Quality,
+                        MediaInfo = decision.Item.FileTrackInfo.MediaInfo,
+                        Language = decision.Item.Language
+                    })
+                .ToList();
+            _mediaFileService.AddMany(newFiles);
+            
+            _logger.Debug($"Inserted {newFiles.Count} new unmatched trackfiles");
+
+            // finally update info on size/modified for existing files
+            var updatedFiles = knownFiles
+                .Join(decisions,
+                      x => x.Path,
+                      x => x.Item.Path,
+                      (file, decision) => new {
+                          File = file,
+                          Item = decision.Item
+                      },
+                      PathEqualityComparer.Instance)
+                .Where(x => x.File.Size != x.Item.Size ||
+                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1 )
+                .Select(x => {
+                        x.File.Size = x.Item.Size;
+                        x.File.Modified = x.Item.Modified;
+                        x.File.MediaInfo = x.Item.FileTrackInfo.MediaInfo;
+                        x.File.Quality = x.Item.Quality;
+                        return x.File;
+                    })
+                .ToList();
+
+            _mediaFileService.Update(updatedFiles);
+            
+            _logger.Debug($"Updated info for {updatedFiles.Count} known files");
+
             RemoveEmptyArtistFolder(artist.Path);
-            UpdateMediaInfo(artist, decisions.Select(x => x.Item).ToList());
+            
             CompletedScanning(artist);
             importStopwatch.Stop();
             _logger.Debug("Track import complete for: {0} [{1}]", artist, importStopwatch.Elapsed);
         }
 
-        private void UpdateMediaInfo(Artist artist, List<LocalTrack> mediaFiles)
-        {
-            var existingFiles = _mediaFileService.GetFilesByArtist(artist.Id);
-            var toUpdate = new List<TrackFile>(existingFiles.Count);
-
-            foreach (var file in existingFiles)
-            {
-                var path = Path.Combine(artist.Path, file.RelativePath);
-                var scannedFile = mediaFiles.FirstOrDefault(x => PathEqualityComparer.Instance.Equals(path, x.Path));
-
-                if (scannedFile != null)
-                {
-                    file.MediaInfo = scannedFile.FileTrackInfo.MediaInfo;
-                    toUpdate.Add(file);
-                }
-            }
-
-            _logger.Debug($"Updating Media Info for:\n{string.Join("\n", toUpdate)}");
-            _mediaFileService.UpdateMediaInfo(toUpdate);
-        }
-        
         private void CleanMediaFiles(Artist artist, List<string> mediaFileList)
         {
             _logger.Debug("{0} Cleaning up media files in DB", artist);
@@ -163,14 +189,14 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new ArtistScannedEvent(artist));
         }
 
-        public string[] GetAudioFiles(string path, bool allDirectories = true)
+        public IFileInfo[] GetAudioFiles(string path, bool allDirectories = true)
         {
             _logger.Debug("Scanning '{0}' for music files", path);
 
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var filesOnDisk = _diskProvider.GetFiles(path, searchOption).ToList();
+            var filesOnDisk = _diskProvider.GetFileInfos(path, searchOption);
 
-            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
+            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(file.Extension))
                                            .ToList();
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
@@ -199,6 +225,13 @@ namespace NzbDrone.Core.MediaFiles
         {
             return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
+                        .ToList();
+        }
+
+        public List<IFileInfo> FilterFiles(string basePath, IEnumerable<IFileInfo> files)
+        {
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file.FullName)))
+                        .Where(file => !ExcludedFilesRegex.IsMatch(file.Name))
                         .ToList();
         }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -15,7 +16,7 @@ namespace NzbDrone.Common.Test.DiskTests
         private const string RECYCLING_BIN = "$Recycle.Bin";
         private const string SYSTEM_VOLUME_INFORMATION = "System Volume Information";
         private const string WINDOWS = "Windows";
-        private List<DirectoryInfo> _folders;
+        private List<IDirectoryInfo> _folders;
 
         private void SetupFolders(string root)
         {
@@ -36,7 +37,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 WINDOWS
             };
 
-            _folders = folders.Select(f => new DirectoryInfo(Path.Combine(root, f))).ToList();
+            _folders = folders.Select(f => (DirectoryInfoBase)new DirectoryInfo(Path.Combine(root, f))).ToList<IDirectoryInfo>();
         }
 
         [Test]

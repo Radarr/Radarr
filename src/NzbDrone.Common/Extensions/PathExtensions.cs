@@ -38,6 +38,11 @@ namespace NzbDrone.Common.Extensions
                 return info.FullName.TrimEnd('/', '\\', ' ');
             }
 
+            if (OsInfo.IsNotWindows && info.FullName.TrimEnd('/').Length == 0)
+            {
+                return "/";
+            }
+
             return info.FullName.TrimEnd('/').Trim('\\', ' ');
         }
 

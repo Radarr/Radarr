@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile = 
                 new TrackFile{
                 Id = 1,
-                RelativePath = "My.Artist.S01E01.mp3",
+                Path = "/My.Artist.S01E01.mp3",
                 Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                 DateAdded = DateTime.Now,
                 AlbumId = 1
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _secondFile = 
                 new TrackFile{
                 Id = 2,
-                RelativePath = "My.Artist.S01E02.mp3",
+                Path = "/My.Artist.S01E02.mp3",
                 Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                 DateAdded = DateTime.Now,
                 AlbumId = 2
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
         private void WithExistingFile(TrackFile trackFile)
         {
-            var path = Path.Combine(@"C:\Music\My.Artist".AsOsAgnostic(), trackFile.RelativePath);
+            var path = trackFile.Path;
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(path))

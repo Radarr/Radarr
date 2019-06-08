@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using Nancy;
 using NzbDrone.Common.Disk;
@@ -62,9 +63,9 @@ namespace Lidarr.Api.V1.FileSystem
             }
 
             return _diskScanService.GetAudioFiles(path).Select(f => new {
-                Path = f,
-                RelativePath = path.GetRelativePath(f),
-                Name = Path.GetFileName(f)
+                Path = f.FullName,
+                RelativePath = path.GetRelativePath(f.FullName),
+                Name = f.Name
             }).AsResponse();
         }
     }

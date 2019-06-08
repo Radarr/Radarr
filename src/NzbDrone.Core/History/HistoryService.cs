@@ -234,7 +234,7 @@ namespace NzbDrone.Core.History
                 //Won't have a value since we publish this event before saving to DB.
                 //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
                 history.Data.Add("DroppedPath", message.TrackInfo.Path);
-                history.Data.Add("ImportedPath", Path.Combine(message.TrackInfo.Artist.Path, message.ImportedTrack.RelativePath));
+                history.Data.Add("ImportedPath", message.ImportedTrack.Path);
                 history.Data.Add("DownloadClient", message.DownloadClient);
 
                 _historyRepository.Insert(history);
@@ -321,8 +321,7 @@ namespace NzbDrone.Core.History
         {
             var sourcePath = message.OriginalPath;
             var sourceRelativePath = message.Artist.Path.GetRelativePath(message.OriginalPath);
-            var path = Path.Combine(message.Artist.Path, message.TrackFile.RelativePath);
-            var relativePath = message.TrackFile.RelativePath;
+            var path = message.TrackFile.Path;
 
             foreach (var track in message.TrackFile.Tracks.Value)
             {
@@ -340,7 +339,6 @@ namespace NzbDrone.Core.History
                 history.Data.Add("SourcePath", sourcePath);
                 history.Data.Add("SourceRelativePath", sourceRelativePath);
                 history.Data.Add("Path", path);
-                history.Data.Add("RelativePath", relativePath);
 
                 _historyRepository.Insert(history);
             }
@@ -348,8 +346,7 @@ namespace NzbDrone.Core.History
 
         public void Handle(TrackFileRetaggedEvent message)
         {
-            var path = Path.Combine(message.Artist.Path, message.TrackFile.RelativePath);
-            var relativePath = message.TrackFile.RelativePath;
+            var path = message.TrackFile.Path;
 
             foreach (var track in message.TrackFile.Tracks.Value)
             {

@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 {
     public class MediaFileTableCleanupServiceFixture : CoreTest<MediaFileTableCleanupService>
     {
-        private const string DELETED_PATH = "ANY FILE WITH THIS PATH IS CONSIDERED DELETED!";
+        private readonly string DELETED_PATH = @"c:\ANY FILE WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
         private List<Track> _tracks;
         private Artist _artist;
 
@@ -56,13 +56,15 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private List<string> FilesOnDisk(IEnumerable<TrackFile> trackFiles)
         {
-            return trackFiles.Select(e => Path.Combine(_artist.Path, e.RelativePath)).ToList();
+            return trackFiles.Select(e => e.Path).ToList();
         }
 
         [Test]
-        public void should_skip_files_that_exist_in_disk()
+        public void should_skip_files_that_exist_on_disk()
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+                .All()
+                .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Build();
 
             GivenTrackFiles(trackFiles);
@@ -76,31 +78,17 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void should_delete_non_existent_files()
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+                .All()
+                .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Random(2)
-                .With(c => c.RelativePath = DELETED_PATH)
+                .With(c => c.Path = DELETED_PATH)
                 .Build();
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => e.RelativePath != DELETED_PATH)));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => e.Path != DELETED_PATH)));
 
-            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.Is<TrackFile>(e => e.RelativePath == DELETED_PATH), DeleteMediaFileReason.MissingFromDisk), Times.Exactly(2));
-        }
-
-        [Test]
-        public void should_delete_files_that_dont_belong_to_any_tracks()
-        {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
-                                .Random(10)
-                                .With(c => c.RelativePath = "ExistingPath")
-                                .Build();
-
-            GivenTrackFiles(trackFiles);
-            GivenFilesAreNotAttachedToTrack();
-
-            Subject.Clean(_artist, FilesOnDisk(trackFiles));
-
-            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.IsAny<TrackFile>(), DeleteMediaFileReason.NoLinkedEpisodes), Times.Exactly(10));
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.Is<TrackFile>(e => e.Path == DELETED_PATH), DeleteMediaFileReason.MissingFromDisk), Times.Exactly(2));
         }
 
         [Test]
@@ -118,7 +106,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                                 .Random(10)
-                                .With(c => c.RelativePath = "ExistingPath")
+                                .With(c => c.Path = "/ExistingPath".AsOsAgnostic())
                                 .Build();
 
             GivenTrackFiles(trackFiles);

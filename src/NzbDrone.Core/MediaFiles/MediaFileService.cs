@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.MediaFiles.Events;
@@ -8,6 +9,7 @@ using NzbDrone.Common;
 using NzbDrone.Core.Music;
 using System;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -21,10 +23,11 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesByRelease(int releaseId);
-        List<string> FilterExistingFiles(List<string> files, Artist artist);
+        List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, Artist artist, FilterFilesType filter);
         TrackFile Get(int id);
         List<TrackFile> Get(IEnumerable<int> ids);
-        List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath);
+        List<TrackFile> GetFilesWithBasePath(string path);
+        TrackFile GetFileWithPath(string path);
         void UpdateMediaInfo(List<TrackFile> trackFiles);
     }
 
@@ -70,19 +73,57 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
-            trackFile.Path = Path.Combine(trackFile.Artist.Value.Path, trackFile.RelativePath);
-
             _mediaFileRepository.Delete(trackFile);
-            _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+            // If the trackfile wasn't mapped to a track, don't publish an event
+            if (trackFile.AlbumId > 0)
+            {
+                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+            }
         }
 
-        public List<string> FilterExistingFiles(List<string> files, Artist artist)
+        public List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, Artist artist, FilterFilesType filter)
         {
-            var artistFiles = GetFilesByArtist(artist.Id).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
+            _logger.Debug($"Filtering {files.Count} files for unchanged files");
 
-            if (!artistFiles.Any()) return files;
+            var knownFiles = GetFilesWithBasePath(artist.Path);
+            _logger.Trace($"Got {knownFiles.Count} existing files");
 
-            return files.Except(artistFiles, PathEqualityComparer.Instance).ToList();
+            if (!knownFiles.Any()) return files;
+
+            var combined = files
+                .Join(knownFiles,
+                      f => f.FullName,
+                      af => af.Path,
+                      (f, af) => new { DiskFile = f, DbFile = af},
+                      PathEqualityComparer.Instance)
+                .ToList();
+
+            List<IFileInfo> unwanted = null;
+            if (filter == FilterFilesType.Known)
+            {
+                unwanted = combined
+                    .Where(x => x.DiskFile.Length == x.DbFile.Size &&
+                           Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1)
+                    .Select(x => x.DiskFile)
+                    .ToList();
+                _logger.Trace($"{unwanted.Count} unchanged existing files");
+            }
+            else if (filter == FilterFilesType.Matched)
+            {
+                unwanted = combined
+                    .Where(x => x.DiskFile.Length == x.DbFile.Size &&
+                           Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1 &&
+                           (x.DbFile.Tracks == null || (x.DbFile.Tracks.IsLoaded && x.DbFile.Tracks.Value.Any())))
+                    .Select(x => x.DiskFile)
+                    .ToList();
+                _logger.Trace($"{unwanted.Count} unchanged and matched files");
+            }
+            else
+            {
+                throw new ArgumentException("Unrecognised value of FilterFilesType filter");
+            }
+
+            return files.Except(unwanted).ToList();
         }
 
         public TrackFile Get(int id)
@@ -95,9 +136,14 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.Get(ids).ToList();
         }
 
-        public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
+        public List<TrackFile> GetFilesWithBasePath(string path)
         {
-            return _mediaFileRepository.GetFilesWithRelativePath(artistId, relativePath);
+            return _mediaFileRepository.GetFilesWithBasePath(path);
+        }
+
+        public TrackFile GetFileWithPath(string path)
+        {
+            return _mediaFileRepository.GetFileWithPath(path);
         }
 
         public void HandleAsync(AlbumDeletedEvent message)

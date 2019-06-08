@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Organizer
             _singleTrackFile = new TrackFile
             {
                 Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
-                RelativePath = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
+                Path = "/music/Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
                 SceneName = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
                 MediaInfo = mediaInfo

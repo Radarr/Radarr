@@ -14,24 +14,26 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     public class CleanupOrphanedTrackFilesFixture : DbTest<CleanupOrphanedTrackFiles, TrackFile>
     {
         [Test]
-        public void should_delete_orphaned_track_files()
+        public void should_unlink_orphaned_track_files()
         {
             var trackFile = Builder<TrackFile>.CreateNew()
-                                                  .With(h => h.Quality = new QualityModel())
-                                                  .BuildNew();
+                .With(h => h.Quality = new QualityModel())
+                .With(h => h.AlbumId = 1)
+                .BuildNew();
 
             Db.Insert(trackFile);
             Subject.Clean();
-            AllStoredModels.Should().BeEmpty();
+            AllStoredModels[0].AlbumId.Should().Be(0);
         }
 
         [Test]
-        public void should_not_delete_unorphaned_track_files()
+        public void should_not_unlink_unorphaned_track_files()
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(2)
-                                                   .All()
-                                                   .With(h => h.Quality = new QualityModel())
-                                                   .BuildListOfNew();
+                .All()
+                .With(h => h.Quality = new QualityModel())
+                .With(h => h.AlbumId = 1)
+                .BuildListOfNew();
 
             Db.InsertMany(trackFiles);
 
@@ -42,7 +44,8 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Db.Insert(track);
 
             Subject.Clean();
-            AllStoredModels.Should().HaveCount(1);
+            AllStoredModels.Where(x => x.AlbumId == 1).Should().HaveCount(1);
+            
             Db.All<Track>().Should().Contain(e => e.TrackFileId == AllStoredModels.First().Id);
         }
     }

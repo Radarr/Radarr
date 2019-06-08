@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
         {
-            var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
             if (metadataFile.Type == MetadataType.TrackMetadata)
             {

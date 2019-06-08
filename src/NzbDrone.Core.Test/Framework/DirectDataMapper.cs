@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.Framework
                     value = dataRow.ItemArray[i];
                 }
 
-                item[columnName] = dataRow.ItemArray[i];
+                item[columnName] = value;
             }
 
             return item;

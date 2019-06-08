@@ -57,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles
             foreach (var existingFile in existingFiles)
             {
                 var file = existingFile.First();
-                var trackFilePath = Path.Combine(localTrack.Artist.Path, file.RelativePath);
+                var trackFilePath = file.Path;
                 var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
 
                 if (_diskProvider.FileExists(trackFilePath))

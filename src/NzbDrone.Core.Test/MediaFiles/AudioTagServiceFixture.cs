@@ -186,10 +186,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             var path = copiedFile;
 
             var track = new TrackFile {
-                Artist = new Artist {
-                    Path = Path.GetDirectoryName(path)
-                },
-                RelativePath = Path.GetFileName(path)
+                Path = path
             };
 
             testTags.Write(path);

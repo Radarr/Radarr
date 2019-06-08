@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Net;
 using FluentAssertions;
@@ -52,6 +53,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
             Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
                   .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
+
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<IFileInfo>>()))
+                .Returns<string, IEnumerable<IFileInfo>>((b, s) => s.ToList());
         }
 
         protected void GivenFailedDownload()

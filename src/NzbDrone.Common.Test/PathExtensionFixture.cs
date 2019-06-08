@@ -43,6 +43,7 @@ namespace NzbDrone.Common.Test
             result.Should().Be(clean);
         }
 
+        [TestCase(@"/", @"/")]
         [TestCase(@"/test/", @"/test")]
         [TestCase(@"//test/", @"/test")]
         [TestCase(@"//test//", @"/test")]

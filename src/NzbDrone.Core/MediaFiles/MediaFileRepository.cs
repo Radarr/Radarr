@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -11,7 +12,8 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesByRelease(int releaseId);
-        List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath);
+        List<TrackFile> GetFilesWithBasePath(string path);
+        TrackFile GetFileWithPath(string path);
     }
 
 
@@ -55,15 +57,17 @@ namespace NzbDrone.Core.MediaFiles
                 .Where<Track>(x => x.AlbumReleaseId == releaseId)
                 .ToList();
         }
-
         
-        public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
+        public List<TrackFile> GetFilesWithBasePath(string path)
         {
             return Query
-                .Join<Track, AlbumRelease>(JoinType.Inner, t => t.AlbumRelease, (t, r) => t.AlbumReleaseId == r.Id)
-                .Where<AlbumRelease>(r => r.Monitored == true)
-                .AndWhere(t => t.Artist.Value.Id == artistId && t.RelativePath == relativePath)
+                .Where(x => x.Path.StartsWith(path))
                 .ToList();
+        }
+        
+        public TrackFile GetFileWithPath(string path)
+        {
+            return Query.Where(x => x.Path == path).SingleOrDefault();
         }
     }
 }

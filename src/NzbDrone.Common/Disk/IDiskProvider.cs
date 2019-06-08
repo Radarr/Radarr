@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
@@ -46,8 +47,10 @@ namespace NzbDrone.Common.Disk
         FileStream OpenWriteStream(string path);
         List<IMount> GetMounts();
         IMount GetMount(string path);
-        List<DirectoryInfo> GetDirectoryInfos(string path);
-        List<FileInfo> GetFileInfos(string path);
+        IDirectoryInfo GetDirectoryInfo(string path);
+        List<IDirectoryInfo> GetDirectoryInfos(string path);
+        IFileInfo GetFileInfo(string path);
+        List<IFileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly);
         void RemoveEmptySubfolders(string path);
         void SaveStream(Stream stream, string path);
     }

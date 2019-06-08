@@ -549,12 +549,7 @@ namespace NzbDrone.Core.Organizer
 
         private string GetOriginalFileName(TrackFile trackFile)
         {
-            if (trackFile.RelativePath.IsNullOrWhiteSpace())
-            {
-                return Path.GetFileNameWithoutExtension(trackFile.Path);
-            }
-
-            return Path.GetFileNameWithoutExtension(trackFile.RelativePath);
+            return Path.GetFileNameWithoutExtension(trackFile.Path);
         }
 
     }

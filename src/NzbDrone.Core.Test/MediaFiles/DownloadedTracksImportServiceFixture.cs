@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -12,36 +12,33 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using System.IO.Abstractions.TestingHelpers;
+using System.IO;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
-    public class DownloadedTracksImportServiceFixture : CoreTest<DownloadedTracksImportService>
+    public class DownloadedTracksImportServiceFixture : FileSystemTest<DownloadedTracksImportService>
     {
         private string _droneFactory = "c:\\drop\\".AsOsAgnostic();
-        private string[] _subFolders = new[] { "c:\\root\\foldername".AsOsAgnostic() };
-        private string[] _audioFiles = new[] { "c:\\root\\foldername\\01 the first track.ext".AsOsAgnostic() };
+        private string[] _subFolders = new[] { "c:\\drop\\foldername".AsOsAgnostic() };
+        private string[] _audioFiles = new[] { "c:\\drop\\foldername\\01 the first track.ext".AsOsAgnostic() };
 
         private TrackedDownload _trackedDownload;
 
         [SetUp]
         public void Setup()
         {
+            GivenAudioFiles(_audioFiles, 10);
+            
             Mocker.GetMock<IDiskScanService>().Setup(c => c.GetAudioFiles(It.IsAny<string>(), It.IsAny<bool>()))
-                  .Returns(_audioFiles);
+                .Returns(_audioFiles.Select(x => DiskProvider.GetFileInfo(x)).ToArray());
 
-            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
-                  .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
-
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetDirectories(It.IsAny<string>()))
-                  .Returns(_subFolders);
-
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(It.IsAny<string>()))
-                  .Returns(true);
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<IFileInfo>>()))
+                  .Returns<string, IEnumerable<IFileInfo>>((b, s) => s.ToList());
 
             Mocker.GetMock<IImportApprovedTracks>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision<LocalTrack>>>(), true, null, ImportMode.Auto))
@@ -65,6 +62,14 @@ namespace NzbDrone.Core.Test.MediaFiles
              };
         }
 
+        private void GivenAudioFiles(string[] files, long filesize)
+        {
+            foreach (var file in files)
+            {
+                FileSystem.AddFile(file, new MockFileData("".PadRight((int)filesize)));
+            }
+        }
+
         private void GivenValidArtist()
         {
             Mocker.GetMock<IParsingService>()
@@ -80,7 +85,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
@@ -92,13 +97,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         private void WasImportedResponse()
         {
             Mocker.GetMock<IDiskScanService>().Setup(c => c.GetAudioFiles(It.IsAny<string>(), It.IsAny<bool>()))
-                  .Returns(new string[0]);
+                  .Returns(new IFileInfo[0]);
         }
 
         [Test]
         public void should_search_for_artist_using_folder_name()
         {
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IParsingService>().Verify(c => c.GetArtist("foldername"), Times.Once());
         }
@@ -108,10 +113,12 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenValidArtist();
 
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.IsFileLocked(It.IsAny<string>()))
-                  .Returns(true);
+            foreach (var file in _audioFiles)
+            {
+                FileSystem.AddFile(file, new MockFileData("".PadRight(10)) { AllowedFileShare = FileShare.None });
+            }
 
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             VerifyNoImport();
         }
@@ -121,10 +128,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             Mocker.GetMock<IParsingService>().Setup(c => c.GetArtist("foldername")).Returns((Artist)null);
 
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IMakeImportDecision>()
-                .Verify(c => c.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()),
+                .Verify(c => c.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()),
                     Times.Never());
 
             VerifyNoImport();
@@ -141,9 +148,9 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDiskScanService>()
                   .Setup(c => c.GetAudioFiles(It.IsAny<string>(), It.IsAny<bool>()))
-                  .Returns(new string[0]);
+                  .Returns(new IFileInfo[0]);
 
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IDiskScanService>()
                   .Verify(v => v.GetAudioFiles(It.IsAny<string>(), true), Times.Never());
@@ -158,7 +165,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision<LocalTrack>>>(), false, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
 
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IDiskProvider>()
                   .Verify(v => v.GetFolderSize(It.IsAny<string>()), Times.Never());
@@ -175,14 +182,14 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision<LocalTrack>>>(), true, null, ImportMode.Auto))
                   .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IDiskProvider>()
                   .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
@@ -195,13 +202,9 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void should_remove_unpack_from_folder_name(string prefix)
         {
             var folderName = "Alien Ant Farm - Truant (2003)";
-            var folders = new[] { string.Format(@"C:\Test\Unsorted\{0}{1}", prefix, folderName).AsOsAgnostic() };
+            FileSystem.AddDirectory(string.Format(@"C:\drop\{0}{1}", prefix, folderName).AsOsAgnostic());
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(c => c.GetDirectories(It.IsAny<string>()))
-                  .Returns(folders);
-
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IParsingService>()
                 .Verify(v => v.GetArtist(folderName), Times.Once());
@@ -213,13 +216,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_return_importresult_on_unknown_artist()
         {
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(It.IsAny<string>()))
-                  .Returns(false);
-
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
-                  .Returns(true);
-
             var fileName = @"C:\folder\file.mkv".AsOsAgnostic();
+            FileSystem.AddFile(fileName, new MockFileData(string.Empty));
 
             var result = Subject.ProcessPath(fileName);
 
@@ -241,33 +239,18 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision<LocalTrack>>>(), true, null, ImportMode.Auto))
                   .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
-            //Mocker.GetMock<IDetectSample>()
-            //      .Setup(s => s.IsSample(It.IsAny<Artist>(),
-            //          It.IsAny<QualityModel>(),
-            //          It.IsAny<string>(),
-            //          It.IsAny<long>(),
-            //          It.IsAny<bool>()))
-            //      .Returns(true);
+            GivenAudioFiles(new []{ _audioFiles.First().Replace(".ext", ".rar") }, 15.Megabytes());
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
-                  .Returns(new []{ _audioFiles.First().Replace(".ext", ".rar") });
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFileSize(It.IsAny<string>()))
-                  .Returns(15.Megabytes());
-
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
-
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
+            DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();
 
             ExceptionVerification.ExpectedWarns(1);
         }
@@ -276,12 +259,6 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void should_not_process_if_file_and_folder_do_not_exist()
         {
             var folderName = @"C:\media\ba09030e-1234-1234-1234-123456789abc\[HorribleSubs] Maria the Virgin Witch - 09 [720p]".AsOsAgnostic();
-
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(folderName))
-                  .Returns(false);
-
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(folderName))
-                  .Returns(false);
 
             Subject.ProcessPath(folderName).Should().BeEmpty();
 
@@ -302,26 +279,16 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision<LocalTrack>>>(), true, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
 
-            //Mocker.GetMock<IDetectSample>()
-            //      .Setup(s => s.IsSample(It.IsAny<Artist>(),
-            //          It.IsAny<QualityModel>(),
-            //          It.IsAny<string>(),
-            //          It.IsAny<long>(),
-            //          It.IsAny<bool>()))
-            //      .Returns(true);
+            Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFileSize(It.IsAny<string>()))
-                  .Returns(15.Megabytes());
-
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
+            DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();            
 
             Mocker.GetMock<IDiskProvider>()
                   .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
@@ -338,8 +305,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.ProcessPath(_droneFactory, ImportMode.Auto, _trackedDownload.RemoteAlbum.Artist, _trackedDownload.DownloadItem);
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
+            DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();
         }
 
         [Test]
@@ -353,8 +319,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.ProcessPath(_droneFactory, ImportMode.Move, _trackedDownload.RemoteAlbum.Artist, _trackedDownload.DownloadItem);
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Once());
+            DiskProvider.FolderExists(_subFolders[0]).Should().BeFalse();
         }
 
         [Test]
@@ -368,8 +333,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.ProcessPath(_droneFactory, ImportMode.Copy, _trackedDownload.RemoteAlbum.Artist, _trackedDownload.DownloadItem);
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
+            DiskProvider.FolderExists(_subFolders[0]).Should().BeTrue();
         }
 
         private void VerifyNoImport()

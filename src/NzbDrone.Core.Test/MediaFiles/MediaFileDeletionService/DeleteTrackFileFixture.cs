@@ -26,8 +26,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
                                      .Build();
 
             _trackFile = Builder<TrackFile>.CreateNew()
-                                               .With(f => f.RelativePath = "Artist Name - Track01")
-                                               .With(f => f.Path = Path.Combine(_artist.Path, "Artist Name - Track01"))
+                                               .With(f => f.Path = "/Artist Name - Track01")
                                                .Build();
 
             Mocker.GetMock<IDiskProvider>()

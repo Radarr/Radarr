@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using NLog;
@@ -594,7 +595,7 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        private bool ShouldIgnore(DirectoryInfo folder)
+        private bool ShouldIgnore(IDirectoryInfo folder)
         {
             if (folder.Name.StartsWith(".nfs"))
             {
@@ -605,7 +606,7 @@ namespace NzbDrone.Common.Disk
             return false;
         }
 
-        private bool ShouldIgnore(FileInfo file)
+        private bool ShouldIgnore(IFileInfo file)
         {
             if (file.Name.StartsWith(".nfs") || file.Name == "debug.log" || file.Name.EndsWith(".socket"))
             {

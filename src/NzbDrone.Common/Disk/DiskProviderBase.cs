@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -15,6 +16,12 @@ namespace NzbDrone.Common.Disk
     public abstract class DiskProviderBase : IDiskProvider
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DiskProviderBase));
+        protected readonly IFileSystem _fileSystem;
+
+        public DiskProviderBase(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
         public static StringComparison PathStringComparison
         {
@@ -38,7 +45,7 @@ namespace NzbDrone.Common.Disk
         {
             CheckFolderExists(path);
 
-            return new DirectoryInfo(path).CreationTimeUtc;
+            return _fileSystem.DirectoryInfo.FromDirectoryName(path).CreationTimeUtc;
         }
 
         public DateTime FolderGetLastWrite(string path)
@@ -49,17 +56,17 @@ namespace NzbDrone.Common.Disk
 
             if (!dirFiles.Any())
             {
-                return new DirectoryInfo(path).LastWriteTimeUtc;
+                return _fileSystem.DirectoryInfo.FromDirectoryName(path).LastWriteTimeUtc;
             }
 
-            return dirFiles.Select(f => new FileInfo(f)).Max(c => c.LastWriteTimeUtc);
+            return dirFiles.Select(f => _fileSystem.FileInfo.FromFileName(f)).Max(c => c.LastWriteTimeUtc);
         }
 
         public DateTime FileGetLastWrite(string path)
         {
             CheckFileExists(path);
 
-            return new FileInfo(path).LastWriteTimeUtc;
+            return _fileSystem.FileInfo.FromFileName(path).LastWriteTimeUtc;
         }
 
         private void CheckFolderExists(string path)
@@ -93,7 +100,7 @@ namespace NzbDrone.Common.Disk
         public bool FolderExists(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
-            return Directory.Exists(path);
+            return _fileSystem.Directory.Exists(path);
         }
 
         public bool FileExists(string path)
@@ -112,11 +119,11 @@ namespace NzbDrone.Common.Disk
                 case StringComparison.InvariantCulture:
                 case StringComparison.Ordinal:
                     {
-                        return File.Exists(path) && path == path.GetActualCasing();
+                        return _fileSystem.File.Exists(path) && path == path.GetActualCasing();
                     }
                 default:
                     {
-                        return File.Exists(path);
+                        return _fileSystem.File.Exists(path);
                     }
             }
         }
@@ -129,8 +136,8 @@ namespace NzbDrone.Common.Disk
             {
                 var testPath = Path.Combine(path, "lidarr_write_test.txt");
                 var testContent = $"This file was created to verify if '{path}' is writable. It should've been automatically deleted. Feel free to delete it.";
-                File.WriteAllText(testPath, testContent);
-                File.Delete(testPath);
+                _fileSystem.File.WriteAllText(testPath, testContent);
+                _fileSystem.File.Delete(testPath);
                 return true;
             }
             catch (Exception e)
@@ -144,21 +151,21 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            return Directory.GetDirectories(path);
+            return _fileSystem.Directory.GetDirectories(path);
         }
 
         public string[] GetFiles(string path, SearchOption searchOption)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            return Directory.GetFiles(path, "*.*", searchOption);
+            return _fileSystem.Directory.GetFiles(path, "*.*", searchOption);
         }
 
         public long GetFolderSize(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            return GetFiles(path, SearchOption.AllDirectories).Sum(e => new FileInfo(e).Length);
+            return GetFiles(path, SearchOption.AllDirectories).Sum(e => _fileSystem.FileInfo.FromFileName(e).Length);
         }
 
         public long GetFileSize(string path)
@@ -170,14 +177,14 @@ namespace NzbDrone.Common.Disk
                 throw new FileNotFoundException("File doesn't exist: " + path);
             }
 
-            var fi = new FileInfo(path);
+            var fi = _fileSystem.FileInfo.FromFileName(path);
             return fi.Length;
         }
 
         public void CreateFolder(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
-            Directory.CreateDirectory(path);
+            _fileSystem.Directory.CreateDirectory(path);
         }
 
         public void DeleteFile(string path)
@@ -187,7 +194,7 @@ namespace NzbDrone.Common.Disk
 
             RemoveReadOnly(path);
 
-            File.Delete(path);
+            _fileSystem.File.Delete(path);
         }
 
         public void CopyFile(string source, string destination, bool overwrite = false)
@@ -205,7 +212,7 @@ namespace NzbDrone.Common.Disk
 
         protected virtual void CopyFileInternal(string source, string destination, bool overwrite = false)
         {
-            File.Copy(source, destination, overwrite);
+            _fileSystem.File.Copy(source, destination, overwrite);
         }
 
         public void MoveFile(string source, string destination, bool overwrite = false)
@@ -237,7 +244,7 @@ namespace NzbDrone.Common.Disk
 
         protected virtual void MoveFileInternal(string source, string destination)
         {
-            File.Move(source, destination);
+            _fileSystem.File.Move(source, destination);
         }
 
         public abstract bool TryCreateHardLink(string source, string destination);
@@ -246,45 +253,45 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            var files = Directory.GetFiles(path, "*.*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            var files = _fileSystem.Directory.GetFiles(path, "*.*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             Array.ForEach(files, RemoveReadOnly);
 
-            Directory.Delete(path, recursive);
+            _fileSystem.Directory.Delete(path, recursive);
         }
 
         public string ReadAllText(string filePath)
         {
             Ensure.That(filePath, () => filePath).IsValidPath();
 
-            return File.ReadAllText(filePath);
+            return _fileSystem.File.ReadAllText(filePath);
         }
 
         public void WriteAllText(string filename, string contents)
         {
             Ensure.That(filename, () => filename).IsValidPath();
             RemoveReadOnly(filename);
-            File.WriteAllText(filename, contents);
+            _fileSystem.File.WriteAllText(filename, contents);
         }
 
         public void FolderSetLastWriteTime(string path, DateTime dateTime)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            Directory.SetLastWriteTimeUtc(path, dateTime);
+            _fileSystem.Directory.SetLastWriteTimeUtc(path, dateTime);
         }
 
         public void FileSetLastWriteTime(string path, DateTime dateTime)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            File.SetLastWriteTime(path, dateTime);
+            _fileSystem.File.SetLastWriteTime(path, dateTime);
         }
 
         public bool IsFileLocked(string file)
         {
             try
             {
-                using (File.Open(file, FileMode.Open, FileAccess.Read, FileShare.None))
+                using (_fileSystem.File.Open(file, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     return false;
                 }
@@ -306,7 +313,7 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            var parent = Directory.GetParent(path.TrimEnd(Path.DirectorySeparatorChar));
+            var parent = _fileSystem.Directory.GetParent(path.TrimEnd(Path.DirectorySeparatorChar));
 
             if (parent == null)
             {
@@ -322,7 +329,7 @@ namespace NzbDrone.Common.Disk
             {
                 var sid = new SecurityIdentifier(accountSid, null);
 
-                var directoryInfo = new DirectoryInfo(filename);
+                var directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(filename);
                 var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.Access);
 
                 var rules = directorySecurity.GetAccessRules(true, false, typeof(SecurityIdentifier));
@@ -368,7 +375,7 @@ namespace NzbDrone.Common.Disk
 
         public FileAttributes GetFileAttributes(string path)
         {
-            return File.GetAttributes(path);
+            return _fileSystem.File.GetAttributes(path);
         }
 
         public void EmptyFolder(string path)
@@ -410,12 +417,12 @@ namespace NzbDrone.Common.Disk
                 throw new FileNotFoundException("Unable to find file: " + path, path);
             }
 
-            return new FileStream(path, FileMode.Open, FileAccess.Read);
+            return (FileStream) _fileSystem.FileStream.Create(path, FileMode.Open, FileAccess.Read);
         }
 
         public FileStream OpenWriteStream(string path)
         {
-            return new FileStream(path, FileMode.Create);
+            return (FileStream) _fileSystem.FileStream.Create(path, FileMode.Create);
         }
 
         public List<IMount> GetMounts()
@@ -454,29 +461,41 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        protected List<DriveInfo> GetDriveInfoMounts()
+        protected List<IDriveInfo> GetDriveInfoMounts()
         {
-            return DriveInfo.GetDrives()
-                            .Where(d => d.IsReady)
-                            .ToList();
+            return _fileSystem.DriveInfo.GetDrives()
+                .Where(d => d.IsReady)
+                .ToList();
         }
 
-        public List<DirectoryInfo> GetDirectoryInfos(string path)
+        public List<IDirectoryInfo> GetDirectoryInfos(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            var di = new DirectoryInfo(path);
+            var di = _fileSystem.DirectoryInfo.FromDirectoryName(path);
 
             return di.GetDirectories().ToList();
         }
 
-        public List<FileInfo> GetFileInfos(string path)
+        public IDirectoryInfo GetDirectoryInfo(string path)
+        {
+            Ensure.That(path, () => path).IsValidPath();
+            return _fileSystem.DirectoryInfo.FromDirectoryName(path);
+        }
+
+        public List<IFileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            var di = new DirectoryInfo(path);
+            var di = _fileSystem.DirectoryInfo.FromDirectoryName(path);
 
-            return di.GetFiles().ToList();
+            return di.GetFiles("*", searchOption).ToList();
+        }
+
+        public IFileInfo GetFileInfo(string path)
+        {
+            Ensure.That(path, () => path).IsValidPath();
+            return _fileSystem.FileInfo.FromFileName(path);
         }
 
         public void RemoveEmptySubfolders(string path)
