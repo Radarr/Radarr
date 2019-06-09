@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMoq, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMoq.1.8.1.0\lib\net40\AutoMoq.dll</HintPath>
+      <HintPath>..\packages\AutoMoq.2.0.0\lib\net45\AutoMoq.dll</HintPath>
     </Reference>
     <Reference Include="FizzWare.NBuilder, Version=4.0.0.115, Culture=neutral, PublicKeyToken=5651b03e12e42c12, processorArchitecture=MSIL">
       <HintPath>..\packages\NBuilder.4.0.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
@@ -89,10 +89,6 @@
     </Reference>
     <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
-    </Reference>
-    <Reference Include="TagLibSharp, Version=2.2.0.19, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\TagLibSharp-Lidarr.2.2.0.19\lib\netstandard2.0\TagLibSharp.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Abstractions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Abstractions.4.0.11\lib\net40\System.IO.Abstractions.dll</HintPath>
@@ -484,7 +480,6 @@
     <Content Include="Files\Indexers\Waffles\Waffles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="License.txt" />
     <Content Include="Files\html_image.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
