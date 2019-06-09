@@ -31,6 +31,24 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy = proxy;
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MusicImportedCategory != Settings.MusicCategory)
+            {
+                try
+                {
+                    _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MusicImportedCategory, Settings);
+                }
+                catch (DownloadClientUnavailableException)
+                {
+                    _logger.Warn("Failed to set torrent post-import label \"{0}\" for {1} in Deluge. Does the label exist?",
+                        Settings.MusicImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
@@ -40,12 +58,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 throw new DownloadClientException("Deluge failed to add magnet " + magnetLink);
             }
 
-            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
-            {
-                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
-            }
-
             _proxy.SetTorrentSeedingConfiguration(actualHash, remoteAlbum.SeedConfiguration, Settings);
+
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(actualHash, Settings.MusicCategory, Settings);
+            }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
@@ -69,9 +87,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentSeedingConfiguration(actualHash, remoteAlbum.SeedConfiguration, Settings);
 
-            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
+                _proxy.SetTorrentLabel(actualHash, Settings.MusicCategory, Settings);
             }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
@@ -91,7 +109,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             IEnumerable<DelugeTorrent> torrents;
 
-            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 torrents = _proxy.GetTorrentsByLabel(Settings.MusicCategory, Settings);
             }
@@ -117,6 +135,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 item.OutputPath = outputPath + torrent.Name;
                 item.RemainingSize = torrent.Size - torrent.BytesDownloaded;
                 item.SeedRatio = torrent.Ratio;
+
                 try
                 {
                     item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
@@ -190,7 +209,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             {
                 status.OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, destDir) };
             }
-            
+
             return status;
         }
 
@@ -226,12 +245,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                     case WebExceptionStatus.ConnectionClosed:
                         return new NzbDroneValidationFailure("UseSsl", "Verify SSL settings")
                         {
-                            DetailedDescription = "Please verify your SSL configuration on both Deluge and NzbDrone."
+                            DetailedDescription = "Please verify your SSL configuration on both Deluge and Lidarr."
                         };
                     case WebExceptionStatus.SecureChannelFailure:
                         return new NzbDroneValidationFailure("UseSsl", "Unable to connect through SSL")
                         {
-                            DetailedDescription = "Drone is unable to connect to Deluge using SSL. This problem could be computer related. Please try to configure both drone and Deluge to not use SSL."
+                            DetailedDescription = "Lidarr is unable to connect to Deluge using SSL. This problem could be computer related. Please try to configure both drone and Deluge to not use SSL."
                         };
                     default:
                         return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
@@ -248,7 +267,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         private ValidationFailure TestCategory()
         {
-            if (Settings.MusicCategory.IsNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNullOrWhiteSpace() && Settings.MusicImportedCategory.IsNullOrWhiteSpace())
             {
                 return null;
             }
@@ -265,7 +284,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var labels = _proxy.GetAvailableLabels(Settings);
 
-            if (!labels.Contains(Settings.MusicCategory))
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace() && !labels.Contains(Settings.MusicCategory))
             {
                 _proxy.AddLabel(Settings.MusicCategory, Settings);
                 labels = _proxy.GetAvailableLabels(Settings);
@@ -274,7 +293,21 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 {
                     return new NzbDroneValidationFailure("MusicCategory", "Configuration of label failed")
                     {
-                        DetailedDescription = "Lidarr as unable to add the label to Deluge."
+                        DetailedDescription = "Lidarr was unable to add the label to Deluge."
+                    };
+                }
+            }
+
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() && !labels.Contains(Settings.MusicImportedCategory))
+            {
+                _proxy.AddLabel(Settings.MusicImportedCategory, Settings);
+                labels = _proxy.GetAvailableLabels(Settings);
+
+                if (!labels.Contains(Settings.MusicImportedCategory))
+                {
+                    return new NzbDroneValidationFailure("MusicImportedCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Lidarr was unable to add the label to Deluge."
                     };
                 }
             }

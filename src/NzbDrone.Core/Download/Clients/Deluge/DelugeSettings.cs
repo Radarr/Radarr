@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
 
             RuleFor(c => c.MusicCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
+            RuleFor(c => c.MusicImportedCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
         }
     }
 
@@ -43,16 +44,19 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MusicCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
+        [FieldDefinition(5, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Lidarr to set after it has imported the download. Leave blank to disable this feature.")]
+        public string MusicImportedCategory { get; set; }
+
+        [FieldDefinition(6, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
+        [FieldDefinition(7, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
-        [FieldDefinition(7, Label = "Add Paused", Type = FieldType.Checkbox)]
+        [FieldDefinition(8, Label = "Add Paused", Type = FieldType.Checkbox)]
         public bool AddPaused { get; set; }
 
-        [FieldDefinition(8, Label = "Use SSL", Type = FieldType.Checkbox)]
+        [FieldDefinition(9, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 
         public NzbDroneValidationResult Validate()

@@ -37,11 +37,29 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _rTorrentDirectoryValidator = rTorrentDirectoryValidator;
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MusicImportedCategory != Settings.MusicCategory)
+            {
+                try
+                {
+                    _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MusicImportedCategory, Settings);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Failed to set torrent post-import label \"{0}\" for {1} in rTorrent. Does the label exist?",
+                        Settings.MusicImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.MusicCategory, priority, Settings.TvDirectory, Settings);
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MusicCategory, priority, Settings.MusicDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -61,7 +79,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MusicCategory, priority, Settings.TvDirectory, Settings);
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MusicCategory, priority, Settings.MusicDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;

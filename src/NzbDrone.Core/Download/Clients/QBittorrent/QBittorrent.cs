@@ -33,6 +33,24 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         private IQBittorrentProxy Proxy => _proxySelector.GetProxy(Settings);
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MusicImportedCategory != Settings.MusicCategory)
+            {
+                try
+                {
+                    Proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MusicImportedCategory, Settings);
+                }
+                catch (DownloadClientException)
+                {
+                    _logger.Warn("Failed to set post-import torrent label \"{0}\" for {1} in qBittorrent. Does the label exist?",
+                        Settings.MusicImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             if (!Proxy.GetConfig(Settings).DhtEnabled && !magnetLink.Contains("&tr="))
@@ -41,11 +59,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
 
             Proxy.AddTorrentFromUrl(magnetLink, Settings);
-
-            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
-            {
-                Proxy.SetTorrentLabel(hash.ToLower(), Settings.MusicCategory, Settings);
-            }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
@@ -68,18 +81,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, Byte[] fileContent)
         {
             Proxy.AddTorrentFromFile(filename, fileContent, Settings);
-
-            try
-            {
-                if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
-                {
-                    Proxy.SetTorrentLabel(hash.ToLower(), Settings.MusicCategory, Settings);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, "Failed to set the torrent label for {0}.", filename);
-            }
 
             try
             {
@@ -216,6 +217,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             failures.AddIfNotNull(TestConnection());
             if (failures.HasErrors()) return;
+            failures.AddIfNotNull(TestCategory());
             failures.AddIfNotNull(TestPrioritySupport());
             failures.AddIfNotNull(TestGetTorrents());
         }
@@ -288,6 +290,53 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 _logger.Error(ex, "Unable to test qBittorrent");
                 return new NzbDroneValidationFailure(String.Empty, "Unknown exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        private ValidationFailure TestCategory()
+        {
+            if (Settings.MusicCategory.IsNullOrWhiteSpace() && Settings.MusicImportedCategory.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            // api v1 doesn't need to check/add categories as it's done on set
+            var version = _proxySelector.GetProxy(Settings, true).GetApiVersion(Settings);
+            if (version < Version.Parse("2.0"))
+            {
+                return null;
+            }
+
+            Dictionary<string, QBittorrentLabel> labels = Proxy.GetLabels(Settings);
+
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace() && !labels.ContainsKey(Settings.MusicCategory))
+            {
+                Proxy.AddLabel(Settings.MusicCategory, Settings);
+                labels = Proxy.GetLabels(Settings);
+
+                if (!labels.ContainsKey(Settings.MusicCategory))
+                {
+                    return new NzbDroneValidationFailure("MusicCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Lidarr was unable to add the label to qBittorrent."
+                    };
+                }
+            }
+
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() && !labels.ContainsKey(Settings.MusicImportedCategory))
+            {
+                Proxy.AddLabel(Settings.MusicImportedCategory, Settings);
+                labels = Proxy.GetLabels(Settings);
+
+                if (!labels.ContainsKey(Settings.MusicImportedCategory))
+                {
+                    return new NzbDroneValidationFailure("MusicImportedCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Lidarr was unable to add the label to qBittorrent."
+                    };
+                }
             }
 
             return null;

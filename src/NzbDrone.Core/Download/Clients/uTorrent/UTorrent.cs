@@ -36,11 +36,31 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _torrentCache = cacheManager.GetCache<UTorrentTorrentCache>(GetType(), "differentialTorrents");
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MusicImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MusicImportedCategory != Settings.MusicCategory)
+            {
+                _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MusicImportedCategory, Settings);
+
+                // old label must be explicitly removed
+                if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
+                {
+                    _proxy.RemoveTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MusicCategory, Settings);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
+
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
@@ -58,8 +78,12 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
+
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
