@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                                 .Random(10)
-                                .With(c => c.Path = "/ExistingPath".AsOsAgnostic())
+                                .With(c => c.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                                 .Build();
 
             GivenTrackFiles(trackFiles);
