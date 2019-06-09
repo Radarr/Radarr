@@ -13,7 +13,7 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 - [Git](https://git-scm.com/downloads)
 - [NodeJS](https://nodejs.org/en/download/) (Node 8.X.X or higher)
 - [Yarn](https://yarnpkg.com/)
-- .NET 4.6.1 or Mono equivalent. 
+- .NET 4.6.2 or Mono equivalent. 
 
 ### Getting started ###
 
