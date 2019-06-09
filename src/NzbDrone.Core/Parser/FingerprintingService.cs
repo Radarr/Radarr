@@ -89,6 +89,7 @@ namespace NzbDrone.Core.Parser
                 p.StartInfo.FileName = path;
                 p.StartInfo.Arguments = "-version";
                 p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.RedirectStandardOutput = true;
 
                 try
@@ -135,6 +136,7 @@ namespace NzbDrone.Core.Parser
             p.StartInfo.FileName = _fpcalcPath;
             p.StartInfo.Arguments = $"-version";
             p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
             p.StartInfo.RedirectStandardOutput = true;
 
             p.Start();
@@ -238,6 +240,7 @@ namespace NzbDrone.Core.Parser
                 p.StartInfo.FileName = _fpcalcPath;
                 p.StartInfo.Arguments = $"{_fpcalcArgs} \"{file}\"";
                 p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.RedirectStandardError = true;
 
