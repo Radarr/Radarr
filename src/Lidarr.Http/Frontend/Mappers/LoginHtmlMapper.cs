@@ -10,11 +10,6 @@ namespace Lidarr.Http.Frontend.Mappers
 {
     public class LoginHtmlMapper : HtmlMapperBase
     {
-        private readonly IDiskProvider _diskProvider;
-        private readonly string _indexPath;
-
-        private string _generatedContent;
-
         public LoginHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
                                Func<ICacheBreakerProvider> cacheBreakProviderFactory,

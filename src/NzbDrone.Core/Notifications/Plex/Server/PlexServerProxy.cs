@@ -189,7 +189,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 }
                 throw new PlexException("Unable to connect to Plex Media Server");
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 throw new PlexException("Unable to connect to Plex Media Server");
             }

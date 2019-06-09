@@ -11,8 +11,6 @@ namespace Lidarr.Http.Frontend.Mappers
     {
         private readonly IConfigFileProvider _configFileProvider;
 
-        private static string API_KEY;
-
         public IndexHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
                                IConfigFileProvider configFileProvider,
