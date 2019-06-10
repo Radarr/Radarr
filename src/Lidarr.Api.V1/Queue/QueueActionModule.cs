@@ -77,8 +77,9 @@ namespace Lidarr.Api.V1.Queue
         private Response Remove(int id)
         {
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
+            var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
 
-            var trackedDownload = Remove(id, blacklist);
+            var trackedDownload = Remove(id, blacklist, skipReDownload);
 
             if (trackedDownload != null)
             {
@@ -91,13 +92,14 @@ namespace Lidarr.Api.V1.Queue
         private Response Remove()
         {
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
+            var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
 
             var resource = Request.Body.FromJson<QueueBulkResource>();
             var trackedDownloadIds = new List<string>();
 
             foreach (var id in resource.Ids)
             {
-                var trackedDownload = Remove(id, blacklist);
+                var trackedDownload = Remove(id, blacklist, skipReDownload);
 
                 if (trackedDownload != null)
                 {
@@ -110,7 +112,7 @@ namespace Lidarr.Api.V1.Queue
             return new object().AsResponse();
         }
 
-        private TrackedDownload Remove(int id, bool blacklist)
+        private TrackedDownload Remove(int id, bool blacklist, bool skipReDownload)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -139,7 +141,7 @@ namespace Lidarr.Api.V1.Queue
 
             if (blacklist)
             {
-                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId);
+                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId, skipReDownload);
             }
 
             return trackedDownload;

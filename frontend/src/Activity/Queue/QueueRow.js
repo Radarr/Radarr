@@ -42,8 +42,8 @@ class QueueRow extends Component {
     this.setState({ isRemoveQueueItemModalOpen: true });
   }
 
-  onRemoveQueueItemModalConfirmed = (blacklist) => {
-    this.props.onRemoveQueueItemPress(blacklist);
+  onRemoveQueueItemModalConfirmed = (blacklist, skipredownload) => {
+    this.props.onRemoveQueueItemPress(blacklist, skipredownload);
     this.setState({ isRemoveQueueItemModalOpen: false });
   }
 

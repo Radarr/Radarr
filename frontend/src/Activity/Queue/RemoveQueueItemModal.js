@@ -21,7 +21,8 @@ class RemoveQueueItemModal extends Component {
     super(props, context);
 
     this.state = {
-      blacklist: false
+      blacklist: false,
+      skipredownload: false
     };
   }
 
@@ -32,15 +33,26 @@ class RemoveQueueItemModal extends Component {
     this.setState({ blacklist: value });
   }
 
+  onSkipReDownloadChange = ({ value }) => {
+    this.setState({ skipredownload: value });
+  }
+
   onRemoveQueueItemConfirmed = () => {
     const blacklist = this.state.blacklist;
+    const skipredownload = this.state.skipredownload;
 
-    this.setState({ blacklist: false });
-    this.props.onRemovePress(blacklist);
+    this.setState({
+      blacklist: false,
+      skipredownload: false
+    });
+    this.props.onRemovePress(blacklist, skipredownload);
   }
 
   onModalClose = () => {
-    this.setState({ blacklist: false });
+    this.setState({
+      blacklist: false,
+      skipredownload: false
+    });
     this.props.onModalClose();
   }
 
@@ -54,6 +66,7 @@ class RemoveQueueItemModal extends Component {
     } = this.props;
 
     const blacklist = this.state.blacklist;
+    const skipredownload = this.state.skipredownload;
 
     return (
       <Modal
@@ -79,10 +92,24 @@ class RemoveQueueItemModal extends Component {
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Prevents Lidarr from automatically grabbing these files again"
+                helpText="Prevents Lidarr from automatically grabbing this release again"
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>
+
+            {
+              blacklist &&
+                <FormGroup>
+                  <FormLabel>Skip Redownload</FormLabel>
+                  <FormInputGroup
+                    type={inputTypes.CHECK}
+                    name="skipredownload"
+                    value={skipredownload}
+                    helpText="Prevents Lidarr from trying download an alternative release for this item"
+                    onChange={this.onSkipReDownloadChange}
+                  />
+                </FormGroup>
+            }
 
           </ModalBody>
 

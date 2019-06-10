@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
@@ -28,6 +28,12 @@ namespace NzbDrone.Core.Download
 
         public void HandleAsync(DownloadFailedEvent message)
         {
+            if (message.SkipReDownload)
+            {
+                _logger.Debug("Skip redownloading requested by user");
+                return;
+            }
+
             if (!_configService.AutoRedownloadFailed)
             {
                 _logger.Debug("Auto redownloading failed albums is disabled");

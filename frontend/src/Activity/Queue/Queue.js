@@ -107,8 +107,8 @@ class Queue extends Component {
     this.setState({ isConfirmRemoveModalOpen: true });
   }
 
-  onRemoveSelectedConfirmed = (blacklist) => {
-    this.props.onRemoveSelectedPress(this.getSelectedIds(), blacklist);
+  onRemoveSelectedConfirmed = (blacklist, skipredownload) => {
+    this.props.onRemoveSelectedPress(this.getSelectedIds(), blacklist, skipredownload);
     this.setState({ isConfirmRemoveModalOpen: false });
   }
 

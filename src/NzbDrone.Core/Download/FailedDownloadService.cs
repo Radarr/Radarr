@@ -9,8 +9,8 @@ namespace NzbDrone.Core.Download
 {
     public interface IFailedDownloadService
     {
-        void MarkAsFailed(int historyId);
-        void MarkAsFailed(string downloadId);
+        void MarkAsFailed(int historyId, bool skipReDownload = false);
+        void MarkAsFailed(string downloadId, bool skipReDownload = false);
         void Process(TrackedDownload trackedDownload);
     }
 
@@ -26,14 +26,14 @@ namespace NzbDrone.Core.Download
             _eventAggregator = eventAggregator;
         }
 
-        public void MarkAsFailed(int historyId)
+        public void MarkAsFailed(int historyId, bool skipReDownload = false)
         {
             var history = _historyService.Get(historyId);
 
             var downloadId = history.DownloadId;
             if (downloadId.IsNullOrWhiteSpace())
             {
-                PublishDownloadFailedEvent(new List<History.History> { history }, "Manually marked as failed");
+                PublishDownloadFailedEvent(new List<History.History> { history }, "Manually marked as failed", skipReDownload: skipReDownload);
             }
             else
             {
@@ -42,13 +42,13 @@ namespace NzbDrone.Core.Download
             }
         }
 
-        public void MarkAsFailed(string downloadId)
+        public void MarkAsFailed(string downloadId, bool skipReDownload = false)
         {
             var history = _historyService.Find(downloadId, HistoryEventType.Grabbed);
 
             if (history.Any())
             {
-                PublishDownloadFailedEvent(history, "Manually marked as failed");
+                PublishDownloadFailedEvent(history, "Manually marked as failed", skipReDownload: skipReDownload);
             }
         }
 
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Download
             }
         }
 
-        private void PublishDownloadFailedEvent(List<History.History> historyItems, string message, TrackedDownload trackedDownload = null)
+        private void PublishDownloadFailedEvent(List<History.History> historyItems, string message, TrackedDownload trackedDownload = null, bool skipReDownload = false)
         {
             var historyItem = historyItems.First();
 
@@ -96,7 +96,8 @@ namespace NzbDrone.Core.Download
                 Message = message,
                 Data = historyItem.Data,
                 TrackedDownload = trackedDownload,
-                Language = historyItem.Language
+                Language = historyItem.Language,
+                SkipReDownload = skipReDownload
             };
 
             _eventAggregator.PublishEvent(downloadFailedEvent);
