@@ -354,13 +354,14 @@ export const actionHandlers = handleThunks({
     const {
       id,
       remove,
-      blocklist
+      blocklist,
+      skipredownload
     } = payload;
 
     dispatch(updateItem({ section: paged, id, isRemoving: true }));
 
     const promise = createAjaxRequest({
-      url: `/queue/${id}?removeFromClient=${remove}&blocklist=${blocklist}`,
+      url: `/queue/${id}?removeFromClient=${remove}&blocklist=${blocklist}&skipredownload=${skipredownload}`,
       method: 'DELETE'
     }).request;
 
@@ -377,7 +378,8 @@ export const actionHandlers = handleThunks({
     const {
       ids,
       remove,
-      blocklist
+      blocklist,
+      skipredownload
     } = payload;
 
     dispatch(batchActions([
@@ -393,7 +395,7 @@ export const actionHandlers = handleThunks({
     ]));
 
     const promise = createAjaxRequest({
-      url: `/queue/bulk?removeFromClient=${remove}&blocklist=${blocklist}`,
+      url: `/queue/bulk?removeFromClient=${remove}&blocklist=${blocklist}&skipredownload=${skipredownload}`,
       method: 'DELETE',
       dataType: 'json',
       contentType: 'application/json',

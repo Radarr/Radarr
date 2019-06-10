@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
@@ -26,6 +26,12 @@ namespace NzbDrone.Core.Download
         [EventHandleOrder(EventHandleOrder.Last)]
         public void Handle(DownloadFailedEvent message)
         {
+            if (message.SkipReDownload)
+            {
+                _logger.Debug("Skip redownloading requested by user");
+                return;
+            }
+
             if (!_configService.AutoRedownloadFailed)
             {
                 _logger.Debug("Auto redownloading failed movies is disabled");

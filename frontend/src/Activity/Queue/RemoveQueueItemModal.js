@@ -47,6 +47,10 @@ class RemoveQueueItemModal extends Component {
     this.setState({ blocklist: value });
   };
 
+  onSkipReDownloadChange = ({ value }) => {
+    this.setState({ skipredownload: value });
+  }
+
   onRemoveConfirmed = () => {
     const state = this.state;
 
@@ -70,7 +74,7 @@ class RemoveQueueItemModal extends Component {
       isPending
     } = this.props;
 
-    const { remove, blocklist } = this.state;
+    const { remove, blocklist, skipredownload } = this.state;
 
     return (
       <Modal
@@ -118,6 +122,19 @@ class RemoveQueueItemModal extends Component {
               />
             </FormGroup>
 
+            {
+              blocklist &&
+                <FormGroup>
+                  <FormLabel>{translate('SkipRedownload')}</FormLabel>
+                  <FormInputGroup
+                    type={inputTypes.CHECK}
+                    name="skipredownload"
+                    value={skipredownload}
+                    helpText={translate('SkipRedownloadText')}
+                    onChange={this.onSkipReDownloadChange}
+                  />
+                </FormGroup>
+            }
           </ModalBody>
 
           <ModalFooter>

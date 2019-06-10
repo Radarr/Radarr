@@ -64,9 +64,9 @@ namespace Radarr.Api.V3.Queue
         }
 
         [RestDeleteById]
-        public void RemoveAction(int id, bool removeFromClient = true, bool blocklist = false)
+        public void RemoveAction(int id, bool removeFromClient = true, bool blocklist = false, bool skipReDownload = false)
         {
-            var trackedDownload = Remove(id, removeFromClient, blocklist);
+            var trackedDownload = Remove(id, removeFromClient, blocklist, skipReDownload);
 
             if (trackedDownload != null)
             {
@@ -75,13 +75,13 @@ namespace Radarr.Api.V3.Queue
         }
 
         [HttpDelete("bulk")]
-        public object RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false)
+        public object RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false, [FromQuery] bool skipReDownload = false)
         {
             var trackedDownloadIds = new List<string>();
 
             foreach (var id in resource.Ids)
             {
-                var trackedDownload = Remove(id, removeFromClient, blocklist);
+                var trackedDownload = Remove(id, removeFromClient, blocklist, skipReDownload);
 
                 if (trackedDownload != null)
                 {
@@ -198,7 +198,7 @@ namespace Radarr.Api.V3.Queue
             }
         }
 
-        private TrackedDownload Remove(int id, bool removeFromClient, bool blocklist)
+        private TrackedDownload Remove(int id, bool removeFromClient, bool blocklist, bool skipReDownload)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -235,7 +235,7 @@ namespace Radarr.Api.V3.Queue
 
             if (blocklist)
             {
-                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId);
+                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId, skipReDownload);
             }
 
             if (!removeFromClient && !blocklist)
