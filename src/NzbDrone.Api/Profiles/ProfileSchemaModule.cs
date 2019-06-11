@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
@@ -42,7 +42,7 @@ namespace NzbDrone.Api.Profiles
             });
 
             var profile = new Profile();
-            profile.Cutoff = Quality.Unknown;
+            profile.Cutoff = Quality.Unknown.Id;
             profile.Items = items;
             profile.FormatCutoff = CustomFormat.None;
             profile.FormatItems = formatItems;

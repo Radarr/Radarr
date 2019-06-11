@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Test.HistoryTests
         [SetUp]
         public void Setup()
         {
-            _profile = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities() };
-            _profileCustom = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
+            _profile = new Profile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities() };
+            _profileCustom = new Profile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
         }
 
         [Test]

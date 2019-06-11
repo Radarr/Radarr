@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _secondFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id })
                          .With(c => c.MovieFile = _firstFile)
                          .Build();
 

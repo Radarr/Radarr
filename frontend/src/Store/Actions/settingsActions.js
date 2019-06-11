@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { handleThunks } from 'Store/thunks';
 import createHandleActions from './Creators/createHandleActions';
+import customFormats from './Settings/customFormats';
 import delayProfiles from './Settings/delayProfiles';
 import downloadClients from './Settings/downloadClients';
 import downloadClientOptions from './Settings/downloadClientOptions';
@@ -20,6 +21,7 @@ import remotePathMappings from './Settings/remotePathMappings';
 import restrictions from './Settings/restrictions';
 import ui from './Settings/ui';
 
+export * from './Settings/customFormats';
 export * from './Settings/delayProfiles';
 export * from './Settings/downloadClients';
 export * from './Settings/downloadClientOptions';
@@ -50,6 +52,7 @@ export const section = 'settings';
 export const defaultState = {
   advancedSettings: false,
 
+  customFormats: customFormats.defaultState,
   delayProfiles: delayProfiles.defaultState,
   downloadClients: downloadClients.defaultState,
   downloadClientOptions: downloadClientOptions.defaultState,
@@ -88,6 +91,7 @@ export const toggleAdvancedSettings = createAction(TOGGLE_ADVANCED_SETTINGS);
 // Action Handlers
 
 export const actionHandlers = handleThunks({
+  ...customFormats.actionHandlers,
   ...delayProfiles.actionHandlers,
   ...downloadClients.actionHandlers,
   ...downloadClientOptions.actionHandlers,
@@ -117,6 +121,7 @@ export const reducers = createHandleActions({
     return Object.assign({}, state, { advancedSettings: !state.advancedSettings });
   },
 
+  ...customFormats.reducers,
   ...delayProfiles.reducers,
   ...downloadClients.reducers,
   ...downloadClientOptions.reducers,

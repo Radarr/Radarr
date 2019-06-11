@@ -43,7 +43,7 @@ namespace NzbDrone.Core.DecisionEngine
         public bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
         {
             var comparer = new QualityModelComparer(profile);
-            var compare = comparer.Compare(currentQuality.Quality, profile.Cutoff);
+            var compare = comparer.Compare(currentQuality.Quality.Id, profile.Cutoff);
 
             if (compare < 0)
             {

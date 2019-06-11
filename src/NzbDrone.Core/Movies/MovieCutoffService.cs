@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Datastore;
@@ -16,13 +16,11 @@ namespace NzbDrone.Core.Movies
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IProfileService _profileService;
-        private readonly Logger _logger;
 
         public MovieCutoffService(IMovieRepository movieRepository, IProfileService profileService, Logger logger)
         {
             _movieRepository = movieRepository;
             _profileService = profileService;
-            _logger = logger;
         }
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec)
@@ -33,12 +31,12 @@ namespace NzbDrone.Core.Movies
             //Get all items less than the cutoff
             foreach (var profile in profiles)
             {
-                var cutoffIndex = profile.Items.FindIndex(v => v.Quality.Id == profile.Cutoff.Id);
-                var belowCutoff = profile.Items.Take(cutoffIndex).ToList();
+                var cutoffIndex = profile.GetIndex(profile.Cutoff);
+                var belowCutoff = profile.Items.Take(cutoffIndex.Index).ToList();
 
                 if (belowCutoff.Any())
                 {
-                    qualitiesBelowCutoff.Add(new QualitiesBelowCutoff(profile.Id, belowCutoff.Select(i => i.Quality.Id)));
+                    qualitiesBelowCutoff.Add(new QualitiesBelowCutoff(profile.Id, belowCutoff.SelectMany(i => i.GetQualities().Select(q => q.Id))));
                 }
             }
 

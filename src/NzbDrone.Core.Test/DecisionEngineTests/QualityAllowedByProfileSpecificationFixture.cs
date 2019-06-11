@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void Setup()
         {
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.Bluray1080p })
+                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.Bluray1080p.Id })
                          .Build();
 
             remoteMovie = new RemoteMovie

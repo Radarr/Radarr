@@ -121,7 +121,7 @@ class EditQualityProfileModalContentConnector extends Component {
         return false;
       }
 
-      return i.id === cutoff.id || (i.quality && i.quality.id === cutoff.id);
+      return i.id === cutoff || (i.quality && i.quality.id === cutoff);
     });
 
     // If the cutoff isn't allowed anymore or there isn't a cutoff set one

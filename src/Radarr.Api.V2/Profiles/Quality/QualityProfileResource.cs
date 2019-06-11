@@ -11,18 +11,25 @@ namespace Radarr.Api.V2.Profiles.Quality
     public class QualityProfileResource : RestResource
     {
         public string Name { get; set; }
-        public NzbDrone.Core.Qualities.Quality Cutoff { get; set; }
+        public int Cutoff { get; set; }
         public string PreferredTags { get; set; }
-        public List<ProfileQualityItemResource> Items { get; set; }
+        public List<QualityProfileQualityItemResource> Items { get; set; }
         public CustomFormatResource FormatCutoff { get; set; }
         public List<ProfileFormatItemResource> FormatItems { get; set; }
         public Language Language { get; set; }
     }
 
-    public class ProfileQualityItemResource : RestResource
+    public class QualityProfileQualityItemResource : RestResource
     {
+        public string Name { get; set; }
         public NzbDrone.Core.Qualities.Quality Quality { get; set; }
+        public List<QualityProfileQualityItemResource> Items { get; set; }
         public bool Allowed { get; set; }
+
+        public QualityProfileQualityItemResource()
+        {
+            Items = new List<QualityProfileQualityItemResource>();
+        }
     }
 
     public class ProfileFormatItemResource : RestResource
@@ -40,7 +47,6 @@ namespace Radarr.Api.V2.Profiles.Quality
             return new QualityProfileResource
             {
                 Id = model.Id,
-
                 Name = model.Name,
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
@@ -51,13 +57,16 @@ namespace Radarr.Api.V2.Profiles.Quality
             };
         }
 
-        public static ProfileQualityItemResource ToResource(this ProfileQualityItem model)
+        public static QualityProfileQualityItemResource ToResource(this ProfileQualityItem model)
         {
             if (model == null) return null;
 
-            return new ProfileQualityItemResource
+            return new QualityProfileQualityItemResource
             {
+                Id = model.Id,
+                Name = model.Name,
                 Quality = model.Quality,
+                Items = model.Items.ConvertAll(ToResource),
                 Allowed = model.Allowed
             };
         }
@@ -78,9 +87,8 @@ namespace Radarr.Api.V2.Profiles.Quality
             return new Profile
             {
                 Id = resource.Id,
-
                 Name = resource.Name,
-                Cutoff = (NzbDrone.Core.Qualities.Quality)resource.Cutoff.Id,
+                Cutoff = resource.Cutoff,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 FormatCutoff = resource.FormatCutoff.ToModel(),
@@ -89,13 +97,16 @@ namespace Radarr.Api.V2.Profiles.Quality
             };
         }
 
-        public static ProfileQualityItem ToModel(this ProfileQualityItemResource resource)
+        public static ProfileQualityItem ToModel(this QualityProfileQualityItemResource resource)
         {
             if (resource == null) return null;
 
             return new ProfileQualityItem
             {
-                Quality = (NzbDrone.Core.Qualities.Quality)resource.Quality.Id,
+                Id = resource.Id,
+                Name = resource.Name,
+                Quality = resource.Quality != null ? (NzbDrone.Core.Qualities.Quality)resource.Quality.Id : null,
+                Items = resource.Items.ConvertAll(ToModel),
                 Allowed = resource.Allowed
             };
         }

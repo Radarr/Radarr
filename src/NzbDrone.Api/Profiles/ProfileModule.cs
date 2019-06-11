@@ -6,7 +6,6 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Validation;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Profiles
 {

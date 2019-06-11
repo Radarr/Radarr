@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _movie.Profile.Value.Cutoff = Quality.Bluray1080p;
+            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _movie.Profile.Value.Cutoff = Quality.Bluray1080p;
+            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_quality_in_queue_meets_cutoff()
         {
-            _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality;
+            _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality.Id;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)

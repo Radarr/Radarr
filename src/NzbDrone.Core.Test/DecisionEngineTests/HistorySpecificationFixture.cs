@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
             _fakeMovie = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .Build();
 
             _parseResultSingle = new RemoteMovie
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_episode_is_of_same_quality_as_existing()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
 
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
 
@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
 

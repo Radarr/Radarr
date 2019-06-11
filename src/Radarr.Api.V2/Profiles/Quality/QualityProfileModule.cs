@@ -20,8 +20,10 @@ namespace Radarr.Api.V2.Profiles.Quality
             _profileService = profileService;
             _formatService = formatService;
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Cutoff).NotNull();
-            SharedValidator.RuleFor(c => c.Items).MustHaveAllowedQuality();
+            // TODO: Need to validate the cutoff is allowed and the ID/quality ID exists
+            // TODO: Need to validate the Items to ensure groups have names and at no item has no name, no items and no quality
+            SharedValidator.RuleFor(c => c.Cutoff).ValidCutoff();
+            SharedValidator.RuleFor(c => c.Items).ValidItems();
             SharedValidator.RuleFor(c => c.Language).ValidLanguage();
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {

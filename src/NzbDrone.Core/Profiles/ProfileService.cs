@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Profiles
         List<Profile> All();
         Profile Get(int id);
         bool Exists(int id);
+        Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
     }
 
     public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
@@ -106,25 +107,6 @@ namespace NzbDrone.Core.Profiles
             return _profileRepository.Exists(id);
         }
 
-        private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
-        {
-            var items = Quality.DefaultQualityDefinitions
-                            .OrderBy(v => v.Weight)
-                            .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
-                            .ToList();
-
-            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items, Language = Language.English, FormatCutoff = CustomFormat.None, FormatItems = new List<ProfileFormatItem>
-            {
-                new ProfileFormatItem
-                {
-                    Allowed = true,
-                    Format = CustomFormat.None
-                }
-            }};
-
-            return Add(profile);
-        }
-
         public void Handle(ApplicationStartedEvent message)
         {
             // Hack to force custom formats to be loaded into memory, if you have a better solution please let me know.
@@ -199,6 +181,71 @@ namespace NzbDrone.Core.Profiles
                 Quality.Remux1080p,
                 Quality.Remux2160p
                 );
+        }
+
+        public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
+        {
+            var groupedQualites = Quality.DefaultQualityDefinitions.GroupBy(q => q.Weight);
+            var items = new List<ProfileQualityItem>();
+            var groupId = 1000;
+            var profileCutoff = cutoff == null ? Quality.Unknown.Id : cutoff.Id;
+
+            foreach (var group in groupedQualites)
+            {
+                if (group.Count() == 1)
+                {
+                    var quality = group.First().Quality;
+
+                    items.Add(new ProfileQualityItem { Quality = group.First().Quality, Allowed = allowed.Contains(quality) });
+                    continue;
+                }
+
+                var groupAllowed = group.Any(g => allowed.Contains(g.Quality));
+
+                items.Add(new ProfileQualityItem
+                {
+                    Id = groupId,
+                    Name = group.First().GroupName,
+                    Items = group.Select(g => new ProfileQualityItem
+                    {
+                        Quality = g.Quality,
+                        Allowed = groupAllowed
+                    }).ToList(),
+                    Allowed = groupAllowed
+                });
+
+                if (group.Any(g => g.Quality.Id == profileCutoff))
+                {
+                    profileCutoff = groupId;
+                }
+
+                groupId++;
+            }
+
+            var qualityProfile = new Profile
+            {
+                Name = name,
+                Cutoff = profileCutoff,
+                Items = items,
+                FormatCutoff = CustomFormat.None,
+                FormatItems = new List<ProfileFormatItem>
+                {
+                    new ProfileFormatItem
+                    {
+                        Allowed = true,
+                        Format = CustomFormat.None
+                    }
+                }
+            };
+
+            return qualityProfile;
+        }
+
+        private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
+        {
+            var profile = GetDefaultProfile(name, cutoff, allowed);
+
+            return Add(profile);
         }
     }
 }

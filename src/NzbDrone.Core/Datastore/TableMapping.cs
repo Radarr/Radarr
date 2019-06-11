@@ -112,7 +112,8 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
-                  .Ignore(d => d.Weight)
+                .Ignore(d => d.GroupName)
+                .Ignore(d => d.Weight)
                 .Relationship();
 
             Mapper.Entity<CustomFormat>().RegisterModel("CustomFormats")

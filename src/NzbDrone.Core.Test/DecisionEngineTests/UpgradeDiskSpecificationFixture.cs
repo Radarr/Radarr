@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _firstFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .With(e => e.MovieFile = _firstFile)
                          .Build();
 

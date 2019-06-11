@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Datastore.Migration;
-using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities
@@ -20,12 +18,47 @@ namespace NzbDrone.Core.Qualities
             _profile = profile;
         }
 
+        public int Compare(int left, int right, bool respectGroupOrder = false)
+        {
+            var leftIndex = _profile.GetIndex(left);
+            var rightIndex = _profile.GetIndex(right);
+
+            return leftIndex.CompareTo(rightIndex, respectGroupOrder);
+        }
+
         public int Compare(Quality left, Quality right)
         {
-            int leftIndex = _profile.Items.FindIndex(v => v.Quality == left);
-            int rightIndex = _profile.Items.FindIndex(v => v.Quality == right);
+            return Compare(left, right, false);
+        }
 
-            return leftIndex.CompareTo(rightIndex);
+        public int Compare(Quality left, Quality right, bool respectGroupOrder)
+        {
+            var leftIndex = _profile.GetIndex(left);
+            var rightIndex = _profile.GetIndex(right);
+
+            return leftIndex.CompareTo(rightIndex, respectGroupOrder);
+        }
+
+        public int Compare(QualityModel left, QualityModel right)
+        {
+            return Compare(left, right, false);
+        }
+
+        public int Compare(QualityModel left, QualityModel right, bool respectGroupOrder)
+        {
+            int result = Compare(left.Quality, right.Quality, respectGroupOrder);
+
+            if (result == 0)
+            {
+                result = Compare(left.CustomFormats, right.CustomFormats);
+
+                if (result == 0)
+                {
+                    result = left.Revision.CompareTo(right.Revision);
+                }
+            }
+
+            return result;
         }
 
         public int Compare(List<CustomFormat> left, List<CustomFormat> right)
@@ -60,23 +93,6 @@ namespace NzbDrone.Core.Qualities
             var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
 
             return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
-        }
-
-        public int Compare(QualityModel left, QualityModel right)
-        {
-            int result = Compare(left.Quality, right.Quality);
-
-            if (result == 0)
-            {
-                result = Compare(left.CustomFormats, right.CustomFormats);
-
-                if (result == 0)
-                {
-                    result = left.Revision.CompareTo(right.Revision);
-                }
-            }
-
-            return result;
         }
     }
 }

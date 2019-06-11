@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p });
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p });
 
-            _profile.Cutoff = Quality.WEBDL720p;
+            _profile.Cutoff = Quality.WEBDL720p.Id;
 
             _remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
             _remoteEpisode.Release = new ReleaseInfo();

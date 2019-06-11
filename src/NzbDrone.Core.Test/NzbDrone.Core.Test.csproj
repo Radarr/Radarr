@@ -305,6 +305,7 @@
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithReleaseInfoFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\ParseQualityDefinitionFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />
+    <Compile Include="Profiles\Qualities\QualityIndexCompareToFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
     <Compile Include="RemotePathMappingsTests\RemotePathMappingServiceFixture.cs" />

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Profiles;
@@ -29,6 +29,50 @@ namespace NzbDrone.Core.Test.Qualities
         private void GivenCustomProfile()
         {
             Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.Bluray720p, Quality.DVD) });
+        }
+
+        private void GivenGroupedProfile()
+        {
+            var profile = new Profile
+            {
+                Items = new List<ProfileQualityItem>
+                                      {
+                                          new ProfileQualityItem
+                                          {
+                                              Allowed = false,
+                                              Quality = Quality.SDTV
+                                          },
+                                          new ProfileQualityItem
+                                          {
+                                              Allowed = false,
+                                              Quality = Quality.DVD
+                                          },
+                                          new ProfileQualityItem
+                                          {
+                                              Allowed = true,
+                                              Items = new List<ProfileQualityItem>
+                                                      {
+                                                          new ProfileQualityItem
+                                                          {
+                                                              Allowed = true,
+                                                              Quality = Quality.HDTV720p
+                                                          },
+                                                          new ProfileQualityItem
+                                                          {
+                                                              Allowed = true,
+                                                              Quality = Quality.WEBDL720p
+                                                          }
+                                                      }
+                                          },
+                                          new ProfileQualityItem
+                                          {
+                                              Allowed = true,
+                                              Quality = Quality.Bluray720p
+                                          }
+                                      }
+            };
+
+            Subject = new QualityModelComparer(profile);
         }
 
         private void GivenDefaultProfileWithFormats()
@@ -117,6 +161,32 @@ namespace NzbDrone.Core.Test.Qualities
             var compare = Subject.Compare(first, second);
 
             compare.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void should_ignore_group_order_by_default()
+        {
+            GivenGroupedProfile();
+
+            var first = new QualityModel(Quality.HDTV720p);
+            var second = new QualityModel(Quality.WEBDL720p);
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().Be(0);
+        }
+
+        [Test]
+        public void should_respect_group_order()
+        {
+            GivenGroupedProfile();
+
+            var first = new QualityModel(Quality.HDTV720p);
+            var second = new QualityModel(Quality.WEBDL720p);
+
+            var compare = Subject.Compare(first, second, true);
+
+            compare.Should().BeLessThan(0);
         }
     }
 }
