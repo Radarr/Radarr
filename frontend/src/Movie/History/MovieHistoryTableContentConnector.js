@@ -47,7 +47,7 @@ class MovieHistoryTableContentConnector extends Component {
       movieId
     } = this.props;
 
-    this.props.seriesHistoryMarkAsFailed({
+    this.props.movieHistoryMarkAsFailed({
       historyId,
       movieId
     });
