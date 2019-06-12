@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchMovieHistory, clearMovieHistory, seriesHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
+import { fetchMovieHistory, clearMovieHistory, movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
 import MovieHistoryModalContent from './MovieHistoryModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.moviesHistory,
-    (seriesHistory) => {
-      return seriesHistory;
+    (state) => state.movieHistory,
+    (movieHistory) => {
+      return movieHistory;
     }
   );
 }
@@ -17,7 +17,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   fetchMovieHistory,
   clearMovieHistory,
-  seriesHistoryMarkAsFailed
+  movieHistoryMarkAsFailed
 };
 
 class MovieHistoryModalContentConnector extends Component {
@@ -27,13 +27,11 @@ class MovieHistoryModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      seriesId,
-      seasonNumber
+      movieId
     } = this.props;
 
     this.props.fetchMovieHistory({
-      seriesId,
-      seasonNumber
+      movieId
     });
   }
 
@@ -46,14 +44,12 @@ class MovieHistoryModalContentConnector extends Component {
 
   onMarkAsFailedPress = (historyId) => {
     const {
-      seriesId,
-      seasonNumber
+      movieId
     } = this.props;
 
     this.props.seriesHistoryMarkAsFailed({
       historyId,
-      seriesId,
-      seasonNumber
+      movieId
     });
   }
 
@@ -71,11 +67,10 @@ class MovieHistoryModalContentConnector extends Component {
 }
 
 MovieHistoryModalContentConnector.propTypes = {
-  seriesId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number,
+  movieId: PropTypes.number.isRequired,
   fetchMovieHistory: PropTypes.func.isRequired,
   clearMovieHistory: PropTypes.func.isRequired,
-  seriesHistoryMarkAsFailed: PropTypes.func.isRequired
+  movieHistoryMarkAsFailed: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieHistoryModalContentConnector);

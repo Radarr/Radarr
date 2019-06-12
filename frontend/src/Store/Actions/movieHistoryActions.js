@@ -23,27 +23,27 @@ export const defaultState = {
 //
 // Actions Types
 
-export const FETCH_SERIES_HISTORY = 'seriesHistory/fetchMovieHistory';
-export const CLEAR_SERIES_HISTORY = 'seriesHistory/clearMovieHistory';
-export const SERIES_HISTORY_MARK_AS_FAILED = 'seriesHistory/seriesHistoryMarkAsFailed';
+export const FETCH_MOVIE_HISTORY = 'movieHistory/fetchMovieHistory';
+export const CLEAR_MOVIE_HISTORY = 'movieHistory/clearMovieHistory';
+export const MOVIE_HISTORY_MARK_AS_FAILED = 'movieHistory/movieHistoryMarkAsFailed';
 
 //
 // Action Creators
 
-export const fetchMovieHistory = createThunk(FETCH_SERIES_HISTORY);
-export const clearMovieHistory = createAction(CLEAR_SERIES_HISTORY);
-export const seriesHistoryMarkAsFailed = createThunk(SERIES_HISTORY_MARK_AS_FAILED);
+export const fetchMovieHistory = createThunk(FETCH_MOVIE_HISTORY);
+export const clearMovieHistory = createAction(CLEAR_MOVIE_HISTORY);
+export const movieHistoryMarkAsFailed = createThunk(MOVIE_HISTORY_MARK_AS_FAILED);
 
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
 
-  [FETCH_SERIES_HISTORY]: function(getState, payload, dispatch) {
+  [FETCH_MOVIE_HISTORY]: function(getState, payload, dispatch) {
     dispatch(set({ section, isFetching: true }));
 
     const promise = createAjaxRequest({
-      url: '/history/series',
+      url: '/history/movie',
       data: payload
     }).request;
 
@@ -70,11 +70,10 @@ export const actionHandlers = handleThunks({
     });
   },
 
-  [SERIES_HISTORY_MARK_AS_FAILED]: function(getState, payload, dispatch) {
+  [MOVIE_HISTORY_MARK_AS_FAILED]: function(getState, payload, dispatch) {
     const {
       historyId,
-      seriesId,
-      seasonNumber
+      movieId
     } = payload;
 
     const promise = createAjaxRequest({
@@ -86,7 +85,7 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done(() => {
-      dispatch(fetchMovieHistory({ seriesId, seasonNumber }));
+      dispatch(fetchMovieHistory({ movieId }));
     });
   }
 });
@@ -96,7 +95,7 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [CLEAR_SERIES_HISTORY]: (state) => {
+  [CLEAR_MOVIE_HISTORY]: (state) => {
     return Object.assign({}, state, defaultState);
   }
 

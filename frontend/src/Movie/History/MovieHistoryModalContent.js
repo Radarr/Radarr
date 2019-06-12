@@ -15,18 +15,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'episode',
-    label: 'Episode',
-    isVisible: true
-  },
-  {
     name: 'sourceTitle',
     label: 'Source Title',
-    isVisible: true
-  },
-  {
-    name: 'language',
-    label: 'Language',
     isVisible: true
   },
   {
@@ -58,7 +48,6 @@ class MovieHistoryModalContent extends Component {
 
   render() {
     const {
-      seasonNumber,
       isFetching,
       isPopulated,
       error,
@@ -67,16 +56,10 @@ class MovieHistoryModalContent extends Component {
       onModalClose
     } = this.props;
 
-    const fullSeries = seasonNumber == null;
     const hasItems = !!items.length;
 
-    return (
-      <ModalContent onModalClose={onModalClose}>
-        <ModalHeader>
-          History
-        </ModalHeader>
-
-        <ModalBody>
+    return (    
+      <div>
           {
             isFetching &&
               <LoadingIndicator />
@@ -94,43 +77,33 @@ class MovieHistoryModalContent extends Component {
 
           {
             isPopulated && hasItems && !error &&
-              <Table columns={columns}>
-                <TableBody>
-                  {
-                    items.map((item) => {
-                      return (
-                        <MovieHistoryRowConnector
-                          key={item.id}
-                          fullSeries={fullSeries}
-                          {...item}
-                          onMarkAsFailedPress={onMarkAsFailedPress}
-                        />
-                      );
-                    })
-                  }
-                </TableBody>
-              </Table>
+            <Table columns={columns}>
+              <TableBody>
+                {
+                  items.map((item) => {
+                    return (
+                      <MovieHistoryRowConnector
+                        key={item.id}
+                        {...item}
+                        onMarkAsFailedPress={onMarkAsFailedPress}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
           }
-        </ModalBody>
-
-        <ModalFooter>
-          <Button onPress={onModalClose}>
-            Close
-          </Button>
-        </ModalFooter>
-      </ModalContent>
+      </div>
     );
   }
 }
 
 MovieHistoryModalContent.propTypes = {
-  seasonNumber: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onMarkAsFailedPress: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onMarkAsFailedPress: PropTypes.func.isRequired
 };
 
 export default MovieHistoryModalContent;

@@ -22,6 +22,8 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
+import MovieDetailsConnector from './MovieDetailsConnector';
+import MovieHistoryModalContent from 'Movie/History/MovieHistoryModalContent';
 import MovieFileEditorModal from 'MovieFile/Editor/MovieFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
@@ -68,7 +70,6 @@ class MovieDetails extends Component {
       isManageEpisodesOpen: false,
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
-      isMovieHistoryModalOpen: false,
       isInteractiveImportModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
@@ -121,14 +122,6 @@ class MovieDetails extends Component {
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
-
-  onMovieHistoryPress = () => {
-    this.setState({ isMovieHistoryModalOpen: true });
-  }
-
-  onMovieHistoryModalClose = () => {
-    this.setState({ isMovieHistoryModalOpen: false });
   }
 
   onExpandAllPress = () => {
@@ -198,7 +191,6 @@ class MovieDetails extends Component {
       isManageEpisodesOpen,
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
-      isMovieHistoryModalOpen,
       isInteractiveImportModalOpen,
       overviewHeight
     } = this.state;
@@ -488,7 +480,9 @@ class MovieDetails extends Component {
               </TabList>
 
               <TabPanel>
-                <h2>Any content 1</h2>
+                <MovieHistoryModal
+                  movieId={id}
+                />
               </TabPanel>
 
               <TabPanel>
@@ -516,12 +510,6 @@ class MovieDetails extends Component {
             isOpen={isManageEpisodesOpen}
             movieId={id}
             onModalClose={this.onManageEpisodesModalClose}
-          />
-
-          <MovieHistoryModal
-            isOpen={isMovieHistoryModalOpen}
-            movieId={id}
-            onModalClose={this.onMovieHistoryModalClose}
           />
 
           <EditMovieModalConnector

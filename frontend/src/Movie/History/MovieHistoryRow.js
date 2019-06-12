@@ -142,13 +142,10 @@ MovieHistoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
-  languageCutoffNotMet: PropTypes.bool.isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  fullSeries: PropTypes.bool.isRequired,
   movie: PropTypes.object.isRequired,
   onMarkAsFailedPress: PropTypes.func.isRequired
 };
