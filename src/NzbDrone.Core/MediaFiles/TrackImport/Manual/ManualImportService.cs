@@ -111,7 +111,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             if (artist == null && downloadId.IsNotNullOrWhiteSpace())
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
-                artist = trackedDownload.RemoteAlbum.Artist;
+                artist = trackedDownload.RemoteAlbum?.Artist;
             }
 
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
