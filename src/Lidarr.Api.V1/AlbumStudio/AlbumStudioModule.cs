@@ -33,6 +33,11 @@ namespace Lidarr.Api.V1.AlbumStudio
                     artist.Monitored = s.Monitored.Value;
                 }
 
+                if (request.MonitoringOptions != null && request.MonitoringOptions.Monitor == MonitorTypes.None)
+                {
+                    artist.Monitored = false;
+                }
+
                 _albumMonitoredService.SetAlbumMonitoredStatus(artist, request.MonitoringOptions);
             }
 

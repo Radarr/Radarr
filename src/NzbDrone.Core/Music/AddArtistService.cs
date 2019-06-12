@@ -121,6 +121,11 @@ namespace NzbDrone.Core.Music
             newArtist.SortName = ArtistNameNormalizer.Normalize(newArtist.Metadata.Value.Name, newArtist.Metadata.Value.ForeignArtistId);
             newArtist.Added = DateTime.UtcNow;
 
+            if (newArtist.AddOptions != null && newArtist.AddOptions.Monitor == MonitorTypes.None)
+            {
+                newArtist.Monitored = false;
+            }
+
             var validationResult = _addArtistValidator.Validate(newArtist);
 
             if (!validationResult.IsValid)
