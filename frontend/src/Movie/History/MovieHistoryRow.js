@@ -20,7 +20,8 @@ function getTitle(eventType) {
     case 'downloadFolderImported': return 'Download Folder Imported';
     case 'downloadFailed': return 'Download Failed';
     case 'episodeFileDeleted': return 'Episode File Deleted';
-    case 'episodeFileRenamed': return 'Episode File Renamed';
+    case 'MovieFileDeleted': return 'Movie File Deleted';
+    case 'MovieFolderImported': return 'Movie Folder Imported';
     default: return 'Unknown';
   }
 }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchMovieHistory, clearMovieHistory, movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
-import MovieHistoryModalContent from './MovieHistoryModalContent';
+import MovieHistoryTableContent from './MovieHistoryTableContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -20,7 +20,7 @@ const mapDispatchToProps = {
   movieHistoryMarkAsFailed
 };
 
-class MovieHistoryModalContentConnector extends Component {
+class MovieHistoryTableContentConnector extends Component {
 
   //
   // Lifecycle
@@ -58,7 +58,7 @@ class MovieHistoryModalContentConnector extends Component {
 
   render() {
     return (
-      <MovieHistoryModalContent
+      <MovieHistoryTableContent
         {...this.props}
         onMarkAsFailedPress={this.onMarkAsFailedPress}
       />
@@ -66,11 +66,11 @@ class MovieHistoryModalContentConnector extends Component {
   }
 }
 
-MovieHistoryModalContentConnector.propTypes = {
+MovieHistoryTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired,
   fetchMovieHistory: PropTypes.func.isRequired,
   clearMovieHistory: PropTypes.func.isRequired,
   movieHistoryMarkAsFailed: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieHistoryModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(MovieHistoryTableContentConnector);

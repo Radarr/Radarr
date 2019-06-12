@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Button from 'Components/Link/Button';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import MovieHistoryRowConnector from './MovieHistoryRowConnector';
@@ -41,7 +36,7 @@ const columns = [
   }
 ];
 
-class MovieHistoryModalContent extends Component {
+class MovieHistoryTableContent extends Component {
 
   //
   // Render
@@ -52,8 +47,7 @@ class MovieHistoryModalContent extends Component {
       isPopulated,
       error,
       items,
-      onMarkAsFailedPress,
-      onModalClose
+      onMarkAsFailedPress
     } = this.props;
 
     const hasItems = !!items.length;
@@ -98,7 +92,7 @@ class MovieHistoryModalContent extends Component {
   }
 }
 
-MovieHistoryModalContent.propTypes = {
+MovieHistoryTableContent.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -106,4 +100,4 @@ MovieHistoryModalContent.propTypes = {
   onMarkAsFailedPress: PropTypes.func.isRequired
 };
 
-export default MovieHistoryModalContent;
+export default MovieHistoryTableContent;

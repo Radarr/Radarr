@@ -22,15 +22,13 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
-import MovieDetailsConnector from './MovieDetailsConnector';
-import MovieHistoryModalContent from 'Movie/History/MovieHistoryModalContent';
 import MovieFileEditorModal from 'MovieFile/Editor/MovieFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
-import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
+import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 // import MovieTagsConnector from './MovieTagsConnector';
@@ -480,7 +478,7 @@ class MovieDetails extends Component {
               </TabList>
 
               <TabPanel>
-                <MovieHistoryModal
+                <MovieHistoryTable
                   movieId={id}
                 />
               </TabPanel>
