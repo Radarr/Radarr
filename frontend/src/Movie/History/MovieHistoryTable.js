@@ -7,9 +7,9 @@ function MovieHistoryTable(props) {
   } = props;
 
   return (
-      <MovieHistoryTableContentConnector
-        {...otherProps}
-      />
+    <MovieHistoryTableContentConnector
+      {...otherProps}
+    />
   );
 }
 

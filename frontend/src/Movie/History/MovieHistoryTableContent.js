@@ -52,41 +52,41 @@ class MovieHistoryTableContent extends Component {
 
     const hasItems = !!items.length;
 
-    return (    
+    return (
       <div>
-          {
-            isFetching &&
-              <LoadingIndicator />
-          }
+        {
+          isFetching &&
+            <LoadingIndicator />
+        }
 
-          {
-            !isFetching && !!error &&
-              <div>Unable to load history.</div>
-          }
+        {
+          !isFetching && !!error &&
+            <div>Unable to load history.</div>
+        }
 
-          {
-            isPopulated && !hasItems && !error &&
-              <div>No history.</div>
-          }
+        {
+          isPopulated && !hasItems && !error &&
+            <div>No history.</div>
+        }
 
-          {
-            isPopulated && hasItems && !error &&
-            <Table columns={columns}>
-              <TableBody>
-                {
-                  items.map((item) => {
-                    return (
-                      <MovieHistoryRowConnector
-                        key={item.id}
-                        {...item}
-                        onMarkAsFailedPress={onMarkAsFailedPress}
-                      />
-                    );
-                  })
-                }
-              </TableBody>
-            </Table>
-          }
+        {
+          isPopulated && hasItems && !error &&
+          <Table columns={columns}>
+            <TableBody>
+              {
+                items.map((item) => {
+                  return (
+                    <MovieHistoryRowConnector
+                      key={item.id}
+                      {...item}
+                      onMarkAsFailedPress={onMarkAsFailedPress}
+                    />
+                  );
+                })
+              }
+            </TableBody>
+          </Table>
+        }
       </div>
     );
   }
