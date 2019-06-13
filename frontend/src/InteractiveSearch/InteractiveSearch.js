@@ -83,7 +83,6 @@ function InteractiveSearch(props) {
     customFilters,
     sortKey,
     sortDirection,
-    type,
     longDateFormat,
     timeFormat,
     onSortPress,
@@ -101,7 +100,6 @@ function InteractiveSearch(props) {
           customFilters={customFilters}
           buttonComponent={PageMenuButton}
           filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
-          filterModalConnectorComponentProps={{ type }}
           onFilterSelect={onFilterSelect}
         />
       </div>
@@ -181,7 +179,6 @@ InteractiveSearch.propTypes = {
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
-  type: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onSortPress: PropTypes.func.isRequired,

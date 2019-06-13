@@ -11,8 +11,6 @@ import createHandleActions from './Creators/createHandleActions';
 // Variables
 
 export const section = 'releases';
-export const episodeSection = 'releases.episode';
-export const seasonSection = 'releases.season';
 
 let abortCurrentRequest = null;
 
@@ -54,28 +52,6 @@ export const defaultState = {
       key: 'all',
       label: 'All',
       filters: []
-    },
-    {
-      key: 'season-pack',
-      label: 'Season Pack',
-      filters: [
-        {
-          key: 'fullSeason',
-          value: true,
-          type: filterTypes.EQUAL
-        }
-      ]
-    },
-    {
-      key: 'not-season-pack',
-      label: 'Not Season Pack',
-      filters: [
-        {
-          key: 'fullSeason',
-          value: false,
-          type: filterTypes.EQUAL
-        }
-      ]
     }
   ],
 
@@ -146,20 +122,13 @@ export const defaultState = {
       type: filterBuilderTypes.NUMBER
     }
   ],
+  selectedFilterKey: 'all'
 
-  episode: {
-    selectedFilterKey: 'all'
-  },
-
-  season: {
-    selectedFilterKey: 'season-pack'
-  }
 };
 
 export const persistState = [
-  'releases.selectedFilterKey',
-  'releases.episode.customFilters',
-  'releases.season.customFilters'
+  'releases.customFilters',
+  'releases.selectedFilterKey'
 ];
 
 //
@@ -171,8 +140,7 @@ export const SET_RELEASES_SORT = 'releases/setReleasesSort';
 export const CLEAR_RELEASES = 'releases/clearReleases';
 export const GRAB_RELEASE = 'releases/grabRelease';
 export const UPDATE_RELEASE = 'releases/updateRelease';
-export const SET_EPISODE_RELEASES_FILTER = 'releases/setEpisodeReleasesFilter';
-export const SET_SEASON_RELEASES_FILTER = 'releases/setSeasonReleasesFilter';
+export const SET_MOVIE_RELEASES_FILTER = 'releases/setMovieReleasesFilter';
 
 //
 // Action Creators
@@ -183,8 +151,7 @@ export const setReleasesSort = createAction(SET_RELEASES_SORT);
 export const clearReleases = createAction(CLEAR_RELEASES);
 export const grabRelease = createThunk(GRAB_RELEASE);
 export const updateRelease = createAction(UPDATE_RELEASE);
-export const setEpisodeReleasesFilter = createAction(SET_EPISODE_RELEASES_FILTER);
-export const setSeasonReleasesFilter = createAction(SET_SEASON_RELEASES_FILTER);
+export const setMovieReleasesFilter = createAction(SET_MOVIE_RELEASES_FILTER);
 
 //
 // Helpers
@@ -249,8 +216,7 @@ export const reducers = createHandleActions({
 
   [CLEAR_RELEASES]: (state) => {
     const {
-      episode,
-      season,
+      movieId,
       ...otherDefaultState
     } = defaultState;
 
@@ -276,8 +242,7 @@ export const reducers = createHandleActions({
     return newState;
   },
 
-  [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section),
-  [SET_EPISODE_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(episodeSection),
-  [SET_SEASON_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(seasonSection)
+  [SET_MOVIE_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section),
+  [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section)
 
 }, defaultState, section);

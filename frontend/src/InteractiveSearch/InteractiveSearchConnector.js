@@ -7,10 +7,10 @@ import createClientSideCollectionSelector from 'Store/Selectors/createClientSide
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import InteractiveSearch from './InteractiveSearch';
 
-function createMapStateToProps(appState, { type }) {
+function createMapStateToProps(appState) {
   return createSelector(
     (state) => state.releases.items.length,
-    createClientSideCollectionSelector('releases', `releases.${type}`),
+    createClientSideCollectionSelector('releases'),
     createUISettingsSelector(),
     (totalReleasesCount, releases, uiSettings) => {
       return {
@@ -34,10 +34,7 @@ function createMapDispatchToProps(dispatch, props) {
     },
 
     onFilterSelect(selectedFilterKey) {
-      const action = props.type === 'episode' ?
-        releaseActions.setEpisodeReleasesFilter :
-        releaseActions.setSeasonReleasesFilter;
-
+      const action = releaseActions.setMovieReleasesFilter;
       dispatch(action({ selectedFilterKey }));
     },
 

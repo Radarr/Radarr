@@ -11,10 +11,10 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import EpisodeQuality from 'Episode/EpisodeQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
+import MovieQuality from 'Movie/MovieQuality';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
   if (isGrabbing) {
@@ -160,7 +160,7 @@ class InteractiveSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.quality}>
-          <EpisodeQuality
+          <MovieQuality
             quality={quality}
           />
         </TableRowCell>
@@ -208,7 +208,7 @@ class InteractiveSearchRow extends Component {
           isOpen={this.state.isConfirmGrabModalOpen}
           kind={kinds.WARNING}
           title="Grab Release"
-          message={`Sonarr was unable to determine which series and episode this release was for. Sonarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
+          message={`Radarr was unable to determine which movie this release was for. Radarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
           confirmLabel="Grab"
           onConfirm={this.onGrabConfirm}
           onCancel={this.onGrabCancel}
