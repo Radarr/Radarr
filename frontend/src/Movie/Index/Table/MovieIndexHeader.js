@@ -37,7 +37,6 @@ class MovieIndexHeader extends Component {
 
   render() {
     const {
-      showSearchAction,
       columns,
       onTableOptionChange,
       ...otherProps
