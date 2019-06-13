@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import InteractiveSearchConnector from 'InteractiveSearch/InteractiveSearchConnector';
 
-function SeasonInteractiveSearchModalContent(props) {
+function InteractiveSearchTableContent(props) {
   const {
     movieId
   } = props;
@@ -18,8 +18,8 @@ function SeasonInteractiveSearchModalContent(props) {
   );
 }
 
-SeasonInteractiveSearchModalContent.propTypes = {
+InteractiveSearchTableContent.propTypes = {
   movieId: PropTypes.number.isRequired
 };
 
-export default SeasonInteractiveSearchModalContent;
+export default InteractiveSearchTableContent;

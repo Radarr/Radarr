@@ -31,7 +31,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
-import SeasonInteractiveSearchModal from 'Movie/Search/SeasonInteractiveSearchModal';
+import InteractiveSearchTable from 'Movie/Search/InteractiveSearchTable';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
@@ -485,7 +485,7 @@ class MovieDetails extends Component {
               </TabPanel>
 
               <TabPanel>
-                <SeasonInteractiveSearchModal
+                <InteractiveSearchTable
                   movieId={id}
                 />
               </TabPanel>
