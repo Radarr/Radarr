@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             try
             {
                 var environmentVariables = new StringDictionary();
-                environmentVariables.Add("Sonarr_EventType", "Test");
+                environmentVariables.Add("Radarr_EventType", "Test");
 
                 var processOutput = ExecuteScript(environmentVariables);
 

@@ -5,6 +5,7 @@ using Radarr.Http.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 
 namespace Radarr.Api.V2.Profiles.Quality
 {

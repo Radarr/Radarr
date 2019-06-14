@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Parser;
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         public OmgwtfnzbsSettings()
         {
             Delay = 30;
+            MultiLanguages = Enumerable.Empty<int>();
         }
 
         // Unused since Omg has a hardcoded url.
@@ -38,7 +40,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         [FieldDefinition(2, Label = "Delay", HelpText = "Time in minutes to delay new nzbs before they appear on the RSS feed", Advanced = true)]
         public int Delay { get; set; }
                 
-        [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        // [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         public NzbDroneValidationResult Validate()

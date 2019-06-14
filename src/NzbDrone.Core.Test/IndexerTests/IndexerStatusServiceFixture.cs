@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.IndexerTests
         private void WithStatus(IndexerStatus status)
         {
             Mocker.GetMock<IIndexerStatusRepository>()
-                .Setup(v => v.FindByIndexerId(1))
+                .Setup(v => v.FindByProviderId(1))
                 .Returns(status);
 
             Mocker.GetMock<IIndexerStatusRepository>()
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.IndexerTests
 
             VerifyUpdate();
 
-            var status = Subject.GetBlockedIndexers().FirstOrDefault();
+            var status = Subject.GetBlockedProviders().FirstOrDefault();
             status.Should().NotBeNull();
             status.DisabledTill.Should().HaveValue();
             status.DisabledTill.Value.Should().BeCloseTo(_epoch + TimeSpan.FromMinutes(5), 500);
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.IndexerTests
 
             VerifyUpdate();
 
-            var status = Subject.GetBlockedIndexers().FirstOrDefault();
+            var status = Subject.GetBlockedProviders().FirstOrDefault();
             status.Should().BeNull();
         }
 
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.IndexerTests
             Subject.RecordSuccess(1);
             Subject.RecordFailure(1);
 
-            var status = Subject.GetBlockedIndexers().FirstOrDefault();
+            var status = Subject.GetBlockedProviders().FirstOrDefault();
             status.Should().NotBeNull();
             status.DisabledTill.Should().HaveValue();
             status.DisabledTill.Value.Should().BeCloseTo(_epoch + TimeSpan.FromMinutes(15), 500);

@@ -1,9 +1,12 @@
 using System;
 using NLog;
+using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Events;
@@ -13,43 +16,51 @@ namespace NzbDrone.Core.Download
 {
     public interface IDownloadService
     {
-        void DownloadReport(RemoteMovie remoteMovie, bool forceDownload);
+        void DownloadReport(RemoteMovie remoteMovie);
     }
+
 
     public class DownloadService : IDownloadService
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IDownloadClientStatusService _downloadClientStatusService;
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IRateLimitService _rateLimitService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ISeedConfigProvider _seedConfigProvider;
         private readonly Logger _logger;
 
         public DownloadService(IProvideDownloadClient downloadClientProvider,
-            IIndexerStatusService indexerStatusService,
-            IRateLimitService rateLimitService,
-            IEventAggregator eventAggregator,
-            Logger logger)
+                               IDownloadClientStatusService downloadClientStatusService,
+                               IIndexerStatusService indexerStatusService,
+                               IRateLimitService rateLimitService,
+                               IEventAggregator eventAggregator,
+                               ISeedConfigProvider seedConfigProvider,
+                               Logger logger)
         {
             _downloadClientProvider = downloadClientProvider;
+            _downloadClientStatusService = downloadClientStatusService;
             _indexerStatusService = indexerStatusService;
             _rateLimitService = rateLimitService;
             _eventAggregator = eventAggregator;
+            _seedConfigProvider = seedConfigProvider;
             _logger = logger;
         }
 
-        public void DownloadReport(RemoteMovie remoteMovie, bool foceDownload = false)
+        public void DownloadReport(RemoteMovie remoteMovie)
         {
-            //Ensure.That(remoteEpisode.Series, () => remoteEpisode.Series).IsNotNull();
-            //Ensure.That(remoteEpisode.Episodes, () => remoteEpisode.Episodes).HasItems(); TODO update this shit
+            Ensure.That(remoteMovie.Movie, () => remoteMovie.Movie).IsNotNull();
 
             var downloadTitle = remoteMovie.Release.Title;
             var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol);
 
             if (downloadClient == null)
             {
-                _logger.Warn("{0} Download client isn't configured yet.", remoteMovie.Release.DownloadProtocol);
-                return;
+                throw new DownloadClientUnavailableException($"{remoteMovie.Release.DownloadProtocol} Download client isn't configured yet");
             }
+
+            // Get the seed configuration for this release.
+            remoteMovie.SeedConfiguration = _seedConfigProvider.GetSeedConfiguration(remoteMovie);
 
             // Limit grabs to 2 per second.
             if (remoteMovie.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteMovie.Release.DownloadUrl.StartsWith("magnet:"))
@@ -58,15 +69,17 @@ namespace NzbDrone.Core.Download
                 _rateLimitService.WaitAndPulse(url.Host, TimeSpan.FromSeconds(2));
             }
 
-            string downloadClientId = "";
+            string downloadClientId;
             try
             {
                 downloadClientId = downloadClient.Download(remoteMovie);
+                _downloadClientStatusService.RecordSuccess(downloadClient.Definition.Id);
                 _indexerStatusService.RecordSuccess(remoteMovie.Release.IndexerId);
             }
-            catch (NotImplementedException ex)
+            catch (ReleaseUnavailableException)
             {
-                _logger.Error(ex, "The download client you are using is currently not configured to download movies. Please choose another one.");
+                _logger.Trace("Release {0} no longer available on indexer.", remoteMovie);
+                throw;
             }
             catch (ReleaseDownloadException ex)
             {

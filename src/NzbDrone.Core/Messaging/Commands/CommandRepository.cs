@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using NzbDrone.Core.Datastore;
@@ -52,24 +52,24 @@ namespace NzbDrone.Core.Messaging.Commands
 
         public List<CommandModel> FindCommands(string name)
         {
-            return Query(q => q.Where(c => c.Name == name).ToList());
+            return Query.Where(c => c.Name == name).ToList();
         }
 
         public List<CommandModel> FindQueuedOrStarted(string name)
         {
-            return Query(q => q.Where(c => c.Name == name)
+            return Query.Where(c => c.Name == name)
                         .AndWhere("[Status] IN (0,1)")
-                        .ToList());
+                        .ToList();
         }
 
         public List<CommandModel> Queued()
         {
-            return Query(q => q.Where(c => c.Status == CommandStatus.Queued).ToList());
+            return Query.Where(c => c.Status == CommandStatus.Queued).ToList();
         }
 
         public List<CommandModel> Started()
         {
-            return Query(q => q.Where(c => c.Status == CommandStatus.Started).ToList());
+            return Query.Where(c => c.Status == CommandStatus.Started).ToList();
         }
 
         public void Start(CommandModel command)

@@ -8,6 +8,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 
 namespace Radarr.Api.V2.Movies
 {

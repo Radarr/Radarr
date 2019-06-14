@@ -65,7 +65,10 @@ namespace NzbDrone.Core.IndexerSearch
 
         private List<DownloadDecision> Dispatch(Func<IIndexer, IEnumerable<ReleaseInfo>> searchAction, SearchCriteriaBase criteriaBase)
         {
-            var indexers = _indexerFactory.SearchEnabled();
+            var indexers = criteriaBase.InteractiveSearch ?
+                _indexerFactory.InteractiveSearchEnabled() :
+                _indexerFactory.AutomaticSearchEnabled();
+
             var reports = new List<ReleaseInfo>();
 
             _logger.ProgressInfo("Searching {0} indexers for {1}", indexers.Count, criteriaBase);
@@ -90,7 +93,7 @@ namespace NzbDrone.Core.IndexerSearch
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "Error while searching for " + criteriaBase);
+                        _logger.Error(e, "Error while searching for {0}", criteriaBase);
                     }
                 }).LogExceptions());
             }

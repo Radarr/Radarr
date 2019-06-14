@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
@@ -22,10 +23,10 @@ namespace NzbDrone.Core.Test.CustomFormat
         [TestCase("s_Dvd", TagType.Source, Source.DVD)]
         [TestCase("S_WEBdL", TagType.Source, Source.WEBDL)]
         [TestCase("S_CAM", TagType.Source, Source.CAM)]
-        [TestCase("L_English", TagType.Language, Language.English)]
-        [TestCase("L_Italian", TagType.Language, Language.Italian)]
-        [TestCase("L_iTa", TagType.Language, Language.Italian)]
-        [TestCase("L_germaN", TagType.Language, Language.German)]
+        // [TestCase("L_English", TagType.Language, Language.English)]
+        // [TestCase("L_Italian", TagType.Language, Language.Italian)]
+        //  [TestCase("L_iTa", TagType.Language, Language.Italian)]
+        // [TestCase("L_germaN", TagType.Language, Language.German)]
         [TestCase("E_Director", TagType.Edition, "director")]
         [TestCase("E_RX_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex)]
         [TestCase("E_RXN_Director('?s)?", TagType.Edition, "director('?s)?", TagModifier.Regex, TagModifier.Not)]

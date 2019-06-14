@@ -37,6 +37,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -140,6 +141,7 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(c => c.Message);
 
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
+            Mapper.Entity<DownloadClientStatus>().RegisterModel("DownloadClientStatus");
 
             Mapper.Entity<CustomFilter>().RegisterModel("CustomFilters");
         }
@@ -148,7 +150,6 @@ namespace NzbDrone.Core.Datastore
         {
             RegisterEmbeddedConverter();
             RegisterProviderSettingConverter();
-
 
             MapRepository.Instance.RegisterTypeConverter(typeof(int), new Int32Converter());
             MapRepository.Instance.RegisterTypeConverter(typeof(double), new DoubleConverter());
@@ -164,6 +165,9 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(IDictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<KeyValuePair<string, int>>), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(Language), new LanguageIntConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<Language>), new EmbeddedDocumentConverter(new LanguageIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ParsedMovieInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ReleaseInfo), new EmbeddedDocumentConverter());

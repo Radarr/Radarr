@@ -14,18 +14,18 @@ class QueueOptions extends Component {
     super(props, context);
 
     this.state = {
-      includeUnknownSeriesItems: props.includeUnknownSeriesItems
+      includeUnknownMovieItems: props.includeUnknownMovieItems
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      includeUnknownSeriesItems
+      includeUnknownMovieItems
     } = this.props;
 
-    if (includeUnknownSeriesItems !== prevProps.includeUnknownSeriesItems) {
+    if (includeUnknownMovieItems !== prevProps.includeUnknownMovieItems) {
       this.setState({
-        includeUnknownSeriesItems
+        includeUnknownMovieItems
       });
     }
   }
@@ -48,19 +48,19 @@ class QueueOptions extends Component {
 
   render() {
     const {
-      includeUnknownSeriesItems
+      includeUnknownMovieItems
     } = this.state;
 
     return (
       <Fragment>
         <FormGroup>
-          <FormLabel>Show Unknown Series Items</FormLabel>
+          <FormLabel>Show Unknown Movie Items</FormLabel>
 
           <FormInputGroup
             type={inputTypes.CHECK}
-            name="includeUnknownSeriesItems"
-            value={includeUnknownSeriesItems}
-            helpText="Show items without a series in the queue, this could include removed series, movies or anything else in Sonarr's category"
+            name="includeUnknownMovieItems"
+            value={includeUnknownMovieItems}
+            helpText="Show items without a movie in the queue, this could include removed movie, movies or anything else in Radarr's category"
             onChange={this.onOptionChange}
           />
         </FormGroup>
@@ -70,7 +70,7 @@ class QueueOptions extends Component {
 }
 
 QueueOptions.propTypes = {
-  includeUnknownSeriesItems: PropTypes.bool.isRequired,
+  includeUnknownMovieItems: PropTypes.bool.isRequired,
   onOptionChange: PropTypes.func.isRequired
 };
 

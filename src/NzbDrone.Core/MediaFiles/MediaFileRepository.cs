@@ -21,12 +21,12 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<MovieFile> GetFilesByMovie(int movieId)
         {
-            return Query(q => q.Where(c => c.MovieId == movieId).ToList());
+            return Query.Where(c => c.MovieId == movieId).ToList();
         }
 
         public List<MovieFile> GetFilesWithoutMediaInfo()
         {
-            return Query(q => q.Where(c => c.MediaInfo == null).ToList());
+            return Query.Where(c => c.MediaInfo == null).ToList();
         }
     }
 }

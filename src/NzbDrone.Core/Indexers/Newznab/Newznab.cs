@@ -8,6 +8,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Newznab
 {
@@ -68,7 +69,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             return new IndexerDefinition
                    {
                        EnableRss = false,
-                       EnableSearch = false,
+                       EnableAutomaticSearch = false,
+                       EnableInteractiveSearch = false,
                        Name = name,
                        Implementation = GetType().Name,
                        Settings = settings,
@@ -78,13 +80,18 @@ namespace NzbDrone.Core.Indexers.Newznab
                    };
         }
 
-        private NewznabSettings GetSettings(string url, params int[] categories)
+        private NewznabSettings GetSettings(string url, string apiPath = null, int[] categories = null)
         {
             var settings = new NewznabSettings { BaseUrl = url };
 
-            if (categories.Any())
+            if (categories != null)
             {
                 settings.Categories = categories;
+            }
+
+            if (apiPath.IsNotNullOrWhiteSpace())
+            {
+                settings.ApiPath = apiPath;
             }
 
             return settings;
@@ -93,7 +100,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override void Test(List<ValidationFailure> failures)
         {
             base.Test(failures);
-
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestCapabilities());
         }
 

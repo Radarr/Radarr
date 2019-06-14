@@ -28,7 +28,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             try {
                 indexerSettings = _indexerFactory.Get(subject.Release.IndexerId)?.Settings as IIndexerSettings;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
             }

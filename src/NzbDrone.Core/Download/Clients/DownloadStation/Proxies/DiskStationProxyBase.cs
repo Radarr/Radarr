@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Unable to connect to Diskstation, please check your settings", ex);
+                throw new DownloadClientUnavailableException("Unable to connect to Diskstation, please check your settings", ex);
             }
 
             _logger.Debug("Trying to {0}", operation);

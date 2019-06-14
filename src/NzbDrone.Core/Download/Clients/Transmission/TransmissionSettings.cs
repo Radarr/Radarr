@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             Host = "localhost";
             Port = 9091;
             UrlBase = "/transmission/";
-            //MovieCategory = "radarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -65,7 +64,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         [FieldDefinition(9, Label = "Add Paused", Type = FieldType.Checkbox)]
         public bool AddPaused { get; set; }
-        
+
         [FieldDefinition(10, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 

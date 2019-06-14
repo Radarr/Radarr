@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.History
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.History
         public Movie Movie { get; set; }
         public HistoryEventType EventType { get; set; }
         public Dictionary<string, string> Data { get; set; }
+        public List<Language> Languages { get; set; }
 
         public string DownloadId { get; set; }
 

@@ -19,7 +19,7 @@ namespace NzbDrone.Common.Instrumentation
             var exception = e.Exception;
 
             Console.WriteLine("Task Error: {0}", exception);
-            Logger.Error(exception, "Task Error: " + exception.Message);
+            Logger.Error(exception, "Task Error");
         }
 
         private static void HandleAppDomainException(object sender, UnhandledExceptionEventArgs e)
@@ -31,7 +31,7 @@ namespace NzbDrone.Common.Instrumentation
             if (exception is NullReferenceException &&
                 exception.ToString().Contains("Microsoft.AspNet.SignalR.Transports.TransportHeartbeat.ProcessServerCommand"))
             {
-                Logger.Warn("SignalR Heartbeat interupted");
+                Logger.Warn("SignalR Heartbeat interrupted");
                 return;
             }
 
@@ -44,11 +44,9 @@ namespace NzbDrone.Common.Instrumentation
                     return;
                 }
             }
-            
-            Console.WriteLine(exception.StackTrace);
 
             Console.WriteLine("EPIC FAIL: {0}", exception);
-            Logger.Fatal(exception, "EPIC FAIL: " + exception.Message);
+            Logger.Fatal(exception, "EPIC FAIL.");
         }
     }
 }

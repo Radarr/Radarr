@@ -10,13 +10,13 @@
 
 .logoContainer {
   display: flex;
-  justify-content: center;
+  align-items: center;
   flex: 0 0 $sidebarWidth;
+  padding-left: 20px;
 }
 
-.logoFull {
-  width: 144px;
-  height: 48px;
+.logoLink {
+  line-height: 0;
 }
 
 .logo {

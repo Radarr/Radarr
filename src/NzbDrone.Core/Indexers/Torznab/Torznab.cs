@@ -11,6 +11,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Torznab
 {
@@ -57,7 +58,8 @@ namespace NzbDrone.Core.Indexers.Torznab
             return new IndexerDefinition
                    {
                        EnableRss = false,
-                       EnableSearch = false,
+                       EnableAutomaticSearch = false,
+                       EnableInteractiveSearch = false,
                        Name = name,
                        Implementation = GetType().Name,
                        Settings = settings,
@@ -67,13 +69,18 @@ namespace NzbDrone.Core.Indexers.Torznab
                    };
         }
 
-        private TorznabSettings GetSettings(string url, params int[] categories)
+        private TorznabSettings GetSettings(string url, string apiPath = null, int[] categories = null)
         {
             var settings = new TorznabSettings { BaseUrl = url };
 
-            if (categories.Any())
+            if (categories != null)
             {
                 settings.Categories = categories;
+            }
+
+            if (apiPath.IsNotNullOrWhiteSpace())
+            {
+                settings.ApiPath = apiPath;
             }
 
             return settings;
@@ -82,7 +89,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected override void Test(List<ValidationFailure> failures)
         {
             base.Test(failures);
-
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestCapabilities());
         }
 
@@ -135,6 +142,5 @@ namespace NzbDrone.Core.Indexers.Torznab
                 return new ValidationFailure(string.Empty, "Unable to connect to indexer, check the log for more details");
             }
         }
-
     }
 }

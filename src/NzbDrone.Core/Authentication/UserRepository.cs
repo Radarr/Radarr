@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -20,12 +20,12 @@ namespace NzbDrone.Core.Authentication
 
         public User FindUser(string username)
         {
-            return Query(q => q.Where(u => u.Username == username).SingleOrDefault());
+            return Query.Where(u => u.Username == username).SingleOrDefault();
         }
 
         public User FindUser(Guid identifier)
         {
-            return Query(q => q.Where(u => u.Identifier == identifier).SingleOrDefault());
+            return Query.Where(u => u.Identifier == identifier).SingleOrDefault();
         }
     }
 }

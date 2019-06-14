@@ -74,7 +74,9 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     RemainingSize = torrent.TotalSize - torrent.DownloadedBytes,
                     RemainingTime = eta,
                     Title = torrent.Name,
-                    TotalSize = torrent.TotalSize
+                    TotalSize = torrent.TotalSize,
+                    SeedRatio = torrent.DownloadedBytes <= 0 ? 0 :
+                        (double) torrent.UploadedBytes / torrent.DownloadedBytes
                 };
 
                 if (!string.IsNullOrEmpty(torrent.Error))
@@ -119,12 +121,12 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             }
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var destDir = new OsPath(config.GetValueOrDefault("bittorrent.defaultSavePath") as string);
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -140,7 +142,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestGetTorrents());
         }
 

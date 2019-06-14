@@ -71,6 +71,7 @@
 .success {
   border-color: $successColor;
   background-color: $successColor;
+  color: #eee;
 
   &.outline {
     color: $successColor;
@@ -101,7 +102,7 @@
 .large {
   padding: 3px 7px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: $defaultFontSize;
 }
 
 /** Outline **/

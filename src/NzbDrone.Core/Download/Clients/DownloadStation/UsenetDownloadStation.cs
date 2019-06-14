@@ -12,6 +12,7 @@ using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation
@@ -47,6 +48,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         }
 
         public override string Name => "Download Station";
+
+        public override ProviderMessage Message => new ProviderMessage("Radarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
 
         protected IEnumerable<DownloadStationTask> GetTasks()
         {
@@ -133,13 +136,13 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return finalPath;
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             try
             {
                 var path = GetDownloadDirectory();
 
-                return new DownloadClientStatus
+                return new DownloadClientInfo
                 {
                     IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
                     OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(path)) }
@@ -149,7 +152,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             {
                 _logger.Debug(e, "Failed to get config from Download Station");
 
-                throw e;
+                throw;
             }
         }
 
@@ -188,7 +191,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestOutputPath());
             failures.AddIfNotNull(TestGetNZB());
         }

@@ -18,9 +18,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     public class QBittorrent : TorrentClientBase<QBittorrentSettings>
     {
-        private readonly IQBittorrentProxy _proxy;
+        private readonly IQBittorrentProxySelector _proxySelector;
 
-        public QBittorrent(IQBittorrentProxy proxy,
+        public QBittorrent(IQBittorrentProxySelector proxySelector,
                            ITorrentFileInfoReader torrentFileInfoReader,
                            IHttpClient httpClient,
                            IConfigService configService,
@@ -30,16 +30,23 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                            Logger logger)
             : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
-            _proxy = proxy;
+            _proxySelector = proxySelector;
         }
+
+        private IQBittorrentProxy Proxy => _proxySelector.GetProxy(Settings);
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings);
+            if (!Proxy.GetConfig(Settings).DhtEnabled && !magnetLink.Contains("&tr="))
+            {
+                throw new NotSupportedException("Magnet Links without trackers not supported if DHT is disabled");
+            }
+
+            Proxy.AddTorrentFromUrl(magnetLink, Settings);
 
             if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
+                Proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
@@ -47,23 +54,28 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             if (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First ||
                 !isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First)
             {
-                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
             }
 
             SetInitialState(hash.ToLower());
+
+            if (remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue))
+            {
+                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+            }
 
             return hash;
         }
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, Byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            Proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
             try
             {
                 if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
                 {
-                    _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
+                    Proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
                 }
             }
             catch (Exception ex)
@@ -78,7 +90,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 if (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First ||
                     !isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First)
                 {
-                    _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                    Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
                 }
             }
             catch (Exception ex)
@@ -88,6 +100,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             SetInitialState(hash.ToLower());
 
+            if (remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue))
+            {
+                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+            }
+
             return hash;
         }
 
@@ -95,38 +112,29 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            QBittorrentPreferences config;
-            List<QBittorrentTorrent> torrents;
-
-            try
-            {
-                config = _proxy.GetConfig(Settings);
-                torrents = _proxy.GetTorrents(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var config = Proxy.GetConfig(Settings);
+            var torrents = Proxy.GetTorrents(Settings);
 
             var queueItems = new List<DownloadClientItem>();
 
             foreach (var torrent in torrents)
             {
-                var item = new DownloadClientItem();
-                item.DownloadId = torrent.Hash.ToUpper();
-                item.Category = torrent.Category.IsNotNullOrWhiteSpace() ? torrent.Category : torrent.Label;
-                item.Title = torrent.Name;
-                item.TotalSize = torrent.Size;
-                item.DownloadClient = Definition.Name;
-                item.RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress));
-                item.RemainingTime = GetRemainingTime(torrent);
-
-                item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath));
+                var item = new DownloadClientItem()
+                {
+                    DownloadId = torrent.Hash.ToUpper(),
+                    Category = torrent.Category.IsNotNullOrWhiteSpace() ? torrent.Category : torrent.Label,
+                    Title = torrent.Name,
+                    TotalSize = torrent.Size,
+                    DownloadClient = Definition.Name,
+                    RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress)),
+                    RemainingTime = GetRemainingTime(torrent),
+                    SeedRatio = torrent.Ratio,
+                    OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath)),
+                };
 
                 // Avoid removing torrents that haven't reached the global max ratio.
                 // Removal also requires the torrent to be paused, in case a higher max ratio was set on the torrent itself (which is not exposed by the api).
-                item.CanMoveFiles = item.CanBeRemoved = (!config.MaxRatioEnabled || config.MaxRatio <= torrent.Ratio) && torrent.State == "pausedUP";
+                item.CanMoveFiles = item.CanBeRemoved = (torrent.State == "pausedUP" && HasReachedSeedLimit(torrent, config));
 
                 if (!item.OutputPath.IsEmpty && item.OutputPath.FileName != torrent.Name)
                 {
@@ -149,12 +157,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         item.Status = DownloadItemStatus.Queued;
                         break;
 
-                    case "pausedUP": // torrent is paused and has finished downloading
+                    case "pausedUP": // torrent is paused and has finished downloading:
                     case "uploading": // torrent is being seeded and data is being transfered
                     case "stalledUP": // torrent is being seeded, but no connection were made
                     case "queuedUP": // queuing is enabled and torrent is queued for upload
                     case "checkingUP": // torrent has finished downloading and is being checked
-                    case "forcedUP": // torrent is beeing seeded by force
+                    case "forcedUP": // torrent has finished downloading and is being forcibly seeded
                         item.Status = DownloadItemStatus.Completed;
                         item.RemainingTime = TimeSpan.Zero; // qBittorrent sends eta=8640000 for completed torrents
                         break;
@@ -164,13 +172,20 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         item.Message = "The download is stalled with no connections";
                         break;
 
-                    case "downloading": // torrent is being downloaded and data is being transfered
-                        item.Status = DownloadItemStatus.Downloading;
+                    case "metaDL": // torrent magnet is being downloaded
+                        if (config.DhtEnabled)
+                        {
+                            item.Status = DownloadItemStatus.Queued;
+                        }
+                        else
+                        {
+                            item.Status = DownloadItemStatus.Warning;
+                            item.Message = "qBittorrent cannot resolve magnet link with DHT disabled";
+                        }
                         break;
 
+                    case "downloading": // torrent is being downloaded and data is being transfered
                     default: // new status in API? default to downloading
-                        item.Message = "Unknown download state: " + torrent.State;
-                        _logger.Warn(item.Message);
                         item.Status = DownloadItemStatus.Downloading;
                         break;
                 }
@@ -183,16 +198,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public override void RemoveItem(string hash, bool deleteData)
         {
-            _proxy.RemoveTorrent(hash.ToLower(), deleteData, Settings);
+            Proxy.RemoveTorrent(hash.ToLower(), deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var config = _proxy.GetConfig(Settings);
+            var config = Proxy.GetConfig(Settings);
 
             var destDir = new OsPath(config.SavePath);
 
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
                 OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, destDir) }
@@ -202,7 +217,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestPrioritySupport());
             failures.AddIfNotNull(TestGetTorrents());
         }
@@ -211,8 +226,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             try
             {
-                var version = _proxy.GetVersion(Settings);
-                if (version < 5)
+                var version = _proxySelector.GetProxy(Settings, true).GetApiVersion(Settings);
+                if (version < Version.Parse("1.5"))
                 {
                     // API version 5 introduced the "save_path" property in /query/torrents
                     return new NzbDroneValidationFailure("Host", "Unsupported client version")
@@ -220,7 +235,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         DetailedDescription = "Please upgrade to qBittorrent version 3.2.4 or higher."
                     };
                 }
-                else if (version < 6)
+                else if (version < Version.Parse("1.6"))
                 {
                     // API version 6 introduced support for labels
                     if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
@@ -242,8 +257,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 }
 
                 // Complain if qBittorrent is configured to remove torrents on max ratio
-                var config = _proxy.GetConfig(Settings);
-                if (config.MaxRatioEnabled && config.RemoveOnMaxRatio)
+                var config = Proxy.GetConfig(Settings);
+                if ((config.MaxRatioEnabled || config.MaxSeedingTimeEnabled) && config.RemoveOnMaxRatio)
                 {
                     return new NzbDroneValidationFailure(String.Empty, "qBittorrent is configured to remove torrents when they reach their Share Ratio Limit")
                     {
@@ -261,7 +276,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to connect to qBittorrent");
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
                     return new NzbDroneValidationFailure("Host", "Unable to connect")
@@ -273,7 +288,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to test qBittorrent");
                 return new NzbDroneValidationFailure(String.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -292,7 +307,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             try
             {
-                var config = _proxy.GetConfig(Settings);
+                var config = Proxy.GetConfig(Settings);
 
                 if (!config.QueueingEnabled)
                 {
@@ -319,11 +334,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             try
             {
-                _proxy.GetTorrents(Settings);
+                Proxy.GetTorrents(Settings);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(String.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 
@@ -337,13 +352,13 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 switch ((QBittorrentState)Settings.InitialState)
                 {
                     case QBittorrentState.ForceStart:
-                        _proxy.SetForceStart(hash, true, Settings);
+                        Proxy.SetForceStart(hash, true, Settings);
                         break;
                     case QBittorrentState.Start:
-                        _proxy.ResumeTorrent(hash, Settings);
+                        Proxy.ResumeTorrent(hash, Settings);
                         break;
                     case QBittorrentState.Pause:
-                        _proxy.PauseTorrent(hash, Settings);
+                        Proxy.PauseTorrent(hash, Settings);
                         break;
                 }
             }
@@ -355,12 +370,58 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         protected TimeSpan? GetRemainingTime(QBittorrentTorrent torrent)
         {
-            if (torrent.Eta< 0 || torrent.Eta> 365 * 24 * 3600)
+            if (torrent.Eta < 0 || torrent.Eta > 365 * 24 * 3600)
             {
                 return null;
             }
 
-            return TimeSpan.FromSeconds((int) torrent.Eta);
+            // qBittorrent sends eta=8640000 if unknown such as queued
+            if (torrent.Eta == 8640000)
+            {
+                return null;
+            }
+
+            return TimeSpan.FromSeconds((int)torrent.Eta);
+        }
+
+        protected bool HasReachedSeedLimit(QBittorrentTorrent torrent, QBittorrentPreferences config)
+        {
+            if (torrent.RatioLimit >= 0)
+            {
+                if (torrent.Ratio >= torrent.RatioLimit) return true;
+            }
+            else if (torrent.RatioLimit == -2 && config.MaxRatioEnabled)
+            {
+                if (torrent.Ratio >= config.MaxRatio) return true;
+            }
+
+            if (torrent.SeedingTimeLimit >= 0)
+            {
+                if (!torrent.SeedingTime.HasValue)
+                {
+                    FetchTorrentDetails(torrent);
+                }
+
+                if (torrent.SeedingTime >= torrent.SeedingTimeLimit) return true;
+            }
+            else if (torrent.SeedingTimeLimit == -2 && config.MaxSeedingTimeEnabled)
+            {
+                if (!torrent.SeedingTime.HasValue)
+                {
+                    FetchTorrentDetails(torrent);
+                }
+
+                if (torrent.SeedingTime >= config.MaxSeedingTime) return true;
+            }
+
+            return false;
+        }
+
+        protected void FetchTorrentDetails(QBittorrentTorrent torrent)
+        {
+            var torrentProperties = Proxy.GetTorrentProperties(torrent.Hash, Settings);
+
+            torrent.SeedingTime = torrentProperties.SeedingTime;
         }
     }
 }

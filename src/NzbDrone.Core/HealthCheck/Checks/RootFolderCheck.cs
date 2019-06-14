@@ -1,9 +1,12 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(MovieDeletedEvent))]
+    [CheckOn(typeof(MovieMovedEvent))]
     public class RootFolderCheck : HealthCheckBase
     {
         private readonly IMovieService _movieService;
@@ -36,7 +39,5 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType());
         }
-
-        public override bool CheckOnConfigChange => false;
     }
 }

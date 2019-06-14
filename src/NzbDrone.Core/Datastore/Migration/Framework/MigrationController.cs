@@ -60,6 +60,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             
 
             sw.Stop();
+
             _announcer.ElapsedTime(sw.Elapsed);
         }
     }

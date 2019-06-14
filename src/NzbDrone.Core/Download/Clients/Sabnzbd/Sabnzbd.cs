@@ -8,6 +8,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
@@ -35,19 +36,19 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         // patch can be a number (releases) or 'x' (git)
         private static readonly Regex VersionRegex = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+|x)", RegexOptions.Compiled);
 
-        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContent)
         {
             var category = Settings.MovieCategory;
             var priority = remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
+            var response = _proxy.DownloadNzb(fileContent, filename, category, priority, Settings);
 
-            if (response != null && response.Ids.Any())
+            if (response == null || response.Ids.Empty())
             {
-                return response.Ids.First();
+                throw new DownloadClientRejectedReleaseException(remoteMovie.Release, "SABnzbd rejected the NZB for an unknown reason");
             }
 
-            return null;
+            return response.Ids.First();
         }
 
         private IEnumerable<DownloadClientItem> GetQueue()
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             catch (DownloadClientException ex)
             {
-                _logger.Warn("Couldn't get download queue. {0}", ex.Message);
+                _logger.Warn(ex, "Couldn't get download queue. {0}", ex.Message);
                 return Enumerable.Empty<DownloadClientItem>();
             }
 
@@ -244,7 +245,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var categories = GetCategories(config).ToArray();
@@ -256,7 +257,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 category = categories.FirstOrDefault(v => v.Name == "*");
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };

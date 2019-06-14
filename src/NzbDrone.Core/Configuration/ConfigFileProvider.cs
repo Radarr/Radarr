@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -197,13 +197,15 @@ namespace NzbDrone.Core.Configuration
             }
         }
 
-        public string UiFolder => GetValue("UiFolder", "UI", false);
+        // public string UiFolder => GetValue("UiFolder", "UI", false);GetValue("UiFolder", "UI", false);
+        public string UiFolder => "UI";
+
 
         public bool UpdateAutomatically => GetValueBoolean("UpdateAutomatically", false, false);
 
         public UpdateMechanism UpdateMechanism => GetValueEnum("UpdateMechanism", UpdateMechanism.BuiltIn, false);
 
-        public string UpdateScriptPath => GetValue("UpdateScriptPath", "", false );
+        public string UpdateScriptPath => GetValue("UpdateScriptPath", "", false);
 
         public int GetValueInt(string key, int defaultValue)
         {

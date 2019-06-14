@@ -12,13 +12,20 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         private void GivenOutput(string version)
         {
             MonoOnly();
+
             Mocker.GetMock<IPlatformInfo>()
                   .SetupGet(s => s.Version)
                   .Returns(new Version(version));
         }
 
-        [TestCase("5.10")]
+        
+        [TestCase("4.6")]
+        [TestCase("4.4.2")]
+        [TestCase("4.6")]
         [TestCase("4.8")]
+        [TestCase("5.0")]
+        [TestCase("5.2")]
+        [TestCase("5.4")]
         public void should_return_ok(string version)
         {
             GivenOutput(version);
@@ -34,9 +41,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [TestCase("3.2.7")]
         [TestCase("3.6.1")]
         [TestCase("3.8")]
+        [TestCase("3.10")]
         [TestCase("4.0.0.0")]
         [TestCase("4.2")]
-        [TestCase("4.4.2")]
         public void should_return_warning(string version)
         {
             GivenOutput(version);

@@ -1,6 +1,6 @@
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications

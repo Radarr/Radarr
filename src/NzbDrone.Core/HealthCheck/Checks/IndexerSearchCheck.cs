@@ -1,9 +1,13 @@
 ﻿using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(ProviderUpdatedEvent<IIndexer>))]
+    [CheckOn(typeof(ProviderDeletedEvent<IIndexer>))]
+    [CheckOn(typeof(ProviderStatusChangedEvent<IIndexer>))]
     public class IndexerSearchCheck : HealthCheckBase
     {
         private readonly IIndexerFactory _indexerFactory;
@@ -15,14 +19,21 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var enabled = _indexerFactory.SearchEnabled(false);
+            var automaticSearchEnabled = _indexerFactory.AutomaticSearchEnabled(false);
 
-            if (enabled.Empty())
+            if (automaticSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Search enabled, Radarr will not provide any search results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Automatic Search enabled, Radarr will not provide any automatic search results");
             }
 
-            var active = _indexerFactory.SearchEnabled(true);
+            var interactiveSearchEnabled = _indexerFactory.InteractiveSearchEnabled(false);
+
+            if (interactiveSearchEnabled.Empty())
+            {
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Interactive Search enabled, Radarr will not provide any interactive search results");
+            }
+
+            var active = _indexerFactory.AutomaticSearchEnabled(true);
 
             if (active.Empty())
             {

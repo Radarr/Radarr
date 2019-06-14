@@ -25,9 +25,9 @@ namespace NzbDrone.Common.EnvironmentInfo
         private readonly Logger _logger;
 
         public AppFolderFactory(IAppFolderInfo appFolderInfo,
-                                        IStartupContext startupContext,
-                                        IDiskProvider diskProvider,
-                                        IDiskTransferService diskTransferService)
+                                IStartupContext startupContext,
+                                IDiskProvider diskProvider,
+                                IDiskTransferService diskTransferService)
         {
             _appFolderInfo = appFolderInfo;
             _startupContext = startupContext;
@@ -43,9 +43,9 @@ namespace NzbDrone.Common.EnvironmentInfo
                 MigrateAppDataFolder();
                 _diskProvider.EnsureFolder(_appFolderInfo.AppDataFolder);
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
-                throw new RadarrStartupException(ex, "Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
+                throw new RadarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
             }
             
 
@@ -112,6 +112,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
+
         private void InitializeMonoApplicationData()
         {
             if (OsInfo.IsWindows) return;
@@ -149,6 +150,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                          .ToList()
                          .ForEach(_diskProvider.DeleteFile);
         }
+
         private void RemovePidFile()
         {
             if (OsInfo.IsNotWindows)

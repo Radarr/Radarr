@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Languages;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 #if !LIBRARY

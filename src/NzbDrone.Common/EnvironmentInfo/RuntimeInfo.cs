@@ -29,7 +29,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             if (entry != null)
             {
                 ExecutingApplication = entry.Location;
-                IsWindowsTray = entry.ManifestModule.Name == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
+                IsWindowsTray = OsInfo.IsWindows && entry.ManifestModule.Name == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
             }
         }
 
@@ -129,8 +129,8 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             try
             {
-                var currentAssmeblyLocation = typeof(RuntimeInfo).Assembly.Location;
-                if (currentAssmeblyLocation.ToLower().Contains("_output")) return false;
+                var currentAssemblyLocation = typeof(RuntimeInfo).Assembly.Location;
+                if (currentAssemblyLocation.ToLower().Contains("_output")) return false;
             }
             catch
             {
@@ -139,6 +139,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             var lowerCurrentDir = Directory.GetCurrentDirectory().ToLower();
             if (lowerCurrentDir.Contains("teamcity")) return false;
+            if (lowerCurrentDir.Contains("buildagent")) return false;
             if (lowerCurrentDir.Contains("_output")) return false;
 
             return true;

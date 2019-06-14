@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContent)
         {
             var category = Settings.MovieCategory;
 
@@ -43,9 +44,9 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
             var addpaused = Settings.AddPaused;
 
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, addpaused, Settings);
+            var response = _proxy.DownloadNzb(fileContent, filename, category, priority, addpaused, Settings);
 
-            if(response == null)
+            if (response == null)
             {
                 throw new DownloadClientException("Failed to add nzb {0}", filename);
             }
@@ -119,13 +120,14 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             foreach (var item in history)
             {
                 var droneParameter = item.Parameters.SingleOrDefault(p => p.Name == "drone");
-
                 var historyItem = new DownloadClientItem();
+                var itemDir = item.FinalDir.IsNullOrWhiteSpace() ? item.DestDir : item.FinalDir;
+
                 historyItem.DownloadClient = Definition.Name;
                 historyItem.DownloadId = droneParameter == null ? item.Id.ToString() : droneParameter.Value.ToString();
                 historyItem.Title = item.Name;
                 historyItem.TotalSize = MakeInt64(item.FileSizeHi, item.FileSizeLo);
-                historyItem.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(item.DestDir));
+                historyItem.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(itemDir));
                 historyItem.Category = item.Category;
                 historyItem.Message = $"PAR Status: {item.ParStatus} - Unpack Status: {item.UnpackStatus} - Move Status: {item.MoveStatus} - Script Status: {item.ScriptStatus} - Delete Status: {item.DeleteStatus} - Mark Status: {item.MarkStatus}";
                 historyItem.Status = DownloadItemStatus.Completed;
@@ -197,13 +199,13 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy.RemoveItem(downloadId, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
             var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.MovieCategory);
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -272,7 +274,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 {
                     return new ValidationFailure("Username", "Authentication failed");
                 }
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to connect to NZBGet");
                 return new ValidationFailure("Host", "Unable to connect to NZBGet");
             }
 

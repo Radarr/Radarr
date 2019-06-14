@@ -83,9 +83,6 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         public override string Name => "Torrent Blackhole";
 
-        public override ProviderMessage Message => new ProviderMessage("Magnet links are not supported.", ProviderMessageType.Warning);
-
-
         public override IEnumerable<DownloadClientItem> GetItems()
         {
             foreach (var item in _scanWatchFolder.GetItems(Settings.WatchFolder, ScanGracePeriod))
@@ -120,9 +117,9 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             DeleteItemData(downloadId);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = true,
                 OutputRootFolders = new List<OsPath> { new OsPath(Settings.WatchFolder) }

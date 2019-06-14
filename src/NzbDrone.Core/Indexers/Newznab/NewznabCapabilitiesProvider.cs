@@ -32,7 +32,6 @@ namespace NzbDrone.Core.Indexers.Newznab
         public NewznabCapabilities GetCapabilities(NewznabSettings indexerSettings)
         {
             var key = indexerSettings.ToJson();
-            //_capabilitiesCache.Clear(); I am an idiot, i think
             var capabilities = _capabilitiesCache.Get(key, () => FetchCapabilities(indexerSettings), TimeSpan.FromDays(7));
 
             return capabilities;
@@ -42,7 +41,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var capabilities = new NewznabCapabilities();
 
-            var url = string.Format("{0}/api?t=caps", indexerSettings.BaseUrl.TrimEnd('/'));
+            var url = string.Format("{0}{1}?t=caps", indexerSettings.BaseUrl.TrimEnd('/'), indexerSettings.ApiPath.TrimEnd('/'));
 
             if (indexerSettings.ApiKey.IsNotNullOrWhiteSpace())
             {
@@ -69,12 +68,14 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (XmlException ex)
             {
-                _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}.", indexerSettings.BaseUrl);
+                _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}", indexerSettings.BaseUrl);
+
+                ex.WithData(response);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Radarr restarts.", indexerSettings.BaseUrl);
+                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Radarr restarts", indexerSettings.BaseUrl);
             }
 
             return capabilities;

@@ -22,9 +22,14 @@ namespace NzbDrone.Common.Extensions
             return "[NULL]";
         }
 
+        public static string FirstCharToLower(this string input)
+        {
+            return input.First().ToString().ToLower() + input.Substring(1);
+        }
+
         public static string FirstCharToUpper(this string input)
         {
-            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+            return input.First().ToString().ToUpper() + input.Substring(1);
         }
 
         public static string Inject(this string format, params object[] formattingArgs)
@@ -65,6 +70,7 @@ namespace NzbDrone.Common.Extensions
 
             return text;
         }
+
         public static string Join(this IEnumerable<string> values, string separator)
         {
             return string.Join(separator, values);
@@ -143,6 +149,11 @@ namespace NzbDrone.Common.Extensions
         public static string SplitCamelCase(this string input)
         {
             return CamelCaseRegex.Replace(input, match => " " + match.Value);
+        }
+
+        public static bool ContainsIgnoreCase(this IEnumerable<string> source, string value)
+        {
+            return source.Contains(value, StringComparer.InvariantCultureIgnoreCase);
         }
     }
 }

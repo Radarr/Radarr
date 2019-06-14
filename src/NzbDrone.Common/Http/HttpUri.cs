@@ -168,7 +168,7 @@ namespace NzbDrone.Common.Http
             {
                 return basePath.Substring(0, baseSlashIndex) + "/" + relativePath;
             }
-            
+
             return relativePath;
         }
 
@@ -263,7 +263,7 @@ namespace NzbDrone.Common.Http
             {
                 return new HttpUri(baseUrl.Scheme, baseUrl.Host, baseUrl.Port, CombineRelativePath(baseUrl.Path, relativeUrl.Path), relativeUrl.Query, relativeUrl.Fragment);
             }
-            
+
             return new HttpUri(baseUrl.Scheme, baseUrl.Host, baseUrl.Port, baseUrl.Path, relativeUrl.Query, relativeUrl.Fragment);
         }
     }

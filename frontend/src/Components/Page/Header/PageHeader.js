@@ -45,17 +45,19 @@ class PageHeader extends Component {
 
   render() {
     const {
-      onSidebarToggle,
-      isSmallScreen
+      onSidebarToggle
     } = this.props;
 
     return (
       <div className={styles.header}>
         <div className={styles.logoContainer}>
-          <Link to={`${window.Radarr.urlBase}/`}>
+          <Link
+            className={styles.logoLink}
+            to={`${window.Radarr.urlBase}/`}
+          >
             <img
-              className={isSmallScreen ? styles.logo : styles.logoFull}
-              src={isSmallScreen ? `${window.Radarr.urlBase}/Content/Images/logo.png` : `${window.Radarr.urlBase}/Content/Images/logo-full.png`}
+              className={styles.logo}
+              src={`${window.Radarr.urlBase}/Content/Images/logo.svg`}
             />
           </Link>
         </div>
@@ -93,7 +95,6 @@ class PageHeader extends Component {
 
 PageHeader.propTypes = {
   onSidebarToggle: PropTypes.func.isRequired,
-  isSmallScreen: PropTypes.bool.isRequired,
   bindShortcut: PropTypes.func.isRequired
 };
 

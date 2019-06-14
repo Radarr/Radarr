@@ -19,7 +19,8 @@ namespace NzbDrone.Api.RootFolders
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
-                                FolderWritableValidator folderWritableValidator)
+                                FolderWritableValidator folderWritableValidator
+            )
             : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
@@ -54,7 +55,7 @@ namespace NzbDrone.Api.RootFolders
 
         private List<RootFolderResource> GetRootFolders()
         {
-            return _rootFolderService.AllWithSpace().ToResource();
+            return _rootFolderService.AllWithUnmappedFolders().ToResource();
         }
 
         private void DeleteFolder(int id)

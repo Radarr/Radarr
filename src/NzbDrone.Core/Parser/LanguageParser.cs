@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {
@@ -41,11 +42,11 @@ namespace NzbDrone.Core.Parser
             if (lowerTitle.Contains("japanese"))
                 languages.Add( Language.Japanese);
 
-            if (lowerTitle.Contains("cantonese"))
-                languages.Add( Language.Cantonese);
+            if (lowerTitle.Contains("icelandic"))
+                languages.Add( Language.Icelandic);
 
-            if (lowerTitle.Contains("mandarin"))
-                languages.Add( Language.Mandarin);
+            if (lowerTitle.Contains("mandarin") || lowerTitle.Contains("cantonese") || lowerTitle.Contains("chinese"))
+                languages.Add( Language.Chinese);
 
             if (lowerTitle.Contains("korean"))
                 languages.Add( Language.Korean);

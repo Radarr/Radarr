@@ -42,13 +42,13 @@ class Queue extends Component {
 
   shouldComponentUpdate(nextProps) {
     // Don't update when fetching has completed if items have changed,
-    // before episodes start fetching or when episodes start fetching.
+    // before movies start fetching or when movies start fetching.
 
     if (
       this.props.isFetching &&
       nextProps.isPopulated &&
       hasDifferentItems(this.props.items, nextProps.items) &&
-      nextProps.items.some((e) => e.episodeId)
+      nextProps.items.some((e) => e.movieId)
     ) {
       return false;
     }
@@ -139,7 +139,6 @@ class Queue extends Component {
     } = this.state;
 
     const isRefreshing = isFetching || isCheckForFinishedDownloadExecuting;
-    const isAllPopulated = isPopulated && !items.length;
     const hasError = error;
     const selectedCount = this.getSelectedIds().length;
     const disableSelectedActions = selectedCount === 0;
@@ -192,7 +191,7 @@ class Queue extends Component {
 
         <PageContentBodyConnector>
           {
-            isRefreshing && !isAllPopulated &&
+            isRefreshing && !isPopulated &&
               <LoadingIndicator />
           }
 
@@ -211,7 +210,7 @@ class Queue extends Component {
           }
 
           {
-            isAllPopulated && !hasError && !!items.length &&
+            isPopulated && !hasError && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -228,7 +227,7 @@ class Queue extends Component {
                         return (
                           <QueueRowConnector
                             key={item.id}
-                            episodeId={item.episodeId}
+                            movieId={item.movieId}
                             isSelected={selectedState[item.id]}
                             columns={columns}
                             {...item}

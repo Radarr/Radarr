@@ -26,6 +26,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             Release = $"{Version}-{Branch}";
         }
+
         public static Version Version { get; }
         public static String Branch { get; }
         public static string Release { get; }

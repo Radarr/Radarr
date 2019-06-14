@@ -31,12 +31,12 @@ namespace Radarr.Api.V2.Indexers
             _indexerFactory = indexerFactory;
             _logger = logger;
 
-            Post["/push"] = x => ProcessRelease(ReadResourceFromRequest());
-
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.DownloadUrl).NotEmpty();
             PostValidator.RuleFor(s => s.Protocol).NotEmpty();
             PostValidator.RuleFor(s => s.PublishDate).NotEmpty();
+
+            Post["/push"] = x => ProcessRelease(ReadResourceFromRequest());
         }
 
         private Response ProcessRelease(ReleaseResource release)

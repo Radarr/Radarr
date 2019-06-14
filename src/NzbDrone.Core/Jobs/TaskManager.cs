@@ -135,6 +135,7 @@ namespace NzbDrone.Core.Jobs
         private int GetBackupInterval()
         {
             var interval = _configService.BackupInterval;
+
             return interval * 60 * 24;
         }
 

@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
             if (id.Length < 10 && int.TryParse(id, out nzbId))
             {
-                // Download wasn't grabbed by Sonarr, so the id is the NzbId reported by nzbget.
+                // Download wasn't grabbed by Radarr, so the id is the NzbId reported by nzbget.
                 queueItem = queue.SingleOrDefault(h => h.NzbId == nzbId);
                 historyItem = history.SingleOrDefault(h => h.Id == nzbId);
             }
@@ -244,14 +244,14 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    throw new DownloadClientException("Authentication failed for NZBGet, please check your settings", ex);
+                    throw new DownloadClientAuthenticationException("Authentication failed for NzbGet, please check your settings", ex);
                 }
 
                 throw new DownloadClientException("Unable to connect to NZBGet. " + ex.Message, ex);
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Unable to connect to NZBGet. " + ex.Message, ex);
+                throw new DownloadClientUnavailableException("Unable to connect to NzbGet. " + ex.Message, ex);
             }
 
             var result = Json.Deserialize<JsonRpcResponse<T>>(response.Content);

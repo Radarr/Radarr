@@ -109,12 +109,12 @@ namespace NzbDrone.Common.Disk
 
             switch (stringComparison)
             {
-                    case StringComparison.CurrentCulture:
-                    case StringComparison.InvariantCulture:
-                    case StringComparison.Ordinal:
-                {
-                     return File.Exists(path) && path == path.GetActualCasing();
-                }
+                case StringComparison.CurrentCulture:
+                case StringComparison.InvariantCulture:
+                case StringComparison.Ordinal:
+                    {
+                        return File.Exists(path) && path == path.GetActualCasing();
+                    }
                 default:
                 {
                      return File.Exists(path);

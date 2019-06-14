@@ -15,6 +15,7 @@ using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Movies;
 using System.Threading;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.NetImport.ImportExclusions;

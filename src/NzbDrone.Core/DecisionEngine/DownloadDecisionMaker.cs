@@ -8,6 +8,7 @@ using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -198,7 +199,7 @@ namespace NzbDrone.Core.DecisionEngine
                     return new Rejection(result.Reason, spec.Type);
                 }
             }
-            catch (NotImplementedException e)
+            catch (NotImplementedException)
             {
                 _logger.Trace("Spec " + spec.GetType().Name + " does not care about movies.");
             }

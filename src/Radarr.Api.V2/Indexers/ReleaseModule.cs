@@ -65,7 +65,7 @@ namespace Radarr.Api.V2.Indexers
 
             try
             {
-                _downloadService.DownloadReport(remoteMovie, false);
+                _downloadService.DownloadReport(remoteMovie);
             }
             catch (ReleaseDownloadException ex)
             {
@@ -94,6 +94,10 @@ namespace Radarr.Api.V2.Indexers
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
                 return MapDecisions(prioritizedDecisions);
+            }
+            catch (SearchFailedException ex)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

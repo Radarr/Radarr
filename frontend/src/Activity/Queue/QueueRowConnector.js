@@ -12,14 +12,14 @@ function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
     createUISettingsSelector(),
-    (series, uiSettings) => {
+    (movie, uiSettings) => {
       const result = _.pick(uiSettings, [
         'showRelativeDates',
         'shortDateFormat',
         'timeFormat'
       ]);
 
-      result.series = series;
+      result.movie = movie;
 
       return result;
     }
@@ -60,7 +60,7 @@ class QueueRowConnector extends Component {
 
 QueueRowConnector.propTypes = {
   id: PropTypes.number.isRequired,
-  episode: PropTypes.object,
+  movie: PropTypes.object,
   grabQueueItem: PropTypes.func.isRequired,
   removeQueueItem: PropTypes.func.isRequired
 };

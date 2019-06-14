@@ -78,6 +78,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 item.OutputPath = GetOutputPath(outputPath, torrent);
                 item.TotalSize = torrent.TotalSize;
                 item.RemainingSize = torrent.LeftUntilDone;
+                item.SeedRatio = torrent.DownloadedEver <= 0 ? 0 :
+                    (double) torrent.UploadedEver / torrent.DownloadedEver;
+
                 if (torrent.Eta >= 0)
                 {
                     item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
@@ -108,7 +111,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                item.CanMoveFiles = item.CanBeRemoved = torrent.Status == TransmissionTorrentStatus.Stopped;
+                item.CanMoveFiles = item.CanBeRemoved =
+                    torrent.Status == TransmissionTorrentStatus.Stopped &&
+                    item.SeedRatio >= torrent.SeedRatioLimit;
 
                 items.Add(item);
             }
@@ -121,7 +126,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy.RemoveTorrent(downloadId.ToLower(), deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var destDir = config.GetValueOrDefault("download-dir") as string;
@@ -131,7 +136,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 destDir = string.Format("{0}/.{1}", destDir, Settings.MovieCategory);
             }
 
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
                 OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(destDir)) }
@@ -141,6 +146,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -156,6 +162,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -171,7 +178,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestGetTorrents());
         }
 
@@ -186,17 +193,13 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             {
                 return Settings.MovieDirectory;
             }
-            else if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
-            {
-                var config = _proxy.GetConfig(Settings);
-                var destDir = (string)config.GetValueOrDefault("download-dir");
 
-                return string.Format("{0}/{1}", destDir.TrimEnd('/'), Settings.MovieCategory);
-            }
-            else
-            {
-                return null;
-            }
+            if (!Settings.MovieCategory.IsNotNullOrWhiteSpace()) return null;
+
+            var config = _proxy.GetConfig(Settings);
+            var destDir = (string)config.GetValueOrDefault("download-dir");
+
+            return $"{destDir.TrimEnd('/')}/{Settings.MovieCategory}";
         }
 
         protected ValidationFailure TestConnection()
@@ -213,21 +216,18 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
                 };
             }
-            catch (WebException ex)
+            catch (DownloadClientUnavailableException ex)
             {
                 _logger.Error(ex, ex.Message);
-                if (ex.Status == WebExceptionStatus.ConnectFailure)
+
+                return new NzbDroneValidationFailure("Host", "Unable to connect")
                 {
-                    return new NzbDroneValidationFailure("Host", "Unable to connect")
-                    {
-                        DetailedDescription = "Please verify the hostname and port."
-                    };
-                }
-                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                    DetailedDescription = "Please verify the hostname and port."
+                };
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to test");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
         }
@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

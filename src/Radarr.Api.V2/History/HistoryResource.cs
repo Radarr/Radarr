@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V2.Movies;
 using Radarr.Http.REST;
@@ -11,6 +12,7 @@ namespace Radarr.Api.V2.History
     {
         public int MovieId { get; set; }
         public string SourceTitle { get; set; }
+        public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public DateTime Date { get; set; }
@@ -35,6 +37,7 @@ namespace Radarr.Api.V2.History
                 
                 MovieId = model.MovieId,
                 SourceTitle = model.SourceTitle,
+                Languages = model.Languages,
                 Quality = model.Quality,
                 //QualityCutoffNotMet
                 Date = model.Date,

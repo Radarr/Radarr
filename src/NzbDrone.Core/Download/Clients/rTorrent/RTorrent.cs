@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
 
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings.DontStartAutomatically, Settings);
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
 
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings.DontStartAutomatically, Settings);
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -83,57 +83,61 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            try
+            var torrents = _proxy.GetTorrents(Settings);
+
+            _logger.Debug("Retrieved metadata of {0} torrents in client", torrents.Count);
+
+            var items = new List<DownloadClientItem>();
+            foreach (RTorrentTorrent torrent in torrents)
             {
-                var torrents = _proxy.GetTorrents(Settings);
+                // Don't concern ourselves with categories other than specified
+                if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && torrent.Category != Settings.MovieCategory) continue;
 
-                _logger.Debug("Retrieved metadata of {0} torrents in client", torrents.Count);
-
-                var items = new List<DownloadClientItem>();
-                foreach (RTorrentTorrent torrent in torrents)
+                if (torrent.Path.StartsWith("."))
                 {
-                    // Don't concern ourselves with categories other than specified
-                    if (torrent.Category != Settings.MovieCategory) continue;
-
-                    if (torrent.Path.StartsWith("."))
-                    {
-                        throw new DownloadClientException("Download paths paths must be absolute. Please specify variable \"directory\" in rTorrent.");
-                    }
-
-                    var item = new DownloadClientItem();
-                    item.DownloadClient = Definition.Name;
-                    item.Title = torrent.Name;
-                    item.DownloadId = torrent.Hash;
-                    item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.Path));
-                    item.TotalSize = torrent.TotalSize;
-                    item.RemainingSize = torrent.RemainingSize;
-                    item.Category = torrent.Category;
-
-                    if (torrent.DownRate > 0) {
-                        var secondsLeft = torrent.RemainingSize / torrent.DownRate;
-                        item.RemainingTime = TimeSpan.FromSeconds(secondsLeft);
-                    } else {
-                        item.RemainingTime = TimeSpan.Zero;
-                    }
-
-                    if (torrent.IsFinished) item.Status = DownloadItemStatus.Completed;
-                    else if (torrent.IsActive) item.Status = DownloadItemStatus.Downloading;
-                    else if (!torrent.IsActive) item.Status = DownloadItemStatus.Paused;
-
-                    // No stop ratio data is present, so do not delete
-                    item.CanMoveFiles = item.CanBeRemoved = false;
-
-                    items.Add(item);
+                    throw new DownloadClientException("Download paths must be absolute. Please specify variable \"directory\" in rTorrent.");
                 }
 
-                return items;
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
+                var item = new DownloadClientItem();
+                item.DownloadClient = Definition.Name;
+                item.Title = torrent.Name;
+                item.DownloadId = torrent.Hash;
+                item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.Path));
+                item.TotalSize = torrent.TotalSize;
+                item.RemainingSize = torrent.RemainingSize;
+                item.Category = torrent.Category;
+                item.SeedRatio = torrent.Ratio;
+
+                if (torrent.DownRate > 0)
+                {
+                    var secondsLeft = torrent.RemainingSize / torrent.DownRate;
+                    item.RemainingTime = TimeSpan.FromSeconds(secondsLeft);
+                }
+                else
+                {
+                    item.RemainingTime = TimeSpan.Zero;
+                }
+
+                if (torrent.IsFinished)
+                {
+                    item.Status = DownloadItemStatus.Completed;
+                }
+                else if (torrent.IsActive)
+                {
+                    item.Status = DownloadItemStatus.Downloading;
+                }
+                else if (!torrent.IsActive)
+                {
+                    item.Status = DownloadItemStatus.Paused;
+                }
+
+                // No stop ratio data is present, so do not delete
+                item.CanMoveFiles = item.CanBeRemoved = false;
+
+                items.Add(item);
             }
 
+            return items;
         }
 
         public override void RemoveItem(string downloadId, bool deleteData)
@@ -146,11 +150,11 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _proxy.RemoveTorrent(downloadId, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             // XXX: This function's correctness has not been considered
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -161,7 +165,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestGetTorrents());
             failures.AddIfNotNull(TestDirectory());
         }
@@ -179,7 +183,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to test rTorrent");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -194,7 +198,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

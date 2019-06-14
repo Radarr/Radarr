@@ -6,21 +6,9 @@ namespace NzbDrone.Core.Datastore.Extensions
 {
     public static class PagingSpecExtensions
     {
-        public static Expression<Func<TModel, object>> OrderByClause<TModel>(this PagingSpec<TModel> pagingSpec, Expression<Func<TModel, object>> defaultExpression = null)
+        public static Expression<Func<TModel, object>> OrderByClause<TModel>(this PagingSpec<TModel> pagingSpec)
         {
-            try
-            {
-                return CreateExpression<TModel>(pagingSpec.SortKey);
-            }
-            catch
-            {
-                if (defaultExpression == null)
-                {
-                    return x => x;
-                }
-                return defaultExpression;
-            }
-            
+            return CreateExpression<TModel>(pagingSpec.SortKey);
         }
 
         public static int PagingOffset<TModel>(this PagingSpec<TModel> pagingSpec)

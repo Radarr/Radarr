@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public NewznabRssParser(NewznabSettings settings)
         {
-            PreferredEnclosureMimeType = "application/x-nzb";
+            PreferredEnclosureMimeTypes = UsenetEnclosureMimeTypes;
+            UseEnclosureUrl = true;
             _settings = settings;
         }
 
@@ -52,6 +54,24 @@ namespace NzbDrone.Core.Indexers.Newznab
             throw new NewznabException(indexerResponse, errorMessage);
         }
 
+        protected override bool PostProcess(IndexerResponse indexerResponse, List<XElement> items, List<ReleaseInfo> releases)
+        {
+            var enclosureTypes = items.SelectMany(GetEnclosures).Select(v => v.Type).Distinct().ToArray();
+            if (enclosureTypes.Any() && enclosureTypes.Intersect(PreferredEnclosureMimeTypes).Empty())
+            {
+                if (enclosureTypes.Intersect(TorrentEnclosureMimeTypes).Any())
+                {
+                    _logger.Warn("Feed does not contain {0}, found {1}, did you intend to add a Torznab indexer?", NzbEnclosureMimeType, enclosureTypes[0]);
+                }
+                else
+                {
+                    _logger.Warn("Feed does not contain {0}, found {1}.", NzbEnclosureMimeType, enclosureTypes[0]);
+                }
+            }
+
+            return true;
+        }
+
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
@@ -75,17 +95,6 @@ namespace NzbDrone.Core.Indexers.Newznab
             //}
 
             return releaseInfo;
-        }
-
-        protected override ReleaseInfo PostProcess(XElement item, ReleaseInfo releaseInfo)
-        {
-            var enclosureType = GetEnclosure(item).Attribute("type").Value;
-            if (enclosureType.Contains("application/x-bittorrent"))
-            {
-                throw new UnsupportedFeedException("Feed contains {0}, did you intend to add a Torznab indexer?", enclosureType);
-            }
-
-            return base.PostProcess(item, releaseInfo);
         }
 
         protected override string GetInfoUrl(XElement item)
@@ -179,11 +188,14 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         protected string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")
         {
-            var attr = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.CurrentCultureIgnoreCase));
-
-            if (attr != null)
+            var attrElement = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.OrdinalIgnoreCase));
+            if (attrElement != null)
             {
-                return attr.Attribute("value").Value;
+                var attrValue = attrElement.Attribute("value");
+                if (attrValue != null)
+                {
+                    return attrValue.Value;
+                }
             }
 
             return defaultValue;

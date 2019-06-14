@@ -185,13 +185,6 @@ namespace NzbDrone.Core.Backup
             }
         }
 
-        private void CreateVersionInfo()
-        {
-            var builder = new StringBuilder();
-
-            builder.AppendLine(BuildInfo.Version.ToString());
-        }
-
         private void BackupDatabase()
         {
             _logger.ProgressDebug("Backing up database");
@@ -207,6 +200,13 @@ namespace NzbDrone.Core.Backup
             var tempConfigFile = Path.Combine(_backupTempFolder, Path.GetFileName(configFile));
 
             _diskTransferService.TransferFile(configFile, tempConfigFile, TransferMode.Copy);
+        }
+
+        private void CreateVersionInfo()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine(BuildInfo.Version.ToString());
         }
 
         private void CleanupOldBackups(BackupType backupType)

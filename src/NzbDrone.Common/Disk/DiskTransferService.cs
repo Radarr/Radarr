@@ -5,6 +5,7 @@ using System.Threading;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Disk
@@ -55,6 +56,23 @@ namespace NzbDrone.Common.Disk
             Ensure.That(sourcePath, () => sourcePath).IsValidPath();
             Ensure.That(targetPath, () => targetPath).IsValidPath();
 
+            if (mode == TransferMode.Move && !_diskProvider.FolderExists(targetPath))
+            {
+                if (verificationMode == DiskTransferVerificationMode.TryTransactional || verificationMode == DiskTransferVerificationMode.VerifyOnly)
+                {
+                    var sourceMount = _diskProvider.GetMount(sourcePath);
+                    var targetMount = _diskProvider.GetMount(targetPath);
+
+                    // If we're on the same mount, do a simple folder move.
+                    if (sourceMount != null && targetMount != null && sourceMount.RootDirectory == targetMount.RootDirectory)
+                    {
+                        _logger.Debug("Move Directory [{0}] > [{1}]", sourcePath, targetPath);
+                        _diskProvider.MoveFolder(sourcePath, targetPath);
+                        return mode;
+                    }
+                }
+            }
+
             if (!_diskProvider.FolderExists(targetPath))
             {
                 _diskProvider.CreateFolder(targetPath);
@@ -64,11 +82,15 @@ namespace NzbDrone.Common.Disk
 
             foreach (var subDir in _diskProvider.GetDirectoryInfos(sourcePath))
             {
+                if (ShouldIgnore(subDir)) continue;
+
                 result &= TransferFolder(subDir.FullName, Path.Combine(targetPath, subDir.Name), mode, verificationMode);
             }
 
             foreach (var sourceFile in _diskProvider.GetFileInfos(sourcePath))
             {
+                if (ShouldIgnore(sourceFile)) continue;
+
                 var destFile = Path.Combine(targetPath, sourceFile.Name);
 
                 result &= TransferFile(sourceFile.FullName, destFile, mode, true, verificationMode);
@@ -101,11 +123,15 @@ namespace NzbDrone.Common.Disk
 
             foreach (var subDir in targetFolders.Where(v => !sourceFolders.Any(d => d.Name == v.Name)))
             {
+                if (ShouldIgnore(subDir)) continue;
+
                 _diskProvider.DeleteFolder(subDir.FullName, true);
             }
 
             foreach (var subDir in sourceFolders)
             {
+                if (ShouldIgnore(subDir)) continue;
+
                 filesCopied += MirrorFolder(subDir.FullName, Path.Combine(targetPath, subDir.Name));
             }
 
@@ -114,11 +140,15 @@ namespace NzbDrone.Common.Disk
 
             foreach (var targetFile in targetFiles.Where(v => !sourceFiles.Any(d => d.Name == v.Name)))
             {
+                if (ShouldIgnore(targetFile)) continue;
+
                 _diskProvider.DeleteFile(targetFile.FullName);
             }
 
             foreach (var sourceFile in sourceFiles)
             {
+                if (ShouldIgnore(sourceFile)) continue;
+
                 var targetFile = Path.Combine(targetPath, sourceFile.Name);
 
                 if (CompareFiles(sourceFile.FullName, targetFile))
@@ -211,7 +241,7 @@ namespace NzbDrone.Common.Disk
                     _diskProvider.MoveFile(sourcePath, tempPath, true);
                     try
                     {
-                        ClearTargetPath(targetPath, overwrite);
+                        ClearTargetPath(sourcePath, targetPath, overwrite);
 
                         _diskProvider.MoveFile(tempPath, targetPath);
 
@@ -241,7 +271,7 @@ namespace NzbDrone.Common.Disk
                 throw new IOException(string.Format("Destination cannot be a child of the source [{0}] => [{1}]", sourcePath, targetPath));
             }
 
-            ClearTargetPath(targetPath, overwrite);
+            ClearTargetPath(sourcePath, targetPath, overwrite);
 
             if (mode.HasFlag(TransferMode.HardLink))
             {
@@ -318,7 +348,7 @@ namespace NzbDrone.Common.Disk
             return TransferMode.None;
         }
 
-        private void ClearTargetPath(string targetPath, bool overwrite)
+        private void ClearTargetPath(string sourcePath, string targetPath, bool overwrite)
         {
             if (_diskProvider.FileExists(targetPath))
             {
@@ -328,7 +358,7 @@ namespace NzbDrone.Common.Disk
                 }
                 else
                 {
-                    throw new IOException(string.Format("Destination already exists [{0}]", targetPath));
+                    throw new DestinationAlreadyExistsException($"Destination {targetPath} already exists.");
                 }
             }
         }
@@ -352,7 +382,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, string.Format("Failed to properly rollback the file move [{0}] to [{1}], incomplete file may be left in target path.", sourcePath, targetPath));
+                _logger.Error(ex, "Failed to properly rollback the file move [{0}] to [{1}], incomplete file may be left in target path.", sourcePath, targetPath);
             }
         }
 
@@ -368,7 +398,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, string.Format("Failed to properly rollback the file move [{0}] to [{1}], file may be left in target path.", sourcePath, targetPath));
+                _logger.Error(ex, "Failed to properly rollback the file move [{0}] to [{1}], file may be left in target path.", sourcePath, targetPath);
             }
         }
 
@@ -387,7 +417,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, string.Format("Failed to properly rollback the file copy [{0}] to [{1}], file may be left in target path.", sourcePath, targetPath));
+                _logger.Error(ex, "Failed to properly rollback the file copy [{0}] to [{1}], file may be left in target path.", sourcePath, targetPath);
             }
         }
 
@@ -429,7 +459,7 @@ namespace NzbDrone.Common.Disk
 
                     if (i == RetryCount)
                     {
-                        _logger.Error("Failed to completely transfer [{0}] to [{1}], aborting.", sourcePath, targetPath, i + 1, RetryCount);
+                        _logger.Error("Failed to completely transfer [{0}] to [{1}], aborting.", sourcePath, targetPath);
                     }
                     else
                     {
@@ -563,6 +593,28 @@ namespace NzbDrone.Common.Disk
                 RollbackPartialMove(sourcePath, targetPath);
                 throw;
             }
+        }
+
+        private bool ShouldIgnore(DirectoryInfo folder)
+        {
+            if (folder.Name.StartsWith(".nfs"))
+            {
+                _logger.Trace("Ignoring folder {0}", folder.FullName);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ShouldIgnore(FileInfo file)
+        {
+            if (file.Name.StartsWith(".nfs") || file.Name == "debug.log" || file.Name.EndsWith(".socket"))
+            {
+                _logger.Trace("Ignoring file {0}", file.FullName);
+                return true;
+            }
+
+            return false;
         }
     }
 }

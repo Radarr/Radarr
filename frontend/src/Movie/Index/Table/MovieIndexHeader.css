@@ -24,6 +24,7 @@
 
 .added,
 .inCinemas,
+.physicalRelease,
 .genres {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
