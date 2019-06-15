@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
@@ -149,6 +151,12 @@ namespace NzbDrone.Core.Tags
 
         public void Delete(int tagId)
         {
+            var details = Details(tagId);
+            if (details.InUse)
+            {
+                throw new ModelConflictException(typeof(Tag), tagId, $"'{details.Label}' cannot be deleted since it's still in use");
+            }
+
             _repo.Delete(tagId);
             _eventAggregator.PublishEvent(new TagsUpdatedEvent());
         }
