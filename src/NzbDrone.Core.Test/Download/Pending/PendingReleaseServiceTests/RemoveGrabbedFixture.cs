@@ -13,6 +13,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using System.Linq;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -23,8 +24,9 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
-        private ParsedMovieInfo _parsedEpisodeInfo;
-        private RemoteMovie _remoteEpisode;
+        private ParsedMovieInfo _parsedMovieInfo;
+        private RemoteMovie _remoteMovie;
+        private List<PendingRelease> _heldReleases;
 
         [SetUp]
         public void Setup()
@@ -48,28 +50,34 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedEpisodeInfo = Builder<ParsedMovieInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _parsedMovieInfo = Builder<ParsedMovieInfo>.CreateNew().Build();
+            _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
-            _remoteEpisode = new RemoteMovie();
-            //_remoteEpisode.Episodes = new List<Episode>{ _episode };
-            _remoteEpisode.Movie = _movie;
-            _remoteEpisode.ParsedMovieInfo = _parsedEpisodeInfo;
-            _remoteEpisode.Release = _release;
+            _remoteMovie = new RemoteMovie();
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
+            _remoteMovie.Release = _release;
 
-            _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
+            _temporarilyRejected = new DownloadDecision(_remoteMovie, new Rejection("Temp Rejected", RejectionType.Temporary));
+
+            _heldReleases = new List<PendingRelease>();
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
-                  .Returns(new List<PendingRelease>());
+                  .Returns(_heldReleases);
+
+            Mocker.GetMock<IPendingReleaseRepository>()
+                  .Setup(s => s.AllByMovieId(It.IsAny<int>()))
+                  .Returns<int>(i => _heldReleases.Where(v => v.MovieId == i).ToList());
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
                   .Returns(_movie);
 
-            //Mocker.GetMock<IParsingService>()
-            //      .Setup(s => s.GetMovie(It.IsAny<ParsedMovieInfo>(), _series.Title))
-            //      .Returns(_episode);
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
+                  .Returns(new List<Movie> { _movie });
+
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisionsForMovies(It.IsAny<List<DownloadDecision>>()))
@@ -78,27 +86,25 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
         private void GivenHeldRelease(QualityModel quality)
         {
-            var parsedEpisodeInfo = _parsedEpisodeInfo.JsonClone();
-            parsedEpisodeInfo.Quality = quality;
+            var parsedMovieInfo = _parsedMovieInfo.JsonClone();
+            parsedMovieInfo.Quality = quality;
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
                                                    .With(h => h.MovieId = _movie.Id)
                                                    .With(h => h.Release = _release.JsonClone())
-                                                   .With(h => h.ParsedMovieInfo = parsedEpisodeInfo)
+                                                   .With(h => h.ParsedMovieInfo = parsedMovieInfo)
                                                    .Build();
 
-            Mocker.GetMock<IPendingReleaseRepository>()
-                  .Setup(s => s.All())
-                  .Returns(heldReleases);
+            _heldReleases.AddRange(heldReleases);
         }
 
         [Test]
         public void should_delete_if_the_grabbed_quality_is_the_same()
         {
-            GivenHeldRelease(_parsedEpisodeInfo.Quality);
+            GivenHeldRelease(_parsedMovieInfo.Quality);
 
-            Subject.Handle(new MovieGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new MovieGrabbedEvent(_remoteMovie));
 
             VerifyDelete();
         }
@@ -108,7 +114,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.SDTV));
 
-            Subject.Handle(new MovieGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new MovieGrabbedEvent(_remoteMovie));
 
             VerifyDelete();
         }
@@ -118,7 +124,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.Bluray720p));
 
-            Subject.Handle(new MovieGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new MovieGrabbedEvent(_remoteMovie));
 
             VerifyNoDelete();
         }

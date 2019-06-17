@@ -7,6 +7,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using System.Collections.Generic;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -19,6 +20,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var blacklist = Builder<Blacklist>.CreateNew()
                                               .With(h => h.MovieId = new int())
                                               .With(h => h.Quality = new QualityModel())
+                                              .With(h => h.Languages = new List<Language>())
                                               .BuildNew();
 
             Db.Insert(blacklist);
@@ -36,6 +38,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var blacklist = Builder<Blacklist>.CreateNew()
                                               .With(h => h.MovieId = new int())
                                               .With(h => h.Quality = new QualityModel())
+                                              .With(h => h.Languages = new List<Language>())
                                               .With(b => b.MovieId = movie.Id)
                                               .BuildNew();
 

@@ -13,6 +13,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using System.Linq;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -63,7 +64,11 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
-                  .Returns(new List<PendingRelease>());
+                  .Returns(_heldReleases);
+
+            Mocker.GetMock<IPendingReleaseRepository>()
+                  .Setup(s => s.AllByMovieId(It.IsAny<int>()))
+                  .Returns<int>(i => _heldReleases.Where(v => v.MovieId == i).ToList());
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))

@@ -181,6 +181,26 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         }
 
         [Test]
+        public void should_detect_rss_settings_for_LimeTorrents()
+        {
+            _indexerSettings.AllowZeroSize = true;
+
+            GivenRecentFeedResponse("TorrentRss/LimeTorrents.xml");
+
+            var settings = Subject.Detect(_indexerSettings);
+
+            settings.ShouldBeEquivalentTo(new TorrentRssIndexerParserSettings
+            {
+                UseEZTVFormat = false,
+                UseEnclosureUrl = true,
+                UseEnclosureLength = true,
+                ParseSizeInDescription = false,
+                ParseSeedersInDescription = false,
+                SizeElementName = null
+            });
+        }
+
+        [Test]
         public void should_detect_rss_settings_for_AlphaRatio()
         {
             _indexerSettings.AllowZeroSize = true;
@@ -234,14 +254,11 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         }
 
         [TestCase("BitMeTv/BitMeTv.xml")]
-        [TestCase("Fanzub/fanzub.xml")]
-        [TestCase("KickassTorrents/KickassTorrents.xml")]
         [TestCase("IPTorrents/IPTorrents.xml")]
-        [TestCase("Newznab/newznab_nzb_su.xml")]
         [TestCase("Nyaa/Nyaa.xml")]
-        [TestCase("Omgwtfnzbs/Omgwtfnzbs.xml")]
         [TestCase("Torznab/torznab_hdaccess_net.xml")]
         [TestCase("Torznab/torznab_tpb.xml")]
+        [TestCase("Torznab/torznab_animetosho.xml")]
         public void should_detect_recent_feed(string rssXmlFile)
         {
             GivenRecentFeedResponse(rssXmlFile);
@@ -268,9 +285,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
 
             var ex = Assert.Throws<UnsupportedFeedException>(() => Subject.Detect(_indexerSettings));
 
-            ex.Message.Should().Contain("Empty feed");
-
-            ExceptionVerification.ExpectedErrors(1);
+            ex.Message.Should().Contain("Rss feed must have a pubDate");
         }
 
         [TestCase("Torrentleech/Torrentleech.xml")]

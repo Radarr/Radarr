@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -21,7 +22,8 @@ namespace NzbDrone.Core.Test.Blacklisting
                      {
                          MovieId = 1234,
                          Quality = new QualityModel(),
-                         SourceTitle = "series.title.s01e01",
+                         Languages = new List<Language>(),
+                         SourceTitle = "movie.title.1998",
                          Date = DateTime.UtcNow
                      };
         }
@@ -34,7 +36,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         }
 
         [Test]
-        public void should_should_have_episode_ids()
+        public void should_should_have_movie_id()
         {
             Subject.Insert(_blacklist);
 

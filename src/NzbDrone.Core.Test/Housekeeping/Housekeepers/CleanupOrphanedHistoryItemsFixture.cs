@@ -1,10 +1,12 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -31,6 +33,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
+                                                  .With(h => h.Languages = new List<Language>())
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -45,6 +48,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
+                                                  .With(h => h.Languages = new List<Language>())
                                                   .With(h => h.MovieId = _movie.Id)
                                                   .BuildNew();
             Db.Insert(history);
