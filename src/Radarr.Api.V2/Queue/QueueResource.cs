@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V2.Movies;
 using Radarr.Http.REST;
@@ -11,8 +12,9 @@ namespace Radarr.Api.V2.Queue
 {
     public class QueueResource : RestResource
     {
-        public int MovieId { get; set; }
+        public int? MovieId { get; set; }
         public MovieResource Movie { get; set; }
+        public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -27,6 +29,7 @@ namespace Radarr.Api.V2.Queue
         public DownloadProtocol Protocol { get; set; }
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }
+        public string OutputPath { get; set; }
     }
 
     public static class QueueResourceMapper
@@ -38,8 +41,9 @@ namespace Radarr.Api.V2.Queue
             return new QueueResource
             {
                 Id = model.Id,
-                MovieId = model.Movie.Id,
-                Movie = includeMovie ? model.Movie.ToResource() : null,
+                MovieId = model.Movie?.Id,
+                Movie = includeMovie && model.Movie != null ? model.Movie.ToResource() : null,
+                Languages = model.Languages,
                 Quality = model.Quality,
                 Size = model.Size,
                 Title = model.Title,
@@ -53,7 +57,8 @@ namespace Radarr.Api.V2.Queue
                 DownloadId = model.DownloadId,
                 Protocol = model.Protocol,
                 DownloadClient = model.DownloadClient,
-                Indexer = model.Indexer
+                Indexer = model.Indexer,
+                OutputPath = model.OutputPath
             };
         }
 

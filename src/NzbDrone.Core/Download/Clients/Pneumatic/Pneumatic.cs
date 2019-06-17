@@ -105,9 +105,9 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
             throw new NotSupportedException();
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = true
             };

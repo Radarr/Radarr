@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if(clrValue == DBNull.Value) return null;
 
-            if(clrValue as Quality == null)
+            if (clrValue as Quality == null)
             {
                 throw new InvalidOperationException("Attempted to save a quality that isn't really a quality");
             }

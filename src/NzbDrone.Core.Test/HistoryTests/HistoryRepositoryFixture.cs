@@ -4,6 +4,8 @@ using NUnit.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {
@@ -20,6 +22,7 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             var history = Builder<History.History>.CreateNew()
                 .With(c => c.Quality = new QualityModel())
+                .With(c => c.Languages = new List<Language>())
                 .BuildNew();
 
             history.Data.Add("key1", "value1");
@@ -36,12 +39,14 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             var historyBluray = Builder<History.History>.CreateNew()
                 .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
                 .With(c => c.MovieId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
                 .BuildNew();
 
             var historyDvd = Builder<History.History>.CreateNew()
                 .With(c => c.Quality = new QualityModel(Quality.DVD))
+                .With(c => c.Languages = new List<Language> { Language.English })
                 .With(c => c.MovieId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
              .BuildNew();

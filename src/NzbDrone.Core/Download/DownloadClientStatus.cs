@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Common.Disk;
+using NzbDrone.Core.ThingiProvider.Status;
 
 namespace NzbDrone.Core.Download
 {
-    public class DownloadClientStatus
+    public class DownloadClientStatus : ProviderStatusBase
     {
-        public bool IsLocalhost { get; set; }
-        public List<OsPath> OutputRootFolders { get; set; }
+
     }
 }

@@ -64,7 +64,7 @@ namespace Radarr.Host
                         }
                         else
                         {
-                            _serviceProvider.UnInstall(ServiceProvider.SERVICE_NAME);
+                            _serviceProvider.Uninstall(ServiceProvider.SERVICE_NAME);
                         }
 
                         break;

@@ -6,6 +6,7 @@ using NzbDrone.Core.Validation;
 using System.Text.RegularExpressions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using System.Linq;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
@@ -19,6 +20,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             RuleFor(c => c.Passkey).Empty();
             RuleFor(c => c.APIUser).NotEmpty();
             RuleFor(c => c.APIKey).NotEmpty();
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
@@ -30,6 +33,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             BaseUrl = "https://passthepopcorn.me";
             MinimumSeeders = 0;
+            MultiLanguages = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
@@ -50,13 +54,16 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(5, Label = "DEPRECATED: Passkey",  HelpText = "Please use APIKey & APIUser instead. PTP Passkey")]
         public string Passkey { get; set; }
               
-        [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        // [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(7, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        [FieldDefinition(8)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
+        [FieldDefinition(9, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()

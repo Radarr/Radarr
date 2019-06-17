@@ -77,7 +77,21 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             requestBuilder.Headers.Add("Accept-Encoding", "gzip,deflate");
 
             var httpRequest = requestBuilder.Build();
-            var response = _httpClient.Execute(httpRequest);
+            HttpResponse response;
+
+            try
+            {
+                response = _httpClient.Execute(httpRequest);
+            }
+            catch (HttpException ex)
+            {
+                throw new DownloadClientException("Unable to connect to Hadouken, please check your settings", ex);
+            }
+            catch (WebException ex)
+            {
+                throw new DownloadClientUnavailableException("Unable to connect to Hadouken, please check your settings", ex);
+            }
+
             var result = Json.Deserialize<JsonRpcResponse<T>>(response.Content);
 
             if (result.Error != null)
@@ -124,6 +138,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     TotalSize = Convert.ToInt64(item[3]),
                     Progress = Convert.ToDouble(item[4]),
                     DownloadedBytes = Convert.ToInt64(item[5]),
+                    UploadedBytes = Convert.ToInt64(item[6]),
                     DownloadRate = Convert.ToInt64(item[9]),
                     Label = Convert.ToString(item[11]),
                     Error = Convert.ToString(item[21]),

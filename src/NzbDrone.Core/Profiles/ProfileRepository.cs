@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Profiles
@@ -17,10 +17,7 @@ namespace NzbDrone.Core.Profiles
 
         public bool Exists(int id)
         {
-            using (var mapper = DataMapper())
-            {
-                return mapper.Query<Profile>().Where(p => p.Id == id).GetRowCount() == 1;
-            }
+            return DataMapper.Query<Profile>().Where(p => p.Id == id).GetRowCount() == 1;
         }
     }
 }

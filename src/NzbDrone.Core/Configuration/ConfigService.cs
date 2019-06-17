@@ -167,7 +167,6 @@ namespace NzbDrone.Core.Configuration
         public int MaximumSize
         {
             get { return GetValueInt("MaximumSize", 0); }
-
             set { SetValue("MaximumSize", value); }
         }
 

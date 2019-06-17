@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Indexers
         bool SupportsRss { get; }
         bool SupportsSearch { get; }
         DownloadProtocol Protocol { get; }
-        
+
         IList<ReleaseInfo> FetchRecent();
         IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria);
     }

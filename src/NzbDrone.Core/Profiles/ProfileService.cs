@@ -8,6 +8,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Profiles
 {
@@ -227,6 +228,7 @@ namespace NzbDrone.Core.Profiles
                 Name = name,
                 Cutoff = profileCutoff,
                 Items = items,
+                Language = Language.English,
                 FormatCutoff = CustomFormat.None,
                 FormatItems = new List<ProfileFormatItem>
                 {

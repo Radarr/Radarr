@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Parser;
@@ -14,6 +15,8 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
             RuleFor(c => c.Passkey).NotEmpty();
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
@@ -25,12 +28,13 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         {
             BaseUrl = "https://awesome-hd.me";
             MinimumSeeders = 0;
+            MultiLanguages = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since you Passkey will be sent to that host.")]
         public string BaseUrl { get; set; }
         
-        [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(2, Label = "Passkey")]
@@ -41,6 +45,9 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         [FieldDefinition(4, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
+
+        [FieldDefinition(5)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {

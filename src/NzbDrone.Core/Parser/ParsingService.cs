@@ -16,6 +16,7 @@ using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Augmenters;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {

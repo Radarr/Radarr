@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 {
                     _proxy.Remove(queueItem.Id, deleteData, Settings);
                 }
-            }            
+            }
         }
 
         protected List<NzbVortexGroup> GetGroups()
@@ -145,9 +145,9 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             return _proxy.GetGroups(Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };

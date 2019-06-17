@@ -36,7 +36,7 @@ namespace Radarr.Api.V2.Queue
 
             if (movieIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Movie.Id == (int)movieIdQuery).ToResource(includeMovie);
+                return fullQueue.Where(q => q.Movie?.Id == (int)movieIdQuery).ToResource(includeMovie);
             }
 
             return fullQueue.ToResource(includeMovie);

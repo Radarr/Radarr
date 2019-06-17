@@ -53,6 +53,10 @@ namespace NzbDrone.Core.Messaging.Commands
                 _logger.Error(ex, "Thread aborted: " + ex.Message);
                 Thread.ResetAbort();
             }
+            catch (OperationCanceledException ex)
+            {
+                _logger.Trace("Stopped one command execution pipeline");
+            }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Unknown error in thread: " + ex.Message);
@@ -78,7 +82,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
                 handler.Execute(command);
 
-                _commandQueueManager.Complete(commandModel, command.CompletionMessage);
+                _commandQueueManager.Complete(commandModel, command.CompletionMessage ?? commandModel.Message);
             }
             catch (CommandFailedException ex)
             {
@@ -106,7 +110,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
             _logger.Trace("{0} <- {1} [{2}]", command.GetType().Name, handler.GetType().Name, commandModel.Duration.ToString());
         }
-        
+
         private void BroadcastCommandUpdate(CommandModel command)
         {
             if (command.Body.SendUpdatesToClient)

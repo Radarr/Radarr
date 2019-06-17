@@ -161,6 +161,12 @@ namespace NzbDrone.Core.Download
             }
             catch (HttpException ex)
             {
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    _logger.Error(ex, "Downloading torrent file for movie '{0}' failed since it no longer exists ({1})", remoteMovie.Release.Title, torrentUrl);
+                    throw new ReleaseUnavailableException(remoteMovie.Release, "Downloading torrent failed", ex);
+                }
+
                 if ((int)ex.Response.StatusCode == 429)
                 {
                     _logger.Error("API Grab Limit reached for {0}", torrentUrl);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using Radarr.Http.REST;
@@ -26,6 +27,7 @@ namespace Radarr.Api.V2.Indexers
         public string Title { get; set; }
         public bool SceneSource { get; set; }
         public string MovieTitle { get; set; }
+        public List<Language> Languages { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
@@ -76,6 +78,7 @@ namespace Radarr.Api.V2.Indexers
                 ReleaseHash = parsedMovieInfo.ReleaseHash,
                 Title = releaseInfo.Title,
                 MovieTitle = parsedMovieInfo.MovieTitle,
+                Languages = parsedMovieInfo.Languages,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,

@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Download.Pending
     {
         void DeleteByMovieId(int movieId);
         List<PendingRelease> AllByMovieId(int movieId);
+        List<PendingRelease> WithoutFallback();
     }
 
     public class PendingReleaseRepository : BasicRepository<PendingRelease>, IPendingReleaseRepository
@@ -24,7 +25,12 @@ namespace NzbDrone.Core.Download.Pending
 
         public List<PendingRelease> AllByMovieId(int movieId)
         {
-            return Query(q => q.Where(p => p.MovieId == movieId).ToList());
+            return Query.Where(p => p.MovieId == movieId).ToList();
+        }
+
+        public List<PendingRelease> WithoutFallback()
+        {
+            return Query.Where(p => p.Reason != PendingReleaseReason.Fallback);
         }
     }
 }

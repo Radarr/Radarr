@@ -69,6 +69,10 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
                   .Returns(_movie);
+            
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
+                  .Returns(new List<Movie> { _movie });
 
             Mocker.GetMock<IParsingService>()
 			      .Setup(s => s.GetMovie(It.IsAny<string>()))

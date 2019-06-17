@@ -5,7 +5,7 @@ import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
 import TableRow from 'Components/Table/TableRow';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+// import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
@@ -67,8 +67,7 @@ class QueueRow extends Component {
       trackedDownloadStatus,
       statusMessages,
       errorMessage,
-      series,
-      episode,
+      movie,
       quality,
       protocol,
       indexer,
@@ -130,34 +129,25 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'series.sortTitle') {
+            if (name === 'movie.sortTitle') {
               return (
                 <TableRowCell key={name}>
                   <MovieTitleLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
+                    titleSlug={movie.titleSlug}
+                    title={movie.title}
                   />
                 </TableRowCell>
               );
             }
 
-            if (name === 'series') {
+            if (name === 'movie') {
               return (
                 <TableRowCell key={name}>
                   <MovieTitleLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
+                    titleSlug={movie.titleSlug}
+                    title={movie.title}
                   />
                 </TableRowCell>
-              );
-            }
-
-            if (name === 'episode.airDateUtc') {
-              return (
-                <RelativeDateCellConnector
-                  key={name}
-                  date={episode.airDateUtc}
-                />
               );
             }
 
@@ -303,8 +293,7 @@ QueueRow.propTypes = {
   trackedDownloadStatus: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
-  series: PropTypes.object.isRequired,
-  episode: PropTypes.object.isRequired,
+  movie: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

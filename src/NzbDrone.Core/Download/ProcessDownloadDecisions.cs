@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Indexers;
 
 namespace NzbDrone.Core.Download
 {
@@ -36,74 +40,110 @@ namespace NzbDrone.Core.Download
             var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(qualifiedReports);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
+            var rejected = decisions.Where(d => d.Rejected).ToList();
+
+            var pendingAddQueue = new List<Tuple<DownloadDecision, PendingReleaseReason>>();
+
+            var usenetFailed = false;
+            var torrentFailed = false;
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteMovie = report.RemoteMovie;
+                var remoteEpisode = report.RemoteMovie;
+                var downloadProtocol = report.RemoteMovie.Release.DownloadProtocol;
 
-                if (remoteMovie == null || remoteMovie.Movie == null)
-                {
-                    continue;
-                }
-
-                List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
-
-
-                //Skip if already grabbed
-                if (grabbed.Select(r => r.RemoteMovie.Movie)
-                                .Select(e => e.Id)
-                                .ToList()
-                                .Intersect(movieIds)
-                                .Any())
+                // Skip if already grabbed
+                if (IsMovieProcessed(grabbed, report))
                 {
                     continue;
                 }
 
                 if (report.TemporarilyRejected)
                 {
-                    _pendingReleaseService.Add(report);
-                    pending.Add(report);
+                    PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.Delay);
                     continue;
                 }
 
-                if (report.Rejections.Any())
+                if (downloadProtocol == DownloadProtocol.Usenet && usenetFailed ||
+                    downloadProtocol == DownloadProtocol.Torrent && torrentFailed)
                 {
-                    _logger.Debug("Rejecting release {0} because {1}", report.ToString(), report.Rejections.First().Reason);
-                    continue;
-                }
-
-
-
-                if (pending.Select(r => r.RemoteMovie.Movie)
-                        .Select(e => e.Id)
-                        .ToList()
-                        .Intersect(movieIds)
-                        .Any())
-                {
+                    PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
                     continue;
                 }
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteMovie, false);
+                    _downloadService.DownloadReport(remoteEpisode);
                     grabbed.Add(report);
                 }
-                catch (Exception e)
+                catch (ReleaseUnavailableException)
                 {
-                    //TODO: support for store & forward
-                    //We'll need to differentiate between a download client error and an indexer error
-                    _logger.Warn(e, "Couldn't add report to download queue. " + remoteMovie);
+                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteEpisode);
+                    rejected.Add(report);
                 }
+                catch (Exception ex)
+                {
+                    if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
+                    {
+                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteEpisode);
+                        PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
 
+                        if (downloadProtocol == DownloadProtocol.Usenet)
+                        {
+                            usenetFailed = true;
+                        }
+                        else if (downloadProtocol == DownloadProtocol.Torrent)
+                        {
+                            torrentFailed = true;
+                        }
+                    }
+                    else
+                    {
+                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteEpisode);
+                    }
+                }
             }
 
-            return new ProcessedDecisions(grabbed, pending, decisions.Where(d => d.Rejected).ToList());
+            if (pendingAddQueue.Any())
+            {
+                _pendingReleaseService.AddMany(pendingAddQueue);
+            }
+
+            return new ProcessedDecisions(grabbed, pending, rejected);
         }
 
         internal List<DownloadDecision> GetQualifiedReports(IEnumerable<DownloadDecision> decisions)
         {
             //Process both approved and temporarily rejected
-            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && (c.RemoteMovie.Movie != null)).ToList();
+            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteMovie.Movie != null).ToList();
+        }
+
+        private bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
+        {
+            var movieId = report.RemoteMovie.Movie.Id;
+
+            return decisions.Select(r => r.RemoteMovie.Movie)
+                            .Select(e => e.Id)
+                            .ToList()
+                            .Contains(movieId);
+        }
+
+        private void PreparePending(List<Tuple<DownloadDecision, PendingReleaseReason>> queue, List<DownloadDecision> grabbed, List<DownloadDecision> pending, DownloadDecision report, PendingReleaseReason reason)
+        {
+            // If a release was already grabbed with matching episodes we should store it as a fallback
+            // and filter it out the next time it is processed.
+            // If a higher quality release failed to add to the download client, but a lower quality release
+            // was sent to another client we still list it normally so it apparent that it'll grab next time.
+            // Delayed is treated the same, but only the first is listed the subsequent items as stored as Fallback.
+
+            if (IsMovieProcessed(grabbed, report) ||
+                IsMovieProcessed(pending, report))
+            {
+                reason = PendingReleaseReason.Fallback;
+            }
+
+            queue.Add(Tuple.Create(report, reason));
+            pending.Add(report);
         }
     }
 }

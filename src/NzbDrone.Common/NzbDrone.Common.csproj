@@ -88,10 +88,13 @@
     <Compile Include="ConsoleService.cs" />
     <Compile Include="ConvertBase32.cs" />
     <Compile Include="Crypto\HashProvider.cs" />
+    <Compile Include="Disk\DestinationAlreadyExistsException.cs" />
     <Compile Include="Disk\FileSystemLookupService.cs" />
     <Compile Include="Disk\DriveInfoMount.cs" />
     <Compile Include="Disk\IMount.cs" />
+    <Compile Include="Disk\LongPathSupport.cs" />
     <Compile Include="Disk\MountOptions.cs" />
+    <Compile Include="Disk\NotParentException.cs" />
     <Compile Include="Disk\RelativeFileSystemModel.cs" />
     <Compile Include="Disk\FileSystemModel.cs" />
     <Compile Include="Disk\FileSystemResult.cs" />
@@ -161,9 +164,11 @@
     <Compile Include="Extensions\Base64Extensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Crypto\HashConverter.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\Int64Extensions.cs" />
     <Compile Include="Extensions\IpAddressExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\RegexExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\UrlExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
@@ -203,6 +208,7 @@
     <Compile Include="Http\UnexpectedHtmlContentException.cs" />
     <Compile Include="Http\UserAgentBuilder.cs" />
     <Compile Include="Instrumentation\CleanseLogMessage.cs" />
+    <Compile Include="Instrumentation\CleansingJsonVisitor.cs" />
     <Compile Include="Instrumentation\Extensions\LoggerProgressExtensions.cs" />
     <Compile Include="Instrumentation\GlobalExceptionHandlers.cs" />
     <Compile Include="Instrumentation\LogEventExtensions.cs" />
@@ -226,6 +232,7 @@
     <Compile Include="Serializer\HttpUriConverter.cs" />
     <Compile Include="Serializer\IntConverter.cs" />
     <Compile Include="Serializer\Json.cs" />
+    <Compile Include="Serializer\JsonVisitor.cs" />
     <Compile Include="Serializer\UnderscoreStringEnumConverter.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="ServiceProvider.cs" />

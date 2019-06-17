@@ -11,6 +11,7 @@ using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Extras.Subtitles
 {

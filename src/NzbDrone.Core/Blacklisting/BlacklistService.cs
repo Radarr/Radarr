@@ -8,6 +8,8 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Movies.Events;
+using System.Collections.Generic;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Blacklisting
 {
@@ -137,7 +139,8 @@ namespace NzbDrone.Core.Blacklisting
                                 Indexer = message.Data.GetValueOrDefault("indexer"),
                                 Protocol = (DownloadProtocol)Convert.ToInt32(message.Data.GetValueOrDefault("protocol")),
                                 Message = message.Message,
-                                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash")
+                                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash"),
+                                Languages = message.Languages
                             };
 
             _blacklistRepository.Insert(blacklist);

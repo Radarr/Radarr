@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             });
 
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.ApiPath).ValidUrlBase("/api");
             RuleFor(c => c.ApiKey).NotEmpty().When(ShouldHaveApiKey);
             RuleFor(c => c.AdditionalParameters).Matches(AdditionalParametersRegex)
                                                 .When(c => !c.AdditionalParameters.IsNullOrWhiteSpace());
@@ -61,14 +62,19 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public NewznabSettings()
         {
+            ApiPath = "/api";
             Categories = new[] { 2000, 2010, 2020, 2030, 2035, 2040, 2045, 2050, 2060 };
             AnimeCategories = Enumerable.Empty<int>();
+            MultiLanguages = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "URL")]
         public string BaseUrl { get; set; }
-                
-        [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+
+        [FieldDefinition(1, Label = "API Path", HelpText = "Path to the api, usually /api", Advanced = true)]
+        public string ApiPath { get; set; }
+
+        // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(2, Label = "API Key")]

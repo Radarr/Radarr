@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.Queue
     {
         List<Queue> GetQueue();
         Queue Find(int id);
+        void Remove(int id);
     }
 
     public class QueueService : IQueueService, IHandle<TrackedDownloadRefreshedEvent>
@@ -34,12 +36,9 @@ namespace NzbDrone.Core.Queue
             return _queue.SingleOrDefault(q => q.Id == id);
         }
 
-        public void Handle(TrackedDownloadRefreshedEvent message)
+        public void Remove(int id)
         {
-            _queue = message.TrackedDownloads.OrderBy(c => c.DownloadItem.RemainingTime).SelectMany(MapQueue)
-                .ToList();
-
-            _eventAggregator.PublishEvent(new QueueUpdatedEvent());
+            _queue.Remove(Find(id));
         }
 
         private IEnumerable<Queue> MapQueue(TrackedDownload trackedDownload)
@@ -48,6 +47,10 @@ namespace NzbDrone.Core.Queue
             {
                 yield return MapMovie(trackedDownload, trackedDownload.RemoteMovie.Movie);
             }
+            else
+            {
+                yield return MapMovie(trackedDownload, null);
+            }
         }
 
         private Queue MapMovie(TrackedDownload trackedDownload, Movie movie)
@@ -55,6 +58,7 @@ namespace NzbDrone.Core.Queue
             var queue = new Queue
             {
                 Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId)),
+                Languages = trackedDownload.RemoteMovie?.ParsedMovieInfo.Languages ?? new List<Language> { Language.Unknown },                
                 Quality = trackedDownload.RemoteMovie.ParsedMovieInfo.Quality,
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
@@ -63,14 +67,17 @@ namespace NzbDrone.Core.Queue
                 Status = trackedDownload.DownloadItem.Status.ToString(),
                 TrackedDownloadStatus = trackedDownload.Status.ToString(),
                 StatusMessages = trackedDownload.StatusMessages.ToList(),
+                ErrorMessage = trackedDownload.DownloadItem.Message,
                 RemoteMovie = trackedDownload.RemoteMovie,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
                 Movie = movie,
                 DownloadClient = trackedDownload.DownloadItem.DownloadClient,
-                Indexer = trackedDownload.Indexer
-               
+                Indexer = trackedDownload.Indexer,
+                OutputPath = trackedDownload.DownloadItem.OutputPath.ToString()
             };
+
+            queue.Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId));
 
             if (queue.Timeleft.HasValue)
             {
@@ -78,6 +85,14 @@ namespace NzbDrone.Core.Queue
             }
 
             return queue;
+        }
+
+        public void Handle(TrackedDownloadRefreshedEvent message)
+        {
+            _queue = message.TrackedDownloads.OrderBy(c => c.DownloadItem.RemainingTime).SelectMany(MapQueue)
+                            .ToList();
+
+            _eventAggregator.PublishEvent(new QueueUpdatedEvent());
         }
     }
 }

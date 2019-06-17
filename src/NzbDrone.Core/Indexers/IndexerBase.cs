@@ -13,7 +13,7 @@ using NzbDrone.Core.ThingiProvider;
 namespace NzbDrone.Core.Indexers
 {
     public abstract class IndexerBase<TSettings> : IIndexer
-        where TSettings : IProviderConfig, new()
+        where TSettings : IIndexerSettings, new()
     {
         protected readonly IIndexerStatusService _indexerStatusService;
         protected readonly IConfigService _configService;
@@ -44,15 +44,16 @@ namespace NzbDrone.Core.Indexers
             {
                 var config = (IProviderConfig)new TSettings();
 
-            	yield return new IndexerDefinition
-            	{
-                	Name = GetType().Name,
-                	EnableRss = config.Validate().IsValid && SupportsRss,
-                	EnableSearch = config.Validate().IsValid && SupportsSearch,
-                	Implementation = GetType().Name,
-                	Settings = config
-            	};
-			}
+                yield return new IndexerDefinition
+                {
+                    Name = GetType().Name,
+                    EnableRss = config.Validate().IsValid && SupportsRss,
+                    EnableAutomaticSearch = config.Validate().IsValid && SupportsSearch,
+                    EnableInteractiveSearch = config.Validate().IsValid && SupportsSearch,
+                    Implementation = GetType().Name,
+                    Settings = config
+                };
+            }
         }
 
         public virtual ProviderDefinition Definition { get; set; }
@@ -90,11 +91,6 @@ namespace NzbDrone.Core.Indexers
             {
                 _logger.Error(ex, "Test aborted due to exception");
                 failures.Add(new ValidationFailure(string.Empty, "Test was aborted due to an error: " + ex.Message));
-            }
-
-            if (Definition.Id != 0)
-            {
-                _indexerStatusService.RecordSuccess(Definition.Id);
             }
 
             return new ValidationResult(failures);

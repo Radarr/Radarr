@@ -31,37 +31,37 @@ namespace NzbDrone.Core.History
 
         public List<QualityModel> GetBestQualityInHistory(int movieId)
         {
-            var history = Query(q => q.Where(c => c.MovieId == movieId).ToList());
+            var history = Query.Where(c => c.MovieId == movieId).ToList();
 
             return history.Select(h => h.Quality).ToList();
         }
 
         public History MostRecentForDownloadId(string downloadId)
         {
-            return Query(q => q.Where(h => h.DownloadId == downloadId)
+            return Query.Where(h => h.DownloadId == downloadId)
              .OrderByDescending(h => h.Date)
-             .FirstOrDefault());
+             .FirstOrDefault();
         }
 
         public List<History> FindByDownloadId(string downloadId)
         {
-            return Query(q => q.Where(h => h.DownloadId == downloadId).ToList());
+            return Query.Where(h => h.DownloadId == downloadId).ToList();
         }
 
         public List<History> FindDownloadHistory(int idMovieId, QualityModel quality)
         {
-            return Query(q => q.Where(h =>
+            return Query.Where(h =>
                  h.MovieId == idMovieId &&
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
                  h.EventType == HistoryEventType.DownloadFolderImported)
-                 ).ToList());
+                 ).ToList();
         }
 
         public List<History> GetByMovieId(int movieId, HistoryEventType? eventType)
         {
-            var query = Query(q => q.Where(h => h.MovieId == movieId).ToList());
+            var query = Query.Where(h => h.MovieId == movieId).ToList();
 
             if (eventType.HasValue)
             {
@@ -87,14 +87,14 @@ namespace NzbDrone.Core.History
 
         public History MostRecentForMovie(int movieId)
         {
-            return Query(q => q.Where(h => h.MovieId == movieId)
+            return Query.Where(h => h.MovieId == movieId)
                         .OrderByDescending(h => h.Date)
-                        .FirstOrDefault());
+                        .FirstOrDefault();
         }
 
         public List<History> Since(DateTime date, HistoryEventType? eventType)
         {
-            var query = Query(q => q.Where(h => h.Date >= date)).ToList();
+            var query = Query.Where(h => h.Date >= date).ToList();
 
             if (eventType.HasValue)
             {

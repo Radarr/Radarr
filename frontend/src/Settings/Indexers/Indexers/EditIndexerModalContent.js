@@ -38,7 +38,8 @@ function EditIndexerModalContent(props) {
     implementationName,
     name,
     enableRss,
-    enableSearch,
+    enableAutomaticSearch,
+    enableInteractiveSearch,
     supportsRss,
     supportsSearch,
     fields
@@ -63,9 +64,7 @@ function EditIndexerModalContent(props) {
 
         {
           !isFetching && !error &&
-            <Form
-              {...otherProps}
-            >
+            <Form {...otherProps}>
               <FormGroup>
                 <FormLabel>Name</FormLabel>
 
@@ -91,15 +90,29 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable Search</FormLabel>
+                <FormLabel>Enable Automatic Search</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="enableSearch"
+                  name="enableAutomaticSearch"
                   helpText={supportsSearch.value ? 'Will be used when automatic searches are performed via the UI or by Radarr' : undefined}
                   helpTextWarning={supportsSearch.value ? undefined : 'Search is not supported with this indexer'}
                   isDisabled={!supportsSearch.value}
-                  {...enableSearch}
+                  {...enableAutomaticSearch}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Enable Interactive Search</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="enableInteractiveSearch"
+                  helpText={supportsSearch.value ? 'Will be used when interactive search is used' : undefined}
+                  helpTextWarning={supportsSearch.value ? undefined : 'Search is not supported with this indexer'}
+                  isDisabled={!supportsSearch.value}
+                  {...enableInteractiveSearch}
                   onChange={onInputChange}
                 />
               </FormGroup>

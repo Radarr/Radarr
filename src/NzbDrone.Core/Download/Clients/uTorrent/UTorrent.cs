@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -60,6 +61,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -78,42 +80,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<UTorrentTorrent> torrents;
-
-            try
-            {
-                var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.MovieCategory);
-                var cache = _torrentCache.Find(cacheKey);
-
-                var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
-
-                if (cache != null && response.Torrents == null)
-                {
-                    var removedAndUpdated = new HashSet<string>(response.TorrentsChanged.Select(v => v.Hash).Concat(response.TorrentsRemoved));
-
-                    torrents = cache.Torrents
-                        .Where(v => !removedAndUpdated.Contains(v.Hash))
-                        .Concat(response.TorrentsChanged)
-                        .ToList();
-                }
-                else
-                {
-                    torrents = response.Torrents;
-                }
-
-                cache = new UTorrentTorrentCache
-                {
-                    CacheID = response.CacheNumber,
-                    Torrents = torrents
-                };
-
-                _torrentCache.Set(cacheKey, cache, TimeSpan.FromMinutes(15));
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = GetTorrents();
 
             var queueItems = new List<DownloadClientItem>();
 
@@ -131,6 +98,8 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 item.Category = torrent.Label;
                 item.DownloadClient = Definition.Name;
                 item.RemainingSize = torrent.Remaining;
+                item.SeedRatio = torrent.Ratio;
+
                 if (torrent.Eta != -1)
                 {
                     item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
@@ -138,7 +107,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.RootDownloadPath));
 
-                if (outputPath == null || outputPath.FileName == torrent.Name)
+                if (outputPath.FileName == torrent.Name)
                 {
                     item.OutputPath = outputPath;
                 }
@@ -171,7 +140,9 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
 
                 // 'Started' without 'Queued' is when the torrent is 'forced seeding'
-                item.CanMoveFiles = item.CanBeRemoved = (!torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) && !torrent.Status.HasFlag(UTorrentTorrentStatus.Started));
+                item.CanMoveFiles = item.CanBeRemoved =
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) &&
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Started);
 
                 queueItems.Add(item);
             }
@@ -179,12 +150,46 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return queueItems;
         }
 
+        private List<UTorrentTorrent> GetTorrents()
+        {
+            List<UTorrentTorrent> torrents;
+
+            var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.MovieCategory);
+            var cache = _torrentCache.Find(cacheKey);
+
+            var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
+
+            if (cache != null && response.Torrents == null)
+            {
+                var removedAndUpdated = new HashSet<string>(response.TorrentsChanged.Select(v => v.Hash).Concat(response.TorrentsRemoved));
+
+                torrents = cache.Torrents
+                    .Where(v => !removedAndUpdated.Contains(v.Hash))
+                    .Concat(response.TorrentsChanged)
+                    .ToList();
+            }
+            else
+            {
+                torrents = response.Torrents;
+            }
+
+            cache = new UTorrentTorrentCache
+            {
+                CacheID = response.CacheNumber,
+                Torrents = torrents
+            };
+
+            _torrentCache.Set(cacheKey, cache, TimeSpan.FromMinutes(15));
+
+            return torrents;
+        }
+
         public override void RemoveItem(string downloadId, bool deleteData)
         {
             _proxy.RemoveTorrent(downloadId, deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
@@ -205,7 +210,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -221,7 +226,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestGetTorrents());
         }
 
@@ -246,7 +251,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to connect to uTorrent");
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
                     return new NzbDroneValidationFailure("Host", "Unable to connect")
@@ -258,7 +263,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to test uTorrent");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -273,7 +278,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

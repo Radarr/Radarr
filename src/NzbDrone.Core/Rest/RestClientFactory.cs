@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Rest
                 UserAgent = $"Radarr/{BuildInfo.Version} ({OsInfo.Os})"
             };
 
+
             return restClient;
         }
     }

@@ -101,6 +101,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.Grabbed,
                 Date = DateTime.UtcNow,
                 Quality = message.Movie.ParsedMovieInfo.Quality,
+                Languages = message.Movie.ParsedMovieInfo.Languages,
                 SourceTitle = message.Movie.Release.Title,
                 DownloadId = message.DownloadId,
                 MovieId = message.Movie.Movie.Id

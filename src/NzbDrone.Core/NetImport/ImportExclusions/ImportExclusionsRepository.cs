@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
 
         public bool IsMovieExcluded(int tmdbid)
         {
-            return Query(q => q.Where(ex => ex.TmdbId == tmdbid).Any());
+            return Query.Where(ex => ex.TmdbId == tmdbid).Any();
         }
 
         public ImportExclusion GetByTmdbid(int tmdbid)
         {
-            return Query(q => q.Where(ex => ex.TmdbId == tmdbid).First());
+            return Query.Where(ex => ex.TmdbId == tmdbid).First();
         }
     }
 }

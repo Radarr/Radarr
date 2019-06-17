@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
- using NzbDrone.Core.CustomFormats;
- using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Profiles

@@ -94,7 +94,8 @@ namespace NzbDrone.Core.Download
                 DownloadId = historyItem.DownloadId,
                 Message = message,
                 Data = historyItem.Data,
-                TrackedDownload = trackedDownload
+                TrackedDownload = trackedDownload,
+                Languages = historyItem.Languages
             };
 
             _eventAggregator.PublishEvent(downloadFailedEvent);

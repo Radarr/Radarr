@@ -223,10 +223,6 @@ class SignalRConnector extends Component {
     this.props.dispatchUpdate({ section: 'queue.status', data: body.resource });
   }
 
-  handleRootfolder = () => {
-    this.props.dispatchFetchRootFolders();
-  }
-
   handleVersion = (body) => {
     const version = body.Version;
 
@@ -235,6 +231,10 @@ class SignalRConnector extends Component {
 
   handleSystemTask = () => {
     // No-op for now, we may want this later
+  }
+
+  handleRootfolder = () => {
+    this.props.dispatchFetchRootFolders();
   }
 
   handleTag = (body) => {

@@ -5,7 +5,6 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Common
 {
@@ -32,7 +31,6 @@ namespace NzbDrone.Common
             {
                 ExtractZip(compressedFile, destination);
             }
-
             else
             {
                 ExtractTgz(compressedFile, destination);

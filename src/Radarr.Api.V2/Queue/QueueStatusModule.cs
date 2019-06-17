@@ -46,9 +46,13 @@ namespace Radarr.Api.V2.Queue
 
             var resource = new QueueStatusResource
             {
-                Count = queue.Count + pending.Count,
-                Errors = queue.Any(q => q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
-                Warnings = queue.Any(q => q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
+                TotalCount = queue.Count + pending.Count,
+                Count = queue.Count(q => q.Movie != null) + pending.Count,
+                UnknownCount = queue.Count(q => q.Movie == null),
+                Errors = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
+                Warnings = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase)),
+                UnknownErrors = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
+                UnknownWarnings = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
             };
 
             _broadcastDebounce.Resume();

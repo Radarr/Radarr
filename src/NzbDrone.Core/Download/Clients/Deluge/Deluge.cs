@@ -57,6 +57,13 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             var actualHash = _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
+            if (actualHash.IsNullOrWhiteSpace())
+            {
+                throw new DownloadClientException("Deluge failed to add torrent " + filename);
+            }
+
+            _proxy.SetTorrentSeedingConfiguration(actualHash, remoteMovie.SeedConfiguration, Settings);
+
             if (!Settings.MovieCategory.IsNullOrWhiteSpace())
             {
                 _proxy.SetLabel(actualHash, Settings.MovieCategory, Settings);
@@ -100,6 +107,8 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             foreach (var torrent in torrents)
             {
+                if (torrent.Hash == null) continue;
+
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.Hash?.ToUpper();
                 item.Title = torrent.Name;
@@ -110,7 +119,18 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.DownloadPath));
                 item.OutputPath = outputPath + torrent.Name;
                 item.RemainingSize = torrent.Size - torrent.BytesDownloaded;
-                item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                item.SeedRatio = torrent.Ratio;
+
+                try
+                {
+                    item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                }
+                catch (OverflowException ex)
+                {
+                    _logger.Debug(ex, "ETA for {0} is too long: {1}", torrent.Name, torrent.Eta);
+                    item.RemainingTime = TimeSpan.MaxValue;
+                }
+
                 item.TotalSize = torrent.Size;
 
                 if (torrent.State == DelugeTorrentStatus.Error)
@@ -135,8 +155,13 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                // Here we detect if Deluge is managing the torrent and whether the seed criteria has been met. This allows drone to delete the torrent as appropriate.
-                item.CanMoveFiles = item.CanBeRemoved = (torrent.IsAutoManaged && torrent.StopAtRatio && torrent.Ratio >= torrent.StopRatio && torrent.State == DelugeTorrentStatus.Paused);
+                // Here we detect if Deluge is managing the torrent and whether the seed criteria has been met.
+                // This allows drone to delete the torrent as appropriate.
+                item.CanMoveFiles = item.CanBeRemoved =
+                    torrent.IsAutoManaged &&
+                    torrent.StopAtRatio &&
+                    torrent.Ratio >= torrent.StopRatio &&
+                    torrent.State == DelugeTorrentStatus.Paused;
 
                 items.Add(item);
             }
@@ -149,7 +174,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy.RemoveTorrent(downloadId.ToLower(), deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
@@ -160,7 +185,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 destDir = new OsPath(config.GetValueOrDefault("move_completed_path") as string);
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -169,14 +194,14 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             {
                 status.OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, destDir) };
             }
-            
+
             return status;
         }
 
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.Any()) return;
+            if (failures.HasErrors()) return;
             failures.AddIfNotNull(TestCategory());
             failures.AddIfNotNull(TestGetTorrents());
         }
@@ -190,11 +215,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             catch (DownloadClientAuthenticationException ex)
             {
                 _logger.Error(ex, ex.Message);
+
                 return new NzbDroneValidationFailure("Password", "Authentication failed");
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unble to test connection");
                 switch (ex.Status)
                 {
                     case WebExceptionStatus.ConnectFailure:
@@ -218,7 +244,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Failed to test connection");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -269,7 +295,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

@@ -17,7 +17,6 @@ namespace NzbDrone.Common.EnvironmentInfo
     {
         private readonly Environment.SpecialFolder DATA_SPECIAL_FOLDER = Environment.SpecialFolder.CommonApplicationData;
 
-
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(AppFolderInfo));
 
         public AppFolderInfo(IStartupContext startupContext)

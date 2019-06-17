@@ -79,7 +79,6 @@ namespace NzbDrone.Core.Configuration
         string LongDateFormat { get; set; }
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
-
         bool EnableColorImpairedMode { get; set; }
 
         //Internal

@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             title = FileNameBuilder.CleanFileName(title);
 
-            var filepath = Path.Combine(Settings.TorrentFolder, string.Format("{0}.magnet", title));
+            var filepath = Path.Combine(Settings.TorrentFolder, $"{title}.{Settings.MagnetFileExtension.Trim('.')}");
 
             var fileContent = Encoding.UTF8.GetBytes(magnetLink);
             using (var stream = _diskProvider.OpenWriteStream(filepath))
@@ -82,9 +82,6 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         }
 
         public override string Name => "Torrent Blackhole";
-
-        public override ProviderMessage Message => new ProviderMessage("Magnet links are not supported.", ProviderMessageType.Warning);
-
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
@@ -120,9 +117,9 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             DeleteItemData(downloadId);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = true,
                 OutputRootFolders = new List<OsPath> { new OsPath(Settings.WatchFolder) }

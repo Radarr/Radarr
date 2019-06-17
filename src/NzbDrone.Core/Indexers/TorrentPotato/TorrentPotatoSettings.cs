@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Parser;
@@ -13,6 +14,8 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         public TorrentPotatoSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
@@ -24,6 +27,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         {
             BaseUrl = "http://127.0.0.1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
+            MultiLanguages = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]
@@ -35,13 +39,16 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer.")]
         public string Passkey { get; set; }
                 
-        [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        // [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(4, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
-        
-        [FieldDefinition(5, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
+
+        [FieldDefinition(5)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
+        [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()

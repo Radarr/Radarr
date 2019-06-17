@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
@@ -9,6 +9,7 @@ using NzbDrone.Core.Datastore.Migration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.Datastore.Migration
 {

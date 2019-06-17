@@ -3,7 +3,7 @@ using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Api.Qualities;
 using Radarr.Http.REST;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 

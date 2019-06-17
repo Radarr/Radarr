@@ -115,7 +115,17 @@
     <Compile Include="CustomFormat\CustomFormatsFixture.cs" />
     <Compile Include="CustomFormat\QualityTagFixture.cs" />
     <Compile Include="Datastore\BasicRepositoryFixture.cs" />
+    <Compile Include="Datastore\Converters\BooleanIntConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\CommandConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\DoubleConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\EnumIntConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\GuidConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\Int32ConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\OsPathConverterFixture.cs" />
     <Compile Include="Datastore\Converters\ProviderSettingConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\QualityIntConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\TimeSpanConverterFixture.cs" />
+    <Compile Include="Datastore\Converters\UtcConverterFixture.cs" />
     <Compile Include="Datastore\DatabaseFixture.cs" />
     <Compile Include="Datastore\DatabaseRelationshipFixture.cs" />
     <Compile Include="Datastore\MappingExtentionFixture.cs" />
@@ -167,6 +177,7 @@
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
+    <Compile Include="Download\DownloadClientStatusServiceFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\TorrentBlackholeFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\UsenetBlackholeFixture.cs" />
@@ -222,6 +233,7 @@
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheckFixture.cs" />
+    <Compile Include="HealthCheck\Checks\MonoDebugFixture.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\RootFolderCheckFixture.cs" />
@@ -232,6 +244,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalUsersFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFilesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleasesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklistFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedMovieFilesFixture.cs" />
@@ -268,6 +281,7 @@
     <Compile Include="InstrumentationTests\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
     <Compile Include="JobTests\TestJobs.cs" />
+    <Compile Include="Languages\LanguageFixture.cs" />
     <Compile Include="MediaCoverTests\CoverExistsSpecificationFixture.cs" />
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
@@ -305,6 +319,7 @@
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithReleaseInfoFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\ParseQualityDefinitionFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />
+    <Compile Include="Profiles\Delay\DelayProfileServiceFixture.cs" />
     <Compile Include="Profiles\Qualities\QualityIndexCompareToFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
@@ -417,6 +432,15 @@
     <None Include="Files\Indexers\TorrentRss\DanishBits.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Files\Indexers\TorrentRss\EvolutionWorld.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\TorrentRss\LimeTorrents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\Torznab\torznab_animetosho.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="License.txt" />
     <None Include="Files\Indexers\BroadcastheNet\RecentFeed.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

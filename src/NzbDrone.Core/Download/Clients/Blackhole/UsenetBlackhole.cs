@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             ScanGracePeriod = TimeSpan.FromSeconds(30);
         }
 
-        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContent)
         {
             var title = remoteMovie.Release.Title;
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             using (var stream = _diskProvider.OpenWriteStream(filepath))
             {
-                stream.Write(fileContents, 0, fileContents.Length);
+                stream.Write(fileContent, 0, fileContent.Length);
             }
 
             _logger.Debug("NZB Download succeeded, saved to: {0}", filepath);
@@ -70,7 +70,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                     OutputPath = item.OutputPath,
 
-                    Status = item.Status
+                    Status = item.Status,
+
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
             }
         }
@@ -85,9 +88,9 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             DeleteItemData(downloadId);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = true,
                 OutputRootFolders = new List<OsPath> { new OsPath(Settings.WatchFolder) }

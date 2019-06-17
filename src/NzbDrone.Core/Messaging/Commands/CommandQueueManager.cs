@@ -153,6 +153,7 @@ namespace NzbDrone.Core.Messaging.Commands
             {
                 command = _repo.Get(id);
             }
+
             return command;
         }
 
@@ -205,7 +206,7 @@ namespace NzbDrone.Core.Messaging.Commands
         public void CleanCommands()
         {
             _logger.Trace("Cleaning up old commands");
-
+            
             var commands = _commandQueue.All()
                                         .Where(c => c.EndedAt < DateTime.UtcNow.AddMinutes(-5))
                                         .ToList();

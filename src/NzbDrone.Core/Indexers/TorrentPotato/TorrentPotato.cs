@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             return new IndexerDefinition
             {
                 EnableRss = false,
-                EnableSearch = false,
+                EnableAutomaticSearch = false,
+                EnableInteractiveSearch = false,
                 Name = name,
                 Implementation = GetType().Name,
                 Settings = settings,

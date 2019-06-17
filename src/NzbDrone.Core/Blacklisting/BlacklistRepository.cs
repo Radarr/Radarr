@@ -22,19 +22,19 @@ namespace NzbDrone.Core.Blacklisting
 
         public List<Blacklist> BlacklistedByTitle(int movieId, string sourceTitle)
         {
-            return Query(q => q.Where(e => e.MovieId == movieId)
-                        .AndWhere(e => e.SourceTitle.Contains(sourceTitle)).ToList());
+            return Query.Where(e => e.MovieId == movieId)
+                        .AndWhere(e => e.SourceTitle.Contains(sourceTitle)).ToList();
         }
 
         public List<Blacklist> BlacklistedByTorrentInfoHash(int movieId, string torrentInfoHash)
         {
-            return Query(q => q.Where(e => e.MovieId == movieId)
-                        .AndWhere(e => e.TorrentInfoHash.Contains(torrentInfoHash)).ToList());
+            return Query.Where(e => e.MovieId == movieId)
+                        .AndWhere(e => e.TorrentInfoHash.Contains(torrentInfoHash)).ToList();
         }
 
         public List<Blacklist> BlacklistedByMovie(int movieId)
         {
-            return Query(q => q.Where(b => b.MovieId == movieId).ToList());
+            return Query.Where(b => b.MovieId == movieId).ToList();
         }
 
         protected override SortBuilder<Blacklist> GetPagedQuery(QueryBuilder<Blacklist> query, PagingSpec<Blacklist> pagingSpec)

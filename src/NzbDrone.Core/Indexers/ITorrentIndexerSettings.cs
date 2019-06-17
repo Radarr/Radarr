@@ -6,5 +6,6 @@ namespace NzbDrone.Core.Indexers
     {
         int MinimumSeeders { get; set; }
         IEnumerable<int> RequiredFlags { get; set; }
+        SeedCriteriaSettings SeedCriteria { get; }
     }
 }

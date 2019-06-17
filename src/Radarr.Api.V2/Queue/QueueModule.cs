@@ -5,6 +5,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
 using Radarr.Http;
@@ -18,60 +20,82 @@ namespace Radarr.Api.V2.Queue
         private readonly IQueueService _queueService;
         private readonly IPendingReleaseService _pendingReleaseService;
 
-        public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage, IQueueService queueService, IPendingReleaseService pendingReleaseService)
+        private readonly QualityModelComparer QUALITY_COMPARER;
+
+        public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage,
+                           IQueueService queueService,
+                           IPendingReleaseService pendingReleaseService,
+                           ProfileService qualityProfileService)
             : base(broadcastSignalRMessage)
         {
             _queueService = queueService;
             _pendingReleaseService = pendingReleaseService;
             GetResourcePaged = GetQueue;
+
+            QUALITY_COMPARER = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
         }
 
         private PagingResource<QueueResource> GetQueue(PagingResource<QueueResource> pagingResource)
         {
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
-            var includeSeries = Request.GetBooleanQueryParameter("includeMovie");
+            var includeUnknownMovieItems = Request.GetBooleanQueryParameter("includeUnknownMovieItems");
+            var includeMovie = Request.GetBooleanQueryParameter("includeMovie");
 
-            return ApplyToPage(GetQueue, pagingSpec, (q) => MapToResource(q, includeSeries));
+            return ApplyToPage((spec) => GetQueue(spec, includeUnknownMovieItems), pagingSpec, (q) => MapToResource(q, includeMovie));
         }
 
-        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec)
+        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, bool includeUnknownMovieItems)
         {
             var ascending = pagingSpec.SortDirection == SortDirection.Ascending;
             var orderByFunc = GetOrderByFunc(pagingSpec);
 
             var queue = _queueService.GetQueue();
+            var filteredQueue = includeUnknownMovieItems ? queue : queue.Where(q => q.Movie != null);
             var pending = _pendingReleaseService.GetPendingQueue();
-            var fullQueue = queue.Concat(pending).ToList();
+            var fullQueue = filteredQueue.Concat(pending).ToList();
             IOrderedEnumerable<NzbDrone.Core.Queue.Queue> ordered;
 
             if (pagingSpec.SortKey == "timeleft")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Timeleft, new TimeleftComparer()) :
-                                      fullQueue.OrderByDescending(q => q.Timeleft, new TimeleftComparer());
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Timeleft, new TimeleftComparer())
+                    : fullQueue.OrderByDescending(q => q.Timeleft, new TimeleftComparer());
             }
 
             else if (pagingSpec.SortKey == "estimatedCompletionTime")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer()) :
-                                      fullQueue.OrderByDescending(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer());
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer())
+                    : fullQueue.OrderByDescending(q => q.EstimatedCompletionTime,
+                        new EstimatedCompletionTimeComparer());
             }
 
             else if (pagingSpec.SortKey == "protocol")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Protocol) :
-                    fullQueue.OrderByDescending(q => q.Protocol);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Protocol)
+                    : fullQueue.OrderByDescending(q => q.Protocol);
             }
 
             else if (pagingSpec.SortKey == "indexer")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase) :
-                    fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase)
+                    : fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
             }
 
             else if (pagingSpec.SortKey == "downloadClient")
             {
-                ordered = ascending ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase) :
-                    fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase)
+                    : fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
+            }
+
+            else if (pagingSpec.SortKey == "quality")
+            {
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Quality, QUALITY_COMPARER)
+                    : fullQueue.OrderByDescending(q => q.Quality, QUALITY_COMPARER);
             }
 
             else
@@ -97,10 +121,14 @@ namespace Radarr.Api.V2.Queue
         {
             switch (pagingSpec.SortKey)
             {
+                case "status":
+                    return q => q.Status;                
                 case "movie.sortTitle":
                     return q => q.Movie.SortTitle;
                 case "title":
                     return q => q.Title;
+                case "language":
+                    return q => q.Languages;
                 case "quality":
                     return q => q.Quality;
                 case "progress":

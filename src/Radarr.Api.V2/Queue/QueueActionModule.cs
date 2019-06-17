@@ -50,7 +50,7 @@ namespace Radarr.Api.V2.Queue
                 throw new NotFoundException();
             }
 
-            _downloadService.DownloadReport(pendingRelease.RemoteMovie, false);
+            _downloadService.DownloadReport(pendingRelease.RemoteMovie);
 
             return new object().AsResponse();
         }
@@ -68,7 +68,7 @@ namespace Radarr.Api.V2.Queue
                     throw new NotFoundException();
                 }
 
-                _downloadService.DownloadReport(pendingRelease.RemoteMovie, false);
+                _downloadService.DownloadReport(pendingRelease.RemoteMovie);
             }
 
             return new object().AsResponse();
