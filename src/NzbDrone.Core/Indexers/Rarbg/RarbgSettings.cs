@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Parser;
@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         public RarbgSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.Categories).NotEmpty();
         }
     }
 
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             BaseUrl = "https://torrentapi.org";
             RankedOnly = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
+            Categories = new[] { 14, 48, 17, 44, 45, 47, 50, 51, 52, 42, 46 };
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to Rarbg api, not the website.")]
@@ -43,6 +45,9 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
         [FieldDefinition(5, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
+
+        [FieldDefinition(6, Type = FieldType.Textbox, Label = "Categories", HelpText = "Comma Separated list, you can retrieve the ID by checking the URL behind the category on the website (i.e. Movie/x264/1080 = 44)", HelpLink = "https://rarbgmirror.org/torrents.php?category=movies", Advanced = true)]
+        public IEnumerable<int> Categories { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
