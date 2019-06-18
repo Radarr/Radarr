@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             }
         }
 
+
         public RarbgSettings Settings { get; set; }
 
         public RarbgRequestGenerator(IRarbgTokenProvider tokenProvider)
