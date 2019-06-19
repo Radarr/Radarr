@@ -87,7 +87,7 @@ class ConfirmImportModalContent extends Component {
             !isFetching && isPopulated &&
               <div>
                 <Alert>
-                  You are already have files imported for the albums listed below.  If you continue, the existing files <b>will be deleted</b> and the new files imported in their place.
+                  You already have files imported for the albums listed below.  If you continue, the existing files <b>will be deleted</b> and the new files imported in their place.
 
                   To avoid deleting existing files, press 'Cancel' and use the 'Combine with existing files' option.
                 </Alert>
