@@ -2,11 +2,9 @@ import moment from 'moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
-import updateSectionState from 'Utilities/State/updateSectionState';
 import { createThunk, handleThunks } from 'Store/thunks';
 import { sortDirections } from 'Helpers/Props';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import { set, update } from './baseActions';
 
@@ -14,8 +12,6 @@ import { set, update } from './baseActions';
 // Variables
 
 export const section = 'interactiveImport';
-
-const episodesSection = `${section}.episodes`;
 
 //
 // State
@@ -36,24 +32,15 @@ export const defaultState = {
       return relativePath.toLowerCase();
     },
 
-    series: function(item, direction) {
-      const series = item.series;
+    movie: function(item, direction) {
+      const movie = item.movie;
 
-      return series ? series.sortTitle : '';
+      return movie ? movie.sortTitle : '';
     },
 
     quality: function(item, direction) {
       return item.quality ? item.quality.qualityWeight : 0;
     }
-  },
-
-  episodes: {
-    isFetching: false,
-    isPopulated: false,
-    error: null,
-    sortKey: 'episodeNumber',
-    sortDirection: sortDirections.ASCENDING,
-    items: []
   }
 };
 
@@ -68,14 +55,11 @@ export const persistState = [
 export const FETCH_INTERACTIVE_IMPORT_ITEMS = 'interactiveImport/fetchInteractiveImportItems';
 export const SET_INTERACTIVE_IMPORT_SORT = 'interactiveImport/setInteractiveImportSort';
 export const UPDATE_INTERACTIVE_IMPORT_ITEM = 'interactiveImport/updateInteractiveImportItem';
+export const UPDATE_INTERACTIVE_IMPORT_ITEMS = 'interactiveImport/updateInteractiveImportItems';
 export const CLEAR_INTERACTIVE_IMPORT = 'interactiveImport/clearInteractiveImport';
 export const ADD_RECENT_FOLDER = 'interactiveImport/addRecentFolder';
 export const REMOVE_RECENT_FOLDER = 'interactiveImport/removeRecentFolder';
 export const SET_INTERACTIVE_IMPORT_MODE = 'interactiveImport/setInteractiveImportMode';
-
-export const FETCH_INTERACTIVE_IMPORT_EPISODES = 'interactiveImport/fetchInteractiveImportEpisodes';
-export const SET_INTERACTIVE_IMPORT_EPISODES_SORT = 'interactiveImport/setInteractiveImportEpisodesSort';
-export const CLEAR_INTERACTIVE_IMPORT_EPISODES = 'interactiveImport/clearInteractiveImportEpisodes';
 
 //
 // Action Creators
@@ -83,14 +67,11 @@ export const CLEAR_INTERACTIVE_IMPORT_EPISODES = 'interactiveImport/clearInterac
 export const fetchInteractiveImportItems = createThunk(FETCH_INTERACTIVE_IMPORT_ITEMS);
 export const setInteractiveImportSort = createAction(SET_INTERACTIVE_IMPORT_SORT);
 export const updateInteractiveImportItem = createAction(UPDATE_INTERACTIVE_IMPORT_ITEM);
+export const updateInteractiveImportItems = createAction(UPDATE_INTERACTIVE_IMPORT_ITEMS);
 export const clearInteractiveImport = createAction(CLEAR_INTERACTIVE_IMPORT);
 export const addRecentFolder = createAction(ADD_RECENT_FOLDER);
 export const removeRecentFolder = createAction(REMOVE_RECENT_FOLDER);
 export const setInteractiveImportMode = createAction(SET_INTERACTIVE_IMPORT_MODE);
-
-export const fetchInteractiveImportEpisodes = createThunk(FETCH_INTERACTIVE_IMPORT_EPISODES);
-export const setInteractiveImportEpisodesSort = createAction(SET_INTERACTIVE_IMPORT_EPISODES_SORT);
-export const clearInteractiveImportEpisodes = createAction(CLEAR_INTERACTIVE_IMPORT_EPISODES);
 
 //
 // Action Handlers
@@ -129,9 +110,7 @@ export const actionHandlers = handleThunks({
         error: xhr
       }));
     });
-  },
-
-  [FETCH_INTERACTIVE_IMPORT_EPISODES]: createFetchHandler('interactiveImport.episodes', '/episode')
+  }
 });
 
 //
@@ -148,6 +127,23 @@ export const reducers = createHandleActions({
 
     newState.items = [...items];
     newState.items.splice(index, 1, item);
+
+    return newState;
+  },
+
+  [UPDATE_INTERACTIVE_IMPORT_ITEMS]: (state, { payload }) => {
+    const ids = payload.ids;
+    const newState = Object.assign({}, state);
+    const items = [...newState.items];
+
+    ids.forEach((id) => {
+      const index = items.findIndex((item) => item.id === id);
+      const item = Object.assign({}, items[index], payload);
+
+      items.splice(index, 1, item);
+    });
+
+    newState.items = items;
 
     return newState;
   },
@@ -191,14 +187,6 @@ export const reducers = createHandleActions({
 
   [SET_INTERACTIVE_IMPORT_MODE]: function(state, { payload }) {
     return Object.assign({}, state, { importMode: payload.importMode });
-  },
-
-  [SET_INTERACTIVE_IMPORT_EPISODES_SORT]: createSetClientSideCollectionSortReducer(episodesSection),
-
-  [CLEAR_INTERACTIVE_IMPORT_EPISODES]: (state) => {
-    return updateSectionState(state, episodesSection, {
-      ...defaultState.episodes
-    });
   }
 
 }, defaultState, section);

@@ -1,23 +1,27 @@
 using System.Linq;
 using NLog;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.DecisionEngine
+namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public interface IQualityUpgradableSpecification
+    public interface IUpgradableSpecification
     {
         bool IsUpgradable(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
         bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
         bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality);
+        bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, QualityModel newQuality);
     }
 
-    public class QualityUpgradableSpecification : IQualityUpgradableSpecification
+    public class UpgradableSpecification : IUpgradableSpecification
     {
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public QualityUpgradableSpecification(Logger logger)
+        public UpgradableSpecification(IConfigService configService, Logger logger)
         {
+            _configService = configService;
             _logger = logger;
         }
 
@@ -70,6 +74,19 @@ namespace NzbDrone.Core.DecisionEngine
 
             if (currentQuality.Quality == newQuality.Quality && compare > 0)
             {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, QualityModel newQuality)
+        {
+            var isQualityUpgrade = new QualityModelComparer(qualityProfile).Compare(newQuality, currentQuality) > 0;
+
+            if (isQualityUpgrade && qualityProfile.UpgradeAllowed)
+            {
+                _logger.Debug("Quality profile allows upgrading");
                 return true;
             }
 

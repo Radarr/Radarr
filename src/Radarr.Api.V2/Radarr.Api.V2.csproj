@@ -123,6 +123,8 @@
     <Compile Include="Logs\LogModule.cs" />
     <Compile Include="Logs\LogResource.cs" />
     <Compile Include="Logs\UpdateLogFileModule.cs" />
+    <Compile Include="ManualImport\ManualImportModule.cs" />
+    <Compile Include="ManualImport\ManualImportResource.cs" />
     <Compile Include="Metadata\MetadataModule.cs" />
     <Compile Include="Metadata\MetadataResource.cs" />
     <Compile Include="MovieFiles\MediaInfoResource.cs" />

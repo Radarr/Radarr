@@ -21,7 +21,6 @@ namespace NzbDrone.Api.Profiles
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
             SharedValidator.RuleFor(c => c.Cutoff).NotNull();
             SharedValidator.RuleFor(c => c.Items).MustHaveAllowedQuality();
-            SharedValidator.RuleFor(c => c.Language).ValidLanguage();
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {
                 var all = _formatService.All().Select(f => f.Id).ToList();

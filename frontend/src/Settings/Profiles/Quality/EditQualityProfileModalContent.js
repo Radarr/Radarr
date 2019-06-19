@@ -92,10 +92,12 @@ class EditQualityProfileModalContent extends Component {
       isSaving,
       saveError,
       qualities,
+      languages,
       item,
       isInUse,
       onInputChange,
       onCutoffChange,
+      onLanguageChange,
       onSavePress,
       onModalClose,
       onDeleteQualityProfilePress,
@@ -105,9 +107,13 @@ class EditQualityProfileModalContent extends Component {
     const {
       id,
       name,
+      upgradeAllowed,
       cutoff,
+      language,
       items
     } = item;
+
+    const languageId = language.value.id;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -159,16 +165,48 @@ class EditQualityProfileModalContent extends Component {
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                            Cutoff
+                            Upgrades Allowed
+                          </FormLabel>
+
+                          <FormInputGroup
+                            type={inputTypes.CHECK}
+                            name="upgradeAllowed"
+                            {...upgradeAllowed}
+                            helpText="If disabled qualities will not be upgraded"
+                            onChange={onInputChange}
+                          />
+                        </FormGroup>
+
+                        {
+                          upgradeAllowed.value &&
+                            <FormGroup size={sizes.EXTRA_SMALL}>
+                              <FormLabel size={sizes.SMALL}>
+                              Upgrade Until
+                              </FormLabel>
+
+                              <FormInputGroup
+                                type={inputTypes.SELECT}
+                                name="cutoff"
+                                {...cutoff}
+                                values={qualities}
+                                helpText="Once this quality is reached Radarr will no longer download movies"
+                                onChange={onCutoffChange}
+                              />
+                            </FormGroup>
+                        }
+
+                        <FormGroup size={sizes.EXTRA_SMALL}>
+                          <FormLabel size={sizes.SMALL}>
+                          Language
                           </FormLabel>
 
                           <FormInputGroup
                             type={inputTypes.SELECT}
-                            name="cutoff"
-                            {...cutoff}
-                            values={qualities}
-                            helpText="Once this quality is reached Radarr will no longer download movies"
-                            onChange={onCutoffChange}
+                            name="language"
+                            values={languages}
+                            value={languageId}
+                            helpText="Language for Releases"
+                            onChange={onLanguageChange}
                           />
                         </FormGroup>
                       </div>
@@ -197,10 +235,10 @@ class EditQualityProfileModalContent extends Component {
         >
           <ModalFooter>
             {
-              id &&
+              id ?
                 <div
                   className={styles.deleteButtonContainer}
-                  title={isInUse && 'Can\'t delete a quality profile that is attached to a series'}
+                  title={isInUse ? 'Can\'t delete a quality profile that is attached to a movie' : undefined}
                 >
                   <Button
                     kind={kinds.DANGER}
@@ -209,7 +247,8 @@ class EditQualityProfileModalContent extends Component {
                   >
                     Delete
                   </Button>
-                </div>
+                </div> :
+                null
             }
 
             <Button
@@ -239,10 +278,12 @@ EditQualityProfileModalContent.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   item: PropTypes.object.isRequired,
   isInUse: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onCutoffChange: PropTypes.func.isRequired,
+  onLanguageChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onContentHeightChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,

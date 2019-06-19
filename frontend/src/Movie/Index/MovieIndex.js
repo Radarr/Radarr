@@ -21,6 +21,7 @@ import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooterConnector from './MovieIndexFooterConnector';
+import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import styles from './MovieIndex.css';
 
 function getViewComponent(view) {
@@ -49,6 +50,7 @@ class MovieIndex extends Component {
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
       isOverviewOptionsModalOpen: false,
+      isInteractiveImportModalOpen: false,
       isRendered: false
     };
   }
@@ -137,6 +139,14 @@ class MovieIndex extends Component {
     this.setState({ isOverviewOptionsModalOpen: false });
   }
 
+  onInteractiveImportPress = () => {
+    this.setState({ isInteractiveImportModalOpen: true });
+  }
+
+  onInteractiveImportModalClose = () => {
+    this.setState({ isInteractiveImportModalOpen: false });
+  }
+
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
   }
@@ -195,6 +205,7 @@ class MovieIndex extends Component {
       jumpToCharacter,
       isPosterOptionsModalOpen,
       isOverviewOptionsModalOpen,
+      isInteractiveImportModalOpen,
       isRendered
     } = this.state;
 
@@ -221,6 +232,28 @@ class MovieIndex extends Component {
               isSpinning={isRssSyncExecuting}
               isDisabled={hasNoMovie}
               onPress={onRssSyncPress}
+            />
+
+            <PageToolbarSeparator />
+
+            <PageToolbarButton
+              label="Search Missing"
+              iconName={icons.SEARCH}
+              isDisabled={hasNoMovie}
+            />
+
+            <PageToolbarButton
+              label="Manual Import"
+              iconName={icons.INTERACTIVE}
+              onPress={this.onInteractiveImportPress}
+            />
+
+            <PageToolbarSeparator />
+
+            <PageToolbarButton
+              label="Edit Mode"
+              iconName={icons.EDIT}
+              isDisabled={hasNoMovie}
             />
 
           </PageToolbarSection>
@@ -338,6 +371,11 @@ class MovieIndex extends Component {
         <MovieIndexOverviewOptionsModal
           isOpen={isOverviewOptionsModalOpen}
           onModalClose={this.onOverviewOptionsModalClose}
+        />
+
+        <InteractiveImportModal
+          isOpen={isInteractiveImportModalOpen}
+          onModalClose={this.onInteractiveImportModalClose}
         />
       </PageContent>
     );

@@ -82,6 +82,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     movieFile.Path = localMovie.Path.CleanFilePath();
                     movieFile.Size = _diskProvider.GetFileSize(localMovie.Path);
                     movieFile.Quality = localMovie.Quality;
+                    movieFile.Languages = localMovie.Languages;
                     movieFile.MediaInfo = localMovie.MediaInfo;
                     movieFile.Movie = localMovie.Movie;
                     movieFile.ReleaseGroup = localMovie.ParsedMovieInfo?.ReleaseGroup;

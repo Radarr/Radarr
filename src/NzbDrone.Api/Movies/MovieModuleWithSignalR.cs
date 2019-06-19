@@ -1,6 +1,6 @@
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore.Events;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -15,10 +15,10 @@ namespace NzbDrone.Api.Movies
         IHandle<MovieDownloadedEvent>
     {
         protected readonly IMovieService _movieService;
-        protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         protected MovieModuleWithSignalR(IMovieService movieService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
@@ -29,7 +29,7 @@ namespace NzbDrone.Api.Movies
         }
 
         protected MovieModuleWithSignalR(IMovieService movieService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)

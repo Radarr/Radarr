@@ -11,6 +11,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -24,7 +25,7 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
-	private readonly IConfigService _configService;
+	    private readonly IConfigService _configService;
         private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
@@ -34,7 +35,7 @@ namespace NzbDrone.Core.DecisionEngine
         {
             _specifications = specifications;
             _parsingService = parsingService;
-		_configService = configService;
+		    _configService = configService;
             _definitionService = qualityDefinitionService;
             _logger = logger;
         }

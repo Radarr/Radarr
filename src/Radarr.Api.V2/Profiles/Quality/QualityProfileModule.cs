@@ -24,7 +24,6 @@ namespace Radarr.Api.V2.Profiles.Quality
             // TODO: Need to validate the Items to ensure groups have names and at no item has no name, no items and no quality
             SharedValidator.RuleFor(c => c.Cutoff).ValidCutoff();
             SharedValidator.RuleFor(c => c.Items).ValidItems();
-            SharedValidator.RuleFor(c => c.Language).ValidLanguage();
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {
                 var all = _formatService.All().Select(f => f.Id).ToList();
@@ -46,8 +45,8 @@ namespace Radarr.Api.V2.Profiles.Quality
         private int Create(QualityProfileResource resource)
         {
             var model = resource.ToModel();
-
-            return _profileService.Add(model).Id;
+            model = _profileService.Add(model);
+            return model.Id;
         }
 
         private void DeleteProfile(int id)

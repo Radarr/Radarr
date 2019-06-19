@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Modal from 'Components/Modal/Modal';
-import SelectSeriesModalContentConnector from './SelectSeriesModalContentConnector';
+import SelectLanguageModalContentConnector from './SelectLanguageModalContentConnector';
 
-class SelectSeriesModal extends Component {
+class SelectLanguageModal extends Component {
 
   //
   // Render
@@ -20,7 +20,7 @@ class SelectSeriesModal extends Component {
         isOpen={isOpen}
         onModalClose={onModalClose}
       >
-        <SelectSeriesModalContentConnector
+        <SelectLanguageModalContentConnector
           {...otherProps}
           onModalClose={onModalClose}
         />
@@ -29,9 +29,9 @@ class SelectSeriesModal extends Component {
   }
 }
 
-SelectSeriesModal.propTypes = {
+SelectLanguageModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectSeriesModal;
+export default SelectLanguageModal;

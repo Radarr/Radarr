@@ -186,6 +186,7 @@ namespace NzbDrone.Core.Parser
             {
                 Movie = movie,
                 Quality = enhanced.Quality,
+                Languages = enhanced.Languages,
                 Path = filename,
                 ParsedMovieInfo = enhanced,
                 ExistingFile = movie.Path.IsParentPath(filename),

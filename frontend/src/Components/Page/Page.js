@@ -86,6 +86,7 @@ class Page extends Component {
 
           <PageHeader
             onSidebarToggle={onSidebarToggle}
+            isSmallScreen={isSmallScreen}
           />
 
           <div className={styles.main}>

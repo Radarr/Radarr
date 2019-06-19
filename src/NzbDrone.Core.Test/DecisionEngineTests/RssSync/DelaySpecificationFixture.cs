@@ -6,7 +6,7 @@ using FluentAssertions;
 using Marr.Data;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
         private void GivenUpgradeForExistingFile()
         {
-            Mocker.GetMock<IQualityUpgradableSpecification>()
+            Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
                   .Returns(true);
         }
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             GivenExistingFile(new QualityModel(Quality.HDTV720p));
             GivenUpgradeForExistingFile();
 
-            Mocker.GetMock<IQualityUpgradableSpecification>()
+            Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsRevisionUpgrade(It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
                   .Returns(true);
 
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             GivenExistingFile(new QualityModel(Quality.HDTV720p));
             GivenUpgradeForExistingFile();
 
-            Mocker.GetMock<IQualityUpgradableSpecification>()
+            Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsRevisionUpgrade(It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
                   .Returns(true);
 

@@ -9,11 +9,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public class QueueSpecification : IDecisionEngineSpecification
     {
         private readonly IQueueService _queueService;
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
         public QueueSpecification(IQueueService queueService,
-                                       QualityUpgradableSpecification qualityUpgradableSpecification,
+                                       UpgradableSpecification qualityUpgradableSpecification,
                                        Logger logger)
         {
             _queueService = queueService;
@@ -21,6 +21,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)

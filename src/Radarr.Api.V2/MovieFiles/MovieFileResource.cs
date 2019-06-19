@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using Radarr.Http.REST;
@@ -17,8 +19,8 @@ namespace Radarr.Api.V2.MovieFiles
         public string SceneName { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
-
         public bool QualityCutoffNotMet { get; set; }
+        public List<Language> Languages { get; set; }
     }
 
     public static class MovieFileResourceMapper
@@ -38,6 +40,7 @@ namespace Radarr.Api.V2.MovieFiles
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
                 Quality = model.Quality,
+                Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 //QualityCutoffNotMet
             };
@@ -59,12 +62,13 @@ namespace Radarr.Api.V2.MovieFiles
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
                 Quality = model.Quality,
+                Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 // QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
             };
         }
 
-        public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IQualityUpgradableSpecification upgradableSpecification)
+        public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IUpgradableSpecification upgradableSpecification)
         {
             if (model == null) return null;
 
@@ -79,6 +83,7 @@ namespace Radarr.Api.V2.MovieFiles
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
                 Quality = model.Quality,
+                Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
             };

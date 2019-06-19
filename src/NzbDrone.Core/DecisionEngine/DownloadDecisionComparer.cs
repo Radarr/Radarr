@@ -12,15 +12,16 @@ namespace NzbDrone.Core.DecisionEngine
 {
     public class DownloadDecisionComparer : IComparer<DownloadDecision>
     {
-        private readonly IDelayProfileService _delayProfileService;
         private readonly IConfigService _configService;
+        private readonly IDelayProfileService _delayProfileService;
+
         public delegate int CompareDelegate(DownloadDecision x, DownloadDecision y);
         public delegate int CompareDelegate<TSubject, TValue>(DownloadDecision x, DownloadDecision y);
 
-        public DownloadDecisionComparer(IDelayProfileService delayProfileService, IConfigService configService)
+        public DownloadDecisionComparer(IConfigService configService, IDelayProfileService delayProfileService)
         {
-            _delayProfileService = delayProfileService;
             _configService = configService;
+            _delayProfileService = delayProfileService;
         }
 
         public int Compare(DownloadDecision x, DownloadDecision y)

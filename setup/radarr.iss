@@ -6,7 +6,7 @@
 #define AppURL "https://radarr.video/"
 #define ForumsURL "https://github.com/Radarr/Radarr/issues"
 #define AppExeName "Radarr.exe"
-#define BuildNumber "1.0"
+#define BuildNumber "2.0"
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
 #define BranchName StringChange(GetEnv('APPVEYOR_REPO_BRANCH'), "/", "-")
 
@@ -23,7 +23,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{56C1065D-3523-4025-B76D-6F73F67F7F82}
 AppName={#AppName}
-AppVersion=0.2
+AppVersion=2.0
 AppPublisher={#AppPublisher}
 AppPublisherURL={#AppURL}
 AppSupportURL={#ForumsURL}

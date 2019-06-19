@@ -9,17 +9,18 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class ProperSpecification : IDecisionEngineSpecification
     {
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public ProperSpecification(QualityUpgradableSpecification qualityUpgradableSpecification, IConfigService configService, Logger logger)
+        public ProperSpecification(UpgradableSpecification qualityUpgradableSpecification, IConfigService configService, Logger logger)
         {
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _configService = configService;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
