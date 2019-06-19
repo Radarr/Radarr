@@ -8,15 +8,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public class CutoffSpecification : IDecisionEngineSpecification
     {
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
-        public CutoffSpecification(QualityUpgradableSpecification qualityUpgradableSpecification, Logger logger)
+        public CutoffSpecification(UpgradableSpecification qualityUpgradableSpecification, Logger logger)
         {
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)

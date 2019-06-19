@@ -1,11 +1,10 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
-import SelectSeriesModalContent from './SelectSeriesModalContent';
+import SelectMovieModalContent from './SelectMovieModalContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -29,27 +28,32 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  updateInteractiveImportItem
+  dispatchUpdateInteractiveImportItem: updateInteractiveImportItem
 };
 
-class SelectSeriesModalContentConnector extends Component {
+class SelectMovieModalContentConnector extends Component {
 
   //
   // Listeners
 
-  onMovieSelect = (seriesId) => {
-    const series = _.find(this.props.items, { id: seriesId });
+  onMovieSelect = (movieId) => {
+    const {
+      ids,
+      items,
+      dispatchUpdateInteractiveImportItem,
+      onModalClose
+    } = this.props;
 
-    this.props.ids.forEach((id) => {
-      this.props.updateInteractiveImportItem({
+    const movie = items.find((s) => s.id === movieId);
+
+    ids.forEach((id) => {
+      dispatchUpdateInteractiveImportItem({
         id,
-        series,
-        seasonNumber: undefined,
-        episodes: []
+        movie
       });
     });
 
-    this.props.onModalClose(true);
+    onModalClose(true);
   }
 
   //
@@ -57,7 +61,7 @@ class SelectSeriesModalContentConnector extends Component {
 
   render() {
     return (
-      <SelectSeriesModalContent
+      <SelectMovieModalContent
         {...this.props}
         onMovieSelect={this.onMovieSelect}
       />
@@ -65,11 +69,11 @@ class SelectSeriesModalContentConnector extends Component {
   }
 }
 
-SelectSeriesModalContentConnector.propTypes = {
+SelectMovieModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  updateInteractiveImportItem: PropTypes.func.isRequired,
+  dispatchUpdateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SelectSeriesModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(SelectMovieModalContentConnector);

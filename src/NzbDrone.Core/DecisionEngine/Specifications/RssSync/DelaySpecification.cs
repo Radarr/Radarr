@@ -11,12 +11,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
     public class DelaySpecification : IDecisionEngineSpecification
     {
         private readonly IPendingReleaseService _pendingReleaseService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IDelayProfileService _delayProfileService;
         private readonly Logger _logger;
 
         public DelaySpecification(IPendingReleaseService pendingReleaseService,
-                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                  IUpgradableSpecification qualityUpgradableSpecification,
                                   IDelayProfileService delayProfileService,
                                   Logger logger)
         {
@@ -26,6 +26,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)

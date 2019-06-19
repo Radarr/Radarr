@@ -3,7 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Test.CustomFormat;
@@ -11,7 +11,7 @@ using NzbDrone.Core.Test.CustomFormat;
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
-    public class CutoffSpecificationFixture : CoreTest<QualityUpgradableSpecification>
+    public class CutoffSpecificationFixture : CoreTest<UpgradableSpecification>
     {
 
         private CustomFormats.CustomFormat _customFormat;

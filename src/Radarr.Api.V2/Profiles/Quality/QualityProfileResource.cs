@@ -12,6 +12,7 @@ namespace Radarr.Api.V2.Profiles.Quality
     public class QualityProfileResource : RestResource
     {
         public string Name { get; set; }
+        public bool UpgradeAllowed { get; set; }
         public int Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<QualityProfileQualityItemResource> Items { get; set; }
@@ -49,6 +50,7 @@ namespace Radarr.Api.V2.Profiles.Quality
             {
                 Id = model.Id,
                 Name = model.Name,
+                UpgradeAllowed = model.UpgradeAllowed,
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
@@ -89,6 +91,7 @@ namespace Radarr.Api.V2.Profiles.Quality
             {
                 Id = resource.Id,
                 Name = resource.Name,
+                UpgradeAllowed = resource.UpgradeAllowed,
                 Cutoff = resource.Cutoff,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),

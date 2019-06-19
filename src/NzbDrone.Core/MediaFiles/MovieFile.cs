@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Marr.Data;
 using NzbDrone.Core.CustomFormats;
@@ -7,6 +7,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
+        public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public string Edition { get; set; }
         public LazyLoaded<Movie> Movie { get; set; }

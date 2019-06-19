@@ -27,7 +27,7 @@ namespace NzbDrone.Core.DecisionEngine
             return decisions.Where(c => c.RemoteMovie.MappingResult == MappingResultType.Success || c.RemoteMovie.MappingResult == MappingResultType.SuccessLenientMapping)
                             .GroupBy(c => c.RemoteMovie.Movie.Id, (movieId, downloadDecisions) =>
                             {
-                                return downloadDecisions.OrderByDescending(decision => decision, new DownloadDecisionComparer(_delayProfileService, _configService));
+                                return downloadDecisions.OrderByDescending(decision => decision, new DownloadDecisionComparer(_configService, _delayProfileService));
                             })
                             .SelectMany(c => c)
                             .Union(decisions.Where(c => c.RemoteMovie.MappingResult != MappingResultType.Success || c.RemoteMovie.MappingResult != MappingResultType.SuccessLenientMapping))

@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Profiles
         public List<ProfileFormatItem> FormatItems { get; set; }
         public List<string> PreferredTags { get; set; }
         public Language Language { get; set; }
+        public bool UpgradeAllowed { get; set; }
 
         public Quality LastAllowedQuality()
         {

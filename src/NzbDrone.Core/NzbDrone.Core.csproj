@@ -155,9 +155,15 @@
     <Compile Include="Datastore\Migration\152_add_custom_filters.cs" />
     <Compile Include="Datastore\Migration\153_indexer_client_status_search_changes.cs" />
     <Compile Include="Datastore\Migration\154_add_language_to_file_history_blacklist.cs" />
+    <Compile Include="Datastore\Migration\155_add_update_allowed_quality_profile.cs" />
+    <Compile Include="DecisionEngine\SpecificationPriority.cs" />
+    <Compile Include="DecisionEngine\Specifications\AlreadyImportedSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\BlockedIndexerSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\CustomFormatAllowedByProfileSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\UpgradeAllowedSpecification.cs" />
     <Compile Include="Download\Clients\DownloadClientUnavailableException.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxySelector.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV1.cs" />
@@ -440,14 +446,12 @@
     <Compile Include="DecisionEngine\DownloadDecisionComparer.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionMaker.cs" />
     <Compile Include="DecisionEngine\DownloadDecisionPriorizationService.cs" />
-    <Compile Include="DecisionEngine\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
-    <Compile Include="DecisionEngine\QualityUpgradableSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\UpgradableSpecification.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlacklistSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\AnimeVersionUpgradeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\CutoffSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ProtocolSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\LanguageSpecification.cs" />
@@ -462,7 +466,6 @@
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredMovieSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\AvailabilitySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\Search\DailyEpisodeMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\MovieSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\TorrentSeedingSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RawDiskSpecification.cs" />
@@ -1266,7 +1269,6 @@
     <Compile Include="Update\UpdateVerificationFailedException.cs" />
     <Compile Include="Validation\FolderValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
-    <Compile Include="Validation\LanguageValidator.cs" />
     <Compile Include="Validation\NzbDroneValidationExtensions.cs" />
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />
     <Compile Include="Validation\NzbDroneValidationResult.cs" />

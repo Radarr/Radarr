@@ -8,10 +8,10 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import SelectSeriesRow from './SelectSeriesRow';
-import styles from './SelectSeriesModalContent.css';
+import SelectMovieRow from './SelectMovieRow';
+import styles from './SelectMovieModalContent.css';
 
-class SelectSeriesModalContent extends Component {
+class SelectMovieModalContent extends Component {
 
   //
   // Lifecycle
@@ -46,7 +46,7 @@ class SelectSeriesModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Series
+          Manual Import - Select Movie
         </ModalHeader>
 
         <ModalBody
@@ -55,7 +55,7 @@ class SelectSeriesModalContent extends Component {
         >
           <TextInput
             className={styles.filterInput}
-            placeholder="Filter series"
+            placeholder="Filter movie"
             name="filter"
             value={filter}
             autoFocus={true}
@@ -67,7 +67,7 @@ class SelectSeriesModalContent extends Component {
               items.map((item) => {
                 return item.title.toLowerCase().includes(filter) ?
                   (
-                    <SelectSeriesRow
+                    <SelectMovieRow
                       key={item.id}
                       id={item.id}
                       title={item.title}
@@ -90,10 +90,10 @@ class SelectSeriesModalContent extends Component {
   }
 }
 
-SelectSeriesModalContent.propTypes = {
+SelectMovieModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectSeriesModalContent;
+export default SelectMovieModalContent;

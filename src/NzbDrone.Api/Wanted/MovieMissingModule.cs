@@ -1,6 +1,6 @@
 using System.Linq;
 using NzbDrone.Api.Movies;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Datastore;
 using NzbDrone.SignalR;
@@ -11,7 +11,7 @@ namespace NzbDrone.Api.Wanted
     class MovieMissingModule : MovieModuleWithSignalR
     {
         public MovieMissingModule(IMovieService movieService, 
-                                  IQualityUpgradableSpecification qualityUpgradableSpecification, 
+                                  IUpgradableSpecification qualityUpgradableSpecification, 
                                   IBroadcastSignalRMessage signalRBroadcaster) 
             : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {

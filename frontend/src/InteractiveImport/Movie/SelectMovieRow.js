@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Link from 'Components/Link/Link';
-import styles from './SelectSeriesRow.css';
+import styles from './SelectMovieRow.css';
 
-class SelectSeriesRow extends Component {
+class SelectMovieRow extends Component {
 
   //
   // Listeners
@@ -18,7 +18,7 @@ class SelectSeriesRow extends Component {
   render() {
     return (
       <Link
-        className={styles.series}
+        className={styles.movie}
         component="div"
         onPress={this.onPress}
       >
@@ -28,10 +28,10 @@ class SelectSeriesRow extends Component {
   }
 }
 
-SelectSeriesRow.propTypes = {
+SelectMovieRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   onMovieSelect: PropTypes.func.isRequired
 };
 
-export default SelectSeriesRow;
+export default SelectMovieRow;

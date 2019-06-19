@@ -1,10 +1,10 @@
 using System.Linq;
 using NzbDrone.Api.Movies;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Datastore;
 using NzbDrone.SignalR;
 using Radarr.Http;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.Wanted
 {
@@ -14,7 +14,7 @@ namespace NzbDrone.Api.Wanted
 
         public MovieCutoffModule(IMovieCutoffService movieCutoffService,
                                  IMovieService movieService,
-                                 IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                 IUpgradableSpecification qualityUpgradableSpecification,
                                  IBroadcastSignalRMessage signalRBroadcaster)
             : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {

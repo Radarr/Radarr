@@ -9,9 +9,10 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import MovieQuality from 'Movie/MovieQuality';
-// import EpisodeLanguage from 'Episode/EpisodeLanguage';
-import SelectSeriesModal from 'InteractiveImport/Series/SelectSeriesModal';
+// import MovieLanguage from 'Movie/MovieLanguage';
+import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
 
@@ -24,21 +25,24 @@ class InteractiveImportRow extends Component {
     super(props, context);
 
     this.state = {
-      isSelectSeriesModalOpen: false,
-      isSelectQualityModalOpen: false
+      isSelectMovieModalOpen: false,
+      isSelectQualityModalOpen: false,
+      isSelectLanguageModalOpen: false
     };
   }
 
   componentDidMount() {
     const {
       id,
-      series,
-      quality
+      movie,
+      quality,
+      language
     } = this.props;
 
     if (
-      series &&
-      quality
+      movie &&
+      quality &&
+      language
     ) {
       this.props.onSelectedChange({ id, value: true });
     }
@@ -47,23 +51,26 @@ class InteractiveImportRow extends Component {
   componentDidUpdate(prevProps) {
     const {
       id,
-      series,
+      movie,
       quality,
+      language,
       isSelected,
       onValidRowChange
     } = this.props;
 
     if (
-      prevProps.series === series &&
+      prevProps.movie === movie &&
       prevProps.quality === quality &&
+      prevProps.language === language &&
       prevProps.isSelected === isSelected
     ) {
       return;
     }
 
     const isValid = !!(
-      series &&
-      quality
+      movie &&
+      quality &&
+      language
     );
 
     if (isSelected && !isValid) {
@@ -90,21 +97,30 @@ class InteractiveImportRow extends Component {
   //
   // Listeners
 
-  onSelectSeriesPress = () => {
-    this.setState({ isSelectSeriesModalOpen: true });
+  onSelectMoviePress = () => {
+    this.setState({ isSelectMovieModalOpen: true });
   }
 
   onSelectQualityPress = () => {
     this.setState({ isSelectQualityModalOpen: true });
   }
 
-  onSelectSeriesModalClose = (changed) => {
-    this.setState({ isSelectSeriesModalOpen: false });
+  onSelectLanguagePress = () => {
+    this.setState({ isSelectLanguageModalOpen: true });
+  }
+
+  onSelectMovieModalClose = (changed) => {
+    this.setState({ isSelectMovieModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
   onSelectQualityModalClose = (changed) => {
     this.setState({ isSelectQualityModalOpen: false });
+    this.selectRowAfterChange(changed);
+  }
+
+  onSelectLanguageModalClose = (changed) => {
+    this.setState({ isSelectLanguageModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -114,10 +130,11 @@ class InteractiveImportRow extends Component {
   render() {
     const {
       id,
-      allowSeriesChange,
+      allowMovieChange,
       relativePath,
-      series,
+      movie,
       quality,
+      language,
       size,
       rejections,
       isSelected,
@@ -125,14 +142,16 @@ class InteractiveImportRow extends Component {
     } = this.props;
 
     const {
-      isSelectSeriesModalOpen,
-      isSelectQualityModalOpen
+      isSelectMovieModalOpen,
+      isSelectQualityModalOpen,
+      isSelectLanguageModalOpen
     } = this.state;
 
-    const seriesTitle = series ? series.title : '';
+    const movieTitle = movie ? movie.title : '';
 
-    const showSeriesPlaceholder = isSelected && !series;
+    const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
+    const showLanguagePlaceholder = isSelected && !language;
 
     return (
       <TableRow>
@@ -150,16 +169,18 @@ class InteractiveImportRow extends Component {
         </TableRowCell>
 
         <TableRowCellButton
-          isDisabled={!allowSeriesChange}
-          onPress={this.onSelectSeriesPress}
+          isDisabled={!allowMovieChange}
+          title={allowMovieChange ? 'Click to change movie' : undefined}
+          onPress={this.onSelectMoviePress}
         >
           {
-            showSeriesPlaceholder ? <InteractiveImportRowCellPlaceholder /> : seriesTitle
+            showMoviePlaceholder ? <InteractiveImportRowCellPlaceholder /> : movieTitle
           }
         </TableRowCellButton>
 
         <TableRowCellButton
           className={styles.quality}
+          title="Click to change quality"
           onPress={this.onSelectQualityPress}
         >
           {
@@ -174,6 +195,25 @@ class InteractiveImportRow extends Component {
                 quality={quality}
               />
           }
+        </TableRowCellButton>
+
+        <TableRowCellButton
+          className={styles.language}
+          title="Click to change language"
+          onPress={this.onSelectLanguagePress}
+        >
+          {
+            showLanguagePlaceholder &&
+              <InteractiveImportRowCellPlaceholder />
+          }
+
+          {/* {
+            !showLanguagePlaceholder && !!language &&
+              <MovieLanguage
+                className={styles.label}
+                language={language}
+              />
+          } */}
         </TableRowCellButton>
 
         <TableRowCell>
@@ -209,19 +249,26 @@ class InteractiveImportRow extends Component {
           }
         </TableRowCell>
 
-        <SelectSeriesModal
-          isOpen={isSelectSeriesModalOpen}
+        <SelectMovieModal
+          isOpen={isSelectMovieModalOpen}
           ids={[id]}
-          onModalClose={this.onSelectSeriesModalClose}
+          onModalClose={this.onSelectMovieModalClose}
         />
 
         <SelectQualityModal
           isOpen={isSelectQualityModalOpen}
-          id={id}
+          ids={[id]}
           qualityId={quality ? quality.quality.id : 0}
           proper={quality ? quality.revision.version > 1 : false}
           real={quality ? quality.revision.real > 0 : false}
           onModalClose={this.onSelectQualityModalClose}
+        />
+
+        <SelectLanguageModal
+          isOpen={isSelectLanguageModalOpen}
+          ids={[id]}
+          languageId={language ? language.id : 0}
+          onModalClose={this.onSelectLanguageModalClose}
         />
       </TableRow>
     );
@@ -231,21 +278,16 @@ class InteractiveImportRow extends Component {
 
 InteractiveImportRow.propTypes = {
   id: PropTypes.number.isRequired,
-  allowSeriesChange: PropTypes.bool.isRequired,
+  allowMovieChange: PropTypes.bool.isRequired,
   relativePath: PropTypes.string.isRequired,
-  series: PropTypes.object,
-  seasonNumber: PropTypes.number,
-  episodes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  movie: PropTypes.object,
   quality: PropTypes.object,
+  language: PropTypes.object,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
   onValidRowChange: PropTypes.func.isRequired
-};
-
-InteractiveImportRow.defaultProps = {
-  episodes: []
 };
 
 export default InteractiveImportRow;

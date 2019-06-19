@@ -8,8 +8,8 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.MovieFiles
 {
@@ -18,14 +18,14 @@ namespace NzbDrone.Api.MovieFiles
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMovieService _movieService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
                              IRecycleBinProvider recycleBinProvider,
                              IMovieService movieService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
         {

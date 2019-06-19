@@ -20,7 +20,9 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import SelectSeriesModal from 'InteractiveImport/Series/SelectSeriesModal';
+import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
+import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
 
@@ -32,8 +34,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'series',
-    label: 'Series',
+    name: 'movie',
+    label: 'Movie',
     isSortable: true,
     isVisible: true
   },
@@ -69,6 +71,16 @@ const filterExistingFilesOptions = {
   NEW: 'new'
 };
 
+const importModeOptions = [
+  { key: 'move', value: 'Move Files' },
+  { key: 'copy', value: 'Copy Files' }
+];
+
+const SELECT = 'select';
+const MOVIE = 'movie';
+const LANGUAGE = 'language';
+const QUALITY = 'quality';
+
 class InteractiveImportModalContent extends Component {
 
   //
@@ -83,7 +95,7 @@ class InteractiveImportModalContent extends Component {
       lastToggled: null,
       selectedState: {},
       invalidRowsSelected: [],
-      isSelectSeriesModalOpen: false
+      selectModalOpen: null
     };
   }
 
@@ -122,9 +134,17 @@ class InteractiveImportModalContent extends Component {
   }
 
   onImportSelectedPress = () => {
-    const selected = this.getSelectedIds();
+    const {
+      downloadId,
+      showImportMode,
+      importMode,
+      onImportSelectedPress
+    } = this.props;
 
-    this.props.onImportSelectedPress(selected, this.props.importMode);
+    const selected = this.getSelectedIds();
+    const finalImportMode = downloadId || !showImportMode ? 'auto' : importMode;
+
+    onImportSelectedPress(selected, finalImportMode);
   }
 
   onFilterExistingFilesChange = (value) => {
@@ -135,12 +155,12 @@ class InteractiveImportModalContent extends Component {
     this.props.onImportModeChange(value);
   }
 
-  onSelectSeriesPress = () => {
-    this.setState({ isSelectSeriesModalOpen: true });
+  onSelectModalSelect = ({ value }) => {
+    this.setState({ selectModalOpen: value });
   }
 
-  onSelectSeriesModalClose = () => {
-    this.setState({ isSelectSeriesModalOpen: false });
+  onSelectModalClose = () => {
+    this.setState({ selectModalOpen: null });
   }
 
   //
@@ -149,7 +169,7 @@ class InteractiveImportModalContent extends Component {
   render() {
     const {
       downloadId,
-      allowSeriesChange,
+      allowMovieChange,
       showFilterExistingFiles,
       showImportMode,
       filterExistingFiles,
@@ -172,16 +192,24 @@ class InteractiveImportModalContent extends Component {
       allUnselected,
       selectedState,
       invalidRowsSelected,
-      isSelectSeriesModalOpen
+      selectModalOpen
     } = this.state;
 
     const selectedIds = this.getSelectedIds();
     const errorMessage = getErrorMessage(error, 'Unable to load manual import items');
 
-    const importModeOptions = [
-      { key: 'move', value: 'Move Files' },
-      { key: 'copy', value: 'Copy Files' }
+    const bulkSelectOptions = [
+      { key: SELECT, value: 'Select...', disabled: true },
+      { key: LANGUAGE, value: 'Select Language' },
+      { key: QUALITY, value: 'Select Quality' }
     ];
+
+    if (allowMovieChange) {
+      bulkSelectOptions.splice(1, 0, {
+        key: MOVIE,
+        value: 'Select Movie'
+      });
+    }
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -258,7 +286,7 @@ class InteractiveImportModalContent extends Component {
                           key={item.id}
                           isSelected={selectedState[item.id]}
                           {...item}
-                          allowSeriesChange={allowSeriesChange}
+                          allowMovieChange={allowMovieChange}
                           onSelectedChange={this.onSelectedChange}
                           onValidRowChange={this.onValidRowChange}
                         />
@@ -278,24 +306,25 @@ class InteractiveImportModalContent extends Component {
         <ModalFooter className={styles.footer}>
           <div className={styles.leftButtons}>
             {
-              !downloadId && showImportMode &&
+              !downloadId && showImportMode ?
                 <SelectInput
                   className={styles.importMode}
                   name="importMode"
                   value={importMode}
                   values={importModeOptions}
                   onChange={this.onImportModeChange}
-                />
+                /> :
+                null
             }
-          </div>
 
-          <div className={styles.centerButtons}>
-            {
-              allowSeriesChange &&
-                <Button onPress={this.onSelectSeriesPress}>
-                  Select Series
-                </Button>
-            }
+            <SelectInput
+              className={styles.bulkSelect}
+              name="select"
+              value={SELECT}
+              values={bulkSelectOptions}
+              isDisabled={!selectedIds.length}
+              onChange={this.onSelectModalSelect}
+            />
           </div>
 
           <div className={styles.rightButtons}>
@@ -318,10 +347,26 @@ class InteractiveImportModalContent extends Component {
           </div>
         </ModalFooter>
 
-        <SelectSeriesModal
-          isOpen={isSelectSeriesModalOpen}
+        <SelectMovieModal
+          isOpen={selectModalOpen === MOVIE}
           ids={selectedIds}
-          onModalClose={this.onSelectSeriesModalClose}
+          onModalClose={this.onSelectModalClose}
+        />
+
+        <SelectLanguageModal
+          isOpen={selectModalOpen === LANGUAGE}
+          ids={selectedIds}
+          languageId={0}
+          onModalClose={this.onSelectModalClose}
+        />
+
+        <SelectQualityModal
+          isOpen={selectModalOpen === QUALITY}
+          ids={selectedIds}
+          qualityId={0}
+          proper={false}
+          real={false}
+          onModalClose={this.onSelectModalClose}
         />
       </ModalContent>
     );
@@ -330,7 +375,7 @@ class InteractiveImportModalContent extends Component {
 
 InteractiveImportModalContent.propTypes = {
   downloadId: PropTypes.string,
-  allowSeriesChange: PropTypes.bool.isRequired,
+  allowMovieChange: PropTypes.bool.isRequired,
   showImportMode: PropTypes.bool.isRequired,
   showFilterExistingFiles: PropTypes.bool.isRequired,
   filterExistingFiles: PropTypes.bool.isRequired,
@@ -352,7 +397,7 @@ InteractiveImportModalContent.propTypes = {
 };
 
 InteractiveImportModalContent.defaultProps = {
-  allowSeriesChange: true,
+  allowMovieChange: true,
   showFilterExistingFiles: false,
   showImportMode: true,
   importMode: 'move'

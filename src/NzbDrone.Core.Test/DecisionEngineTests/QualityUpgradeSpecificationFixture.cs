@@ -1,16 +1,16 @@
-﻿﻿using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
 
-    public class QualityUpgradeSpecificationFixture : CoreTest<QualityUpgradableSpecification>
+    public class QualityUpgradeSpecificationFixture : CoreTest<UpgradableSpecification>
     {
         public static object[] IsUpgradeTestCases =
         {

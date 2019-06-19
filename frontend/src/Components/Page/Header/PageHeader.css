@@ -15,8 +15,9 @@
   padding-left: 20px;
 }
 
-.logoLink {
-  line-height: 0;
+.logoFull {
+  width: 144px;
+  height: 48px;
 }
 
 .logo {

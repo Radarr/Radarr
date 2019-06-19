@@ -4,22 +4,22 @@ using Nancy;
 using Radarr.Http.Extensions;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Radarr.Http;
 using Radarr.Http.REST;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.History
 {
     public class HistoryModule : RadarrRestModule<HistoryResource>
     {
         private readonly IHistoryService _historyService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IFailedDownloadService _failedDownloadService;
 
         public HistoryModule(IHistoryService historyService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              IFailedDownloadService failedDownloadService)
         {
             _historyService = historyService;
