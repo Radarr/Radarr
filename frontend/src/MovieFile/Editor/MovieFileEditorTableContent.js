@@ -8,12 +8,8 @@ import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import { kinds } from 'Helpers/Props';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import SelectInput from 'Components/Form/SelectInput';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
@@ -22,18 +18,13 @@ import styles from './MovieFileEditorModalContent.css';
 
 const columns = [
   {
-    name: 'episodeNumber',
-    label: 'Episode',
+    name: 'title',
+    label: 'Title',
     isVisible: true
   },
   {
-    name: 'relativePath',
-    label: 'Relative Path',
-    isVisible: true
-  },
-  {
-    name: 'airDateUtc',
-    label: 'Air Date',
+    name: 'mediainfo',
+    label: 'Media Info',
     isVisible: true
   },
   {
@@ -48,7 +39,7 @@ const columns = [
   }
 ];
 
-class MovieFileEditorModalContent extends Component {
+class MovieFileEditorTableContent extends Component {
 
   //
   // Lifecycle
@@ -82,8 +73,8 @@ class MovieFileEditorModalContent extends Component {
     return selectedIds.reduce((acc, id) => {
       const matchingItem = this.props.items.find((item) => item.id === id);
 
-      if (matchingItem && !acc.includes(matchingItem.episodeFileId)) {
-        acc.push(matchingItem.episodeFileId);
+      if (matchingItem && !acc.includes(matchingItem.movieId)) {
+        acc.push(matchingItem.movieId);
       }
 
       return acc;
@@ -118,21 +109,17 @@ class MovieFileEditorModalContent extends Component {
 
   onLanguageChange = ({ value }) => {
     const selectedIds = this.getSelectedIds();
-
     if (!selectedIds.length) {
       return;
     }
-
     this.props.onLanguageChange(selectedIds, parseInt(value));
   }
 
   onQualityChange = ({ value }) => {
     const selectedIds = this.getSelectedIds();
-
     if (!selectedIds.length) {
       return;
     }
-
     this.props.onQualityChange(selectedIds, parseInt(value));
   }
 
@@ -144,8 +131,7 @@ class MovieFileEditorModalContent extends Component {
       isDeleting,
       items,
       languages,
-      qualities,
-      onModalClose
+      qualities
     } = this.props;
 
     const {
@@ -176,45 +162,39 @@ class MovieFileEditorModalContent extends Component {
     const hasSelectedFiles = this.getSelectedIds().length > 0;
 
     return (
-      <ModalContent onModalClose={onModalClose}>
-        <ModalHeader>
-          Manage Episodes
-        </ModalHeader>
+      <div>
+        {
+          !items.length &&
+            <div>
+              No movie files to manage.
+            </div>
+        }
 
-        <ModalBody>
-          {
-            !items.length &&
-              <div>
-                No episode files to manage.
-              </div>
-          }
-
-          {
-            !!items.length &&
-              <Table
-                columns={columns}
-                selectAll={true}
-                allSelected={allSelected}
-                allUnselected={allUnselected}
-                onSelectAllChange={this.onSelectAllChange}
-              >
-                <TableBody>
-                  {
-                    items.map((item) => {
-                      return (
-                        <MovieFileEditorRow
-                          key={item.id}
-                          isSelected={selectedState[item.id]}
-                          {...item}
-                          onSelectedChange={this.onSelectedChange}
-                        />
-                      );
-                    })
-                  }
-                </TableBody>
-              </Table>
-          }
-        </ModalBody>
+        {
+          !!items.length &&
+            <Table
+              columns={columns}
+              selectAll={true}
+              allSelected={allSelected}
+              allUnselected={allUnselected}
+              onSelectAllChange={this.onSelectAllChange}
+            >
+              <TableBody>
+                {
+                  items.map((item) => {
+                    return (
+                      <MovieFileEditorRow
+                        key={item.id}
+                        isSelected={selectedState[item.id]}
+                        {...item}
+                        onSelectedChange={this.onSelectedChange}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
+        }
 
         <ModalFooter>
           <div className={styles.actions}>
@@ -247,38 +227,31 @@ class MovieFileEditorModalContent extends Component {
               />
             </div>
           </div>
-
-          <Button
-            onPress={onModalClose}
-          >
-            Close
-          </Button>
         </ModalFooter>
 
         <ConfirmModal
           isOpen={isConfirmDeleteModalOpen}
           kind={kinds.DANGER}
-          title="Delete Selected Episode Files"
-          message={'Are you sure you want to delete the selected episode files?'}
+          title="Delete Selected Movie Files"
+          message={'Are you sure you want to delete the selected movie files?'}
           confirmLabel="Delete"
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}
         />
-      </ModalContent>
+      </div>
     );
   }
 }
 
-MovieFileEditorModalContent.propTypes = {
-  seasonNumber: PropTypes.number,
+MovieFileEditorTableContent.propTypes = {
+  movieId: PropTypes.number,
   isDeleting: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onLanguageChange: PropTypes.func.isRequired,
-  onQualityChange: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onQualityChange: PropTypes.func.isRequired
 };
 
-export default MovieFileEditorModalContent;
+export default MovieFileEditorTableContent;

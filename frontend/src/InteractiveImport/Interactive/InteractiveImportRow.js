@@ -9,7 +9,7 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import MovieQuality from 'Movie/MovieQuality';
-// import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguage from 'Movie/MovieLanguage';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
@@ -152,7 +152,8 @@ class InteractiveImportRow extends Component {
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
     const showLanguagePlaceholder = isSelected && !language;
-
+    //TODO - Placeholder till we implement selection of multiple languages
+    const languages = [language];
     return (
       <TableRow>
         <TableSelectCell
@@ -207,13 +208,13 @@ class InteractiveImportRow extends Component {
               <InteractiveImportRowCellPlaceholder />
           }
 
-          {/* {
+          {
             !showLanguagePlaceholder && !!language &&
               <MovieLanguage
                 className={styles.label}
-                language={language}
+                languages={languages}
               />
-          } */}
+          }
         </TableRowCellButton>
 
         <TableRowCell>

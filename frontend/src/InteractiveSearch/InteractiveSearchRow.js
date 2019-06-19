@@ -15,6 +15,7 @@ import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieLanguage from 'Movie/MovieLanguage';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
   if (isGrabbing) {
@@ -111,6 +112,7 @@ class InteractiveSearchRow extends Component {
       seeders,
       leechers,
       quality,
+      languages,
       rejections,
       downloadAllowed,
       isGrabbing,
@@ -157,6 +159,12 @@ class InteractiveSearchRow extends Component {
                 leechers={leechers}
               />
           }
+        </TableRowCell>
+
+        <TableRowCell className={styles.language}>
+          <MovieLanguage
+            languages={languages}
+          />
         </TableRowCell>
 
         <TableRowCell className={styles.quality}>
@@ -233,6 +241,7 @@ InteractiveSearchRow.propTypes = {
   seeders: PropTypes.number,
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   rejections: PropTypes.arrayOf(PropTypes.string).isRequired,
   downloadAllowed: PropTypes.bool.isRequired,
   isGrabbing: PropTypes.bool.isRequired,

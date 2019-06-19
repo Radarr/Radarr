@@ -22,7 +22,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
-import MovieFileEditorModal from 'MovieFile/Editor/MovieFileEditorModal';
+import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import MoviePoster from 'Movie/MoviePoster';
@@ -491,7 +491,9 @@ class MovieDetails extends Component {
               </TabPanel>
 
               <TabPanel>
-                <h2>Any content 3</h2>
+                <MovieFileEditorTable
+                  movieId={id}
+                />
               </TabPanel>
 
               <TabPanel>
@@ -505,12 +507,6 @@ class MovieDetails extends Component {
             isOpen={isOrganizeModalOpen}
             movieId={id}
             onModalClose={this.onOrganizeModalClose}
-          />
-
-          <MovieFileEditorModal
-            isOpen={isManageEpisodesOpen}
-            movieId={id}
-            onModalClose={this.onManageEpisodesModalClose}
           />
 
           <EditMovieModalConnector

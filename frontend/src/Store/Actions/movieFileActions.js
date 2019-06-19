@@ -137,9 +137,10 @@ export const actionHandlers = handleThunks({
   },
 
   [UPDATE_MOVIE_FILES]: function(getState, payload, dispatch) {
+
     const {
       movieFileIds,
-      language,
+      languages,
       quality
     } = payload;
 
@@ -149,14 +150,14 @@ export const actionHandlers = handleThunks({
       movieFileIds
     };
 
-    if (language) {
-      data.language = language;
+    if (languages) {
+      data.languages = languages;
     }
 
     if (quality) {
       data.quality = quality;
     }
-
+    console.log(JSON.stringify(data))
     const promise = createAjaxRequest({
       url: '/movieFile/editor',
       method: 'PUT',
@@ -168,15 +169,12 @@ export const actionHandlers = handleThunks({
       dispatch(batchActions([
         ...movieFileIds.map((id) => {
           const props = {};
-
-          if (language) {
-            props.language = language;
+          if (languages) {
+            props.languages = languages;
           }
-
           if (quality) {
             props.quality = quality;
           }
-
           return updateItem({ section, id, ...props });
         }),
 

@@ -42,10 +42,10 @@ namespace Radarr.Api.V2.MovieFiles
 
             GetResourceById = GetMovieFile;
             GetResourceAll = GetMovieFiles;
-            UpdateResource = SetQuality;
+            UpdateResource = SetMovieFile;
             DeleteResource = DeleteMovieFile;
 
-            Put["/editor"] = movieFiles => SetQuality();
+            Put["/editor"] = movieFiles => SetMovieFile();
             Delete["/bulk"] = movieFiles => DeleteMovieFiles();
         }
 
@@ -92,14 +92,15 @@ namespace Radarr.Api.V2.MovieFiles
             }
         }
 
-        private void SetQuality(MovieFileResource movieFileResource)
+        private void SetMovieFile(MovieFileResource movieFileResource)
         {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
             movieFile.Quality = movieFileResource.Quality;
+            movieFile.Languages = movieFileResource.Languages;
             _mediaFileService.Update(movieFile);
         }
 
-        private Response SetQuality()
+        private Response SetMovieFile()
         {
             var resource = Request.Body.FromJson<MovieFileListResource>();
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
@@ -111,6 +112,11 @@ namespace Radarr.Api.V2.MovieFiles
                 {
                     movieFile.Quality = resource.Quality;
                 }
+                if (resource.Languages != null)
+                {
+                    movieFile.Languages = resource.Languages;
+                }
+
             }
 
             _mediaFileService.Update(movieFiles);
