@@ -121,7 +121,6 @@ class InteractiveSearchRow extends Component {
       timeFormat,
       grabError
     } = this.props;
-
     return (
       <TableRow>
         <TableRowCell>
@@ -207,6 +206,7 @@ class InteractiveSearchRow extends Component {
             name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
             kind={grabError ? kinds.DANGER : kinds.DEFAULT}
             title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+            isDisabled={isGrabbed}
             isSpinning={isGrabbing}
             onPress={downloadAllowed ? this.onGrabPress : this.onConfirmGrabPress}
           />
