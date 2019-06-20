@@ -19,8 +19,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
             artists.ForEach(s =>
             {
-                s.CleanName = s.CleanName.CleanArtistName();
-                _artistRepository.Update(s);
+                var cleanName = s.Name.CleanArtistName();
+                if (s.CleanName != cleanName)
+                {
+                    s.CleanName = cleanName;
+                    _artistRepository.Update(s);
+                }
             });
         }
     }
