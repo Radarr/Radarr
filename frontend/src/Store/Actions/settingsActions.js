@@ -18,7 +18,6 @@ import namingExamples from './Settings/namingExamples';
 import notifications from './Settings/notifications';
 import qualityDefinitions from './Settings/qualityDefinitions';
 import qualityProfiles from './Settings/qualityProfiles';
-import languageProfiles from './Settings/languageProfiles';
 import remotePathMappings from './Settings/remotePathMappings';
 import restrictions from './Settings/restrictions';
 import ui from './Settings/ui';
@@ -31,7 +30,6 @@ export * from './Settings/general';
 export * from './Settings/indexerOptions';
 export * from './Settings/indexers';
 export * from './Settings/languages';
-export * from './Settings/languageProfiles';
 export * from './Settings/netImportOptions';
 export * from './Settings/netImports';
 export * from './Settings/mediaManagement';
@@ -64,7 +62,6 @@ export const defaultState = {
   indexerOptions: indexerOptions.defaultState,
   indexers: indexers.defaultState,
   languages: languages.defaultState,
-  languageProfiles: languageProfiles.defaultState,
   netImportOptions: netImportOptions.defaultState,
   netImports: netImports.defaultState,
   mediaManagement: mediaManagement.defaultState,
@@ -105,7 +102,6 @@ export const actionHandlers = handleThunks({
   ...indexerOptions.actionHandlers,
   ...indexers.actionHandlers,
   ...languages.actionHandlers,
-  ...languageProfiles.actionHandlers,
   ...netImportOptions.actionHandlers,
   ...netImports.actionHandlers,
   ...mediaManagement.actionHandlers,
@@ -137,7 +133,6 @@ export const reducers = createHandleActions({
   ...indexerOptions.reducers,
   ...indexers.reducers,
   ...languages.reducers,
-  ...languageProfiles.reducers,
   ...netImportOptions.reducers,
   ...netImports.reducers,
   ...mediaManagement.reducers,

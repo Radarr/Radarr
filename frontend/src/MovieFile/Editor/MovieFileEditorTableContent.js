@@ -112,6 +112,7 @@ class MovieFileEditorTableContent extends Component {
     if (!selectedIds.length) {
       return;
     }
+
     this.props.onLanguageChange(selectedIds, parseInt(value));
   }
 
@@ -120,6 +121,7 @@ class MovieFileEditorTableContent extends Component {
     if (!selectedIds.length) {
       return;
     }
+
     this.props.onQualityChange(selectedIds, parseInt(value));
   }
 

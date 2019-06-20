@@ -21,25 +21,6 @@ const mapDispatchToProps = {
 class MovieTitlesTableContentConnector extends Component {
 
   //
-  // Lifecycle
-
-  componentDidMount() {
-    // const {
-    //   movieId
-    // } = this.props;
-
-    // this.props.fetchMovies({
-    //   movieId
-    // });
-  }
-
-  // componentWillUnmount() {
-  // }
-
-  //
-  // Listeners
-
-  //
   // Render
 
   render() {

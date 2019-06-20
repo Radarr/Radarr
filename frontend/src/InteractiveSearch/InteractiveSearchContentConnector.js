@@ -38,7 +38,7 @@ function createMapDispatchToProps(dispatch, props) {
     },
 
     onFilterSelect(selectedFilterKey) {
-      const action = releaseActions.setMovieReleasesFilter;
+      const action = releaseActions.setReleasesFilter;
       dispatch(action({ selectedFilterKey }));
     },
 

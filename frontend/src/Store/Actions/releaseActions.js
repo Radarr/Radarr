@@ -140,7 +140,7 @@ export const SET_RELEASES_SORT = 'releases/setReleasesSort';
 export const CLEAR_RELEASES = 'releases/clearReleases';
 export const GRAB_RELEASE = 'releases/grabRelease';
 export const UPDATE_RELEASE = 'releases/updateRelease';
-export const SET_MOVIE_RELEASES_FILTER = 'releases/setMovieReleasesFilter';
+export const SET_RELEASES_FILTER = 'releases/setMovieReleasesFilter';
 
 //
 // Action Creators
@@ -151,7 +151,7 @@ export const setReleasesSort = createAction(SET_RELEASES_SORT);
 export const clearReleases = createAction(CLEAR_RELEASES);
 export const grabRelease = createThunk(GRAB_RELEASE);
 export const updateRelease = createAction(UPDATE_RELEASE);
-export const setMovieReleasesFilter = createAction(SET_MOVIE_RELEASES_FILTER);
+export const setReleasesFilter = createAction(SET_RELEASES_FILTER);
 
 //
 // Helpers
@@ -242,7 +242,7 @@ export const reducers = createHandleActions({
     return newState;
   },
 
-  [SET_MOVIE_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section),
+  [SET_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section),
   [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section)
 
 }, defaultState, section);
