@@ -29,6 +29,10 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(releaseActions.fetchReleases(payload));
     },
 
+    dispatchClearReleases(payload) {
+      dispatch(releaseActions.clearReleases(payload));
+    },
+
     onSortPress(sortKey, sortDirection) {
       dispatch(releaseActions.setReleasesSort({ sortKey, sortDirection }));
     },
@@ -58,10 +62,16 @@ class InteractiveSearchConnector extends Component {
 
     // If search results are not yet isPopulated fetch them,
     // otherwise re-show the existing props.
-
     if (!isPopulated) {
       dispatchFetchReleases(searchPayload);
     }
+  }
+
+  componentWillUnmount() {
+    const {
+      dispatchClearReleases
+    } = this.props;
+    dispatchClearReleases();
   }
 
   //
@@ -70,6 +80,7 @@ class InteractiveSearchConnector extends Component {
   render() {
     const {
       dispatchFetchReleases,
+      dispatchClearReleases,
       ...otherProps
     } = this.props;
 
@@ -85,7 +96,8 @@ class InteractiveSearchConnector extends Component {
 InteractiveSearchConnector.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  dispatchFetchReleases: PropTypes.func.isRequired
+  dispatchFetchReleases: PropTypes.func.isRequired,
+  dispatchClearReleases: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchConnector);

@@ -4,18 +4,17 @@ import InteractiveSearchTableContent from './InteractiveSearchTableContent';
 
 function InteractiveSearchTable(props) {
   const {
-    movieId
+    ...otherProps
   } = props;
 
   return (
     <InteractiveSearchTableContent
-      movieId={movieId}
+    {...otherProps}
     />
   );
 }
 
 InteractiveSearchTable.propTypes = {
-  movieId: PropTypes.number.isRequired
 };
 
 export default InteractiveSearchTable;

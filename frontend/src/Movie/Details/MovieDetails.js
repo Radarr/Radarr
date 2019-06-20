@@ -29,9 +29,10 @@ import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
+import MovieTitlesTable from 'Movie/Titles/MovieTitlesTable';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
-import InteractiveSearchTable from 'Movie/Search/InteractiveSearchTable';
+import InteractiveSearchTable from '../../InteractiveSearch/InteractiveSearchTable';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
@@ -497,7 +498,9 @@ class MovieDetails extends Component {
               </TabPanel>
 
               <TabPanel>
-                <h2>Any content 4</h2>
+              <MovieTitlesTable
+                  movieId={id}
+                />
               </TabPanel>
             </Tabs>
 
