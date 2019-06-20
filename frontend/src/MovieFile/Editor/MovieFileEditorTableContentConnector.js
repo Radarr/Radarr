@@ -18,10 +18,10 @@ function createMapStateToProps() {
     createMovieSelector(),
     (
       movieFiles,
-      languages,
+      languageProfiles,
       qualityProfiles
     ) => {
-      languages = languages.items;
+      const languages = languageProfiles.items;
       const qualities = getQualities(qualityProfiles.schema.items);
       // let error = null;
       // if (languageProfiles.schemaError) {
