@@ -23,12 +23,6 @@ function createMapStateToProps() {
     ) => {
       const languages = languageProfiles.items;
       const qualities = getQualities(qualityProfiles.schema.items);
-      // let error = null;
-      // if (languageProfiles.schemaError) {
-      //   error = 'Unable to load languages';
-      // } else if (qualityProfiles.schemaError) {
-      //   error = 'Unable to load qualities';
-      // }
 
       return {
         items: movieFiles.items,

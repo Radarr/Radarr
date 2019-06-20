@@ -38,7 +38,7 @@ export const actionHandlers = handleThunks({
     dispatch(set({ section, isFetching: true }));
 
     const promise = createAjaxRequest({
-      url: '/history/movie',
+      url: '/alttitle',
       data: payload
     }).request;
 

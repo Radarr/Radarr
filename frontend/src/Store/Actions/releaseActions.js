@@ -215,12 +215,7 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CLEAR_RELEASES]: (state) => {
-    const {
-      movieId,
-      ...otherDefaultState
-    } = defaultState;
-
-    return Object.assign({}, state, otherDefaultState);
+    return Object.assign({}, state, defaultState);
   },
 
   [UPDATE_RELEASE]: (state, { payload }) => {
