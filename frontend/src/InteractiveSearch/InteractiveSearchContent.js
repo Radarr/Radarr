@@ -9,7 +9,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import InteractiveSearchRow from './InteractiveSearchRow';
-import styles from './InteractiveSearch.css';
+import styles from './InteractiveSearchContent.css';
 
 const columns = [
   {
@@ -76,7 +76,7 @@ const columns = [
   }
 ];
 
-function InteractiveSearch(props) {
+function InteractiveSearchContent(props) {
   const {
     searchPayload,
     isFetching,
@@ -173,7 +173,7 @@ function InteractiveSearch(props) {
   );
 }
 
-InteractiveSearch.propTypes = {
+InteractiveSearchContent.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
@@ -192,4 +192,4 @@ InteractiveSearch.propTypes = {
   onGrabPress: PropTypes.func.isRequired
 };
 
-export default InteractiveSearch;
+export default InteractiveSearchContent;

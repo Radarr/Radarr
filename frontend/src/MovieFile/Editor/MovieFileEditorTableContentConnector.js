@@ -21,9 +21,9 @@ function createMapStateToProps() {
       languages,
       qualityProfiles
     ) => {
-      languages = languages.items
+      languages = languages.items;
       const qualities = getQualities(qualityProfiles.schema.items);
-      let error = null;
+      // let error = null;
       // if (languageProfiles.schemaError) {
       //   error = 'Unable to load languages';
       // } else if (qualityProfiles.schemaError) {
@@ -34,7 +34,7 @@ function createMapStateToProps() {
         items: movieFiles.items,
         isDeleting: movieFiles.isDeleting,
         isSaving: movieFiles.isSaving,
-        error,
+        error: null,
         languages,
         qualities
       };
@@ -80,8 +80,8 @@ class MovieFileEditorTableContentConnector extends Component {
 
   onLanguageChange = (movieFileIds, languageId) => {
     const language = _.find(this.props.languages, { id: languageId });
-    //TODO - Placeholder till we implement selection of multiple languages
-    const languages = [language]
+    // TODO - Placeholder till we implement selection of multiple languages
+    const languages = [language];
     this.props.dispatchUpdateMovieFiles({ movieFileIds, languages });
   }
 

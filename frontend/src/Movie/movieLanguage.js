@@ -15,7 +15,7 @@ function MovieLanguage(props) {
     return null;
   }
 
-  if (languages.length == 1) {
+  if (languages.length === 1) {
     return (
       <Label
         className={className}

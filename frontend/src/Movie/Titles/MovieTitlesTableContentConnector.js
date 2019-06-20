@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-//import { fetchMovies  } from 'Store/Actions/movieTitlesActions';
+// import { fetchMovies  } from 'Store/Actions/movieTitlesActions';
 import MovieTitlesTableContent from './MovieTitlesTableContent';
 
 function createMapStateToProps() {
@@ -33,8 +33,8 @@ class MovieTitlesTableContentConnector extends Component {
     // });
   }
 
-  componentWillUnmount() {
-  }
+  // componentWillUnmount() {
+  // }
 
   //
   // Listeners
@@ -52,7 +52,7 @@ class MovieTitlesTableContentConnector extends Component {
 }
 
 MovieTitlesTableContentConnector.propTypes = {
-  movieId: PropTypes.number.isRequired,
+  movieId: PropTypes.number.isRequired
 //  fetchMovieTitles: PropTypes.func.isRequired
 };
 

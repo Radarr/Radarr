@@ -188,7 +188,6 @@ class MovieDetails extends Component {
 
     const {
       isOrganizeModalOpen,
-      isManageEpisodesOpen,
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
@@ -498,7 +497,7 @@ class MovieDetails extends Component {
               </TabPanel>
 
               <TabPanel>
-              <MovieTitlesTable
+                <MovieTitlesTable
                   movieId={id}
                 />
               </TabPanel>

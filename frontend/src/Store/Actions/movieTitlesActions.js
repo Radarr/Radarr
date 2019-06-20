@@ -1,4 +1,3 @@
-import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { createThunk, handleThunks } from 'Store/thunks';
@@ -64,7 +63,7 @@ export const actionHandlers = handleThunks({
         error: xhr
       }));
     });
-  },
+  }
 });
 
 //

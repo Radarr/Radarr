@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Label from 'Components/Label';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';

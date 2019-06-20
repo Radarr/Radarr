@@ -1,15 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import InteractiveSearchTableContent from './InteractiveSearchTableContent';
+import InteractiveSearchContentConnector from './InteractiveSearchContentConnector';
 
 function InteractiveSearchTable(props) {
-  const {
-    ...otherProps
-  } = props;
+  // const {
+  //   ...otherProps
+  // } = props;
 
   return (
-    <InteractiveSearchTableContent
-    {...otherProps}
+  // <InteractiveSearchTableContent
+  // {...otherProps}
+  // />
+    <InteractiveSearchContentConnector
+      searchPayload={props}
     />
   );
 }

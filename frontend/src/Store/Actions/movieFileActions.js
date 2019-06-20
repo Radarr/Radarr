@@ -157,7 +157,6 @@ export const actionHandlers = handleThunks({
     if (quality) {
       data.quality = quality;
     }
-    console.log(JSON.stringify(data))
     const promise = createAjaxRequest({
       url: '/movieFile/editor',
       method: 'PUT',

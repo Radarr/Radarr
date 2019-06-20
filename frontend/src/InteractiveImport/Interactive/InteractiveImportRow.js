@@ -152,7 +152,7 @@ class InteractiveImportRow extends Component {
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
     const showLanguagePlaceholder = isSelected && !language;
-    //TODO - Placeholder till we implement selection of multiple languages
+    // TODO - Placeholder till we implement selection of multiple languages
     const languages = [language];
     return (
       <TableRow>

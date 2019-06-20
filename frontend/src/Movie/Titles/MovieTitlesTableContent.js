@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-//import MovieHistoryRowConnector from './MovieHistoryRowConnector';
+// import MovieHistoryRowConnector from './MovieHistoryRowConnector';
 const columns = [
   {
     name: 'eventType',
@@ -51,7 +51,6 @@ class MovieTitlesTableContent extends Component {
 
     const hasItems = !!items.length;
     return (
-      
       <div>
         {
           isFetching &&

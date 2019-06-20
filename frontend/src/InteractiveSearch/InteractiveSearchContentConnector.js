@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import InteractiveSearch from './InteractiveSearch';
+import InteractiveSearchContent from './InteractiveSearchContent';
 
 function createMapStateToProps(appState) {
   return createSelector(
@@ -48,7 +48,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class InteractiveSearchConnector extends Component {
+class InteractiveSearchContentConnector extends Component {
 
   //
   // Lifecycle
@@ -86,18 +86,18 @@ class InteractiveSearchConnector extends Component {
 
     return (
 
-      <InteractiveSearch
+      <InteractiveSearchContent
         {...otherProps}
       />
     );
   }
 }
 
-InteractiveSearchConnector.propTypes = {
+InteractiveSearchContentConnector.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   dispatchFetchReleases: PropTypes.func.isRequired,
   dispatchClearReleases: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchContentConnector);
