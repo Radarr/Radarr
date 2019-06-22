@@ -18,7 +18,7 @@ function getMovieStatus(hasFile, isMonitored, inCinemas) {
     return 'Missing';
   }
 
-  return 'Unaired';
+  return 'Unreleased';
 }
 
 function MovieStatusLabel(props) {
