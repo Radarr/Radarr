@@ -10,6 +10,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieLanguage from 'Movie/MovieLanguage';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import QueueStatusCell from './QueueStatusCell';
@@ -69,6 +70,7 @@ class QueueRow extends Component {
       errorMessage,
       movie,
       quality,
+      languages,
       protocol,
       indexer,
       downloadClient,
@@ -146,6 +148,16 @@ class QueueRow extends Component {
                   <MovieTitleLink
                     titleSlug={movie.titleSlug}
                     title={movie.title}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'language') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieLanguage
+                    languages={languages}
                   />
                 </TableRowCell>
               );
@@ -295,6 +307,7 @@ QueueRow.propTypes = {
   errorMessage: PropTypes.string,
   movie: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,
   downloadClient: PropTypes.string,

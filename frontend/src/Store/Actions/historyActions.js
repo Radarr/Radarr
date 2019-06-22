@@ -42,11 +42,13 @@ export const defaultState = {
     {
       name: 'language',
       label: 'Language',
-      isVisible: false
+      isSortable: true,
+      isVisible: true
     },
     {
       name: 'quality',
       label: 'Quality',
+      isSortable: true,
       isVisible: true
     },
     {
