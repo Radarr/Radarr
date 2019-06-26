@@ -148,8 +148,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void HandleAsync(AlbumDeletedEvent message)
         {
-            var files = GetFilesByAlbum(message.Album.Id);
-            _mediaFileRepository.DeleteMany(files);
+            _mediaFileRepository.DeleteFilesByAlbum(message.Album.Id);
         }
 
         public List<TrackFile> GetFilesByArtist(int artistId)

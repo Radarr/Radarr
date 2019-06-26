@@ -6,6 +6,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -139,6 +140,15 @@ namespace NzbDrone.Core.Test.MediaFiles
                 file.Artist.Value.Metadata.IsLoaded.Should().BeTrue();
                 file.Artist.Value.Metadata.Value.Should().NotBeNull();
             }
+        }
+
+        [Test]
+        public void delete_files_by_album_should_work_if_join_fails()
+        {
+            Db.Delete(album);
+            Subject.DeleteFilesByAlbum(album.Id);
+            
+            Db.All<TrackFile>().Where(x => x.AlbumId == album.Id).Should().HaveCount(0);
         }
     }
 }
