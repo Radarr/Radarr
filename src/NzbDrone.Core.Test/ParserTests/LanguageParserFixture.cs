@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.Turkish.HDTV.XviD-LOL", Language.Turkish)]
         [TestCase("Castle.2009.S01E14.Czech.HDTV.XviD-LOL", Language.Czech)]
         [TestCase("Castle.2009.S01E14.Portuguese.HDTV.XviD-LOL", Language.Portuguese)]
+        [TestCase("Castle.2009.S01E14.Brazilian.HDTV.XviD-LOL", Language.Brazilian)]
         [TestCase("Burn.Notice.S04E15.Brotherly.Love.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP", Language.German)]
         [TestCase("Revolution S01E03 No Quarter 2012 WEB-DL 720p Nordic-philipo mkv", Language.Norwegian)]
         [TestCase("Constantine.2014.S01E01.WEBRiP.H264.AAC.5.1-NL.SUBS", Language.Dutch)]
