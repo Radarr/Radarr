@@ -5,7 +5,7 @@ function createArtistLanguageProfileSelector() {
   return createSelector(
     (state) => state.settings.languageProfiles.items,
     createArtistSelector(),
-    (languageProfiles, artist) => {
+    (languageProfiles, artist = {}) => {
       return languageProfiles.find((profile) => {
         return profile.id === artist.languageProfileId;
       });

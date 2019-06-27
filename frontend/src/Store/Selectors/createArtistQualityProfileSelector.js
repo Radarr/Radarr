@@ -5,7 +5,7 @@ function createArtistQualityProfileSelector() {
   return createSelector(
     (state) => state.settings.qualityProfiles.items,
     createArtistSelector(),
-    (qualityProfiles, artist) => {
+    (qualityProfiles, artist = {}) => {
       return qualityProfiles.find((profile) => {
         return profile.id === artist.qualityProfileId;
       });

@@ -5,7 +5,7 @@ function createArtistMetadataProfileSelector() {
   return createSelector(
     (state) => state.settings.metadataProfiles.items,
     createArtistSelector(),
-    (metadataProfiles, artist) => {
+    (metadataProfiles, artist = {}) => {
       return metadataProfiles.find((profile) => {
         return profile.id === artist.metadataProfileId;
       });
