@@ -70,15 +70,15 @@ namespace NzbDrone.Core.Notifications.PushBullet
                 var devices = _proxy.GetDevices(Settings);
 
                 return new
-                {
-                    devices = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
-                        .OrderBy(d => d.Nickname, StringComparer.InvariantCultureIgnoreCase)
-                        .Select(d => new
-                        {
-                            id = d.Id,
-                            name = d.Nickname
-                        })
-                };
+                       {
+                           options = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
+                                            .OrderBy(d => d.Nickname, StringComparer.InvariantCultureIgnoreCase)
+                                            .Select(d => new
+                                                         {
+                                                             id = d.Id,
+                                                             name = d.Nickname
+                                                         })
+                       };
             }
 
             return new { };

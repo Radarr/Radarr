@@ -20,14 +20,14 @@ namespace Lidarr.Http.ClientSchema
 
             var mappings = GetFieldMappings(model.GetType());
 
-                var result = new List<Field>(mappings.Length);
+            var result = new List<Field>(mappings.Length);
 
             foreach (var mapping in mappings)
             {
                 var field = mapping.Field.Clone();
                 field.Value = mapping.GetterFunc(model);
 
-                    result.Add(field);
+                result.Add(field);
             }
 
             return result.OrderBy(r => r.Order).ToList();
@@ -45,7 +45,7 @@ namespace Lidarr.Http.ClientSchema
             {
                 var field = fields.Find(f => f.Name == mapping.Field.Name);
 
-                    mapping.SetterFunc(target, field.Value);
+                mapping.SetterFunc(target, field.Value);
             }
 
             return target;
@@ -54,8 +54,9 @@ namespace Lidarr.Http.ClientSchema
 
         public static T ReadFromSchema<T>(List<Field> fields)
         {
-            return (T) ReadFromSchema(fields, typeof(T));
+            return (T)ReadFromSchema(fields, typeof(T));
         }
+
 
         // Ideally this function should begin a System.Linq.Expression expression tree since it's faster.
         // But it's probably not needed till performance issues pop up.
@@ -74,11 +75,12 @@ namespace Lidarr.Http.ClientSchema
                         result[i].Field.Order = i;
                     }
 
-                        _mappings[type] = result;
+                    _mappings[type] = result;
                 }
                 return result;
             }
         }
+
         private static FieldMapping[] GetFieldMapping(Type type, string prefix, Func<object, object> targetSelector)
         {
             var result = new List<FieldMapping>();
@@ -97,7 +99,7 @@ namespace Lidarr.Http.ClientSchema
                         HelpLink = fieldAttribute.HelpLink,
                         Order = fieldAttribute.Order,
                         Advanced = fieldAttribute.Advanced,
-                        Type = fieldAttribute.Type.ToString().ToLowerInvariant(),
+                        Type = fieldAttribute.Type.ToString().FirstCharToLower(),
                         Section = fieldAttribute.Section
                     };
 
@@ -106,9 +108,14 @@ namespace Lidarr.Http.ClientSchema
                         field.SelectOptions = GetSelectOptions(fieldAttribute.SelectOptions);
                     }
 
+                    if (fieldAttribute.Hidden != HiddenType.Visible)
+                    {
+                        field.Hidden = fieldAttribute.Hidden.ToString().FirstCharToLower();
+                    }
+
                     var valueConverter = GetValueConverter(propertyInfo.PropertyType);
 
-                        result.Add(new FieldMapping
+                    result.Add(new FieldMapping
                     {
                         Field = field,
                         PropertyType = propertyInfo.PropertyType,
@@ -138,8 +145,10 @@ namespace Lidarr.Http.ClientSchema
         {
             var options = from Enum e in Enum.GetValues(selectOptions)
                           select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
+
             return options.OrderBy(o => o.Value).ToList();
         }
+
         private static Func<object, object> GetValueConverter(Type propertyType)
         {
             if (propertyType == typeof(int))
@@ -178,13 +187,11 @@ namespace Lidarr.Http.ClientSchema
                 {
                     if (fieldValue.GetType() == typeof(JArray))
                     {
-                        return ((JArray) fieldValue).Select(s => s.Value<int>());
+                        return ((JArray)fieldValue).Select(s => s.Value<int>());
                     }
-
                     else
                     {
-                        return fieldValue.ToString().Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(s => Convert.ToInt32(s));
+                        return fieldValue.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => Convert.ToInt32(s));
                     }
                 };
             }
@@ -195,11 +202,11 @@ namespace Lidarr.Http.ClientSchema
                 {
                     if (fieldValue.GetType() == typeof(JArray))
                     {
-                        return ((JArray) fieldValue).Select(s => s.Value<string>());
+                        return ((JArray)fieldValue).Select(s => s.Value<string>());
                     }
                     else
                     {
-                        return fieldValue.ToString().Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                        return fieldValue.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     }
                 };
             }

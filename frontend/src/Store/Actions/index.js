@@ -1,10 +1,9 @@
 import * as addArtist from './addArtistActions';
 import * as app from './appActions';
 import * as blacklist from './blacklistActions';
+import * as calendar from './calendarActions';
 import * as captcha from './captchaActions';
 import * as customFilters from './customFilterActions';
-import * as devices from './deviceActions';
-import * as calendar from './calendarActions';
 import * as commands from './commandActions';
 import * as albums from './albumActions';
 import * as trackFiles from './trackFileActions';
@@ -16,6 +15,7 @@ import * as oAuth from './oAuthActions';
 import * as organizePreview from './organizePreviewActions';
 import * as retagPreview from './retagPreviewActions';
 import * as paths from './pathActions';
+import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
@@ -38,7 +38,6 @@ export default [
   calendar,
   commands,
   customFilters,
-  devices,
   albums,
   trackFiles,
   albumHistory,
@@ -49,6 +48,7 @@ export default [
   organizePreview,
   retagPreview,
   paths,
+  providerOptions,
   queue,
   releases,
   rootFolders,

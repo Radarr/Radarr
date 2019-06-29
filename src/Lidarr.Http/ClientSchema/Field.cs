@@ -15,10 +15,11 @@ namespace Lidarr.Http.ClientSchema
         public bool Advanced { get; set; }
         public List<SelectOption> SelectOptions { get; set; }
         public string Section { get; set; }
+        public string Hidden { get; set; }
 
         public Field Clone()
         {
-            return (Field) MemberwiseClone();
+            return (Field)MemberwiseClone();
         }
     }
 }
