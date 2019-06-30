@@ -21,13 +21,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new QBittorrentSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              Username = "admin",
-                                              Password = "pass",
-                                              MovieCategory = "movies-radarr"
-                                          };
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                Username = "admin",
+                Password = "pass",
+                MovieCategory = "movies-radarr"
+            };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
                   .Setup(s => s.GetHashFromTorrentFile(It.IsAny<Byte[]>()))

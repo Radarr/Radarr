@@ -107,14 +107,15 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 * [Visual Studio Community 2017](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
+* [Yarn](https://yarnpkg.com/)
 
 ### Setup
 
 * Make sure all the required software mentioned above are installed
 * Clone the repository into your development machine ([*info*](https://help.github.com/desktop/guides/contributing/working-with-your-remote-repository-on-github-or-github-enterprise))
 * Grab the submodules `git submodule init && git submodule update`
-* Install the required Node Packages `npm install`
-* Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
+* Install the required Node Packages `yarn install`
+* Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
 
 > **Notice**  
 > Gulp must be running at all times while you are working with Radarr client source files.
@@ -127,7 +128,7 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ### Development
 
-* Open `NzbDrone.sln` in Visual Studio 2017 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
+* Open `Radarr.sln` in Visual Studio 2017 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
 * Make sure `NzbDrone.Console` is set as the startup project
 * Run `build.sh` before running
 
@@ -158,4 +159,4 @@ Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrai
 ## License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2018
+* Copyright 2010-2019

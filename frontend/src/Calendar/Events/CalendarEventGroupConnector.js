@@ -6,11 +6,11 @@ import CalendarEventGroup from './CalendarEventGroup';
 
 function createIsDownloadingSelector() {
   return createSelector(
-    (state, { episodeIds }) => episodeIds,
+    (state, { movieIds }) => movieIds,
     (state) => state.queue.details,
-    (episodeIds, details) => {
+    (movieIds, details) => {
       return details.items.some((item) => {
-        return episodeIds.includes(item.episode.id);
+        return item.movie && movieIds.includes(item.movie.id);
       });
     }
   );
@@ -22,9 +22,9 @@ function createMapStateToProps() {
     createMovieSelector(),
     createIsDownloadingSelector(),
     createUISettingsSelector(),
-    (calendarOptions, series, isDownloading, uiSettings) => {
+    (calendarOptions, movie, isDownloading, uiSettings) => {
       return {
-        series,
+        movie,
         isDownloading,
         ...calendarOptions,
         timeFormat: uiSettings.timeFormat,

@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
             info.AudioLanguages.Should().Be("English");
-            info.AudioAdditionalFeatures.Should().Be("LC");
+            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
             info.AudioLanguages.Should().Be("English");
-            info.AudioAdditionalFeatures.Should().Be("LC");
+            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");

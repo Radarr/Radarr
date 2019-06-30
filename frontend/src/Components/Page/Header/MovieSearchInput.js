@@ -76,7 +76,7 @@ class MovieSearchInput extends Component {
   renderSuggestion(item, { query }) {
     if (item.type === ADD_NEW_TYPE) {
       return (
-        <div className={styles.addNewSeriesSuggestion}>
+        <div className={styles.addNewMovieSuggestion}>
           Search for {query}
         </div>
       );

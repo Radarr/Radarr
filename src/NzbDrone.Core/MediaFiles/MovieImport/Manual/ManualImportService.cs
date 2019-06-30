@@ -110,7 +110,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 if (movie == null)
                 {
-                    movie = trackedDownload.RemoteMovie.Movie;
+                    movie = trackedDownload.RemoteMovie?.Movie;
                 }
             }
 

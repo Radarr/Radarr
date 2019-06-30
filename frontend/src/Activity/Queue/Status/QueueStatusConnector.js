@@ -12,8 +12,12 @@ function createMapStateToProps() {
     (state) => state.queue.options.includeUnknownMovieItems,
     (app, status, includeUnknownMovieItems) => {
       const {
+        errors,
+        warnings,
+        unknownErrors,
+        unknownWarnings,
         count,
-        unknownCount
+        totalCount
       } = status.item;
 
       return {
@@ -21,7 +25,9 @@ function createMapStateToProps() {
         isReconnecting: app.isReconnecting,
         isPopulated: status.isPopulated,
         ...status.item,
-        count: includeUnknownMovieItems ? count : count - unknownCount
+        count: includeUnknownMovieItems ? totalCount : count,
+        errors: includeUnknownMovieItems ? errors || unknownErrors : errors,
+        warnings: includeUnknownMovieItems ? warnings || unknownWarnings : warnings
       };
     }
   );

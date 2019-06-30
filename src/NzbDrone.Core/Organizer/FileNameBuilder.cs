@@ -35,16 +35,7 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex EpisodeRegex = new Regex(@"(?<episode>\{episode(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         private static readonly Regex TagsRegex = new Regex(@"(?<tags>\{tags(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex SeasonRegex = new Regex(@"(?<season>\{season(?:\:0+)?})",
-                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex AbsoluteEpisodeRegex = new Regex(@"(?<absolute>\{absolute(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static readonly Regex SeasonEpisodePatternRegex = new Regex(@"(?<separator>(?<=})[- ._]+?)?(?<seasonEpisode>s?{season(?:\:0+)?}(?<episodeSeparator>[- ._]?[ex])(?<episode>{episode(?:\:0+)?}))(?<separator>[- ._]+?(?={))?",
@@ -178,48 +169,6 @@ namespace NzbDrone.Core.Organizer
         {
             return new BasicNamingConfig(); //For now let's be lazy
 
-            //var episodeFormat = GetEpisodeFormat(nameSpec.StandardMovieFormat).LastOrDefault();
-
-            //if (episodeFormat == null)
-            //{
-            //    return new BasicNamingConfig();
-            //}
-
-            //var basicNamingConfig = new BasicNamingConfig
-            //{
-            //    Separator = episodeFormat.Separator,
-            //    NumberStyle = episodeFormat.SeasonEpisodePattern
-            //};
-
-            //var titleTokens = TitleRegex.Matches(nameSpec.StandardMovieFormat);
-
-            //foreach (Match match in titleTokens)
-            //{
-            //    var separator = match.Groups["separator"].Value;
-            //    var token = match.Groups["token"].Value;
-
-            //    if (!separator.Equals(" "))
-            //    {
-            //        basicNamingConfig.ReplaceSpaces = true;
-            //    }
-
-            //    if (token.StartsWith("{Series", StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        basicNamingConfig.IncludeSeriesTitle = true;
-            //    }
-
-            //    if (token.StartsWith("{Episode", StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        basicNamingConfig.IncludeEpisodeTitle = true;
-            //    }
-
-            //    if (token.StartsWith("{Quality", StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        basicNamingConfig.IncludeQuality = true;
-            //    }
-            //}
-
-            //return basicNamingConfig;
         }
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)
@@ -519,18 +468,6 @@ namespace NzbDrone.Core.Organizer
             if (split.Length == 1) return value.ToString("0");
 
             return value.ToString(split[1]);
-        }
-
-        private EpisodeFormat[] GetEpisodeFormat(string pattern)
-        {
-            return _episodeFormatCache.Get(pattern, () => SeasonEpisodePatternRegex.Matches(pattern).OfType<Match>()
-                .Select(match => new EpisodeFormat
-                {
-                    EpisodeSeparator = match.Groups["episodeSeparator"].Value,
-                    Separator = match.Groups["separator"].Value,
-                    EpisodePattern = match.Groups["episode"].Value,
-                    SeasonEpisodePattern = match.Groups["seasonEpisode"].Value,
-                }).ToArray());
         }
 
         private string GetQualityProper(Movie movie, QualityModel quality)

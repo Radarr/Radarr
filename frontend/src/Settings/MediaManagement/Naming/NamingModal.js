@@ -83,10 +83,6 @@ class NamingModal extends Component {
       value,
       isOpen,
       advancedSettings,
-      season,
-      episode,
-      daily,
-      anime,
       additional,
       onInputChange,
       onModalClose
@@ -112,58 +108,21 @@ class NamingModal extends Component {
 
     const fileNameTokens = [
       {
-        token: '{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}',
-        example: 'Series Title (2010) - S01E01 - Episode Title HDTV-720p Proper'
-      },
-      {
-        token: '{Series Title} - {season:0}x{episode:00} - {Episode Title} {Quality Full}',
-        example: 'Series Title (2010) - 1x01 - Episode Title HDTV-720p Proper'
-      },
-      {
-        token: '{Series.Title}.S{season:00}E{episode:00}.{EpisodeClean.Title}.{Quality.Full}',
-        example: 'Series.Title.(2010).S01E01.Episode.Title.HDTV-720p'
+        token: '{Movie Title} - {Quality Full}',
+        example: 'Movie Title (2010) - HDTV-720p Proper'
       }
     ];
 
-    const seriesTokens = [
-      { token: '{Series Title}', example: 'Series Title!' },
-      { token: '{Series CleanTitle}', example: 'Series Title' },
-      { token: '{Series CleanTitleYear}', example: 'Series Title 2010' },
-      { token: '{Series TitleThe}', example: 'Series Title, The' },
-      { token: '{Series TitleTheYear}', example: 'Series Title, The (2010)' },
-      { token: '{Series TitleYear}', example: 'Series Title (2010)' }
+    const movieTokens = [
+      { token: '{Movie Title}', example: 'Movie Title!' },
+      { token: '{Movie CleanTitle}', example: 'Movie Title' },
+      { token: '{Movie TitleThe}', example: 'Movie Title, The' }
+
     ];
 
-    const seriesIdTokens = [
+    const movieIdTokens = [
       { token: '{ImdbId}', example: 'tt12345' },
-      { token: '{TvdbId}', example: '12345' },
-      { token: '{TvMazeId}', example: '54321' }
-    ];
-
-    const seasonTokens = [
-      { token: '{season:0}', example: '1' },
-      { token: '{season:00}', example: '01' }
-    ];
-
-    const episodeTokens = [
-      { token: '{episode:0}', example: '1' },
-      { token: '{episode:00}', example: '01' }
-    ];
-
-    const airDateTokens = [
-      { token: '{Air-Date}', example: '2016-03-20' },
-      { token: '{Air Date}', example: '2016 03 20' }
-    ];
-
-    const absoluteTokens = [
-      { token: '{absolute:0}', example: '1' },
-      { token: '{absolute:00}', example: '01' },
-      { token: '{absolute:000}', example: '001' }
-    ];
-
-    const episodeTitleTokens = [
-      { token: '{Episode Title}', example: 'Episode Title' },
-      { token: '{Episode CleanTitle}', example: 'Episode Title' }
+      { token: '{TmdbId}', example: '123456' }
     ];
 
     const qualityTokens = [
@@ -175,8 +134,14 @@ class NamingModal extends Component {
       { token: '{MediaInfo Simple}', example: 'x264 DTS' },
       { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]' },
       { token: '{MediaInfo VideoCodec}', example: 'x264' },
-      { token: '{MediaInfo AudioFormat}', example: 'DTS' },
-      { token: '{MediaInfo AudioChannels}', example: '5.1' }
+      { token: '{MediaInfo AudioCodec}', example: 'DTS' },
+      { token: '{MediaInfo AudioChannels}', example: '5.1' },
+      { token: '{MediaInfo AudioLanguages}', example: '[EN+DE]' },
+      { token: '{MediaInfo SubtitleLanguages}', example: '[DE]' },
+
+      { token: '{MediaInfo VideoCodec}', example: 'x264' },
+      { token: '{MediaInfo VideoBitDepth}', example: '10' },
+      { token: '{MediaInfo VideoDynamicRange}', example: 'HDR' }
     ];
 
     const releaseGroupTokens = [
@@ -184,8 +149,8 @@ class NamingModal extends Component {
     ];
 
     const originalTokens = [
-      { token: '{Original Title}', example: 'Series.Title.S01E01.HDTV.x264-EVOLVE' },
-      { token: '{Original Filename}', example: 'series.title.s01e01.hdtv.x264-EVOLVE' }
+      { token: '{Original Title}', example: 'Movie.Title.HDTV.x264-EVOLVE' },
+      { token: '{Original Filename}', example: 'Movie.title.hdtv.x264-EVOLVE' }
     ];
 
     return (
@@ -244,10 +209,10 @@ class NamingModal extends Component {
                 </FieldSet>
             }
 
-            <FieldSet legend="Series">
+            <FieldSet legend="Movie">
               <div className={styles.groups}>
                 {
-                  seriesTokens.map(({ token, example }) => {
+                  movieTokens.map(({ token, example }) => {
                     return (
                       <NamingOption
                         key={token}
@@ -266,10 +231,10 @@ class NamingModal extends Component {
               </div>
             </FieldSet>
 
-            <FieldSet legend="Series ID">
+            <FieldSet legend="Movie ID">
               <div className={styles.groups}>
                 {
-                  seriesIdTokens.map(({ token, example }) => {
+                  movieIdTokens.map(({ token, example }) => {
                     return (
                       <NamingOption
                         key={token}
@@ -287,134 +252,10 @@ class NamingModal extends Component {
                 }
               </div>
             </FieldSet>
-
-            {
-              season &&
-                <FieldSet legend="Season">
-                  <div className={styles.groups}>
-                    {
-                      seasonTokens.map(({ token, example }) => {
-                        return (
-                          <NamingOption
-                            key={token}
-                            name={name}
-                            value={value}
-                            token={token}
-                            example={example}
-                            tokenSeparator={tokenSeparator}
-                            tokenCase={tokenCase}
-                            onPress={this.onOptionPress}
-                          />
-                        );
-                      }
-                      )
-                    }
-                  </div>
-                </FieldSet>
-            }
-
-            {
-              episode &&
-                <div>
-                  <FieldSet legend="Episode">
-                    <div className={styles.groups}>
-                      {
-                        episodeTokens.map(({ token, example }) => {
-                          return (
-                            <NamingOption
-                              key={token}
-                              name={name}
-                              value={value}
-                              token={token}
-                              example={example}
-                              tokenSeparator={tokenSeparator}
-                              tokenCase={tokenCase}
-                              onPress={this.onOptionPress}
-                            />
-                          );
-                        }
-                        )
-                      }
-                    </div>
-                  </FieldSet>
-
-                  {
-                    daily &&
-                      <FieldSet legend="Air-Date">
-                        <div className={styles.groups}>
-                          {
-                            airDateTokens.map(({ token, example }) => {
-                              return (
-                                <NamingOption
-                                  key={token}
-                                  name={name}
-                                  value={value}
-                                  token={token}
-                                  example={example}
-                                  tokenSeparator={tokenSeparator}
-                                  tokenCase={tokenCase}
-                                  onPress={this.onOptionPress}
-                                />
-                              );
-                            }
-                            )
-                          }
-                        </div>
-                      </FieldSet>
-                  }
-
-                  {
-                    anime &&
-                      <FieldSet legend="Absolute Episode Number">
-                        <div className={styles.groups}>
-                          {
-                            absoluteTokens.map(({ token, example }) => {
-                              return (
-                                <NamingOption
-                                  key={token}
-                                  name={name}
-                                  value={value}
-                                  token={token}
-                                  example={example}
-                                  tokenSeparator={tokenSeparator}
-                                  tokenCase={tokenCase}
-                                  onPress={this.onOptionPress}
-                                />
-                              );
-                            }
-                            )
-                          }
-                        </div>
-                      </FieldSet>
-                  }
-                </div>
-            }
 
             {
               additional &&
                 <div>
-                  <FieldSet legend="Episode Title">
-                    <div className={styles.groups}>
-                      {
-                        episodeTitleTokens.map(({ token, example }) => {
-                          return (
-                            <NamingOption
-                              key={token}
-                              name={name}
-                              value={value}
-                              token={token}
-                              example={example}
-                              tokenSeparator={tokenSeparator}
-                              tokenCase={tokenCase}
-                              onPress={this.onOptionPress}
-                            />
-                          );
-                        }
-                        )
-                      }
-                    </div>
-                  </FieldSet>
-
                   <FieldSet legend="Quality">
                     <div className={styles.groups}>
                       {
@@ -529,20 +370,12 @@ NamingModal.propTypes = {
   value: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   advancedSettings: PropTypes.bool.isRequired,
-  season: PropTypes.bool.isRequired,
-  episode: PropTypes.bool.isRequired,
-  daily: PropTypes.bool.isRequired,
-  anime: PropTypes.bool.isRequired,
   additional: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 NamingModal.defaultProps = {
-  season: false,
-  episode: false,
-  daily: false,
-  anime: false,
   additional: false
 };
 

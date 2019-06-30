@@ -88,7 +88,7 @@
     <Compile Include="SignalRDependencyResolver.cs" />
     <Compile Include="SignalRJsonSerializer.cs" />
     <Compile Include="SignalRMessage.cs" />
-    <Compile Include="SonarrPerformanceCounterManager.cs" />
+    <Compile Include="RadarrPerformanceCounterManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
