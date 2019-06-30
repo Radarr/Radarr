@@ -8,7 +8,7 @@ import createCommandExecutingSelector from 'Store/Selectors/createCommandExecuti
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchMovies } from 'Store/Actions/movieActions';
 import scrollPositions from 'Store/scrollPositions';
-import { setMovieSort, setMovieFilter, setMovieView } from 'Store/Actions/movieIndexActions';
+import { setMovieSort, setMovieFilter, setMovieView, setMovieTableOption } from 'Store/Actions/movieIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
@@ -59,13 +59,41 @@ function createMapStateToProps() {
   );
 }
 
-const mapDispatchToProps = {
-  fetchMovies,
-  setMovieSort,
-  setMovieFilter,
-  setMovieView,
-  executeCommand
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchFetchMovies() {
+      dispatch(fetchMovies);
+    },
+
+    onTableOptionChange(payload) {
+      dispatch(setMovieTableOption(payload));
+    },
+
+    onSortSelect(sortKey) {
+      dispatch(setMovieSort({ sortKey }));
+    },
+
+    onFilterSelect(selectedFilterKey) {
+      dispatch(setMovieFilter({ selectedFilterKey }));
+    },
+
+    dispatchSetMovieView(view) {
+      dispatch(setMovieView({ view }));
+    },
+
+    onRefreshMoviePress() {
+      dispatch(executeCommand({
+        name: commandNames.REFRESH_MOVIE
+      }));
+    },
+
+    onRssSyncPress() {
+      dispatch(executeCommand({
+        name: commandNames.RSS_SYNC
+      }));
+    }
+  };
+}
 
 class MovieIndexConnector extends Component {
 
@@ -87,24 +115,16 @@ class MovieIndexConnector extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchMovies();
+    this.props.dispatchFetchMovies();
   }
 
   //
   // Listeners
 
-  onSortSelect = (sortKey) => {
-    this.props.setMovieSort({ sortKey });
-  }
-
-  onFilterSelect = (selectedFilterKey) => {
-    this.props.setMovieFilter({ selectedFilterKey });
-  }
-
   onViewSelect = (view) => {
     // Reset the scroll position before changing the view
     this.setState({ scrollTop: 0 }, () => {
-      this.props.setMovieView({ view });
+      this.props.dispatchSetMovieView(view);
     });
   }
 
@@ -116,18 +136,6 @@ class MovieIndexConnector extends Component {
     });
   }
 
-  onRefreshMoviePress = () => {
-    this.props.executeCommand({
-      name: commandNames.REFRESH_MOVIE
-    });
-  }
-
-  onRssSyncPress = () => {
-    this.props.executeCommand({
-      name: commandNames.RSS_SYNC
-    });
-  }
-
   //
   // Render
 
@@ -136,12 +144,8 @@ class MovieIndexConnector extends Component {
       <MovieIndex
         {...this.props}
         scrollTop={this.state.scrollTop}
-        onSortSelect={this.onSortSelect}
-        onFilterSelect={this.onFilterSelect}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
-        onRefreshMoviePress={this.onRefreshMoviePress}
-        onRssSyncPress={this.onRssSyncPress}
       />
     );
   }
@@ -151,14 +155,11 @@ MovieIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
-  fetchMovies: PropTypes.func.isRequired,
-  setMovieSort: PropTypes.func.isRequired,
-  setMovieFilter: PropTypes.func.isRequired,
-  setMovieView: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchFetchMovies: PropTypes.func.isRequired,
+  dispatchSetMovieView: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(
-  connect(createMapStateToProps, mapDispatchToProps)(MovieIndexConnector),
+  connect(createMapStateToProps, createMapDispatchToProps)(MovieIndexConnector),
   'movieIndex'
 );

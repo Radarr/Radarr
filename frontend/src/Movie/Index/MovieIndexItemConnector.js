@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
-import createExecutingCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import createMovieQualityProfileSelector from 'Store/Selectors/createMovieQualityProfileSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
