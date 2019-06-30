@@ -21,21 +21,21 @@ namespace NzbDrone.Core.Movies
         public bool ShouldRefresh(Movie movie)
         {
             //return false;
-            if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-30))
+            if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-180))
             {
-                _logger.Trace("Movie {0} last updated more than 30 days ago, should refresh.", movie.Title);
+                _logger.Trace("Movie {0} last updated more than 180 days ago, should refresh.", movie.Title);
                 return true;
             }
 
-            if (movie.LastInfoSync >= DateTime.UtcNow.AddHours(-6))
+            if (movie.LastInfoSync >= DateTime.UtcNow.AddHours(-12))
             {
-                _logger.Trace("Movie {0} last updated less than 6 hours ago, should not be refreshed.", movie.Title);
+                _logger.Trace("Movie {0} last updated less than 12 hours ago, should not be refreshed.", movie.Title);
                 return false;
             }
 
             if (movie.Status == MovieStatusType.Announced || movie.Status == MovieStatusType.InCinemas)
             {
-                _logger.Trace("Movie {0} is announced or in cinemas, should refresh.", movie.Title); //We probably have to change this.
+                _logger.Trace("Movie {0} is announced or in cinemas, should refresh.", movie.Title);
                 return true;
             }
 
