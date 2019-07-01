@@ -133,21 +133,14 @@ class QueueRow extends Component {
             if (name === 'movie.sortTitle') {
               return (
                 <TableRowCell key={name}>
-                  <MovieTitleLink
-                    titleSlug={movie.titleSlug}
-                    title={movie.title}
-                  />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'movie') {
-              return (
-                <TableRowCell key={name}>
-                  <MovieTitleLink
-                    titleSlug={movie.titleSlug}
-                    title={movie.title}
-                  />
+                  {
+                    movie ?
+                      <MovieTitleLink
+                        titleSlug={movie.titleSlug}
+                        title={movie.title}
+                      /> :
+                      title
+                  }
                 </TableRowCell>
               );
             }
