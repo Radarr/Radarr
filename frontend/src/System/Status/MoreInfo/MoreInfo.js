@@ -19,6 +19,11 @@ class MoreInfo extends Component {
             <Link to="https://radarr.video/">radarr.video</Link>
           </DescriptionListItemDescription>
 
+          <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
+          <DescriptionListItemDescription>
+            <Link to="https://discord.gg/AD3UP37">discord.gg/AD3UP37</Link>
+          </DescriptionListItemDescription>
+
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://github.com/Radarr/Radarr/wiki">github.com/Radarr/Radarr/wiki</Link>

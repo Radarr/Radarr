@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
@@ -46,11 +47,16 @@ namespace Radarr.Api.V2.Indexers
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
 
-
         public bool IsDaily { get; set; }
         public bool IsAbsoluteNumbering { get; set; }
         public bool IsPossibleSpecialEpisode { get; set; }
         public bool Special { get; set; }
+
+        // Sent when queuing an unknown release
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int? MovieId { get; set; }
+
     }
 
     public static class ReleaseResourceMapper
@@ -88,7 +94,7 @@ namespace Radarr.Api.V2.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                // DownloadAllowed = remoteMovie.DownloadAllowed,
+                DownloadAllowed = remoteMovie.DownloadAllowed,
                 //ReleaseWeight
 
 

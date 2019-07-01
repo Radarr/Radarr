@@ -2,26 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
- using System.ServiceModel;
- using NLog;
+using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Movies;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
- using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.AlternativeTitles;
+using System.Globalization;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -117,8 +114,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 			    {
 			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
 			    }
-
-				//movie.AlternativeTitles.Add(resource.original_title);
 			}
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)
@@ -201,23 +196,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Genres.Add(genre.name);
             }
 
-            //this is the way it should be handled
-            //but unfortunately it seems
-            //tmdb lacks alot of release date info
-            //omdbapi is actually quite good for this info
-            //except omdbapi has been having problems recently
-            //so i will just leave this in as a comment
-            //and use the 3 month logic that we were using before
-            /*var now = DateTime.Now;
-            if (now < movie.InCinemas)
-                movie.Status = MovieStatusType.Announced;
-            if (now >= movie.InCinemas)
-                movie.Status = MovieStatusType.InCinemas;
-            if (now >= movie.PhysicalRelease)
-                movie.Status = MovieStatusType.Released;
-            */
-
-
             var now = DateTime.Now;
             //handle the case when we have both theatrical and physical release dates
             if (movie.InCinemas.HasValue && movie.PhysicalRelease.HasValue)
@@ -262,23 +240,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 					movie.HasPreDBEntry = false;
 				}
 			}
-
-            //this matches with the old behavior before the creation of the MovieStatusType.InCinemas
-            /*if (resource.status == "Released")
-            {
-                if (movie.InCinemas.HasValue && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds <= 60 * 60 * 24 * 30 * 3))
-                {
-                    movie.Status = MovieStatusType.InCinemas;
-                }
-                else
-                {
-                    movie.Status = MovieStatusType.Released;
-                }
-            }
-            else
-            {
-                movie.Status = MovieStatusType.Announced;
-            }*/
 
             if (resource.videos != null)
             {
@@ -485,22 +446,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
-            /*var imdbRequest = new HttpRequest("https://v2.sg.media-imdb.com/suggests/" + firstChar + "/" + searchTerm + ".json");
-
-            var response = _httpClient.Get(imdbRequest);
-
-            var imdbCallback = "imdb$" + searchTerm + "(";
-
-            var responseCleaned = response.Content.Replace(imdbCallback, "").TrimEnd(")");
-
-            _logger.Warn("Cleaned response: " + responseCleaned);
-
-            ImdbResource json =Json Convert.DeserializeObject<ImdbResource>(responseCleaned);
-
-            _logger.Warn("Json object: " + json);
-
-            _logger.Warn("Crash ahead.");*/
-
             var response = _httpClient.Get<MovieSearchRoot>(request);
 
             var movieResults = response.Resource.results;
@@ -522,13 +467,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     if (result.release_date.IsNotNullOrWhiteSpace())
                     {
-                        imdbMovie.InCinemas = DateTime.Parse(result.release_date);
+                        imdbMovie.InCinemas = DateTime.ParseExact(result.release_date, "yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
                         imdbMovie.Year = imdbMovie.InCinemas.Value.Year;
                     }
 
                     if (result.physical_release.IsNotNullOrWhiteSpace())
                     {
-                        imdbMovie.PhysicalRelease = DateTime.Parse(result.physical_release);
+                        imdbMovie.PhysicalRelease = DateTime.ParseExact(result.physical_release, "yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
                         if (result.physical_release_note.IsNotNullOrWhiteSpace())
                         {
                             imdbMovie.PhysicalReleaseNote = result.physical_release_note;

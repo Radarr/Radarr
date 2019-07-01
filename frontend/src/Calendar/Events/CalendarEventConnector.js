@@ -13,10 +13,10 @@ function createMapStateToProps() {
     createMovieFileSelector(),
     createQueueItemSelector(),
     createUISettingsSelector(),
-    (calendarOptions, series, episodeFile, queueItem, uiSettings) => {
+    (calendarOptions, movie, movieFile, queueItem, uiSettings) => {
       return {
-        series,
-        episodeFile,
+        movie,
+        movieFile,
         queueItem,
         ...calendarOptions,
         timeFormat: uiSettings.timeFormat,

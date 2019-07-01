@@ -76,7 +76,7 @@ class MovieSearchInput extends Component {
   renderSuggestion(item, { query }) {
     if (item.type === ADD_NEW_TYPE) {
       return (
-        <div className={styles.addNewSeriesSuggestion}>
+        <div className={styles.addNewMovieSuggestion}>
           Search for {query}
         </div>
       );
@@ -154,8 +154,33 @@ class MovieSearchInput extends Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    const fuse = new Fuse(this.props.movies, fuseOptions);
-    const suggestions = fuse.search(value);
+    const { movies } = this.props;
+    let suggestions = [];
+
+    if (value.length === 1) {
+      suggestions = movies.reduce((acc, s) => {
+        if (s.firstCharacter === value.toLowerCase()) {
+          acc.push({
+            item: s,
+            indices: [
+              [0, 0]
+            ],
+            matches: [
+              {
+                value: s.title,
+                key: 'title'
+              }
+            ],
+            arrayIndex: 0
+          });
+        }
+
+        return acc;
+      }, []);
+    } else {
+      const fuse = new Fuse(movies, fuseOptions);
+      suggestions = fuse.search(value);
+    }
 
     this.setState({ suggestions });
   }

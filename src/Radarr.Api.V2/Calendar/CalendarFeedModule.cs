@@ -36,7 +36,6 @@ namespace Radarr.Api.V2.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var unmonitored = false;
-            //var premiersOnly = false;
             var tags = new List<int>();
 
             // TODO: Remove start/end parameters in v3, they don't work well for iCal
@@ -45,7 +44,6 @@ namespace Radarr.Api.V2.Calendar
             var queryPastDays = Request.Query.PastDays;
             var queryFutureDays = Request.Query.FutureDays;
             var queryUnmonitored = Request.Query.Unmonitored;
-            // var queryPremiersOnly = Request.Query.PremiersOnly;
             var queryTags = Request.Query.Tags;
 
             if (queryStart.HasValue) start = DateTime.Parse(queryStart.Value);
@@ -67,11 +65,6 @@ namespace Radarr.Api.V2.Calendar
             {
                 unmonitored = bool.Parse(queryUnmonitored.Value);
             }
-
-            //if (queryPremiersOnly.HasValue)
-            //{
-            //    premiersOnly = bool.Parse(queryPremiersOnly.Value);
-            //}
 
             if (queryTags.HasValue)
             {
@@ -116,7 +109,7 @@ namespace Radarr.Api.V2.Calendar
             }
 
             var occurrence = calendar.Create<Event>();
-            occurrence.Uid = "NzbDrone_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
+            occurrence.Uid = "Radarr_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
             occurrence.Status = movie.Status == MovieStatusType.Announced ? EventStatus.Tentative : EventStatus.Confirmed;
 
             occurrence.Start = new CalDateTime(date.Value);

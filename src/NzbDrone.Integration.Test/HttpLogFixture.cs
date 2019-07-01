@@ -16,10 +16,12 @@ namespace NzbDrone.Integration.Test
             config.LogLevel = "Trace";
             HostConfig.Put(config);
 
+            var resultGet = Movies.All();
+
             var logFile = Path.Combine(_runner.AppData, "logs", "radarr.trace.txt");
             var logLines = File.ReadAllLines(logFile);
 
-            var result = Movies.InvalidPost(new MovieResource());
+            var resultPost = Movies.InvalidPost(new MovieResource());
 
             logLines = File.ReadAllLines(logFile).Skip(logLines.Length).ToArray();
 

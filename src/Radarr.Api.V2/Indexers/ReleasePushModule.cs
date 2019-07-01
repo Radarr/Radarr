@@ -56,10 +56,10 @@ namespace Radarr.Api.V2.Indexers
 
             if (firstDecision?.RemoteMovie.ParsedMovieInfo == null)
             {
-                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
+                throw new ValidationException(new List<ValidationFailure>{ new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new[] { firstDecision }).AsResponse();
+            return MapDecisions(new [] { firstDecision }).AsResponse();
         }
 
         private void ResolveIndexer(ReleaseInfo release)
@@ -74,7 +74,7 @@ namespace Radarr.Api.V2.Indexers
                 }
                 else
                 {
-                    _logger.Debug("Push Release {0} not associated with unknown indexer {1}.", release.Title, release.Indexer);
+                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title, release.Indexer);
                 }
             }
             else if (release.IndexerId != 0 && release.Indexer.IsNullOrWhiteSpace())
@@ -87,7 +87,7 @@ namespace Radarr.Api.V2.Indexers
                 }
                 catch (ModelNotFoundException)
                 {
-                    _logger.Debug("Push Release {0} not associated with unknown indexer {0}.", release.Title, release.IndexerId);
+                    _logger.Debug("Push Release {0} not associated with known indexer {0}.", release.Title, release.IndexerId);
                     release.IndexerId = 0;
                 }
             }

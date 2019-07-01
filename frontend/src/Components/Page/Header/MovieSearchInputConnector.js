@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
+import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import MovieSearchInput from './MovieSearchInput';
 
@@ -26,9 +27,16 @@ function createCleanMovieSelector() {
           sortTitle,
           images,
           alternateTitles,
-          tags: tags.map((id) => {
-            return allTags.find((tag) => tag.id === id);
-          })
+          firstCharacter: title.charAt(0).toLowerCase(),
+          tags: tags.reduce((acc, id) => {
+            const matchingTag = allTags.find((tag) => tag.id === id);
+
+            if (matchingTag) {
+              acc.push(matchingTag);
+            }
+
+            return acc;
+          }, [])
         };
       });
     }
@@ -36,7 +44,7 @@ function createCleanMovieSelector() {
 }
 
 function createMapStateToProps() {
-  return createSelector(
+  return createDeepEqualSelector(
     createCleanMovieSelector(),
     (movies) => {
       return {

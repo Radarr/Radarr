@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
 
             RuleFor(c => c.MovieCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
+            RuleFor(c => c.MovieImportedCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
         }
     }
 
@@ -43,16 +44,19 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MovieCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        [FieldDefinition(5, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Radarr to set after it has imported the download. Leave blank to disable this feature.")]
+        public string MovieImportedCategory { get; set; }
+
+        [FieldDefinition(6, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that aired within the last 14 days")]
         public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        [FieldDefinition(7, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that aired over 14 days ago")]
         public int OlderMoviePriority { get; set; }
 
-        [FieldDefinition(7, Label = "Add Paused", Type = FieldType.Checkbox)]
+        [FieldDefinition(8, Label = "Add Paused", Type = FieldType.Checkbox)]
         public bool AddPaused { get; set; }
 
-        [FieldDefinition(8, Label = "Use SSL", Type = FieldType.Checkbox)]
+        [FieldDefinition(9, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 
         public NzbDroneValidationResult Validate()

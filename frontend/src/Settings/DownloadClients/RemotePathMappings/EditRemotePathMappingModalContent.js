@@ -23,6 +23,7 @@ function EditRemotePathMappingModalContent(props) {
     isSaving,
     saveError,
     item,
+    downloadClientHosts,
     onInputChange,
     onSavePress,
     onModalClose,
@@ -55,17 +56,16 @@ function EditRemotePathMappingModalContent(props) {
 
         {
           !isFetching && !error &&
-            <Form
-              {...otherProps}
-            >
+            <Form {...otherProps}>
               <FormGroup>
                 <FormLabel>Host</FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.TEXT}
+                  type={inputTypes.SELECT}
                   name="host"
                   helpText="The same host you specified for the remote Download Client"
                   {...host}
+                  values={downloadClientHosts}
                   onChange={onInputChange}
                 />
               </FormGroup>
@@ -140,6 +140,7 @@ EditRemotePathMappingModalContent.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.shape(remotePathMappingShape).isRequired,
+  downloadClientHosts: PropTypes.arrayOf(PropTypes.string).isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,

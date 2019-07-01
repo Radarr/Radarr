@@ -6,7 +6,9 @@ using System.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 
@@ -28,6 +30,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
         public override string Name => "Custom Script";
 
         public override string Link => "https://github.com/Radarr/Radarr/wiki/Custom-Post-Processing-Scripts";
+
+        public override ProviderMessage Message => new ProviderMessage("Testing will execute the script with the EventType set to Test, ensure your script handles this correctly", ProviderMessageType.Warning);
 
         public override void OnGrab(GrabMessage message)
         {
@@ -84,6 +88,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
                 environmentVariables.Add("Radarr_DeletedRelativePaths", string.Join("|", message.OldMovieFiles.Select(e => e.RelativePath)));
                 environmentVariables.Add("Radarr_DeletedPaths", string.Join("|", message.OldMovieFiles.Select(e => Path.Combine(movie.Path, e.RelativePath))));
             }
+
             ExecuteScript(environmentVariables);
         }
 
@@ -110,22 +115,33 @@ namespace NzbDrone.Core.Notifications.CustomScript
                 failures.Add(new NzbDroneValidationFailure("Path", "File does not exist"));
             }
 
-            try
+            foreach (var systemFolder in SystemFolders.GetSystemFolders())
             {
-                var environmentVariables = new StringDictionary();
-                environmentVariables.Add("Radarr_EventType", "Test");
-
-                var processOutput = ExecuteScript(environmentVariables);
-
-                if (processOutput.ExitCode != 0)
+                if (systemFolder.IsParentPath(Settings.Path))
                 {
-                    failures.Add(new NzbDroneValidationFailure(string.Empty, $"Script exited with code: {processOutput.ExitCode}"));
+                    failures.Add(new NzbDroneValidationFailure("Path", $"Must not be a descendant of '{systemFolder}'"));
                 }
             }
-            catch (Exception ex)
+
+            if (failures.Empty())
             {
-                _logger.Error(ex);
-                failures.Add(new NzbDroneValidationFailure(string.Empty, ex.Message));
+                try
+                {
+                    var environmentVariables = new StringDictionary();
+                    environmentVariables.Add("Radarr_EventType", "Test");
+
+                    var processOutput = ExecuteScript(environmentVariables);
+
+                    if (processOutput.ExitCode != 0)
+                    {
+                        failures.Add(new NzbDroneValidationFailure(string.Empty, $"Script exited with code: {processOutput.ExitCode}"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex);
+                    failures.Add(new NzbDroneValidationFailure(string.Empty, ex.Message));
+                }
             }
 
             return new ValidationResult(failures);
@@ -141,6 +157,11 @@ namespace NzbDrone.Core.Notifications.CustomScript
             _logger.Debug("Script Output: \r\n{0}", string.Join("\r\n", processOutput.Lines));
 
             return processOutput;
+        }
+
+        private bool ValidatePathParent(string possibleParent, string path)
+        {
+            return possibleParent.IsParentPath(path);
         }
     }
 }

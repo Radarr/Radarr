@@ -38,11 +38,31 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _torrentCache = cacheManager.GetCache<UTorrentTorrentCache>(GetType(), "differentialTorrents");
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MovieImportedCategory != Settings.MovieCategory)
+            {
+                _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MovieImportedCategory, Settings);
+
+                // old label must be explicitly removed
+                if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+                {
+                    _proxy.RemoveTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MovieCategory, Settings);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
+
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+            }
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -60,13 +80,17 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+            }
 
-            if (isRecentMovie && Settings.RecentMoviePriority == (int)UTorrentPriority.First ||
-                !isRecentMovie && Settings.OlderMoviePriority == (int)UTorrentPriority.First)
+            var isRecentEpisode = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentEpisode && Settings.RecentMoviePriority == (int)UTorrentPriority.First ||
+                !isRecentEpisode && Settings.OlderMoviePriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }

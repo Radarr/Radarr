@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using FluentValidation;
 using Nancy;
-using Nancy.ModelBinding;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Exceptions;
@@ -43,11 +43,11 @@ namespace Radarr.Api.V2.Indexers
             _downloadService = downloadService;
             _logger = logger;
 
-            GetResourceAll = GetReleases;
-            Post["/"] = x => DownloadRelease(ReadResourceFromRequest());
-
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
+
+            GetResourceAll = GetReleases;
+            Post["/"] = x => DownloadRelease(ReadResourceFromRequest());
 
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
@@ -69,7 +69,7 @@ namespace Radarr.Api.V2.Indexers
             }
             catch (ReleaseDownloadException ex)
             {
-                _logger.ErrorException(ex.Message, ex);
+                _logger.Error(ex, ex.Message);
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 

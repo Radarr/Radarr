@@ -52,15 +52,15 @@ class DeleteMovieModalContent extends Component {
     } = this.props;
 
     const {
-      episodeFileCount,
+      movieFileCount,
       sizeOnDisk
     } = statistics;
 
     const deleteFiles = this.state.deleteFiles;
-    let deleteFilesLabel = `Delete ${episodeFileCount} Movie Files`;
+    let deleteFilesLabel = `Delete ${movieFileCount} Movie Files`;
     let deleteFilesHelpText = 'Delete the movie files and movie folder';
 
-    if (episodeFileCount === 0) {
+    if (movieFileCount === 0) {
       deleteFilesLabel = 'Delete Movie Folder';
       deleteFilesHelpText = 'Delete the movie folder and it\'s contents';
     }
@@ -102,8 +102,8 @@ class DeleteMovieModalContent extends Component {
                 <div>The movie folder <strong>{path}</strong> and all it's content will be deleted.</div>
 
                 {
-                  !!episodeFileCount &&
-                    <div>{episodeFileCount} movie files totaling {formatBytes(sizeOnDisk)}</div>
+                  !!movieFileCount &&
+                    <div>{movieFileCount} movie files totaling {formatBytes(sizeOnDisk)}</div>
                 }
               </div>
           }
@@ -137,7 +137,7 @@ DeleteMovieModalContent.propTypes = {
 
 DeleteMovieModalContent.defaultProps = {
   statistics: {
-    episodeFileCount: 0
+    movieFileCount: 0
   }
 };
 

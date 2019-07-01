@@ -39,6 +39,24 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _rTorrentDirectoryValidator = rTorrentDirectoryValidator;
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MovieImportedCategory != Settings.MovieCategory)
+            {
+                try
+                {
+                    _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MovieImportedCategory, Settings);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Failed to set torrent post-import label \"{0}\" for {1} in rTorrent. Does the label exist?",
+                        Settings.MovieImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);

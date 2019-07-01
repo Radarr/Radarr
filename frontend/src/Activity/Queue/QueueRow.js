@@ -73,6 +73,7 @@ class QueueRow extends Component {
       languages,
       protocol,
       indexer,
+      outputPath,
       downloadClient,
       estimatedCompletionTime,
       timeleft,
@@ -134,21 +135,14 @@ class QueueRow extends Component {
             if (name === 'movie.sortTitle') {
               return (
                 <TableRowCell key={name}>
-                  <MovieTitleLink
-                    titleSlug={movie.titleSlug}
-                    title={movie.title}
-                  />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'movie') {
-              return (
-                <TableRowCell key={name}>
-                  <MovieTitleLink
-                    titleSlug={movie.titleSlug}
-                    title={movie.title}
-                  />
+                  {
+                    movie ?
+                      <MovieTitleLink
+                        titleSlug={movie.titleSlug}
+                        title={movie.title}
+                      /> :
+                      title
+                  }
                 </TableRowCell>
               );
             }
@@ -203,6 +197,14 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {title}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'outputPath') {
+              return (
+                <TableRowCell key={name}>
+                  {outputPath}
                 </TableRowCell>
               );
             }
@@ -310,6 +312,7 @@ QueueRow.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,
+  outputPath: PropTypes.string,
   downloadClient: PropTypes.string,
   estimatedCompletionTime: PropTypes.string,
   timeleft: PropTypes.string,

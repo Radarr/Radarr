@@ -14,7 +14,7 @@ import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
-import SelectInput from './SelectInput';
+import EnhancedSelectInput from './EnhancedSelectInput';
 import TagInputConnector from './TagInputConnector';
 import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
@@ -60,7 +60,7 @@ function getComponent(type) {
       return RootFolderSelectInputConnector;
 
     case inputTypes.SELECT:
-      return SelectInput;
+      return EnhancedSelectInput;
 
     case inputTypes.TAG:
       return TagInputConnector;

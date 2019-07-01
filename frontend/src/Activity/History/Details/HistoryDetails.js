@@ -163,7 +163,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'episodeFileDeleted') {
+  if (eventType === 'movieFileDeleted') {
     const {
       reason
     } = data;
@@ -199,7 +199,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'episodeFileRenamed') {
+  if (eventType === 'movieFileRenamed') {
     const {
       sourcePath,
       sourceRelativePath,
