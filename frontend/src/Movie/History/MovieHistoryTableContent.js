@@ -68,12 +68,12 @@ class MovieHistoryTableContent extends Component {
 
         {
           !isFetching && !!error &&
-            <div class={styles.blankpad}>Unable to load history.</div>
+            <div className={styles.blankpad}>Unable to load history.</div>
         }
 
         {
           isPopulated && !hasItems && !error &&
-            <div class={styles.blankpad}>No history.</div>
+            <div className={styles.blankpad}>No history.</div>
         }
 
         {

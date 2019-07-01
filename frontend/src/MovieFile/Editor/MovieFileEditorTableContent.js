@@ -169,7 +169,7 @@ class MovieFileEditorTableContent extends Component {
       <div>
         {
           !items.length &&
-            <div class={styles.blankpad}>
+            <div className={styles.blankpad}>
               No movie files to manage.
             </div>
         }
