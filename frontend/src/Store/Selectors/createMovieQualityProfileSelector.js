@@ -5,7 +5,7 @@ function createMovieQualityProfileSelector() {
   return createSelector(
     (state) => state.settings.qualityProfiles.items,
     createMovieSelector(),
-    (qualityProfiles, movie) => {
+    (qualityProfiles, movie = {}) => {
       return qualityProfiles.find((profile) => {
         return profile.id === movie.qualityProfileId;
       });

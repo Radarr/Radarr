@@ -64,12 +64,12 @@ namespace NzbDrone.Core.Messaging.Commands
 
         public List<CommandModel> Queued()
         {
-            return Query.Where(c => c.Status == CommandStatus.Queued).ToList();
+            return Query.Where(c => c.Status == CommandStatus.Queued);
         }
 
         public List<CommandModel> Started()
         {
-            return Query.Where(c => c.Status == CommandStatus.Started).ToList();
+            return Query.Where(c => c.Status == CommandStatus.Started);
         }
 
         public void Start(CommandModel command)

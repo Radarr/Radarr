@@ -156,6 +156,8 @@
     <Compile Include="Datastore\Migration\153_indexer_client_status_search_changes.cs" />
     <Compile Include="Datastore\Migration\154_add_language_to_file_history_blacklist.cs" />
     <Compile Include="Datastore\Migration\155_add_update_allowed_quality_profile.cs" />
+    <Compile Include="Datastore\Migration\156_add_download_client_priority.cs" />
+    <Compile Include="Datastore\ModelConflictException.cs" />
     <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AlreadyImportedSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlockedIndexerSpecification.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeAllowedSpecification.cs" />
     <Compile Include="Download\Clients\DownloadClientUnavailableException.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentLabel.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxySelector.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV1.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV2.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="Languages\LanguageExtensions.cs" />
     <Compile Include="MediaCover\EnsureMediaCoversCommand.cs" />
     <Compile Include="MediaFiles\Commands\UpdateMovieFileQualityCommand.cs" />
+    <Compile Include="MediaFiles\Events\MovieFileRenamedEvent.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
@@ -932,12 +936,9 @@
     <Compile Include="MetadataSource\PreDB\PreDBService.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ConfigurationResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MovieResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TMDBResources.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
@@ -964,10 +965,17 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\TmdbConfigurationService.cs" />
     <Compile Include="NetImport\NetImportSyncCommand.cs" />
+    <Compile Include="Notifications\Discord\Discord.cs" />
+    <Compile Include="Notifications\Discord\DiscordColors.cs" />
+    <Compile Include="Notifications\Discord\DiscordException.cs" />
+    <Compile Include="Notifications\Discord\DiscordProxy.cs" />
+    <Compile Include="Notifications\Discord\DiscordSettings.cs" />
+    <Compile Include="Notifications\Discord\Payloads\DiscordPayload.cs" />
+    <Compile Include="Notifications\Discord\Payloads\Embed.cs" />
+    <Compile Include="Notifications\Gotify\GotifyProxy.cs" />
     <Compile Include="Notifications\Gotify\InvalidResponseException.cs" />
     <Compile Include="Notifications\Gotify\Gotify.cs" />
     <Compile Include="Notifications\Gotify\GotifyPriority.cs" />
-    <Compile Include="Notifications\Gotify\GotifyService.cs" />
     <Compile Include="Notifications\Gotify\GotifySettings.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />

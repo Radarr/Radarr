@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using FluentAssertions;
@@ -24,18 +25,64 @@ namespace NzbDrone.Common.Test.Http
     [TestFixture(typeof(CurlHttpDispatcher))]
     public class HttpClientFixture<TDispatcher> : TestBase<HttpClient> where TDispatcher : IHttpDispatcher
     {
-        private static string[] _httpBinHosts = new[] { "eu.httpbin.org", "httpbin.org" };
-        private static int _httpBinRandom;
+        private string[] _httpBinHosts;
+        private int _httpBinSleep;
+        private int _httpBinRandom;
         private string _httpBinHost;
+        private string _httpBinHost2;
+
+        [OneTimeSetUp]
+        public void FixtureSetUp()
+        {
+            var candidates = new[] { "eu.httpbin.org", /*"httpbin.org",*/ "www.httpbin.org" };
+            // httpbin.org is broken right now, occassionally redirecting to https if it's unavailable.
+            _httpBinHosts = candidates.Where(IsTestSiteAvailable).ToArray();
+
+            TestLogger.Info($"{candidates.Length} TestSites available.");
+
+            _httpBinSleep = _httpBinHosts.Count() < 2 ? 100 : 10;
+        }
+
+        private bool IsTestSiteAvailable(string site)
+        {
+            try
+            {
+                var req = WebRequest.Create($"http://{site}/get") as HttpWebRequest;
+                var res = req.GetResponse() as HttpWebResponse;
+                if (res.StatusCode != HttpStatusCode.OK) return false;
+
+                try
+                {
+                    req = WebRequest.Create($"http://{site}/status/429") as HttpWebRequest;
+                    res = req.GetResponse() as HttpWebResponse;
+                }
+                catch (WebException ex)
+                {
+                    res = ex.Response as HttpWebResponse;
+                }
+
+                if (res == null || res.StatusCode != (HttpStatusCode)429) return false;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         [SetUp]
         public void SetUp()
         {
+            if (!_httpBinHosts.Any())
+            {
+                Assert.Inconclusive("No TestSites available");
+            }
 
             Mocker.GetMock<IPlatformInfo>().Setup(c => c.Version).Returns(new Version("1.0.0"));
             Mocker.GetMock<IOsInfo>().Setup(c => c.Name).Returns("TestOS");
             Mocker.GetMock<IOsInfo>().Setup(c => c.Version).Returns("9.0.0");
-            
+
             Mocker.SetConstant<IUserAgentBuilder>(Mocker.Resolve<UserAgentBuilder>());
 
             Mocker.SetConstant<ICacheManager>(Mocker.Resolve<CacheManager>());
@@ -51,6 +98,13 @@ namespace NzbDrone.Common.Test.Http
 
             // Roundrobin over the two servers, to reduce the chance of hitting the ratelimiter.
             _httpBinHost = _httpBinHosts[_httpBinRandom++ % _httpBinHosts.Length];
+            _httpBinHost2 = _httpBinHosts[_httpBinRandom % _httpBinHosts.Length];
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Thread.Sleep(_httpBinSleep);
         }
 
         [Test]
@@ -76,11 +130,12 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_execute_typed_get()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"http://{_httpBinHost}/get?test=1");
 
             var response = Subject.Get<HttpBinResource>(request);
 
-            response.Resource.Url.Should().Be(request.Url.FullUri);
+            response.Resource.Url.EndsWith("/get?test=1");
+            response.Resource.Args.Should().Contain("test", "1");
         }
 
         [Test]
@@ -163,6 +218,11 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_follow_redirects_to_https()
         {
+            if (typeof(TDispatcher) == typeof(ManagedHttpDispatcher) && PlatformInfo.IsMono)
+            {
+                Assert.Ignore("Will fail on tls1.2 via managed dispatcher, ignore.");
+            }
+
             var request = new HttpRequestBuilder($"http://{_httpBinHost}/redirect-to")
                 .AddQueryParam("url", $"https://sonarr.tv/")
                 .Build();
@@ -241,7 +301,12 @@ namespace NzbDrone.Common.Test.Http
 
         public void GivenOldCookie()
         {
-            var oldRequest = new HttpRequest("http://eu.httpbin.org/get");
+            if (_httpBinHost == _httpBinHost2)
+            {
+                Assert.Inconclusive("Need both httpbin.org and eu.httpbin.org to run this test.");
+            }
+
+            var oldRequest = new HttpRequest($"http://{_httpBinHost2}/get");
             oldRequest.Cookies["my"] = "cookie";
 
             var oldClient = new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<ICacheManager>(), Mocker.Resolve<IRateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.GetMock<IUserAgentBuilder>().Object, Mocker.Resolve<Logger>());
@@ -258,7 +323,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("http://eu.httpbin.org/get");
+            var request = new HttpRequest($"http://{_httpBinHost2}/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -274,7 +339,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("http://httpbin.org/get");
+            var request = new HttpRequest($"http://{_httpBinHost}/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -332,6 +397,28 @@ namespace NzbDrone.Common.Test.Http
             var responseCookies = Subject.Get<HttpCookieResource>(requestDelete);
 
             responseCookies.Resource.Cookies.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_clear_request_cookie()
+        {
+            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies");
+            requestSet.Cookies.Add("my", "cookie");
+            requestSet.AllowAutoRedirect = false;
+            requestSet.StoreRequestCookie = true;
+            requestSet.StoreResponseCookie = false;
+
+            var responseSet = Subject.Get<HttpCookieResource>(requestSet);
+
+            var requestClear = new HttpRequest($"http://{_httpBinHost}/cookies");
+            requestClear.Cookies.Add("my", null);
+            requestClear.AllowAutoRedirect = false;
+            requestClear.StoreRequestCookie = true;
+            requestClear.StoreResponseCookie = false;
+
+            var responseClear = Subject.Get<HttpCookieResource>(requestClear);
+
+            responseClear.Resource.Cookies.Should().BeEmpty();
         }
 
         [Test]
@@ -519,20 +606,6 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
-        public void should_not_send_old_cookie()
-        {
-            GivenOldCookie();
-            
-            var requestCookies = new HttpRequest($"http://{_httpBinHost}/cookies");
-            requestCookies.IgnorePersistentCookies = true;
-            requestCookies.StoreRequestCookie = false;
-            requestCookies.StoreResponseCookie = false;
-            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
-
-            responseCookies.Resource.Cookies.Should().BeEmpty();
-        }
-
-        [Test]
         public void should_throw_on_http429_too_many_requests()
         {
             var request = new HttpRequest($"http://{_httpBinHost}/status/429");
@@ -610,8 +683,7 @@ namespace NzbDrone.Common.Test.Http
         {
             try
             {
-                string url =
-                    $"http://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeUriString(malformedCookie)}";
+                string url = $"http://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeUriString(malformedCookie)}";
 
                 var requestSet = new HttpRequest(url);
                 requestSet.AllowAutoRedirect = false;
@@ -635,6 +707,7 @@ namespace NzbDrone.Common.Test.Http
 
     public class HttpBinResource
     {
+        public Dictionary<string, object> Args { get; set; }
         public Dictionary<string, object> Headers { get; set; }
         public string Origin { get; set; }
         public string Url { get; set; }

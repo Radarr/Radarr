@@ -7,12 +7,14 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageJumpBar from 'Components/Page/PageJumpBar';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import NoMovie from 'Movie/NoMovie';
 import MovieIndexTableConnector from './Table/MovieIndexTableConnector';
+import MovieIndexTableOptionsConnector from './Table/MovieIndexTableOptionsConnector';
 import MovieIndexPosterOptionsModal from './Posters/Options/MovieIndexPosterOptionsModal';
 import MovieIndexPostersConnector from './Posters/MovieIndexPostersConnector';
 import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOverviewOptionsModal';
@@ -182,6 +184,7 @@ class MovieIndex extends Component {
       error,
       totalItems,
       items,
+      columns,
       selectedFilterKey,
       filters,
       customFilters,
@@ -251,7 +254,7 @@ class MovieIndex extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="Edit Mode"
+              label="Movie Editor"
               iconName={icons.EDIT}
               isDisabled={hasNoMovie}
             />
@@ -262,25 +265,41 @@ class MovieIndex extends Component {
             alignContent={align.RIGHT}
             collapseButtons={false}
           >
+            {
+              view === 'table' ?
+                <TableOptionsModalWrapper
+                  {...otherProps}
+                  columns={columns}
+                  optionsComponent={MovieIndexTableOptionsConnector}
+                >
+                  <PageToolbarButton
+                    label="Options"
+                    iconName={icons.TABLE}
+                  />
+                </TableOptionsModalWrapper> :
+                null
+            }
 
             {
-              view === 'posters' &&
+              view === 'posters' ?
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.POSTER}
                   isDisabled={hasNoMovie}
                   onPress={this.onPosterOptionsPress}
-                />
+                /> :
+                null
             }
 
             {
-              view === 'overview' &&
+              view === 'overview' ?
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.OVERVIEW}
                   isDisabled={hasNoMovie}
                   onPress={this.onOverviewOptionsPress}
-                />
+                /> :
+                null
             }
 
             {
@@ -388,6 +407,7 @@ MovieIndex.propTypes = {
   error: PropTypes.object,
   totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -27,6 +27,8 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             Port = 8080;
             UrlBase = "RPC2";
             MovieCategory = "radarr";
+            OlderMoviePriority = (int)RTorrentPriority.Normal;
+            RecentMoviePriority = (int)RTorrentPriority.Normal;
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -50,16 +52,19 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional.")]
         public string MovieCategory { get; set; }
 
-        [FieldDefinition(7, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]
+        [FieldDefinition(7, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Sonarr to set after it has imported the download. Leave blank to disable this feature.")]
+        public string MovieImportedCategory { get; set; }
+
+        [FieldDefinition(8, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]
         public string MovieDirectory { get; set; }
 
-        [FieldDefinition(8, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        [FieldDefinition(9, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
         public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(9, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        [FieldDefinition(10, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
         public int OlderMoviePriority { get; set; }
 
-        [FieldDefinition(10, Label = "Add Stopped", Type = FieldType.Checkbox, HelpText = "Enabling will prevent magnets from downloading before downloading")]
+        [FieldDefinition(11, Label = "Add Stopped", Type = FieldType.Checkbox, HelpText = "Enabling will prevent magnets from downloading before downloading")]
         public bool AddStopped { get; set; }
 
         public NzbDroneValidationResult Validate()

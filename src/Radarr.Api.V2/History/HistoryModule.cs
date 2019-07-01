@@ -56,11 +56,18 @@ namespace Radarr.Api.V2.History
             var includeMovie = Request.GetBooleanQueryParameter("includeMovie");
 
             var eventTypeFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "eventType");
+            var downloadIdFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "downloadId");
 
             if (eventTypeFilter != null)
             {
                 var filterValue = (HistoryEventType)Convert.ToInt32(eventTypeFilter.Value);
                 pagingSpec.FilterExpressions.Add(v => v.EventType == filterValue);
+            }
+
+            if (downloadIdFilter != null)
+            {
+                var downloadId = downloadIdFilter.Value;
+                pagingSpec.FilterExpressions.Add(h => h.DownloadId == downloadId);
             }
 
             return ApplyToPage(_historyService.Paged, pagingSpec, h => MapToResource(h, includeMovie));

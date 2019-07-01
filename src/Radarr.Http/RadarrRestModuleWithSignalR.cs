@@ -25,6 +25,8 @@ namespace Radarr.Http
 
         public void Handle(ModelEvent<TModel> message)
         {
+            if (!_signalRBroadcaster.IsConnected) return;
+
             if (message.Action == ModelAction.Deleted || message.Action == ModelAction.Sync)
             {
                 BroadcastResourceChange(message.Action);
@@ -35,6 +37,8 @@ namespace Radarr.Http
 
         protected void BroadcastResourceChange(ModelAction action, int id)
         {
+            if (!_signalRBroadcaster.IsConnected) return;
+
             if (action == ModelAction.Deleted)
             {
                 BroadcastResourceChange(action, new TResource {Id = id});
@@ -48,6 +52,8 @@ namespace Radarr.Http
 
         protected void BroadcastResourceChange(ModelAction action, TResource resource)
         {
+            if (!_signalRBroadcaster.IsConnected) return;
+
             if (GetType().Namespace.Contains("V2"))
             {
                 var signalRMessage = new SignalRMessage
@@ -63,6 +69,8 @@ namespace Radarr.Http
      
         protected void BroadcastResourceChange(ModelAction action)
         {
+            if (!_signalRBroadcaster.IsConnected) return;
+
             if (GetType().Namespace.Contains("V2"))
             {
                 var signalRMessage = new SignalRMessage

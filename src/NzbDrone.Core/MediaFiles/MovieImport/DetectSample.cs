@@ -57,13 +57,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 var runTime = _videoFileInfoReader.GetRunTime(path);
                 var minimumRuntime = GetMinimumAllowedRuntime(movie);
 
-                if (runTime.TotalMinutes.Equals(0))
+                if (runTime.Value.TotalMinutes.Equals(0))
                 {
                     _logger.Error("[{0}] has a runtime of 0, is it a valid video file?", path);
                     return true;
                 }
 
-                if (runTime.TotalSeconds < minimumRuntime)
+                if (runTime.Value.TotalSeconds < minimumRuntime)
                 {
                     _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime, minimumRuntime);
                     return true;

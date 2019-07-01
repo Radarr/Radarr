@@ -147,6 +147,7 @@
     <Compile Include="Datastore\Migration\147_custom_formatsFixture.cs" />
     <Compile Include="Datastore\Migration\149_regex_required_tagsFixture.cs" />
     <Compile Include="Datastore\Migration\150_fix_format_tags_double_underscoreFixture.cs" />
+    <Compile Include="Datastore\Migration\156_add_download_client_priorityFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
+    <Compile Include="Download\DownloadClientProviderFixture.cs" />
     <Compile Include="Download\DownloadClientStatusServiceFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\TorrentBlackholeFixture.cs" />

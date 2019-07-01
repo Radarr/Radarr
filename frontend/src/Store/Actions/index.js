@@ -4,7 +4,6 @@ import * as blacklist from './blacklistActions';
 import * as calendar from './calendarActions';
 import * as captcha from './captchaActions';
 import * as customFilters from './customFilterActions';
-import * as devices from './deviceActions';
 import * as commands from './commandActions';
 import * as movieFiles from './movieFileActions';
 import * as history from './historyActions';
@@ -13,6 +12,7 @@ import * as interactiveImportActions from './interactiveImportActions';
 import * as oAuth from './oAuthActions';
 import * as organizePreview from './organizePreviewActions';
 import * as paths from './pathActions';
+import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
@@ -32,7 +32,6 @@ export default [
   captcha,
   commands,
   customFilters,
-  devices,
   movieFiles,
   history,
   importMovie,
@@ -40,6 +39,7 @@ export default [
   oAuth,
   organizePreview,
   paths,
+  providerOptions,
   queue,
   releases,
   rootFolders,

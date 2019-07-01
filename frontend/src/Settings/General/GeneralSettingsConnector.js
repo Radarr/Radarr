@@ -26,6 +26,7 @@ function createMapStateToProps() {
         isResettingApiKey,
         isMono: systemStatus.isMono,
         isWindows: systemStatus.isWindows,
+        isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service',
         mode: systemStatus.mode,
         ...sectionSettings
       };
@@ -58,7 +59,7 @@ class GeneralSettingsConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: SECTION });
+    this.props.clearPendingChanges({ section: `settings.${SECTION}` });
   }
 
   //

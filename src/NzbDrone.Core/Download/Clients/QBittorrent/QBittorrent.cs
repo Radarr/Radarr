@@ -35,6 +35,24 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         private IQBittorrentProxy Proxy => _proxySelector.GetProxy(Settings);
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MovieImportedCategory != Settings.MovieCategory)
+            {
+                try
+                {
+                    Proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MovieImportedCategory, Settings);
+                }
+                catch (DownloadClientException)
+                {
+                    _logger.Warn("Failed to set post-import torrent label \"{0}\" for {1} in qBittorrent. Does the label exist?",
+                        Settings.MovieImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             if (!Proxy.GetConfig(Settings).DhtEnabled && !magnetLink.Contains("&tr="))
@@ -43,11 +61,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
 
             Proxy.AddTorrentFromUrl(magnetLink, Settings);
-
-            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
-            {
-                Proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
-            }
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
@@ -70,18 +83,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, Byte[] fileContent)
         {
             Proxy.AddTorrentFromFile(filename, fileContent, Settings);
-
-            try
-            {
-                if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
-                {
-                    Proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, "Failed to set the torrent label for {0}.", filename);
-            }
 
             try
             {
@@ -218,6 +219,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             failures.AddIfNotNull(TestConnection());
             if (failures.HasErrors()) return;
+            failures.AddIfNotNull(TestCategory());
             failures.AddIfNotNull(TestPrioritySupport());
             failures.AddIfNotNull(TestGetTorrents());
         }
@@ -249,7 +251,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 else if (Settings.MovieCategory.IsNullOrWhiteSpace())
                 {
                     // warn if labels are supported, but category is not provided
-                    return new NzbDroneValidationFailure("TvCategory", "Category is recommended")
+                    return new NzbDroneValidationFailure("MovieCategory", "Category is recommended")
                     {
                         IsWarning = true,
                         DetailedDescription = "Radarr will not attempt to import completed downloads without a category."
@@ -290,6 +292,53 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 _logger.Error(ex, "Unable to test qBittorrent");
                 return new NzbDroneValidationFailure(String.Empty, "Unknown exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        private ValidationFailure TestCategory()
+        {
+            if (Settings.MovieCategory.IsNullOrWhiteSpace() && Settings.MovieImportedCategory.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
+            // api v1 doesn't need to check/add categories as it's done on set
+            var version = _proxySelector.GetProxy(Settings, true).GetApiVersion(Settings);
+            if (version < Version.Parse("2.0"))
+            {
+                return null;
+            }
+
+            Dictionary<string, QBittorrentLabel> labels = Proxy.GetLabels(Settings);
+
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && !labels.ContainsKey(Settings.MovieCategory))
+            {
+                Proxy.AddLabel(Settings.MovieCategory, Settings);
+                labels = Proxy.GetLabels(Settings);
+
+                if (!labels.ContainsKey(Settings.MovieCategory))
+                {
+                    return new NzbDroneValidationFailure("MovieCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Radarr was unable to add the label to qBittorrent."
+                    };
+                }
+            }
+
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() && !labels.ContainsKey(Settings.MovieImportedCategory))
+            {
+                Proxy.AddLabel(Settings.MovieImportedCategory, Settings);
+                labels = Proxy.GetLabels(Settings);
+
+                if (!labels.ContainsKey(Settings.MovieImportedCategory))
+                {
+                    return new NzbDroneValidationFailure("MovieImportedCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Radarr was unable to add the label to qBittorrent."
+                    };
+                }
             }
 
             return null;

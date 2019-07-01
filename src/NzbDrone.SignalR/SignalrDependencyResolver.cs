@@ -17,7 +17,7 @@ namespace NzbDrone.SignalR
         private SignalRDependencyResolver(IContainer container)
         {
             _container = container;
-            var performanceCounterManager = new SonarrPerformanceCounterManager();
+            var performanceCounterManager = new RadarrPerformanceCounterManager();
             Register(typeof(IPerformanceCounterManager), () => performanceCounterManager);
         }
 

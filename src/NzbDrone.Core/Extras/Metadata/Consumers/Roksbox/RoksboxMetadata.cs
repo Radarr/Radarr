@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             if (image == null)
             {
                 _logger.Trace("Failed to find suitable Movie image for movie {0}.", movie.Title);
-                return null;
+                return new List<ImageFileResult>();
             }
 
             var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);

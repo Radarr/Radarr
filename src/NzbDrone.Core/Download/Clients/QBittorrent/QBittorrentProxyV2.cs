@@ -177,6 +177,20 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             ProcessRequest(request, settings);
         }
 
+        public void AddLabel(string label, QBittorrentSettings settings)
+        {
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/createCategory")
+                                                .Post()
+                                                .AddFormParameter("category", label);
+            ProcessRequest(request, settings);
+        }
+
+        public Dictionary<string, QBittorrentLabel> GetLabels(QBittorrentSettings settings)
+        {
+            var request = BuildRequest(settings).Resource("/api/v2/torrents/categories");
+            return Json.Deserialize<Dictionary<string, QBittorrentLabel>>(ProcessRequest(request, settings));
+        }
+
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
         {
             var ratioLimit = seedConfiguration.Ratio.HasValue ? seedConfiguration.Ratio : -2;

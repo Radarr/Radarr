@@ -30,13 +30,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(), HealthCheckResult.Error, $"Your Mono version {monoVersion} has a bug that causes issues connecting to indexers/download clients. You should upgrade to a higher version");
             }
 
-            if (monoVersion >= new Version("4.8.0"))
+            if (monoVersion >= new Version("4.4.2"))
             {
-                _logger.Debug("Mono version is 4.8.0 or better: {0}", monoVersion);
+                _logger.Debug("Mono version is 4.4.2 or better: {0}", monoVersion);
                 return new HealthCheck(GetType());
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Warning, "Your version of mono which is required by Radarr is deprecated and no longer supported. Core functionality of Radarr including automatic updates may be and will remain broken until you upgrade. You must manually upgrade your mono version to restore automatic update functionality.");
+            return new HealthCheck(GetType(), HealthCheckResult.Warning, "You are running an old and unsupported version of Mono. Please upgrade Mono for improved stability.");
         }
 
         public override bool CheckOnSchedule => false;

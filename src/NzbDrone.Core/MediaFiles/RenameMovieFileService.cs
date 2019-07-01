@@ -119,6 +119,8 @@ namespace NzbDrone.Core.MediaFiles
 
                     _logger.Debug("Renamed movie file: {0}", movieFile);
 
+                    _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, oldMovieFilePath));
+
                 }
                 catch (SameFilenameException ex)
                 {

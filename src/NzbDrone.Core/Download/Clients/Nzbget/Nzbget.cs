@@ -9,6 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
@@ -43,12 +44,11 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             var priority = remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
             var addpaused = Settings.AddPaused;
-
             var response = _proxy.DownloadNzb(fileContent, filename, category, priority, addpaused, Settings);
 
             if (response == null)
             {
-                throw new DownloadClientException("Failed to add nzb {0}", filename);
+                throw new DownloadClientRejectedReleaseException(remoteMovie.Release, "NZBGet rejected the NZB for an unknown reason");
             }
 
             return response;
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 historyItem.CanMoveFiles = true;
                 historyItem.CanBeRemoved = true;
 
-                if (item.DeleteStatus == "MANUAL")
+                if (item.DeleteStatus == "MANUAL" || item.DeleteStatus == "COPY")
                 {
                     continue;
                 }

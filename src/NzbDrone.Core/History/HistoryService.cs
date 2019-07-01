@@ -35,6 +35,7 @@ namespace NzbDrone.Core.History
                                   IHandle<MovieImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<MovieFileDeletedEvent>,
+                                  IHandle<MovieFileRenamedEvent>,
                                   IHandle<MovieDeletedEvent>
     {
         private readonly IHistoryRepository _historyRepository;
@@ -191,6 +192,30 @@ namespace NzbDrone.Core.History
             };
 
             history.Data.Add("Reason", message.Reason.ToString());
+
+            _historyRepository.Insert(history);
+        }
+
+        public void Handle(MovieFileRenamedEvent message)
+        {
+            var sourcePath = message.OriginalPath;
+            var sourceRelativePath = message.Movie.Path.GetRelativePath(message.OriginalPath);
+            var path = Path.Combine(message.Movie.Path, message.MovieFile.RelativePath);
+            var relativePath = message.MovieFile.RelativePath;
+
+            var history = new History
+            {
+                EventType = HistoryEventType.MovieFileRenamed,
+                Date = DateTime.UtcNow,
+                Quality = message.MovieFile.Quality,
+                SourceTitle = message.OriginalPath,
+                MovieId = message.MovieFile.MovieId,
+            };
+
+            history.Data.Add("SourcePath", sourcePath);
+            history.Data.Add("SourceRelativePath", sourceRelativePath);
+            history.Data.Add("Path", path);
+            history.Data.Add("RelativePath", relativePath);
 
             _historyRepository.Insert(history);
         }

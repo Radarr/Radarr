@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.MovieTests
 
         private void GivenMovieLastRefreshedMonthsAgo()
         {
-            _movie.LastInfoSync = DateTime.UtcNow.AddDays(-90);
+            _movie.LastInfoSync = DateTime.UtcNow.AddDays(-190);
         }
 
         private void GivenMovieLastRefreshedYesterday()

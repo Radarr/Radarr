@@ -571,7 +571,7 @@ MovieDetails.propTypes = {
 };
 
 MovieDetails.defaultProps = {
-  tag: [],
+  tags: [],
   isSaving: false,
   sizeOnDisk: 0
 };

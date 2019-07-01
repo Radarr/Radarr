@@ -7,6 +7,8 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -16,30 +18,32 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_delete_orphaned_episode_files()
         {
-            var episodeFile = Builder<MovieFile>.CreateNew()
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
+                                                  .With(h => h.Languages = new List<Language> { Language.English})
                                                   .BuildNew();
 
-            Db.Insert(episodeFile);
+            Db.Insert(movieFile);
             Subject.Clean();
             AllStoredModels.Should().BeEmpty();
         }
 
         [Test]
-        public void should_not_delete_unorphaned_episode_files()
+        public void should_not_delete_unorphaned_movie_files()
         {
-            var episodeFiles = Builder<MovieFile>.CreateListOfSize(2)
+            var movieFiles = Builder<MovieFile>.CreateListOfSize(2)
                                                    .All()
                                                    .With(h => h.Quality = new QualityModel())
+                                                   .With(h => h.Languages = new List<Language> { Language.English })
                                                    .BuildListOfNew();
 
-            Db.InsertMany(episodeFiles);
+            Db.InsertMany(movieFiles);
 
-            var episode = Builder<Movie>.CreateNew()
-                                          .With(e => e.MovieFileId = episodeFiles.First().Id)
+            var movie = Builder<Movie>.CreateNew()
+                                          .With(e => e.MovieFileId = movieFiles.First().Id)
                                           .BuildNew();
 
-            Db.Insert(episode);
+            Db.Insert(movie);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
