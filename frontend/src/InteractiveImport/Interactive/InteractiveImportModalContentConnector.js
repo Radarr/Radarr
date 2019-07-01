@@ -100,6 +100,7 @@ class InteractiveImportModalContentConnector extends Component {
 
     _.forEach(this.props.items, (item) => {
       const isSelected = selected.indexOf(item.id) > -1;
+      
       if (isSelected) {
         const {
           movie,

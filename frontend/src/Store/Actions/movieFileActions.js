@@ -169,12 +169,15 @@ export const actionHandlers = handleThunks({
       dispatch(batchActions([
         ...movieFileIds.map((id) => {
           const props = {};
+          
           if (languages) {
             props.languages = languages;
           }
+
           if (quality) {
             props.quality = quality;
           }
+
           return updateItem({ section, id, ...props });
         }),
 
