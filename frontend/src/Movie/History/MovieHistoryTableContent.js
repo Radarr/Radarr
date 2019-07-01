@@ -4,6 +4,8 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import MovieHistoryRowConnector from './MovieHistoryRowConnector';
+import styles from './MovieHistoryTableContent.css';
+
 const columns = [
   {
     name: 'eventType',
@@ -66,12 +68,12 @@ class MovieHistoryTableContent extends Component {
 
         {
           !isFetching && !!error &&
-            <div>Unable to load history.</div>
+            <div class={styles.blankpad}>Unable to load history.</div>
         }
 
         {
           isPopulated && !hasItems && !error &&
-            <div>No history.</div>
+            <div class={styles.blankpad}>No history.</div>
         }
 
         {
