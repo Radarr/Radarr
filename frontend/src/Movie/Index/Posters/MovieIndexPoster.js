@@ -254,10 +254,7 @@ MovieIndexPoster.propTypes = {
 
 MovieIndexPoster.defaultProps = {
   statistics: {
-    seasonCount: 0,
-    episodeCount: 0,
-    episodeFileCount: 0,
-    totalEpisodeCount: 0
+    movieFileCount: 0
   }
 };
 

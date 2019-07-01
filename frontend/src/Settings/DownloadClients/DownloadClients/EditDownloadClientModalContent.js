@@ -44,6 +44,7 @@ class EditDownloadClientModalContent extends Component {
       implementationName,
       name,
       enable,
+      priority,
       fields,
       message
     } = item;
@@ -67,9 +68,7 @@ class EditDownloadClientModalContent extends Component {
 
           {
             !isFetching && !error &&
-              <Form
-                {...otherProps}
-              >
+              <Form {...otherProps}>
                 {
                   !!message &&
                     <Alert
@@ -116,6 +115,23 @@ class EditDownloadClientModalContent extends Component {
                     );
                   })
                 }
+
+                <FormGroup
+                  advancedSettings={advancedSettings}
+                  isAdvanced={true}
+                >
+                  <FormLabel>Client Priority</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.NUMBER}
+                    name="priority"
+                    helpText="Prioritize multiple Download Clients. Round-Robin is used for clients with the same priority."
+                    min={1}
+                    max={50}
+                    {...priority}
+                    onChange={onInputChange}
+                  />
+                </FormGroup>
 
               </Form>
           }

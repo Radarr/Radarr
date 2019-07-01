@@ -9,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     public interface IVideoFileInfoReader
     {
         MediaInfoModel GetMediaInfo(string filename);
-        TimeSpan GetRunTime(string filename);
+        TimeSpan? GetRunTime(string filename);
     }
 
     public class VideoFileInfoReader : IVideoFileInfoReader
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 4;
+        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 3;
         public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 5;
 
         public VideoFileInfoReader(IDiskProvider diskProvider, Logger logger)
@@ -35,6 +35,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             MediaInfo mediaInfo = null;
+
+            // TODO: Cache media info by path, mtime and length so we don't need to read files multiple times
 
             try
             {
@@ -117,6 +119,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     int.TryParse(aBitRate, out audioBitRate);
                     int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "StreamCount"), out streamCount);
 
+
                     string audioChannelsStr = mediaInfo.Get(StreamKind.Audio, 0, "Channel(s)").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
 
                     var audioChannelPositions = mediaInfo.Get(StreamKind.Audio, 0, "ChannelPositions/String2");
@@ -177,25 +180,17 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
             finally
             {
-                if (mediaInfo != null)
-                {
-                    mediaInfo.Close();
-                }
+                mediaInfo?.Close();
             }
 
             return null;
         }
 
-        public TimeSpan GetRunTime(string filename)
+        public TimeSpan? GetRunTime(string filename)
         {
             var info = GetMediaInfo(filename);
 
-            if (info == null)
-            {
-                return new TimeSpan();
-            }
-
-            return info.RunTime;
+            return info?.RunTime;
         }
 
         private TimeSpan GetBestRuntime(int audio, int video, int general)

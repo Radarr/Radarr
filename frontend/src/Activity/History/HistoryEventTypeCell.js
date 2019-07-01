@@ -9,15 +9,15 @@ function getIconName(eventType) {
   switch (eventType) {
     case 'grabbed':
       return icons.DOWNLOADING;
-    case 'seriesFolderImported':
+    case 'movieFolderImported':
       return icons.DRIVE;
     case 'downloadFolderImported':
       return icons.DOWNLOADED;
     case 'downloadFailed':
       return icons.DOWNLOADING;
-    case 'episodeFileDeleted':
+    case 'movieFileDeleted':
       return icons.DELETE;
-    case 'episodeFileRenamed':
+    case 'movieFileRenamed':
       return icons.ORGANIZE;
     default:
       return icons.UNKNOWN;
@@ -36,17 +36,17 @@ function getIconKind(eventType) {
 function getTooltip(eventType, data) {
   switch (eventType) {
     case 'grabbed':
-      return `Episode grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
-    case 'seriesFolderImported':
-      return 'Episode imported from series folder';
+      return `Movie grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
+    case 'movieFolderImported':
+      return 'Movie imported from movie folder';
     case 'downloadFolderImported':
-      return 'Episode downloaded successfully and picked up from download client';
+      return 'Movie downloaded successfully and picked up from download client';
     case 'downloadFailed':
-      return 'Episode download failed';
-    case 'episodeFileDeleted':
-      return 'Episode file deleted';
-    case 'episodeFileRenamed':
-      return 'Episode file renamed';
+      return 'Movie download failed';
+    case 'movieFileDeleted':
+      return 'Movie file deleted';
+    case 'movieFileRenamed':
+      return 'Movie file renamed';
     default:
       return 'Unknown event';
   }

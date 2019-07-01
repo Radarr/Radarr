@@ -86,7 +86,7 @@ namespace NzbDrone.Common.Test
         {
             first.AsOsAgnostic().PathEquals(second.AsOsAgnostic()).Should().BeFalse();
         }
-        
+
         [Test]
         public void should_return_false_when_not_a_child()
         {
@@ -113,6 +113,7 @@ namespace NzbDrone.Common.Test
         [TestCase(@"C:\Test\", @"C:\Test\mydir")]
         [TestCase(@"C:\Test\", @"C:\Test\mydir\")]
         [TestCase(@"C:\Test", @"C:\Test\30.Rock.S01E01.Pilot.avi")]
+        [TestCase(@"C:\", @"C:\Test\30.Rock.S01E01.Pilot.avi")]
         public void path_should_be_parent(string parentPath, string childPath)
         {
             parentPath.AsOsAgnostic().IsParentPath(childPath.AsOsAgnostic()).Should().BeTrue();
@@ -137,18 +138,34 @@ namespace NzbDrone.Common.Test
         }
 
         [TestCase(@"C:\Test\mydir", @"C:\Test")]
-        [TestCase(@"C:\Test\", @"C:")]
+        [TestCase(@"C:\Test\", @"C:\")]
         [TestCase(@"C:\", null)]
-        public void path_should_return_parent(string path, string parentPath)
+        [TestCase(@"\\server\share", null)]
+        [TestCase(@"\\server\share\test", @"\\server\share")]
+        public void path_should_return_parent_windows(string path, string parentPath)
         {
+            WindowsOnly();
+            path.GetParentPath().Should().Be(parentPath);
+        }
+
+        [TestCase(@"/", null)]
+        [TestCase(@"/test", "/")]
+        public void path_should_return_parent_mono(string path, string parentPath)
+        {
+            MonoOnly();
             path.GetParentPath().Should().Be(parentPath);
         }
 
         [Test]
         public void path_should_return_parent_for_oversized_path()
         {
-            var path       = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/nzbdrone/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories";
-            var parentPath = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/nzbdrone/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing";
+            MonoOnly();
+
+            // This test will fail on Windows if long path support is not enabled: https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/
+            // It will also fail if the app isn't configured to use long path (such as resharper): https://blogs.msdn.microsoft.com/jeremykuhne/2016/07/30/net-4-6-2-and-long-paths-on-windows-10/
+
+            var path       = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\nzbdrone\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories".AsOsAgnostic();
+            var parentPath = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\nzbdrone\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing".AsOsAgnostic();
 
             path.GetParentPath().Should().Be(parentPath);
         }

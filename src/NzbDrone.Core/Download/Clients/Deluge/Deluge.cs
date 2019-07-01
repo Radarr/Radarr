@@ -33,13 +33,38 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy = proxy;
         }
 
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            // set post-import category
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() &&
+                Settings.MovieImportedCategory != Settings.MovieCategory)
+            {
+                try
+                {
+                    _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), Settings.MovieImportedCategory, Settings);
+                }
+                catch (DownloadClientUnavailableException)
+                {
+                    _logger.Warn("Failed to set torrent post-import label \"{0}\" for {1} in Deluge. Does the label exist?",
+                        Settings.MovieImportedCategory, downloadClientItem.Title);
+                }
+            }
+        }
+
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
 
-            if (!Settings.MovieCategory.IsNullOrWhiteSpace())
+            if (actualHash.IsNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.MovieCategory, Settings);
+                throw new DownloadClientException("Deluge failed to add magnet " + magnetLink);
+            }
+
+            _proxy.SetTorrentSeedingConfiguration(actualHash, remoteMovie.SeedConfiguration, Settings);
+
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                _proxy.SetTorrentLabel(actualHash, Settings.MovieCategory, Settings);
             }
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
@@ -64,9 +89,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentSeedingConfiguration(actualHash, remoteMovie.SeedConfiguration, Settings);
 
-            if (!Settings.MovieCategory.IsNullOrWhiteSpace())
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.MovieCategory, Settings);
+                _proxy.SetTorrentLabel(actualHash, Settings.MovieCategory, Settings);
             }
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
@@ -86,21 +111,13 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             IEnumerable<DelugeTorrent> torrents;
 
-            try
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                if (!Settings.MovieCategory.IsNullOrWhiteSpace())
-                {
-                    torrents = _proxy.GetTorrentsByLabel(Settings.MovieCategory, Settings);
-                }
-                else
-                {
-                    torrents = _proxy.GetTorrents(Settings);
-                }
+                torrents = _proxy.GetTorrentsByLabel(Settings.MovieCategory, Settings);
             }
-            catch (DownloadClientException ex)
+            else
             {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
+                torrents = _proxy.GetTorrents(Settings);
             }
 
             var items = new List<DownloadClientItem>();
@@ -110,7 +127,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 if (torrent.Hash == null) continue;
 
                 var item = new DownloadClientItem();
-                item.DownloadId = torrent.Hash?.ToUpper();
+                item.DownloadId = torrent.Hash.ToUpper();
                 item.Title = torrent.Name;
                 item.Category = Settings.MovieCategory;
 
@@ -253,7 +270,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         private ValidationFailure TestCategory()
         {
-            if (Settings.MovieCategory.IsNullOrWhiteSpace())
+            if (Settings.MovieCategory.IsNullOrWhiteSpace() && Settings.MovieImportedCategory.IsNullOrWhiteSpace())
             {
                 return null;
             }
@@ -262,7 +279,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             if (!enabledPlugins.Contains("Label"))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Label plugin not activated")
+                return new NzbDroneValidationFailure("MovieCategory", "Label plugin not activated")
                 {
                     DetailedDescription = "You must have the Label plugin enabled in Deluge to use categories."
                 };
@@ -270,7 +287,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var labels = _proxy.GetAvailableLabels(Settings);
 
-            if (!labels.Contains(Settings.MovieCategory))
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && !labels.Contains(Settings.MovieCategory))
             {
                 _proxy.AddLabel(Settings.MovieCategory, Settings);
                 labels = _proxy.GetAvailableLabels(Settings);
@@ -279,7 +296,21 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 {
                     return new NzbDroneValidationFailure("MovieCategory", "Configuration of label failed")
                     {
-                        DetailedDescription = "Radarr as unable to add the label to Deluge."
+                        DetailedDescription = "Radarr was unable to add the label to Deluge."
+                    };
+                }
+            }
+
+            if (Settings.MovieImportedCategory.IsNotNullOrWhiteSpace() && !labels.Contains(Settings.MovieImportedCategory))
+            {
+                _proxy.AddLabel(Settings.MovieImportedCategory, Settings);
+                labels = _proxy.GetAvailableLabels(Settings);
+
+                if (!labels.Contains(Settings.MovieImportedCategory))
+                {
+                    return new NzbDroneValidationFailure("MovieImportedCategory", "Configuration of label failed")
+                    {
+                        DetailedDescription = "Radarr was unable to add the label to Deluge."
                     };
                 }
             }

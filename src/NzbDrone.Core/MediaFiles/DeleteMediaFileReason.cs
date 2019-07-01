@@ -5,6 +5,7 @@
         MissingFromDisk,
         Manual,
         Upgrade,
-        NoLinkedEpisodes
+        NoLinkedEpisodes,
+        ManualOverride
     }
 }

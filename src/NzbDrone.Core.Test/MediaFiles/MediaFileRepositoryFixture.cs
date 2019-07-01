@@ -1,9 +1,11 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -16,12 +18,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void get_files_by_series()
+        public void get_files_by_movie()
         {
             var files = Builder<MovieFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
-                .With(c => c.Quality =new QualityModel())
+                .With(c => c.Quality = new QualityModel())
+                .With(c => c.Languages = new List<Language> { Language.English })
                 .Random(4)
                 .With(s => s.MovieId = 12)
                 .BuildListOfNew();
@@ -29,10 +32,10 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Db.InsertMany(files);
 
-            var seriesFiles = Subject.GetFilesByMovie(12);
+            var movieFiles = Subject.GetFilesByMovie(12);
 
-            seriesFiles.Should().HaveCount(4);
-            seriesFiles.Should().OnlyContain(c => c.MovieId == 12);
+            movieFiles.Should().HaveCount(4);
+            movieFiles.Should().OnlyContain(c => c.MovieId == 12);
 
         }
     }
