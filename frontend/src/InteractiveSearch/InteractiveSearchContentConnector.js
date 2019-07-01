@@ -67,13 +67,6 @@ class InteractiveSearchContentConnector extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const {
-      dispatchClearReleases
-    } = this.props;
-    dispatchClearReleases();
-  }
-
   //
   // Render
 

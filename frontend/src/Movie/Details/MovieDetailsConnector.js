@@ -10,6 +10,7 @@ import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
+import { clearReleases } from 'Store/Actions/releaseActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import MovieDetails from './MovieDetails';
@@ -108,6 +109,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   fetchMovieFiles,
   clearMovieFiles,
+  clearReleases,
   toggleMovieMonitored,
   fetchQueueDetails,
   clearQueueDetails,
@@ -169,6 +171,7 @@ class MovieDetailsConnector extends Component {
   unpopulate = () => {
     this.props.clearMovieFiles();
     this.props.clearQueueDetails();
+    this.props.clearReleases();
   }
 
   //
@@ -220,6 +223,7 @@ MovieDetailsConnector.propTypes = {
   isRenamingMovie: PropTypes.bool.isRequired,
   fetchMovieFiles: PropTypes.func.isRequired,
   clearMovieFiles: PropTypes.func.isRequired,
+  clearReleases: PropTypes.func.isRequired,
   toggleMovieMonitored: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
