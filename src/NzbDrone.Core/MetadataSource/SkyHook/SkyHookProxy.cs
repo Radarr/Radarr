@@ -114,8 +114,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 			    {
 			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
 			    }
-
-				//movie.AlternativeTitles.Add(resource.original_title);
 			}
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)

@@ -97,8 +97,6 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Movie>().RegisterModel("Movies")
                 .Ignore(s => s.RootFolderPath)
                 .Ignore(m => m.Actors)
-                .Ignore(m => m.Genres)
-//                .Ignore(m => m.Tags)
                 .Relationship()
                 .HasOne(s => s.Profile, s => s.ProfileId);
                 //.HasOne(m => m.MovieFile, m => m.MovieFileId);

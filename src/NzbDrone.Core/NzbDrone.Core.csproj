@@ -936,12 +936,9 @@
     <Compile Include="MetadataSource\PreDB\PreDBService.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ConfigurationResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MovieResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TMDBResources.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
