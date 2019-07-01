@@ -109,7 +109,7 @@ class MovieFileEditorTableContent extends Component {
 
   onLanguageChange = ({ value }) => {
     const selectedIds = this.getSelectedIds();
-    
+
     if (!selectedIds.length) {
       return;
     }

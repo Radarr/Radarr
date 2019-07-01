@@ -121,7 +121,7 @@ class InteractiveSearchRow extends Component {
       timeFormat,
       grabError
     } = this.props;
-    
+
     return (
       <TableRow>
         <TableRowCell>
