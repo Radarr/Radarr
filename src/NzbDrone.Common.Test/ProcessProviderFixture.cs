@@ -103,6 +103,54 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        public void Should_be_able_to_start_powershell()
+        {
+            WindowsOnly();
+
+            var tempDir = GetTempFilePath();
+            var tempScript = Path.Combine(tempDir, "myscript.ps1");
+
+            Directory.CreateDirectory(tempDir);
+
+            File.WriteAllText(tempScript, "Write-Output 'Hello There'\r\n");
+
+            try
+            {
+                var result = Subject.StartAndCapture(tempScript);
+
+                result.Standard.First().Content.Should().Be("Hello There");
+            }
+            catch (Win32Exception ex) when (ex.NativeErrorCode == 2)
+            {
+                Assert.Fail("No Powershell available?!?");
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_start_python()
+        {
+            WindowsOnly();
+
+            var tempDir = GetTempFilePath();
+            var tempScript = Path.Combine(tempDir, "myscript.py");
+
+            Directory.CreateDirectory(tempDir);
+
+            File.WriteAllText(tempScript, "print(\"Hello There\")\r\n");
+
+            try
+            {
+                var result = Subject.StartAndCapture(tempScript);
+
+                result.Standard.First().Content.Should().Be("Hello There");
+            }
+            catch (Win32Exception ex) when (ex.NativeErrorCode == 2)
+            {
+                Assert.Inconclusive("No Python available");
+            }
+        }
+
+        [Test]
         [Platform(Exclude = "MacOsX")]
         [Retry(3)]
         public void kill_all_should_kill_all_process_with_name()
