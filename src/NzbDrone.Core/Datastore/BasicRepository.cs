@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
+        protected QueryBuilder<TModel> Query => AddJoinQueries(DataMapper.Query<TModel>());
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Datastore
 
         public IEnumerable<TModel> All()
         {
-            return DataMapper.Query<TModel>().ToList();
+            return AddJoinQueries(DataMapper.Query<TModel>()).ToList();
         }
 
         public int Count()
@@ -294,6 +294,11 @@ namespace NzbDrone.Core.Datastore
             {
                 _eventAggregator.PublishEvent(new ModelEvent<TModel>(model, action));
             }
+        }
+
+        protected virtual QueryBuilder<TActual> AddJoinQueries<TActual>(QueryBuilder<TActual> baseQuery)
+        {
+            return baseQuery;
         }
 
         protected virtual bool PublishModelEvents => false;

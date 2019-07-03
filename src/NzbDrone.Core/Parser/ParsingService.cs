@@ -450,16 +450,12 @@ namespace NzbDrone.Core.Parser
                 {
                     case MappingResultType.Success:
                         return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
-                        break;
                     case MappingResultType.SuccessLenientMapping:
                         return $"Successfully mapped parts of the release name {ReleaseName} to movie {Movie}";
-                        break;
                     case MappingResultType.NotParsable:
                         return $"Failed to find movie title in release name {ReleaseName}";
-                        break;
                     case MappingResultType.TitleNotFound:
                         return $"Could not find {RemoteMovie.ParsedMovieInfo.MovieTitle}";
-                        break;
                     case MappingResultType.WrongYear:
                         return $"Failed to map movie, expected year {RemoteMovie.Movie.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
