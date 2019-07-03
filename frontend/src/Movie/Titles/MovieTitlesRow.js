@@ -16,7 +16,7 @@ class MovieTitlesRow extends Component {
     } = this.props;
 
     // TODO - Fix languages to all take arrays
-    const languages = [language]
+    const languages = [language];
 
     return (
       <TableRow>
