@@ -24,9 +24,14 @@ class MovieTitlesTableContentConnector extends Component {
   // Render
 
   render() {
+    var result = this.props.items.filter(obj => {
+      return obj.id === this.props.movieId
+    })
+
     return (
       <MovieTitlesTableContent
         {...this.props}
+        items={result[0].alternateTitles}
       />
     );
   }
@@ -34,7 +39,6 @@ class MovieTitlesTableContentConnector extends Component {
 
 MovieTitlesTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired
-//  fetchMovieTitles: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieTitlesTableContentConnector);

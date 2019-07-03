@@ -12,7 +12,7 @@ import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
 import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
-import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
+import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
 import styles from './MovieFileEditorRow.css';
 
 class MovieFileEditorRow extends Component {
@@ -111,7 +111,7 @@ class MovieFileEditorRow extends Component {
         >
           {
             showLanguagePlaceholder &&
-              <InteractiveImportRowCellPlaceholder />
+              <MovieFileRowCellPlaceholder />
           }
 
           {
@@ -130,7 +130,7 @@ class MovieFileEditorRow extends Component {
         >
           {
             showQualityPlaceholder &&
-              <InteractiveImportRowCellPlaceholder />
+              <MovieFileRowCellPlaceholder />
           }
 
           {

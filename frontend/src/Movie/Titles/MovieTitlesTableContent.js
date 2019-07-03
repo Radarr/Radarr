@@ -3,35 +3,17 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-// import MovieHistoryRowConnector from './MovieHistoryRowConnector';
+import styles from './MovieTitlesTableContent.css';
+import MovieTitlesRow from './MovieTitlesRow';
 const columns = [
   {
-    name: 'eventType',
+    name: 'altTitle',
+    label: 'Alternative Title',
     isVisible: true
   },
   {
-    name: 'sourceTitle',
-    label: 'Source Title',
-    isVisible: true
-  },
-  {
-    name: 'quality',
-    label: 'Quality',
-    isVisible: true
-  },
-  {
-    name: 'date',
-    label: 'Date',
-    isVisible: true
-  },
-  {
-    name: 'details',
-    label: 'Details',
-    isVisible: true
-  },
-  {
-    name: 'actions',
-    label: 'Actions',
+    name: 'language',
+    label: 'Language',
     isVisible: true
   }
 ];
@@ -59,12 +41,12 @@ class MovieTitlesTableContent extends Component {
 
         {
           !isFetching && !!error &&
-            <div>Unable to load history.</div>
+            <div className={styles.blankpad}>Unable to load alternative titles.</div>
         }
 
         {
           isPopulated && !hasItems && !error &&
-            <div>No history.</div>
+            <div className={styles.blankpad}>No alternative titles.</div>
         }
 
         {
@@ -72,6 +54,14 @@ class MovieTitlesTableContent extends Component {
           <Table columns={columns}>
             <TableBody>
               {
+                items.reverse().map((item) => {
+                  return (
+                    <MovieTitlesRow
+                      key={item.id}
+                      {...item}
+                    />
+                  );
+                })
               }
             </TableBody>
           </Table>
