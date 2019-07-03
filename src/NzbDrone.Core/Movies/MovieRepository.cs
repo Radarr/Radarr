@@ -270,5 +270,14 @@ namespace NzbDrone.Core.Movies
         {
             return Query.Where(m => m.TmdbId == tmdbid).FirstOrDefault();
         }
+
+        protected override QueryBuilder<TActual> AddJoinQueries<TActual>(QueryBuilder<TActual> baseQuery)
+        {
+            baseQuery = base.AddJoinQueries(baseQuery);
+            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
+                (m, t) => m.Id == t.MovieId);
+
+            return baseQuery;
+        }
     }
 }

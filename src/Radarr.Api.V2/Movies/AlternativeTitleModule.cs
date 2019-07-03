@@ -1,19 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Marr.Data;
-using Nancy;
-using Radarr.Api.V2;
-using NzbDrone.Common.Cache;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 using Radarr.Http;
@@ -33,9 +22,11 @@ namespace Radarr.Api.V2.Movies
             _altTitleService = altTitleService;
             _movieService = movieService;
             _radarrApi = radarrApi;
-            CreateResource = AddTitle;
-            GetResourceById = GetTitle;
             _eventAggregator = eventAggregator;
+
+            CreateResource = AddTitle;
+            GetResourceById = GetAltTitle;
+            GetResourceAll = GetAltTitles;
         }
 
         private int AddTitle(AlternativeTitleResource altTitle)
@@ -49,9 +40,23 @@ namespace Radarr.Api.V2.Movies
             return addedTitle.Id;
         }
 
-        private AlternativeTitleResource GetTitle(int id)
+        private AlternativeTitleResource GetAltTitle(int id)
         {
             return _altTitleService.GetById(id).ToResource();
+        }
+
+        private List<AlternativeTitleResource> GetAltTitles()
+        {
+            var movieIdQuery = Request.Query.MovieId;
+
+            if (movieIdQuery.HasValue)
+            {
+                int movieId = Convert.ToInt32(movieIdQuery.Value);
+
+                return _altTitleService.GetAllTitlesForMovie(movieId).ToResource();
+            }
+
+            return _altTitleService.GetAllTitles().ToResource();
         }
     }
 }
