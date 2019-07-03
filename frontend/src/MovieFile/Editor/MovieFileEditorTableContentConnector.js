@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import getQualities from 'Utilities/Quality/getQualities';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
-import { deleteMovieFiles, updateMovieFiles } from 'Store/Actions/movieFileActions';
+import { deleteMovieFile, updateMovieFiles } from 'Store/Actions/movieFileActions';
 import { fetchQualityProfileSchema, fetchLanguages } from 'Store/Actions/settingsActions';
 import MovieFileEditorTableContent from './MovieFileEditorTableContent';
 
@@ -50,8 +50,8 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(updateMovieFiles(updateProps));
     },
 
-    onDeletePress(movieFileIds) {
-      dispatch(deleteMovieFiles({ movieFileIds }));
+    onDeletePress(movieFileId) {
+      dispatch(deleteMovieFile(movieFileId));
     }
   };
 }
