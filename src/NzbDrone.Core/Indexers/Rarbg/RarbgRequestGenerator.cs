@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -60,7 +61,9 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "movies");
+            var categoryParam = string.Join(";", Settings.Categories.Distinct());
+
+            requestBuilder.AddQueryParam("category", categoryParam);
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
@@ -98,7 +101,9 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "movies");
+            var categoryParam = string.Join(";", Settings.Categories.Distinct());
+
+            requestBuilder.AddQueryParam("category", categoryParam);
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
