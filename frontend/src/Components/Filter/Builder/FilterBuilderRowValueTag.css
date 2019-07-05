@@ -1,4 +1,6 @@
 .tag {
+  height: 21px;
+
   &.isLastTag {
     .or {
       display: none;
