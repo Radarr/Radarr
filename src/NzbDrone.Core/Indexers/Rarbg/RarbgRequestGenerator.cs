@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -9,14 +10,6 @@ namespace NzbDrone.Core.Indexers.Rarbg
     public class RarbgRequestGenerator : IIndexerRequestGenerator
     {
         private readonly IRarbgTokenProvider _tokenProvider;
-
-        private string _categoryParam
-        {
-            get
-            {
-                return string.Join(";", Settings.Categories);
-            }
-        }
 
         public RarbgSettings Settings { get; set; }
 
@@ -68,7 +61,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", _categoryParam);
+            requestBuilder.AddQueryParam("category", string.Join(";", Settings.Categories.Distinct()));
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
@@ -106,7 +99,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", _categoryParam);
+            requestBuilder.AddQueryParam("category", string.Join(";", Settings.Categories.Distinct()));
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
