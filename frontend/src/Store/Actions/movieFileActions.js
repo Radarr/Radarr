@@ -137,9 +137,10 @@ export const actionHandlers = handleThunks({
   },
 
   [UPDATE_MOVIE_FILES]: function(getState, payload, dispatch) {
+
     const {
       movieFileIds,
-      language,
+      languages,
       quality
     } = payload;
 
@@ -149,8 +150,8 @@ export const actionHandlers = handleThunks({
       movieFileIds
     };
 
-    if (language) {
-      data.language = language;
+    if (languages) {
+      data.languages = languages;
     }
 
     if (quality) {
@@ -169,8 +170,8 @@ export const actionHandlers = handleThunks({
         ...movieFileIds.map((id) => {
           const props = {};
 
-          if (language) {
-            props.language = language;
+          if (languages) {
+            props.languages = languages;
           }
 
           if (quality) {

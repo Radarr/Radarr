@@ -128,7 +128,7 @@ class InteractiveImportModalContentConnector extends Component {
           folderName: item.folderName,
           movieId: movie.id,
           quality,
-          language,
+          languages: [language],
           downloadId: this.props.downloadId
         });
       }

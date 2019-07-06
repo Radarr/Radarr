@@ -7,8 +7,6 @@
 .quality,
 .language {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
-
-  text-align: center;
 }
 
 .label {

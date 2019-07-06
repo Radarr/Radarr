@@ -6,26 +6,30 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import getQualities from 'Utilities/Quality/getQualities';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
-import { deleteMovieFiles, updateMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
-import MovieFileEditorModalContent from './MovieFileEditorModalContent';
+import { deleteMovieFile, updateMovieFiles } from 'Store/Actions/movieFileActions';
+import { fetchQualityProfileSchema, fetchLanguages } from 'Store/Actions/settingsActions';
+import MovieFileEditorTableContent from './MovieFileEditorTableContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.movieFiles,
-    (state) => state.settings.qualityProfiles.schema,
+    (state) => state.settings.languages,
+    (state) => state.settings.qualityProfiles,
     createMovieSelector(),
     (
       movieFiles,
-      qualityProfileSchema,
-      movie
+      languageProfiles,
+      qualityProfiles
     ) => {
-      const qualities = getQualities(qualityProfileSchema.items);
+      const languages = languageProfiles.items;
+      const qualities = getQualities(qualityProfiles.schema.items);
 
       return {
         items: movieFiles.items,
         isDeleting: movieFiles.isDeleting,
         isSaving: movieFiles.isSaving,
+        error: null,
+        languages,
         qualities
       };
     }
@@ -38,22 +42,27 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(fetchQualityProfileSchema());
     },
 
+    dispatchFetchLanguages(name, path) {
+      dispatch(fetchLanguages());
+    },
+
     dispatchUpdateMovieFiles(updateProps) {
       dispatch(updateMovieFiles(updateProps));
     },
 
-    onDeletePress(episodeFileIds) {
-      dispatch(deleteMovieFiles({ episodeFileIds }));
+    onDeletePress(movieFileId) {
+      dispatch(deleteMovieFile(movieFileId));
     }
   };
 }
 
-class MovieFileEditorModalContentConnector extends Component {
+class MovieFileEditorTableContentConnector extends Component {
 
   //
   // Lifecycle
 
   componentDidMount() {
+    this.props.dispatchFetchLanguages();
     this.props.dispatchFetchQualityProfileSchema();
   }
 
@@ -63,7 +72,14 @@ class MovieFileEditorModalContentConnector extends Component {
   //
   // Listeners
 
-  onQualityChange = (episodeFileIds, qualityId) => {
+  onLanguageChange = (movieFileIds, languageId) => {
+    const language = _.find(this.props.languages, { id: languageId });
+    // TODO - Placeholder till we implement selection of multiple languages
+    const languages = [language];
+    this.props.dispatchUpdateMovieFiles({ movieFileIds, languages });
+  }
+
+  onQualityChange = (movieFileIds, qualityId) => {
     const quality = {
       quality: _.find(this.props.qualities, { id: qualityId }),
       revision: {
@@ -72,31 +88,34 @@ class MovieFileEditorModalContentConnector extends Component {
       }
     };
 
-    this.props.dispatchUpdateMovieFiles({ episodeFileIds, quality });
+    this.props.dispatchUpdateMovieFiles({ movieFileIds, quality });
   }
 
   render() {
     const {
+      dispatchFetchLanguages,
       dispatchFetchQualityProfileSchema,
       dispatchUpdateMovieFiles,
       ...otherProps
     } = this.props;
 
     return (
-      <MovieFileEditorModalContent
+      <MovieFileEditorTableContent
         {...otherProps}
+        onLanguageChange={this.onLanguageChange}
         onQualityChange={this.onQualityChange}
       />
     );
   }
 }
 
-MovieFileEditorModalContentConnector.propTypes = {
+MovieFileEditorTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchFetchLanguages: PropTypes.func.isRequired,
   dispatchFetchQualityProfileSchema: PropTypes.func.isRequired,
   dispatchUpdateMovieFiles: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(MovieFileEditorModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(MovieFileEditorTableContentConnector);

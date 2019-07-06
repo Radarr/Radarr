@@ -22,15 +22,17 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
-import MovieFileEditorModal from 'MovieFile/Editor/MovieFileEditorModal';
+import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
-import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
+import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
+import MovieTitlesTable from 'Movie/Titles/MovieTitlesTable';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
+import InteractiveSearchTable from '../../InteractiveSearch/InteractiveSearchTable';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
@@ -68,7 +70,6 @@ class MovieDetails extends Component {
       isManageEpisodesOpen: false,
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
-      isMovieHistoryModalOpen: false,
       isInteractiveImportModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
@@ -121,14 +122,6 @@ class MovieDetails extends Component {
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
-
-  onMovieHistoryPress = () => {
-    this.setState({ isMovieHistoryModalOpen: true });
-  }
-
-  onMovieHistoryModalClose = () => {
-    this.setState({ isMovieHistoryModalOpen: false });
   }
 
   onExpandAllPress = () => {
@@ -195,10 +188,8 @@ class MovieDetails extends Component {
 
     const {
       isOrganizeModalOpen,
-      isManageEpisodesOpen,
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
-      isMovieHistoryModalOpen,
       isInteractiveImportModalOpen,
       overviewHeight
     } = this.state;
@@ -488,19 +479,27 @@ class MovieDetails extends Component {
               </TabList>
 
               <TabPanel>
-                <h2>Any content 1</h2>
+                <MovieHistoryTable
+                  movieId={id}
+                />
               </TabPanel>
 
               <TabPanel>
-                <h2>Any content 2</h2>
+                <InteractiveSearchTable
+                  movieId={id}
+                />
               </TabPanel>
 
               <TabPanel>
-                <h2>Any content 3</h2>
+                <MovieFileEditorTable
+                  movieId={id}
+                />
               </TabPanel>
 
               <TabPanel>
-                <h2>Any content 4</h2>
+                <MovieTitlesTable
+                  movieId={id}
+                />
               </TabPanel>
             </Tabs>
 
@@ -510,18 +509,6 @@ class MovieDetails extends Component {
             isOpen={isOrganizeModalOpen}
             movieId={id}
             onModalClose={this.onOrganizeModalClose}
-          />
-
-          <MovieFileEditorModal
-            isOpen={isManageEpisodesOpen}
-            movieId={id}
-            onModalClose={this.onManageEpisodesModalClose}
-          />
-
-          <MovieHistoryModal
-            isOpen={isMovieHistoryModalOpen}
-            movieId={id}
-            onModalClose={this.onMovieHistoryModalClose}
           />
 
           <EditMovieModalConnector

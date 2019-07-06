@@ -5,12 +5,12 @@ import { createSelector } from 'reselect';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import InteractiveSearch from './InteractiveSearch';
+import InteractiveSearchContent from './InteractiveSearchContent';
 
-function createMapStateToProps(appState, { type }) {
+function createMapStateToProps(appState) {
   return createSelector(
     (state) => state.releases.items.length,
-    createClientSideCollectionSelector('releases', `releases.${type}`),
+    createClientSideCollectionSelector('releases'),
     createUISettingsSelector(),
     (totalReleasesCount, releases, uiSettings) => {
       return {
@@ -29,15 +29,16 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(releaseActions.fetchReleases(payload));
     },
 
+    dispatchClearReleases(payload) {
+      dispatch(releaseActions.clearReleases(payload));
+    },
+
     onSortPress(sortKey, sortDirection) {
       dispatch(releaseActions.setReleasesSort({ sortKey, sortDirection }));
     },
 
     onFilterSelect(selectedFilterKey) {
-      const action = props.type === 'episode' ?
-        releaseActions.setEpisodeReleasesFilter :
-        releaseActions.setSeasonReleasesFilter;
-
+      const action = releaseActions.setReleasesFilter;
       dispatch(action({ selectedFilterKey }));
     },
 
@@ -47,7 +48,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class InteractiveSearchConnector extends Component {
+class InteractiveSearchContentConnector extends Component {
 
   //
   // Lifecycle
@@ -61,7 +62,6 @@ class InteractiveSearchConnector extends Component {
 
     // If search results are not yet isPopulated fetch them,
     // otherwise re-show the existing props.
-
     if (!isPopulated) {
       dispatchFetchReleases(searchPayload);
     }
@@ -73,22 +73,24 @@ class InteractiveSearchConnector extends Component {
   render() {
     const {
       dispatchFetchReleases,
+      dispatchClearReleases,
       ...otherProps
     } = this.props;
 
     return (
 
-      <InteractiveSearch
+      <InteractiveSearchContent
         {...otherProps}
       />
     );
   }
 }
 
-InteractiveSearchConnector.propTypes = {
+InteractiveSearchContentConnector.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  dispatchFetchReleases: PropTypes.func.isRequired
+  dispatchFetchReleases: PropTypes.func.isRequired,
+  dispatchClearReleases: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchContentConnector);

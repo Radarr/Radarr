@@ -1,4 +1,3 @@
-import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { createThunk, handleThunks } from 'Store/thunks';
@@ -8,7 +7,7 @@ import { set, update } from './baseActions';
 //
 // Variables
 
-export const section = 'movieHistory';
+export const section = 'movieTitles';
 
 //
 // State
@@ -23,27 +22,23 @@ export const defaultState = {
 //
 // Actions Types
 
-export const FETCH_MOVIE_HISTORY = 'movieHistory/fetchMovieHistory';
-export const CLEAR_MOVIE_HISTORY = 'movieHistory/clearMovieHistory';
-export const MOVIE_HISTORY_MARK_AS_FAILED = 'movieHistory/movieHistoryMarkAsFailed';
+export const FETCH_MOVIE_TITLES = 'movieTitles/fetchMovieTitles';
 
 //
 // Action Creators
 
-export const fetchMovieHistory = createThunk(FETCH_MOVIE_HISTORY);
-export const clearMovieHistory = createAction(CLEAR_MOVIE_HISTORY);
-export const movieHistoryMarkAsFailed = createThunk(MOVIE_HISTORY_MARK_AS_FAILED);
+export const fetchMovieTitles = createThunk(FETCH_MOVIE_TITLES);
 
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
 
-  [FETCH_MOVIE_HISTORY]: function(getState, payload, dispatch) {
+  [FETCH_MOVIE_TITLES]: function(getState, payload, dispatch) {
     dispatch(set({ section, isFetching: true }));
 
     const promise = createAjaxRequest({
-      url: '/history/movie',
+      url: '/alttitle',
       data: payload
     }).request;
 
@@ -68,25 +63,6 @@ export const actionHandlers = handleThunks({
         error: xhr
       }));
     });
-  },
-
-  [MOVIE_HISTORY_MARK_AS_FAILED]: function(getState, payload, dispatch) {
-    const {
-      historyId,
-      movieId
-    } = payload;
-
-    const promise = createAjaxRequest({
-      url: '/history/failed',
-      method: 'POST',
-      data: {
-        id: historyId
-      }
-    }).request;
-
-    promise.done(() => {
-      dispatch(fetchMovieHistory({ movieId }));
-    });
   }
 });
 
@@ -95,9 +71,4 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [CLEAR_MOVIE_HISTORY]: (state) => {
-    return Object.assign({}, state, defaultState);
-  }
-
 }, defaultState, section);
-

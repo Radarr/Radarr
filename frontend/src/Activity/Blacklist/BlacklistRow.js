@@ -6,6 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieLanguage from 'Movie/MovieLanguage';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
 import styles from './BlacklistRow.css';
@@ -42,6 +43,7 @@ class BlacklistRow extends Component {
       movie,
       sourceTitle,
       quality,
+      languages,
       date,
       protocol,
       indexer,
@@ -78,6 +80,16 @@ class BlacklistRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {sourceTitle}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'language') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieLanguage
+                    languages={languages}
+                  />
                 </TableRowCell>
               );
             }
@@ -159,6 +171,7 @@ BlacklistRow.propTypes = {
   movie: PropTypes.object.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   date: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

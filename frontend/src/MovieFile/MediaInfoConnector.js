@@ -6,10 +6,10 @@ import MediaInfo from './MediaInfo';
 function createMapStateToProps() {
   return createSelector(
     createMovieFileSelector(),
-    (episodeFile) => {
-      if (episodeFile) {
+    (movieFile) => {
+      if (movieFile) {
         return {
-          ...episodeFile.mediaInfo
+          ...movieFile.mediaInfo
         };
       }
 

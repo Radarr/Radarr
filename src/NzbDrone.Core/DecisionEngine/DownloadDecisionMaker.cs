@@ -148,7 +148,7 @@ namespace NzbDrone.Core.DecisionEngine
                         }
                         else
                         {
-                            //remoteMovie.DownloadAllowed = true;
+                            remoteMovie.DownloadAllowed = true;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
 

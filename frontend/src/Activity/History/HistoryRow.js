@@ -6,6 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieLanguage from 'Movie/MovieLanguage';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
 import HistoryDetailsModal from './Details/HistoryDetailsModal';
@@ -52,6 +53,7 @@ class HistoryRow extends Component {
     const {
       movie,
       quality,
+      languages,
       qualityCutoffNotMet,
       eventType,
       sourceTitle,
@@ -97,6 +99,16 @@ class HistoryRow extends Component {
                   <MovieTitleLink
                     titleSlug={movie.titleSlug}
                     title={movie.title}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'language') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieLanguage
+                    languages={languages}
                   />
                 </TableRowCell>
               );
@@ -193,8 +205,7 @@ class HistoryRow extends Component {
 HistoryRow.propTypes = {
   movieId: PropTypes.number,
   movie: PropTypes.object.isRequired,
-  language: PropTypes.object.isRequired,
-  languageCutoffNotMet: PropTypes.bool.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   eventType: PropTypes.string.isRequired,

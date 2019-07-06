@@ -9,6 +9,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieLanguage from 'Movie/MovieLanguage';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import styles from './MovieHistoryRow.css';
@@ -20,7 +21,8 @@ function getTitle(eventType) {
     case 'downloadFolderImported': return 'Download Folder Imported';
     case 'downloadFailed': return 'Download Failed';
     case 'episodeFileDeleted': return 'Episode File Deleted';
-    case 'episodeFileRenamed': return 'Episode File Renamed';
+    case 'movieFileDeleted': return 'Movie File Deleted';
+    case 'movieFolderImported': return 'Movie Folder Imported';
     default: return 'Unknown';
   }
 }
@@ -62,10 +64,10 @@ class MovieHistoryRow extends Component {
       eventType,
       sourceTitle,
       quality,
+      languages,
       qualityCutoffNotMet,
       date,
       data
-      // movie,
     } = this.props;
 
     const {
@@ -81,6 +83,12 @@ class MovieHistoryRow extends Component {
 
         <TableRowCell>
           {sourceTitle}
+        </TableRowCell>
+
+        <TableRowCell>
+          <MovieLanguage
+            languages={languages}
+          />
         </TableRowCell>
 
         <TableRowCell>
@@ -142,13 +150,11 @@ MovieHistoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
-  languageCutoffNotMet: PropTypes.bool.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  fullSeries: PropTypes.bool.isRequired,
   movie: PropTypes.object.isRequired,
   onMarkAsFailedPress: PropTypes.func.isRequired
 };

@@ -9,7 +9,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import InteractiveSearchRow from './InteractiveSearchRow';
-import styles from './InteractiveSearch.css';
+import styles from './InteractiveSearchContent.css';
 
 const columns = [
   {
@@ -49,6 +49,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'languageWeight',
+    label: 'Language',
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'qualityWeight',
     label: 'Quality',
     isSortable: true,
@@ -70,7 +76,7 @@ const columns = [
   }
 ];
 
-function InteractiveSearch(props) {
+function InteractiveSearchContent(props) {
   const {
     searchPayload,
     isFetching,
@@ -83,7 +89,6 @@ function InteractiveSearch(props) {
     customFilters,
     sortKey,
     sortDirection,
-    type,
     longDateFormat,
     timeFormat,
     onSortPress,
@@ -101,7 +106,6 @@ function InteractiveSearch(props) {
           customFilters={customFilters}
           buttonComponent={PageMenuButton}
           filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
-          filterModalConnectorComponentProps={{ type }}
           onFilterSelect={onFilterSelect}
         />
       </div>
@@ -169,7 +173,7 @@ function InteractiveSearch(props) {
   );
 }
 
-InteractiveSearch.propTypes = {
+InteractiveSearchContent.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
@@ -181,7 +185,6 @@ InteractiveSearch.propTypes = {
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
-  type: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onSortPress: PropTypes.func.isRequired,
@@ -189,4 +192,4 @@ InteractiveSearch.propTypes = {
   onGrabPress: PropTypes.func.isRequired
 };
 
-export default InteractiveSearch;
+export default InteractiveSearchContent;

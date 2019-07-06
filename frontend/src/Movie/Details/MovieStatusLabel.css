@@ -5,12 +5,12 @@
 
 .downloaded {
   padding-left: 2px;
-  border-left: 4px solid $dangerColor;
+  border-left: 4px solid $successColor;
 }
 
-.unaired {
+.unreleased {
   padding-left: 2px;
-  border-left: 4px solid $gray;
+  border-left: 4px solid $primaryColor;
 }
 
 .unmonitored {
