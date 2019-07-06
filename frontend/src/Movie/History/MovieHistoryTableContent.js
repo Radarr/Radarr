@@ -17,8 +17,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'language',
-    label: 'Language',
+    name: 'languages',
+    label: 'Languages',
     isVisible: true
   },
   {
@@ -68,12 +68,12 @@ class MovieHistoryTableContent extends Component {
 
         {
           !isFetching && !!error &&
-            <div className={styles.blankpad}>Unable to load history.</div>
+            <div className={styles.blankpad}>Unable to load history</div>
         }
 
         {
           isPopulated && !hasItems && !error &&
-            <div className={styles.blankpad}>No history.</div>
+            <div className={styles.blankpad}>No history</div>
         }
 
         {
