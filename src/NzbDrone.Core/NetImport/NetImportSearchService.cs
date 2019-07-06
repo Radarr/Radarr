@@ -125,12 +125,6 @@ namespace NzbDrone.Core.NetImport
                 CleanLibrary(listedMovies);
             }
 
-            listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
-            if (listedMovies.Any())
-            {
-                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
-            }
-
             var importExclusions = new List<string>();
             var moviesToAdd = new List<Movie>();
 
@@ -138,23 +132,30 @@ namespace NzbDrone.Core.NetImport
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
-                if (mapped == null)
+                if (mapped != null && mapped.TmdbId > 0)
                 {
-                    _logger.Debug($"{movie.Title} could not be mapped to a valid tmdb ID, will not be added from list");
+                    if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
+                    {
+                        _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                    }
+                    else if (_movieService.MovieExists(mapped))
+                    {
+                        _logger.Trace($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it exists in Library");
+                    }
+                    else
+                    {
+                        if (!moviesToAdd.Any(c => c.TmdbId == mapped.TmdbId))
+                        {
+                            mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
+                            moviesToAdd.Add(mapped);
+                        }
+                    }
                 }
-                else if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
-                {
-                    _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
-                }
-                else if (_movieService.MovieExists(mapped))
-                {
-                    _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it exists in DB");
-                }
-                else
-                {
-                    mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
-                    moviesToAdd.Add(mapped);
-                }
+            }
+
+            if (moviesToAdd.Any())
+            {
+                _logger.Info($"Adding {moviesToAdd.Count()} movies from your auto enabled lists to library");
             }
 
             _movieService.AddMovies(moviesToAdd);
