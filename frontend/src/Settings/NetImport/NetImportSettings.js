@@ -8,7 +8,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import NetImportsConnector from './NetImport/NetImportsConnector';
 import NetImportOptionsConnector from './Options/NetImportOptionsConnector';
-// import ImportExclusionsConnector from './ImportExclusions/ImportExclusionsConnector';
+import NetImportExclusionsConnector from './NetImportExclusions/NetImportExclusionsConnector';
 
 class NetImportSettings extends Component {
 
@@ -84,6 +84,8 @@ class NetImportSettings extends Component {
             onChildMounted={this.onChildMounted}
             onChildStateChange={this.onChildStateChange}
           />
+
+          <NetImportExclusionsConnector />
 
         </PageContentBodyConnector>
       </PageContent>

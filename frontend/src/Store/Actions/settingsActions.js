@@ -9,6 +9,7 @@ import general from './Settings/general';
 import indexerOptions from './Settings/indexerOptions';
 import indexers from './Settings/indexers';
 import languages from './Settings/languages';
+import netImportExclusions from './Settings/netImportExclusions';
 import netImportOptions from './Settings/netImportOptions';
 import netImports from './Settings/netImports';
 import mediaManagement from './Settings/mediaManagement';
@@ -30,6 +31,7 @@ export * from './Settings/general';
 export * from './Settings/indexerOptions';
 export * from './Settings/indexers';
 export * from './Settings/languages';
+export * from './Settings/netImportExclusions';
 export * from './Settings/netImportOptions';
 export * from './Settings/netImports';
 export * from './Settings/mediaManagement';
@@ -62,6 +64,7 @@ export const defaultState = {
   indexerOptions: indexerOptions.defaultState,
   indexers: indexers.defaultState,
   languages: languages.defaultState,
+  netImportExclusions: netImportExclusions.defaultState,
   netImportOptions: netImportOptions.defaultState,
   netImports: netImports.defaultState,
   mediaManagement: mediaManagement.defaultState,
@@ -102,6 +105,7 @@ export const actionHandlers = handleThunks({
   ...indexerOptions.actionHandlers,
   ...indexers.actionHandlers,
   ...languages.actionHandlers,
+  ...netImportExclusions.actionHandlers,
   ...netImportOptions.actionHandlers,
   ...netImports.actionHandlers,
   ...mediaManagement.actionHandlers,
@@ -133,6 +137,7 @@ export const reducers = createHandleActions({
   ...indexerOptions.reducers,
   ...indexers.reducers,
   ...languages.reducers,
+  ...netImportExclusions.reducers,
   ...netImportOptions.reducers,
   ...netImports.reducers,
   ...mediaManagement.reducers,

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
@@ -9,8 +8,6 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.NetImport.ImportExclusions;
@@ -134,43 +131,33 @@ namespace NzbDrone.Core.NetImport
                 _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
             }
 
-
             var importExclusions = new List<string>();
+            var moviesToAdd = new List<Movie>();
 
-            //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null && !_exclusionService.IsMovieExcluded(mapped.TmdbId))
+
+                if (mapped == null)
                 {
-                    //List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
-                    _movieService.AddMovie(mapped);
-
-                    //// Search for movie
-                    //try
-                    //{
-                    //    decisions = _nzbSearchService.MovieSearch(mapped.Id, false);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    _logger.Error(ex, $"Unable to search in list for movie {mapped.Id}");
-                    //    continue;
-                    //}
-
-                    //var processed = _processDownloadDecisions.ProcessDecisions(decisions);
-                    //downloadedCount += processed.Grabbed.Count;
+                    _logger.Debug($"{movie.Title} could not be mapped to a valid tmdb ID, will not be added from list");
+                }
+                else if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
+                {
+                    _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                }
+                else if (_movieService.MovieExists(mapped))
+                {
+                    _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it exists in DB");
                 }
                 else
                 {
-                    if (mapped != null)
-                    {
-                        _logger.Info($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
-                    }
+                    mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
+                    moviesToAdd.Add(mapped);
                 }
             }
 
-            //_logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
+            _movieService.AddMovies(moviesToAdd);
         }
 
         private void CleanLibrary(List<Movie> movies)

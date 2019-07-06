@@ -24,7 +24,7 @@ class AddNewMovieSearchResult extends Component {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.isExistingMovie && this.props.isExistingMovie) {
-      this.onAddSerisModalClose();
+      this.onAddMovieModalClose();
     }
   }
 
@@ -35,7 +35,7 @@ class AddNewMovieSearchResult extends Component {
     this.setState({ isNewAddMovieModalOpen: true });
   }
 
-  onAddSerisModalClose = () => {
+  onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
   }
 
@@ -54,6 +54,7 @@ class AddNewMovieSearchResult extends Component {
       ratings,
       images,
       isExistingMovie,
+      isExclusionMovie,
       isSmallScreen
     } = this.props;
     const {
@@ -97,6 +98,16 @@ class AddNewMovieSearchResult extends Component {
                   title="Already in your library"
                 />
               }
+
+              {
+                isExclusionMovie &&
+                <Icon
+                  className={styles.exclusionIcon}
+                  name={icons.DANGER}
+                  size={36}
+                  title="Movie is on Net Import Exclusion List"
+                />
+              }
             </div>
 
             <div>
@@ -138,7 +149,7 @@ class AddNewMovieSearchResult extends Component {
           year={year}
           overview={overview}
           images={images}
-          onModalClose={this.onAddSerisModalClose}
+          onModalClose={this.onAddMovieModalClose}
         />
       </div>
     );
@@ -156,6 +167,7 @@ AddNewMovieSearchResult.propTypes = {
   ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingMovie: PropTypes.bool.isRequired,
+  isExclusionMovie: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired
 };
 

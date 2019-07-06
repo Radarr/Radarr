@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import parseUrl from 'Utilities/String/parseUrl';
 import { lookupMovie, clearAddMovie } from 'Store/Actions/addMovieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { fetchNetImportExclusions } from 'Store/Actions/Settings/netImportExclusions';
 import AddNewMovie from './AddNewMovie';
 
 function createMapStateToProps() {
@@ -25,7 +26,8 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   lookupMovie,
   clearAddMovie,
-  fetchRootFolders
+  fetchRootFolders,
+  fetchNetImportExclusions
 };
 
 class AddNewMovieConnector extends Component {
@@ -41,6 +43,7 @@ class AddNewMovieConnector extends Component {
 
   componentDidMount() {
     this.props.fetchRootFolders();
+    this.props.fetchNetImportExclusions();
   }
 
   componentWillUnmount() {
@@ -96,7 +99,8 @@ AddNewMovieConnector.propTypes = {
   term: PropTypes.string,
   lookupMovie: PropTypes.func.isRequired,
   clearAddMovie: PropTypes.func.isRequired,
-  fetchRootFolders: PropTypes.func.isRequired
+  fetchRootFolders: PropTypes.func.isRequired,
+  fetchNetImportExclusions: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AddNewMovieConnector);

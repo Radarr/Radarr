@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
-using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
 
 namespace Radarr.Api.V2.NetImport
@@ -19,6 +17,10 @@ namespace Radarr.Api.V2.NetImport
             CreateResource = AddExclusion;
             DeleteResource = RemoveExclusion;
             GetResourceById = GetById;
+
+            SharedValidator.RuleFor(c => c.TmdbId).GreaterThan(0);
+            SharedValidator.RuleFor(c => c.MovieTitle).NotEmpty();
+            SharedValidator.RuleFor(c => c.MovieYear).GreaterThan(0);
         }
 
         public List<ImportExclusionsResource> GetAll()
@@ -34,6 +36,8 @@ namespace Radarr.Api.V2.NetImport
         public int AddExclusion(ImportExclusionsResource exclusionResource)
         {
             var model = exclusionResource.ToModel();
+
+            // TODO: Add some more validation here and auto pull the title if not provided
 
             return _exclusionService.AddExclusion(model).Id;
         }
