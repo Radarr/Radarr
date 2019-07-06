@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Datastore
         {
             var idList = ids.ToList();
             var query = string.Format("Id IN ({0})", string.Join(",", idList));
-            var result = Query.Where(query).ToList();
+            var result = Query.Where(m => m.Id.In(idList)).ToList();
 
             if (result.Count != idList.Count())
             {
