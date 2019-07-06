@@ -7,7 +7,6 @@ import Switch from 'Components/Router/Switch';
 import MovieIndexConnector from 'Movie/Index/MovieIndexConnector';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
-import SeriesEditorConnector from 'Movie/Editor/SeriesEditorConnector';
 import MovieDetailsPageConnector from 'Movie/Details/MovieDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import HistoryConnector from 'Activity/History/HistoryConnector';
@@ -75,11 +74,6 @@ function AppRoutes(props) {
       <Route
         path="/add/import"
         component={ImportMovies}
-      />
-
-      <Route
-        path="/serieseditor"
-        component={SeriesEditorConnector}
       />
 
       <Route

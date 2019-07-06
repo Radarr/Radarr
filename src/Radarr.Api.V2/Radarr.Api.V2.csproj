@@ -136,6 +136,7 @@
     <Compile Include="Movies\AlternativeYearModule.cs" />
     <Compile Include="Movies\AlternativeYearResource.cs" />
     <Compile Include="Movies\FetchMovieListModule.cs" />
+    <Compile Include="Movies\MovieEditorResource.cs" />
     <Compile Include="Movies\MovieImportModule.cs" />
     <Compile Include="Movies\MovieDiscoverModule.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />

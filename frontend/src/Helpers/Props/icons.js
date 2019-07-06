@@ -34,6 +34,7 @@ import {
   faCalendarAlt as fasCalendarAlt,
   faCaretDown as fasCaretDown,
   faCheck as fasCheck,
+  faCheckSquare as fasCheckSquare,
   faChevronCircleDown as fasChevronCircleDown,
   faChevronCircleRight as fasChevronCircleRight,
   faChevronCircleUp as fasChevronCircleUp,
@@ -117,6 +118,7 @@ export const CARET_DOWN = fasCaretDown;
 export const CHECK = fasCheck;
 export const CHECK_INDETERMINATE = fasMinus;
 export const CHECK_CIRCLE = fasCheckCircle;
+export const CHECK_SQUARE = fasCheckSquare;
 export const CIRCLE = fasCircle;
 export const CIRCLE_OUTLINE = farCircle;
 export const CLEAR = fasTrashAlt;
@@ -180,7 +182,7 @@ export const SAVE = fasSave;
 export const SCHEDULED = farClock;
 export const SCORE = fasUserPlus;
 export const SEARCH = fasSearch;
-export const SERIES_CONTINUING = fasPlay;
+export const MOVIE_CONTINUING = fasPlay;
 export const SERIES_ENDED = fasStop;
 export const SETTINGS = fasCogs;
 export const SHUTDOWN = fasPowerOff;

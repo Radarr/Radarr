@@ -11,7 +11,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import MoveMovieModal from 'Movie/MoveSeries/MoveSeriesModal';
+import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import styles from './EditMovieModalContent.css';
 
 class EditMovieModalContent extends Component {

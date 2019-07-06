@@ -7,16 +7,16 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import styles from './MoveSeriesModal.css';
+import styles from './MoveMovieModal.css';
 
-function MoveSeriesModal(props) {
+function MoveMovieModal(props) {
   const {
     originalPath,
     destinationPath,
     destinationRootFolder,
     isOpen,
     onSavePress,
-    onMoveSeriesPress
+    onMoveMoviePress
   } = props;
 
   if (
@@ -61,7 +61,7 @@ function MoveSeriesModal(props) {
 
           <Button
             kind={kinds.DANGER}
-            onPress={onMoveSeriesPress}
+            onPress={onMoveMoviePress}
           >
             Yes, Move the Files
           </Button>
@@ -71,13 +71,13 @@ function MoveSeriesModal(props) {
   );
 }
 
-MoveSeriesModal.propTypes = {
+MoveMovieModal.propTypes = {
   originalPath: PropTypes.string,
   destinationPath: PropTypes.string,
   destinationRootFolder: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   onSavePress: PropTypes.func.isRequired,
-  onMoveSeriesPress: PropTypes.func.isRequired
+  onMoveMoviePress: PropTypes.func.isRequired
 };
 
-export default MoveSeriesModal;
+export default MoveMovieModal;

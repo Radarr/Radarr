@@ -4,6 +4,7 @@ import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
+import VirtualTableSelectAllHeaderCell from 'Components/Table/VirtualTableSelectAllHeaderCell';
 import TableOptionsModal from 'Components/Table/TableOptions/TableOptionsModal';
 import MovieIndexTableOptionsConnector from './MovieIndexTableOptionsConnector';
 import styles from './MovieIndexHeader.css';
@@ -39,6 +40,10 @@ class MovieIndexHeader extends Component {
     const {
       columns,
       onTableOptionChange,
+      allSelected,
+      allUnselected,
+      onSelectAllChange,
+      isMovieEditorActive,
       ...otherProps
     } = this.props;
 
@@ -55,6 +60,17 @@ class MovieIndexHeader extends Component {
 
             if (!isVisible) {
               return null;
+            }
+
+            if (isMovieEditorActive && name === 'select') {
+              return (
+                <VirtualTableSelectAllHeaderCell
+                  key={name}
+                  allSelected={allSelected}
+                  allUnselected={allUnselected}
+                  onSelectAllChange={onSelectAllChange}
+                />
+              );
             }
 
             if (name === 'actions') {
@@ -102,7 +118,11 @@ class MovieIndexHeader extends Component {
 
 MovieIndexHeader.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onTableOptionChange: PropTypes.func.isRequired
+  onTableOptionChange: PropTypes.func.isRequired,
+  allSelected: PropTypes.bool.isRequired,
+  allUnselected: PropTypes.bool.isRequired,
+  onSelectAllChange: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired
 };
 
 export default MovieIndexHeader;

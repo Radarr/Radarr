@@ -195,7 +195,10 @@ class MovieIndexPosters extends Component {
       posterOptions,
       showRelativeDates,
       shortDateFormat,
-      timeFormat
+      timeFormat,
+      selectedState,
+      isMovieEditorActive,
+      onSelectedChange
     } = this.props;
 
     const {
@@ -234,6 +237,9 @@ class MovieIndexPosters extends Component {
         style={style}
         movieId={movie.id}
         qualityProfileId={movie.qualityProfileId}
+        isSelected={selectedState[movie.id]}
+        onSelectedChange={onSelectedChange}
+        isMovieEditorActive={isMovieEditorActive}
       />
     );
   }
@@ -260,7 +266,8 @@ class MovieIndexPosters extends Component {
       items,
       scrollTop,
       isSmallScreen,
-      onScroll
+      onScroll,
+      selectedState
     } = this.props;
 
     const {
@@ -294,6 +301,7 @@ class MovieIndexPosters extends Component {
                 overscanRowCount={2}
                 cellRenderer={this.cellRenderer}
                 onSectionRendered={this.onSectionRendered}
+                selectedState={selectedState}
               />
             );
           }
@@ -318,7 +326,10 @@ MovieIndexPosters.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  onScroll: PropTypes.func.isRequired,
+  selectedState: PropTypes.object.isRequired,
+  onSelectedChange: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired
 };
 
 export default MovieIndexPosters;

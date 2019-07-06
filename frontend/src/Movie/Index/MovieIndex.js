@@ -2,6 +2,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import selectAll from 'Utilities/Table/selectAll';
+import toggleSelected from 'Utilities/Table/toggleSelected';
 import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -23,7 +26,9 @@ import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooterConnector from './MovieIndexFooterConnector';
+import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
+// import OrganizeMovieModal from './Organize/OrganizePreviewModal';
 import styles from './MovieIndex.css';
 
 function getViewComponent(view) {
@@ -53,12 +58,30 @@ class MovieIndex extends Component {
       isPosterOptionsModalOpen: false,
       isOverviewOptionsModalOpen: false,
       isInteractiveImportModalOpen: false,
+      isMovieEditorActive: false,
+      isOrganizingMovieModalOpen: false,
+      allSelected: false,
+      allUnselected: false,
+      lastToggled: null,
+      selectedState: {},
       isRendered: false
     };
   }
 
   componentDidMount() {
+    const {
+      items
+    } = this.props;
+
     this.setJumpBarItems();
+
+    const intialState = {};
+
+    items.forEach((movie) => {
+      intialState[movie.id] = false;
+    });
+
+    this.setState({ selectedState: intialState });
   }
 
   componentDidUpdate(prevProps) {
@@ -66,7 +89,9 @@ class MovieIndex extends Component {
       items,
       sortKey,
       sortDirection,
-      scrollTop
+      scrollTop,
+      isDeleting,
+      deleteError
     } = this.props;
 
     if (
@@ -80,6 +105,14 @@ class MovieIndex extends Component {
     if (this.state.jumpToCharacter != null && scrollTop !== prevProps.scrollTop) {
       this.setState({ jumpToCharacter: null });
     }
+
+    const hasFinishedDeleting = prevProps.isDeleting &&
+                                !isDeleting &&
+                                !deleteError;
+
+    if (hasFinishedDeleting) {
+      this.onSelectAllChange({ value: false });
+    }
   }
 
   //
@@ -87,6 +120,10 @@ class MovieIndex extends Component {
 
   setContentBodyRef = (ref) => {
     this.setState({ contentBody: ref });
+  }
+
+  getSelectedIds = () => {
+    return getSelectedIds(this.state.selectedState);
   }
 
   setJumpBarItems() {
@@ -149,8 +186,49 @@ class MovieIndex extends Component {
     this.setState({ isInteractiveImportModalOpen: false });
   }
 
+  onMovieEditorTogglePress = () => {
+    if (this.state.isMovieEditorActive) {
+      this.setState({ isMovieEditorActive: false });
+    } else {
+      this.setState({ isMovieEditorActive: true });
+    }
+  }
+
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
+  }
+
+  onSelectAllChange = ({ value }) => {
+    this.setState(selectAll(this.state.selectedState, value));
+  }
+
+  onSelectAllPress = () => {
+    this.onSelectAllChange({ value: !this.state.allSelected });
+  }
+
+  onSelectedChange = ({ id, value, shiftKey = false }) => {
+    this.setState((state) => {
+      return toggleSelected(state, this.props.items, id, value, shiftKey);
+    });
+  }
+
+  onSaveSelected = (changes) => {
+    this.props.onSaveSelected({
+      movieIds: this.getSelectedIds(),
+      ...changes
+    });
+  }
+
+  onOrganizeMoviePress = () => {
+    this.setState({ isOrganizingMovieModalOpen: true });
+  }
+
+  onOrganizeMovieModalClose = (organized) => {
+    this.setState({ isOrganizingMovieModalOpen: false });
+
+    if (organized === true) {
+      this.onSelectAllChange({ value: false });
+    }
   }
 
   onRender = () => {
@@ -193,6 +271,11 @@ class MovieIndex extends Component {
       view,
       isRefreshingMovie,
       isRssSyncExecuting,
+      isOrganizingMovie,
+      isSaving,
+      saveError,
+      isDeleting,
+      deleteError,
       scrollTop,
       onSortSelect,
       onFilterSelect,
@@ -209,8 +292,14 @@ class MovieIndex extends Component {
       isPosterOptionsModalOpen,
       isOverviewOptionsModalOpen,
       isInteractiveImportModalOpen,
-      isRendered
+      isMovieEditorActive,
+      isRendered,
+      selectedState,
+      allSelected,
+      allUnselected
     } = this.state;
+
+    const selectedMovieIds = this.getSelectedIds();
 
     const ViewComponent = getViewComponent(view);
     const isLoaded = !!(!error && isPopulated && items.length && contentBody);
@@ -248,16 +337,38 @@ class MovieIndex extends Component {
             <PageToolbarButton
               label="Manual Import"
               iconName={icons.INTERACTIVE}
+              isDisabled={hasNoMovie}
               onPress={this.onInteractiveImportPress}
             />
 
             <PageToolbarSeparator />
 
-            <PageToolbarButton
-              label="Movie Editor"
-              iconName={icons.EDIT}
-              isDisabled={hasNoMovie}
-            />
+            {
+              isMovieEditorActive ?
+                <PageToolbarButton
+                  label="Movie Index"
+                  iconName={icons.MOVIE_CONTINUING}
+                  isDisabled={hasNoMovie}
+                  onPress={this.onMovieEditorTogglePress}
+                /> :
+                <PageToolbarButton
+                  label="Movie Editor"
+                  iconName={icons.EDIT}
+                  isDisabled={hasNoMovie}
+                  onPress={this.onMovieEditorTogglePress}
+                />
+            }
+
+            {
+              isMovieEditorActive ?
+                <PageToolbarButton
+                  label={allSelected ? 'Unselect All' : 'Select All'}
+                  iconName={icons.CHECK_SQUARE}
+                  isDisabled={hasNoMovie}
+                  onPress={this.onSelectAllPress}
+                /> :
+                null
+            }
 
           </PageToolbarSection>
 
@@ -360,10 +471,19 @@ class MovieIndex extends Component {
                     scrollTop={scrollTop}
                     jumpToCharacter={jumpToCharacter}
                     onRender={this.onRender}
+                    isMovieEditorActive={isMovieEditorActive}
+                    allSelected={allSelected}
+                    allUnselected={allUnselected}
+                    onSelectedChange={this.onSelectedChange}
+                    onSelectAllChange={this.onSelectAllChange}
+                    selectedState={selectedState}
                     {...otherProps}
                   />
 
-                  <MovieIndexFooterConnector />
+                  {
+                    !isMovieEditorActive &&
+                      <MovieIndexFooterConnector />
+                  }
                 </div>
             }
 
@@ -381,6 +501,21 @@ class MovieIndex extends Component {
               />
           }
         </div>
+
+        {
+          isLoaded && isMovieEditorActive &&
+            <MovieEditorFooter
+              movieIds={selectedMovieIds}
+              selectedCount={selectedMovieIds.length}
+              isSaving={isSaving}
+              saveError={saveError}
+              isDeleting={isDeleting}
+              deleteError={deleteError}
+              isOrganizingMovie={isOrganizingMovie}
+              onSaveSelected={this.onSaveSelected}
+              onOrganizeMoviePress={this.onOrganizeMoviePress}
+            />
+        }
 
         <MovieIndexPosterOptionsModal
           isOpen={isPosterOptionsModalOpen}
@@ -415,15 +550,21 @@ MovieIndex.propTypes = {
   sortDirection: PropTypes.oneOf(sortDirections.all),
   view: PropTypes.string.isRequired,
   isRefreshingMovie: PropTypes.bool.isRequired,
+  isOrganizingMovie: PropTypes.bool.isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  isSaving: PropTypes.bool.isRequired,
+  saveError: PropTypes.object,
+  isDeleting: PropTypes.bool.isRequired,
+  deleteError: PropTypes.object,
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onViewSelect: PropTypes.func.isRequired,
   onRefreshMoviePress: PropTypes.func.isRequired,
   onRssSyncPress: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  onScroll: PropTypes.func.isRequired,
+  onSaveSelected: PropTypes.func.isRequired
 };
 
 export default MovieIndex;

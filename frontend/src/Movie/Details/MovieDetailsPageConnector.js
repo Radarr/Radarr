@@ -54,7 +54,7 @@ class MovieDetailsPageConnector extends Component {
     if (!titleSlug) {
       return (
         <NotFound
-          message="Sorry, that series cannot be found."
+          message="Sorry, that movie cannot be found."
         />
       );
     }

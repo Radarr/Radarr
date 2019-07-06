@@ -8,24 +8,24 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import styles from './OrganizeSeriesModalContent.css';
+import styles from './OrganizeMovieModalContent.css';
 
-function OrganizeSeriesModalContent(props) {
+function OrganizeMovieModalContent(props) {
   const {
-    seriesTitles,
+    movieTitles,
     onModalClose,
-    onOrganizeSeriesPress
+    onOrganizeMoviePress
   } = props;
 
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Organize Selected Series
+        Organize Selected Movies
       </ModalHeader>
 
       <ModalBody>
         <Alert>
-          Tip: To preview a rename... select "Cancel" then any series title and use the
+          Tip: To preview a rename... select "Cancel" then any movie title and use the
           <Icon
             className={styles.renameIcon}
             name={icons.ORGANIZE}
@@ -33,12 +33,12 @@ function OrganizeSeriesModalContent(props) {
         </Alert>
 
         <div className={styles.message}>
-          Are you sure you want to organize all files in the {seriesTitles.length} selected series?
+          Are you sure you want to organize all files in the {movieTitles.length} selected movie(s)?
         </div>
 
         <ul>
           {
-            seriesTitles.map((title) => {
+            movieTitles.map((title) => {
               return (
                 <li key={title}>
                   {title}
@@ -56,7 +56,7 @@ function OrganizeSeriesModalContent(props) {
 
         <Button
           kind={kinds.DANGER}
-          onPress={onOrganizeSeriesPress}
+          onPress={onOrganizeMoviePress}
         >
           Organize
         </Button>
@@ -65,10 +65,10 @@ function OrganizeSeriesModalContent(props) {
   );
 }
 
-OrganizeSeriesModalContent.propTypes = {
-  seriesTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
+OrganizeMovieModalContent.propTypes = {
+  movieTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onOrganizeSeriesPress: PropTypes.func.isRequired
+  onOrganizeMoviePress: PropTypes.func.isRequired
 };
 
-export default OrganizeSeriesModalContent;
+export default OrganizeMovieModalContent;

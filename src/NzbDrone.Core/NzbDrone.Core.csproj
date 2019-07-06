@@ -219,6 +219,7 @@
     <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleRepository.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleService.cs" />
+    <Compile Include="Movies\Commands\BulkMoveMovieCommand.cs" />
     <Compile Include="Movies\Events\MoviesImportedEvent.cs" />
     <Compile Include="NetImport\NetImportListLevels.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />

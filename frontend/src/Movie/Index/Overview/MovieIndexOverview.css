@@ -17,6 +17,13 @@ $hoverScale: 1.05;
   position: relative;
 }
 
+.editorSelect {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  z-index: 3;
+}
+
 .posterContainer {
   position: relative;
 }

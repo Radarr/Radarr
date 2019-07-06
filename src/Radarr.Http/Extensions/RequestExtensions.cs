@@ -54,5 +54,17 @@ namespace Radarr.Http.Extensions
 
             return defaultValue;
         }
+
+        public static int GetIntegerQueryParameter(this Request request, string parameter, int defaultValue = 0)
+        {
+            var parameterValue = request.Query[parameter];
+
+            if (parameterValue.HasValue)
+            {
+                return int.Parse(parameterValue.Value);
+            }
+
+            return defaultValue;
+        }
     }
 }

@@ -27,7 +27,7 @@ function MovieStatusCell(props) {
 
       <Icon
         className={styles.statusIcon}
-        name={status === 'released' ? icons.SERIES_ENDED : icons.SERIES_CONTINUING}
+        name={status === 'released' ? icons.SERIES_ENDED : icons.MOVIE_CONTINUING}
         title={status === 'ended' ? 'Ended' : 'Continuing'}
 
       />

@@ -7,18 +7,18 @@ import TagsModalContent from './TagsModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { seriesIds }) => seriesIds,
+    (state, { movieIds }) => movieIds,
     createAllMoviesSelector(),
     createTagsSelector(),
-    (seriesIds, allMovies, tagList) => {
-      const series = _.intersectionWith(allMovies, seriesIds, (s, id) => {
+    (movieIds, allMovies, tagList) => {
+      const movies = _.intersectionWith(allMovies, movieIds, (s, id) => {
         return s.id === id;
       });
 
-      const seriesTags = _.uniq(_.concat(..._.map(series, 'tags')));
+      const movieTags = _.uniq(_.concat(..._.map(movies, 'tags')));
 
       return {
-        seriesTags,
+        movieTags,
         tagList
       };
     }

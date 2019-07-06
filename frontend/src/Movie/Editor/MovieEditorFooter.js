@@ -6,15 +6,15 @@ import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSe
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import MoveSeriesModal from 'Movie/MoveSeries/MoveSeriesModal';
+import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import TagsModal from './Tags/TagsModal';
 import DeleteMovieModal from './Delete/DeleteMovieModal';
-import SeriesEditorFooterLabel from './SeriesEditorFooterLabel';
-import styles from './SeriesEditorFooter.css';
+import MovieEditorFooterLabel from './MovieEditorFooterLabel';
+import styles from './MovieEditorFooter.css';
 
 const NO_CHANGE = 'noChange';
 
-class SeriesEditorFooter extends Component {
+class MovieEditorFooter extends Component {
 
   //
   // Lifecycle
@@ -112,7 +112,7 @@ class SeriesEditorFooter extends Component {
     this.props.onSaveSelected({ rootFolderPath: this.state.destinationRootFolder });
   }
 
-  onMoveSeriesPress = () => {
+  onMoveMoviePress = () => {
     this.setState({
       isConfirmMoveModalOpen: false,
       destinationRootFolder: null
@@ -129,12 +129,12 @@ class SeriesEditorFooter extends Component {
 
   render() {
     const {
-      seriesIds,
+      movieIds,
       selectedCount,
       isSaving,
       isDeleting,
-      isOrganizingSeries,
-      onOrganizeSeriesPress
+      isOrganizingMovie,
+      onOrganizeMoviePress
     } = this.props;
 
     const {
@@ -157,8 +157,8 @@ class SeriesEditorFooter extends Component {
     return (
       <PageContentFooter>
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
-            label="Monitor Series"
+          <MovieEditorFooterLabel
+            label="Monitor Movie"
             isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
@@ -172,7 +172,7 @@ class SeriesEditorFooter extends Component {
         </div>
 
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
+          <MovieEditorFooterLabel
             label="Quality Profile"
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
@@ -187,7 +187,7 @@ class SeriesEditorFooter extends Component {
         </div>
 
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
+          <MovieEditorFooterLabel
             label="Root Folder"
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
@@ -204,8 +204,8 @@ class SeriesEditorFooter extends Component {
 
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
-            <SeriesEditorFooterLabel
-              label={`${selectedCount} Series Selected`}
+            <MovieEditorFooterLabel
+              label={`${selectedCount} Movie(s) Selected`}
               isSaving={false}
             />
 
@@ -214,9 +214,9 @@ class SeriesEditorFooter extends Component {
                 <SpinnerButton
                   className={styles.organizeSelectedButton}
                   kind={kinds.WARNING}
-                  isSpinning={isOrganizingSeries}
-                  isDisabled={!selectedCount || isOrganizingSeries}
-                  onPress={onOrganizeSeriesPress}
+                  isSpinning={isOrganizingMovie}
+                  isDisabled={!selectedCount || isOrganizingMovie}
+                  onPress={onOrganizeMoviePress}
                 >
                   Rename Files
                 </SpinnerButton>
@@ -224,7 +224,7 @@ class SeriesEditorFooter extends Component {
                 <SpinnerButton
                   className={styles.tagsButton}
                   isSpinning={isSaving && savingTags}
-                  isDisabled={!selectedCount || isOrganizingSeries}
+                  isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={this.onTagsPress}
                 >
                   Set Tags
@@ -246,38 +246,38 @@ class SeriesEditorFooter extends Component {
 
         <TagsModal
           isOpen={isTagsModalOpen}
-          seriesIds={seriesIds}
+          movieIds={movieIds}
           onApplyTagsPress={this.onApplyTagsPress}
           onModalClose={this.onTagsModalClose}
         />
 
         <DeleteMovieModal
           isOpen={isDeleteMovieModalOpen}
-          seriesIds={seriesIds}
+          movieIds={movieIds}
           onModalClose={this.onDeleteMovieModalClose}
         />
 
-        <MoveSeriesModal
+        <MoveMovieModal
           destinationRootFolder={destinationRootFolder}
           isOpen={isConfirmMoveModalOpen}
           onSavePress={this.onSaveRootFolderPress}
-          onMoveSeriesPress={this.onMoveSeriesPress}
+          onMoveMoviePress={this.onMoveMoviePress}
         />
       </PageContentFooter>
     );
   }
 }
 
-SeriesEditorFooter.propTypes = {
-  seriesIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+MovieEditorFooter.propTypes = {
+  movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedCount: PropTypes.number.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
-  isOrganizingSeries: PropTypes.bool.isRequired,
+  isOrganizingMovie: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
-  onOrganizeSeriesPress: PropTypes.func.isRequired
+  onOrganizeMoviePress: PropTypes.func.isRequired
 };
 
-export default SeriesEditorFooter;
+export default MovieEditorFooter;
