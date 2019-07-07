@@ -33,15 +33,15 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             Language = language ?? Language.English;
         }
 
-        public bool IsTrusted(int minVotes = 3)
+        public bool IsTrusted(int minVotes = 4)
         {
             switch (SourceType)
             {
-                case SourceType.TMDB:
+                case SourceType.Mappings:
                     return Votes >= minVotes;
                 default:
                     return true;
-            }   
+            }
         }
 
         public override bool Equals(object obj)

@@ -104,26 +104,16 @@ namespace NzbDrone.Core.Movies
                 _logger.Warn(e, "Couldn't update movie path for " + movie.Path);
             }
 
-            movieInfo.AlternativeTitles = movieInfo.AlternativeTitles.Where(t => t.CleanTitle != movie.CleanTitle)
-                .DistinctBy(t => t.CleanTitle)
-                .ExceptBy(t => t.CleanTitle, movie.AlternativeTitles, t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
-
             try
             {
-                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
-                
                 var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
                 var mappingsTitles = mappings.Item1;
 
-                _titleService.DeleteNotEnoughVotes(mappingsTitles);
+                mappingsTitles = mappingsTitles.Where(t => t.IsTrusted()).ToList();
 
-                mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
-                    t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
-
-
-                mappingsTitles = mappingsTitles.Where(t => t.Votes > 3).ToList();
-
-                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
+                movieInfo.AlternativeTitles.AddRange(mappingsTitles);
+                
+                movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
 
                 if (mappings.Item2 != null)
                 {
