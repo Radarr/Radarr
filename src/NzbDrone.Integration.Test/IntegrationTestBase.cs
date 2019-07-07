@@ -254,9 +254,13 @@ namespace NzbDrone.Integration.Test
 
             if (result.MovieFile == null)
             {
-                var path = Path.Combine(MovieRootFolder, movie.Title, string.Format("{0} - {1}.mkv", movie.Title, quality.Name));
+                var path = Path.Combine(MovieRootFolder, movie.Title, string.Format("{0} ({1}) - {2}.strm", movie.Title, movie.Year, quality.Name));
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+                var sourcePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "ApiTests", "Files", "H264_sample.mp4");
+
+                //File.Copy(sourcePath, path);
                 File.WriteAllText(path, "Fake Movie");
 
                 Commands.PostAndWait(new CommandResource { Name = "refreshmovie", Body = new RefreshMovieCommand(movie.Id) });

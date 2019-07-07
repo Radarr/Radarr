@@ -113,7 +113,8 @@
     <Compile Include="ApiTests\MovieFileFixture.cs" />
     <Compile Include="ApiTests\FileSystemFixture.cs" />
     <Compile Include="ApiTests\MovieLookupFixture.cs" />
-    <Compile Include="ApiTests\WantedFixture.cs" />
+    <Compile Include="ApiTests\WantedTests\CutoffUnmetFixture.cs" />
+    <Compile Include="ApiTests\WantedTests\MissingFixture.cs" />
     <Compile Include="Client\ClientBase.cs" />
     <Compile Include="Client\IndexerClient.cs" />
     <Compile Include="Client\DownloadClientClient.cs" />
