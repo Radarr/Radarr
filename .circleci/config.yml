@@ -154,9 +154,9 @@ workflows:
             - unit_tests:
                 requires:
                     - build
-            #- integration_tests:
-            #    requires:
-            #        - build
+            - integration_tests:
+                requires:
+                    - build
             - publish_artifacts:
                 requires:
                     - build

@@ -5,7 +5,6 @@ using NzbDrone.Api.Commands;
 namespace NzbDrone.Integration.Test.ApiTests
 {
     [TestFixture]
-    [Ignore("Not ready to be used on this branch")]
     public class CommandFixture : IntegrationTest
     {
         [Test]
