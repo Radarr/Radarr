@@ -235,6 +235,8 @@ namespace NzbDrone.Integration.Test
                 }
             }
 
+            Commands.WaitAll();
+
             return result;
         }
 
