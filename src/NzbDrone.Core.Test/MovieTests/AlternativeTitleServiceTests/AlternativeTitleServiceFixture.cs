@@ -4,6 +4,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Test.Framework;
@@ -85,6 +86,19 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
 
             _title1.MovieId.Should().Be(_movie.Id);
             _title2.MovieId.Should().Be(_movie.Id);
+        }
+
+        [Test]
+        public void should_update_with_correct_id()
+        {
+            var existingTitle = Builder<AlternativeTitle>.CreateNew().With(t => t.Id = 2).Build();
+            GivenExistingTitles(existingTitle);
+            var updateTitle = existingTitle.JsonClone();
+            updateTitle.Id = 0;
+
+            Subject.UpdateTitles(new List<AlternativeTitle> {updateTitle}, _movie);
+
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(list => list.First().Id == existingTitle.Id)), Times.Once());
         }
     }
 }

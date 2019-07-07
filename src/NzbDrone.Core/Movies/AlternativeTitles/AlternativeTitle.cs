@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         {
             switch (SourceType)
             {
-                case SourceType.TMDB:
+                case SourceType.Mappings:
                     return Votes >= minVotes;
                 default:
                     return true;

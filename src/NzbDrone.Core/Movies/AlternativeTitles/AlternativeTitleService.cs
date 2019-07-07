@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie);
         List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie);
         AlternativeTitle GetById(int id);
-        void UpdateTitles(List<AlternativeTitle> titles, Movie movie);
+        List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, Movie movie);
     }
 
     public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MovieDeletedEvent>
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _titleRepo.Delete(title);
         }
 
-        public void UpdateTitles(List<AlternativeTitle> titles, Movie movie)
+        public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, Movie movie)
         {
             int movieId = movie.Id;
             // First update the movie ids so we can correlate them later.
@@ -78,12 +78,14 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             var existingTitles = _titleRepo.FindByMovieId(movieId);
 
             var insert = titles.Where(t => !existingTitles.Contains(t));
-            var update = titles.Where(t => existingTitles.Contains(t));
+            var update = existingTitles.Where(t => titles.Contains(t));
             var delete = existingTitles.Where(t => !titles.Contains(t));
 
             _titleRepo.DeleteMany(delete.ToList());
             _titleRepo.UpdateMany(update.ToList());
             _titleRepo.InsertMany(insert.ToList());
+
+            return titles;
         }
 
         public void HandleAsync(MovieDeletedEvent message)
