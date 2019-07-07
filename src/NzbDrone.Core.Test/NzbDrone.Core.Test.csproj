@@ -296,6 +296,7 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchMovieComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
+    <Compile Include="MovieTests\AlternativeTitleServiceTests\AlternativeTitleServiceFixture.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoParserFixture.cs" />
     <Compile Include="NetImport\RSSImportFixture.cs" />
     <Compile Include="NetImport\RSSImportParserFixture.cs" />

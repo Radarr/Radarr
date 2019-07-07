@@ -3,6 +3,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Messaging.Events;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
@@ -13,7 +14,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie);
         List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie);
         AlternativeTitle GetById(int id);
-        void DeleteNotEnoughVotes(List<AlternativeTitle> mappingsTitles);
+        void UpdateTitles(List<AlternativeTitle> titles, Movie movie);
     }
 
     public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MovieDeletedEvent>
@@ -63,11 +64,26 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _titleRepo.Delete(title);
         }
 
-        public void DeleteNotEnoughVotes(List<AlternativeTitle> mappingsTitles)
+        public void UpdateTitles(List<AlternativeTitle> titles, Movie movie)
         {
-            var toRemove = mappingsTitles.Where(t => t.SourceType == SourceType.Mappings && t.Votes < 4);
-            var realT = _titleRepo.FindBySourceIds(toRemove.Select(t => t.SourceId).ToList());
-            _titleRepo.DeleteMany(realT);
+            int movieId = movie.Id;
+            // First update the movie ids so we can correlate them later.
+            titles.ForEach(t => t.MovieId = movieId);
+            // Then make sure none of them are the same as the main title.
+            titles = titles.Where(t => t.CleanTitle != movie.CleanTitle).ToList();
+            // Then make sure they are all distinct titles
+            titles = titles.DistinctBy(t => t.CleanTitle).ToList();
+
+            // Now find titles to delete, update and insert.
+            var existingTitles = _titleRepo.FindByMovieId(movieId);
+
+            var insert = titles.Where(t => !existingTitles.Contains(t));
+            var update = titles.Where(t => existingTitles.Contains(t));
+            var delete = existingTitles.Where(t => !titles.Contains(t));
+
+            _titleRepo.DeleteMany(delete.ToList());
+            _titleRepo.UpdateMany(update.ToList());
+            _titleRepo.InsertMany(insert.ToList());
         }
 
         public void HandleAsync(MovieDeletedEvent message)
