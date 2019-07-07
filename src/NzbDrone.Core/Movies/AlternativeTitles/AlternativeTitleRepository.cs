@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
