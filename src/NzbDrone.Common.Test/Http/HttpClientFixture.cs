@@ -68,11 +68,12 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_execute_typed_get()
         {
-            var request = new HttpRequest(string.Format("http://{0}/get", _httpBinHost));
+            var request = new HttpRequest(string.Format("http://{0}/get?test=1", _httpBinHost));
 
             var response = Subject.Get<HttpBinResource>(request);
 
-            response.Resource.Url.Should().Be(request.Url.FullUri);
+            response.Resource.Url.EndsWith("/get?test=1");
+            response.Resource.Args.Should().Contain("test", "1");
         }
 
         [Test]
@@ -514,7 +515,7 @@ namespace NzbDrone.Common.Test.Http
         public void should_not_send_old_cookie()
         {
             GivenOldCookie();
-            
+
             var requestCookies = new HttpRequest($"http://{_httpBinHost}/cookies");
             requestCookies.IgnorePersistentCookies = true;
             requestCookies.StoreRequestCookie = false;
@@ -626,6 +627,7 @@ namespace NzbDrone.Common.Test.Http
 
     public class HttpBinResource
     {
+        public Dictionary<string, object> Args { get; set; }
         public Dictionary<string, object> Headers { get; set; }
         public string Origin { get; set; }
         public string Url { get; set; }
