@@ -10,6 +10,7 @@ using NzbDrone.Test.Common;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.Test.Framework
 {
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<IHttpProvider>(new HttpProvider(TestLogger));
             Mocker.SetConstant<IHttpClient>(new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<CacheManager>(), Mocker.Resolve<RateLimitService>(), Mocker.Resolve<FallbackHttpDispatcher>(), Mocker.Resolve<UserAgentBuilder>(), TestLogger));
             Mocker.SetConstant<ILidarrCloudRequestBuilder>(new LidarrCloudRequestBuilder());
+            Mocker.SetConstant<IMetadataRequestBuilder>(Mocker.Resolve<MetadataRequestBuilder>());
         }
     }
 
