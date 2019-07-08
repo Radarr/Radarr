@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(c => c.FilterUnchangedFiles(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<FilterFilesType>()))
-                .Returns((List<IFileInfo> files, Artist artist) => files);
+                .Returns((List<IFileInfo> files, Artist artist, FilterFilesType filter) => files);
 
             GivenSpecifications(_albumpass1);
         }

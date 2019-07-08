@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(v => v.FilterUnchangedFiles(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<FilterFilesType>()))
-                .Returns((List<IFileInfo> files, Artist artist) => files);
+                .Returns((List<IFileInfo> files, Artist artist, FilterFilesType filter) => files);
         }
 
         private void GivenRootFolder(params string[] subfolders)
