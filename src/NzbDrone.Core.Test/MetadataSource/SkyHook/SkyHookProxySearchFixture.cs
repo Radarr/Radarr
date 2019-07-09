@@ -62,8 +62,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("Coldplay", "Coldplay")]
         [TestCase("Avenged Sevenfold", "Avenged Sevenfold")]
         [TestCase("3OH!3", "3OH!3")]
-        [TestCase("Where's Kitty?", "Where's Kitty?")]
-        [TestCase("The Academy Is...", "The Academy Is...")]
+        [TestCase("The Academy Is...", "The Academy Is…")]
         [TestCase("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
         [TestCase("lidarrid:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
         [TestCase("lidarrid: f59c5520-5f46-4d2c-b2c4-822eabf53419 ", "Linkin Park")]
@@ -100,7 +99,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("lidarrid: 0")]
         [TestCase("lidarrid: -12")]
         [TestCase("lidarrid:289578")]
-        [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
+        [TestCase("adjalkwdjkalwdjklawjdlKAJD")]
         public void no_artist_search_result(string term)
         {
             var result = Subject.SearchForNewArtist(term);
