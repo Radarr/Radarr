@@ -17,6 +17,7 @@ namespace NzbDrone.Common.Cloud
                 .CreateFactory();
 
             Search = new HttpRequestBuilder("https://api.lidarr.audio/api/v0.4/{route}")
+                .KeepAlive()
                 .CreateFactory();
         }
 

@@ -26,7 +26,7 @@ namespace NzbDrone.Core.MetadataSource
         {
             if (_configService.MetadataSource.IsNotNullOrWhiteSpace())
             {
-                return new HttpRequestBuilder(_configService.MetadataSource.TrimEnd("/") + "/{route}").CreateFactory();
+                return new HttpRequestBuilder(_configService.MetadataSource.TrimEnd("/") + "/{route}").KeepAlive().CreateFactory();
             }
             else
             {
