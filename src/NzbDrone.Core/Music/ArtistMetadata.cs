@@ -15,10 +15,14 @@ namespace NzbDrone.Core.Music
             Genres = new List<string>();
             Members = new List<Member>();
             Links = new List<Links>();
+            OldForeignArtistIds = new List<string>();
+            Aliases = new List<string>();
         }
 
         public string ForeignArtistId { get; set; }
+        public List<string> OldForeignArtistIds { get; set; }
         public string Name { get; set; }
+        public List<string> Aliases { get; set; }
         public string Overview { get; set; }
         public string Disambiguation { get; set; }
         public string Type { get; set; }
@@ -37,7 +41,9 @@ namespace NzbDrone.Core.Music
         public void ApplyChanges(ArtistMetadata otherArtist)
         {
             ForeignArtistId = otherArtist.ForeignArtistId;
+            OldForeignArtistIds = otherArtist.OldForeignArtistIds;
             Name = otherArtist.Name;
+            Aliases = otherArtist.Aliases;
             Overview = otherArtist.Overview.IsNullOrWhiteSpace() ? Overview : otherArtist.Overview;
             Disambiguation = otherArtist.Disambiguation;
             Type = otherArtist.Type;
@@ -58,7 +64,9 @@ namespace NzbDrone.Core.Music
 
             if (Id == other.Id &&
                 ForeignArtistId == other.ForeignArtistId &&
+                (OldForeignArtistIds?.SequenceEqual(other.OldForeignArtistIds) ?? true) &&
                 Name == other.Name &&
+                (Aliases?.SequenceEqual(other.Aliases) ?? true) &&
                 Overview == other.Overview &&
                 Disambiguation == other.Disambiguation &&
                 Type == other.Type &&
@@ -100,7 +108,9 @@ namespace NzbDrone.Core.Music
                 int hash = 17;
                 hash = hash * 23 + Id;
                 hash = hash * 23 + ForeignArtistId.GetHashCode();
+                hash = hash * 23 + OldForeignArtistIds.GetHashCode();
                 hash = hash * 23 + Name?.GetHashCode() ?? 0;
+                hash = hash * 23 + Aliases?.GetHashCode() ?? 0;
                 hash = hash * 23 + Overview?.GetHashCode() ?? 0;
                 hash = hash * 23 + Disambiguation?.GetHashCode() ?? 0;
                 hash = hash * 23 + Type?.GetHashCode() ?? 0;

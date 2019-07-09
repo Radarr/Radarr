@@ -1,7 +1,6 @@
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Marr.Data;
 
@@ -16,6 +15,7 @@ namespace NzbDrone.Core.Music
             Links = new List<Links>();
             Ratings = new Ratings();
             Artist = new Artist();
+            OldForeignAlbumIds = new List<string>();
         }
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Music
         // These are metadata entries
         public int ArtistMetadataId { get; set; }
         public string ForeignAlbumId { get; set; }
+        public List<string> OldForeignAlbumIds { get; set; }
         public string Title { get; set; }
         public string Overview { get; set; }
         public string Disambiguation { get; set; }

@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Music
     public interface IReleaseService
     {
         AlbumRelease GetRelease(int id);
-        AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId);
+        AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false);
         void InsertMany(List<AlbumRelease> releases);
         void UpdateMany(List<AlbumRelease> releases);
         void DeleteMany(List<AlbumRelease> releases);
@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Music
             return _releaseRepository.Get(id);
         }
 
-        public AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId)
+        public AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false)
         {
-            return _releaseRepository.FindByForeignReleaseId(foreignReleaseId);
+            return _releaseRepository.FindByForeignReleaseId(foreignReleaseId, checkRedirect);
         }
 
         public void InsertMany(List<AlbumRelease> releases)

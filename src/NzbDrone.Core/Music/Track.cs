@@ -4,6 +4,8 @@ using Marr.Data;
 using NzbDrone.Common.Extensions;
 using System;
 using NzbDrone.Common.Serializer;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.Music
 {
@@ -11,11 +13,15 @@ namespace NzbDrone.Core.Music
     {
         public Track()
         {
+            OldForeignTrackIds = new List<string>();
+            OldForeignRecordingIds = new List<string>();
         }
 
         // These are model fields
         public string ForeignTrackId { get; set; }
+        public List<string> OldForeignTrackIds { get; set; }
         public string ForeignRecordingId { get; set; }
+        public List<string> OldForeignRecordingIds { get; set; }
         public int AlbumReleaseId { get; set; }
         public int ArtistMetadataId { get; set; }
         public string TrackNumber { get; set; }
@@ -53,7 +59,9 @@ namespace NzbDrone.Core.Music
 
             if (Id == other.Id &&
                 ForeignTrackId == other.ForeignTrackId &&
+                (OldForeignTrackIds?.SequenceEqual(other.OldForeignTrackIds) ?? true) &&
                 ForeignRecordingId == other.ForeignRecordingId &&
+                (OldForeignRecordingIds?.SequenceEqual(other.OldForeignRecordingIds) ?? true) &&
                 AlbumReleaseId == other.AlbumReleaseId &&
                 ArtistMetadataId == other.ArtistMetadataId &&
                 TrackNumber == other.TrackNumber &&
@@ -96,7 +104,9 @@ namespace NzbDrone.Core.Music
                 int hash = 17;
                 hash = hash * 23 + Id;
                 hash = hash * 23 + ForeignTrackId.GetHashCode();
+                hash = hash * 23 + OldForeignTrackIds?.GetHashCode() ?? 0;
                 hash = hash * 23 + ForeignRecordingId.GetHashCode();
+                hash = hash * 23 + OldForeignRecordingIds?.GetHashCode() ?? 0;
                 hash = hash * 23 + AlbumReleaseId;
                 hash = hash * 23 + ArtistMetadataId;
                 hash = hash * 23 + TrackNumber?.GetHashCode() ?? 0;

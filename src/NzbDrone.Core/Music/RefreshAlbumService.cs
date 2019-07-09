@@ -143,6 +143,7 @@ namespace NzbDrone.Core.Music
             forceUpdateFileTags |= album.Title != (albumInfo.Title ?? "Unknown");
             updated |= forceUpdateFileTags;
 
+            album.OldForeignAlbumIds = albumInfo.OldForeignAlbumIds;
             album.LastInfoSync = DateTime.UtcNow;
             album.CleanTitle = albumInfo.CleanTitle;
             album.Title = albumInfo.Title ?? "Unknown";

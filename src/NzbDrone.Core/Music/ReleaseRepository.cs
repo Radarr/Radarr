@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IReleaseRepository : IBasicRepository<AlbumRelease>
     {
-        AlbumRelease FindByForeignReleaseId(string foreignReleaseId);
+        AlbumRelease FindByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false);
         List<AlbumRelease> FindByAlbum(int id);
         List<AlbumRelease> FindByRecordingId(List<string> recordingIds);
         List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds);
@@ -23,11 +23,19 @@ namespace NzbDrone.Core.Music
         {
         }
 
-        public AlbumRelease FindByForeignReleaseId(string foreignReleaseId)
+        public AlbumRelease FindByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false)
         {
-            return Query
+            var release = Query
                 .Where(x => x.ForeignReleaseId == foreignReleaseId)
                 .SingleOrDefault();
+
+            if (release == null && checkRedirect)
+            {
+                release = Query.Where(x => x.OldForeignReleaseIds.Contains(foreignReleaseId))
+                               .SingleOrDefault();
+            }
+            
+            return release;
         }
 
         public List<AlbumRelease> GetReleasesForRefresh(int albumId, IEnumerable<string> foreignReleaseIds)

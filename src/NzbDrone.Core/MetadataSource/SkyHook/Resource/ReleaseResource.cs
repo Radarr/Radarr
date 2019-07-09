@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<string> Country { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string Id { get; set; }
+        public List<string> OldIds { get; set; }
         public List<string> Label { get; set; }
         public List<MediumResource> Media { get; set; }
         public string Title { get; set; }

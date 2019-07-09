@@ -275,7 +275,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             if (releaseIds.Count == 1 && releaseIds[0].IsNotNullOrWhiteSpace())
             {
                 _logger.Debug("Selecting release from consensus ForeignReleaseId [{0}]", releaseIds[0]);
-                tagMbidRelease = _releaseService.GetReleaseByForeignReleaseId(releaseIds[0]);
+                tagMbidRelease = _releaseService.GetReleaseByForeignReleaseId(releaseIds[0], true);
+                
                 if (tagMbidRelease != null)
                 {
                     tagCandidate = GetCandidatesByRelease(new List<AlbumRelease> { tagMbidRelease }, includeExisting);
@@ -555,7 +556,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             var recordingId = localTrack.FileTrackInfo.RecordingMBId;
             if (recordingId.IsNotNullOrWhiteSpace())
             {
-                dist.AddBool("recording_id", localTrack.FileTrackInfo.RecordingMBId != mbTrack.ForeignRecordingId);
+                dist.AddBool("recording_id", localTrack.FileTrackInfo.RecordingMBId != mbTrack.ForeignRecordingId &&
+                             !mbTrack.OldForeignRecordingIds.Contains(localTrack.FileTrackInfo.RecordingMBId));
             }
 
             // for fingerprinted files
@@ -657,8 +659,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             var mbAlbumId = MostCommon(localTracks.Select(x => x.FileTrackInfo.ReleaseMBId));
             if (mbAlbumId.IsNotNullOrWhiteSpace())
             {
-                dist.AddEquality("album_id", mbAlbumId, new List<string> { release.ForeignReleaseId });
-                _logger.Trace("album_id: {0} vs {1}; {2}", mbAlbumId, release.ForeignReleaseId, dist.NormalizedDistance());
+                dist.AddBool("album_id", mbAlbumId != release.ForeignReleaseId && !release.OldForeignReleaseIds.Contains(mbAlbumId));
+                _logger.Trace("album_id: {0} vs {1} or {2}; {3}", mbAlbumId, release.ForeignReleaseId, string.Join(", ", release.OldForeignReleaseIds), dist.NormalizedDistance());
             }
 
             // tracks

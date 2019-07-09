@@ -10,9 +10,15 @@ namespace NzbDrone.Core.Music
 {
     public class AlbumRelease : ModelBase, IEquatable<AlbumRelease>
     {
+        public AlbumRelease()
+        {
+            OldForeignReleaseIds = new List<string>();
+        }
+
         // These correspond to columns in the AlbumReleases table
         public int AlbumId { get; set; }
         public string ForeignReleaseId { get; set; }
+        public List<string> OldForeignReleaseIds { get; set; }
         public string Title { get; set; }
         public string Status { get; set; }
         public int Duration { get; set; }
@@ -43,6 +49,7 @@ namespace NzbDrone.Core.Music
             if (Id == other.Id &&
                 AlbumId == other.AlbumId &&
                 ForeignReleaseId == other.ForeignReleaseId &&
+                (OldForeignReleaseIds?.SequenceEqual(other.OldForeignReleaseIds) ?? true) &&
                 Title == other.Title &&
                 Status == other.Status &&
                 Duration == other.Duration &&
@@ -86,6 +93,7 @@ namespace NzbDrone.Core.Music
                 hash = hash * 23 + Id;
                 hash = hash * 23 + AlbumId;
                 hash = hash * 23 + ForeignReleaseId.GetHashCode();
+                hash = hash * 23 + OldForeignReleaseIds?.GetHashCode() ?? 0;
                 hash = hash * 23 + Title?.GetHashCode() ?? 0;
                 hash = hash * 23 + Status?.GetHashCode() ?? 0;
                 hash = hash * 23 + Duration;

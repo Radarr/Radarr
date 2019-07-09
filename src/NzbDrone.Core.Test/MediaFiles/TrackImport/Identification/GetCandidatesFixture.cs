@@ -148,8 +148,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localAlbumRelease = new LocalAlbumRelease(localTracks);
 
             Mocker.GetMock<IReleaseService>()
-                .Setup(x => x.GetReleaseByForeignReleaseId("xxx"))
-                .Returns(release);
+                  .Setup(x => x.GetReleaseByForeignReleaseId("xxx", true))
+                  .Returns(release);
 
             Subject.GetCandidatesFromTags(localAlbumRelease, null, null, null, false).ShouldBeEquivalentTo(
                 new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) }
