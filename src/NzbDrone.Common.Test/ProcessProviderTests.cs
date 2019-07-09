@@ -66,10 +66,10 @@ namespace NzbDrone.Common.Test
         [Test]
         public void Should_be_able_to_start_process()
         {
-            var process = Subject.Start(Path.Combine(Directory.GetCurrentDirectory(), DummyApp.DUMMY_PROCCESS_NAME + ".exe"));
+            var process = StartDummyProcess();
 
             Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should()
-                   .BeTrue("excepted one dummy process to be already running");
+                   .BeTrue("expected one dummy process to be already running");
 
             process.Kill();
             process.WaitForExit();
@@ -92,7 +92,7 @@ namespace NzbDrone.Common.Test
 
         private Process StartDummyProcess()
         {
-            return Subject.Start(DummyApp.DUMMY_PROCCESS_NAME + ".exe");
+            return Subject.Start(Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe"));
         }
 
         [Test]
