@@ -25,7 +25,6 @@ namespace NzbDrone.Core.Music
         void DeleteAlbum(int albumId, bool deleteFiles);
         List<Album> GetAllAlbums();
         Album UpdateAlbum(Album album);
-        List<Album> UpdateAlbums(List<Album> album);
         void SetAlbumMonitored(int albumId, bool monitored);
         void SetMonitored(IEnumerable<int> ids, bool monitored);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
@@ -278,16 +277,6 @@ namespace NzbDrone.Core.Music
             {
                 _eventAggregator.PublishEvent(new AlbumEditedEvent(album, album));
             }
-        }
-
-        public List<Album> UpdateAlbums(List<Album> albums)
-        {
-            _logger.Debug("Updating {0} albums", albums.Count);
-
-            _albumRepository.UpdateMany(albums);
-            _logger.Debug("{0} albums updated", albums.Count);
-
-            return albums;
         }
 
         public void Handle(ArtistDeletedEvent message)

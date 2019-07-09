@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Music
                     }
                 }
 
-                _albumService.UpdateAlbums(albums);
+                _albumService.UpdateMany(albums);
             }
 
             _artistService.UpdateArtist(artist);
