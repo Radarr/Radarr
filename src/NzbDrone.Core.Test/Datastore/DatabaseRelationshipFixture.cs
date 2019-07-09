@@ -7,6 +7,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
+using System;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -18,6 +19,9 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var album = Builder<Album>.CreateNew()
                 .With(c => c.Id = 0)
+                .With(x => x.ReleaseDate = DateTime.UtcNow)
+                .With(x => x.LastInfoSync = DateTime.UtcNow)
+                .With(x => x.Added = DateTime.UtcNow)
                 .BuildNew();
             Db.Insert(album);
 
