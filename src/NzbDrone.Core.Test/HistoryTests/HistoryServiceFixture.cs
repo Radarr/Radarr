@@ -61,12 +61,12 @@ namespace NzbDrone.Core.Test.HistoryTests
             var trackFile = Builder<TrackFile>.CreateNew()
                 .With(f => f.SceneName = null)
                 .With(f => f.Artist = artist)
-                .With(f => f.Album = new Album())
                 .Build();
 
             var localTrack = new LocalTrack
             {
                 Artist = artist,
+                Album = new Album(),
                 Tracks = tracks,
                 Path = @"C:\Test\Unsorted\Artist.01.Hymn.mp3"
             };
