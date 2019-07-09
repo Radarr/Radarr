@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
     public class ArtistResource
     {
-        public ArtistResource() {
+        public ArtistResource()
+        {
             Albums = new List<AlbumResource>();
+            Genres = new List<string>();
         }
 
         public List<string> Genres { get; set; }

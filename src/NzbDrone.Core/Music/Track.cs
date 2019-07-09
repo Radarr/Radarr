@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Music
 
         // These are retained for compatibility
         // TODO: Remove set, bodged in because tests expect this to be writable
-        public int AlbumId { get { return AlbumRelease.Value?.Album.Value?.Id ?? 0; } set { /* empty */ } }
+        public int AlbumId { get { return AlbumRelease?.Value?.Album?.Value?.Id ?? 0; } set { /* empty */ } }
         public Album Album { get; set; }
 
         public override string ToString()

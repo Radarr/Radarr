@@ -23,18 +23,21 @@ namespace NzbDrone.Core.Music
     public class AddArtistService : IAddArtistService
     {
         private readonly IArtistService _artistService;
+        private readonly IArtistMetadataRepository _artistMetadataRepository;
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddArtistValidator _addArtistValidator;
         private readonly Logger _logger;
 
         public AddArtistService(IArtistService artistService,
+                                IArtistMetadataRepository artistMetadataRepository,
                                 IProvideArtistInfo artistInfo,
                                 IBuildFileNames fileNameBuilder,
                                 IAddArtistValidator addArtistValidator,
                                 Logger logger)
         {
             _artistService = artistService;
+            _artistMetadataRepository = artistMetadataRepository;
             _artistInfo = artistInfo;
             _fileNameBuilder = fileNameBuilder;
             _addArtistValidator = addArtistValidator;
@@ -49,6 +52,12 @@ namespace NzbDrone.Core.Music
             newArtist = SetPropertiesAndValidate(newArtist);
 
             _logger.Info("Adding Artist {0} Path: [{1}]", newArtist, newArtist.Path);
+
+            // add metadata
+            _artistMetadataRepository.Upsert(newArtist.Metadata.Value);
+            newArtist.ArtistMetadataId = newArtist.Metadata.Value.Id;
+
+            // add the artist itself
             _artistService.AddArtist(newArtist);
 
             return newArtist;
@@ -76,6 +85,12 @@ namespace NzbDrone.Core.Music
                 }
                 
             }
+
+            // add metadata
+            _artistMetadataRepository.UpsertMany(artistsToAdd);
+
+            _logger.Debug("metadata id 1 {0}", string.Join(", ", artistsToAdd.Select(x => x.Metadata.Value.Id)));
+            _logger.Debug("metadata id 2 {0}", string.Join(", ", artistsToAdd.Select(x => x.ArtistMetadataId)));
 
             return _artistService.AddArtists(artistsToAdd);
         }

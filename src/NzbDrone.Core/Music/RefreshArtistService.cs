@@ -13,21 +13,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NzbDrone.Core.ImportLists.Exclusions;
+using NzbDrone.Common.EnsureThat;
+using NzbDrone.Core.History;
 
 namespace NzbDrone.Core.Music
 {
-    public class RefreshArtistService : IExecute<RefreshArtistCommand>
+    public class RefreshArtistService : RefreshEntityServiceBase<Artist, Album>, IExecute<RefreshArtistCommand>
     {
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
-        private readonly IAddAlbumService _addAlbumService;
+        private readonly IArtistMetadataRepository _artistMetadataRepository;
         private readonly IAlbumService _albumService;
         private readonly IRefreshAlbumService _refreshAlbumService;
-        private readonly IRefreshTrackService _refreshTrackService;
-        private readonly IAudioTagService _audioTagService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly IHistoryService _historyService;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
         private readonly IConfigService _configService;
@@ -36,154 +37,219 @@ namespace NzbDrone.Core.Music
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
                                     IArtistService artistService,
-                                    IAddAlbumService addAlbumService,
+                                    IArtistMetadataRepository artistMetadataRepository,
                                     IAlbumService albumService,
                                     IRefreshAlbumService refreshAlbumService,
-                                    IRefreshTrackService refreshTrackService,
-                                    IAudioTagService audioTagService,
                                     IEventAggregator eventAggregator,
+                                    IMediaFileService mediaFileService,
+                                    IHistoryService historyService,
                                     IDiskScanService diskScanService,
                                     ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
                                     IConfigService configService,
                                     IImportListExclusionService importListExclusionService,
                                     Logger logger)
+        : base(logger, artistMetadataRepository)
         {
             _artistInfo = artistInfo;
             _artistService = artistService;
-            _addAlbumService = addAlbumService;
+            _artistMetadataRepository = artistMetadataRepository;
             _albumService = albumService;
             _refreshAlbumService = refreshAlbumService;
-            _refreshTrackService = refreshTrackService;
-            _audioTagService = audioTagService;
             _eventAggregator = eventAggregator;
+            _mediaFileService = mediaFileService;
+            _historyService = historyService;
             _diskScanService = diskScanService;
             _checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
             _configService = configService;
             _importListExclusionService = importListExclusionService;
             _logger = logger;
         }
-
-        private bool RefreshArtistInfo(Artist artist, bool forceAlbumRefresh)
+        
+        protected override RemoteData GetRemoteData(Artist local, List<Artist> remote)
         {
-            _logger.ProgressInfo("Updating Info for {0}", artist.Name);
-            bool updated = false;
-
-            Artist artistInfo;
-
+            var result = new RemoteData();
             try
             {
-                artistInfo = _artistInfo.GetArtistInfo(artist.Metadata.Value.ForeignArtistId, artist.MetadataProfileId);
+                result.Entity = _artistInfo.GetArtistInfo(local.Metadata.Value.ForeignArtistId, local.MetadataProfileId);
+                result.Metadata = new List<ArtistMetadata> { result.Entity.Metadata.Value };
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error($"Artist {artist} was not found, it may have been removed from Metadata sources.");
-                return updated;
+                _logger.Error($"Could not find artist with id {local.Metadata.Value.ForeignArtistId}");
             }
 
-            var forceUpdateFileTags = artist.Name != artistInfo.Name;
-            updated |= forceUpdateFileTags;
+            return result;
+        }
+                  
+        protected override bool ShouldDelete(Artist local)
+        {
+            return !_mediaFileService.GetFilesByArtist(local.Id).Any();
+        }
+        
+        protected override void LogProgress(Artist local)
+        {
+            _logger.ProgressInfo("Updating Info for {0}", local.Name);            
+        }
+            
+        protected override bool IsMerge(Artist local, Artist remote)
+        {
+            return local.ArtistMetadataId != remote.Metadata.Value.Id;
+        }
 
-            if (artist.Metadata.Value.ForeignArtistId != artistInfo.Metadata.Value.ForeignArtistId)
+        protected override UpdateResult UpdateEntity(Artist local, Artist remote)
+        {
+            UpdateResult result = UpdateResult.None;
+            
+            if(!local.Metadata.Value.Equals(remote.Metadata.Value))
             {
-                _logger.Warn($"Artist {artist} was replaced with {artistInfo} because the original was a duplicate.");
-
-                // Update list exclusion if one exists
-                var importExclusion = _importListExclusionService.FindByForeignId(artist.Metadata.Value.ForeignArtistId);
-
-                if (importExclusion != null)
-                {
-                    importExclusion.ForeignId = artistInfo.Metadata.Value.ForeignArtistId;
-                    _importListExclusionService.Update(importExclusion);
-                }
-
-                artist.Metadata.Value.ForeignArtistId = artistInfo.Metadata.Value.ForeignArtistId;
-                forceUpdateFileTags = true;
-                updated = true;
+                result = UpdateResult.UpdateTags;
             }
 
-            artist.Metadata.Value.ApplyChanges(artistInfo.Metadata.Value);
-            artist.CleanName = artistInfo.CleanName;
-            artist.SortName = artistInfo.SortName;
-            artist.LastInfoSync = DateTime.UtcNow;
+            local.CleanName = remote.CleanName;
+            local.SortName = remote.SortName;
+            local.LastInfoSync = DateTime.UtcNow;
 
             try
             {
-                artist.Path = new DirectoryInfo(artist.Path).FullName;
-                artist.Path = artist.Path.GetActualCasing();
+                local.Path = new DirectoryInfo(local.Path).FullName;
+                local.Path = local.Path.GetActualCasing();
             }
             catch (Exception e)
             {
-                _logger.Warn(e, "Couldn't update artist path for " + artist.Path);
+                _logger.Warn(e, "Couldn't update artist path for " + local.Path);
             }
 
-            var remoteAlbums = artistInfo.Albums.Value.DistinctBy(m => m.ForeignAlbumId).ToList();
+            return result;
+        }
+        
+        protected override UpdateResult MoveEntity(Artist local, Artist remote)
+        {
+            _logger.Debug($"Updating MusicBrainz id for {local} to {remote}");
 
-            // Get list of DB current db albums for artist
-            var existingAlbums = _albumService.GetAlbumsForRefresh(artist.ArtistMetadataId, remoteAlbums.Select(x => x.ForeignAlbumId));
-            var newAlbumsList = new List<Album>();
-            var updateAlbumsList = new List<Album>();
+            // We are moving from one metadata to another (will already have been poplated)
+            local.ArtistMetadataId = remote.Metadata.Value.Id;
+            local.Metadata = remote.Metadata.Value;
 
-            // Cycle thru albums
-            foreach (var album in remoteAlbums)
+            // Update list exclusion if one exists
+            var importExclusion = _importListExclusionService.FindByForeignId(local.Metadata.Value.ForeignArtistId);
+
+            if (importExclusion != null)
             {
-                // Check for album in existing albums, if not set properties and add to new list
-                var albumToRefresh = existingAlbums.SingleOrDefault(s => s.ForeignAlbumId == album.ForeignAlbumId);
-
-                if (albumToRefresh != null)
-                {
-                    albumToRefresh.Artist = artist;
-                    existingAlbums.Remove(albumToRefresh);
-                    updateAlbumsList.Add(albumToRefresh);
-                }
-                else
-                {
-                    album.Artist = artist;
-                    newAlbumsList.Add(album);
-                }
+                importExclusion.ForeignId = remote.Metadata.Value.ForeignArtistId;
+                _importListExclusionService.Update(importExclusion);
             }
 
-            _logger.Debug("{0} Deleting {1}, Updating {2}, Adding {3} albums",
-                          artist, existingAlbums.Count, updateAlbumsList.Count, newAlbumsList.Count);
-
-            // before deleting anything, remove musicbrainz ids for things we are deleting
-            _audioTagService.RemoveMusicBrainzTags(existingAlbums);
-
-            // Delete old albums first - this avoids errors if albums have been merged and we'll
-            // end up trying to duplicate an existing release under a new album
-            _albumService.DeleteMany(existingAlbums);
+            // Do the standard update
+            UpdateEntity(local, remote);
             
-            // Update new albums with artist info and correct monitored status
-            newAlbumsList = UpdateAlbums(artist, newAlbumsList);
-            _addAlbumService.AddAlbums(newAlbumsList);
-
-            updated |= existingAlbums.Any() || newAlbumsList.Any();
-
-            updated |= _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh, forceUpdateFileTags);
-
-            // Do this last so artist only marked as refreshed if refresh of tracks / albums completed successfully
-            _artistService.UpdateArtist(artist);
-
-            _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
-
-            if (updated)
-            {
-                _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
-            }
-
-            _logger.Debug("Finished artist refresh for {0}", artist.Name);
-
-            return updated;
+            // We know we need to update tags as artist id has changed
+            return UpdateResult.UpdateTags;
         }
 
-        private List<Album> UpdateAlbums(Artist artist, List<Album> albumsToUpdate)
+        protected override UpdateResult MergeEntity(Artist local, Artist target, Artist remote)
         {
-            foreach (var album in albumsToUpdate)
+            _logger.Warn($"Artist {local} was replaced with {remote} because the original was a duplicate.");
+
+            // Update list exclusion if one exists
+            var importExclusionLocal = _importListExclusionService.FindByForeignId(local.Metadata.Value.ForeignArtistId);
+
+            if (importExclusionLocal != null)
             {
-                album.ProfileId = artist.QualityProfileId;
-                album.Monitored = artist.Monitored;
+                var importExclusionTarget = _importListExclusionService.FindByForeignId(target.Metadata.Value.ForeignArtistId);
+                if (importExclusionTarget == null)
+                {
+                    importExclusionLocal.ForeignId = remote.Metadata.Value.ForeignArtistId;
+                    _importListExclusionService.Update(importExclusionLocal);
+                }
             }
 
-            return albumsToUpdate;
+            // move any albums over to the new artist and remove the local artist
+            var albums = _albumService.GetAlbumsByArtist(local.Id);
+            albums.ForEach(x => x.ArtistMetadataId = target.ArtistMetadataId);
+            _albumService.UpdateMany(albums);
+            _artistService.DeleteArtist(local.Id, false);
+
+            // Update history entries to new id
+            var items = _historyService.GetByArtist(local.Id, null);
+            items.ForEach(x => x.ArtistId = target.Id);
+            _historyService.UpdateMany(items);
+
+            // We know we need to update tags as artist id has changed
+            return UpdateResult.UpdateTags;
+        }
+
+        protected override Artist GetEntityByForeignId(Artist local)
+        {
+            return _artistService.FindById(local.ForeignArtistId);
+        }
+
+        protected override void SaveEntity(Artist local)
+        {
+            _artistService.UpdateArtist(local);
+        }
+
+        protected override void DeleteEntity(Artist local, bool deleteFiles)
+        {
+            _artistService.DeleteArtist(local.Id, true);
+        }
+
+        protected override List<Album> GetRemoteChildren(Artist remote)
+        {
+            return remote.Albums.Value.DistinctBy(m => m.ForeignAlbumId).ToList();
+        }
+
+        protected override List<Album> GetLocalChildren(Artist entity, List<Album> remoteChildren)
+        {
+            return _albumService.GetAlbumsForRefresh(entity.ArtistMetadataId,
+                                                     remoteChildren.Select(x => x.ForeignAlbumId)
+                                                     .Concat(remoteChildren.SelectMany(x => x.OldForeignAlbumIds)));
+        }
+        
+        protected override Tuple<Album, List<Album> > GetMatchingExistingChildren(List<Album> existingChildren, Album remote)
+        {
+            var existingChild = existingChildren.SingleOrDefault(x => x.ForeignAlbumId == remote.ForeignAlbumId);
+            var mergeChildren = existingChildren.Where(x => remote.OldForeignAlbumIds.Contains(x.ForeignAlbumId)).ToList();
+            return Tuple.Create(existingChild, mergeChildren);
+        }
+        
+        protected override void PrepareNewChild(Album child, Artist entity)
+        {
+            child.Artist = entity;
+            child.ArtistMetadata = entity.Metadata.Value;
+            child.ArtistMetadataId = entity.Metadata.Value.Id;
+            child.Added = DateTime.UtcNow;
+            child.LastInfoSync = DateTime.MinValue;
+            child.ProfileId = entity.QualityProfileId;
+            child.Monitored = entity.Monitored;
+        }
+        
+        protected override void PrepareExistingChild(Album local, Album remote, Artist entity)
+        {
+            local.Artist = entity;
+            local.ArtistMetadata = entity.Metadata.Value;
+            local.ArtistMetadataId = entity.Metadata.Value.Id;
+        }
+        
+        protected override void AddChildren(List<Album> children)
+        {
+            _albumService.InsertMany(children);
+        }
+
+        protected override bool RefreshChildren(SortedChildren localChildren, List<Album> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags)
+        {
+            // we always want to end up refreshing the albums since we don't get have proper data
+            Ensure.That(localChildren.UpToDate.Count, () => localChildren.UpToDate.Count).IsLessThanOrEqualTo(0);
+            return _refreshAlbumService.RefreshAlbumInfo(localChildren.All, remoteChildren, forceChildRefresh, forceUpdateFileTags);
+        }
+            
+        protected override void PublishEntityUpdatedEvent(Artist entity)
+        {
+            _eventAggregator.PublishEvent(new ArtistUpdatedEvent(entity));
+        }
+
+        protected override void PublishChildrenUpdatedEvent(Artist entity, List<Album> newChildren, List<Album> updateChildren)
+        {
+            _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(entity, newChildren, updateChildren));
         }
 
         private void RescanArtist(Artist artist, bool isNew, CommandTrigger trigger, bool infoUpdated)
@@ -239,7 +305,7 @@ namespace NzbDrone.Core.Music
                 bool updated = false;
                 try
                 {
-                    updated = RefreshArtistInfo(artist, true);
+                    updated = RefreshEntityInfo(artist, null, true, false);
                     RescanArtist(artist, isNew, trigger, updated);
                 }
                 catch (Exception e)
@@ -262,7 +328,7 @@ namespace NzbDrone.Core.Music
                         bool updated = false;
                         try
                         {
-                            updated = RefreshArtistInfo(artist, manualTrigger);
+                            updated = RefreshEntityInfo(artist, null, manualTrigger, false);
                         }
                         catch (Exception e)
                         {
@@ -271,7 +337,6 @@ namespace NzbDrone.Core.Music
 
                         RescanArtist(artist, false, trigger, updated);
                     }
-
                     else
                     {
                         _logger.Info("Skipping refresh of artist: {0}", artist.Name);

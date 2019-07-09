@@ -3,10 +3,12 @@ using NzbDrone.Core.Datastore;
 using System;
 using System.Collections.Generic;
 using Marr.Data;
+using System.Linq;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Music
 {
-    public class Album : ModelBase
+    public class Album : ModelBase, IEquatable<Album>
     {
         public Album()
         {
@@ -65,6 +67,73 @@ namespace NzbDrone.Core.Music
             AddOptions = otherAlbum.AddOptions;
             Monitored = otherAlbum.Monitored;
             AnyReleaseOk = otherAlbum.AnyReleaseOk;
+        }
+
+        public bool Equals(Album other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Id == other.Id &&
+                ForeignAlbumId == other.ForeignAlbumId &&
+                (OldForeignAlbumIds?.SequenceEqual(other.OldForeignAlbumIds) ?? true) &&
+                Title == other.Title &&
+                Overview == other.Overview &&
+                Disambiguation == other.Disambiguation &&
+                ReleaseDate == other.ReleaseDate &&
+                Images?.ToJson() == other.Images?.ToJson() &&
+                Links?.ToJson() == other.Links?.ToJson() &&
+                (Genres?.SequenceEqual(other.Genres) ?? true) &&
+                AlbumType == other.AlbumType &&
+                (SecondaryTypes?.SequenceEqual(other.SecondaryTypes) ?? true) &&
+                Ratings?.ToJson() == other.Ratings?.ToJson())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as Album;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(other);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + Id;
+                hash = hash * 23 + ForeignAlbumId.GetHashCode();
+                hash = hash * 23 + OldForeignAlbumIds?.GetHashCode() ?? 0;
+                hash = hash * 23 + Title?.GetHashCode() ?? 0;
+                hash = hash * 23 + Overview?.GetHashCode() ?? 0;
+                hash = hash * 23 + Disambiguation?.GetHashCode() ?? 0;
+                hash = hash * 23 + ReleaseDate?.GetHashCode() ?? 0;
+                hash = hash * 23 + Images?.GetHashCode() ?? 0;
+                hash = hash * 23 + Links?.GetHashCode() ?? 0;
+                hash = hash * 23 + Genres?.GetHashCode() ?? 0;
+                hash = hash * 23 + AlbumType?.GetHashCode() ?? 0;
+                hash = hash * 23 + SecondaryTypes?.GetHashCode() ?? 0;
+                hash = hash * 23 + Ratings?.GetHashCode() ?? 0;
+                return hash;
+            }
         }
     }
 }

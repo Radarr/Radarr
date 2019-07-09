@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using Marr.Data;
 using NLog;
 
 namespace NzbDrone.Core.Music
@@ -16,8 +15,8 @@ namespace NzbDrone.Core.Music
         void UpdateMany(List<Artist> artists);
         ArtistMetadata FindById(string foreignArtistId);
         List<ArtistMetadata> FindById(List<string> foreignIds);
-        void UpsertMany(List<ArtistMetadata> artists);
-        void UpsertMany(List<Artist> artists);
+        bool UpsertMany(List<ArtistMetadata> artists);
+        bool UpsertMany(List<Artist> artists);
     }
 
     public class ArtistMetadataRepository : BasicRepository<ArtistMetadata>, IArtistMetadataRepository
@@ -40,10 +39,8 @@ namespace NzbDrone.Core.Music
         public List<Artist> InsertMany(List<Artist> artists)
         {
             InsertMany(artists.Select(x => x.Metadata.Value).ToList());
-            foreach (var artist in artists)
-            {
-                artist.ArtistMetadataId = artist.Metadata.Value.Id;
-            }
+            artists.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
+
             return artists;
         }
 
@@ -70,12 +67,12 @@ namespace NzbDrone.Core.Music
             return artist;
         }
 
-        public void UpsertMany(List<Artist> artists)
+        public bool UpsertMany(List<Artist> artists)
         {
-            foreach (var artist in artists)
-            {
-                Upsert(artist);
-            }
+            var result = UpsertMany(artists.Select(x => x.Metadata.Value).ToList());
+            artists.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
+            
+            return result;
         }
 
         public void UpdateMany(List<Artist> artists)
@@ -93,22 +90,40 @@ namespace NzbDrone.Core.Music
             return Query.Where($"[ForeignArtistId] IN ('{string.Join("','", foreignIds)}')").ToList();
         }
 
-        public void UpsertMany(List<ArtistMetadata> artists)
+        public bool UpsertMany(List<ArtistMetadata> data)
         {
-            foreach (var artist in artists)
+            var existingMetadata = FindById(data.Select(x => x.ForeignArtistId).ToList());
+            var updateMetadataList = new List<ArtistMetadata>();
+            var addMetadataList = new List<ArtistMetadata>();
+            int upToDateMetadataCount = 0;
+
+            foreach (var meta in data)
             {
-                var existing = FindById(artist.ForeignArtistId);
+                var existing = existingMetadata.SingleOrDefault(x => x.ForeignArtistId == meta.ForeignArtistId);
                 if (existing != null)
                 {
-                    artist.Id = existing.Id;
-                    Update(artist);
+                    meta.Id = existing.Id;
+                    if (!meta.Equals(existing))
+                    {
+                        updateMetadataList.Add(meta);
+                    }
+                    else
+                    {
+                        upToDateMetadataCount++;
+                    }
                 }
                 else
                 {
-                    Insert(artist);
+                    addMetadataList.Add(meta);
                 }
-                _logger.Debug("Upserted metadata with ID {0}", artist.Id);
             }
+            
+            UpdateMany(updateMetadataList);
+            InsertMany(addMetadataList);
+            
+            _logger.Debug($"{upToDateMetadataCount} artist metadata up to date; Updating {updateMetadataList.Count}, Adding {addMetadataList.Count} artist metadata entries.");
+            
+            return updateMetadataList.Count > 0 || addMetadataList.Count > 0;
         }
     }
 }

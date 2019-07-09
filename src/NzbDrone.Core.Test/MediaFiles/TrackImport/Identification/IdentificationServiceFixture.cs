@@ -61,7 +61,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             _addArtistService = Mocker.Resolve<AddArtistService>();
 
             Mocker.SetConstant<IRefreshTrackService>(Mocker.Resolve<RefreshTrackService>());
-            Mocker.SetConstant<IAddAlbumService>(Mocker.Resolve<AddAlbumService>());
+            Mocker.SetConstant<IRefreshAlbumReleaseService>(Mocker.Resolve<RefreshAlbumReleaseService>());
+            Mocker.SetConstant<IRefreshAlbumService>(Mocker.Resolve<RefreshAlbumService>());
             _refreshArtistService = Mocker.Resolve<RefreshArtistService>();
 
             Mocker.GetMock<IAddArtistValidator>().Setup(x => x.Validate(It.IsAny<Artist>())).Returns(new ValidationResult());

@@ -82,10 +82,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.SortName = Parser.Parser.NormalizeTitle(artist.Metadata.Value.Name);
 
             artist.Albums = FilterAlbums(httpResponse.Resource.Albums, metadataProfileId)
-                .Select(x => new Album {
-                        ForeignAlbumId = x.Id
-                    })
-                .ToList();
+                .Select(x => MapAlbum(x, null)).ToList();
 
             return artist;
         }
@@ -136,6 +133,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var artists = httpResponse.Resource.Artists.Select(MapArtistMetadata).ToList();
             var artistDict = artists.ToDictionary(x => x.ForeignArtistId, x => x);
             var album = MapAlbum(httpResponse.Resource, artistDict);
+            album.ArtistMetadata = artistDict[httpResponse.Resource.ArtistId];
 
             return new Tuple<string, Album, List<ArtistMetadata>>(httpResponse.Resource.ArtistId, album, artists);
         }
@@ -181,8 +179,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                     .SetSegment("route", "search")
                                     .AddQueryParam("type", "artist")
                                     .AddQueryParam("query", title.ToLower().Trim())
-                                    //.AddQueryParam("images","false") // Should pass these on import search to avoid looking to fanart and wiki 
-                                    //.AddQueryParam("overview","false")
                                     .Build();
 
 

@@ -28,6 +28,7 @@ namespace NzbDrone.Core.History
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
+        void UpdateMany(IList<History> items);
     }
 
     public class HistoryService : IHistoryService,
@@ -380,6 +381,11 @@ namespace NzbDrone.Core.History
         public List<History> Since(DateTime date, HistoryEventType? eventType)
         {
             return _historyRepository.Since(date, eventType);
+        }
+
+        public void UpdateMany(IList<History> items)
+        {
+            _historyRepository.UpdateMany(items);
         }
     }
 }

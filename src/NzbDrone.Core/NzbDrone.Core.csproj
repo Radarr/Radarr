@@ -847,7 +847,6 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
-    <Compile Include="Music\AddAlbumService.cs" />
     <Compile Include="Music\AlbumAddedService.cs" />
     <Compile Include="Music\AlbumEditedService.cs" />
     <Compile Include="Music\AlbumRepository.cs" />
@@ -898,8 +897,10 @@
     <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
     <Compile Include="Music\Events\AlbumInfoRefreshedEvent.cs" />
     <Compile Include="Music\Ratings.cs" />
+    <Compile Include="Music\RefreshEntityServiceBase.cs" />
     <Compile Include="Music\RefreshArtistService.cs" />
     <Compile Include="Music\RefreshAlbumService.cs" />
+    <Compile Include="Music\RefreshAlbumReleaseService.cs" />
     <Compile Include="Music\RefreshTrackService.cs" />
     <Compile Include="Music\ShouldRefreshArtist.cs" />
     <Compile Include="Music\Track.cs" />

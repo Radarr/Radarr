@@ -275,7 +275,6 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchArtistComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
-    <Compile Include="MusicTests\AddAlbumFixture.cs" />
     <Compile Include="MusicTests\AlbumServiceFixture.cs" />
     <Compile Include="MusicTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\AlbumMonitoredServiceTests\AlbumMonitoredServiceFixture.cs" />
