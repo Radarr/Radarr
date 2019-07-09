@@ -21,6 +21,7 @@ environment:
 install:
   - git submodule update --init --recursive
   - cmd: powershell Install-Product node $env:nodejs_version
+  - cmd: powershell Set-Service SCardSvr -StartupType Manual
   - sh: nvm install $nodejs_version
   - sh: sudo apt update
   - sh: sudo apt install -y libchromaprint-tools
