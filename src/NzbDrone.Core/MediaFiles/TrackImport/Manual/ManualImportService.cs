@@ -255,6 +255,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     var release = _releaseService.GetRelease(file.AlbumReleaseId);
                     var tracks = _trackService.GetTracks(file.TrackIds);
                     var fileTrackInfo = _audioTagService.ReadTags(file.Path) ?? new ParsedTrackInfo();
+                    var fileInfo = _diskProvider.GetFileInfo(file.Path);
 
                     var localTrack = new LocalTrack
                     {
@@ -262,6 +263,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                         Tracks = tracks,
                         FileTrackInfo = fileTrackInfo,
                         Path = file.Path,
+                        Size = fileInfo.Length,
+                        Modified = fileInfo.LastWriteTimeUtc,
                         Quality = file.Quality,
                         Language = file.Language,
                         Artist = artist,
