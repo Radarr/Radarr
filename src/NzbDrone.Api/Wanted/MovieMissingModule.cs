@@ -30,10 +30,6 @@ namespace NzbDrone.Api.Wanted
             var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Movies.Movie>("title", SortDirection.Descending);
 
             pagingSpec.FilterExpression = _movieService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue);
-            if (pagingResource.FilterKey != "monitored")
-            {
-                pagingSpec.FilterExpression = m => m.Monitored == true;
-            }
 
             var resource = ApplyToPage(_movieService.MoviesWithoutFiles, pagingSpec, v => MapToResource(v, true));
 
