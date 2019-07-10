@@ -171,6 +171,7 @@
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxySelector.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV1.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentProxyV2.cs" />
+    <Compile Include="Download\Clients\Transmission\TransmissionConfig.cs" />
     <Compile Include="Download\DownloadClientInfo.cs" />
     <Compile Include="Download\DownloadClientStatusRepository.cs" />
     <Compile Include="Download\DownloadClientStatusService.cs" />

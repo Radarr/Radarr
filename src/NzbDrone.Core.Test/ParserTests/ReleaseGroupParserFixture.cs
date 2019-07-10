@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Colbert Report - 2014-06-02 - Thomas Piketty.mkv", null)]
         [TestCase("Real Time with Bill Maher S12E17 May 23, 2014.mp4", null)]
         [TestCase("Reizen Waes - S01E08 - Transistri\u00EB, Zuid-Osseti\u00EB en Abchazi\u00EB SDTV.avi", null)]
-        [TestCase("Simpsons 10x11 - Wild Barts Cant Be Broken [rl].avi", null)]
+        [TestCase("Simpsons 10x11 - Wild Barts Cant Be Broken [rl].avi", "rl")]
         [TestCase("[ www.Torrenting.com ] - Revenge.S03E14.720p.HDTV.X264-DIMENSION", "DIMENSION")]
         [TestCase("Seed S02E09 HDTV x264-2HD [eztv]-[rarbg.com]", "2HD")]
         [TestCase("7s-atlantis-s02e01-720p.mkv", null)]
@@ -32,6 +32,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Who.is.America.S01E01.INTERNAL.720p.HDTV.x264-aAF-RakuvUS-Obfuscated", "aAF")]
         [TestCase("Haunted.Hayride.2018.720p.WEBRip.DDP5.1.x264-NTb-postbot", "NTb")]
         [TestCase("Haunted.Hayride.2018.720p.WEBRip.DDP5.1.x264-NTb-xpost", "NTb")]
+        [TestCase("2.Broke.Girls.S02E24.1080p.AMZN.WEBRip.DD5.1.x264-CasStudio-AsRequested", "CasStudio")]
+        [TestCase("Billions.S04E11.Lamster.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-AlternativeToRequested", "NTb")]
+        [TestCase("NCIS.S16E04.Third.Wheel.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-GEROV", "NTb")]
+        [TestCase("Will.and.Grace.S10E06.Kid.n.Play.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-Z0iDS3N", "NTb")]
+        [TestCase("Absolute.Power.S02E06.The.House.of.Lords.DVDRip.x264-MaG-Chamele0n", "MaG")]
         //[TestCase("", "")]
         public void should_parse_release_group(string title, string expected)
         {

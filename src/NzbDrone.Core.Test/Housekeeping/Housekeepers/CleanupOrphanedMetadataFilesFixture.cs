@@ -8,6 +8,8 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Languages;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -70,6 +72,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
+                                                  .With(h => h.Languages = new List<Language>())
                                                   .BuildNew();
 
             Db.Insert(movie);

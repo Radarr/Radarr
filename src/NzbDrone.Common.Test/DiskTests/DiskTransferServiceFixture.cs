@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Test.Common;
-using FluentAssertions;
 
 namespace NzbDrone.Common.Test.DiskTests
 {
@@ -16,6 +18,7 @@ namespace NzbDrone.Common.Test.DiskTests
         private readonly string _targetPath = @"C:\target\my.video.mkv".AsOsAgnostic();
         private readonly string _backupPath = @"C:\source\my.video.mkv.backup~".AsOsAgnostic();
         private readonly string _tempTargetPath = @"C:\target\my.video.mkv.partial~".AsOsAgnostic();
+        private readonly string _nfsFile = ".nfs01231232";
 
         [SetUp]
         public void SetUp()
@@ -237,7 +240,7 @@ namespace NzbDrone.Common.Test.DiskTests
 
             WithExistingFile(_targetPath);
 
-            Assert.Throws<IOException>(() => Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Move, false));
+            Assert.Throws<DestinationAlreadyExistsException>(() => Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Move, false));
 
             Mocker.GetMock<IDiskProvider>()
                 .Verify(v => v.DeleteFile(_targetPath), Times.Never());
@@ -642,6 +645,21 @@ namespace NzbDrone.Common.Test.DiskTests
             VerifyCopyFolder(source.FullName, destination.FullName);
         }
 
+        [Test]
+        public void CopyFolder_should_ignore_nfs_temp_file()
+        {
+            WithRealDiskProvider();
+
+            var source = GetFilledTempFolder();
+
+            File.WriteAllText(Path.Combine(source.FullName, _nfsFile), "SubFile1");
+
+            var destination = new DirectoryInfo(GetTempFilePath());
+
+            Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Copy);
+
+            File.Exists(Path.Combine(destination.FullName, _nfsFile)).Should().BeFalse();
+        }
 
         [Test]
         public void MoveFolder_should_move_folder()
@@ -705,6 +723,26 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        public void MirrorFolder_should_not_remove_nfs_files()
+        {
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var source = new DirectoryInfo(GetTempFilePath());
+            var destination = new DirectoryInfo(GetTempFilePath());
+
+            source.Create();
+            Subject.TransferFolder(original.FullName, destination.FullName, TransferMode.Copy);
+
+            File.WriteAllText(Path.Combine(destination.FullName, _nfsFile), "SubFile1");
+
+            var count = Subject.MirrorFolder(source.FullName, destination.FullName);
+
+            count.Should().Equals(0);
+            destination.GetFileSystemInfos().Should().HaveCount(1);
+        }
+
+        [Test]
         public void MirrorFolder_should_add_new_files()
         {
             WithRealDiskProvider();
@@ -719,6 +757,24 @@ namespace NzbDrone.Common.Test.DiskTests
 
             count.Should().Equals(3);
             VerifyCopyFolder(original.FullName, destination.FullName);
+        }
+
+        [Test]
+        public void MirrorFolder_should_ignore_nfs_temp_file()
+        {
+            WithRealDiskProvider();
+
+            var source = GetFilledTempFolder();
+
+            File.WriteAllText(Path.Combine(source.FullName, _nfsFile), "SubFile1");
+
+            var destination = new DirectoryInfo(GetTempFilePath());
+
+            var count = Subject.MirrorFolder(source.FullName, destination.FullName);
+
+            count.Should().Equals(3);
+
+            File.Exists(Path.Combine(destination.FullName, _nfsFile)).Should().BeFalse();
         }
 
         [Test]
@@ -740,6 +796,75 @@ namespace NzbDrone.Common.Test.DiskTests
             VerifyCopyFolder(original.FullName, destination.FullName);
         }
 
+        [Test]
+        public void TransferFolder_should_use_movefolder_if_on_same_mount()
+        {
+            WithEmulatedDiskProvider();
+
+            var src = @"C:\Base1\TestDir1".AsOsAgnostic();
+            var dst = @"C:\Base1\TestDir2".AsOsAgnostic();
+
+            WithMockMount(@"C:\Base1".AsOsAgnostic());
+            WithExistingFile(@"C:\Base1\TestDir1\test.file.txt".AsOsAgnostic());
+
+            Subject.TransferFolder(src, dst, TransferMode.Move);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.MoveFolder(src, dst, false), Times.Once());
+        }
+
+        [Test]
+        public void TransferFolder_should_not_use_movefolder_if_on_same_mount_but_target_already_exists()
+        {
+            WithEmulatedDiskProvider();
+
+            var src = @"C:\Base1\TestDir1".AsOsAgnostic();
+            var dst = @"C:\Base1\TestDir2".AsOsAgnostic();
+
+            WithMockMount(@"C:\Base1".AsOsAgnostic());
+            WithExistingFile(@"C:\Base1\TestDir1\test.file.txt".AsOsAgnostic());
+            WithExistingFolder(dst);
+
+            Subject.TransferFolder(src, dst, TransferMode.Move);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.MoveFolder(src, dst, false), Times.Never());
+        }
+
+        [Test]
+        public void TransferFolder_should_not_use_movefolder_if_on_same_mount_but_transactional()
+        {
+            WithEmulatedDiskProvider();
+
+            var src = @"C:\Base1\TestDir1".AsOsAgnostic();
+            var dst = @"C:\Base1\TestDir2".AsOsAgnostic();
+
+            WithMockMount(@"C:\Base1".AsOsAgnostic());
+            WithExistingFile(@"C:\Base1\TestDir1\test.file.txt".AsOsAgnostic());
+
+            Subject.TransferFolder(src, dst, TransferMode.Move, DiskTransferVerificationMode.Transactional);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.MoveFolder(src, dst, false), Times.Never());
+        }
+
+        [Test]
+        public void TransferFolder_should_not_use_movefolder_if_on_different_mount()
+        {
+            WithEmulatedDiskProvider();
+
+            var src = @"C:\Base1\TestDir1".AsOsAgnostic();
+            var dst = @"C:\Base2\TestDir2".AsOsAgnostic();
+
+            WithMockMount(@"C:\Base1".AsOsAgnostic());
+            WithMockMount(@"C:\Base2".AsOsAgnostic());
+
+            Subject.TransferFolder(src, dst, TransferMode.Move);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.MoveFolder(src, dst, false), Times.Never());
+        }
+
         public DirectoryInfo GetFilledTempFolder()
         {
             var tempFolder = GetTempFilePath();
@@ -756,8 +881,23 @@ namespace NzbDrone.Common.Test.DiskTests
             return new DirectoryInfo(tempFolder);
         }
 
+        private void WithExistingFolder(string path, bool exists = true)
+        {
+            var dir = Path.GetDirectoryName(path);
+            if (exists && dir.IsNotNullOrWhiteSpace())
+                WithExistingFolder(dir);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.FolderExists(path))
+                .Returns(exists);
+        }
+
         private void WithExistingFile(string path, bool exists = true, int size = 1000)
         {
+            var dir = Path.GetDirectoryName(path);
+            if (exists && dir.IsNotNullOrWhiteSpace())
+                WithExistingFolder(dir);
+
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FileExists(path))
                 .Returns(exists);
@@ -809,6 +949,45 @@ namespace NzbDrone.Common.Test.DiskTests
                 {
                     WithExistingFile(v, false);
                 });
+
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.FolderExists(It.IsAny<string>()))
+                .Returns(false);
+
+            Mocker.GetMock<IDiskProvider>()
+               .Setup(v => v.CreateFolder(It.IsAny<string>()))
+               .Callback<string>((f) =>
+               {
+                   WithExistingFolder(f);
+               });
+
+            Mocker.GetMock<IDiskProvider>()
+               .Setup(v => v.MoveFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
+               .Callback<string, string, bool>((s, d, b) =>
+               {
+                   WithExistingFolder(s, false);
+                   WithExistingFolder(d);
+                   // Note: Should also deal with the files.
+               });
+
+            Mocker.GetMock<IDiskProvider>()
+               .Setup(v => v.DeleteFolder(It.IsAny<string>(), It.IsAny<bool>()))
+               .Callback<string, bool>((f, r) =>
+               {
+                   WithExistingFolder(f, false);
+                   // Note: Should also deal with the files.
+               });
+
+            // Note: never returns anything.
+            Mocker.GetMock<IDiskProvider>()
+               .Setup(v => v.GetDirectoryInfos(It.IsAny<string>()))
+               .Returns(new List<DirectoryInfo>());
+
+            // Note: never returns anything.
+            Mocker.GetMock<IDiskProvider>()
+               .Setup(v => v.GetFileInfos(It.IsAny<string>()))
+               .Returns(new List<FileInfo>());
         }
 
         private void WithRealDiskProvider()
@@ -863,6 +1042,18 @@ namespace NzbDrone.Common.Test.DiskTests
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.OpenReadStream(It.IsAny<string>()))
                 .Returns<string>(s => new FileStream(s, FileMode.Open, FileAccess.Read));
+        }
+
+        private void WithMockMount(string root)
+        {
+            var rootDir = root;
+            var mock = new Mock<IMount>();
+            mock.SetupGet(v => v.RootDirectory)
+                .Returns(rootDir);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.GetMount(It.Is<string>(s => s.StartsWith(rootDir))))
+                .Returns(mock.Object);
         }
 
         private void VerifyCopyFolder(string source, string destination)

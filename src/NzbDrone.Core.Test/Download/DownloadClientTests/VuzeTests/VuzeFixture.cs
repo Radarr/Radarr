@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void Download_with_TvDirectory_should_force_directory()
         {
-            GivenTvDirectory();
+            GivenMovieDirectory();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void Download_with_category_should_force_directory()
         {
-            GivenTvCategory();
+            GivenMovieCategory();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void Download_with_category_should_not_have_double_slashes()
         {
-            GivenTvCategory();
+            GivenMovieCategory();
             GivenSuccessfulDownload();
 
             _transmissionConfigItems["download-dir"] += "/";
@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void should_exclude_items_not_in_category()
         {
-            GivenTvCategory();
+            GivenMovieCategory();
 
             _downloading.DownloadDir = @"C:/Downloads/Finished/transmission/radarr";
 
@@ -232,7 +232,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void should_exclude_items_not_in_TvDirectory()
         {
-            GivenTvDirectory();
+            GivenMovieDirectory();
 
             _downloading.DownloadDir = @"C:/Downloads/Finished/radarr/subdir";
 

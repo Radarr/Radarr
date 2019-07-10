@@ -32,7 +32,7 @@ namespace NzbDrone.Common.Test.DiskTests
         public void should_be_able_to_check_space_on_ramdrive()
         {
             MonoOnly();
-            Subject.GetAvailableSpace("/").Should().NotBe(0);
+            Subject.GetAvailableSpace("/run/").Should().NotBe(0);
         }
 
         [Ignore("Docker")]
@@ -62,7 +62,7 @@ namespace NzbDrone.Common.Test.DiskTests
             {
                 if (new DriveInfo(driveletter.ToString()).IsReady)
                     continue;
-
+                
                 Assert.Throws<DirectoryNotFoundException>(() => Subject.GetAvailableSpace(driveletter + @":\NOT_A_REAL_PATH\DOES_NOT_EXIST".AsOsAgnostic()));
                 return;
             }
