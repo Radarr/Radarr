@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Parser
         Hungarian = 22,
         Hebrew = 23,
         Czech = 24,
+        Ukrainian = 25,
         Any = -1,
     }
 

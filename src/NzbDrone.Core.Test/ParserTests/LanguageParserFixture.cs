@@ -26,6 +26,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.Mandarin.HDTV.XviD-LOL", Language.Mandarin)]
         [TestCase("Castle.2009.S01E14.Korean.HDTV.XviD-LOL", Language.Korean)]
         [TestCase("Castle.2009.S01E14.Russian.HDTV.XviD-LOL", Language.Russian)]
+        [TestCase("Castle.2009.S01E14.Ukrainian.HDTV.XviD-LOL", Language.Ukrainian)]
+        [TestCase("Castle.2009.S01E14.Ukr.HDTV.XviD-LOL", Language.Ukrainian)]
         [TestCase("Castle.2009.S01E14.Polish.HDTV.XviD-LOL", Language.Polish)]
         [TestCase("Castle.2009.S01E14.Vietnamese.HDTV.XviD-LOL", Language.Vietnamese)]
         [TestCase("Castle.2009.S01E14.Swedish.HDTV.XviD-LOL", Language.Swedish)]
