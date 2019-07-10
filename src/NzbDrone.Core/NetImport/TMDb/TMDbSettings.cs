@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -19,6 +21,12 @@ namespace NzbDrone.Core.NetImport.TMDb
                 .Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase)
                 .When(c => c.ListType == (int)TMDbListType.List)
                 .WithMessage("List Id is required when using TMDb Lists");
+
+            // Greater than 0
+            RuleFor(c => c.PersonId)
+                .Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase)
+                .When(c => c.ListType == (int)TMDbListType.PeopleCast || c.ListType == (int)TMDbListType.PeopleCrew)
+                .WithMessage("Person ID required when selecting people lists");
 
             // Range 0.0 - 10.0
             RuleFor(c => c.MinVoteAverage)
@@ -93,9 +101,63 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
         public int LanguageCode { get; set; }
 
+        [FieldDefinition(9, Label = "Person ID", HelpText = "Used when a People* list is selected.  for the url https://www.themoviedb.org/person/6384-keanu-reeves, the person id is '6384'. Only one person per list ")]
+        public string PersonId { get; set; }
+
+        [FieldDefinition(10, Label = "Person Director",
+            HelpText =
+                "Used when a PeopleCrew list is selected.  Select if you want to include Director credits in the result"
+            , Type = FieldType.Checkbox)]
+        public bool PersonCastDirector { get; set; }
+
+        [FieldDefinition(11, Label = "Person Producer",
+            HelpText =
+                "Used when a PeopleCrew list is selected.  Select if you want to include Producer credits in the result"
+            , Type = FieldType.Checkbox)]
+        public bool PersonCastProducer { get; set; }
+
+        [FieldDefinition(12, Label = "Person Sound",
+            HelpText =
+                "Used when a PeopleCrew list is selected.  Select if you want to include Sound credits in the result"
+            , Type = FieldType.Checkbox)]
+        public bool PersonCastSound { get; set; }
+
+        [FieldDefinition(113, Label = "Person Writing",
+            HelpText =
+                "Used when a PeopleCrew list is selected.  Select if you want to include Writing credits in the result"
+            , Type = FieldType.Checkbox)]
+        public bool PersonCastWriting { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
+        }
+
+        public List<String> GetCrewDepartments()
+        {
+            var creditsDepartment = new List<String>();
+
+            if (PersonCastDirector)
+            {
+                creditsDepartment.Add("Directing");
+            }
+
+            if (PersonCastProducer)
+            {
+                creditsDepartment.Add("Production");
+            }
+
+            if (PersonCastSound)
+            {
+                creditsDepartment.Add("Sound");
+            }
+
+            if (PersonCastWriting)
+            {
+                creditsDepartment.Add("Writing");
+            }
+
+            return creditsDepartment;
         }
     }
 

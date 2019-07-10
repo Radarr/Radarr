@@ -35,46 +35,103 @@ namespace NzbDrone.Core.NetImport.TMDb
                 return movies;
             }
 
-            if (_settings.ListType != (int)TMDbListType.List)
+            switch (_settings.ListType)
             {
-                var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
-
-                // no movies were return
-                if (jsonResponse == null)
-                {
-                    return movies;
-                }
-
-                return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
+                case (int)TMDbListType.List:
+                    movies = ProcessListResponse();
+                    break;
+                case (int)TMDbListType.PeopleCast:
+                    movies = ProcessPersonCastListResponse();
+                    break;
+                case (int)TMDbListType.PeopleCrew:
+                    movies = ProcessPersonCrewListResponse();
+                    break;
+                default:
+                    movies = ProcessDiscoveryListResponse();
+                    break;
             }
-            else
+
+            return movies;
+        }
+
+        protected List<Movies.Movie> ProcessPersonCrewListResponse()
+        {
+            var jsonResponse = JsonConvert.DeserializeObject<PersonCreditsRoot>(_importResponse.Content);
+            var movies = new List<Movies.Movie>();
+
+            // no movies were return
+            if (jsonResponse == null)
             {
-                var jsonResponse = JsonConvert.DeserializeObject<ListResponseRoot>(_importResponse.Content);
+                return movies;
+            }
 
-                // no movies were return
-                if (jsonResponse == null)
+            var creditsDepartment = _settings.GetCrewDepartments();
+
+            foreach (var movie in jsonResponse.crew)
+            {
+                if (creditsDepartment.Contains(movie.department))
                 {
-                    return movies;
-                }
-
-                foreach (var movie in jsonResponse.items)
-                {
-                    // Skip non-movie things
-                    if (movie.media_type != "movie")
-                    {
-                        continue;
-                    }
-
-                    // Movies with no Year Fix
-                    if (string.IsNullOrWhiteSpace(movie.release_date))
-                    {
-                        continue;
-                    }
-
                     movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
                 }
             }
 
+            return movies;
+        }
+        protected List<Movies.Movie> ProcessPersonCastListResponse()
+        {
+            var jsonResponse = JsonConvert.DeserializeObject<PersonCreditsRoot>(_importResponse.Content);
+            var movies = new List<Movies.Movie>();
+
+            // no movies were return
+            if (jsonResponse == null)
+            {
+                return movies;
+            }
+
+            return jsonResponse.cast.SelectList(_skyhookProxy.MapMovie);
+        }
+
+        protected List<Movies.Movie> ProcessDiscoveryListResponse()
+        {
+            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
+            var movies = new List<Movies.Movie>();
+
+            // no movies were return
+            if (jsonResponse == null)
+            {
+                return movies;
+            }
+
+            return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
+        }
+
+        protected List<Movies.Movie> ProcessListResponse()
+        {
+            var jsonResponse = JsonConvert.DeserializeObject<ListResponseRoot>(_importResponse.Content);
+            var movies = new List<Movies.Movie>();
+
+            // no movies were return
+            if (jsonResponse == null)
+            {
+                return movies;
+            }
+
+            foreach (var movie in jsonResponse.items)
+            {
+                // Skip non-movie things
+                if (movie.media_type != "movie")
+                {
+                    continue;
+                }
+
+                // Movies with no Year Fix
+                if (string.IsNullOrWhiteSpace(movie.release_date))
+                {
+                    continue;
+                }
+
+                movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
+            }
 
             return movies;
         }

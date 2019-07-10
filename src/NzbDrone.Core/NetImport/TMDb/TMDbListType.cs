@@ -13,6 +13,10 @@ namespace NzbDrone.Core.NetImport.TMDb
         [EnumMember(Value = "Top Rated")]
         Top = 3,
         [EnumMember(Value = "Upcoming")]
-        Upcoming = 4
+        Upcoming = 4,
+        [EnumMember(Value = "People Cast")]
+        PeopleCast = 5,
+        [EnumMember(Value = "People Crew")]
+        PeopleCrew = 6
     }
 }

@@ -34,6 +34,8 @@ namespace NzbDrone.Core.NetImport.TMDb
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
             var threeMonthsFromNow = DateTime.Parse(todaysDate).AddMonths(3).ToString("yyyy-MM-dd");
 
+            var personId = Settings.PersonId;
+
             if (ceritification.IsNotNullOrWhiteSpace())
             {
                 ceritification = $"&certification_country=US&certification={ceritification}";
@@ -43,21 +45,38 @@ namespace NzbDrone.Core.NetImport.TMDb
             switch (Settings.ListType)
             {
                 case (int)TMDbListType.List:
-                    tmdbParams = $"/3/list/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
+                    tmdbParams = $"/3/list/{Settings.ListId}";
                     break;
                 case (int)TMDbListType.Theaters:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    tmdbParams = $"/3/discover/movie?primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
                 case (int)TMDbListType.Popular:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=popularity.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    tmdbParams = $"/3/discover/movie?sort_by=popularity.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
                 case (int)TMDbListType.Top:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&sort_by=vote_average.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    tmdbParams = $"/3/discover/movie?&sort_by=vote_average.desc&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
                 case (int)TMDbListType.Upcoming:
-                    tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    tmdbParams = $"/3/discover/movie?primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
+                    break;
+                case (int)TMDbListType.PeopleCast:
+                    tmdbParams = $"/3/person/{personId}/movie_credits?language={languageCode}";
+                    break;
+                case (int)TMDbListType.PeopleCrew:
+                    tmdbParams = $"/3/person/{personId}/movie_credits?language={languageCode}";
                     break;
             }
+
+            if (Settings.ListType == (int) TMDbListType.List)
+            {
+                tmdbParams += "?";
+            }
+            else
+            {
+                tmdbParams += "&";
+            }
+
+            tmdbParams += "api_key=1a7373301961d03f97f853a876dd1212";
 
             var pageableRequests = new NetImportPageableRequestChain();
             if (Settings.ListType != (int)TMDbListType.List)
@@ -90,8 +109,16 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         private IEnumerable<NetImportRequest> GetMovies(string tmdbParams, int totalPages)
         {
+            var doesntPage = new List<int>
+            {
+                (int)TMDbListType.List,
+                (int)TMDbListType.PeopleCast,
+                (int)TMDbListType.PeopleCrew
+            };
+
             var baseUrl = $"{Settings.Link.TrimEnd("/")}{tmdbParams}";
-            if (Settings.ListType != (int)TMDbListType.List)
+
+            if (!doesntPage.Contains(Settings.ListType))
             {
                 for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++)
                 {

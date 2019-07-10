@@ -18,6 +18,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public int total_pages { get; set; }
     }
 
+    public class PersonCreditsRoot
+    {
+        public MovieResult[] cast { get; set; }
+        public MovieResult[] crew { get; set; }
+        public int id { get; set; }
+    }
+
     public class MovieResult
     {
         public string poster_path { get; set; }
@@ -38,6 +45,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string trailer_site { get; set; }
         public string physical_release { get; set; }
         public string physical_release_note { get; set; }
+        public string department { get; set; }
+        public string job { get; set; }
+        public string credit_id { get; set; }
     }
 
 
