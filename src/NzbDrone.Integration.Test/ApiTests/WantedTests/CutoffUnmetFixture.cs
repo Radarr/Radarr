@@ -27,7 +27,7 @@ namespace NzbDrone.Integration.Test.ApiTests.WantedTests
             var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 
-            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
+            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "false");
 
             result.Records.Should().BeEmpty();
         }
