@@ -147,10 +147,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 if(movie.YouTubeTrailerId.IsNotNullOrWhiteSpace())
                 {
-                String[] tube = { "plugin://plugin.video.youtube/?action=play_video&amp;videoid=", movie.YouTubeTrailerId};
-                details.Add(new XElement("trailer", string.Join("", tube)));
+                    String[] tube = { "plugin://plugin.video.youtube/?action=play_video&amp;videoid=", movie.YouTubeTrailerId};
+                    details.Add(new XElement("trailer", string.Join("", tube)));
                 }
-
 
                 var uniqueId = new XElement("uniqueid", movie.TmdbId);
                 uniqueId.SetAttributeValue("type", "tmdb");
