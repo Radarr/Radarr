@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -144,6 +144,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     imdbId.SetAttributeValue("default", true);
                     details.Add(imdbId);
                 }
+
+                if(movie.YouTubeTrailerId.IsNotNullOrWhiteSpace())
+                {
+                String[] tube = { "plugin://plugin.video.youtube/?action=play_video&amp;videoid=", movie.YouTubeTrailerId};
+                details.Add(new XElement("trailer", string.Join("", tube)));
+                }
+
 
                 var uniqueId = new XElement("uniqueid", movie.TmdbId);
                 uniqueId.SetAttributeValue("type", "tmdb");
