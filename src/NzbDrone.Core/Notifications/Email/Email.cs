@@ -19,7 +19,10 @@ namespace NzbDrone.Core.Notifications.Email
         public override void OnGrab(GrabMessage grabMessage)
         {
             const string subject = "Radarr [Movie] - Grabbed";
-            var body = string.Format("{0} sent to queue.", grabMessage.Message);
+            var body = string.Format("{0} sent to queue.", grabMessage.Message);            
+            
+            if (grabMessage.RemoteMovie.Release.InfoUrl.IsNotNullOrWhiteSpace())
+                body = $"{body}\n Release info: {grabMessage.RemoteMovie.Release.InfoUrl}";
 
             _emailService.SendEmail(Settings, subject, body);
         }
