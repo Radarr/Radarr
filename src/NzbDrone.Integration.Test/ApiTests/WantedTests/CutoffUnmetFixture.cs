@@ -15,7 +15,7 @@ namespace NzbDrone.Integration.Test.ApiTests.WantedTests
             var movie = EnsureMovie(680, "Pulp Fiction", true);
             EnsureMovieFile(movie, Quality.SDTV);
 
-            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
+            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "true");
 
             result.Records.Should().NotBeEmpty();
         }
@@ -27,7 +27,19 @@ namespace NzbDrone.Integration.Test.ApiTests.WantedTests
             var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 
-            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
+            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "true");
+
+            result.Records.Should().BeEmpty();
+        }
+
+        [Test, Order(1)]
+        public void cutoff_should_not_have_released_items()
+        {
+            EnsureProfileCutoff(1, Quality.HDTV720p);
+            var movie = EnsureMovie(680, "Pulp Fiction", true);
+            EnsureMovieFile(movie, Quality.SDTV);
+
+            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "status", "inCinemas");
 
             result.Records.Should().BeEmpty();
         }
@@ -52,6 +64,18 @@ namespace NzbDrone.Integration.Test.ApiTests.WantedTests
             EnsureMovieFile(movie, Quality.SDTV);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "false");
+
+            result.Records.Should().NotBeEmpty();
+        }
+        
+        [Test, Order(2)]
+        public void cutoff_should_have_released_items()
+        {
+            EnsureProfileCutoff(1, Quality.HDTV720p);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
+            EnsureMovieFile(movie, Quality.SDTV);
+
+            var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "status", "released");
 
             result.Records.Should().NotBeEmpty();
         }
