@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
-using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.DecisionEngine
@@ -13,13 +13,13 @@ namespace NzbDrone.Core.DecisionEngine
 
     public class DownloadDecisionPriorizationService : IPrioritizeDownloadDecision
     {
-        private readonly IDelayProfileService _delayProfileService;
         private readonly IConfigService _configService;
+        private readonly IDelayProfileService _delayProfileService;
 
-        public DownloadDecisionPriorizationService(IDelayProfileService delayProfileService, IConfigService configService)
+        public DownloadDecisionPriorizationService(IConfigService configService, IDelayProfileService delayProfileService)
         {
-            _delayProfileService = delayProfileService;
             _configService = configService;
+            _delayProfileService = delayProfileService;
         }
 
         public List<DownloadDecision> PrioritizeDecisionsForMovies(List<DownloadDecision> decisions)

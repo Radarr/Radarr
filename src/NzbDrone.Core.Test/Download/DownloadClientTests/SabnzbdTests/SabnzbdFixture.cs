@@ -191,7 +191,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);
+
             result.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [TestCase(SabnzbdDownloadStatus.Paused)]
@@ -205,6 +208,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             var result = Subject.GetItems().Single();
 
             VerifyPaused(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [TestCase(SabnzbdDownloadStatus.Checking)]
@@ -227,7 +233,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             var result = Subject.GetItems().Single();
 
             VerifyDownloading(result);
+
             result.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -239,6 +248,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             var result = Subject.GetItems().Single();
 
             VerifyCompleted(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -252,6 +264,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             var result = Subject.GetItems().Single();
 
             VerifyFailed(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]

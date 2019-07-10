@@ -116,7 +116,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (movie == null)
             {
-                var files = _diskScanService.GetVideoFiles(folder);
+                var files = _diskScanService.FilterFiles(folder, _diskScanService.GetVideoFiles(folder));
 
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }

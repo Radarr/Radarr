@@ -103,10 +103,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         public void queued_item_should_have_required_properties()
         {
             GivenQueue(_queued);
-            
+
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -118,6 +121,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyPaused(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -129,6 +135,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyDownloading(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -139,6 +148,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyCompleted(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -149,6 +161,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyFailed(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]

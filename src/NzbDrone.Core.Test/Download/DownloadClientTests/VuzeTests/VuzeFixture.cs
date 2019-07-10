@@ -47,9 +47,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         [Test]
         public void completed_download_should_have_required_properties()
         {
-            PrepareClientToReturnCompletedItem();
+            PrepareClientToReturnCompletedItem(true, ratioLimit: 0.5);
             var item = Subject.GetItems().Single();
             VerifyCompleted(item);
+
+            item.CanBeRemoved.Should().BeTrue();
+            item.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -72,7 +75,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_with_TvDirectory_should_force_directory()
+        public void Download_with_MovieDirectory_should_force_directory()
         {
             GivenMovieDirectory();
             GivenSuccessfulDownload();
@@ -122,7 +125,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_without_TvDirectory_and_Category_should_use_default()
+        public void Download_without_MovieDirectory_and_Category_should_use_default()
         {
             GivenSuccessfulDownload();
 
@@ -181,13 +184,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             item.Status.Should().Be(expectedItemStatus);
         }
 
-        [TestCase(TransmissionTorrentStatus.Stopped, DownloadItemStatus.Completed, true)]
+        [TestCase(TransmissionTorrentStatus.Stopped, DownloadItemStatus.Completed, false)]
         [TestCase(TransmissionTorrentStatus.CheckWait, DownloadItemStatus.Downloading, false)]
         [TestCase(TransmissionTorrentStatus.Check, DownloadItemStatus.Downloading, false)]
         [TestCase(TransmissionTorrentStatus.Queued, DownloadItemStatus.Queued, false)]
         [TestCase(TransmissionTorrentStatus.SeedingWait, DownloadItemStatus.Completed, false)]
         [TestCase(TransmissionTorrentStatus.Seeding, DownloadItemStatus.Completed, false)]
-        public void GetItems_should_return_completed_item_as_downloadItemStatus(TransmissionTorrentStatus apiStatus, DownloadItemStatus expectedItemStatus, bool expectedReadOnly)
+        public void GetItems_should_return_completed_item_as_downloadItemStatus(TransmissionTorrentStatus apiStatus, DownloadItemStatus expectedItemStatus, bool expectedValue)
         {
             _completed.Status = apiStatus;
 
@@ -196,8 +199,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             var item = Subject.GetItems().Single();
 
             item.Status.Should().Be(expectedItemStatus);
-            item.CanBeRemoved.Should().Be(expectedReadOnly);
-            item.CanMoveFiles.Should().Be(expectedReadOnly);
+            item.CanBeRemoved.Should().Be(expectedValue);
+            item.CanMoveFiles.Should().Be(expectedValue);
         }
 
         [Test]
