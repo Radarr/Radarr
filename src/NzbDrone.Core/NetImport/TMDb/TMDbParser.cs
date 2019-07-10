@@ -40,10 +40,10 @@ namespace NzbDrone.Core.NetImport.TMDb
                 case (int)TMDbListType.List:
                     movies = ProcessListResponse();
                     break;
-                case (int)TMDbListType.PeopleCast:
+                case (int)TMDbListType.PersonCast:
                     movies = ProcessPersonCastListResponse();
                     break;
-                case (int)TMDbListType.PeopleCrew:
+                case (int)TMDbListType.PersonCrew:
                     movies = ProcessPersonCrewListResponse();
                     break;
                 default:

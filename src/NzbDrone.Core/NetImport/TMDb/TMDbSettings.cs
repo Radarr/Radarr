@@ -25,7 +25,7 @@ namespace NzbDrone.Core.NetImport.TMDb
             // Greater than 0
             RuleFor(c => c.PersonId)
                 .Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase)
-                .When(c => c.ListType == (int)TMDbListType.PeopleCast || c.ListType == (int)TMDbListType.PeopleCrew)
+                .When(c => c.ListType == (int)TMDbListType.PersonCast || c.ListType == (int)TMDbListType.PersonCrew)
                 .WithMessage("Person ID required when selecting people lists");
 
             // Range 0.0 - 10.0
@@ -104,25 +104,25 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(9, Label = "Person ID", HelpText = "Used when a People* list is selected.  for the url https://www.themoviedb.org/person/6384-keanu-reeves, the person id is '6384'. Only one person per list ")]
         public string PersonId { get; set; }
 
-        [FieldDefinition(10, Label = "Person Director",
+        [FieldDefinition(10, Label = "Person Director Credits",
             HelpText =
                 "Used when a PeopleCrew list is selected.  Select if you want to include Director credits in the result"
             , Type = FieldType.Checkbox)]
         public bool PersonCastDirector { get; set; }
 
-        [FieldDefinition(11, Label = "Person Producer",
+        [FieldDefinition(11, Label = "Person Producer Credits",
             HelpText =
                 "Used when a PeopleCrew list is selected.  Select if you want to include Producer credits in the result"
             , Type = FieldType.Checkbox)]
         public bool PersonCastProducer { get; set; }
 
-        [FieldDefinition(12, Label = "Person Sound",
+        [FieldDefinition(12, Label = "Person Sound Credits",
             HelpText =
                 "Used when a PeopleCrew list is selected.  Select if you want to include Sound credits in the result"
             , Type = FieldType.Checkbox)]
         public bool PersonCastSound { get; set; }
 
-        [FieldDefinition(113, Label = "Person Writing",
+        [FieldDefinition(113, Label = "Person Writing Credits",
             HelpText =
                 "Used when a PeopleCrew list is selected.  Select if you want to include Writing credits in the result"
             , Type = FieldType.Checkbox)]

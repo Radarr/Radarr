@@ -59,10 +59,10 @@ namespace NzbDrone.Core.NetImport.TMDb
                 case (int)TMDbListType.Upcoming:
                     tmdbParams = $"/3/discover/movie?primary_release_date.gte={todaysDate}&primary_release_date.lte={threeMonthsFromNow}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
                     break;
-                case (int)TMDbListType.PeopleCast:
+                case (int)TMDbListType.PersonCast:
                     tmdbParams = $"/3/person/{personId}/movie_credits?language={languageCode}";
                     break;
-                case (int)TMDbListType.PeopleCrew:
+                case (int)TMDbListType.PersonCrew:
                     tmdbParams = $"/3/person/{personId}/movie_credits?language={languageCode}";
                     break;
             }
@@ -112,8 +112,8 @@ namespace NzbDrone.Core.NetImport.TMDb
             var doesntPage = new List<int>
             {
                 (int)TMDbListType.List,
-                (int)TMDbListType.PeopleCast,
-                (int)TMDbListType.PeopleCrew
+                (int)TMDbListType.PersonCast,
+                (int)TMDbListType.PersonCrew
             };
 
             var baseUrl = $"{Settings.Link.TrimEnd("/")}{tmdbParams}";
