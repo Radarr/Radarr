@@ -20,8 +20,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 
     public class PersonCreditsRoot
     {
-        public MovieResult[] cast { get; set; }
-        public MovieResult[] crew { get; set; }
+        public CreditsResult[] cast { get; set; }
+        public CreditsResult[] crew { get; set; }
         public int id { get; set; }
     }
 
@@ -45,9 +45,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string trailer_site { get; set; }
         public string physical_release { get; set; }
         public string physical_release_note { get; set; }
-        public string department { get; set; }
-        public string job { get; set; }
-        public string credit_id { get; set; }
     }
 
 
@@ -185,6 +182,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string[] origin_country { get; set; }
         public string name { get; set; }
         public string original_name { get; set; }
+    }
+
+    public class CreditsResult : MovieResult
+    {
+        public string department { get; set; }
+        public string job { get; set; }
+        public string credit_id { get; set; }
     }
 
 }
