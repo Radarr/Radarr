@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.NetImport.Radarr;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Profiles;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.NetImport.RadarrInstance
@@ -45,7 +48,32 @@ namespace NzbDrone.Core.NetImport.RadarrInstance
 
         public override IParseNetImportResponse GetParser()
         {
-            return new RadarrInstanceParser();
+            return new RadarrInstanceParser(Settings);
+        }
+
+        public override object RequestAction(string action, IDictionary<string, string> query)
+        {
+            if (action == "getProfiles")
+            {
+                return ProxyRequest<Profile>("/api/profile");
+            }
+
+            return new { };
+        }
+
+        private List<TResource> ProxyRequest<TResource>(string path)
+        {
+            if (Settings.URL.IsNullOrWhiteSpace() || Settings.APIKey.IsNullOrWhiteSpace())
+            {
+                return new List<TResource>();
+            }
+
+            var baseUrl = $"{Settings.URL.TrimEnd('/')}";
+            var request = new HttpRequestBuilder(baseUrl).Resource(path).Accept(HttpAccept.Json)
+                .SetHeader("X-Api-Key", Settings.APIKey).Build();
+            var response = _httpClient.Get(request);
+            var results = JsonConvert.DeserializeObject<List<TResource>>(response.Content);
+            return results;
         }
     }
 }

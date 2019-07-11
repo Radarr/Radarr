@@ -53,6 +53,10 @@ var _fieldBuilder = function(field) {
         return _templateRenderer.call(field, 'Form/CaptchaTemplate');
     }
 
+    if (field.type === 'profile') {
+        return _templateRenderer.call(field, 'Form/ProfileTemplate');
+    }
+
     return _templateRenderer.call(field, 'Form/TextboxTemplate');
 };
 

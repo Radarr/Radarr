@@ -28,6 +28,7 @@ var view = Marionette.ItemView.extend({
 		events : {
 				'click .x-back'            : '_back',
 				'click .x-captcha-refresh' : '_onRefreshCaptcha',
+				'click .x-profiles-refresh' : '_onRefreshProfiles',
 				'change .x-root-folder'   : '_rootFolderChanged',
 		},
 
@@ -58,6 +59,10 @@ var view = Marionette.ItemView.extend({
 					model    : this.model,
 					property : 'tags'
 				});
+				var index = this._getProfileIndex();
+				if (index >= 0 && this.model.get("fields."+index).selectOptions === undefined) {
+					this._onRefreshProfiles();
+				}
 		},
 
 		_onBeforeSave : function() {
@@ -109,6 +114,27 @@ var view = Marionette.ItemView.extend({
 		_rootFoldersUpdated : function() {
 				this._configureTemplateHelpers();
 				this.render();
+		},
+
+		_getProfileIndex : function() {
+			return _.indexOf(_.pluck(this.model.get('fields'), 'type'), 'profile');
+		},
+
+		_onRefreshProfiles : function() {
+			var self = this;
+			//var target = $(event.target).parents('.input-group');
+
+			this.ui.indicator.show();
+			this.model.requestAction("getProfiles").then(function(result) {
+				var index = self._getProfileIndex();
+				var selectOptions = _.map(result, function(profile) {
+					return {'name' : profile.Name, 'value' : profile.Id};
+				});
+				self.model.set('fields.' + index + '.selectOptions', selectOptions);
+				return result;
+			}).always(function() {
+				self.ui.indicator.hide();
+			});
 		},
 
 		_onRefreshCaptcha : function(event) {
