@@ -122,7 +122,7 @@ namespace NzbDrone.Common.Test.CacheTests
 
             Thread.Sleep(1000);
 
-            hitCount.Should().BeInRange(3, 6);
+            hitCount.Should().BeInRange(3, 7);
             _cachedString.Values.Should().HaveCount(0);
         }
     }
