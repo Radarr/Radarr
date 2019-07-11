@@ -37,37 +37,39 @@ namespace NzbDrone.Core.Messaging.Commands
 
         public void OrphanStarted()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            mapper.Parameters.Add(new SQLiteParameter("@orphaned", (int)CommandStatus.Orphaned));
-            mapper.Parameters.Add(new SQLiteParameter("@started", (int)CommandStatus.Started));
-            mapper.Parameters.Add(new SQLiteParameter("@ended", DateTime.UtcNow));
+                mapper.Parameters.Add(new SQLiteParameter("@orphaned", (int) CommandStatus.Orphaned));
+                mapper.Parameters.Add(new SQLiteParameter("@started", (int) CommandStatus.Started));
+                mapper.Parameters.Add(new SQLiteParameter("@ended", DateTime.UtcNow));
 
-            mapper.ExecuteNonQuery(@"UPDATE Commands
+                mapper.ExecuteNonQuery(@"UPDATE Commands
                                      SET Status = @orphaned, EndedAt = @ended
                                      WHERE Status = @started");
+            }
         }
 
         public List<CommandModel> FindCommands(string name)
         {
-            return Query.Where(c => c.Name == name).ToList();
+            return Query(q => q.Where(c => c.Name == name).ToList());
         }
 
         public List<CommandModel> FindQueuedOrStarted(string name)
         {
-            return Query.Where(c => c.Name == name)
+            return Query(q => q.Where(c => c.Name == name)
                         .AndWhere("[Status] IN (0,1)")
-                        .ToList();
+                        .ToList());
         }
 
         public List<CommandModel> Queued()
         {
-            return Query.Where(c => c.Status == CommandStatus.Queued);
+            return Query(q => q.Where(c => c.Status == CommandStatus.Queued).ToList());
         }
 
         public List<CommandModel> Started()
         {
-            return Query.Where(c => c.Status == CommandStatus.Started);
+            return Query(q => q.Where(c => c.Status == CommandStatus.Started).ToList());
         }
 
         public void Start(CommandModel command)

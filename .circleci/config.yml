@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: gallileo/radarr-cci-primary:5.8.8
+    - image: gallileo/radarr-cci-primary:5.8.9
   environment:
       BUILD_VERSION: 0.2.0
 
@@ -119,9 +119,9 @@ jobs:
             - store_artifacts:
                 path: _packages
                 destination: artifacts
-            - run:
-                name: "Deploying"
-                command: chmod +x deploy.sh && ./deploy.sh
+            #- run:
+            #    name: "Deploying"
+            #    command: chmod +x deploy.sh && ./deploy.sh
             - persist_to_workspace:
                 root: .
                 # Must be relative path from root
@@ -154,9 +154,9 @@ workflows:
             - unit_tests:
                 requires:
                     - build
-            #- integration_tests:
-            #    requires:
-            #        - build
+            - integration_tests:
+                requires:
+                    - build
             - publish_artifacts:
                 requires:
                     - build

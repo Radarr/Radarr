@@ -370,7 +370,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _renderView : function() {
-        if (MoviesCollection.length === 0) {
+        if (MoviesCollection.length === 0 && !this.moviesCollection.isFiltered()) {
             this.moviesRegion.show(new EmptyView());
 
             this.toolbar.close();

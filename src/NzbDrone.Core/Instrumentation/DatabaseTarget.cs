@@ -15,13 +15,14 @@ namespace NzbDrone.Core.Instrumentation
     {
         private readonly SQLiteConnection _connection;
 
+        private readonly IConnectionStringFactory _connectionStringFactory;
+
         const string INSERT_COMMAND = "INSERT INTO [Logs]([Message],[Time],[Logger],[Exception],[ExceptionType],[Level]) " +
                                       "VALUES(@Message,@Time,@Logger,@Exception,@ExceptionType,@Level)";
 
         public DatabaseTarget(IConnectionStringFactory connectionStringFactory)
         {
-            _connection = new SQLiteConnection(connectionStringFactory.LogDbConnectionString);
-            _connection.Open();
+            _connectionStringFactory = connectionStringFactory;
         }
 
         public void Register()
@@ -84,16 +85,25 @@ namespace NzbDrone.Core.Instrumentation
 
                 log.Level = logEvent.Level.Name;
 
-                var sqlCommand = new SQLiteCommand(INSERT_COMMAND, _connection);
+                using (var connection =
+                    SQLiteFactory.Instance.CreateConnection())
+                {
+                    connection.ConnectionString = _connectionStringFactory.LogDbConnectionString;
+                    connection.Open();
+                    using (var sqlCommand = connection.CreateCommand())
+                    {
+                        sqlCommand.CommandText = INSERT_COMMAND;
+                        sqlCommand.Parameters.Add(new SQLiteParameter("Message", DbType.String) { Value = log.Message });
+                        sqlCommand.Parameters.Add(new SQLiteParameter("Time", DbType.DateTime) { Value = log.Time.ToUniversalTime() });
+                        sqlCommand.Parameters.Add(new SQLiteParameter("Logger", DbType.String) { Value = log.Logger });
+                        sqlCommand.Parameters.Add(new SQLiteParameter("Exception", DbType.String) { Value = log.Exception });
+                        sqlCommand.Parameters.Add(new SQLiteParameter("ExceptionType", DbType.String) { Value = log.ExceptionType });
+                        sqlCommand.Parameters.Add(new SQLiteParameter("Level", DbType.String) { Value = log.Level });
 
-                sqlCommand.Parameters.Add(new SQLiteParameter("Message", DbType.String) { Value = log.Message });
-                sqlCommand.Parameters.Add(new SQLiteParameter("Time", DbType.DateTime) { Value = log.Time.ToUniversalTime() });
-                sqlCommand.Parameters.Add(new SQLiteParameter("Logger", DbType.String) { Value = log.Logger });
-                sqlCommand.Parameters.Add(new SQLiteParameter("Exception", DbType.String) { Value = log.Exception });
-                sqlCommand.Parameters.Add(new SQLiteParameter("ExceptionType", DbType.String) { Value = log.ExceptionType });
-                sqlCommand.Parameters.Add(new SQLiteParameter("Level", DbType.String) { Value = log.Level });
+                        sqlCommand.ExecuteNonQuery();   
+                    }
+                }
 
-                sqlCommand.ExecuteNonQuery();
             }
             catch (SQLiteException ex)
             {
@@ -104,7 +114,7 @@ namespace NzbDrone.Core.Instrumentation
 
         public void Handle(ApplicationShutdownRequested message)
         {
-            if (LogManager.Configuration.LoggingRules.Contains(Rule))
+            if (LogManager.Configuration?.LoggingRules?.Contains(Rule) == true)
             {
                 UnRegister();
             }

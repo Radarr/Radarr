@@ -28,8 +28,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
-
-        private readonly IHttpRequestBuilderFactory _requestBuilder;
+        
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
         private readonly IMovieService _movieService;
@@ -38,13 +37,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IAlternativeTitleService _altTitleService;
         private readonly IRadarrAPIClient _radarrAPI;
 
-        private readonly IHttpRequestBuilderFactory _apiBuilder;
-
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService,
+        public SkyHookProxy(IHttpClient httpClient, IRadarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService,
                             IPreDBService predbService, IImportExclusionsService exclusionService, IAlternativeTitleService altTitleService, IRadarrAPIClient radarrAPI, Logger logger)
         {
             _httpClient = httpClient;
-             _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
             _movieService = movieService;
@@ -705,6 +701,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 	            newMovie.Monitored = movie.Monitored;
 	            newMovie.MovieFile = movie.MovieFile;
 	            newMovie.MinimumAvailability = movie.MinimumAvailability;
+	            newMovie.Tags = movie.Tags;
 
 	            return newMovie;
 			}

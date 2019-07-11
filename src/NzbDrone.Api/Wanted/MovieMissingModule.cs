@@ -15,9 +15,9 @@ namespace NzbDrone.Api.Wanted
     {
         protected readonly IMovieService _movieService;
 
-        public MovieMissingModule(IMovieService movieService, 
-                                  IQualityUpgradableSpecification qualityUpgradableSpecification, 
-                                  IBroadcastSignalRMessage signalRBroadcaster) 
+        public MovieMissingModule(IMovieService movieService,
+                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                  IBroadcastSignalRMessage signalRBroadcaster)
             : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
 

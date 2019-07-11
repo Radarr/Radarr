@@ -43,7 +43,8 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("To.Live.and.Die.in.L.A.1985.1080p.BluRay", "To Live and Die in L.A.")]
 		[TestCase("A.I.Artificial.Intelligence.(2001)", "A.I. Artificial Intelligence")]
 		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
-		[TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
+        [TestCase("www.Torrenting.com - Revenge.2008.720p.X264-DIMENSION", "Revenge")]
+        [TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
         [TestCase("Resident.Evil.The.Final.Chapter.2016", "Resident Evil The Final Chapter")]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James")]
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers")]
@@ -52,7 +53,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
 		[TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
 		[TestCase("My Movie 1999 German Bluray", "My Movie")]
-		public void should_parse_movie_title(string postTitle, string title)
+        [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
+        [TestCase("Climax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Climax")]
+        [TestCase("Movie.Title.Imax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Movie Title")]
+        public void should_parse_movie_title(string postTitle, string title)
 		{
 		    Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
         }
@@ -66,6 +70,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", 2016)]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
+        [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", 1897)]
         public void should_parse_movie_year(string postTitle, int year)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
@@ -108,6 +113,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
+        [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE","")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);

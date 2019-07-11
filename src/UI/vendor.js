@@ -11,7 +11,6 @@ require('jquery.knob');
 require('jquery.easypiechart');
 require('jquery.dotdotdot');
 require('typeahead');
-require('zero.clipboard');
 
 /*Bootstrap*/
 require('bootstrap');

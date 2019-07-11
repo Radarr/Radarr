@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Parser
         //                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
-                                                                (?<bluray>BluRay|Blu-Ray|HDDVD|BD|BDISO|BD25|BD50|BR.?DISK)|
+                                                                (?<bluray>M?BluRay|Blu-Ray|HDDVD|BD|BDISO|BD25|BD50|BR.?DISK)|
                                                                 (?<webdl>WEB[-_. ]DL|HDRIP|WEBDL|WebRip|Web-Rip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip)|(?<brrip>BRRip)|

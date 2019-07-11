@@ -17,16 +17,18 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
+            using (var mapper = _database.GetDataMapper())
+            {
 
-            var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions" }
-                .SelectMany(v => GetUsedTags(v, mapper))
-                .Distinct()
-                .ToArray();
+                var usedTags = new[] {"Movies", "Notifications", "DelayProfiles", "Restrictions", "NetImport"}
+                    .SelectMany(v => GetUsedTags(v, mapper))
+                    .Distinct()
+                    .ToArray();
 
-            var usedTagsList = string.Join(",", usedTags.Select(d => d.ToString()).ToArray());
+                var usedTagsList = string.Join(",", usedTags.Select(d => d.ToString()).ToArray());
 
-            mapper.ExecuteNonQuery($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
+                mapper.ExecuteNonQuery($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
+            }
         }
 
         private int[] GetUsedTags(string table, IDataMapper mapper)

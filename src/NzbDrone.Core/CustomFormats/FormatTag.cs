@@ -83,7 +83,9 @@ namespace NzbDrone.Core.CustomFormats
                     var tuple = Value as (long, long)? ?? (0, 0);
                     return size > tuple.Item1 && size < tuple.Item2;
                 case TagType.Indexer:
+#if !LIBRARY
                     return (movieInfo.ExtraInfo.GetValueOrDefault("IndexerFlags") as IndexerFlags?)?.HasFlag((IndexerFlags) Value) == true;
+#endif
                 default:
                     return false;
             }
@@ -188,6 +190,7 @@ namespace NzbDrone.Core.CustomFormats
                     Value = Parser.LanguageParser.ParseLanguages(value).First();
                     break;
                 case "i":
+#if !LIBRARY
                     TagType = TagType.Indexer;
                     var flagValues = Enum.GetValues(typeof(IndexerFlags));
 
@@ -198,7 +201,7 @@ namespace NzbDrone.Core.CustomFormats
                         Value = flagValue;
                         break;
                     }
-
+#endif
                     break;
                 case "g":
                     TagType = TagType.Size;

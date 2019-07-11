@@ -44,6 +44,20 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public TrackedDownload TrackDownload(DownloadClientDefinition downloadClient, DownloadClientItem downloadItem)
         {
+            if (downloadItem.DownloadId.IsNullOrWhiteSpace())
+            {
+                _logger.Warn("The following download client item ({0}) has no download hash (id), so it cannot be tracked: {1}", 
+                    downloadClient.Name, downloadItem.Title);
+                return null;
+            }
+
+            if (downloadItem.Title.IsNullOrWhiteSpace())
+            {
+                _logger.Warn("The following download client item ({0}) has no title so it cannot be tracked: {1}",
+                    downloadClient.Name, downloadItem.Title);
+                return null;
+            }
+            
             var existingItem = Find(downloadItem.DownloadId);
 
             if (existingItem != null && existingItem.State != TrackedDownloadStage.Downloading)

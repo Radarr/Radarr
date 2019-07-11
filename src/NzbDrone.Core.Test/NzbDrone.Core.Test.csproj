@@ -195,6 +195,7 @@
     <Compile Include="Download\DownloadClientTests\DownloadStationTests\UsenetDownloadStationFixture.cs" />
     <Compile Include="Download\DownloadServiceFixture.cs" />
     <Compile Include="Download\FailedDownloadServiceFixture.cs" />
+    <Compile Include="Download\NzbValidationServiceFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\PendingReleaseServiceFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemovePendingFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveRejectedFixture.cs" />
@@ -295,6 +296,8 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchMovieComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
+    <Compile Include="MovieTests\AlternativeTitleServiceTests\AlternativeTitleFixture.cs" />
+    <Compile Include="MovieTests\AlternativeTitleServiceTests\AlternativeTitleServiceFixture.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoParserFixture.cs" />
     <Compile Include="NetImport\RSSImportFixture.cs" />
     <Compile Include="NetImport\RSSImportParserFixture.cs" />
@@ -553,6 +556,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Files\Nzbs\NoFiles.nzb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Files\Nzbs\NotNzb.nzb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Files\Nzbs\ValidNzb.nzb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\TestArchive.tar.gz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

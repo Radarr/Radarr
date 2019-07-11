@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Notifications
         private string GetMessage(Movie movie, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
-            var ImdbUrl = "http://www.imdb.com/title/" + movie.ImdbId + "/";
+            var ImdbUrl = "https://www.imdb.com/title/" + movie.ImdbId + "/";
 
             if (quality.Revision.Version > 1)
             {
@@ -72,7 +72,9 @@ namespace NzbDrone.Core.Notifications
                 Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality),
                 Quality = message.Movie.ParsedMovieInfo.Quality,
                 Movie = message.Movie.Movie,
-                RemoteMovie = message.Movie
+                RemoteMovie = message.Movie,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             foreach (var notification in _notificationFactory.OnGrabEnabled())

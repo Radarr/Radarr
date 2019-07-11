@@ -13,10 +13,10 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LanguageParser));
 
-        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_)(?<italian>\b(?:ita|italian)\b)|(?<german>german\b|videomann)|(?<flemish>flemish)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VOSTFR|VO|VFF|VFQ|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<dutch>nl\W?subs?)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<czech>\bCZ|SK\b)",
+        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>german\b|videomann)|(?<flemish>flemish)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VOSTFR|VO|VFF|VFQ|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<dutch>nl\W?subs?)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<czech>\b(?:CZ|SK)\b)|(?<ukrainian>\bukr\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static List<Language> ParseLanguages(string title)
         {
@@ -86,6 +86,9 @@ namespace NzbDrone.Core.Parser
             if (lowerTitle.Contains("czech"))
                 languages.Add( Language.Czech);
 
+            if (lowerTitle.Contains("ukrainian"))
+                languages.Add(Language.Ukrainian);
+
             var match = LanguageRegex.Match(title);
 
             if (match.Groups["italian"].Captures.Cast<Capture>().Any())
@@ -118,6 +121,8 @@ namespace NzbDrone.Core.Parser
             if (match.Groups["czech"].Success)
                 languages.Add( Language.Czech);
 
+            if (match.Groups["ukrainian"].Success)
+                languages.Add( Language.Ukrainian);
 
             return languages.DistinctBy(l => (int)l).ToList();
         }
@@ -142,7 +147,9 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
+#if !LIBRARY
                 Logger.Debug("Parsing language from subtitle file: {0}", fileName);
+#endif
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
@@ -154,12 +161,15 @@ namespace NzbDrone.Core.Parser
 
                     return isoLanguage?.Language ?? Language.Unknown;
                 }
-
+#if !LIBRARY
                 Logger.Debug("Unable to parse langauge from subtitle file: {0}", fileName);
+#endif
             }
             catch (Exception ex)
             {
+#if !LIBRARY
                 Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);
+#endif
             }
 
             return Language.Unknown;
