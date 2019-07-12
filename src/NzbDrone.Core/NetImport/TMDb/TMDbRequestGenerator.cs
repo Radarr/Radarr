@@ -79,8 +79,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                 requestBuilder.Resource(tmdbParams);
 
                 var request = requestBuilder
-                    .SetHeader("Bearer","NEED RADARR API Read Access Token (v4 auth) HERE")
-                    // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
+                    .SetHeader("Bearer","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTczNzMzMDE5NjFkMDNmOTdmODUzYTg3NmRkMTIxMiIsInN1YiI6IjU4NjRmNTkyYzNhMzY4MGFiNjAxNzUzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gh1BwogCCKOda6xj9FRMgAAj_RYKMMPC3oNlcBtlmwk")
                     .Accept(HttpAccept.Json)
                     .Build();
 
