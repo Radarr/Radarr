@@ -69,19 +69,8 @@ class MovieIndex extends Component {
   }
 
   componentDidMount() {
-    const {
-      items
-    } = this.props;
-
     this.setJumpBarItems();
-
-    const intialState = {};
-
-    items.forEach((movie) => {
-      intialState[movie.id] = false;
-    });
-
-    this.setState({ selectedState: intialState });
+    this.setSelectedState();
   }
 
   componentDidUpdate(prevProps) {
@@ -100,6 +89,7 @@ class MovieIndex extends Component {
       sortDirection !== prevProps.sortDirection
     ) {
       this.setJumpBarItems();
+      this.setSelectedState();
     }
 
     if (this.state.jumpToCharacter != null && scrollTop !== prevProps.scrollTop) {
@@ -124,6 +114,41 @@ class MovieIndex extends Component {
 
   getSelectedIds = () => {
     return getSelectedIds(this.state.selectedState);
+  }
+
+  setSelectedState() {
+    const {
+      items
+    } = this.props;
+
+    const {
+      selectedState
+    } = this.state;
+
+    const newSelectedState = {};
+
+    items.forEach((movie) => {
+      const isItemSelected = selectedState[movie.id];
+
+      if (isItemSelected) {
+        newSelectedState[movie.id] = isItemSelected;
+      } else {
+        newSelectedState[movie.id] = false;
+      }
+    });
+
+    const selectedCount = getSelectedIds(newSelectedState).length;
+    const newStateCount = Object.keys(newSelectedState).length;
+    let isAllSelected = false;
+    let isAllUnselected = false;
+
+    if (selectedCount === 0) {
+      isAllUnselected = true;
+    } else if (selectedCount === newStateCount) {
+      isAllSelected = true;
+    }
+
+    this.setState({ selectedState: newSelectedState, allSelected: isAllSelected, allUnselected: isAllUnselected });
   }
 
   setJumpBarItems() {
