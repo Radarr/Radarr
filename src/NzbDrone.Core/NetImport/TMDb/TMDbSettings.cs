@@ -93,7 +93,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
         public int LanguageCode { get; set; }
 
-        [FieldDefinition(9, Label = "Account ID", HelpText = "Your account ID for Radarr API. Use the link to get it.", HelpLink = "https://github.com/elChapoSing/tmdb_account_id";)]
+        [FieldDefinition(9, Label = "Account ID", HelpText = "Your account ID for Radarr API. Use the link to get it.", HelpLink = "https://github.com/elChapoSing/tmdb_account_id")]
         public string AccountID { get; set; }
 
         public NzbDroneValidationResult Validate()
