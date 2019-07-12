@@ -259,7 +259,7 @@ class ImportMovieSelectMovie extends Component {
                                   title={item.title}
                                   year={item.year}
                                   studio={item.studio}
-                                  onPress={this.onSeriesSelect}
+                                  onPress={this.onMovieSelect}
                                 />
                               );
                             })

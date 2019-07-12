@@ -57,6 +57,7 @@ export const defaultState = {
   columns: [
     {
       name: 'select',
+      columnLabel: 'select',
       isSortable: false,
       isVisible: true,
       isModifiable: false
@@ -228,8 +229,8 @@ export const defaultState = {
       label: 'Genres',
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
-        const tagList = items.reduce((acc, series) => {
-          series.genres.forEach((genre) => {
+        const tagList = items.reduce((acc, movie) => {
+          movie.genres.forEach((genre) => {
             acc.push({
               id: genre,
               name: genre

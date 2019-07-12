@@ -28,7 +28,7 @@ import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooterConnector from './MovieIndexFooterConnector';
 import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-// import OrganizeMovieModal from './Organize/OrganizePreviewModal';
+import OrganizeMovieModal from 'Movie/Editor/Organize/OrganizeMovieModal';
 import styles from './MovieIndex.css';
 
 function getViewComponent(view) {
@@ -555,6 +555,12 @@ class MovieIndex extends Component {
         <InteractiveImportModal
           isOpen={isInteractiveImportModalOpen}
           onModalClose={this.onInteractiveImportModalClose}
+        />
+
+        <OrganizeMovieModal
+          isOpen={this.state.isOrganizingMovieModalOpen}
+          movieIds={selectedMovieIds}
+          onModalClose={this.onOrganizeMovieModalClose}
         />
       </PageContent>
     );

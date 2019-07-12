@@ -46,8 +46,8 @@ function MoveMovieModal(props) {
         <ModalBody>
           {
             destinationRootFolder ?
-              `Would you like to move the series folders to '${destinationRootFolder}'?` :
-              `Would you like to move the series files from '${originalPath}' to '${destinationPath}'?`
+              `Would you like to move the movie folders to '${destinationRootFolder}'?` :
+              `Would you like to move the movie files from '${originalPath}' to '${destinationPath}'?`
           }
         </ModalBody>
 

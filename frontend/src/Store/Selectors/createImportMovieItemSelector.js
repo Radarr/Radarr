@@ -8,10 +8,10 @@ function createImportMovieItemSelector() {
     (state) => state.addMovie,
     (state) => state.importMovie,
     createAllMoviesSelector(),
-    (id, addMovie, importMovie, series) => {
+    (id, addMovie, importMovie, movies) => {
       const item = _.find(importMovie.items, { id }) || {};
       const selectedMovie = item && item.selectedMovie;
-      const isExistingMovie = !!selectedMovie && _.some(series, { tvdbId: selectedMovie.tvdbId });
+      const isExistingMovie = !!selectedMovie && _.some(movies, { tmdbId: selectedMovie.tmdbId });
 
       return {
         defaultMonitor: addMovie.defaults.monitor,

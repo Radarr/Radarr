@@ -66,23 +66,23 @@ class ImportMovieTable extends Component {
       const isExistingMovie = !!selectedMovie &&
         _.some(prevProps.allMovies, { tmdbId: selectedMovie.tmdbId });
 
-      // Props doesn't have a selected series or
-      // the selected series is an existing series.
+      // Props doesn't have a selected movie or
+      // the selected movie is an existing movie.
       if ((!selectedMovie && prevItem.selectedMovie) || (isExistingMovie && !prevItem.selectedMovie)) {
         onSelectedChange({ id, value: false });
 
         return;
       }
 
-      // State is selected, but a series isn't selected or
-      // the selected series is an existing series.
+      // State is selected, but a movie isn't selected or
+      // the selected movie is an existing movie.
       if (isSelected && (!selectedMovie || isExistingMovie)) {
         onSelectedChange({ id, value: false });
 
         return;
       }
 
-      // A series is being selected that wasn't previously selected.
+      // A movie is being selected that wasn't previously selected.
       if (selectedMovie && selectedMovie !== prevItem.selectedMovie) {
         onSelectedChange({ id, value: true });
 

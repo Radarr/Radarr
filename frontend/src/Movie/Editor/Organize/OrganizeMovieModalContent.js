@@ -25,7 +25,7 @@ function OrganizeMovieModalContent(props) {
 
       <ModalBody>
         <Alert>
-          Tip: To preview a rename... select "Cancel" then any movie title and use the
+          Tip: To preview a rename... select "Cancel" then click any movie title and use the
           <Icon
             className={styles.renameIcon}
             name={icons.ORGANIZE}

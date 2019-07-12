@@ -527,7 +527,7 @@ class MovieDetails extends Component {
           <InteractiveImportModal
             isOpen={isInteractiveImportModalOpen}
             folder={path}
-            allowSeriesChange={false}
+            allowMovieChange={false}
             showFilterExistingFiles={true}
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}

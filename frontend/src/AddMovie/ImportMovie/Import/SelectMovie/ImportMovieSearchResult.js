@@ -26,7 +26,7 @@ class ImportMovieSearchResult extends Component {
 
     return (
       <Link
-        className={styles.series}
+        className={styles.movie}
         onPress={this.onPress}
       >
         <ImportMovieTitle
