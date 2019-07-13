@@ -23,15 +23,15 @@ class AddNewMovieModalContent extends Component {
     super(props, context);
 
     this.state = {
-      searchForMissingEpisodes: false
+      searchForMovie: false
     };
   }
 
   //
   // Listeners
 
-  onSearchForMissingEpisodesChange = ({ value }) => {
-    this.setState({ searchForMissingEpisodes: value });
+  onSearchForMissingMovieChange = ({ value }) => {
+    this.setState({ searchForMovie: value });
   }
 
   onQualityProfileIdChange = ({ value }) => {
@@ -39,7 +39,7 @@ class AddNewMovieModalContent extends Component {
   }
 
   onAddMoviePress = () => {
-    this.props.onAddMoviePress(this.state.searchForMissingEpisodes);
+    this.props.onAddMoviePress(this.state.searchForMovie);
   }
 
   //
@@ -142,17 +142,17 @@ class AddNewMovieModalContent extends Component {
         </ModalBody>
 
         <ModalFooter className={styles.modalFooter}>
-          <label className={styles.searchForMissingEpisodesLabelContainer}>
-            <span className={styles.searchForMissingEpisodesLabel}>
+          <label className={styles.searchForMissingMovieLabelContainer}>
+            <span className={styles.searchForMissingMovieLabel}>
               Start search for missing movie
             </span>
 
             <CheckInput
-              containerClassName={styles.searchForMissingEpisodesContainer}
-              className={styles.searchForMissingEpisodesInput}
-              name="searchForMissingEpisodes"
-              value={this.state.searchForMissingEpisodes}
-              onChange={this.onSearchForMissingEpisodesChange}
+              containerClassName={styles.searchForMissingMovieContainer}
+              className={styles.searchForMissingMovieInput}
+              name="searchForMovie"
+              value={this.state.searchForMovie}
+              onChange={this.onSearchForMissingMovieChange}
             />
           </label>
 

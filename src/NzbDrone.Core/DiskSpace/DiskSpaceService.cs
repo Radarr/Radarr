@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.DiskSpace
@@ -32,26 +31,29 @@ namespace NzbDrone.Core.DiskSpace
 
         public List<DiskSpace> GetFreeSpace()
         {
-            var diskSpace = new List<DiskSpace>();
-            diskSpace.AddRange(GetMovieFreeSpace());
-            diskSpace.AddRange(GetFixedDisksFreeSpace());
+            var importantRootFolders = GetMoviesRootPaths().Distinct().ToList();
 
-            return diskSpace.DistinctBy(d => d.Path).ToList();
+            var optionalRootFolders = GetFixedDisksRootPaths().Except(importantRootFolders).Distinct().ToList();
+
+            var diskSpace = GetDiskSpace(importantRootFolders).Concat(GetDiskSpace(optionalRootFolders, true)).ToList();
+
+            return diskSpace;
         }
 
-        private IEnumerable<DiskSpace> GetMovieFreeSpace()
+        private IEnumerable<string> GetMoviesRootPaths()
         {
-            var movieRootPaths = _movieService.GetAllMovies().Select(s => _diskProvider.GetPathRoot(s.Path)).Distinct();
-
-            return GetDiskSpace(movieRootPaths);
+            return _movieService.GetAllMovies()
+                .Where(s => _diskProvider.FolderExists(s.Path))
+                .Select(s => _diskProvider.GetPathRoot(s.Path))
+                .Distinct();
         }
 
-        private IEnumerable<DiskSpace> GetFixedDisksFreeSpace()
+        private IEnumerable<string> GetFixedDisksRootPaths()
         {
-            return GetDiskSpace(_diskProvider.GetMounts()
+            return _diskProvider.GetMounts()
                 .Where(d => d.DriveType == DriveType.Fixed)
                 .Where(d => !_regexSpecialDrive.IsMatch(d.RootDirectory))
-                .Select(d => d.RootDirectory), true);
+                .Select(d => d.RootDirectory);
         }
 
         private IEnumerable<DiskSpace> GetDiskSpace(IEnumerable<string> paths, bool suppressWarnings = false)

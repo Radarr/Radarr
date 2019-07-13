@@ -4,14 +4,6 @@ namespace Radarr.Api.V2.Config
 {
     public class NamingExampleResource
     {
-        //public string SingleEpisodeExample { get; set; }
-        //public string MultiEpisodeExample { get; set; }
-        //public string DailyEpisodeExample { get; set; }
-        //public string AnimeEpisodeExample { get; set; }
-        //public string AnimeMultiEpisodeExample { get; set; }
-        //public string SeriesFolderExample { get; set; }
-        //public string SeasonFolderExample { get; set; }
-
         public string MovieExample { get; set; }
         public string MovieFolderExample { get; set; }
     }
@@ -24,14 +16,11 @@ namespace Radarr.Api.V2.Config
             {
                 Id = model.Id,
 
-                RenameEpisodes = model.RenameEpisodes,
+                RenameMovies = model.RenameEpisodes,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
-                MultiEpisodeStyle = model.MultiEpisodeStyle,
                 ColonReplacementFormat = model.ColonReplacementFormat,
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat,
-                //IncludeSeriesTitle
-                //IncludeEpisodeTitle
                 //IncludeQuality
                 //ReplaceSpaces
                 //Separator
@@ -41,8 +30,6 @@ namespace Radarr.Api.V2.Config
 
         public static void AddToResource(this BasicNamingConfig basicNamingConfig, NamingConfigResource resource)
         {
-            resource.IncludeSeriesTitle = basicNamingConfig.IncludeSeriesTitle;
-            resource.IncludeEpisodeTitle = basicNamingConfig.IncludeEpisodeTitle;
             resource.IncludeQuality = basicNamingConfig.IncludeQuality;
             resource.ReplaceSpaces = basicNamingConfig.ReplaceSpaces;
             resource.Separator = basicNamingConfig.Separator;
@@ -55,9 +42,8 @@ namespace Radarr.Api.V2.Config
             {
                 Id = resource.Id,
 
-                RenameEpisodes = resource.RenameEpisodes,
+                RenameEpisodes = resource.RenameMovies,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
-                MultiEpisodeStyle = resource.MultiEpisodeStyle,
                 ColonReplacementFormat = resource.ColonReplacementFormat,
                 StandardMovieFormat = resource.StandardMovieFormat,
                 MovieFolderFormat = resource.MovieFolderFormat,

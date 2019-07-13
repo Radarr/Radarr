@@ -71,7 +71,7 @@ class Naming extends Component {
       namingModalOptions
     } = this.state;
 
-    const renameEpisodes = hasSettings && settings.renameEpisodes.value;
+    const renameMovies = hasSettings && settings.renameMovies.value;
 
     const standardMovieFormatHelpTexts = [];
     const standardMovieFormatErrors = [];
@@ -112,10 +112,10 @@ class Naming extends Component {
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="renameEpisodes"
+                  name="renameMovies"
                   helpText="Radarr will use the existing file name if renaming is disabled"
                   onChange={onInputChange}
-                  {...settings.renameEpisodes}
+                  {...settings.renameMovies}
                 />
               </FormGroup>
 
@@ -132,7 +132,7 @@ class Naming extends Component {
               </FormGroup>
 
               {
-                renameEpisodes &&
+                renameMovies &&
                   <div>
                     <FormGroup size={sizes.LARGE}>
                       <FormLabel>Standard Movie Format</FormLabel>

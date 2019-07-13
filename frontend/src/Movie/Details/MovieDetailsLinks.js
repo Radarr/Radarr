@@ -8,7 +8,8 @@ import styles from './MovieDetailsLinks.css';
 function MovieDetailsLinks(props) {
   const {
     tmdbId,
-    imdbId
+    imdbId,
+    youTubeTrailerId
   } = props;
 
   return (
@@ -28,7 +29,7 @@ function MovieDetailsLinks(props) {
 
       <Link
         className={styles.link}
-        to={`http://trakt.tv/search/tvdb/${tmdbId}?id_type=show`}
+        to={`https://trakt.tv/search/tvdb/${tmdbId}?id_type=show`}
       >
         <Label
           className={styles.linkLabel}
@@ -43,7 +44,7 @@ function MovieDetailsLinks(props) {
         !!imdbId &&
           <Link
             className={styles.link}
-            to={`http://imdb.com/title/${imdbId}/`}
+            to={`https://imdb.com/title/${imdbId}/`}
           >
             <Label
               className={styles.linkLabel}
@@ -54,13 +55,46 @@ function MovieDetailsLinks(props) {
             </Label>
           </Link>
       }
+
+      {
+        !!imdbId &&
+          <Link
+            className={styles.link}
+            to={` https://moviechat.org/${imdbId}/`}
+          >
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              Movie Chat
+            </Label>
+          </Link>
+      }
+
+      {
+        !!youTubeTrailerId &&
+          <Link
+            className={styles.link}
+            to={` https://www.youtube.com/watch?v=${youTubeTrailerId}/`}
+          >
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.DANGER}
+              size={sizes.LARGE}
+            >
+              Trailer
+            </Label>
+          </Link>
+      }
     </div>
   );
 }
 
 MovieDetailsLinks.propTypes = {
   tmdbId: PropTypes.number.isRequired,
-  imdbId: PropTypes.string
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string
 };
 
 export default MovieDetailsLinks;

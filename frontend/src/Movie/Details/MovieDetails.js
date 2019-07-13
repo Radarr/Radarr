@@ -168,6 +168,7 @@ class MovieDetails extends Component {
       monitored,
       studio,
       overview,
+      youTubeTrailerId,
       inCinemas,
       images,
       alternateTitles,
@@ -426,6 +427,7 @@ class MovieDetails extends Component {
                       <MovieDetailsLinks
                         tmdbId={tmdbId}
                         imdbId={imdbId}
+                        youTubeTrailerId={youTubeTrailerId}
                       />
                     }
                   </span>
@@ -551,6 +553,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   inCinemas: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,

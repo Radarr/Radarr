@@ -13,21 +13,25 @@ namespace Radarr.Api.V2.Movies
         private readonly IRenameMovieFileService _renameMovieFileService;
 
         public RenameMovieModule(IRenameMovieFileService renameMovieFileService)
-            : base("renameMovie")
+            : base("rename")
         {
             _renameMovieFileService = renameMovieFileService;
 
-            GetResourceAll = GetMovies; //TODO: GetResourceSingle?
+            GetResourceAll = GetMovies;
         }
 
         private List<RenameMovieResource> GetMovies()
         {
-            if(!Request.Query.MovieId.HasValue)
+            int movieId;
+
+            if(Request.Query.MovieId.HasValue)
+            {
+                movieId = (int)Request.Query.MovieId;
+            }
+            else
             {
                 throw new BadRequestException("movieId is missing");
             }
-
-            var movieId = (int)Request.Query.MovieId;
 
             return _renameMovieFileService.GetRenamePreviews(movieId).ToResource();
         }

@@ -4,7 +4,7 @@ defaults: &defaults
   docker:
     - image: gallileo/radarr-cci-primary:5.8.9
   environment:
-      BUILD_VERSION: 0.2.0
+      BUILD_VERSION: 2.0.0
 
 jobs:
     build:

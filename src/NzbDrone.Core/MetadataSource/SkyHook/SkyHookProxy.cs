@@ -487,7 +487,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     _logger.Debug("Not a valid date time.");
                 }

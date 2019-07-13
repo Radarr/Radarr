@@ -35,7 +35,6 @@ namespace Radarr.Api.V2.Config
 
             Get["/examples"] = x => GetExamples(this.Bind<NamingConfigResource>());
 
-            SharedValidator.RuleFor(c => c.MultiEpisodeStyle).InclusiveBetween(0, 5);
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
         }
@@ -94,11 +93,9 @@ namespace Radarr.Api.V2.Config
         {
             var movieSampleResult = _filenameSampleService.GetMovieSample(nameSpec);
 
-            //var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult); For now, let's hope the user is not stupid enough :/
+            var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult);
 
             var validationFailures = new List<ValidationFailure>();
-
-            //validationFailures.AddIfNotNull(standardMovieValidationResult);
 
             if (validationFailures.Any())
             {

@@ -4,9 +4,15 @@ function getNewMovie(movie, payload) {
     rootFolderPath,
     monitor,
     qualityProfileId,
-    tags
+    tags,
+    searchForMovie = false
   } = payload;
 
+  const addOptions = {
+    searchForMovie
+  };
+
+  movie.addOptions = addOptions;
   movie.monitored = monitor === 'true';
   movie.qualityProfileId = qualityProfileId;
   movie.rootFolderPath = rootFolderPath;

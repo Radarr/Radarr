@@ -19,7 +19,7 @@ function createMapStateToProps() {
       props.isFetching = organizePreview.isFetching || naming.isFetching;
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
-      props.renameEpisodes = naming.item.renameEpisodes;
+      props.renameMovies = naming.item.renameMovies;
       props.standardMovieFormat = naming.item.standardMovieFormat;
       props.path = movie.path;
 

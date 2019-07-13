@@ -90,8 +90,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         }
 
         [Test]
-        [Ignore("Unknown failure")]
-        public void should_not_check_diskspace_for_missing_movies_folders()
+        public void should_not_check_diskspace_for_missing_movie_folders()
         {
             GivenMovies(new Movie { Path = _moviesFolder });
 
@@ -110,8 +109,6 @@ namespace NzbDrone.Core.Test.DiskSpace
         [TestCase("/var/lib/docker")]
         [TestCase("/some/place/docker/aufs")]
         [TestCase("/etc/network")]
-        [TestCase("/snap/filebot/9")]
-        [TestCase("/snap/core/5145")]
         public void should_not_check_diskspace_for_irrelevant_mounts(string path)
         {
             var mount = new Mock<IMount>();
