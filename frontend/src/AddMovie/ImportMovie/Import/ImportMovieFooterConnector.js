@@ -5,8 +5,8 @@ import { cancelLookupMovie } from 'Store/Actions/importMovieActions';
 import ImportMovieFooter from './ImportMovieFooter';
 
 function isMixed(items, selectedIds, defaultValue, key) {
-  return _.some(items, (series) => {
-    return selectedIds.indexOf(series.id) > -1 && series[key] !== defaultValue;
+  return _.some(items, (movie) => {
+    return selectedIds.indexOf(movie.id) > -1 && movie[key] !== defaultValue;
   });
 }
 

@@ -144,7 +144,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showTitle"
                 value={showTitle}
-                helpText="Show series title under poster"
+                helpText="Show movie title under poster"
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>

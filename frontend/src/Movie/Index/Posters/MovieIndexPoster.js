@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
+import CheckInput from 'Components/Form/CheckInput';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
@@ -61,6 +62,15 @@ class MovieIndexPoster extends Component {
     }
   }
 
+  onChange = ({ value, shiftKey }) => {
+    const {
+      id,
+      onSelectedChange
+    } = this.props;
+
+    onSelectedChange({ id, value, shiftKey });
+  }
+
   //
   // Render
 
@@ -89,6 +99,9 @@ class MovieIndexPoster extends Component {
       isSearchingMovie,
       onRefreshMoviePress,
       onSearchPress,
+      isMovieEditorActive,
+      isSelected,
+      onSelectedChange,
       ...otherProps
     } = this.props;
 
@@ -109,6 +122,17 @@ class MovieIndexPoster extends Component {
       <div className={styles.container} style={style}>
         <div className={styles.content}>
           <div className={styles.posterContainer}>
+            {
+              isMovieEditorActive &&
+              <div className={styles.editorSelect}>
+                <CheckInput
+                  className={styles.checkInput}
+                  name={id.toString()}
+                  value={isSelected}
+                  onChange={this.onChange}
+                />
+              </div>
+            }
             <Label className={styles.controls}>
               <SpinnerIconButton
                 className={styles.action}
@@ -249,7 +273,10 @@ MovieIndexPoster.propTypes = {
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,
   onRefreshMoviePress: PropTypes.func.isRequired,
-  onSearchPress: PropTypes.func.isRequired
+  onSearchPress: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired,
+  isSelected: PropTypes.bool,
+  onSelectedChange: PropTypes.func.isRequired
 };
 
 MovieIndexPoster.defaultProps = {

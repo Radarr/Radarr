@@ -6,22 +6,22 @@ import { createSelector } from 'reselect';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import OrganizeSeriesModalContent from './OrganizeSeriesModalContent';
+import OrganizeMovieModalContent from './OrganizeMovieModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { seriesIds }) => seriesIds,
+    (state, { movieIds }) => movieIds,
     createAllMoviesSelector(),
-    (seriesIds, allMovies) => {
-      const series = _.intersectionWith(allMovies, seriesIds, (s, id) => {
+    (movieIds, allMovies) => {
+      const movies = _.intersectionWith(allMovies, movieIds, (s, id) => {
         return s.id === id;
       });
 
-      const sortedSeries = _.orderBy(series, 'sortTitle');
-      const seriesTitles = _.map(sortedSeries, 'title');
+      const sortedMovies = _.orderBy(movies, 'sortTitle');
+      const movieTitles = _.map(sortedMovies, 'title');
 
       return {
-        seriesTitles
+        movieTitles
       };
     }
   );
@@ -31,15 +31,15 @@ const mapDispatchToProps = {
   executeCommand
 };
 
-class OrganizeSeriesModalContentConnector extends Component {
+class OrganizeMovieModalContentConnector extends Component {
 
   //
   // Listeners
 
-  onOrganizeSeriesPress = () => {
+  onOrganizeMoviePress = () => {
     this.props.executeCommand({
-      name: commandNames.RENAME_SERIES,
-      seriesIds: this.props.seriesIds
+      name: commandNames.RENAME_MOVIE,
+      movieIds: this.props.movieIds
     });
 
     this.props.onModalClose(true);
@@ -50,18 +50,18 @@ class OrganizeSeriesModalContentConnector extends Component {
 
   render(props) {
     return (
-      <OrganizeSeriesModalContent
+      <OrganizeMovieModalContent
         {...this.props}
-        onOrganizeSeriesPress={this.onOrganizeSeriesPress}
+        onOrganizeMoviePress={this.onOrganizeMoviePress}
       />
     );
   }
 }
 
-OrganizeSeriesModalContentConnector.propTypes = {
-  seriesIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+OrganizeMovieModalContentConnector.propTypes = {
+  movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onModalClose: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(OrganizeSeriesModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(OrganizeMovieModalContentConnector);

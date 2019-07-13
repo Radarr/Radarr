@@ -326,7 +326,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="folderChmod"
-                          helpText="Octal, applied to series/season folders created by Radarr"
+                          helpText="Octal, applied to movie folders created by Radarr"
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.folderChmod}

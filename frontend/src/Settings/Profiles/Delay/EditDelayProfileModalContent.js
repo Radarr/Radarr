@@ -110,7 +110,7 @@ function EditDelayProfileModalContent(props) {
               {
                 id === 1 ?
                   <Alert>
-                    This is the default profile. It applies to all series that don't have an explicit profile.
+                    This is the default profile. It applies to all movies that don't have an explicit profile.
                   </Alert> :
 
                   <FormGroup>
@@ -120,7 +120,7 @@ function EditDelayProfileModalContent(props) {
                       type={inputTypes.TAG}
                       name="tags"
                       {...tags}
-                      helpText="Applies to series with at least one matching tag"
+                      helpText="Applies to movies with at least one matching tag"
                       onChange={onInputChange}
                     />
                   </FormGroup>

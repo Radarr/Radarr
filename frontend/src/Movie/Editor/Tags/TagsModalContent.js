@@ -49,7 +49,7 @@ class TagsModalContent extends Component {
 
   render() {
     const {
-      seriesTags,
+      movieTags,
       tagList,
       onModalClose
     } = this.props;
@@ -93,7 +93,7 @@ class TagsModalContent extends Component {
                 value={applyTags}
                 values={applyTagsOptions}
                 helpTexts={[
-                  'How to apply tags to the selected series',
+                  'How to apply tags to the selected movies',
                   'Add: Add the tags the existing list of tags',
                   'Remove: Remove the entered tags',
                   'Replace: Replace the tags with the entered tags (enter no tags to clear all tags)'
@@ -107,7 +107,7 @@ class TagsModalContent extends Component {
 
               <div className={styles.result}>
                 {
-                  seriesTags.map((t) => {
+                  movieTags.map((t) => {
                     const tag = _.find(tagList, { id: t });
 
                     if (!tag) {
@@ -139,7 +139,7 @@ class TagsModalContent extends Component {
                           return null;
                         }
 
-                        if (seriesTags.indexOf(t) > -1) {
+                        if (movieTags.indexOf(t) > -1) {
                           return null;
                         }
 
@@ -178,7 +178,7 @@ class TagsModalContent extends Component {
 }
 
 TagsModalContent.propTypes = {
-  seriesTags: PropTypes.arrayOf(PropTypes.number).isRequired,
+  movieTags: PropTypes.arrayOf(PropTypes.number).isRequired,
   tagList: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onApplyTagsPress: PropTypes.func.isRequired

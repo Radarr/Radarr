@@ -1,10 +1,14 @@
 import { createAction } from 'redux-actions';
+import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import { createThunk, handleThunks } from 'Store/thunks';
 import createHandleActions from './Creators/createHandleActions';
+import { set, updateItem } from './baseActions';
 import { filters, filterPredicates, sortPredicates } from './movieActions';
 //
 // Variables
@@ -15,6 +19,10 @@ export const section = 'movieIndex';
 // State
 
 export const defaultState = {
+  isSaving: false,
+  saveError: null,
+  isDeleting: false,
+  deleteError: null,
   sortKey: 'sortTitle',
   sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'sortTitle',
@@ -47,6 +55,13 @@ export const defaultState = {
   },
 
   columns: [
+    {
+      name: 'select',
+      columnLabel: 'select',
+      isSortable: false,
+      isVisible: true,
+      isModifiable: false
+    },
     {
       name: 'status',
       columnLabel: 'Status',
@@ -214,8 +229,8 @@ export const defaultState = {
       label: 'Genres',
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
-        const tagList = items.reduce((acc, series) => {
-          series.genres.forEach((genre) => {
+        const tagList = items.reduce((acc, movie) => {
+          movie.genres.forEach((genre) => {
             acc.push({
               id: genre,
               name: genre
@@ -268,6 +283,8 @@ export const SET_MOVIE_VIEW = 'movieIndex/setMovieView';
 export const SET_MOVIE_TABLE_OPTION = 'movieIndex/setMovieTableOption';
 export const SET_MOVIE_POSTER_OPTION = 'movieIndex/setMoviePosterOption';
 export const SET_MOVIE_OVERVIEW_OPTION = 'movieIndex/setMovieOverviewOption';
+export const SAVE_MOVIE_EDITOR = 'movieIndex/saveMovieEditor';
+export const BULK_DELETE_MOVIE = 'movieIndex/bulkDeleteMovie';
 
 //
 // Action Creators
@@ -278,6 +295,85 @@ export const setMovieView = createAction(SET_MOVIE_VIEW);
 export const setMovieTableOption = createAction(SET_MOVIE_TABLE_OPTION);
 export const setMoviePosterOption = createAction(SET_MOVIE_POSTER_OPTION);
 export const setMovieOverviewOption = createAction(SET_MOVIE_OVERVIEW_OPTION);
+export const saveMovieEditor = createThunk(SAVE_MOVIE_EDITOR);
+export const bulkDeleteMovie = createThunk(BULK_DELETE_MOVIE);
+
+//
+// Action Handlers
+
+export const actionHandlers = handleThunks({
+  [SAVE_MOVIE_EDITOR]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      isSaving: true
+    }));
+
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
+      method: 'PUT',
+      data: JSON.stringify(payload),
+      dataType: 'json'
+    }).request;
+
+    promise.done((data) => {
+      dispatch(batchActions([
+        ...data.map((movie) => {
+          return updateItem({
+            id: movie.id,
+            section: 'movies',
+            ...movie
+          });
+        }),
+
+        set({
+          section,
+          isSaving: false,
+          saveError: null
+        })
+      ]));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section,
+        isSaving: false,
+        saveError: xhr
+      }));
+    });
+  },
+
+  [BULK_DELETE_MOVIE]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      isDeleting: true
+    }));
+
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
+      method: 'DELETE',
+      data: JSON.stringify(payload),
+      dataType: 'json'
+    }).request;
+
+    promise.done(() => {
+      // SignaR will take care of removing the movie from the collection
+
+      dispatch(set({
+        section,
+        isDeleting: false,
+        deleteError: null
+      }));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section,
+        isDeleting: false,
+        deleteError: xhr
+      }));
+    });
+  }
+});
 
 //
 // Reducers

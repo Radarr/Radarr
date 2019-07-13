@@ -29,21 +29,21 @@ function createMapStateToProps() {
     (state) => state.movies,
     createMovieSelector(),
     createIsPathChangingSelector(),
-    (seriesState, movie, isPathChanging) => {
+    (moviesState, movie, isPathChanging) => {
       const {
         isSaving,
         saveError,
         pendingChanges
-      } = seriesState;
+      } = moviesState;
 
-      const seriesSettings = _.pick(movie, [
+      const movieSettings = _.pick(movie, [
         'monitored',
         'qualityProfileId',
         'path',
         'tags'
       ]);
 
-      const settings = selectSettings(seriesSettings, pendingChanges, saveError);
+      const settings = selectSettings(movieSettings, pendingChanges, saveError);
 
       return {
         title: movie.title,
@@ -97,7 +97,7 @@ class EditMovieModalContentConnector extends Component {
         {...this.props}
         onInputChange={this.onInputChange}
         onSavePress={this.onSavePress}
-        onMoveSeriesPress={this.onMoveSeriesPress}
+        onMoveMoviePress={this.onMoveMoviePress}
       />
     );
   }

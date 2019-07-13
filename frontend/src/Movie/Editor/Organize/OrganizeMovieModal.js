@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from 'Components/Modal/Modal';
-import OrganizeSeriesModalContentConnector from './OrganizeSeriesModalContentConnector';
+import OrganizeMovieModalContentConnector from './OrganizeMovieModalContentConnector';
 
-function OrganizeSeriesModal(props) {
+function OrganizeMovieModal(props) {
   const {
     isOpen,
     onModalClose,
@@ -15,7 +15,7 @@ function OrganizeSeriesModal(props) {
       isOpen={isOpen}
       onModalClose={onModalClose}
     >
-      <OrganizeSeriesModalContentConnector
+      <OrganizeMovieModalContentConnector
         {...otherProps}
         onModalClose={onModalClose}
       />
@@ -23,9 +23,9 @@ function OrganizeSeriesModal(props) {
   );
 }
 
-OrganizeSeriesModal.propTypes = {
+OrganizeMovieModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default OrganizeSeriesModal;
+export default OrganizeMovieModal;

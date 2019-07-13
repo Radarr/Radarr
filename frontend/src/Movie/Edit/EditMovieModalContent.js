@@ -11,7 +11,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import MoveMovieModal from 'Movie/MoveSeries/MoveSeriesModal';
+import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import styles from './EditMovieModalContent.css';
 
 class EditMovieModalContent extends Component {
@@ -45,7 +45,7 @@ class EditMovieModalContent extends Component {
     }
   }
 
-  onMoveSeriesPress = () => {
+  onMoveMoviePress = () => {
     this.setState({ isConfirmMoveModalOpen: false });
 
     this.props.onSavePress(true);
@@ -159,7 +159,7 @@ class EditMovieModalContent extends Component {
           destinationPath={path.value}
           isOpen={this.state.isConfirmMoveModalOpen}
           onSavePress={this.onSavePress}
-          onMoveSeriesPress={this.onMoveSeriesPress}
+          onMoveMoviePress={this.onMoveMoviePress}
         />
       </ModalContent>
     );

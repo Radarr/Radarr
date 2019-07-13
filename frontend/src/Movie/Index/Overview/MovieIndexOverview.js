@@ -7,6 +7,7 @@ import fonts from 'Styles/Variables/fonts';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import CheckInput from 'Components/Form/CheckInput';
 import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -65,6 +66,15 @@ class MovieIndexOverview extends Component {
     this.setState({ isDeleteMovieModalOpen: false });
   }
 
+  onChange = ({ value, shiftKey }) => {
+    const {
+      id,
+      onSelectedChange
+    } = this.props;
+
+    onSelectedChange({ id, value, shiftKey });
+  }
+
   //
   // Render
 
@@ -94,6 +104,9 @@ class MovieIndexOverview extends Component {
       isSearchingMovie,
       onRefreshMoviePress,
       onSearchPress,
+      isMovieEditorActive,
+      isSelected,
+      onSelectedChange,
       ...otherProps
     } = this.props;
 
@@ -118,11 +131,15 @@ class MovieIndexOverview extends Component {
           <div className={styles.poster}>
             <div className={styles.posterContainer}>
               {
-                status === 'ended' &&
-                <div
-                  className={styles.ended}
-                  title="Ended"
-                />
+                isMovieEditorActive &&
+                  <div className={styles.editorSelect}>
+                    <CheckInput
+                      className={styles.checkInput}
+                      name={id.toString()}
+                      value={isSelected}
+                      onChange={this.onChange}
+                    />
+                  </div>
               }
 
               <Link
@@ -253,7 +270,10 @@ MovieIndexOverview.propTypes = {
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,
   onRefreshMoviePress: PropTypes.func.isRequired,
-  onSearchPress: PropTypes.func.isRequired
+  onSearchPress: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired,
+  isSelected: PropTypes.bool,
+  onSelectedChange: PropTypes.func.isRequired
 };
 
 export default MovieIndexOverview;

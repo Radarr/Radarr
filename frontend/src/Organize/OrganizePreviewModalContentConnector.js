@@ -14,14 +14,14 @@ function createMapStateToProps() {
     (state) => state.organizePreview,
     (state) => state.settings.naming,
     createMovieSelector(),
-    (organizePreview, naming, series) => {
+    (organizePreview, naming, movie) => {
       const props = { ...organizePreview };
       props.isFetching = organizePreview.isFetching || naming.isFetching;
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
       props.renameEpisodes = naming.item.renameEpisodes;
-      props.episodeFormat = naming.item.episodeFormat;
-      props.path = series.path;
+      props.standardMovieFormat = naming.item.standardMovieFormat;
+      props.path = movie.path;
 
       return props;
     }
@@ -41,13 +41,11 @@ class OrganizePreviewModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      seriesId,
-      seasonNumber
+      movieId
     } = this.props;
 
     this.props.fetchOrganizePreview({
-      seriesId,
-      seasonNumber
+      movieId
     });
 
     this.props.fetchNamingSettings();
@@ -59,7 +57,7 @@ class OrganizePreviewModalContentConnector extends Component {
   onOrganizePress = (files) => {
     this.props.executeCommand({
       name: commandNames.RENAME_FILES,
-      seriesId: this.props.seriesId,
+      movieId: this.props.movieId,
       files
     });
 
@@ -80,8 +78,7 @@ class OrganizePreviewModalContentConnector extends Component {
 }
 
 OrganizePreviewModalContentConnector.propTypes = {
-  seriesId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number,
+  movieId: PropTypes.number.isRequired,
   fetchOrganizePreview: PropTypes.func.isRequired,
   fetchNamingSettings: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,

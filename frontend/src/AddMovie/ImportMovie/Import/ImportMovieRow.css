@@ -23,7 +23,7 @@
   min-width: 170px;
 }
 
-.series {
+.movie {
   composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
 
   flex: 0 1 400px;

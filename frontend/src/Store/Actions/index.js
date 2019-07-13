@@ -17,7 +17,6 @@ import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
 import * as movies from './movieActions';
-import * as movieEditor from './movieEditorActions';
 import * as movieHistory from './movieHistoryActions';
 import * as movieIndex from './movieIndexActions';
 import * as settings from './settingsActions';
@@ -44,7 +43,6 @@ export default [
   releases,
   rootFolders,
   movies,
-  movieEditor,
   movieHistory,
   movieIndex,
   settings,

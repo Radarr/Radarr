@@ -53,7 +53,7 @@ function ImportMovieRow(props) {
         />
       </VirtualTableRowCell>
 
-      <VirtualTableRowCell className={styles.series}>
+      <VirtualTableRowCell className={styles.movie}>
         <ImportMovieSelectMovieConnector
           id={id}
           isExistingMovie={isExistingMovie}

@@ -2,20 +2,20 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
-import { bulkDeleteMovie } from 'Store/Actions/movieEditorActions';
+import { bulkDeleteMovie } from 'Store/Actions/movieIndexActions';
 import DeleteMovieModalContent from './DeleteMovieModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { seriesIds }) => seriesIds,
+    (state, { movieIds }) => movieIds,
     createAllMoviesSelector(),
-    (seriesIds, allMovies) => {
-      const selectedMovie = _.intersectionWith(allMovies, seriesIds, (s, id) => {
+    (movieIds, allMovies) => {
+      const selectedMovie = _.intersectionWith(allMovies, movieIds, (s, id) => {
         return s.id === id;
       });
 
-      const sortedSeries = _.orderBy(selectedMovie, 'sortTitle');
-      const series = _.map(sortedSeries, (s) => {
+      const sortedMovies = _.orderBy(selectedMovie, 'sortTitle');
+      const movies = _.map(sortedMovies, (s) => {
         return {
           title: s.title,
           path: s.path
@@ -23,7 +23,7 @@ function createMapStateToProps() {
       });
 
       return {
-        series
+        movies
       };
     }
   );
@@ -33,7 +33,7 @@ function createMapDispatchToProps(dispatch, props) {
   return {
     onDeleteSelectedPress(deleteFiles) {
       dispatch(bulkDeleteMovie({
-        seriesIds: props.seriesIds,
+        movieIds: props.movieIds,
         deleteFiles
       }));
 

@@ -69,7 +69,7 @@ function createMapStateToProps() {
       const isRefreshing = isMovieRefreshing || allMoviesRefreshing;
       const isSearching = isCommandExecuting(findCommand(commands, { name: commandNames.MOVIE_SEARCH, movieIds: [movie.id] }));
       const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, movieId: movie.id }));
-      const isRenamingMovieCommand = findCommand(commands, { name: commandNames.RENAME_SERIES });
+      const isRenamingMovieCommand = findCommand(commands, { name: commandNames.RENAME_MOVIE });
       const isRenamingMovie = (
         isCommandExecuting(isRenamingMovieCommand) &&
         isRenamingMovieCommand.body.movieIds.indexOf(movie.id) > -1

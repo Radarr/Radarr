@@ -136,8 +136,8 @@ class MovieSearchInput extends Component {
       return;
     }
 
-    // If an suggestion is not selected go to the first series,
-    // otherwise go to the selected series.
+    // If an suggestion is not selected go to the first movie,
+    // otherwise go to the selected movie.
 
     if (highlightedSuggestionIndex == null) {
       this.goToMovie(suggestions[0]);

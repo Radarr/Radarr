@@ -85,6 +85,13 @@ $hoverScale: 1.05;
   transition: opacity 0;
 }
 
+.editorSelect {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+}
+
 .action {
   composes: button from '~Components/Link/IconButton.css';
 

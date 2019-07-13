@@ -7,58 +7,98 @@ using Radarr.Http.Extensions;
 using Radarr.Http.REST;
 using NzbDrone.Core.Movies;
 using Radarr.Http.Mapping;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace Radarr.Api.V2.Movies
 {
     public class MovieEditorModule : RadarrV2Module
     {
         private readonly IMovieService _movieService;
+        private readonly IManageCommandQueue _commandQueueManager;
 
-        public MovieEditorModule(IMovieService movieService)
+        public MovieEditorModule(IMovieService movieService, IManageCommandQueue commandQueueManager)
             : base("/movie/editor")
         {
             _movieService = movieService;
-            Put["/"] = Movie => SaveAll();
-            Put["/delete"] = Movie => DeleteSelected();
+            _commandQueueManager = commandQueueManager;
+            Put["/"] = movie => SaveAll();
+            Delete["/"] = movie => DeleteMovies();
         }
 
         private Response SaveAll()
         {
-            var resources = Request.Body.FromJson<List<MovieResource>>();
+            var resource = Request.Body.FromJson<MovieEditorResource>();
+            var moviesToUpdate = _movieService.GetMovies(resource.MovieIds);
+            var moviesToMove = new List<BulkMoveMovie>();
 
-            var Movie = resources.Select(MovieResource => MovieResource.ToModel(_movieService.GetMovie(MovieResource.Id))).ToList();
+            foreach (var movie in moviesToUpdate)
+            {
+                if (resource.Monitored.HasValue)
+                {
+                    movie.Monitored = resource.Monitored.Value;
+                }
 
-            return _movieService.UpdateMovie(Movie)
+                if (resource.QualityProfileId.HasValue)
+                {
+                    movie.ProfileId = resource.QualityProfileId.Value;
+                }
+
+                if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
+                {
+                    movie.RootFolderPath = resource.RootFolderPath;
+                    moviesToMove.Add(new BulkMoveMovie
+                    {
+                        MovieId = movie.Id,
+                        SourcePath = movie.Path
+                    });
+                }
+
+                if (resource.Tags != null)
+                {
+                    var newTags = resource.Tags;
+                    var applyTags = resource.ApplyTags;
+
+                    switch (applyTags)
+                    {
+                        case ApplyTags.Add:
+                            newTags.ForEach(t => movie.Tags.Add(t));
+                            break;
+                        case ApplyTags.Remove:
+                            newTags.ForEach(t => movie.Tags.Remove(t));
+                            break;
+                        case ApplyTags.Replace:
+                            movie.Tags = new HashSet<int>(newTags);
+                            break;
+                    }
+                }
+            }
+
+            if (resource.MoveFiles && moviesToMove.Any())
+            {
+                _commandQueueManager.Push(new BulkMoveMovieCommand
+                {
+                    DestinationRootFolder = resource.RootFolderPath,
+                    Movies = moviesToMove
+                });
+            }
+
+            return _movieService.UpdateMovie(moviesToUpdate)
                                  .ToResource()
                                  .AsResponse(HttpStatusCode.Accepted);
         }
 
-        private Response DeleteSelected()
+        private Response DeleteMovies()
         {
-            var deleteFiles = false;
-            var addExclusion = false;
-            var deleteFilesQuery = Request.Query.deleteFiles;
-            var addExclusionQuery = Request.Query.addExclusion;
+            var resource = Request.Body.FromJson<MovieEditorResource>();
 
-            if (deleteFilesQuery.HasValue)
+            foreach (var id in resource.MovieIds)
             {
-                deleteFiles = Convert.ToBoolean(deleteFilesQuery.Value);
-            }
-            if (addExclusionQuery.HasValue)
-            {
-                addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
-            }
-            var ids = Request.Body.FromJson<List<int>>();
-
-            foreach (var id in ids)
-            {
-                _movieService.DeleteMovie(id, deleteFiles, addExclusion);
+                _movieService.DeleteMovie(id, false, false);
             }
 
-            return new Response
-            {
-                StatusCode = HttpStatusCode.Accepted
-            };
+            return new object().AsResponse();
         }
     }
 }

@@ -75,7 +75,7 @@ class OrganizePreviewModalContent extends Component {
       error,
       items,
       renameEpisodes,
-      episodeFormat,
+      standardMovieFormat,
       path,
       onModalClose
     } = this.props;
@@ -129,8 +129,8 @@ class OrganizePreviewModalContent extends Component {
 
                   <div>
                     Naming pattern:
-                    <span className={styles.episodeFormat}>
-                      {episodeFormat}
+                    <span className={styles.standardMovieFormat}>
+                      {standardMovieFormat}
                     </span>
                   </div>
                 </Alert>
@@ -140,11 +140,11 @@ class OrganizePreviewModalContent extends Component {
                     items.map((item) => {
                       return (
                         <OrganizePreviewRow
-                          key={item.episodeFileId}
-                          id={item.episodeFileId}
+                          key={item.movieFileId}
+                          id={item.movieFileId}
                           existingPath={item.existingPath}
                           newPath={item.newPath}
-                          isSelected={selectedState[item.episodeFileId]}
+                          isSelected={selectedState[item.movieFileId]}
                           onSelectedChange={this.onSelectedChange}
                         />
                       );
@@ -190,10 +190,9 @@ OrganizePreviewModalContent.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  seasonNumber: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   renameEpisodes: PropTypes.bool,
-  episodeFormat: PropTypes.string,
+  standardMovieFormat: PropTypes.string,
   onOrganizePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

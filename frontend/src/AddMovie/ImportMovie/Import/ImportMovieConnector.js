@@ -61,7 +61,7 @@ const mapDispatchToProps = {
   dispatchImportMovie: importMovie,
   dispatchClearImportMovie: clearImportMovie,
   dispatchFetchRootFolders: fetchRootFolders,
-  dispatchSetAddSeriesDefault: setAddMovieDefault
+  dispatchSetAddMovieDefault: setAddMovieDefault
 };
 
 class ImportMovieConnector extends Component {
@@ -74,7 +74,7 @@ class ImportMovieConnector extends Component {
       qualityProfiles,
       defaultQualityProfileId,
       dispatchFetchRootFolders,
-      dispatchSetAddSeriesDefault
+      dispatchSetAddMovieDefault
     } = this.props;
 
     if (!this.props.rootFoldersPopulated) {
@@ -93,7 +93,7 @@ class ImportMovieConnector extends Component {
     }
 
     if (setDefaults) {
-      dispatchSetAddSeriesDefault(setDefaultPayload);
+      dispatchSetAddMovieDefault(setDefaultPayload);
     }
   }
 
@@ -105,7 +105,7 @@ class ImportMovieConnector extends Component {
   // Listeners
 
   onInputChange = (ids, name, value) => {
-    this.props.dispatchSetAddSeriesDefault({ [name]: value });
+    this.props.dispatchSetAddMovieDefault({ [name]: value });
 
     ids.forEach((id) => {
       this.props.dispatchSetImportMovieValue({
@@ -146,7 +146,7 @@ ImportMovieConnector.propTypes = {
   dispatchImportMovie: PropTypes.func.isRequired,
   dispatchClearImportMovie: PropTypes.func.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
-  dispatchSetAddSeriesDefault: PropTypes.func.isRequired
+  dispatchSetAddMovieDefault: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(ImportMovieConnector);

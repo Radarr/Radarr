@@ -43,7 +43,7 @@ class DeleteMovieModalContent extends Component {
 
   render() {
     const {
-      series,
+      movies,
       onModalClose
     } = this.props;
     const deleteFiles = this.state.deleteFiles;
@@ -51,19 +51,19 @@ class DeleteMovieModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Delete Selected Series
+          Delete Selected Movie(s)
         </ModalHeader>
 
         <ModalBody>
           <div>
             <FormGroup>
-              <FormLabel>{`Delete Series Folder${series.length > 1 ? 's' : ''}`}</FormLabel>
+              <FormLabel>{`Delete Movie Folder${movies.length > 1 ? 's' : ''}`}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="deleteFiles"
                 value={deleteFiles}
-                helpText={`Delete Series Folder${series.length > 1 ? 's' : ''} and all contents`}
+                helpText={`Delete Movie Folder${movies.length > 1 ? 's' : ''} and all contents`}
                 kind={kinds.DANGER}
                 onChange={this.onDeleteFilesChange}
               />
@@ -71,12 +71,12 @@ class DeleteMovieModalContent extends Component {
           </div>
 
           <div className={styles.message}>
-            {`Are you sure you want to delete ${series.length} selected series${deleteFiles ? ' and all contents' : ''}?`}
+            {`Are you sure you want to delete ${movies.length} selected movie(s)${deleteFiles ? ' and all contents' : ''}?`}
           </div>
 
           <ul>
             {
-              series.map((s) => {
+              movies.map((s) => {
                 return (
                   <li key={s.title}>
                     <span>{s.title}</span>
@@ -115,7 +115,7 @@ class DeleteMovieModalContent extends Component {
 }
 
 DeleteMovieModalContent.propTypes = {
-  series: PropTypes.arrayOf(PropTypes.object).isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteSelectedPress: PropTypes.func.isRequired
 };

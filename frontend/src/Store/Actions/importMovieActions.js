@@ -190,8 +190,8 @@ export const actionHandlers = handleThunks({
       const item = _.find(items, { id });
       const selectedMovie = item.selectedMovie;
 
-      // Make sure we have a selected series and
-      // the same series hasn't been added yet.
+      // Make sure we have a selected movie and
+      // the same movie hasn't been added yet.
       if (selectedMovie && !_.some(acc, { tmdbId: selectedMovie.tmdbId })) {
         const newMovie = getNewMovie(_.cloneDeep(selectedMovie), item);
         newMovie.path = item.path;

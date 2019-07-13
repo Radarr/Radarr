@@ -8,7 +8,7 @@ import createCommandExecutingSelector from 'Store/Selectors/createCommandExecuti
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchMovies } from 'Store/Actions/movieActions';
 import scrollPositions from 'Store/scrollPositions';
-import { setMovieSort, setMovieFilter, setMovieView, setMovieTableOption } from 'Store/Actions/movieIndexActions';
+import { setMovieSort, setMovieFilter, setMovieView, setMovieTableOption, saveMovieEditor } from 'Store/Actions/movieIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
@@ -42,17 +42,20 @@ function createMapStateToProps() {
     createMovieClientSideCollectionItemsSelector('movieIndex'),
     createCommandExecutingSelector(commandNames.REFRESH_MOVIE),
     createCommandExecutingSelector(commandNames.RSS_SYNC),
+    createCommandExecutingSelector(commandNames.RENAME_MOVIE),
     createDimensionsSelector(),
     (
       movies,
       isRefreshingMovie,
       isRssSyncExecuting,
+      isOrganizingMovie,
       dimensionsState
     ) => {
       return {
         ...movies,
         isRefreshingMovie,
         isRssSyncExecuting,
+        isOrganizingMovie,
         isSmallScreen: dimensionsState.isSmallScreen
       };
     }
@@ -79,6 +82,10 @@ function createMapDispatchToProps(dispatch, props) {
 
     dispatchSetMovieView(view) {
       dispatch(setMovieView({ view }));
+    },
+
+    dispatchSaveMovieEditor(payload) {
+      dispatch(saveMovieEditor(payload));
     },
 
     onRefreshMoviePress() {
@@ -128,6 +135,10 @@ class MovieIndexConnector extends Component {
     });
   }
 
+  onSaveSelected = (payload) => {
+    this.props.dispatchSaveMovieEditor(payload);
+  }
+
   onScroll = ({ scrollTop }) => {
     this.setState({
       scrollTop
@@ -146,6 +157,7 @@ class MovieIndexConnector extends Component {
         scrollTop={this.state.scrollTop}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
+        onSaveSelected={this.onSaveSelected}
       />
     );
   }
@@ -156,7 +168,8 @@ MovieIndexConnector.propTypes = {
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
   dispatchFetchMovies: PropTypes.func.isRequired,
-  dispatchSetMovieView: PropTypes.func.isRequired
+  dispatchSetMovieView: PropTypes.func.isRequired,
+  dispatchSaveMovieEditor: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(

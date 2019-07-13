@@ -163,7 +163,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.TAG}
                 name="tags"
                 value={tags}
-                helpText="Feed will only contain series with at least one matching tag"
+                helpText="Feed will only contain movies with at least one matching tag"
                 onChange={this.onInputChange}
               />
             </FormGroup>

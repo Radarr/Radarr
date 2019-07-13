@@ -22,10 +22,13 @@ class MovieIndexTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const {
+      items
+    } = this.props;
+
     const jumpToCharacter = this.props.jumpToCharacter;
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
-      const items = this.props.items;
 
       const scrollIndex = getIndexOfFirstCharacter(items, jumpToCharacter);
 
@@ -43,7 +46,10 @@ class MovieIndexTable extends Component {
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
-      columns
+      columns,
+      selectedState,
+      onSelectedChange,
+      isMovieEditorActive
     } = this.props;
 
     const movie = items[rowIndex];
@@ -56,6 +62,9 @@ class MovieIndexTable extends Component {
         columns={columns}
         movieId={movie.id}
         qualityProfileId={movie.qualityProfileId}
+        isSelected={selectedState[movie.id]}
+        onSelectedChange={onSelectedChange}
+        isMovieEditorActive={isMovieEditorActive}
       />
     );
   }
@@ -75,7 +84,12 @@ class MovieIndexTable extends Component {
       contentBody,
       onSortPress,
       onRender,
-      onScroll
+      onScroll,
+      allSelected,
+      allUnselected,
+      onSelectAllChange,
+      isMovieEditorActive,
+      selectedState
     } = this.props;
 
     return (
@@ -95,8 +109,13 @@ class MovieIndexTable extends Component {
             sortKey={sortKey}
             sortDirection={sortDirection}
             onSortPress={onSortPress}
+            allSelected={allSelected}
+            allUnselected={allUnselected}
+            onSelectAllChange={onSelectAllChange}
+            isMovieEditorActive={isMovieEditorActive}
           />
         }
+        selectedState={selectedState}
         columns={columns}
         filters={filters}
         sortKey={sortKey}
@@ -120,7 +139,13 @@ MovieIndexTable.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  onScroll: PropTypes.func.isRequired,
+  allSelected: PropTypes.bool.isRequired,
+  allUnselected: PropTypes.bool.isRequired,
+  selectedState: PropTypes.object.isRequired,
+  onSelectedChange: PropTypes.func.isRequired,
+  onSelectAllChange: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired
 };
 
 export default MovieIndexTable;

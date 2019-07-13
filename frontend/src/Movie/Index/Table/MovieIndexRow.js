@@ -15,6 +15,7 @@ import MovieTitleLink from 'Movie/MovieTitleLink';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieStatusCell from './MovieStatusCell';
+import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import styles from './MovieIndexRow.css';
 
 class MovieIndexRow extends Component {
@@ -80,8 +81,11 @@ class MovieIndexRow extends Component {
       columns,
       isRefreshingMovie,
       isSearchingMovie,
+      isMovieEditorActive,
+      isSelected,
       onRefreshMoviePress,
-      onSearchPress
+      onSearchPress,
+      onSelectedChange
     } = this.props;
 
     const {
@@ -100,6 +104,19 @@ class MovieIndexRow extends Component {
 
             if (!isVisible) {
               return null;
+            }
+
+            if (isMovieEditorActive && name === 'select') {
+              return (
+                <VirtualTableSelectCell
+                  inputClassName={styles.checkInput}
+                  id={id}
+                  key={name}
+                  isSelected={isSelected}
+                  isDisabled={false}
+                  onSelectedChange={onSelectedChange}
+                />
+              );
             }
 
             if (name === 'status') {
@@ -322,7 +339,10 @@ MovieIndexRow.propTypes = {
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,
   onRefreshMoviePress: PropTypes.func.isRequired,
-  onSearchPress: PropTypes.func.isRequired
+  onSearchPress: PropTypes.func.isRequired,
+  isMovieEditorActive: PropTypes.bool.isRequired,
+  isSelected: PropTypes.bool,
+  onSelectedChange: PropTypes.func.isRequired
 };
 
 MovieIndexRow.defaultProps = {
