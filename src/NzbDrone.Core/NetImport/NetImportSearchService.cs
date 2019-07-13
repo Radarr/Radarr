@@ -1,18 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace NzbDrone.Core.NetImport
@@ -29,25 +23,18 @@ namespace NzbDrone.Core.NetImport
         private readonly INetImportFactory _netImportFactory;
         private readonly IMovieService _movieService;
         private readonly ISearchForNewMovie _movieSearch;
-        private readonly IRootFolderService _rootFolder;
         private readonly IConfigService _configService;
-        private readonly ISearchForNzb _nzbSearchService;
-        private readonly IProcessDownloadDecisions _processDownloadDecisions;
         private readonly IImportExclusionsService _exclusionService;
 
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
-            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, ISearchForNzb nzbSearchService,
-                                   IProcessDownloadDecisions processDownloadDecisions, IConfigService configService,
+            ISearchForNewMovie movieSearch, IConfigService configService,
                                       IImportExclusionsService exclusionService,
                                       Logger logger)
         {
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _movieSearch = movieSearch;
-            _nzbSearchService = nzbSearchService;
-            _processDownloadDecisions = processDownloadDecisions;
-            _rootFolder = rootFolder;
             _exclusionService = exclusionService;
             _logger = logger;
             _configService = configService;
@@ -128,49 +115,40 @@ namespace NzbDrone.Core.NetImport
                 CleanLibrary(listedMovies);
             }
 
-            listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
-            if (listedMovies.Any())
-            {
-                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
-            }
-
-
             var importExclusions = new List<string>();
+            var moviesToAdd = new List<Movie>();
 
-            //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null && !_exclusionService.IsMovieExcluded(mapped.TmdbId))
-                {
-                    //List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
-                    _movieService.AddMovie(mapped);
 
-                    //// Search for movie
-                    //try
-                    //{
-                    //    decisions = _nzbSearchService.MovieSearch(mapped.Id, false);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    _logger.Error(ex, $"Unable to search in list for movie {mapped.Id}");
-                    //    continue;
-                    //}
-
-                    //var processed = _processDownloadDecisions.ProcessDecisions(decisions);
-                    //downloadedCount += processed.Grabbed.Count;
-                }
-                else
+                if (mapped != null && mapped.TmdbId > 0)
                 {
-                    if (mapped != null)
+                    if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
                     {
-                        _logger.Info($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                        _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                    }
+                    else if (_movieService.MovieExists(mapped))
+                    {
+                        _logger.Trace($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it exists in Library");
+                    }
+                    else
+                    {
+                        if (!moviesToAdd.Any(c => c.TmdbId == mapped.TmdbId))
+                        {
+                            mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
+                            moviesToAdd.Add(mapped);
+                        }
                     }
                 }
             }
 
-            //_logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
+            if (moviesToAdd.Any())
+            {
+                _logger.Info($"Adding {moviesToAdd.Count()} movies from your auto enabled lists to library");
+            }
+
+            _movieService.AddMovies(moviesToAdd);
         }
 
         private void CleanLibrary(List<Movie> movies)
