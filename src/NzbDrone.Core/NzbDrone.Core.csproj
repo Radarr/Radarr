@@ -164,6 +164,7 @@
     <Compile Include="DecisionEngine\Specifications\CustomFormatAllowedByProfileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\RepackSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeAllowedSpecification.cs" />
     <Compile Include="Download\Clients\DownloadClientUnavailableException.cs" />

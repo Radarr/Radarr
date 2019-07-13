@@ -1,4 +1,3 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
@@ -74,6 +73,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (currentQuality.Quality == newQuality.Quality && compare > 0)
             {
+                _logger.Debug("New quality is a better revision for existing quality");
                 return true;
             }
 

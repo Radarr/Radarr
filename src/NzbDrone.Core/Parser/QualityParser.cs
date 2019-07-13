@@ -15,20 +15,6 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityParser));
 
-        //private static readonly Regex SourceRegex = new Regex(@"\b(?:
-        //                                                        (?<bluray>BluRay|Blu-Ray|HDDVD|BD)|
-        //                                                        (?<webdl>WEB[-_. ]DL|WEBDL|WebRip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
-        //                                                        (?<hdtv>HDTV)|
-        //                                                        (?<bdrip>BDRip)|
-        //                                                        (?<brrip>BRRip)|
-        //                                                        (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
-        //                                                        (?<dsr>WS[-_. ]DSR|DSR)|
-        //                                                        (?<pdtv>PDTV)|
-        //                                                        (?<sdtv>SDTV)|
-        //                                                        (?<tvrip>TVRip)
-        //                                                        )\b",
-        //                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
                                                                 (?<bluray>M?BluRay|Blu-Ray|HDDVD|BD|BDISO|BD25|BD50|BR.?DISK)|
                                                                 (?<webdl>WEB[-_. ]DL|HDRIP|WEBDL|WebRip|Web-Rip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DDP?5[. ]1)|\d+0p[-. ]WEB[-. ]|WEB-DLMux|\b\s\/\sWEB\s\/\s\b)|
@@ -57,7 +43,10 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper|repack|rerip)\b",
+        private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper)\b",
+                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex RepackRegex = new Regex(@"\b(?<repack>repack|rerip)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex VersionRegex = new Regex(@"\dv(?<version>\d)\b|\[v(?<version>\d)\]",
@@ -404,6 +393,12 @@ namespace NzbDrone.Core.Parser
             if (ProperRegex.IsMatch(normalizedName))
             {
                 result.Revision.Version = 2;
+            }
+
+            if (RepackRegex.IsMatch(normalizedName))
+            {
+                result.Revision.Version = 2;
+                result.Revision.IsRepack = true;
             }
 
             var versionRegexResult = VersionRegex.Match(normalizedName);

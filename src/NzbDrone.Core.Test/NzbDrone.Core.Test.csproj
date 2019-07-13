@@ -168,6 +168,7 @@
     <Compile Include="DecisionEngineTests\QualityAllowedByProfileSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\QualityUpgradeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MinimumAgeSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\RepackSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RetentionSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\DelaySpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\ProperSpecificationFixture.cs" />

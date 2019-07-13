@@ -349,6 +349,17 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);
         }
 
+        [TestCase("Movie Title 2018 REPACK 720p x264 aAF", true)]
+        [TestCase("Movie.Title.2018.REPACK.720p.x264-aAF", true)]
+        [TestCase("Movie.Title.2018.PROPER.720p.x264-aAF", false)]
+        [TestCase("Movie.Title.2018.RERIP.720p.BluRay.x264-DEMAND", true)]
+        public void should_be_able_to_parse_repack(string title, bool isRepack)
+        {
+            var result = QualityParser.ParseQuality(title);
+            result.Revision.Version.Should().Be(2);
+            result.Revision.IsRepack.Should().Be(isRepack);
+        }
+
         private void ParseAndVerifyQuality(string title, Source source, bool proper, Resolution resolution, Modifier modifier = Modifier.NONE)
         {
             var result = QualityParser.ParseQuality(title);
