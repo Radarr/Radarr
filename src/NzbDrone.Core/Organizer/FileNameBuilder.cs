@@ -28,8 +28,7 @@ namespace NzbDrone.Core.Organizer
     {
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
-        private readonly ICached<EpisodeFormat[]> _episodeFormatCache;
-        private readonly ICached<AbsoluteEpisodeFormat[]> _absoluteEpisodeFormatCache;
+        private readonly IUpdateMediaInfo _mediaInfoUpdater;
         private readonly Logger _logger;
 
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
@@ -65,14 +64,12 @@ namespace NzbDrone.Core.Organizer
 
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
-                               ICacheManager cacheManager,
+                               IUpdateMediaInfo mediaInfoUpdater,
                                Logger logger)
         {
             _namingConfigService = namingConfigService;
             _qualityDefinitionService = qualityDefinitionService;
-            //_movieFormatCache = cacheManager.GetCache<MovieFormat>(GetType(), "movieFormat");
-            _episodeFormatCache = cacheManager.GetCache<EpisodeFormat[]>(GetType(), "episodeFormat");
-            _absoluteEpisodeFormatCache = cacheManager.GetCache<AbsoluteEpisodeFormat[]>(GetType(), "absoluteEpisodeFormat");
+            _mediaInfoUpdater = mediaInfoUpdater;
             _logger = logger;
         }
 
@@ -90,6 +87,8 @@ namespace NzbDrone.Core.Organizer
 
             var pattern = namingConfig.StandardMovieFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            UpdateMediaInfoIfNeeded(pattern, movieFile, movie);
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
@@ -312,34 +311,44 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Quality Real}"] = m => qualityReal;
         }
 
+        private const string MediaInfoVideoDynamicRangeToken = "{MediaInfo VideoDynamicRange}";
+        private static readonly IDictionary<string, int> MinimumMediaInfoSchemaRevisions =
+            new Dictionary<string, int>(FileNameBuilderTokenEqualityComparer.Instance)
+        {
+            {MediaInfoVideoDynamicRangeToken, 5}
+        };
+
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
-            if (movieFile.MediaInfo == null) return;
+            if (movieFile.MediaInfo == null)
+            {
+                _logger.Trace("Media info is unavailable for {0}", movieFile);
+
+                return;
+            }
 
             var sceneName = movieFile.GetSceneOrFileName();
+
 
             var videoCodec =  MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
             var audioCodec =  MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
+            var audioLanguages = movieFile.MediaInfo.AudioLanguages ?? string.Empty;
+            var subtitles = movieFile.MediaInfo.Subtitles ?? string.Empty;
 
-            // Workaround until https://github.com/MediaArea/MediaInfo/issues/299 is fixed and release
-            if (audioCodec.EqualsIgnoreCase("DTS-X"))
-            {
-                audioChannels = audioChannels - 1 + 0.1m;
-            }
-
-            var mediaInfoAudioLanguages = GetLanguagesToken(movieFile.MediaInfo.AudioLanguages);
+            var mediaInfoAudioLanguages = GetLanguagesToken(audioLanguages);
             if (!mediaInfoAudioLanguages.IsNullOrWhiteSpace())
             {
                 mediaInfoAudioLanguages = $"[{mediaInfoAudioLanguages}]";
             }
+
             var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
             if (mediaInfoAudioLanguages == "[EN]")
             {
                 mediaInfoAudioLanguages = string.Empty;
             }
 
-            var mediaInfoSubtitleLanguages = GetLanguagesToken(movieFile.MediaInfo.Subtitles);
+            var mediaInfoSubtitleLanguages = GetLanguagesToken(subtitles);
             if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
             {
                 mediaInfoSubtitleLanguages = $"[{mediaInfoSubtitleLanguages}]";
@@ -347,24 +356,10 @@ namespace NzbDrone.Core.Organizer
 
             var videoBitDepth = movieFile.MediaInfo.VideoBitDepth > 0 ? movieFile.MediaInfo.VideoBitDepth.ToString() : string.Empty;
             var audioChannelsFormatted = audioChannels > 0 ?
-                            audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
-                            string.Empty;
+                                audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
+                                string.Empty;
 
             var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
-
-            var videoColourPrimaries = movieFile.MediaInfo.VideoColourPrimaries ?? string.Empty;
-            var videoTransferCharacteristics = movieFile.MediaInfo.VideoTransferCharacteristics ?? string.Empty;
-            var mediaInfoHDR = string.Empty;
-
-            if (movieFile.MediaInfo.VideoBitDepth >= 10 && !videoColourPrimaries.IsNullOrWhiteSpace() && !videoTransferCharacteristics.IsNullOrWhiteSpace())
-            {
-                string[] validTransferFunctions = new string[] { "PQ", "HLG" };
-
-                if (videoColourPrimaries.EqualsIgnoreCase("BT.2020") && validTransferFunctions.Any(videoTransferCharacteristics.Contains))
-                {
-                    mediaInfoHDR = "HDR";
-                }
-            }
 
             tokenHandlers["{MediaInfo Video}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoCodec}"] = m => videoCodec;
@@ -377,12 +372,15 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
 
             tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
+            tokenHandlers["{MediaInfo SubtitleLanguagesAll}"] = m => mediaInfoSubtitleLanguages;
 
             tokenHandlers["{MediaInfo 3D}"] = m => mediaInfo3D;
-            tokenHandlers["{MediaInfo HDR}"] = m => mediaInfoHDR;
 
             tokenHandlers["{MediaInfo Simple}"] = m => $"{videoCodec} {audioCodec}";
             tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
+
+            tokenHandlers[MediaInfoVideoDynamicRangeToken] =
+                m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)
@@ -394,7 +392,7 @@ namespace NzbDrone.Core.Organizer
                     tokens.Add(item.Trim());
             }
 
-            var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.NeutralCultures);
+            var cultures = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
             for (int i = 0; i < tokens.Count; i++)
             {
                 try
@@ -410,6 +408,26 @@ namespace NzbDrone.Core.Organizer
             }
 
             return string.Join("+", tokens.Distinct());
+        }
+
+        private void UpdateMediaInfoIfNeeded(string pattern, MovieFile movieFile, Movie movie)
+        {
+            if (movie.Path.IsNullOrWhiteSpace())
+            {
+                return;
+            }
+           
+            var schemaRevision = movieFile.MediaInfo != null ? movieFile.MediaInfo.SchemaRevision : 0;
+            var matches = TitleRegex.Matches(pattern);
+
+            var shouldUpdateMediaInfo = matches.Cast<Match>()
+                .Select(m => MinimumMediaInfoSchemaRevisions.GetValueOrDefault(m.Value, -1))
+                .Any(r => schemaRevision < r);
+
+            if (shouldUpdateMediaInfo)
+            {
+                _mediaInfoUpdater.Update(movieFile, movie);
+            }
         }
 
         private string ReplaceTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, NamingConfig namingConfig)
