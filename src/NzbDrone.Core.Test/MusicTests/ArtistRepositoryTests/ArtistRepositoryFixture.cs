@@ -10,6 +10,9 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Common.Extensions;
+using System;
+using System.Data.SQLite;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
@@ -20,6 +23,13 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         private ArtistRepository _artistRepo;
         private ArtistMetadataRepository _artistMetadataRepo;
         private int _id = 1;
+
+        [SetUp]
+        public void Setup()
+        {
+            _artistRepo = Mocker.Resolve<ArtistRepository>();
+            _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
+        }
 
         private void AddArtist(string name)
         {
@@ -42,8 +52,6 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
         private void GivenArtists()
         {
-            _artistRepo = Mocker.Resolve<ArtistRepository>();
-            _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
             AddArtist("The Black Eyed Peas");
             AddArtist("The Black Keys");
         }
@@ -117,6 +125,31 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             
             var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
             artist.Should().BeNull();
+        }
+        
+        [Test]
+        public void should_throw_sql_exception_adding_duplicate_artist()
+        {
+            var name = "test";
+            var metadata = Builder<ArtistMetadata>.CreateNew()
+                .With(a => a.Id = 0)
+                .With(a => a.Name = name)
+                .BuildNew();
+            
+            var artist1 = Builder<Artist>.CreateNew()
+                .With(a => a.Id = 0)
+                .With(a => a.Metadata = metadata)
+                .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
+                .BuildNew();
+
+            var artist2 = artist1.JsonClone();
+            artist2.Metadata = metadata;
+
+            _artistMetadataRepo.Insert(metadata);
+            _artistRepo.Insert(artist1);
+
+            Action insertDupe = () => _artistRepo.Insert(artist2);
+            insertDupe.ShouldThrow<SQLiteException>();
         }
     }
 }

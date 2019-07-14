@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtistStatsTests\ArtistStatisticsFixture.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Datastore\Migration\004_add_various_qualities_in_profileFixture.cs" />
     <Compile Include="Datastore\Migration\023_add_release_groups_etcFixture.cs" />
     <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtimeFixture.cs" />
+    <Compile Include="Datastore\Migration\031_add_artistmetadataid_constraintFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />

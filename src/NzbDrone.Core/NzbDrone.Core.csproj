@@ -171,6 +171,7 @@
     <Compile Include="Datastore\Migration\026_rename_quality_profiles_add_upgrade_allowed.cs" />
     <Compile Include="Datastore\Migration\028_clean_artistmetadata_table.cs" />
     <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtime.cs" />
+    <Compile Include="Datastore\Migration\031_add_artistmetadataid_constraint.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
