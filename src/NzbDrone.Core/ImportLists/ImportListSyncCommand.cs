@@ -17,6 +17,8 @@ namespace NzbDrone.Core.ImportLists
 
         public override bool SendUpdatesToClient => true;
 
+        public override bool IsTypeExclusive => true;
+
         public override bool UpdateScheduledTask => !DefinitionId.HasValue;
     }
 }

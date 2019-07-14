@@ -130,7 +130,11 @@ namespace NzbDrone.Core.Messaging.Commands
                     var startedCommands = _items.Where(c => c.Status == CommandStatus.Started)
                         .ToList();
 
-                        var localItem = _items.Where(c =>
+                    var exclusiveTypes = startedCommands.Where(x => x.Body.IsTypeExclusive)
+                        .Select(x => x.Body.Name)
+                        .ToList();
+
+                    var localItem = _items.Where(c =>
                         {
                             // If an executing command requires disk access don't return a command that
                             // requires disk access. A lower priority or later queued task could be returned
@@ -139,6 +143,11 @@ namespace NzbDrone.Core.Messaging.Commands
                             {
                                 return c.Status == CommandStatus.Queued &&
                                        !c.Body.RequiresDiskAccess;
+                            }
+
+                            // If an executing command is TypeExclusive don't return a command with same type
+                            if (startedCommands.Any(x => x.Body.IsTypeExclusive)) {
+                                return c.Status == CommandStatus.Queued && !exclusiveTypes.Any(x => x == c.Body.Name);
                             }
 
                             return c.Status == CommandStatus.Queued;

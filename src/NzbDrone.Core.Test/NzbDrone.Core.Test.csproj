@@ -265,6 +265,7 @@
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecificationFixture.cs" />
     <Compile Include="MediaFiles\ImportApprovedTracksFixture.cs" />
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />
+    <Compile Include="Messaging\Commands\CommandQueueFixture.cs" />
     <Compile Include="Messaging\Commands\CommandQueueManagerFixture.cs" />
     <Compile Include="MetadataSource\MetadataRequestBuilderFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
