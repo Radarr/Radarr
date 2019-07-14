@@ -134,59 +134,53 @@ namespace NzbDrone.Core.Messaging.Commands
                         .Select(x => x.Body.Name)
                         .ToList();
 
-                    var localItem = _items.Where(c =>
-                        {
-                            // If an executing command requires disk access don't return a command that
-                            // requires disk access. A lower priority or later queued task could be returned
-                            // instead, but that will allow other tasks to execute whiule waiting for disk access.
-                            if (startedCommands.Any(x => x.Body.RequiresDiskAccess))
-                            {
-                                return c.Status == CommandStatus.Queued &&
-                                       !c.Body.RequiresDiskAccess;
-                            }
+                    var queuedCommands = _items.Where(c => c.Status == CommandStatus.Queued);
 
-                            // If an executing command is TypeExclusive don't return a command with same type
-                            if (startedCommands.Any(x => x.Body.IsTypeExclusive)) {
-                                return c.Status == CommandStatus.Queued && !exclusiveTypes.Any(x => x == c.Body.Name);
-                            }
+                    if (startedCommands.Any(x => x.Body.RequiresDiskAccess))
+                    {
+                        queuedCommands = queuedCommands.Where(c => !c.Body.RequiresDiskAccess);
+                    }
 
-                            return c.Status == CommandStatus.Queued;
-                        })
-                                              .OrderByDescending(c => c.Priority)
-                                              .ThenBy(c => c.QueuedAt)
-                                              .FirstOrDefault();
+                    if (startedCommands.Any(x => x.Body.IsTypeExclusive))
+                    {
+                        queuedCommands = queuedCommands.Where(c => !exclusiveTypes.Any(x => x == c.Body.Name));
+                    }
 
-                        // Nothing queued that meets the requirements
-                        if (localItem == null)
-                        {
-                            rval = false;
-                        }
+                    var localItem = queuedCommands.OrderByDescending(c => c.Priority)
+                        .ThenBy(c => c.QueuedAt)
+                        .FirstOrDefault();
+                    
+                    // Nothing queued that meets the requirements
+                    if (localItem == null)
+                    {
+                        rval = false;
+                    }
 
-                        // If any executing command is exclusive don't want return another command until it completes.
-                        else if (startedCommands.Any(c => c.Body.IsExclusive))
-                        {
-                            rval = false;
-                        }
+                    // If any executing command is exclusive don't want return another command until it completes.
+                    else if (startedCommands.Any(c => c.Body.IsExclusive))
+                    {
+                        rval = false;
+                    }
 
-                        // If the next command to execute is exclusive wait for executing commands to complete.
-                        // This will prevent other tasks from starting so the exclusive task executes in the order it should.
-                        else if (localItem.Body.IsExclusive && startedCommands.Any())
-                        {
-                            rval = false;
-                        }
+                    // If the next command to execute is exclusive wait for executing commands to complete.
+                    // This will prevent other tasks from starting so the exclusive task executes in the order it should.
+                    else if (localItem.Body.IsExclusive && startedCommands.Any())
+                    {
+                        rval = false;
+                    }
 
-                        // A command ready to execute
-                        else
-                        {
-                            localItem.StartedAt = DateTime.UtcNow;
-                            localItem.Status = CommandStatus.Started;
+                    // A command ready to execute
+                    else
+                    {
+                        localItem.StartedAt = DateTime.UtcNow;
+                        localItem.Status = CommandStatus.Started;
 
-                            item = localItem;
-                        }
+                        item = localItem;
                     }
                 }
+            }
 
             return rval;
-            }
         }
+    }
 }

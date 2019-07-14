@@ -89,6 +89,25 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         }
 
         [Test]
+        public void should_not_return_type_exclusive_command_if_another_and_disk_access_command_running()
+        {
+            GivenStartedTypeExclusiveCommand();
+            GivenStartedDiskCommand();
+
+            var newCommandModel = Builder<CommandModel>
+                .CreateNew()
+                .With(c => c.Name = "ImportListSync")
+                .With(c => c.Body = new ImportListSyncCommand())
+                .Build();
+
+            Subject.Add(newCommandModel);
+
+            Subject.TryGet(out var command);
+
+            command.Should().BeNull();
+        }
+
+        [Test]
         public void should_return_type_exclusive_command_if_another_not_running()
         {
             GivenStartedDiskCommand();
