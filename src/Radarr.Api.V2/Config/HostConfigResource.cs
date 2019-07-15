@@ -19,6 +19,7 @@ namespace Radarr.Api.V2.Config
         public string Username { get; set; }
         public string Password { get; set; }
         public string LogLevel { get; set; }
+        public string ConsoleLogLevel { get; set; }
         public string Branch { get; set; }
         public string ApiKey { get; set; }
         public string SslCertHash { get; set; }
@@ -57,6 +58,7 @@ namespace Radarr.Api.V2.Config
                 //Username
                 //Password
                 LogLevel = model.LogLevel,
+                ConsoleLogLevel = model.ConsoleLogLevel,
                 Branch = model.Branch,
                 ApiKey = model.ApiKey,
                 SslCertHash = model.SslCertHash,

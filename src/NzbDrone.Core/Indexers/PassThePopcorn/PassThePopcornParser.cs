@@ -5,9 +5,7 @@ using Newtonsoft.Json;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn

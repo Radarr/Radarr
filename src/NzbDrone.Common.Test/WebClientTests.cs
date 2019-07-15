@@ -21,9 +21,19 @@ namespace NzbDrone.Common.Test
 
         [TestCase("")]
         [TestCase("http://")]
-        public void DownloadString_should_throw_on_error(string url)
+        public void DownloadString_should_throw_on_error_windows(string url)
         {
+            WindowsOnly();
             Assert.Throws<ArgumentException>(() => Subject.DownloadString(url));
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+
+        [TestCase("http://")]
+        public void DownloadString_should_throw_on_not_supported_string_mono(string url)
+        {
+            MonoOnly();
+            Assert.Throws<System.Net.WebException>(() => Subject.DownloadString(url));
             ExceptionVerification.ExpectedWarns(1);
         }
     }

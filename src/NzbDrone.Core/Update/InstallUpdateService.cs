@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Update
         {
             if (configFileProvider == null)
             {
-                throw new ArgumentNullException("configFileProvider");
+                throw new ArgumentNullException(nameof(configFileProvider));
             }
             _checkUpdateService = checkUpdateService;
             _appFolderInfo = appFolderInfo;
@@ -85,6 +85,12 @@ namespace NzbDrone.Core.Update
                 {
                     throw new UpdateFolderNotWritableException("Cannot install update because UI folder '{0}' is not writable by the user '{1}'.", uiFolder, Environment.UserName);
                 }
+            }
+
+            if (_appFolderInfo.StartUpFolder.EndsWith("_output"))
+            {
+                _logger.ProgressDebug("Running in developer environment, not updating.");
+                return;
             }
 
             var updateSandboxFolder = _appFolderInfo.GetUpdateSandboxFolder();
@@ -148,7 +154,7 @@ namespace NzbDrone.Core.Update
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, string.Format("Couldn't change the branch from [{0}] to [{1}].", currentBranch, package.Branch));
+                    _logger.Error(e, "Couldn't change the branch from [{0}] to [{1}].", currentBranch, package.Branch);
                 }
             }
         }
@@ -178,9 +184,8 @@ namespace NzbDrone.Core.Update
         {
             var processId = _processProvider.GetCurrentProcess().Id.ToString();
             var executingApplication = _runtimeInfo.ExecutingApplication;
-            var args = string.Join(" ", processId, updateSandboxFolder.TrimEnd(Path.DirectorySeparatorChar).WrapInQuotes(), executingApplication.WrapInQuotes(), _startupContext.PreservedArguments);
-            _logger.Info("Updater Arguments: " + args);
-            return args;
+
+            return string.Join(" ", processId, updateSandboxFolder.TrimEnd(Path.DirectorySeparatorChar).WrapInQuotes(), executingApplication.WrapInQuotes(), _startupContext.PreservedArguments);
         }
 
         private void EnsureAppDataSafety()
@@ -200,7 +205,7 @@ namespace NzbDrone.Core.Update
 
             if (latestAvailable == null)
             {
-                _logger.ProgressDebug("No update available.");
+                _logger.ProgressDebug("No update available");
                 return;
             }
 
@@ -213,6 +218,7 @@ namespace NzbDrone.Core.Update
             try
             {
                 InstallUpdate(latestAvailable);
+                _logger.ProgressDebug("Restarting Radarr to apply updates");
             }
             catch (UpdateFolderNotWritableException ex)
             {

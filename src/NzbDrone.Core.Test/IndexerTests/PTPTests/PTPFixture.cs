@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             Subject.Definition = new IndexerDefinition()
             {
                 Name = "PTP",
-                Settings = new PassThePopcornSettings() { Passkey = "fakekey", Username = "asdf", Password = "sad" }
+                Settings = new PassThePopcornSettings() { APIUser = "asdf", APIKey = "sad" }
             };
         }
 

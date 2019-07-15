@@ -9,6 +9,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Lifecycle;
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.Configuration
         AuthenticationType AuthenticationMethod { get; }
         bool AnalyticsEnabled { get; }
         string LogLevel { get; }
+        string ConsoleLogLevel { get; }
         string Branch { get; }
         string ApiKey { get; }
         string SslCertHash { get; }
@@ -179,6 +181,7 @@ namespace NzbDrone.Core.Configuration
         public string Branch => GetValue("Branch", "develop").ToLowerInvariant();
 
         public string LogLevel => GetValue("LogLevel", "Info");
+        public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
 
         public string SslCertHash => GetValue("SslCertHash", "");
 
