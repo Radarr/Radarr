@@ -15,6 +15,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
@@ -76,10 +77,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()))
-                  .Returns(_localMovie);
-
-            Mocker.GetMock<IParsingService>()
                 .Setup(c => c.ParseMinimalPathMovieInfo(It.IsAny<string>()))
                 .Returns(_fileInfo);
 
@@ -100,6 +97,16 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                   .Returns(_videoFiles);
         }
 
+        private void GivenAugmentationSuccess()
+        {
+            Mocker.GetMock<IAggregationService>()
+                  .Setup(s => s.Augment(It.IsAny<LocalMovie>(), It.IsAny<bool>()))
+                  .Callback<LocalMovie, bool>((localMovie, otherFiles) =>
+                  {
+                      localMovie.Movie = _localMovie.Movie;
+                  });
+        }
+
         [Test]
         public void should_call_all_specifications()
         {
@@ -108,12 +115,12 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             Subject.GetImportDecisions(_videoFiles, new Movie(), downloadClientItem, null, false);
 
-            _fail1.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
-            _fail2.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
-            _fail3.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
-            _pass1.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
-            _pass2.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
-            _pass3.Verify(c => c.IsSatisfiedBy(_localMovie, downloadClientItem), Times.Once());
+            _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
+            _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
+            _fail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
         }
 
         [Test]
@@ -160,8 +167,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenSpecifications(_pass1);
 
-            Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()))
+            Mocker.GetMock<IAggregationService>()
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
             _videoFiles = new List<string>
@@ -175,8 +182,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             Subject.GetImportDecisions(_videoFiles, _movie);
 
-            Mocker.GetMock<IParsingService>()
-                  .Verify(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()), Times.Exactly(_videoFiles.Count));
+            Mocker.GetMock<IAggregationService>()
+                  .Verify(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<bool>()), Times.Exactly(_videoFiles.Count));
 
             ExceptionVerification.ExpectedErrors(3);
         }
@@ -196,88 +203,16 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             var fileNames = _videoFiles.Select(System.IO.Path.GetFileName);
 
-            Mocker.GetMock<IParsingService>()
-                .Verify(
-                    c => c.GetLocalMovie(It.IsAny<string>(),
-                        It.Is<ParsedMovieInfo>(p => fileNames.Contains(p.SimpleReleaseTitle)), It.IsAny<Movie>(),
-                        It.IsAny<List<object>>(), It.IsAny<bool>()), Times.Exactly(_videoFiles.Count));
-        }
-
-        [Test]
-        public void should_use_file_quality_if_folder_quality_is_null()
-        {
-            GivenSpecifications(_pass1, _pass2, _pass3);
-            var result = Subject.GetImportDecisions(_videoFiles, _movie);
-
-            result.Single().LocalMovie.Quality.Should().Be(_fileInfo.Quality);
-        }
-
-        [Test]
-        public void should_use_file_quality_if_file_quality_was_determined_by_name()
-        {
-            GivenSpecifications(_pass1, _pass2, _pass3);
-
-            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo{Quality = new QualityModel(Quality.SDTV)}, true);
-
-            result.Single().LocalMovie.Quality.Should().Be(_fileInfo.Quality);
-        }
-
-        [Test]
-        public void should_use_folder_quality_when_file_quality_was_determined_by_the_extension()
-        {
-            GivenSpecifications(_pass1, _pass2, _pass3);
-            GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
-
-            _localMovie.Path = _videoFiles.Single();
-            _localMovie.Quality.QualitySource = QualitySource.Extension;
-            _localMovie.Quality.Quality = Quality.HDTV720p;
-
-            var expectedQuality = new QualityModel(Quality.SDTV);
-
-            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
-
-            result.Single().LocalMovie.Quality.Should().Be(expectedQuality);
-        }
-
-        [Test]
-        public void should_use_folder_quality_when_greater_than_file_quality()
-        {
-            GivenSpecifications(_pass1, _pass2, _pass3);
-            GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
-
-            _localMovie.Path = _videoFiles.Single();
-            _localMovie.Quality.Quality = Quality.HDTV720p;
-
-            var expectedQuality = new QualityModel(Quality.Bluray720p);
-
-            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = expectedQuality }, true);
-
-            result.Single().LocalMovie.Quality.Should().Be(expectedQuality);
-        }
-
-        [Test]
-        public void should_not_use_folder_quality_when_it_is_unknown()
-        {
-            GivenSpecifications(_pass1, _pass2, _pass3);
-
-            _movie.Profile = new Profile
-                              {
-                                  Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.Unknown)
-                              };
-
-
-            var folderQuality = new QualityModel(Quality.Unknown);
-
-            var result = Subject.GetImportDecisions(_videoFiles, _movie, null, new ParsedMovieInfo { Quality = folderQuality}, true);
-
-            result.Single().LocalMovie.Quality.Should().Be(_quality);
+            Mocker.GetMock<IAggregationService>()
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<bool>()))
+                  .Throws<TestException>();
         }
 
         [Test]
         public void should_return_a_decision_when_exception_is_caught()
         {
-            Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.GetLocalMovie(It.IsAny<string>(), It.IsAny<ParsedMovieInfo>(), It.IsAny<Movie>(), It.IsAny<List<object>>(), It.IsAny<bool>()))
+            Mocker.GetMock<IAggregationService>()
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
             _videoFiles = new List<string>

@@ -130,7 +130,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 var size = _diskProvider.GetFileSize(videoFile);
 
-                if (!_detectSample.IsSample(movie, QualityParser.ParseQuality(Path.GetFileName(videoFile)), videoFile, size, false))
+                if (_detectSample.IsSample(movie, videoFile, false) == DetectSampleResult.NotSample)
                 {
                     _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                     return false;
@@ -198,7 +198,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, downloadClientItem, folderInfo, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, downloadClientItem, folderInfo, true);
             var importResults = _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
 
             if ((downloadClientItem == null || downloadClientItem.CanBeRemoved) &&
@@ -252,7 +252,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, downloadClientItem, null, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, downloadClientItem, null, true);
 
             return _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
         }

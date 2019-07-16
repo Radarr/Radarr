@@ -125,7 +125,7 @@ namespace NzbDrone.Api.Movies
 
 				var files = _diskScanService.GetVideoFiles(f.Path);
 
-				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m, true);
+				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
 
 				var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
 
@@ -136,10 +136,10 @@ namespace NzbDrone.Api.Movies
 					m.MovieFile = new MovieFile
 					{
 						Path = local.Path,
-						Edition = local.ParsedMovieInfo.Edition,
+						Edition = local.Edition,
 						Quality = local.Quality,
 						MediaInfo = local.MediaInfo,
-						ReleaseGroup = local.ParsedMovieInfo.ReleaseGroup,
+						ReleaseGroup = local.ReleaseGroup,
 						RelativePath = f.Path.GetRelativePath(local.Path)
 					};
 				}

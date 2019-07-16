@@ -5,8 +5,8 @@ namespace NzbDrone.Core.Update.Commands
     public class ApplicationUpdateCommand : Command
     {
         public override bool SendUpdatesToClient => true;
-        public override bool RequiresDiskAccess => true;
+        public override bool IsExclusive => true;
 
-        public override string CompletionMessage => "Restarting Radarr to apply updates";
+        public override string CompletionMessage => null;
     }
 }

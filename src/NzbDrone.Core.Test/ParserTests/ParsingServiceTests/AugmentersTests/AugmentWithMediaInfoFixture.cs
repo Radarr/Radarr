@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, mediaInfo);
             movieInfo.Quality.Resolution.ShouldBeEquivalentTo(realResolution);
-            movieInfo.Quality.QualitySource.ShouldBeEquivalentTo(QualitySource.MediaInfo);
+            movieInfo.Quality.QualityDetectionSource.ShouldBeEquivalentTo(QualityDetectionSource.MediaInfo);
         }
 
         [TestCase(Resolution.R720P, Source.BLURAY, Resolution.R1080P, Modifier.BRDISK)]
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, mediaInfo);
             movieInfo.Quality.Resolution.ShouldBeEquivalentTo(resolution);
-            movieInfo.Quality.QualitySource.ShouldBeEquivalentTo(QualitySource.Name);
+            movieInfo.Quality.QualityDetectionSource.ShouldBeEquivalentTo(QualityDetectionSource.Name);
         }
     }
 }

@@ -349,7 +349,7 @@ namespace NzbDrone.Core.Parser
                     result.Source = MediaFileExtensions.GetSourceForExtension(Path.GetExtension(name));
                     result.Resolution = MediaFileExtensions.GetResolutionForExtension(Path.GetExtension(name));
 
-                    result.QualitySource = QualitySource.Extension;
+                    result.QualityDetectionSource = QualityDetectionSource.Extension;
                 }
                 catch (ArgumentException)
                 {

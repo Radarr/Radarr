@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Qualities
         public string HardcodedSubs { get; set; }
 
         [JsonIgnore]
-        public QualitySource QualitySource { get; set; }
+        public QualityDetectionSource QualityDetectionSource { get; set; }
 
         public QualityModel()
             : this(Quality.Unknown, new Revision())

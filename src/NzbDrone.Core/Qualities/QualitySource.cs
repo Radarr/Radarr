@@ -2,8 +2,12 @@
 {
     public enum QualitySource
     {
-        Name,
-        Extension,
-        MediaInfo
+        Unknown,
+        Television,
+        TelevisionRaw,
+        Web,
+        WebRip,
+        DVD,
+        Bluray
     }
 }

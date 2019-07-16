@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie = Builder<LocalMovie>.CreateNew()
                                                  .With(l => l.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic())
-                                                 .With(l => l.ParsedMovieInfo =
+                                                 .With(l => l.FileMovieInfo =
                                                      Builder<ParsedMovieInfo>.CreateNew()
                                                                                .Build())
                                                  .Build();

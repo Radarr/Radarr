@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Movies
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title, int? year);
         Movie FindByTitleSlug(string slug);
+        Movie FindByPath(string path);
         bool MovieExists(Movie movie);
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
@@ -94,20 +95,16 @@ namespace NzbDrone.Core.Movies
                 {
                     case "released":
                         return v => v.Status == MovieStatusType.Released;
-                        break;
                     case "inCinemas":
                         return v => v.Status == MovieStatusType.InCinemas;
-                        break;
                     case "announced":
                         return v => v.Status == MovieStatusType.Announced;
-                        break;
                     case "available":
                         return v => v.Monitored == true &&
                              ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
                              (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
                              (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
                              (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released || v.HasPreDBEntry == true));
-                        break;
                 }
             }
             else if (FilterKey == "downloaded")
@@ -289,6 +286,11 @@ namespace NzbDrone.Core.Movies
         public Movie FindByTitle(string title, int year)
         {
             return _movieRepository.FindByTitle(title.CleanSeriesTitle(), year);
+        }
+
+        public Movie FindByPath(string path)
+        {
+            return _movieRepository.FindByPath(path);
         }
 
         public void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false)

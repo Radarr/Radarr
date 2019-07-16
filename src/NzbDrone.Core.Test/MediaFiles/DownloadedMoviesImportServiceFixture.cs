@@ -172,11 +172,9 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<QualityModel>(),
                       It.IsAny<string>(),
-                      It.IsAny<long>(),
                       It.IsAny<bool>()))
-                  .Returns(true);
+                  .Returns(DetectSampleResult.Sample);
 
             Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
 
@@ -244,11 +242,9 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<QualityModel>(),
                       It.IsAny<string>(),
-                      It.IsAny<long>(),
                       It.IsAny<bool>()))
-                  .Returns(true);
+                  .Returns(DetectSampleResult.Sample);
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
@@ -289,7 +285,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), It.IsAny<ParsedMovieInfo>(), true, false), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), It.IsAny<ParsedMovieInfo>(), true), Times.Once());
         }
 
         [Test]
@@ -313,7 +309,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var result = Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true, false), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true), Times.Once());
         }
 
         [Test]
@@ -355,11 +351,9 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<QualityModel>(),
                       It.IsAny<string>(),
-                      It.IsAny<long>(),
                       It.IsAny<bool>()))
-                  .Returns(true);
+                  .Returns(DetectSampleResult.Sample);
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFileSize(It.IsAny<string>()))

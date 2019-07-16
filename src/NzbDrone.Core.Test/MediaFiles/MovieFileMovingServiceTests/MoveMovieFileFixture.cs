@@ -15,29 +15,29 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
+namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
 {
     [TestFixture]
-    public class MoveEpisodeFileFixture : CoreTest<MovieFileMovingService>
+    public class MoveMovieFileFixture : CoreTest<MovieFileMovingService>
     {
-        private Movie _series;
-        private MovieFile _episodeFile;
-        private LocalMovie _localEpisode;
+        private Movie _movie;
+        private MovieFile _movieFile;
+        private LocalMovie _localMovie;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Movie>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\TV\Series".AsOsAgnostic())
+            _movie = Builder<Movie>.CreateNew()
+                                     .With(s => s.Path = @"C:\Test\Movies\Movie".AsOsAgnostic())
                                      .Build();
 
-            _episodeFile = Builder<MovieFile>.CreateNew()
+            _movieFile = Builder<MovieFile>.CreateNew()
                                                .With(f => f.Path = null)
-                                               .With(f => f.RelativePath = @"Season 1\File.avi")
+                                               .With(f => f.RelativePath = @"File.avi")
                                                .Build();
 
-            _localEpisode = Builder<LocalMovie>.CreateNew()
-                                                 .With(l => l.Movie = _series)
+            _localMovie = Builder<LocalMovie>.CreateNew()
+                                                 .With(l => l.Movie = _movie)
                                                  .Build();
 
             Mocker.GetMock<IBuildFileNames>()
@@ -46,9 +46,9 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
 
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.BuildFilePath(It.IsAny<Movie>(), It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(@"C:\Test\TV\Series\File Name.avi".AsOsAgnostic());
+                  .Returns(@"C:\Test\Movies\Movie\File Name.avi".AsOsAgnostic());
 
-            var rootFolder = @"C:\Test\TV\".AsOsAgnostic();
+            var rootFolder = @"C:\Test\Movies\".AsOsAgnostic();
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FolderExists(rootFolder))
                   .Returns(true);
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
                   .Setup(s => s.InheritFolderPermissions(It.IsAny<string>()))
                   .Throws<UnauthorizedAccessException>();
 
-            Subject.MoveMovieFile(_episodeFile, _localEpisode);
+            Subject.MoveMovieFile(_movieFile, _localMovie);
         }
 
         [Test]
@@ -79,13 +79,13 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
                   .Setup(s => s.InheritFolderPermissions(It.IsAny<string>()))
                   .Throws<InvalidOperationException>();
 
-            Subject.MoveMovieFile(_episodeFile, _localEpisode);
+            Subject.MoveMovieFile(_movieFile, _localMovie);
         }
 
         [Test]
-        public void should_notify_on_series_folder_creation()
+        public void should_notify_on_movie_folder_creation()
         {
-            Subject.MoveMovieFile(_episodeFile, _localEpisode);
+            Subject.MoveMovieFile(_movieFile, _localMovie);
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(s => s.PublishEvent<MovieFolderCreatedEvent>(It.Is<MovieFolderCreatedEvent>(p =>
@@ -93,13 +93,13 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeFileMovingServiceTests
         }
 
         [Test]
-        public void should_not_notify_if_series_folder_already_exists()
+        public void should_not_notify_if_movie_folder_already_exists()
         {
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.FolderExists(_series.Path))
+                  .Setup(s => s.FolderExists(_movie.Path))
                   .Returns(true);
 
-            Subject.MoveMovieFile(_episodeFile, _localEpisode);
+            Subject.MoveMovieFile(_movieFile, _localMovie);
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(s => s.PublishEvent<MovieFolderCreatedEvent>(It.Is<MovieFolderCreatedEvent>(p =>

@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Parser
             {"ü", "ue"},
         };
 
-        private static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
+        public static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
         {
             var fileInfo = new FileInfo(path);
 
