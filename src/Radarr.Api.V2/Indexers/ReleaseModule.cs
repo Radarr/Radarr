@@ -90,7 +90,7 @@ namespace Radarr.Api.V2.Indexers
         {
             try
             {
-                var decisions = _nzbSearchService.MovieSearch(episodeId, true);
+                var decisions = _nzbSearchService.MovieSearch(episodeId, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
                 return MapDecisions(prioritizedDecisions);

@@ -49,7 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
                     continue;
                 }
 
-                var decisions = _nzbSearchService.MovieSearch(movieId, false);//_nzbSearchService.SeasonSearch(message.MovieId, season.SeasonNumber, false, message.Trigger == CommandTrigger.Manual);
+                var decisions = _nzbSearchService.MovieSearch(movieId, false, false);//_nzbSearchService.SeasonSearch(message.MovieId, season.SeasonNumber, false, message.Trigger == CommandTrigger.Manual);
                 downloadedCount += _processDownloadDecisions.ProcessDecisions(decisions).Grabbed.Count;
 
             }
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.IndexerSearch
 
                 try
                 {
-                    decisions = _nzbSearchService.MovieSearch(movieId.Key, userInvokedSearch);
+                    decisions = _nzbSearchService.MovieSearch(movieId.Key, userInvokedSearch, false);
                 }
                 catch (Exception ex)
                 {

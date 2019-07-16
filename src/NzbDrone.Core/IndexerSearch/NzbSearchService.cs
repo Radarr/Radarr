@@ -16,8 +16,8 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public interface ISearchForNzb
     {
-        List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch);
-        List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch);
+        List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch);
+        List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch, bool interactiveSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
@@ -38,28 +38,28 @@ namespace NzbDrone.Core.IndexerSearch
             _logger = logger;
         }
 
-        public List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch)
+        public List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch)
         {
             var movie = _movieService.GetMovie(movieId);
 
-            return MovieSearch(movie, userInvokedSearch);
+            return MovieSearch(movie, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch)
+        public List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch, bool interactiveSearch)
         {
-            var searchSpec = Get<MovieSearchCriteria>(movie, userInvokedSearch);
+            var searchSpec = Get<MovieSearchCriteria>(movie, userInvokedSearch, interactiveSearch);
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec()
             {
                 Movie = movie,
-
-                UserInvokedSearch = userInvokedSearch
-            };
+                UserInvokedSearch = userInvokedSearch,
+                InteractiveSearch = interactiveSearch
+        };
             return spec;
         }
 
