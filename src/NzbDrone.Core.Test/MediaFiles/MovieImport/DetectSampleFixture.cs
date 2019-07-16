@@ -10,11 +10,12 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
     [TestFixture]
-    public class SampleServiceFixture : CoreTest<DetectSample>
+    public class DetectSampleFixture : CoreTest<DetectSample>
     {
         private Movie _movie;
         private LocalMovie _localMovie;
@@ -26,17 +27,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                                      .With(s => s.Runtime = 30)
                                      .Build();
 
-            _localMovie = new LocalMovie
-                                {
-                                    Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
-                                    Movie = _movie,
-                                    Quality = new QualityModel(Quality.HDTV720p)
-                                };
-        }
 
-        private void GivenFileSize(long size)
-        {
-            _localMovie.Size = size;
+            _localMovie = new LocalMovie
+            {
+                Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
+                Movie = _movie,
+                Quality = new QualityModel(Quality.HDTV720p)
+            };
         }
 
         private void GivenRuntime(int seconds)
@@ -51,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             _localMovie.Path = @"C:\Test\some.show.s01e01.flv";
 
-            ShouldBeFalse();
+            ShouldBeNotSample();
 
             Mocker.GetMock<IVideoFileInfoReader>().Verify(c => c.GetRunTime(It.IsAny<string>()), Times.Never());
         }
@@ -61,7 +58,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             _localMovie.Path = @"C:\Test\some.show.s01e01.strm";
 
-            ShouldBeFalse();
+            ShouldBeNotSample();
 
             Mocker.GetMock<IVideoFileInfoReader>().Verify(c => c.GetRunTime(It.IsAny<string>()), Times.Never());
         }
@@ -70,12 +67,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         public void should_use_runtime()
         {
             GivenRuntime(120);
-            GivenFileSize(1000.Megabytes());
 
             Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Quality,
                              _localMovie.Path,
-                             _localMovie.Size,
                              false);
 
             Mocker.GetMock<IVideoFileInfoReader>().Verify(v => v.GetRunTime(It.IsAny<string>()), Times.Once());
@@ -86,7 +80,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenRuntime(60);
 
-            ShouldBeTrue();
+            ShouldBeSample();
         }
 
         [Test]
@@ -94,7 +88,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenRuntime(600);
 
-            ShouldBeFalse();
+            ShouldBeNotSample();
         }
 
         [Test]
@@ -103,51 +97,53 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             _movie.Runtime = 6;
             GivenRuntime(299);
 
-            ShouldBeFalse();
+            ShouldBeNotSample();
         }
 
         [Test]
-        public void should_fall_back_to_file_size_if_mediainfo_dll_not_found_acceptable_size()
+        public void should_return_false_if_runtime_greater_than_anime_short_minimum()
         {
-            Mocker.GetMock<IVideoFileInfoReader>()
-                  .Setup(s => s.GetRunTime(It.IsAny<string>()))
-                  .Throws<DllNotFoundException>();
+            _movie.Runtime = 2;
+            GivenRuntime(60);
 
-            GivenFileSize(1000.Megabytes());
-            ShouldBeFalse();
+            ShouldBeNotSample();
         }
 
         [Test]
-        public void should_fall_back_to_file_size_if_mediainfo_dll_not_found_undersize()
+        public void should_return_true_if_runtime_less_than_anime_short_minimum()
+        {
+            _movie.Runtime = 2;
+            GivenRuntime(10);
+
+            ShouldBeSample();
+        }
+
+        [Test]
+        public void should_return_indeterminate_if_mediainfo_result_is_null()
         {
             Mocker.GetMock<IVideoFileInfoReader>()
                   .Setup(s => s.GetRunTime(It.IsAny<string>()))
-                  .Throws<DllNotFoundException>();
+                  .Returns((TimeSpan?)null);
 
-            GivenFileSize(1.Megabytes());
-            ShouldBeTrue();
-        }
-
-
-
-
-
-        private void ShouldBeTrue()
-        {
             Subject.IsSample(_localMovie.Movie,
-                                         _localMovie.Quality,
-                                         _localMovie.Path,
-                                         _localMovie.Size,
-                                         false).Should().BeTrue();
-        }
-
-        private void ShouldBeFalse()
-        {
-            Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Quality,
                              _localMovie.Path,
-                             _localMovie.Size,
-                             false).Should().BeFalse();
+                             false).Should().Be(DetectSampleResult.Indeterminate);
+
+            ExceptionVerification.ExpectedErrors(1);
+        }
+
+        private void ShouldBeSample()
+        {
+            Subject.IsSample(_localMovie.Movie,
+                             _localMovie.Path,
+                             false).Should().Be(DetectSampleResult.Sample);
+        }
+
+        private void ShouldBeNotSample()
+        {
+            Subject.IsSample(_localMovie.Movie,
+                             _localMovie.Path,
+                             false).Should().Be(DetectSampleResult.NotSample);
         }
     }
 }

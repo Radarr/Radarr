@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Movies
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title, int? year);
         Movie FindByTitleSlug(string slug);
+        Movie FindByPath(string path);
         bool MovieExists(Movie movie);
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
@@ -285,6 +286,11 @@ namespace NzbDrone.Core.Movies
         public Movie FindByTitle(string title, int year)
         {
             return _movieRepository.FindByTitle(title.CleanSeriesTitle(), year);
+        }
+
+        public Movie FindByPath(string path)
+        {
+            return _movieRepository.FindByPath(path);
         }
 
         public void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false)

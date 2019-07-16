@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
     //TODO: Update all of this for movies.
-    public class ImportApprovedEpisodesFixture : CoreTest<ImportApprovedMovie>
+    public class ImportApprovedMoviesFixture : CoreTest<ImportApprovedMovie>
     {
         private List<ImportDecision> _rejectedDecisions;
         private List<ImportDecision> _approvedDecisions;
@@ -51,10 +51,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                            Movie = movie,
                                            Path = Path.Combine(movie.Path, "30 Rock - S01E01 - Pilot.avi"),
                                            Quality = new QualityModel(),
-                                           ParsedMovieInfo = new ParsedMovieInfo()
-                                           {
-                                               ReleaseGroup = "DRONE"
-                                           }
+                                           ReleaseGroup = "DRONE"
                                        }));
 
 

@@ -22,11 +22,9 @@ namespace NzbDrone.Core.Parser
 {
     public interface IParsingService
     {
-        LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, List<object> helpers, bool sceneSource = false);
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
-        ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers);
         ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
         List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
@@ -122,27 +120,6 @@ namespace NzbDrone.Core.Parser
             return minimalInfo;
         }
 
-        public ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers)
-        {
-            var fileInfo = new FileInfo(path);
-
-            var result = ParseMovieInfo(fileInfo.Name, helpers);
-
-            if (result == null)
-            {
-                _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name, helpers);
-            }
-
-            if (result == null)
-            {
-                _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseMovieInfo(fileInfo.Directory.Name + fileInfo.Extension, helpers);
-            }
-
-            return result;
-        }
-
         public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
         {
             var matches = MatchFormatTags(movieInfo);
@@ -176,22 +153,6 @@ namespace NzbDrone.Core.Parser
             }
 
             return matches;
-        }
-
-        public LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, List<object> helpers, bool sceneSource = false)
-        {
-            var enhanced = EnhanceMinimalInfo(minimalInfo, helpers);
-
-            return new LocalMovie
-            {
-                Movie = movie,
-                Quality = enhanced.Quality,
-                Languages = enhanced.Languages,
-                Path = filename,
-                ParsedMovieInfo = enhanced,
-                ExistingFile = movie.Path.IsParentPath(filename),
-                MediaInfo = helpers.FirstOrDefault(h => h?.GetType() == typeof(MediaInfoModel)) as MediaInfoModel
-            };
         }
 
         public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)

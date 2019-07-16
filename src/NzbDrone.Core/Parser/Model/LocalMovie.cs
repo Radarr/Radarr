@@ -15,13 +15,18 @@ namespace NzbDrone.Core.Parser.Model
 
         public string Path { get; set; }
         public long Size { get; set; }
-        public ParsedMovieInfo ParsedMovieInfo { get; set; }
+        public ParsedMovieInfo FileMovieInfo { get; set; }
+        public ParsedMovieInfo DownloadClientMovieInfo { get; set; }
+        public ParsedMovieInfo FolderMovieInfo { get; set; }
         public Movie Movie { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public bool ExistingFile { get; set; }
-        
+        public bool SceneSource { get; set; }
+        public string ReleaseGroup { get; set; }
+        public string Edition { get; set; }
+
 
         public override string ToString()
         {

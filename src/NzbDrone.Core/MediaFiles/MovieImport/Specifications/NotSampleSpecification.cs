@@ -17,15 +17,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localEpisode, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
-            var sample = _detectSample.IsSample(localEpisode.Movie,
-                                                localEpisode.Quality,
-                                                localEpisode.Path,
-                                                localEpisode.Size,
+            var sample = _detectSample.IsSample(localMovie.Movie,
+                                                localMovie.Path,
                                                 false);
 
-            if (sample)
+            if (sample == DetectSampleResult.Sample)
             {
                 return Decision.Reject("Sample");
             }

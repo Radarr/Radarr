@@ -85,8 +85,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     movieFile.Languages = localMovie.Languages;
                     movieFile.MediaInfo = localMovie.MediaInfo;
                     movieFile.Movie = localMovie.Movie;
-                    movieFile.ReleaseGroup = localMovie.ParsedMovieInfo?.ReleaseGroup;
-                    movieFile.Edition = localMovie.ParsedMovieInfo?.Edition;
+                    movieFile.ReleaseGroup = localMovie.ReleaseGroup;
+                    movieFile.Edition = localMovie.Edition;
 
                     bool copyOnly;
                     switch (importMode)

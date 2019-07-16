@@ -331,7 +331,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("White.Van.Man.2011.S02E01.WS.PDTV.x264-REPACK-TLA")]
         public void should_parse_quality_from_name(string title)
         {
-            QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Name);
+            QualityParser.ParseQuality(title).QualityDetectionSource.Should().Be(QualityDetectionSource.Name);
         }
 
         [TestCase("Revolution.S01E02.Chained.Heat.mkv")]
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[CR] Sailor Moon - 004 [48CE2D0F].avi")]
         public void should_parse_quality_from_extension(string title)
         {
-            QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Extension);
+            QualityParser.ParseQuality(title).QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
         }
 
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]

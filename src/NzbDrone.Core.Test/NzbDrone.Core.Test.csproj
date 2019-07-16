@@ -291,10 +291,13 @@
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
     <Compile Include="MediaFiles\DownloadedMoviesCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedMoviesImportServiceFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeFileMovingServiceTests\MoveEpisodeFileFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatVideoDynamicRangeFixture.cs" />
+    <Compile Include="MediaFiles\MovieFileMovingServiceTests\MoveMovieFileFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\Aggregation\Aggregators\AggregateLanguageFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\Aggregation\Aggregators\AggregateQualityFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\Aggregation\Aggregators\Augmenters\Quality\AugmentQualityFromMediaInfoFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\ImportDecisionMakerFixture.cs" />
-    <Compile Include="MediaFiles\MovieImport\SampleServiceFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\DetectSampleFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\FreeSpaceSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualityFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\MatchesFolderSpecificationFixture.cs" />
@@ -302,7 +305,7 @@
     <Compile Include="MediaFiles\MovieImport\Specifications\NotUnpackingSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\SameFileSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\UpgradeSpecificationFixture.cs" />
-    <Compile Include="MediaFiles\ImportApprovedEpisodesFixture.cs" />
+    <Compile Include="MediaFiles\ImportApprovedMoviesFixture.cs" />
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />
     <Compile Include="MediaFiles\UpdateMovieFileQualityServiceFixture.cs" />
     <Compile Include="Messaging\Commands\CommandQueueManagerFixture.cs" />

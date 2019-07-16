@@ -28,10 +28,7 @@ namespace NzbDrone.Core.Parser.Model
         /// </summary>
         [JsonIgnore]
         public IDictionary<string, object> ExtraInfo = new Dictionary<string, object>();
-        //public int SeasonNumber { get; set; }
         public List<Language> Languages = new List<Language>();
-        //public bool FullSeason { get; set; }
-        //public bool Special { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
         public string Edition { get; set;}
