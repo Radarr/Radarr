@@ -187,7 +187,19 @@ export const defaultState = {
     {
       name: 'studio',
       label: 'Studio',
-      type: filterBuilderTypes.STRING
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const tagList = items.reduce((acc, movie) => {
+          acc.push({
+            id: movie.studio,
+            name: movie.studio
+          });
+
+          return acc;
+        }, []);
+
+        return tagList.sort(sortByName);
+      }
     },
     {
       name: 'qualityProfileId',
