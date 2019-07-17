@@ -87,11 +87,9 @@ namespace NzbDrone.Core.Music
             }
 
             // add metadata
-            _artistMetadataRepository.UpsertMany(artistsToAdd);
-
-            _logger.Debug("metadata id 1 {0}", string.Join(", ", artistsToAdd.Select(x => x.Metadata.Value.Id)));
-            _logger.Debug("metadata id 2 {0}", string.Join(", ", artistsToAdd.Select(x => x.ArtistMetadataId)));
-
+            _artistMetadataRepository.UpsertMany(artistsToAdd.Select(x => x.Metadata.Value).ToList());
+            artistsToAdd.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
+            
             return _artistService.AddArtists(artistsToAdd);
         }
 

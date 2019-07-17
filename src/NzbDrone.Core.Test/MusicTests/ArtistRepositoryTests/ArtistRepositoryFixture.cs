@@ -46,7 +46,8 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 .BuildNew();
             _id++;
 
-            _artistMetadataRepo.Insert(artist);
+            _artistMetadataRepo.Insert(metadata);
+            artist.ArtistMetadataId = metadata.Id;
             _artistRepo.Insert(artist);
         }
 

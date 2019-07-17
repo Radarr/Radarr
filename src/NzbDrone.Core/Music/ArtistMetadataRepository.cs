@@ -8,15 +8,8 @@ namespace NzbDrone.Core.Music
 {
     public interface IArtistMetadataRepository : IBasicRepository<ArtistMetadata>
     {
-        Artist Insert(Artist artist);
-        List<Artist> InsertMany(List<Artist> artists);
-        Artist Update(Artist artist);
-        Artist Upsert(Artist artist);
-        void UpdateMany(List<Artist> artists);
-        ArtistMetadata FindById(string foreignArtistId);
         List<ArtistMetadata> FindById(List<string> foreignIds);
         bool UpsertMany(List<ArtistMetadata> artists);
-        bool UpsertMany(List<Artist> artists);
     }
 
     public class ArtistMetadataRepository : BasicRepository<ArtistMetadata>, IArtistMetadataRepository
@@ -27,62 +20,6 @@ namespace NzbDrone.Core.Music
             : base(database, eventAggregator)
         {
             _logger = logger;
-        }
-
-        public Artist Insert(Artist artist)
-        {
-            Insert(artist.Metadata.Value);
-            artist.ArtistMetadataId = artist.Metadata.Value.Id;
-            return artist;
-        }
-
-        public List<Artist> InsertMany(List<Artist> artists)
-        {
-            InsertMany(artists.Select(x => x.Metadata.Value).ToList());
-            artists.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
-
-            return artists;
-        }
-
-        public Artist Update(Artist artist)
-        {
-            Update(artist.Metadata.Value);
-            return artist;
-        }
-
-        public Artist Upsert(Artist artist)
-        {
-            var existing = FindById(artist.Metadata.Value.ForeignArtistId);
-            if (existing != null)
-            {
-                artist.ArtistMetadataId = existing.Id;
-                artist.Metadata.Value.Id = existing.Id;
-                Update(artist);
-            }
-            else
-            {
-                Insert(artist);
-            }
-            _logger.Debug("Upserted metadata with ID {0}", artist.Id);
-            return artist;
-        }
-
-        public bool UpsertMany(List<Artist> artists)
-        {
-            var result = UpsertMany(artists.Select(x => x.Metadata.Value).ToList());
-            artists.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
-            
-            return result;
-        }
-
-        public void UpdateMany(List<Artist> artists)
-        {
-            UpdateMany(artists.Select(x => x.Metadata.Value).ToList());
-        }
-
-        public ArtistMetadata FindById(string foreignArtistId)
-        {
-            return Query.Where(a => a.ForeignArtistId == foreignArtistId).SingleOrDefault();
         }
 
         public List<ArtistMetadata> FindById(List<string> foreignIds)
