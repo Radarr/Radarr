@@ -215,7 +215,9 @@ class MovieIndex extends Component {
     if (this.state.isMovieEditorActive) {
       this.setState({ isMovieEditorActive: false });
     } else {
-      this.setState({ isMovieEditorActive: true });
+      const newState = selectAll(this.state.selectedState, false)
+      newState.isMovieEditorActive = true;
+      this.setState(newState);
     }
   }
 

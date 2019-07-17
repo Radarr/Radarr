@@ -6,7 +6,7 @@ import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/create
 import dimensions from 'Styles/Variables/dimensions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchMovies } from 'Store/Actions/movieActions';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import scrollPositions from 'Store/scrollPositions';
 import { setMovieSort, setMovieFilter, setMovieView, setMovieTableOption, saveMovieEditor } from 'Store/Actions/movieIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -64,8 +64,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchMovies() {
-      dispatch(fetchMovies);
+    dispatchFetchRootFolders() {
+      dispatch(fetchRootFolders());
     },
 
     onTableOptionChange(payload) {
@@ -122,7 +122,8 @@ class MovieIndexConnector extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatchFetchMovies();
+    // TODO: Fetch root folders here for now, but should eventually fetch on editor toggle and check loaded before showing controls
+    this.props.dispatchFetchRootFolders();
   }
 
   //
@@ -167,7 +168,7 @@ MovieIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
-  dispatchFetchMovies: PropTypes.func.isRequired,
+  dispatchFetchRootFolders: PropTypes.func.isRequired,
   dispatchSetMovieView: PropTypes.func.isRequired,
   dispatchSaveMovieEditor: PropTypes.func.isRequired
 };
