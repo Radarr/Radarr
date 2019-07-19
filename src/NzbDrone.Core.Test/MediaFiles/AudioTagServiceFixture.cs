@@ -12,6 +12,7 @@ using System.Linq;
 using NzbDrone.Common.Extensions;
 using System.Collections.Generic;
 using NzbDrone.Test.Common;
+using NzbDrone.Common.Disk;
 
 namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 {
@@ -47,10 +48,15 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
         private readonly string testdir = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media");
         private string copiedFile;
         private AudioTag testTags;
+        private IDiskProvider _diskProvider;
         
         [SetUp]
         public void Setup()
         {
+            _diskProvider = Mocker.Resolve<IDiskProvider>("ActualDiskProvider");
+
+            Mocker.SetConstant<IDiskProvider>(_diskProvider);
+            
             Mocker.GetMock<IConfigService>()
                 .Setup(x => x.WriteAudioTags)
                 .Returns(WriteAudioTagsType.Sync);
@@ -344,6 +350,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 
             var file = Builder<TrackFile>.CreateNew()
                 .With(x => x.Tracks = new List<Track> { tracks[0] })
+                .With(x => x.Artist = artist)
                 .Build();
 
             return file;
@@ -356,6 +363,25 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             var tag = Subject.GetTrackMetadata(file);
         
             tag.MusicBrainzReleaseCountry.Should().BeNull();
+        }
+
+        [TestCase("nin.mp3")]
+        public void write_tags_should_update_trackfile_size_and_modified(string filename)
+        {
+            Mocker.GetMock<IConfigService>()
+                .Setup(x => x.ScrubAudioTags)
+                .Returns(true);
+
+            GivenFileCopy(filename);
+
+            var file = GivenPopulatedTrackfile();
+
+            file.Path = copiedFile;
+            Subject.WriteTags(file, false, true);
+
+            var fileInfo = _diskProvider.GetFileInfo(file.Path);
+            file.Modified.Should().Be(fileInfo.LastWriteTimeUtc);
+            file.Size.Should().Be(fileInfo.Length);
         }
     }
 }

@@ -104,10 +104,13 @@ namespace NzbDrone.Core.MediaFiles
             };
         }
 
-        private void UpdateTrackfileSize(TrackFile trackfile, string path)
+        private void UpdateTrackfileSizeAndModified(TrackFile trackfile, string path)
         {
             // update the saved file size so that the importer doesn't get confused on the next scan
-            trackfile.Size = _diskProvider.GetFileSize(path);
+            var fileInfo = _diskProvider.GetFileInfo(path);
+            trackfile.Size = fileInfo.Length;
+            trackfile.Modified = fileInfo.LastWriteTimeUtc;
+            
             if (trackfile.Id > 0)
             {
                 _mediaFileService.Update(trackfile);
@@ -190,7 +193,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Debug($"Writing tags for {trackfile}");
             newTags.Write(path);
 
-            UpdateTrackfileSize(trackfile, path);
+            UpdateTrackfileSizeAndModified(trackfile, path);
             
             _eventAggregator.PublishEvent(new TrackFileRetaggedEvent(trackfile.Artist.Value, trackfile, diff, _configService.ScrubAudioTags));
         }
@@ -276,7 +279,7 @@ namespace NzbDrone.Core.MediaFiles
 
             RemoveMusicBrainzTags(path);
             
-            UpdateTrackfileSize(trackfile, path);
+            UpdateTrackfileSizeAndModified(trackfile, path);
         }
 
         public List<RetagTrackFilePreview> GetRetagPreviewsByArtist(int artistId)
