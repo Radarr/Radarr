@@ -100,7 +100,11 @@ namespace NzbDrone.Core.Music
         protected virtual void PublishEntityUpdatedEvent(Entity entity)
         {
         }
-        
+
+        protected virtual void PublishRefreshCompleteEvent(Entity entity)
+        {
+        }
+
         protected virtual void PublishChildrenUpdatedEvent(Entity entity, List<Child> newChildren, List<Child> updateChildren)
         {
         }
@@ -184,6 +188,8 @@ namespace NzbDrone.Core.Music
             {
                 PublishEntityUpdatedEvent(local);
             }
+
+            PublishRefreshCompleteEvent(local);
 
             _logger.Debug($"Finished {typeof(Entity).Name} refresh for {local}");
 

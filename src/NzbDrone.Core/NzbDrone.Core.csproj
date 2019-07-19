@@ -893,7 +893,7 @@
     <Compile Include="Music\Events\ArtistDeletedEvent.cs" />
     <Compile Include="Music\Events\AlbumEditedEvent.cs" />
     <Compile Include="Music\Events\ArtistEditedEvent.cs" />
-    <Compile Include="Music\Events\ArtistRefreshStartingEvent.cs" />
+    <Compile Include="Music\Events\ArtistRefreshCompleteEvent.cs" />
     <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
     <Compile Include="Music\Events\AlbumInfoRefreshedEvent.cs" />
     <Compile Include="Music\Ratings.cs" />

@@ -247,6 +247,11 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(entity));
         }
 
+        protected virtual void PublishRefreshCompleteEvent(Artist entity)
+        {
+            _eventAggregator.PublishEvent(new ArtistRefreshCompleteEvent(entity));
+        }
+
         protected override void PublishChildrenUpdatedEvent(Artist entity, List<Album> newChildren, List<Album> updateChildren)
         {
             _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(entity, newChildren, updateChildren));
@@ -297,7 +302,6 @@ namespace NzbDrone.Core.Music
         {
             var trigger = message.Trigger;
             var isNew = message.IsNewArtist;
-            _eventAggregator.PublishEvent(new ArtistRefreshStartingEvent(trigger == CommandTrigger.Manual));
 
             if (message.ArtistId.HasValue)
             {

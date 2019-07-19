@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaCover
     }
 
     public class MediaCoverService :
-        IHandleAsync<ArtistUpdatedEvent>,
+        IHandleAsync<ArtistRefreshCompleteEvent>,
         IHandleAsync<ArtistDeletedEvent>,
         IMapCoversToLocal
     {
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        public void HandleAsync(ArtistUpdatedEvent message)
+        public void HandleAsync(ArtistRefreshCompleteEvent message)
         {
             EnsureArtistCovers(message.Artist);
 
