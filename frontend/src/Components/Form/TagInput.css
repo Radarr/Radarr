@@ -2,7 +2,6 @@
 .input {
   composes: input from '~./AutoSuggestInput.css';
 
-  position: relative;
   padding: 0;
   min-height: 35px;
   height: auto;
