@@ -7,7 +7,6 @@ import createArtistClientSideCollectionItemsSelector from 'Store/Selectors/creat
 import dimensions from 'Styles/Variables/dimensions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchArtist } from 'Store/Actions/artistActions';
 import scrollPositions from 'Store/scrollPositions';
 import { setArtistSort, setArtistFilter, setArtistView, setArtistTableOption } from 'Store/Actions/artistIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -68,10 +67,6 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchArtist() {
-      dispatch(fetchArtist);
-    },
-
     onTableOptionChange(payload) {
       dispatch(setArtistTableOption(payload));
     },
@@ -121,10 +116,6 @@ class ArtistIndexConnector extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.dispatchFetchArtist();
-  }
-
   //
   // Listeners
 
@@ -162,7 +153,6 @@ ArtistIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
-  dispatchFetchArtist: PropTypes.func.isRequired,
   dispatchSetArtistView: PropTypes.func.isRequired
 };
 
