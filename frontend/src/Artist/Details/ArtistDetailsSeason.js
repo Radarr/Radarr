@@ -206,6 +206,7 @@ class ArtistDetailsSeason extends Component {
                 }
                 <div className={styles.collapseButtonContainer}>
                   <IconButton
+                    iconClassName={styles.collapseButtonIcon}
                     name={icons.COLLAPSE}
                     size={20}
                     title="Hide albums"
