@@ -36,7 +36,8 @@ namespace NzbDrone.Core.Annotations
         Url,
         Captcha,
         OAuth,
-        Device
+        Device,
+        Playlist
     }
 
     public enum HiddenType

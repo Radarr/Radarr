@@ -289,6 +289,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 artist.Metadata = MapArtistMetadata(resource.Artists.Single(x => x.Id == resource.ArtistId));
             }
             album.Artist = artist;
+            album.ArtistMetadata = artist.Metadata;
 
             return album;
         }

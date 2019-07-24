@@ -221,6 +221,7 @@ function EditImportListModalContent(props) {
                           advancedSettings={advancedSettings}
                           provider="importList"
                           providerData={item}
+                          section="settings.importLists"
                           {...field}
                           onChange={onFieldChange}
                         />

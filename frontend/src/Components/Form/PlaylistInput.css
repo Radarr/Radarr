@@ -1,0 +1,9 @@
+.playlistInputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  composes: input from '~./TagInput.css';
+  composes: hasButton from '~Components/Form/Input.css';
+}

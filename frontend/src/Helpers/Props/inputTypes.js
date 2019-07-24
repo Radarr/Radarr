@@ -2,6 +2,7 @@ export const AUTO_COMPLETE = 'autoComplete';
 export const CAPTCHA = 'captcha';
 export const CHECK = 'check';
 export const DEVICE = 'device';
+export const PLAYLIST = 'playlist';
 export const KEY_VALUE_LIST = 'keyValueList';
 export const MONITOR_ALBUMS_SELECT = 'monitorAlbumsSelect';
 export const NUMBER = 'number';
@@ -24,6 +25,7 @@ export const all = [
   CAPTCHA,
   CHECK,
   DEVICE,
+  PLAYLIST,
   KEY_VALUE_LIST,
   MONITOR_ALBUMS_SELECT,
   NUMBER,

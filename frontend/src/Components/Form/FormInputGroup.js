@@ -6,6 +6,7 @@ import AutoCompleteInput from './AutoCompleteInput';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
+import PlaylistInputConnector from './PlaylistInputConnector';
 import KeyValueListInput from './KeyValueListInput';
 import MonitorAlbumsSelectInput from './MonitorAlbumsSelectInput';
 import NumberInput from './NumberInput';
@@ -38,6 +39,9 @@ function getComponent(type) {
 
     case inputTypes.DEVICE:
       return DeviceInputConnector;
+
+    case inputTypes.PLAYLIST:
+      return PlaylistInputConnector;
 
     case inputTypes.KEY_VALUE_LIST:
       return KeyValueListInput;
