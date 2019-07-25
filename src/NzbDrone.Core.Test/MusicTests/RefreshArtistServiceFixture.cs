@@ -106,6 +106,7 @@ namespace NzbDrone.Core.Test.MusicTests
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             VerifyEventNotPublished<ArtistUpdatedEvent>();
+            VerifyEventPublished<ArtistRefreshCompleteEvent>();
         }
 
         [Test]
@@ -125,6 +126,7 @@ namespace NzbDrone.Core.Test.MusicTests
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             VerifyEventPublished<ArtistUpdatedEvent>();
+            VerifyEventPublished<ArtistRefreshCompleteEvent>();
         }
 
         [Test]

@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(entity));
         }
 
-        protected virtual void PublishRefreshCompleteEvent(Artist entity)
+        protected override void PublishRefreshCompleteEvent(Artist entity)
         {
             _eventAggregator.PublishEvent(new ArtistRefreshCompleteEvent(entity));
         }
