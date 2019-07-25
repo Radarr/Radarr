@@ -10,7 +10,6 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.MetadataSource.SkyHook;
 
 namespace NzbDrone.Core.Music
 {
@@ -23,21 +22,21 @@ namespace NzbDrone.Core.Music
     public class AddArtistService : IAddArtistService
     {
         private readonly IArtistService _artistService;
-        private readonly IArtistMetadataRepository _artistMetadataRepository;
+        private readonly IArtistMetadataService _artistMetadataService;
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddArtistValidator _addArtistValidator;
         private readonly Logger _logger;
 
         public AddArtistService(IArtistService artistService,
-                                IArtistMetadataRepository artistMetadataRepository,
+                                IArtistMetadataService artistMetadataService,
                                 IProvideArtistInfo artistInfo,
                                 IBuildFileNames fileNameBuilder,
                                 IAddArtistValidator addArtistValidator,
                                 Logger logger)
         {
             _artistService = artistService;
-            _artistMetadataRepository = artistMetadataRepository;
+            _artistMetadataService = artistMetadataService;
             _artistInfo = artistInfo;
             _fileNameBuilder = fileNameBuilder;
             _addArtistValidator = addArtistValidator;
@@ -54,7 +53,7 @@ namespace NzbDrone.Core.Music
             _logger.Info("Adding Artist {0} Path: [{1}]", newArtist, newArtist.Path);
 
             // add metadata
-            _artistMetadataRepository.Upsert(newArtist.Metadata.Value);
+            _artistMetadataService.Upsert(newArtist.Metadata.Value);
             newArtist.ArtistMetadataId = newArtist.Metadata.Value.Id;
 
             // add the artist itself
@@ -87,7 +86,7 @@ namespace NzbDrone.Core.Music
             }
 
             // add metadata
-            _artistMetadataRepository.UpsertMany(artistsToAdd.Select(x => x.Metadata.Value).ToList());
+            _artistMetadataService.UpsertMany(artistsToAdd.Select(x => x.Metadata.Value).ToList());
             artistsToAdd.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
             
             return _artistService.AddArtists(artistsToAdd);

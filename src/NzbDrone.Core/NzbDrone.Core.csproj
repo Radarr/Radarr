@@ -884,6 +884,7 @@
     <Compile Include="Music\AlbumService.cs" />
     <Compile Include="Music\ArtistRepository.cs" />
     <Compile Include="Music\ArtistMetadataRepository.cs" />
+    <Compile Include="Music\ArtistMetadataService.cs" />
     <Compile Include="Music\ArtistService.cs" />
     <Compile Include="Music\Commands\RefreshArtistCommand.cs" />
     <Compile Include="Music\Events\AlbumAddedEvent.cs" />

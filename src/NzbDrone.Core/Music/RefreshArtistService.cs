@@ -23,7 +23,6 @@ namespace NzbDrone.Core.Music
     {
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
-        private readonly IArtistMetadataRepository _artistMetadataRepository;
         private readonly IAlbumService _albumService;
         private readonly IRefreshAlbumService _refreshAlbumService;
         private readonly IEventAggregator _eventAggregator;
@@ -37,7 +36,7 @@ namespace NzbDrone.Core.Music
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
                                     IArtistService artistService,
-                                    IArtistMetadataRepository artistMetadataRepository,
+                                    IArtistMetadataService artistMetadataService,
                                     IAlbumService albumService,
                                     IRefreshAlbumService refreshAlbumService,
                                     IEventAggregator eventAggregator,
@@ -48,11 +47,10 @@ namespace NzbDrone.Core.Music
                                     IConfigService configService,
                                     IImportListExclusionService importListExclusionService,
                                     Logger logger)
-        : base(logger, artistMetadataRepository)
+        : base(logger, artistMetadataService)
         {
             _artistInfo = artistInfo;
             _artistService = artistService;
-            _artistMetadataRepository = artistMetadataRepository;
             _albumService = albumService;
             _refreshAlbumService = refreshAlbumService;
             _eventAggregator = eventAggregator;

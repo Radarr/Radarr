@@ -50,6 +50,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             _artistService = Mocker.Resolve<ArtistService>();
             Mocker.SetConstant<IArtistService>(_artistService);
+            Mocker.SetConstant<IArtistMetadataService>(Mocker.Resolve<ArtistMetadataService>());
             Mocker.SetConstant<IAlbumService>(Mocker.Resolve<AlbumService>());
             Mocker.SetConstant<IReleaseService>(Mocker.Resolve<ReleaseService>());
             Mocker.SetConstant<ITrackService>(Mocker.Resolve<TrackService>());

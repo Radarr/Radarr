@@ -9,13 +9,13 @@ namespace NzbDrone.Core.Music
     public abstract class RefreshEntityServiceBase<Entity, Child>
     {
         private readonly Logger _logger;
-        private readonly IArtistMetadataRepository _artistMetadataRepository;
+        private readonly IArtistMetadataService _artistMetadataService;
 
         public RefreshEntityServiceBase(Logger logger,
-                                        IArtistMetadataRepository artistMetadataRepository)
+                                        IArtistMetadataService artistMetadataService)
         {
             _logger = logger;
-            _artistMetadataRepository = artistMetadataRepository;
+            _artistMetadataService = artistMetadataService;
         }
         
         public enum UpdateResult
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Music
         public UpdateResult UpdateArtistMetadata(List<ArtistMetadata> data)
         {
             var remoteMetadata = data.DistinctBy(x => x.ForeignArtistId).ToList();
-            var updated = _artistMetadataRepository.UpsertMany(data);
+            var updated = _artistMetadataService.UpsertMany(data);
             return updated ? UpdateResult.UpdateTags : UpdateResult.None;
         }
 

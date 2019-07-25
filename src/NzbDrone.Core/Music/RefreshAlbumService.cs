@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Music
         public RefreshAlbumService(IAlbumService albumService,
                                    IArtistService artistService,
                                    IAddArtistService addArtistService,
-                                   IArtistMetadataRepository artistMetadataRepository,
+                                   IArtistMetadataService artistMetadataService,
                                    IReleaseService releaseService,
                                    IProvideAlbumInfo albumInfo,
                                    IRefreshAlbumReleaseService refreshAlbumReleaseService,
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Music
                                    IEventAggregator eventAggregator,
                                    ICheckIfAlbumShouldBeRefreshed checkIfAlbumShouldBeRefreshed,
                                    Logger logger)
-        : base(logger, artistMetadataRepository)
+        : base(logger, artistMetadataService)
         {
             _albumService = albumService;
             _artistService = artistService;

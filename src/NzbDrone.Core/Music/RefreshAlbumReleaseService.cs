@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Music
         private readonly Logger _logger;
 
         public RefreshAlbumReleaseService(IReleaseService releaseService,
-                                          IArtistMetadataRepository artistMetadataRepository,
+                                          IArtistMetadataService artistMetadataService,
                                           IRefreshTrackService refreshTrackService,
                                           ITrackService trackService,
                                           IMediaFileService mediaFileService,
                                           Logger logger)
-        : base(logger, artistMetadataRepository)
+        : base(logger, artistMetadataService)
         {
             _releaseService = releaseService;
             _trackService = trackService;
