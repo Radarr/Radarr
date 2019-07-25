@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
+import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -12,10 +13,41 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import Popover from 'Components/Tooltip/Popover';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import DescriptionList from 'Components/DescriptionList/DescriptionList';
+import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import styles from './EditImportListModalContent.css';
 
+function ImportListMonitoringOptionsPopoverContent() {
+  return (
+    <DescriptionList>
+      <DescriptionListItem
+        title="None"
+        data="Do not monitor artists or albums"
+      />
+
+      <DescriptionListItem
+        title="Specific Album"
+        data="Monitor artists but only monitor albums explicitly included in the list"
+      />
+
+      <DescriptionListItem
+        title="All Artist Albums"
+        data="Monitor artists and all albums for each artist included on the import list"
+      />
+    </DescriptionList>
+  );
+}
+
 function EditImportListModalContent(props) {
+
+  const monitorOptions = [
+    { key: 'none', value: 'None' },
+    { key: 'specificAlbum', value: 'Specific Album' },
+    { key: 'entireArtist', value: 'All Artist Albums' }
+  ];
+
   const {
     advancedSettings,
     isFetching,
@@ -92,11 +124,26 @@ function EditImportListModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Monitor</FormLabel>
+                <FormLabel>
+                  Monitor
+
+                  <Popover
+                    anchor={
+                      <Icon
+                        className={styles.labelIcon}
+                        name={icons.INFO}
+                      />
+                    }
+                    title="Monitoring Options"
+                    body={<ImportListMonitoringOptionsPopoverContent />}
+                    position={tooltipPositions.RIGHT}
+                  />
+                </FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.CHECK}
+                  type={inputTypes.SELECT}
                   name="shouldMonitor"
+                  values={monitorOptions}
                   helpText={'Monitor artists and albums added from this list'}
                   {...shouldMonitor}
                   onChange={onInputChange}

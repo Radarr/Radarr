@@ -5,7 +5,7 @@ namespace Lidarr.Api.V1.ImportLists
     public class ImportListResource : ProviderResource
     {
         public bool EnableAutomaticAdd { get; set; }
-        public bool ShouldMonitor { get; set; }
+        public ImportListMonitorType ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public int LanguageProfileId { get; set; }

@@ -107,8 +107,8 @@ export default {
 
     [SELECT_IMPORT_LIST_SCHEMA]: (state, { payload }) => {
       return selectProviderSchema(state, section, payload, (selectedSchema) => {
-        selectedSchema.enableRss = selectedSchema.supportsRss;
-        selectedSchema.enableSearch = selectedSchema.supportsSearch;
+        selectedSchema.enableAutomaticAdd = true;
+        selectedSchema.shouldMonitor = 'entireArtist';
 
         return selectedSchema;
       });

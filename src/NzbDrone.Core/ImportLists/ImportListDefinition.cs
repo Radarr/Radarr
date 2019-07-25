@@ -5,7 +5,7 @@ namespace NzbDrone.Core.ImportLists
     public class ImportListDefinition : ProviderDefinition
     {
         public bool EnableAutomaticAdd { get; set; }
-        public bool ShouldMonitor { get; set; }
+        public ImportListMonitorType ShouldMonitor { get; set; }
         public int ProfileId { get; set; }
         public int LanguageProfileId { get; set; }
         public int MetadataProfileId { get; set; }
@@ -14,5 +14,12 @@ namespace NzbDrone.Core.ImportLists
         public override bool Enable => EnableAutomaticAdd;
 
         public ImportListStatus Status { get; set; }
+    }
+
+    public enum ImportListMonitorType
+    {
+        None,
+        SpecificAlbum,
+        EntireArtist
     }
 }

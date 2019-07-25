@@ -130,13 +130,14 @@ namespace NzbDrone.Core.ImportLists
                 // Append Artist if not already in DB or already on add list
                 if (existingArtist == null && excludedArtist == null && artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
                 {
+                    var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
                     artistsToAdd.Add(new Artist
                     {
                         Metadata = new ArtistMetadata {
                             ForeignArtistId = report.ArtistMusicBrainzId,
                             Name = report.Artist
                         },
-                        Monitored = importList.ShouldMonitor,
+                        Monitored = monitored,
                         RootFolderPath = importList.RootFolderPath,
                         QualityProfileId = importList.ProfileId,
                         LanguageProfileId = importList.LanguageProfileId,
@@ -144,15 +145,15 @@ namespace NzbDrone.Core.ImportLists
                         Tags = importList.Tags,
                         AlbumFolder = true,
                         AddOptions = new AddArtistOptions {
-                            SearchForMissingAlbums = importList.ShouldMonitor,
-                            Monitored = importList.ShouldMonitor,
-                            Monitor = importList.ShouldMonitor ? MonitorTypes.All : MonitorTypes.None
+                            SearchForMissingAlbums = monitored,
+                            Monitored = monitored,
+                            Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
                         }
                     });
                 }
 
                 // Add Album so we know what to monitor
-                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s => s.Metadata.Value.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor)
+                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s => s.Metadata.Value.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor == ImportListMonitorType.SpecificAlbum)
                 {
                     artistsToAdd.Find(s => s.Metadata.Value.ForeignArtistId == report.ArtistMusicBrainzId).AddOptions.AlbumsToMonitor.Add(report.AlbumMusicBrainzId);
                 }
