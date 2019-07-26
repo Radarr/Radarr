@@ -43,12 +43,16 @@ function createMapStateToProps() {
     createCommandExecutingSelector(commandNames.REFRESH_MOVIE),
     createCommandExecutingSelector(commandNames.RSS_SYNC),
     createCommandExecutingSelector(commandNames.RENAME_MOVIE),
+    createCommandExecutingSelector(commandNames.CUTOFF_UNMET_MOVIES_SEARCH),
+    createCommandExecutingSelector(commandNames.MISSING_MOVIES_SEARCH),
     createDimensionsSelector(),
     (
       movies,
       isRefreshingMovie,
       isRssSyncExecuting,
       isOrganizingMovie,
+      isCutoffMoviesSearch,
+      isMissingMoviesSearch,
       dimensionsState
     ) => {
       return {
@@ -56,6 +60,7 @@ function createMapStateToProps() {
         isRefreshingMovie,
         isRssSyncExecuting,
         isOrganizingMovie,
+        isSearchingMovies: isCutoffMoviesSearch || isMissingMoviesSearch,
         isSmallScreen: dimensionsState.isSmallScreen
       };
     }
@@ -97,6 +102,12 @@ function createMapDispatchToProps(dispatch, props) {
     onRssSyncPress() {
       dispatch(executeCommand({
         name: commandNames.RSS_SYNC
+      }));
+    },
+
+    onSearchPress(command) {
+      dispatch(executeCommand({
+        name: command
       }));
     }
   };

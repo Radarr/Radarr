@@ -5,7 +5,7 @@ import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons, sortDirections } from 'Helpers/Props';
+import { align, icons, kinds, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -15,6 +15,7 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import NoMovie from 'Movie/NoMovie';
 import MovieIndexTableConnector from './Table/MovieIndexTableConnector';
 import MovieIndexTableOptionsConnector from './Table/MovieIndexTableOptionsConnector';
@@ -24,6 +25,7 @@ import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOvervie
 import MovieIndexOverviewsConnector from './Overview/MovieIndexOverviewsConnector';
 import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
+import MovieIndexSearchMenu from './Menus/MovieIndexSearchMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooterConnector from './MovieIndexFooterConnector';
 import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
@@ -60,6 +62,8 @@ class MovieIndex extends Component {
       isInteractiveImportModalOpen: false,
       isMovieEditorActive: false,
       isOrganizingMovieModalOpen: false,
+      isConfirmSearchModalOpen: false,
+      searchType: null,
       allSelected: false,
       allUnselected: false,
       lastToggled: null,
@@ -215,7 +219,7 @@ class MovieIndex extends Component {
     if (this.state.isMovieEditorActive) {
       this.setState({ isMovieEditorActive: false });
     } else {
-      const newState = selectAll(this.state.selectedState, false)
+      const newState = selectAll(this.state.selectedState, false);
       newState.isMovieEditorActive = true;
       this.setState(newState);
     }
@@ -256,6 +260,19 @@ class MovieIndex extends Component {
     if (organized === true) {
       this.onSelectAllChange({ value: false });
     }
+  }
+
+  onSearchPress = (command) => {
+    this.setState({ isConfirmSearchModalOpen: true, searchType: command });
+  }
+
+  onSearchConfirmed = () => {
+    this.props.onSearchPress(this.state.searchType);
+    this.setState({ isConfirmSearchModalOpen: false });
+  }
+
+  onConfirmSearchModalClose = () => {
+    this.setState({ isConfirmSearchModalOpen: false });
   }
 
   onRender = () => {
@@ -299,6 +316,7 @@ class MovieIndex extends Component {
       isRefreshingMovie,
       isRssSyncExecuting,
       isOrganizingMovie,
+      isSearchingMovies,
       isSaving,
       saveError,
       isDeleting,
@@ -309,6 +327,7 @@ class MovieIndex extends Component {
       onViewSelect,
       onRefreshMoviePress,
       onRssSyncPress,
+      onSearchPress,
       ...otherProps
     } = this.props;
 
@@ -319,6 +338,7 @@ class MovieIndex extends Component {
       isPosterOptionsModalOpen,
       isOverviewOptionsModalOpen,
       isInteractiveImportModalOpen,
+      isConfirmSearchModalOpen,
       isMovieEditorActive,
       isRendered,
       selectedState,
@@ -355,10 +375,9 @@ class MovieIndex extends Component {
 
             <PageToolbarSeparator />
 
-            <PageToolbarButton
-              label="Search Missing"
-              iconName={icons.SEARCH}
-              isDisabled={hasNoMovie}
+            <MovieIndexSearchMenu
+              isDisabled={isSearchingMovies}
+              onSearchPress={this.onSearchPress}
             />
 
             <PageToolbarButton
@@ -564,6 +583,25 @@ class MovieIndex extends Component {
           movieIds={selectedMovieIds}
           onModalClose={this.onOrganizeMovieModalClose}
         />
+
+        <ConfirmModal
+          isOpen={isConfirmSearchModalOpen}
+          kind={kinds.DANGER}
+          title="Mass Movie Search"
+          message={
+            <div>
+              <div>
+                Are you sure you want to perform mass movie search?
+              </div>
+              <div>
+                This cannot be cancelled once started without restarting Radarr.
+              </div>
+            </div>
+          }
+          confirmLabel="Search"
+          onConfirm={this.onSearchConfirmed}
+          onCancel={this.onConfirmSearchModalClose}
+        />
       </PageContent>
     );
   }
@@ -584,6 +622,7 @@ MovieIndex.propTypes = {
   view: PropTypes.string.isRequired,
   isRefreshingMovie: PropTypes.bool.isRequired,
   isOrganizingMovie: PropTypes.bool.isRequired,
+  isSearchingMovies: PropTypes.bool.isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
@@ -596,6 +635,7 @@ MovieIndex.propTypes = {
   onViewSelect: PropTypes.func.isRequired,
   onRefreshMoviePress: PropTypes.func.isRequired,
   onRssSyncPress: PropTypes.func.isRequired,
+  onSearchPress: PropTypes.func.isRequired,
   onScroll: PropTypes.func.isRequired,
   onSaveSelected: PropTypes.func.isRequired
 };

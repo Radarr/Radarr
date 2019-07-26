@@ -177,7 +177,9 @@ namespace NzbDrone.Core.Movies
 
         private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
 		{
-            return Query.Where(pagingSpec.FilterExpressions.FirstOrDefault())
+            return Query
+                 .Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
+                 .Where(pagingSpec.FilterExpressions.FirstOrDefault())
                  .AndWhere(m => m.MovieFileId != 0)
                  .AndWhere(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
                  .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
