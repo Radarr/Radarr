@@ -850,7 +850,6 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedMovieScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieCommand.cs" />
-    <Compile Include="MediaFiles\Commands\RenameMovieFilesCommand.cs" />
     <Compile Include="MediaFiles\Commands\RescanMovieCommand.cs" />
     <Compile Include="MediaFiles\DownloadedMovieCommandService.cs" />
     <Compile Include="MediaFiles\DownloadedMovieImportService.cs" />

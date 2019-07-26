@@ -34,14 +34,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(_movie);
         }
 
-        private void GivenNoEpisodeFiles()
+        private void GivenNoMovieFiles()
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
                   .Returns(new List<MovieFile>());
         }
 
-        private void GivenEpisodeFiles()
+        private void GivenMovieFiles()
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
@@ -57,9 +57,9 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_publish_event_if_no_files_to_rename()
         {
-            GivenNoEpisodeFiles();
+            GivenNoMovieFiles();
 
-            Subject.Execute(new RenameMovieFilesCommand(_movie.Id, new List<int>{1}));
+            Subject.Execute(new RenameFilesCommand(_movie.Id, new List<int>{1}));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<MovieRenamedEvent>()), Times.Never());
@@ -68,13 +68,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_publish_event_if_no_files_are_renamed()
         {
-            GivenEpisodeFiles();
+            GivenMovieFiles();
 
             Mocker.GetMock<IMoveMovieFiles>()
                   .Setup(s => s.MoveMovieFile(It.IsAny<MovieFile>(), It.IsAny<Movie>()))
                   .Throws(new SameFilenameException("Same file name", "Filename"));
 
-            Subject.Execute(new RenameMovieFilesCommand(_movie.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_movie.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<MovieRenamedEvent>()), Times.Never());
@@ -83,10 +83,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_publish_event_if_files_are_renamed()
         {
-            GivenEpisodeFiles();
+            GivenMovieFiles();
             GivenMovedFiles();
 
-            Subject.Execute(new RenameMovieFilesCommand(_movie.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_movie.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<MovieRenamedEvent>()), Times.Once());
@@ -95,24 +95,24 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_update_moved_files()
         {
-            GivenEpisodeFiles();
+            GivenMovieFiles();
             GivenMovedFiles();
 
-            Subject.Execute(new RenameMovieFilesCommand(_movie.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_movie.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IMediaFileService>()
                   .Verify(v => v.Update(It.IsAny<MovieFile>()), Times.Exactly(2));
         }
 
         [Test]
-        public void should_get_episodefiles_by_ids_only()
+        public void should_get_moviefiles_by_ids_only()
         {
-            GivenEpisodeFiles();
+            GivenMovieFiles();
             GivenMovedFiles();
 
             var files = new List<int> { 1 };
 
-            Subject.Execute(new RenameMovieFilesCommand(_movie.Id, files));
+            Subject.Execute(new RenameFilesCommand(_movie.Id, files));
 
             Mocker.GetMock<IMediaFileService>()
                   .Verify(v => v.GetMovies(files), Times.Once());

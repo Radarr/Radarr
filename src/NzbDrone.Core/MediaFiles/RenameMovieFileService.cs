@@ -25,7 +25,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
-                                          IExecute<RenameMovieFilesCommand>,
+                                          IExecute<RenameFilesCommand>,
                                           IExecute<RenameMovieCommand>,
 					IExecute<RenameMovieFolderCommand>
     {
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 		}
 
-        public void Execute(RenameMovieFilesCommand message)
+        public void Execute(RenameFilesCommand message)
         {
             var movie = _movieService.GetMovie(message.MovieId);
             var movieFiles = _mediaFileService.GetMovies(message.Files);
