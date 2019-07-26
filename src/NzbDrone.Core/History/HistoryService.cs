@@ -160,6 +160,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.DownloadFolderImported,
                 Date = DateTime.UtcNow,
                 Quality = message.MovieInfo.Quality,
+                Languages = message.MovieInfo.Languages,
                 SourceTitle = message.ImportedMovie.SceneName ?? Path.GetFileNameWithoutExtension(message.MovieInfo.Path),
                 DownloadId = downloadId,
                 MovieId = movie.Id,
@@ -187,6 +188,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.MovieFileDeleted,
                 Date = DateTime.UtcNow,
                 Quality = message.MovieFile.Quality,
+                Languages = message.MovieFile.Languages,
                 SourceTitle = message.MovieFile.Path,
                 MovieId = message.MovieFile.MovieId
             };
@@ -208,6 +210,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.MovieFileRenamed,
                 Date = DateTime.UtcNow,
                 Quality = message.MovieFile.Quality,
+                Languages = message.MovieFile.Languages,
                 SourceTitle = message.OriginalPath,
                 MovieId = message.MovieFile.MovieId,
             };
@@ -274,6 +277,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.DownloadFailed,
                 Date = DateTime.UtcNow,
                 Quality = message.Quality,
+                Languages = message.Languages,
                 SourceTitle = message.SourceTitle,
                 MovieId = message.MovieId,
                 DownloadId = message.DownloadId
