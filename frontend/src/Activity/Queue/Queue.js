@@ -40,22 +40,6 @@ class Queue extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    // Don't update when fetching has completed if items have changed,
-    // before movies start fetching or when movies start fetching.
-
-    if (
-      this.props.isFetching &&
-      nextProps.isPopulated &&
-      hasDifferentItems(this.props.items, nextProps.items) &&
-      nextProps.items.some((e) => e.movieId)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       this.setState((state) => {
