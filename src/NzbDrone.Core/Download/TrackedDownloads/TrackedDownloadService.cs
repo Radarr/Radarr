@@ -9,10 +9,11 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
-    public interface ITrackedDownloadService
+    public interface ITrackedDownloadService : IHandle<AlbumDeletedEvent>
     {
         TrackedDownload Find(string downloadId);
         void StopTracking(string downloadId);
@@ -46,6 +47,24 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         public TrackedDownload Find(string downloadId)
         {
             return _cache.Find(downloadId);
+        }
+
+        public void UpdateAlbumCache(int albumId)
+        {
+            var updateCacheItems = _cache.Values.Where(x => x.RemoteAlbum.Albums.Any(a => a.Id == albumId)).ToList();
+
+            foreach (var item in updateCacheItems)
+            {
+                var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(item.DownloadItem.Title);
+                item.RemoteAlbum = null;
+
+                if (parsedAlbumInfo != null)
+                {
+                    item.RemoteAlbum = _parsingService.Map(parsedAlbumInfo);
+                }
+            }
+
+            _eventAggregator.PublishEvent(new TrackedDownloadRefreshedEvent(GetTrackedDownloads()));
         }
 
         public void StopTracking(string downloadId)
@@ -224,5 +243,11 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             return TrackedDownloadStage.Downloading;
         }
+
+        public void Handle(AlbumDeletedEvent message)
+        {
+            UpdateAlbumCache(message.Album.Id);
+        }
     }
 }
+
