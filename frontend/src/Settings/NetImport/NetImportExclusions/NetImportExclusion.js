@@ -62,7 +62,7 @@ class NetImportExclusion extends Component {
     return (
       <div
         className={classNames(
-          styles.netImportExclusion,
+          styles.netImportExclusion
         )}
       >
         <div className={styles.tmdbId}>{tmdbId}</div>

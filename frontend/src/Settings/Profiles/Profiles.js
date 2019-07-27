@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
+// Only a single DragDrop Context can exist so it's done here to allow editing
+// quality profiles and reordering delay profiles to work.
 
 class Profiles extends Component {
 
@@ -20,15 +22,14 @@ class Profiles extends Component {
         />
 
         <PageContentBodyConnector>
-          <QualityProfilesConnector />
-          <DelayProfilesConnector />
+          <DndProvider backend={HTML5Backend}>
+            <QualityProfilesConnector />
+            <DelayProfilesConnector />
+          </DndProvider>
         </PageContentBodyConnector>
       </PageContent>
     );
   }
 }
 
-// Only a single DragDropContext can exist so it's done here to allow editing
-// quality profiles and reordering delay profiles to work.
-
-export default DragDropContext(HTML5Backend)(Profiles);
+export default Profiles;

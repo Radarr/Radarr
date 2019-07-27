@@ -176,7 +176,7 @@ class AutoSuggestInput extends Component {
       className: classNames(
         className,
         hasError && styles.hasError,
-        hasWarning && styles.hasWarning,
+        hasWarning && styles.hasWarning
       ),
       name,
       value,
@@ -234,7 +234,7 @@ AutoSuggestInput.propTypes = {
   minHeight: PropTypes.number.isRequired,
   maxHeight: PropTypes.number.isRequired,
   getSuggestionValue: PropTypes.func.isRequired,
-  renderInputComponent: PropTypes.func,
+  renderInputComponent: PropTypes.elementType,
   renderSuggestion: PropTypes.func.isRequired,
   onInputChange: PropTypes.func,
   onInputKeyDown: PropTypes.func,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -19,12 +19,14 @@ class CustomFormatSettingsConnector extends Component {
         />
 
         <PageContentBodyConnector>
-          <CustomFormatsConnector />
+          <DndProvider backend={HTML5Backend}>
+            <CustomFormatsConnector />
+          </DndProvider>
         </PageContentBodyConnector>
       </PageContent>
     );
   }
 }
 
-export default DragDropContext(HTML5Backend)(CustomFormatSettingsConnector);
+export default CustomFormatSettingsConnector;
 

@@ -82,7 +82,7 @@ BuildWithXbuild()
 LintUI()
 {
     echo "ESLint"
-    CheckExitCode yarn eslint
+    CheckExitCode yarn lint
     echo "ESLint"
 
     echo "Stylelint"

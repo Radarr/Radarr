@@ -21,7 +21,7 @@ function createMapStateToProps() {
       rootFolders,
       addMovie,
       importMovieState,
-      qualityProfiles,
+      qualityProfiles
     ) => {
       const {
         isFetching: rootFoldersFetching,
