@@ -78,7 +78,7 @@ class AgendaEvent extends Component {
               colorImpairedMode && 'colorImpaired'
             )}
           >
-            <div className={styles.seriesTitle}>
+            <div className={styles.movieTitle}>
               <MovieTitleLink
                 titleSlug={titleSlug}
                 title={title}

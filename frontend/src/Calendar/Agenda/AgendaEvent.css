@@ -30,8 +30,7 @@
   border: none !important;
 }
 
-.seriesTitle,
-.episodeTitle {
+.movieTitle {
   @add-mixin truncate;
 
   flex: 0 1 300px;

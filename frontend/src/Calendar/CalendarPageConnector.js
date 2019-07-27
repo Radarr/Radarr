@@ -10,24 +10,24 @@ import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import CalendarPage from './CalendarPage';
 
-function createMissingEpisodeIdsSelector() {
+function createMissingMovieIdsSelector() {
   return createSelector(
     (state) => state.calendar.start,
     (state) => state.calendar.end,
     (state) => state.calendar.items,
     (state) => state.queue.details.items,
-    (start, end, episodes, queueDetails) => {
-      return episodes.reduce((acc, episode) => {
-        const airDateUtc = episode.airDateUtc;
+    (start, end, movies, queueDetails) => {
+      return movies.reduce((acc, movie) => {
+        const inCinemas = movie.inCinemas;
 
         if (
-          !episode.episodeFileId &&
-          moment(airDateUtc).isAfter(start) &&
-          moment(airDateUtc).isBefore(end) &&
-          isBefore(episode.airDateUtc) &&
-          !queueDetails.some((details) => !!details.episode && details.episode.id === episode.id)
+          !movie.movieFileId &&
+          moment(inCinemas).isAfter(start) &&
+          moment(inCinemas).isBefore(end) &&
+          isBefore(movie.inCinemas) &&
+          !queueDetails.some((details) => !!details.movie && details.movie.id === movie.id)
         ) {
-          acc.push(episode.id);
+          acc.push(movie.id);
         }
 
         return acc;
@@ -58,14 +58,14 @@ function createMapStateToProps() {
     (state) => state.calendar.filters,
     createMovieCountSelector(),
     createUISettingsSelector(),
-    createMissingEpisodeIdsSelector(),
+    createMissingMovieIdsSelector(),
     createIsSearchingSelector(),
     (
       selectedFilterKey,
       filters,
       movieCount,
       uiSettings,
-      missingEpisodeIds,
+      missingMovieIds,
       isSearchingForMissing
     ) => {
       return {
@@ -73,7 +73,7 @@ function createMapStateToProps() {
         filters,
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasMovie: !!movieCount,
-        missingEpisodeIds,
+        missingMovieIds,
         isSearchingForMissing
       };
     }
@@ -82,8 +82,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onSearchMissingPress(episodeIds) {
-      dispatch(searchMissing({ episodeIds }));
+    onSearchMissingPress(movieIds) {
+      dispatch(searchMissing({ movieIds }));
     },
 
     onDaysCountChange(dayCount) {

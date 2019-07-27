@@ -60,11 +60,11 @@ class CalendarPage extends Component {
 
   onSearchMissingPress = () => {
     const {
-      missingEpisodeIds,
+      missingMovieIds,
       onSearchMissingPress
     } = this.props;
 
-    onSearchMissingPress(missingEpisodeIds);
+    onSearchMissingPress(missingMovieIds);
   }
 
   //
@@ -75,7 +75,7 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasMovie,
-      missingEpisodeIds,
+      missingMovieIds,
       isSearchingForMissing,
       useCurrentPage,
       onFilterSelect
@@ -102,7 +102,7 @@ class CalendarPage extends Component {
             <PageToolbarButton
               label="Search for Missing"
               iconName={icons.SEARCH}
-              isDisabled={!missingEpisodeIds.length}
+              isDisabled={!missingMovieIds.length}
               isSpinning={isSearchingForMissing}
               onPress={this.onSearchMissingPress}
             />
@@ -167,7 +167,7 @@ CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMovie: PropTypes.bool.isRequired,
-  missingEpisodeIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  missingMovieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,
   onSearchMissingPress: PropTypes.func.isRequired,

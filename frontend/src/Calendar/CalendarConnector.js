@@ -76,15 +76,15 @@ class CalendarConnector extends Component {
     } = this.props;
 
     if (hasDifferentItems(prevProps.items, items)) {
-      const episodeIds = selectUniqueIds(items, 'id');
-      const episodeFileIds = selectUniqueIds(items, 'episodeFileId');
+      const movieIds = selectUniqueIds(items, 'id');
+      const movieFileIds = selectUniqueIds(items, 'movieFileId');
 
       if (items.length) {
-        this.props.fetchQueueDetails({ episodeIds });
+        this.props.fetchQueueDetails({ movieIds });
       }
 
-      if (episodeFileIds.length) {
-        this.props.fetchMovieFiles({ episodeFileIds });
+      if (movieFileIds.length) {
+        this.props.fetchMovieFiles({ movieFileIds });
       }
     }
 

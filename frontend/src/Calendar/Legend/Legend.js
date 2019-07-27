@@ -52,13 +52,13 @@ function Legend(props) {
       <div>
         <LegendItem
           status="unaired"
-          tooltip="Episode hasn't aired yet"
+          tooltip="Movie hasn't aired yet"
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           status="unmonitored"
-          tooltip="Episode is unmonitored"
+          tooltip="Movie is unmonitored"
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -66,13 +66,13 @@ function Legend(props) {
       <div>
         <LegendItem
           status="downloading"
-          tooltip="Episode is currently downloading"
+          tooltip="Movie is currently downloading"
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           status="downloaded"
-          tooltip="Episode was downloaded and sorted"
+          tooltip="Movie was downloaded and sorted"
           colorImpairedMode={colorImpairedMode}
         />
       </div>

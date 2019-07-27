@@ -9,10 +9,10 @@ import CalendarDay from './CalendarDay';
 function sort(items) {
   return _.sortBy(items, (item) => {
     if (item.isGroup) {
-      return moment(item.events[0].airDateUtc).unix();
+      return moment(item.events[0].inCinemas).unix();
     }
 
-    return moment(item.airDateUtc).unix();
+    return moment(item.inCinemas).unix();
   });
 }
 
@@ -20,38 +20,12 @@ function createCalendarEventsConnector() {
   return createSelector(
     (state, { date }) => date,
     (state) => state.calendar.items,
-    (state) => state.calendar.options.collapseMultipleEpisodes,
-    (date, items, collapseMultipleEpisodes) => {
+    (date, items) => {
       const filtered = _.filter(items, (item) => {
-        return moment(date).isSame(moment(item.airDateUtc), 'day');
+        return moment(date).isSame(moment(item.inCinemas), 'day');
       });
 
-      if (!collapseMultipleEpisodes) {
-        return sort(filtered);
-      }
-
-      const groupedObject = _.groupBy(filtered, (item) => `${item.seriesId}-${item.seasonNumber}`);
-      const grouped = [];
-
-      Object.keys(groupedObject).forEach((key) => {
-        const events = groupedObject[key];
-
-        if (events.length === 1) {
-          grouped.push(events[0]);
-        } else {
-          grouped.push({
-            isGroup: true,
-            seriesId: events[0].seriesId,
-            seasonNumber: events[0].seasonNumber,
-            episodeIds: events.map((event) => event.id),
-            events: _.sortBy(events, (item) => moment(item.airDateUtc).unix())
-          });
-        }
-      });
-
-      const sorted = sort(grouped);
-
-      return sorted;
+      return sort(filtered);
     }
   );
 }

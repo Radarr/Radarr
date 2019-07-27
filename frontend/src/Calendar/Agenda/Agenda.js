@@ -13,14 +13,14 @@ function Agenda(props) {
     <div className={styles.agenda}>
       {
         items.map((item, index) => {
-          const momentDate = moment(item.airDateUtc);
+          const momentDate = moment(item.inCinemas);
           const showDate = index === 0 ||
-            !moment(items[index - 1].airDateUtc).isSame(momentDate, 'day');
+            !moment(items[index - 1].inCinemas).isSame(momentDate, 'day');
 
           return (
             <AgendaEventConnector
               key={item.id}
-              episodeId={item.id}
+              movieId={item.id}
               showDate={showDate}
               {...item}
             />

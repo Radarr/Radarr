@@ -4,7 +4,6 @@ import React from 'react';
 import classNames from 'classnames';
 import * as calendarViews from 'Calendar/calendarViews';
 import CalendarEventConnector from 'Calendar/Events/CalendarEventConnector';
-import CalendarEventGroupConnector from 'Calendar/Events/CalendarEventGroupConnector';
 import styles from './CalendarDay.css';
 
 function CalendarDay(props) {
@@ -37,20 +36,10 @@ function CalendarDay(props) {
       <div>
         {
           events.map((event) => {
-            if (event.isGroup) {
-              return (
-                <CalendarEventGroupConnector
-                  key={event.seriesId}
-                  {...event}
-                  onEventModalOpenToggle={onEventModalOpenToggle}
-                />
-              );
-            }
-
             return (
               <CalendarEventConnector
                 key={event.id}
-                episodeId={event.id}
+                movieId={event.id}
                 {...event}
                 onEventModalOpenToggle={onEventModalOpenToggle}
               />
