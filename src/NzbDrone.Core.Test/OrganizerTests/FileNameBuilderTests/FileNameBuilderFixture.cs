@@ -9,8 +9,6 @@ using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MediaInfo;
-using Moq;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
@@ -308,6 +306,26 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
+        public void should_format_mediainfo_hdr_properly()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.HDR}.{MediaInfo.Simple}";
+
+            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            {
+                VideoFormat = "AVC",
+                VideoBitDepth = 10,
+                VideoColourPrimaries = "BT.2020",
+                VideoTransferCharacteristics = "PQ",
+                AudioFormat = "DTS",
+                AudioLanguages = "English",
+                Subtitles = "English/Spanish/Italian"
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South.Park.HDR.h264.DTS");
+        }
+
+        [Test]
         public void should_remove_duplicate_non_word_characters()
         {
             _movie.Title = "Venture Bros.";
@@ -488,138 +506,6 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(releaseGroup);
         }
 
-        [TestCase("English", "")]
-        [TestCase("English/German", "[EN+DE]")]
-        public void should_format_audio_languages(string audioLanguages, string expected)
-        {
-            _movieFile.ReleaseGroup = null;
-
-            GivenMediaInfoModel(audioLanguages: audioLanguages);
-
-
-            _namingConfig.StandardMovieFormat = "{MediaInfo AudioLanguages}";
-
-
-            Subject.BuildFileName( _movie , _movieFile)
-                   .Should().Be(expected);
-        }
-
-        [TestCase("English", "[EN]")]
-        [TestCase("English/German", "[EN+DE]")]
-        public void should_format_audio_languages_all(string audioLanguages, string expected)
-        {
-            _movieFile.ReleaseGroup = null;
-
-            GivenMediaInfoModel(audioLanguages: audioLanguages);
-
-
-            _namingConfig.StandardMovieFormat = "{MediaInfo AudioLanguagesAll}";
-
-
-            Subject.BuildFileName( _movie , _movieFile)
-                   .Should().Be(expected);
-        }
-
-        [TestCase(8, "BT.601 NTSC", "BT.709", "South.Park")]
-        [TestCase(10, "BT.2020", "PQ", "South.Park.HDR")]
-        [TestCase(10, "BT.2020", "HLG", "South.Park.HDR")]
-        [TestCase(0, null, null, "South.Park")]
-        public void should_include_hdr_for_mediainfo_videodynamicrange_with_valid_properties(int bitDepth, string colourPrimaries,
-            string transferCharacteristics, string expectedName)
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}.{MediaInfo VideoDynamicRange}";
-
-            GivenMediaInfoModel(videoBitDepth: bitDepth, videoColourPrimaries: colourPrimaries, videoTransferCharacteristics: transferCharacteristics);
-
-            Subject.BuildFileName(_movie, _movieFile)
-                .Should().Be(expectedName);
-        }
-
-        [Test]
-        public void should_update_media_info_if_token_configured_and_revision_is_old()
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}.{MediaInfo VideoDynamicRange}";
-
-            GivenMediaInfoModel(schemaRevision: 3);
-
-            Subject.BuildFileName( _movie, _movieFile);
-
-            Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Once());
-        }
-
-        [Test]
-        public void should_not_update_media_info_if_no_movie_path_available()
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}.{MediaInfo VideoDynamicRange}";
-
-            GivenMediaInfoModel(schemaRevision: 3);
-            _movie.Path = null;
-
-            Subject.BuildFileName( _movie, _movieFile);
-
-            Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
-        }
-
-        [Test]
-        public void should_not_update_media_info_if_token_not_configured_and_revision_is_old()
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}";
-
-            GivenMediaInfoModel(schemaRevision: 3);
-
-            Subject.BuildFileName( _movie, _movieFile);
-
-            Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
-        }
-
-        [Test]
-        public void should_not_update_media_info_if_token_configured_and_revision_is_current()
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}.{MediaInfo VideoDynamicRange}";
-
-            GivenMediaInfoModel(schemaRevision: 5);
-
-            Subject.BuildFileName( _movie, _movieFile);
-
-            Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
-        }
-
-        [Test]
-        public void should_not_update_media_info_if_token_configured_and_revision_is_newer()
-        {
-            _namingConfig.StandardMovieFormat =
-                "{Movie.Title}.{MediaInfo VideoDynamicRange}";
-
-            GivenMediaInfoModel(schemaRevision: 8);
-
-            Subject.BuildFileName(_movie, _movieFile);
-
-            Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
-        }
-
-        private void GivenMediaInfoModel(string videoCodec = "AVC", string audioCodec = "DTS", int audioChannels = 6, int videoBitDepth = 8,
-                string videoColourPrimaries = "", string videoTransferCharacteristics = "", string audioLanguages = "English",
-                string subtitles = "English/Spanish/Italian", int schemaRevision = 5)
-        {
-            _movieFile.MediaInfo = new MediaInfoModel
-            {
-                VideoCodec = videoCodec,
-                AudioFormat = audioCodec,
-                AudioChannels = audioChannels,
-                AudioLanguages = audioLanguages,
-                Subtitles = subtitles,
-                VideoBitDepth = videoBitDepth,
-                VideoColourPrimaries = videoColourPrimaries,
-                VideoTransferCharacteristics = videoTransferCharacteristics,
-                SchemaRevision = schemaRevision
-            };
-
-        }
 
     }
 }
