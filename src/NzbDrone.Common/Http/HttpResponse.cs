@@ -53,6 +53,7 @@ namespace NzbDrone.Common.Http
 
         public bool HasHttpRedirect => StatusCode == HttpStatusCode.Moved ||
                                        StatusCode == HttpStatusCode.MovedPermanently ||
+                                       StatusCode == HttpStatusCode.TemporaryRedirect ||
                                        StatusCode == HttpStatusCode.Found;
 
         public string[] GetCookieHeaders()
