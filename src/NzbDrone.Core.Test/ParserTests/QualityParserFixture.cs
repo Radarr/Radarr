@@ -155,6 +155,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[HorribleSubs]_Fairy_Tail_-_145_[720p]", false)]
         [TestCase("[Eveyuu] No Game No Life - 10 [Hi10P 1280x720 H264][10B23BD8]", false)]
         [TestCase("Movie.Title.ITA.720p.WEBMux.x264-NovaRip", false)]
+        [TestCase("BrainDead.S01E01.The.Insanity.Principle.720p.WEB-DL.DD5.1.H.264-BD", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720P);
