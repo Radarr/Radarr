@@ -93,6 +93,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Glee.S04E10.Glee.Actually.480p.WEB-DL.x264-mSD", false)]
         [TestCase("The.Big.Bang.Theory.S06E11.The.Santa.Simulation.480p.WEB-DL.x264-mSD", false)]
         [TestCase("Da.Vincis.Demons.S02E04.480p.WEB.DL.nSD.x264-NhaNc3", false)]
+        [TestCase("Series.Title.1x04.ITA.WEBMux.x264-NovaRip", false)]
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R480P);
@@ -153,6 +154,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Doremi].Yes.Pretty.Cure.5.Go.Go!.31.[1280x720].[C65D4B1F].mkv", false)]
         [TestCase("[HorribleSubs]_Fairy_Tail_-_145_[720p]", false)]
         [TestCase("[Eveyuu] No Game No Life - 10 [Hi10P 1280x720 H264][10B23BD8]", false)]
+        [TestCase("Movie.Title.ITA.720p.WEBMux.x264-NovaRip", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720P);
@@ -177,6 +179,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Series Title S06E08 No One PROPER 1080p WEB H 264-EXCLUSIVE", true)]
         [TestCase("The.Simpsons.S25E21.Pay.Pal.1080p.WEB-DL.DD5.1.H.264-NTb", false)]
         [TestCase("The.Simpsons.2017.1080p.WEB-DL.DD5.1.H.264.Remux.-NTb", false)]
+        [TestCase("Series.Title.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080P);
