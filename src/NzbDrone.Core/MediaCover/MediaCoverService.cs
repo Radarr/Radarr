@@ -115,13 +115,13 @@ namespace NzbDrone.Core.MediaCover
                 
                 try
                 {
-                    var lastModifiedServer = GetCoverModifiedDate(cover.Url);
+                    var serverFileHeaders = _httpClient.Head(new HttpRequest(cover.Url) { AllowAutoRedirect = true }).Headers;
 
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(lastModifiedServer, fileName);
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, serverFileHeaders.ContentLength, fileName);
 
                     if (!alreadyExists)
                     {
-                        DownloadCover(artist, cover, lastModifiedServer);
+                        DownloadCover(artist, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
@@ -145,11 +145,13 @@ namespace NzbDrone.Core.MediaCover
                 var alreadyExists = false;
                 try
                 {
-                    var lastModifiedServer = GetCoverModifiedDate(cover.Url);
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(lastModifiedServer, fileName);
+                    var serverFileHeaders = _httpClient.Head(new HttpRequest(cover.Url) { AllowAutoRedirect = true }).Headers;
+
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, serverFileHeaders.ContentLength, fileName);
+
                     if (!alreadyExists)
                     {
-                        DownloadAlbumCover(album, cover, lastModifiedServer);
+                        DownloadAlbumCover(album, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
@@ -247,20 +249,6 @@ namespace NzbDrone.Core.MediaCover
                     }
                 }
             }
-        }
-
-        private DateTime GetCoverModifiedDate(string url)
-        {
-            var lastModifiedServer = DateTime.Now;
-
-            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
-
-            if (headers.LastModified.HasValue)
-            {
-                lastModifiedServer = headers.LastModified.Value;
-            }
-
-            return lastModifiedServer;
         }
 
         private int[] GetDefaultHeights(MediaCoverTypes coverType)

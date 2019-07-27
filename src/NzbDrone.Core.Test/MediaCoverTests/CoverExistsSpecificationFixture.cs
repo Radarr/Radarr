@@ -11,41 +11,46 @@ namespace NzbDrone.Core.Test.MediaCoverTests
     [TestFixture]
     public class CoverAlreadyExistsSpecificationFixture : CoreTest<CoverAlreadyExistsSpecification>
     {
-        private void GivenFileExistsOnDisk()
+        private void GivenFileExistsOnDisk(DateTime? givenDate)
         {
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>())).Returns(true);
-        }
-
-
-        private void GivenExistingFileDate(DateTime lastModifiedDate)
-        {
-            GivenFileExistsOnDisk();
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>())).Returns(lastModifiedDate);
-
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>())).Returns(givenDate ?? DateTime.Now);
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(1000);
         }
 
         [Test]
         public void should_return_false_if_file_not_exists()
         {
-            Subject.AlreadyExists(DateTime.Now, "c:\\file.exe").Should().BeFalse();
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>())).Returns(false);
+
+            Subject.AlreadyExists(DateTime.Now, 0, "c:\\file.exe").Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_file_exists_but_diffrent_date()
         {
-            GivenExistingFileDate(DateTime.Now);
+            GivenFileExistsOnDisk(DateTime.Now);
 
-            Subject.AlreadyExists(DateTime.Now.AddHours(-5), "c:\\file.exe").Should().BeFalse();
+            Subject.AlreadyExists(DateTime.Now.AddHours(-5), 0, "c:\\file.exe").Should().BeFalse();
         }
 
         [Test]
-        public void should_return_ture_if_file_exists_and_same_date()
+        public void should_return_ture_if_file_exists_and_same_date_but_no_length_header()
         {
             var givenDate = DateTime.Now;
 
-            GivenExistingFileDate(givenDate);
+            GivenFileExistsOnDisk(givenDate);
 
-            Subject.AlreadyExists(givenDate, "c:\\file.exe").Should().BeTrue();
+            Subject.AlreadyExists(givenDate, null, "c:\\file.exe").Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_ture_if_file_exists_and_date_header_is_null_but_has_length_header()
+        {
+
+            GivenFileExistsOnDisk(DateTime.Now);
+
+            Subject.AlreadyExists(null, 1000, "c:\\file.exe").Should().BeTrue();
         }
     }
 }

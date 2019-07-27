@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_main_downloaded()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
                   .Returns(false);
 
             Mocker.GetMock<IAlbumService>()
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_missing()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IAlbumService>()
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_not_resize_covers_if_exists()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_existing_is_empty()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_log_error_if_resize_failed()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime?>(), It.IsAny<long?>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
