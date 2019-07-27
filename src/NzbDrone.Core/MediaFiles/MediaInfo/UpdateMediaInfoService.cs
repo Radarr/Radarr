@@ -4,13 +4,17 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
-    public class UpdateMediaInfoService : IHandle<MovieScannedEvent>
+    public interface IUpdateMediaInfo
+    {
+        void Update(MovieFile movieFile, Movie movie);
+    }
+
+    public class UpdateMediaInfoService : IHandle<MovieScannedEvent>, IUpdateMediaInfo
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
@@ -31,28 +35,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _logger = logger;
         }
 
-        private void UpdateMediaInfo(Movie movie, List<MovieFile> mediaFiles)
-        {
-            foreach (var mediaFile in mediaFiles)
-            {
-                var path = Path.Combine(movie.Path, mediaFile.RelativePath);
-
-                if (!_diskProvider.FileExists(path))
-                {
-                    _logger.Debug("Can't update MediaInfo because '{0}' does not exist", path);
-                    continue;
-                }
-
-                mediaFile.MediaInfo = _videoFileInfoReader.GetMediaInfo(path);
-
-                if (mediaFile.MediaInfo != null)
-                {
-                    _mediaFileService.Update(mediaFile);
-                    _logger.Debug("Updated MediaInfo for '{0}'", path);
-                }
-            }
-        }
-
         public void Handle(MovieScannedEvent message)
         {
             if (!_configService.EnableMediaInfo)
@@ -62,9 +44,45 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             var allMediaFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id);
-            var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < VideoFileInfoReader.MINIMUM_MEDIA_INFO_SCHEMA_REVISION).ToList();
+            var filteredMediaFiles = allMediaFiles.Where(c =>
+                c.MediaInfo == null ||
+                c.MediaInfo.SchemaRevision < VideoFileInfoReader.MINIMUM_MEDIA_INFO_SCHEMA_REVISION).ToList();
 
-            UpdateMediaInfo(message.Movie, filteredMediaFiles);
+            foreach (var mediaFile in filteredMediaFiles)
+            {
+                UpdateMediaInfo(mediaFile, message.Movie);
+            }
+        }
+
+        public void Update(MovieFile movieFile, Movie movie)
+        {
+            if (!_configService.EnableMediaInfo)
+            {
+                _logger.Debug("MediaInfo is disabled");
+                return;
+            }
+
+            UpdateMediaInfo(movieFile, movie);
+        }
+
+        private void UpdateMediaInfo(MovieFile movieFile, Movie movie)
+        {
+            var path = Path.Combine(movie.Path, movieFile.RelativePath);
+
+            if (!_diskProvider.FileExists(path))
+            {
+                _logger.Debug("Can't update MediaInfo because '{0}' does not exist", path);
+                return;
+            }
+
+            var updatedMediaInfo = _videoFileInfoReader.GetMediaInfo(path);
+
+            if (updatedMediaInfo != null)
+            {
+                movieFile.MediaInfo = updatedMediaInfo;
+                _mediaFileService.Update(movieFile);
+                _logger.Debug("Updated MediaInfo for '{0}'", path);
+            }
         }
     }
 }

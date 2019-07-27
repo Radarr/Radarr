@@ -7,7 +7,6 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Common;
-using System;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -28,15 +27,13 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
-        private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieService movieService,
+        public MediaFileService(IMediaFileRepository mediaFileRepository,
                                 IEventAggregator eventAggregator, Logger logger)
         {
             _mediaFileRepository = mediaFileRepository;
             _eventAggregator = eventAggregator;
-            _movieService = movieService;
             _logger = logger;
         }
 

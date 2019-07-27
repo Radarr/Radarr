@@ -40,20 +40,18 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             var info = Subject.GetMediaInfo(path);
 
+            info.VideoCodec.Should().BeNull();
             info.VideoFormat.Should().Be("AVC");
             info.VideoCodecID.Should().Be("avc1");
             info.VideoProfile.Should().Be("Baseline@L2.1");
             info.VideoCodecLibrary.Should().Be("");
-            info.VideoMultiViewCount.Should().Be(0);
-            info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
-            info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioFormat.Should().Be("AAC");
             info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
+            info.AudioProfile.Should().BeOneOf("", "LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
             info.AudioLanguages.Should().Be("English");
-            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");
@@ -61,6 +59,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoBitrate.Should().Be(193329);
             info.VideoFps.Should().Be(24);
             info.Width.Should().Be(480);
+            info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
+            info.VideoTransferCharacteristics.Should().Be("BT.709");
+            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
+
         }
 
         [Test]
@@ -77,20 +79,18 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             var info = Subject.GetMediaInfo(path);
 
+            info.VideoCodec.Should().BeNull();
             info.VideoFormat.Should().Be("AVC");
             info.VideoCodecID.Should().Be("avc1");
             info.VideoProfile.Should().Be("Baseline@L2.1");
             info.VideoCodecLibrary.Should().Be("");
-            info.VideoMultiViewCount.Should().Be(0);
-            info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
-            info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioFormat.Should().Be("AAC");
             info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
+            info.AudioProfile.Should().BeOneOf("", "LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
             info.AudioChannels.Should().Be(2);
             info.AudioLanguages.Should().Be("English");
-            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
             info.Height.Should().Be(320);
             info.RunTime.Seconds.Should().Be(10);
             info.ScanType.Should().Be("Progressive");
@@ -98,6 +98,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoBitrate.Should().Be(193329);
             info.VideoFps.Should().Be(24);
             info.Width.Should().Be(480);
+            info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
+            info.VideoTransferCharacteristics.Should().Be("BT.709");
+            info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
         }
 
         [Test]

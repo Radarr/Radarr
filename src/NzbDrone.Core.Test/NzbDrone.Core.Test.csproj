@@ -292,6 +292,7 @@
     <Compile Include="MediaFiles\DownloadedMoviesCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedMoviesImportServiceFixture.cs" />
     <Compile Include="MediaFiles\EpisodeFileMovingServiceTests\MoveEpisodeFileFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatVideoDynamicRangeFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\SampleServiceFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\FreeSpaceSpecificationFixture.cs" />
