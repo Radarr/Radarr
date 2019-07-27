@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         }
 
         [Test]
-        public void should_return_false_if_file_exists_but_diffrent_date()
+        public void should_return_false_if_file_exists_but_different_date()
         {
             GivenFileExistsOnDisk(DateTime.Now);
 
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         }
 
         [Test]
-        public void should_return_ture_if_file_exists_and_same_date_but_no_length_header()
+        public void should_return_true_if_file_exists_and_same_date_but_no_length_header()
         {
             var givenDate = DateTime.Now;
 
@@ -45,12 +45,31 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         }
 
         [Test]
-        public void should_return_ture_if_file_exists_and_date_header_is_null_but_has_length_header()
+        public void should_return_false_if_file_exists_and_same_date_but_length_header_different()
         {
+            var givenDate = DateTime.Now;
 
+            GivenFileExistsOnDisk(givenDate);
+
+            Subject.AlreadyExists(givenDate, 999, "c:\\file.exe").Should().BeFalse();
+        }
+
+
+        [Test]
+        public void should_return_true_if_file_exists_and_date_header_is_null_but_has_length_header()
+        {
             GivenFileExistsOnDisk(DateTime.Now);
 
             Subject.AlreadyExists(null, 1000, "c:\\file.exe").Should().BeTrue();
         }
+
+        [Test]
+        public void should_return_true_if_file_exists_and_date_header_is_different_but_length_header_the_same()
+        {
+            GivenFileExistsOnDisk(DateTime.Now.AddDays(-1));
+
+            Subject.AlreadyExists(DateTime.Now, 1000, "c:\\file.exe").Should().BeTrue();
+        }
+
     }
 }

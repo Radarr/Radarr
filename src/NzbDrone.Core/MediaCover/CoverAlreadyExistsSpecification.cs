@@ -1,6 +1,5 @@
 using System;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.MediaCover
 {
@@ -25,18 +24,18 @@ namespace NzbDrone.Core.MediaCover
                 return false;
             }
 
-            if (serverModifiedDate.HasValue)
-            {
-                DateTime? lastModifiedLocal = _diskProvider.FileGetLastWrite(localPath);
-
-                return lastModifiedLocal.Value.ToUniversalTime() == serverModifiedDate.Value.ToUniversalTime();
-            }
-
             if (serverContentLength.HasValue && serverContentLength.Value > 0)
             {
                 var fileSize = _diskProvider.GetFileSize(localPath);
 
                 return fileSize == serverContentLength;
+            }
+
+            if (serverModifiedDate.HasValue)
+            {
+                DateTime? lastModifiedLocal = _diskProvider.FileGetLastWrite(localPath);
+
+                return lastModifiedLocal.Value.ToUniversalTime() == serverModifiedDate.Value.ToUniversalTime();
             }
 
             return false;
