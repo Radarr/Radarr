@@ -36,10 +36,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 if (IsRevisionUpgrade(currentQuality, newQuality))
                 {
+                    _logger.Debug("New item has a better quality revision");
                     return true;
                 }
             }
 
+            _logger.Debug("New item has a better quality");
             return true;
         }
 

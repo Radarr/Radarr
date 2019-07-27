@@ -57,5 +57,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
                     .Should().BeFalse();
         }
+
+
+        [Test]
+        public void should_return_false_if_release_and_existing_file_are_the_same()
+        {
+            var profile = new Profile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+            };
+
+            Subject.IsUpgradable(
+                       profile,
+                       new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
+                       new QualityModel(Quality.HDTV720p, new Revision(version: 1)))
+                   .Should().BeFalse();
+        }
     }
 }
