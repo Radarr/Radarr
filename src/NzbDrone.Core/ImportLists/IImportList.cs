@@ -6,6 +6,7 @@ namespace NzbDrone.Core.ImportLists
 {
     public interface IImportList : IProvider
     {
+        ImportListType ListType { get; }
         IList<ImportListItemInfo> Fetch();
     }
 }

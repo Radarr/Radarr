@@ -21,6 +21,8 @@ namespace NzbDrone.Core.ImportLists
 
         public abstract string Name { get; }
 
+        public abstract ImportListType ListType {get; }
+
         public ImportListBase(IImportListStatusService importListStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
         {
             _importListStatusService = importListStatusService;

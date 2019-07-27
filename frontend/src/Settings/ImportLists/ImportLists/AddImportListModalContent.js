@@ -11,6 +11,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import AddImportListItem from './AddImportListItem';
 import styles from './AddImportListModalContent.css';
+import titleCase from 'Utilities/String/titleCase';
 
 class AddImportListModalContent extends Component {
 
@@ -22,7 +23,7 @@ class AddImportListModalContent extends Component {
       isSchemaFetching,
       isSchemaPopulated,
       schemaError,
-      allLists,
+      listGroups,
       onImportListSelect,
       onModalClose
     } = this.props;
@@ -52,23 +53,28 @@ class AddImportListModalContent extends Component {
                   <div>Lidarr supports multiple lists for importing Albums and Artists into the database.</div>
                   <div>For more information on the individual lists, click on the info buttons.</div>
                 </Alert>
-
-                <FieldSet legend="Import Lists">
-                  <div className={styles.lists}>
-                    {
-                      allLists.map((list) => {
-                        return (
-                          <AddImportListItem
-                            key={list.implementation}
-                            implementation={list.implementation}
-                            {...list}
-                            onImportListSelect={onImportListSelect}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                </FieldSet>
+                {
+                  Object.keys(listGroups).map((key) => {
+                    return (
+                      <FieldSet legend={`${titleCase(key)} List`} key={key}>
+                        <div className={styles.lists}>
+                          {
+                            listGroups[key].map((list) => {
+                              return (
+                                <AddImportListItem
+                                  key={list.implementation}
+                                  implementation={list.implementation}
+                                  {...list}
+                                  onImportListSelect={onImportListSelect}
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </FieldSet>
+                    );
+                  })
+                }
               </div>
           }
         </ModalBody>
@@ -88,7 +94,7 @@ AddImportListModalContent.propTypes = {
   isSchemaFetching: PropTypes.bool.isRequired,
   isSchemaPopulated: PropTypes.bool.isRequired,
   schemaError: PropTypes.object,
-  allLists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  listGroups: PropTypes.object.isRequired,
   onImportListSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

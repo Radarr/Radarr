@@ -12,6 +12,8 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
     {
         public override string Name => "Lidarr Lists";
 
+        public override ImportListType ListType => ImportListType.Other;
+
         public override int PageSize => 10;
 
         private readonly IMetadataRequestBuilder _requestBuilder;

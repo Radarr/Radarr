@@ -9,6 +9,8 @@ namespace NzbDrone.Core.ImportLists.LastFm
     {
         public override string Name => "Last.fm User";
 
+        public override ImportListType ListType => ImportListType.LastFm;
+
         public override int PageSize => 1000;
 
         public LastFmUser(IHttpClient httpClient, IImportListStatusService importListStatusService, IConfigService configService, IParsingService parsingService, Logger logger)

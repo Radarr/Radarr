@@ -14,6 +14,7 @@ namespace NzbDrone.Core.ImportLists
         public override bool Enable => EnableAutomaticAdd;
 
         public ImportListStatus Status { get; set; }
+        public ImportListType ListType { get; set; }
     }
 
     public enum ImportListMonitorType

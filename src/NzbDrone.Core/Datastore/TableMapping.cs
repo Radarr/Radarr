@@ -68,7 +68,8 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.Tags);
 
             Mapper.Entity<ImportListDefinition>().RegisterDefinition("ImportLists")
-                .Ignore(i => i.Enable);
+                .Ignore(i => i.Enable)
+                .Ignore(i => i.ListType);
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)

@@ -35,6 +35,13 @@ namespace NzbDrone.Core.ImportLists
             return base.Active().Where(c => c.Enable).ToList();
         }
 
+        public override void SetProviderCharacteristics(IImportList provider, ImportListDefinition definition)
+        {
+            base.SetProviderCharacteristics(provider, definition);
+
+            definition.ListType = provider.ListType;
+        }
+
         public List<IImportList> AutomaticAddEnabled(bool filterBlockedImportLists = true)
         {
             var enabledImportLists = GetAvailableProviders().Where(n => ((ImportListDefinition)n.Definition).EnableAutomaticAdd);

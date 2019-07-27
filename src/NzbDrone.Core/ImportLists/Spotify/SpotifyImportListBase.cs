@@ -32,6 +32,8 @@ namespace NzbDrone.Core.ImportLists.Spotify
             _importListRepository = importListRepository;
         }
 
+        public override ImportListType ListType => ImportListType.Spotify;
+
         private void RefreshToken()
         {
             _logger.Trace("Refreshing Token");

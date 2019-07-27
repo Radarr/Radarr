@@ -9,6 +9,8 @@ namespace NzbDrone.Core.ImportLists.HeadphonesImport
     {
         public override string Name => "Headphones";
 
+        public override ImportListType ListType => ImportListType.Other;
+
         public override int PageSize => 1000;
 
         public HeadphonesImport(IHttpClient httpClient, IImportListStatusService importListStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
