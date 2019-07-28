@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Extras.Subtitles
                 var suffix = GetSuffix(language, existingSrtSubs.Count() + 1, extension.ToLower() == ".srt");                
                 var subtitleFile = new SubtitleFile();
                 
-                if (extension.ToLower() == ".srt" && language != Language.Unknown ||
+                if ((extension.ToLower() == ".srt" && language != Language.Unknown) ||
                     extension.ToLower() != ".srt")
                 {
                     subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
