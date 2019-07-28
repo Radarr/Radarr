@@ -17,7 +17,10 @@ function createMapStateToProps() {
         schema
       } = importLists;
 
-      const listGroups = _.groupBy(schema, 'listType');
+      const listGroups = _.chain(schema)
+        .sortBy((o) => o.listOrder)
+        .groupBy('listType')
+        .value();
 
       return {
         isSchemaFetching,

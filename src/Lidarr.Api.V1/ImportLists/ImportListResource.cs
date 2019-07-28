@@ -11,6 +11,7 @@ namespace Lidarr.Api.V1.ImportLists
         public int LanguageProfileId { get; set; }
         public int MetadataProfileId { get; set; }
         public ImportListType ListType { get; set; }
+        public int ListOrder { get; set; }
     }
 
     public class ImportListResourceMapper : ProviderResourceMapper<ImportListResource, ImportListDefinition>
@@ -31,6 +32,7 @@ namespace Lidarr.Api.V1.ImportLists
             resource.LanguageProfileId = definition.LanguageProfileId;
             resource.MetadataProfileId = definition.MetadataProfileId;
             resource.ListType = definition.ListType;
+            resource.ListOrder = (int) definition.ListType;
 
             return resource;
         }
