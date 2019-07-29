@@ -70,6 +70,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("2 Broke Girls - S01E01 - Pilot.sub", Language.Unknown)]
         [TestCase("2 Broke Girls - S01E01 - Pilot.eng.forced.sub", Language.English)]
         [TestCase("2 Broke Girls - S01E01 - Pilot-eng-forced.sub", Language.English)]
+        [TestCase("2_Eng.srt", Language.English)]
+        [TestCase("3_English.srt", Language.English)]
         public void should_parse_subtitle_language(string fileName, Language language)
         {
             var result = LanguageParser.ParseSubtitleLanguage(fileName);

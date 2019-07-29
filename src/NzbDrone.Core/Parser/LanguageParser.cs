@@ -17,8 +17,8 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         // jpogs: updated regex to match RARBG subtitle naming convention
-        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?.*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
+        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RarbgSubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[A-Za-z]{2,3}).*(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static List<Language> ParseLanguages(string title)
         {
             var lowerTitle = title.ToLower();
@@ -153,12 +153,18 @@ namespace NzbDrone.Core.Parser
 #endif
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
-                var languageMatch = SubtitleLanguageRegex.Match(simpleFilename.ToLower());
+                var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
+
+                // jpogs: retry match for RARBG subs
+                if (!languageMatch.Success)
+                {
+                    languageMatch = RarbgSubtitleLanguageRegex.Match(simpleFilename);
+                }
 
                 if (languageMatch.Success)
                 {
                     var isoCode = languageMatch.Groups["iso_code"].Value;
-                    var isoLanguage = IsoLanguages.Find(isoCode);
+                    var isoLanguage = IsoLanguages.Find(isoCode.ToLower());
 
                     Logger.Debug("Parsed language: {0}", isoLanguage?.Language ?? Language.Unknown);
                     return isoLanguage?.Language ?? Language.Unknown;                    
