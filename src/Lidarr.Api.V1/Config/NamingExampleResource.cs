@@ -5,6 +5,7 @@ namespace Lidarr.Api.V1.Config
     public class NamingExampleResource
     {
         public string SingleTrackExample { get; set; }
+        public string MultiDiscTrackExample { get; set; }
         public string ArtistFolderExample { get; set; }
         public string AlbumFolderExample { get; set; }
     }
@@ -20,6 +21,7 @@ namespace Lidarr.Api.V1.Config
                 RenameTracks = model.RenameTracks,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
                 StandardTrackFormat = model.StandardTrackFormat,
+                MultiDiscTrackFormat = model.MultiDiscTrackFormat,
                 ArtistFolderFormat = model.ArtistFolderFormat,
                 AlbumFolderFormat = model.AlbumFolderFormat
             };
@@ -44,6 +46,7 @@ namespace Lidarr.Api.V1.Config
                 RenameTracks = resource.RenameTracks,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
                 StandardTrackFormat = resource.StandardTrackFormat,
+                MultiDiscTrackFormat = resource.MultiDiscTrackFormat,
 
                 ArtistFolderFormat = resource.ArtistFolderFormat,
                 AlbumFolderFormat = resource.AlbumFolderFormat

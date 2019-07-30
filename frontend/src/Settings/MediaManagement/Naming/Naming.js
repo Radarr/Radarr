@@ -40,6 +40,18 @@ class Naming extends Component {
     });
   }
 
+  onMultiDiscNamingModalOpenClick = () => {
+    this.setState({
+      isNamingModalOpen: true,
+      namingModalOptions: {
+        name: 'multiDiscTrackFormat',
+        album: true,
+        track: true,
+        additional: true
+      }
+    });
+  }
+
   onArtistFolderNamingModalOpenClick = () => {
     this.setState({
       isNamingModalOpen: true,
@@ -87,6 +99,8 @@ class Naming extends Component {
 
     const standardTrackFormatHelpTexts = [];
     const standardTrackFormatErrors = [];
+    const multiDiscTrackFormatHelpTexts = [];
+    const multiDiscTrackFormatErrors = [];
     const artistFolderFormatHelpTexts = [];
     const artistFolderFormatErrors = [];
     const albumFolderFormatHelpTexts = [];
@@ -97,6 +111,12 @@ class Naming extends Component {
         standardTrackFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
       } else {
         standardTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
+      }
+
+      if (examples.multiDiscTrackExample) {
+        multiDiscTrackFormatHelpTexts.push(`Multi Disc Track: ${examples.multiDiscTrackExample}`);
+      } else {
+        multiDiscTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
       }
 
       if (examples.artistFolderExample) {
@@ -166,6 +186,21 @@ class Naming extends Component {
                         {...settings.standardTrackFormat}
                         helpTexts={standardTrackFormatHelpTexts}
                         errors={[...standardTrackFormatErrors, ...settings.standardTrackFormat.errors]}
+                      />
+                    </FormGroup>
+
+                    <FormGroup size={sizes.LARGE}>
+                      <FormLabel>Multi Disc Track Format</FormLabel>
+
+                      <FormInputGroup
+                        inputClassName={styles.namingInput}
+                        type={inputTypes.TEXT}
+                        name="multiDiscTrackFormat"
+                        buttons={<FormInputButton onPress={this.onMultiDiscNamingModalOpenClick}>?</FormInputButton>}
+                        onChange={onInputChange}
+                        {...settings.multiDiscTrackFormat}
+                        helpTexts={multiDiscTrackFormatHelpTexts}
+                        errors={[...multiDiscTrackFormatErrors, ...settings.multiDiscTrackFormat.errors]}
                       />
                     </FormGroup>
 

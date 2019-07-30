@@ -37,6 +37,7 @@ namespace Lidarr.Api.V1.Config
 
 
             SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidTrackFormat();
+            SharedValidator.RuleFor(c => c.MultiDiscTrackFormat).ValidTrackFormat();
             SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidArtistFolderFormat();
             SharedValidator.RuleFor(c => c.AlbumFolderFormat).ValidAlbumFolderFormat();
         }
@@ -55,6 +56,12 @@ namespace Lidarr.Api.V1.Config
             var resource = nameSpec.ToResource();
 
             if (resource.StandardTrackFormat.IsNotNullOrWhiteSpace())
+            {
+                var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
+                basicConfig.AddToResource(resource);
+            }
+
+            if (resource.MultiDiscTrackFormat.IsNotNullOrWhiteSpace())
             {
                 var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
                 basicConfig.AddToResource(resource);
@@ -79,10 +86,15 @@ namespace Lidarr.Api.V1.Config
             var sampleResource = new NamingExampleResource();
             
             var singleTrackSampleResult = _filenameSampleService.GetStandardTrackSample(nameSpec);
+            var multiDiscTrackSampleResult = _filenameSampleService.GetMultiDiscTrackSample(nameSpec);
 
             sampleResource.SingleTrackExample = _filenameValidationService.ValidateTrackFilename(singleTrackSampleResult) != null
                     ? null
                     : singleTrackSampleResult.FileName;
+
+            sampleResource.MultiDiscTrackExample = _filenameValidationService.ValidateTrackFilename(multiDiscTrackSampleResult) != null
+                    ? null
+                    : multiDiscTrackSampleResult.FileName;
 
             sampleResource.ArtistFolderExample = nameSpec.ArtistFolderFormat.IsNullOrWhiteSpace()
                 ? null

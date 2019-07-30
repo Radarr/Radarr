@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Organizer
     public interface IFilenameSampleService
     {
         SampleResult GetStandardTrackSample(NamingConfig nameSpec);
-
+        SampleResult GetMultiDiscTrackSample(NamingConfig nameSpec);
         string GetArtistFolderSample(NamingConfig nameSpec);
         string GetAlbumFolderSample(NamingConfig nameSpec);
     }
@@ -20,6 +20,8 @@ namespace NzbDrone.Core.Organizer
 
         private static Artist _standardArtist;
         private static Album _standardAlbum;
+        private static AlbumRelease _singleRelease;
+        private static AlbumRelease _multiRelease;
         private static Track _track1;
         private static List<Track> _singleTrack;
         private static TrackFile _singleTrackFile;
@@ -47,7 +49,7 @@ namespace NzbDrone.Core.Organizer
                 Disambiguation = "The Best Album",
             };
 
-            var _release = new AlbumRelease
+            _singleRelease = new AlbumRelease
             {
                 Album = _standardAlbum,
                 Media = new List<Medium>
@@ -62,9 +64,30 @@ namespace NzbDrone.Core.Organizer
                 Monitored = true
             };
 
+            _multiRelease = new AlbumRelease
+            {
+                Album = _standardAlbum,
+                Media = new List<Medium>
+                {
+                    new Medium
+                    {
+                        Name = "CD 1: First Years",
+                        Format = "CD",
+                        Number = 1
+                    },
+                    new Medium
+                    {
+                        Name = "CD 2: Second Best",
+                        Format = "CD",
+                        Number = 2
+                    }
+                },
+                Monitored = true
+            };
+
             _track1 = new Track
             {
-                AlbumRelease = _release,
+                AlbumRelease = _singleRelease,
                 AbsoluteTrackNumber = 3,
                 MediumNumber = 1,
                 
@@ -102,6 +125,24 @@ namespace NzbDrone.Core.Organizer
 
         public SampleResult GetStandardTrackSample(NamingConfig nameSpec)
         {
+            _track1.AlbumRelease = _singleRelease;
+
+            var result = new SampleResult
+            {
+                FileName = BuildTrackSample(_singleTrack, _standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
+                Artist = _standardArtist,
+                Album = _standardAlbum,
+                Tracks = _singleTrack,
+                TrackFile = _singleTrackFile
+            };
+
+            return result;
+        }
+
+        public SampleResult GetMultiDiscTrackSample(NamingConfig nameSpec)
+        {
+            _track1.AlbumRelease = _multiRelease;
+
             var result = new SampleResult
             {
                 FileName = BuildTrackSample(_singleTrack, _standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
