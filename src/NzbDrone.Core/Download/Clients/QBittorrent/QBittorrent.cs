@@ -164,6 +164,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         item.Message = "The download is stalled with no connections";
                         break;
 
+                    case "metaDL": // torrent is downloading metadata
                     case "downloading": // torrent is being downloaded and data is being transfered
                         item.Status = DownloadItemStatus.Downloading;
                         break;
