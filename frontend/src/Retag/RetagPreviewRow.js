@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import CheckInput from 'Components/Form/CheckInput';
@@ -7,16 +8,19 @@ import styles from './RetagPreviewRow.css';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 
-function formatMissing(value) {
-  if (value === undefined || value === 0 || value === '0') {
+function formatValue(field, value) {
+  if (value === undefined || value === 0 || value === '0' || value === '') {
     return (<Icon name={icons.BAN} size={12} />);
+  }
+  if (field === 'Image Size') {
+    return formatBytes(value);
   }
   return value;
 }
 
-function formatChange(oldValue, newValue) {
+function formatChange(field, oldValue, newValue) {
   return (
-    <div> {formatMissing(oldValue)} <Icon name={icons.ARROW_RIGHT_NO_CIRCLE} size={12} /> {formatMissing(newValue)} </div>
+    <div> {formatValue(field, oldValue)} <Icon name={icons.ARROW_RIGHT_NO_CIRCLE} size={12} /> {formatValue(field, newValue)} </div>
   );
 }
 
@@ -78,7 +82,7 @@ class RetagPreviewRow extends Component {
                   <DescriptionListItem
                     key={field}
                     title={field}
-                    data={formatChange(oldValue, newValue)}
+                    data={formatChange(field, oldValue, newValue)}
                   />
                 );
               })

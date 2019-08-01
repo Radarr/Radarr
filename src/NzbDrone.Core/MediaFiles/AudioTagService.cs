@@ -16,6 +16,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using TagLib;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaCover;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -40,6 +41,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
         private readonly IArtistService _artistService;
+        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
         
@@ -47,6 +49,7 @@ namespace NzbDrone.Core.MediaFiles
                                IMediaFileService mediaFileService,
                                IDiskProvider diskProvider,
                                IArtistService artistService,
+                               IMapCoversToLocal mediaCoverService,
                                IEventAggregator eventAggregator,
                                Logger logger)
         {
@@ -54,6 +57,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileService = mediaFileService;
             _diskProvider = diskProvider;
             _artistService = artistService;
+            _mediaCoverService = mediaCoverService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -76,6 +80,23 @@ namespace NzbDrone.Core.MediaFiles
             var albumartist = album.Artist.Value;
             var artist = track.ArtistMetadata.Value;
 
+            var cover = album.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
+            string imageFile = null;
+            long imageSize = 0;
+            if (cover != null)
+            {
+                imageFile = _mediaCoverService.GetCoverPath(album.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, null);
+                var fileInfo = _diskProvider.GetFileInfo(imageFile);
+                if (fileInfo.Exists)
+                {
+                    imageSize = fileInfo.Length;
+                }
+                else
+                {
+                    imageFile = null;
+                }
+            }
+
             return new AudioTag {
                 Title = track.Title,
                 Performers = new [] { artist.Name },
@@ -91,6 +112,9 @@ namespace NzbDrone.Core.MediaFiles
                 OriginalReleaseDate = album.ReleaseDate,
                 OriginalYear = (uint)album.ReleaseDate?.Year,
                 Publisher = release.Label.FirstOrDefault(),
+                Genres = album.Genres.Any() ? album.Genres.ToArray() : artist.Genres.ToArray(),
+                ImageFile = imageFile,
+                ImageSize = imageSize,
                 MusicBrainzReleaseCountry = IsoCountries.Find(release.Country.FirstOrDefault())?.TwoLetterCode,
                 MusicBrainzReleaseStatus = release.Status.ToLower(),
                 MusicBrainzReleaseType = album.AlbumType.ToLower(),

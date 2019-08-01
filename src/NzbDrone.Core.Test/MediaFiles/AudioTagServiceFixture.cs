@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
         {
             private static readonly string[] MediaFiles = new [] { "nin.mp2", "nin.mp3", "nin.flac", "nin.m4a", "nin.wma", "nin.ape", "nin.opus" };
 
-            private static readonly string[] SkipProperties = new [] { "IsValid", "Duration", "Quality", "MediaInfo" };
+            private static readonly string[] SkipProperties = new [] { "IsValid", "Duration", "Quality", "MediaInfo", "ImageFile" };
             private static readonly Dictionary<string, string[]> SkipPropertiesByFile = new Dictionary<string, string[]> {
                 { "nin.mp2", new [] {"OriginalReleaseDate"} }
             };
@@ -61,6 +61,9 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .Setup(x => x.WriteAudioTags)
                 .Returns(WriteAudioTagsType.Sync);
 
+            var imageFile = Path.Combine(testdir, "nin.png");
+            var imageSize = _diskProvider.GetFileSize(imageFile);
+
             // have to manually set the arrays of string parameters and integers to values > 1
             testTags = Builder<AudioTag>.CreateNew()
                 .With(x => x.Track = 2)
@@ -73,6 +76,9 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .With(x => x.OriginalYear = 2009)
                 .With(x => x.Performers = new [] { "Performer1" })
                 .With(x => x.AlbumArtists = new [] { "방탄소년단" })
+                .With(x => x.Genres = new [] { "Genre1", "Genre2" })
+                .With(x => x.ImageFile = imageFile)
+                .With(x => x.ImageSize = imageSize)
                 .Build();
         }
 
@@ -228,7 +234,8 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             var tag = Subject.ReadAudioTag(path);
             var expected = new AudioTag() {
                 Performers = new string[0],
-                AlbumArtists = new string[0]
+                AlbumArtists = new string[0],
+                Genres = new string[0]
             };
 
             VerifySame(tag, expected, skipProperties);

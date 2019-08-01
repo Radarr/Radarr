@@ -34,6 +34,9 @@ namespace NzbDrone.Core.MediaFiles
         public uint OriginalYear { get; set; }
         public string Publisher { get; set; }
         public TimeSpan Duration { get; set; }
+        public string[] Genres { get; set; }
+        public string ImageFile { get; set; }
+        public long ImageSize { get; set; }
         public string MusicBrainzReleaseCountry { get; set; }
         public string MusicBrainzReleaseStatus { get; set; }
         public string MusicBrainzReleaseType { get; set; }
@@ -81,6 +84,8 @@ namespace NzbDrone.Core.MediaFiles
                 Year = tag.Year;
                 Publisher = tag.Publisher;
                 Duration = file.Properties.Duration;
+                Genres = tag.Genres;
+                ImageSize = tag.Pictures.FirstOrDefault()?.Data.Count ?? 0;
                 MusicBrainzReleaseCountry = tag.MusicBrainzReleaseCountry;
                 MusicBrainzReleaseStatus = tag.MusicBrainzReleaseStatus;
                 MusicBrainzReleaseType = tag.MusicBrainzReleaseType;
@@ -315,6 +320,7 @@ namespace NzbDrone.Core.MediaFiles
             // WMA with null performers/albumartists
             Performers = Performers ?? new string[0];
             AlbumArtists = AlbumArtists ?? new string[0];
+            Genres = Genres ?? new string[0];
 
             TagLib.File file = null;
             try
@@ -332,6 +338,7 @@ namespace NzbDrone.Core.MediaFiles
                 tag.Disc = Disc;
                 tag.DiscCount = DiscCount;
                 tag.Publisher = Publisher;
+                tag.Genres = Genres;
                 tag.MusicBrainzReleaseCountry = MusicBrainzReleaseCountry;
                 tag.MusicBrainzReleaseStatus = MusicBrainzReleaseStatus;
                 tag.MusicBrainzReleaseType = MusicBrainzReleaseType;
@@ -340,6 +347,11 @@ namespace NzbDrone.Core.MediaFiles
                 tag.MusicBrainzReleaseArtistId = MusicBrainzReleaseArtistId;
                 tag.MusicBrainzReleaseGroupId = MusicBrainzReleaseGroupId;
                 tag.MusicBrainzTrackId = MusicBrainzTrackId;
+
+                if (ImageFile.IsNotNullOrWhiteSpace())
+                {
+                    tag.Pictures = new IPicture[1] { new Picture(ImageFile) };
+                }
 
                 if (file.TagTypes.HasFlag(TagTypes.Id3v2))
                 {
@@ -522,6 +534,16 @@ namespace NzbDrone.Core.MediaFiles
             if (Publisher != other.Publisher)
             {
                 output.Add("Label", Tuple.Create(Publisher, other.Publisher));
+            }
+
+            if (!Genres.SequenceEqual(other.Genres))
+            {
+                output.Add("Genres", Tuple.Create(string.Join(", ", Genres), string.Join(", ", other.Genres)));
+            }
+
+            if (ImageSize != other.ImageSize)
+            {
+                output.Add("Image Size", Tuple.Create(ImageSize.ToString(), other.ImageSize.ToString()));
             }
 
             return output;

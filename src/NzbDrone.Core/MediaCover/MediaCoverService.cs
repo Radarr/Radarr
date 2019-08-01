@@ -19,6 +19,7 @@ namespace NzbDrone.Core.MediaCover
     {
         void ConvertToLocalUrls(int entityId, MediaCoverEntity coverEntity, IEnumerable<MediaCover> covers);
         string GetCoverPath(int entityId, MediaCoverEntity coverEntity, MediaCoverTypes mediaCoverTypes, string extension, int? height = null);
+        void EnsureAlbumCovers(Album album);
     }
 
     public class MediaCoverService :
@@ -137,7 +138,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private void EnsureAlbumCovers(Album album)
+        public void EnsureAlbumCovers(Album album)
         {
             foreach (var cover in album.Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
             {

@@ -75,7 +75,6 @@ class RetagPreviewModalContentConnector extends Component {
 RetagPreviewModalContentConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   albumId: PropTypes.number,
-  retagTracks: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchRetagPreview: PropTypes.func.isRequired,

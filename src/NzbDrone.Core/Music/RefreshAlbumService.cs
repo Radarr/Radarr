@@ -12,6 +12,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.History;
+using NzbDrone.Core.MediaCover;
 
 namespace NzbDrone.Core.Music
 {
@@ -33,6 +34,7 @@ namespace NzbDrone.Core.Music
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly ICheckIfAlbumShouldBeRefreshed _checkIfAlbumShouldBeRefreshed;
+        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
 
         public RefreshAlbumService(IAlbumService albumService,
@@ -46,6 +48,7 @@ namespace NzbDrone.Core.Music
                                    IHistoryService historyService,
                                    IEventAggregator eventAggregator,
                                    ICheckIfAlbumShouldBeRefreshed checkIfAlbumShouldBeRefreshed,
+                                   IMapCoversToLocal mediaCoverService,
                                    Logger logger)
         : base(logger, artistMetadataService)
         {
@@ -59,6 +62,7 @@ namespace NzbDrone.Core.Music
             _historyService = historyService;
             _eventAggregator = eventAggregator;
             _checkIfAlbumShouldBeRefreshed = checkIfAlbumShouldBeRefreshed;
+            _mediaCoverService = mediaCoverService;
             _logger = logger;
         }
 
@@ -154,6 +158,13 @@ namespace NzbDrone.Core.Music
             else
             {
                 result = UpdateResult.None;
+            }
+
+            // Force update and fetch covers if images have changed so that we can write them into tags
+            if (remote.Images.Any() && !local.Images.Select(x => x.Url).SequenceEqual(remote.Images.Select(x => x.Url)))
+            {
+                _mediaCoverService.EnsureAlbumCovers(remote);
+                result = UpdateResult.UpdateTags;
             }
             
             local.ArtistMetadataId = remote.ArtistMetadata.Value.Id;

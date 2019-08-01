@@ -471,6 +471,9 @@
     <Content Include="Files\LongOverview.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Files\Media\nin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Files\Media\nin.mp2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
