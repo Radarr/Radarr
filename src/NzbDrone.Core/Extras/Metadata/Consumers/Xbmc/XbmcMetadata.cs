@@ -205,11 +205,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             foreach (var image in artist.Metadata.Value.Images)
             {
-                var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType);
-                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
+                var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType, image.Extension);
+                var destination = image.CoverType.ToString().ToLowerInvariant() + image.Extension;
                 if (image.CoverType == MediaCoverTypes.Poster)
                 {
-                    destination = "folder" + Path.GetExtension(image.Url);
+                    destination = "folder" + image.Extension;
                 }
 
                 yield return new ImageFileResult(destination, source);
@@ -222,7 +222,21 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             {
                 // TODO: Make Source fallback to URL if local does not exist
                 // var source = _mediaCoverService.GetCoverPath(album.ArtistId, image.CoverType, null, album.Id);
-                var destination = Path.Combine(albumPath, image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url));
+                string filename;
+
+                switch(image.CoverType)
+                {
+                    case MediaCoverTypes.Cover:
+                        filename = "folder";
+                        break;
+                    case MediaCoverTypes.Disc:
+                        filename = "discart";
+                        break;
+                    default:
+                        continue;
+                }
+
+                var destination = Path.Combine(albumPath, filename + image.Extension);
 
                 yield return new ImageFileResult(destination, image.Url);
             }

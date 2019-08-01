@@ -1,3 +1,4 @@
+using System.IO;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.MediaCover
     {
         public MediaCoverTypes CoverType { get; set; }
         public string Url { get; set; }
+        public string Extension => Path.GetExtension(Url);
 
         public MediaCover()
         {

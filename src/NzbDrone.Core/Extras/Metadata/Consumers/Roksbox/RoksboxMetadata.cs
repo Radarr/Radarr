@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 return new List<ImageFileResult>(); ;
             }
 
-            var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType);
+            var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType, image.Extension);
             var destination = Path.GetFileName(artist.Path) + Path.GetExtension(source);
 
             return new List<ImageFileResult>{ new ImageFileResult(destination, source) };

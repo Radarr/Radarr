@@ -41,12 +41,17 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
         }
 
-        [Test]
-        public void should_convert_cover_urls_to_local()
+        [TestCase(".png")]
+        [TestCase(".jpg")]
+        public void should_convert_cover_urls_to_local(string extension)
         {
             var covers = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Banner}
+                    new MediaCover.MediaCover
+                    {
+                        Url = "http://dummy.com/test" + extension,
+                        CoverType = MediaCoverTypes.Banner
+                    }
                 };
 
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
@@ -58,15 +63,20 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
 
 
-            covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg?lastWrite=1234");
+            covers.Single().Url.Should().Be("/MediaCover/12/banner" + extension + "?lastWrite=1234");
         }
 
-        [Test]
-        public void should_convert_album_cover_urls_to_local()
+        [TestCase(".png")]
+        [TestCase(".jpg")]
+        public void should_convert_album_cover_urls_to_local(string extension)
         {
             var covers = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Disc}
+                    new MediaCover.MediaCover
+                    {
+                        Url = "http://dummy.com/test" + extension,
+                        CoverType = MediaCoverTypes.Disc
+                    }
                 };
 
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
@@ -78,22 +88,27 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.ConvertToLocalUrls(6, MediaCoverEntity.Album, covers);
 
 
-            covers.Single().Url.Should().Be("/MediaCover/Albums/6/disc.jpg?lastWrite=1234");
+            covers.Single().Url.Should().Be("/MediaCover/Albums/6/disc" + extension + "?lastWrite=1234");
         }
 
-        [Test]
-        public void should_convert_media_urls_to_local_without_time_if_file_doesnt_exist()
+        [TestCase(".png")]
+        [TestCase(".jpg")]
+        public void should_convert_media_urls_to_local_without_time_if_file_doesnt_exist(string extension)
         {
             var covers = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Banner}
+                    new MediaCover.MediaCover
+                    {
+                        Url = "http://dummy.com/test" + extension,
+                        CoverType = MediaCoverTypes.Banner
+                    }
                 };
 
 
             Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
 
 
-            covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg");
+            covers.Single().Url.Should().Be("/MediaCover/12/banner" + extension);
         }
 
         [Test]
