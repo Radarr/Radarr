@@ -95,6 +95,7 @@ namespace NzbDrone.Core.Music
             }
                          
             result.Entity = tuple.Item2;
+            result.Entity.Id = local.Id;
             result.Metadata = tuple.Item3;
             return result;
         }

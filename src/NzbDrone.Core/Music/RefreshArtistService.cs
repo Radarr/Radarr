@@ -308,6 +308,7 @@ namespace NzbDrone.Core.Music
                 try
                 {
                     updated = RefreshEntityInfo(artist, null, true, false);
+                    _logger.Trace($"Artist {artist} updated: {updated}");
                     RescanArtist(artist, isNew, trigger, updated);
                 }
                 catch (Exception e)
