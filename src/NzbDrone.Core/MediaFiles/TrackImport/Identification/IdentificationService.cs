@@ -173,17 +173,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             return false;
         }
 
-        private List<LocalTrack> ToLocalTrack(IEnumerable<TrackFile> trackfiles)
+        private List<LocalTrack> ToLocalTrack(IEnumerable<TrackFile> trackfiles, LocalAlbumRelease localRelease)
         {
-            var localTracks = trackfiles.Select(x => new LocalTrack {
-                    Path = x.Path,
-                    Size = x.Size,
-                    Modified = x.Modified,
-                    FileTrackInfo = _audioTagService.ReadTags(x.Path),
-                    ExistingFile = true,
-                    AdditionalFile = true,
-                    Quality = x.Quality
-                })
+            var scanned = trackfiles.Join(localRelease.LocalTracks, t => t.Path, l => l.Path, (track, localTrack) => localTrack);
+            var toScan = trackfiles.ExceptBy(t => t.Path, scanned, s => s.Path, StringComparer.InvariantCulture);
+            var localTracks = scanned.Concat(toScan.Select(x => new LocalTrack {
+                        Path = x.Path,
+                        Size = x.Size,
+                        Modified = x.Modified,
+                        FileTrackInfo = _audioTagService.ReadTags(x.Path),
+                        ExistingFile = true,
+                        AdditionalFile = true,
+                        Quality = x.Quality
+                    }))
                 .ToList();
 
             localTracks.ForEach(x => _augmentingService.Augment(x, true));
@@ -218,7 +220,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             // convert all the TrackFiles that represent extra files to List<LocalTrack>
             var allLocalTracks = ToLocalTrack(candidateReleases
                                               .SelectMany(x => x.ExistingTracks)
-                                              .DistinctBy(x => x.Path));
+                                              .DistinctBy(x => x.Path), localAlbumRelease);
 
             _logger.Debug($"Retrieved {allTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
             
@@ -242,7 +244,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                     allLocalTracks.AddRange(ToLocalTrack(newCandidates
                                                          .SelectMany(x  => x.ExistingTracks)
                                                          .DistinctBy(x => x.Path)
-                                                         .ExceptBy(x => x.Path, allLocalTracks, x => x.Path, PathEqualityComparer.Instance)));
+                                                         .ExceptBy(x => x.Path, allLocalTracks, x => x.Path, PathEqualityComparer.Instance),
+                                                         localAlbumRelease));
                 }
 
                 // fingerprint all the local files in candidates we might be matching against
