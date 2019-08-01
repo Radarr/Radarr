@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Parser
             if (albumInfo == null)
             {
                 _logger.Debug("Trying inexact album match for {0}", parsedAlbumInfo.AlbumTitle);
-                albumInfo = _albumService.FindByTitleInexact(artist.Id, parsedAlbumInfo.AlbumTitle);
+                albumInfo = _albumService.FindByTitleInexact(artist.ArtistMetadataId, parsedAlbumInfo.AlbumTitle);
             }
 
             if (albumInfo != null)

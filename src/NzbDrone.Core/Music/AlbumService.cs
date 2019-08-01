@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbumsForRefresh(int artistMetadataId, IEnumerable<string> foreignIds);
         Album AddAlbum(Album newAlbum);
         Album FindById(string foreignId);
-        Album FindByTitle(int artistId, string title);
-        Album FindByTitleInexact(int artistId, string title);
+        Album FindByTitle(int artistMetadataId, string title);
+        Album FindByTitleInexact(int artistMetadataId, string title);
         List<Album> GetCandidates(int artistId, string title);
         void DeleteAlbum(int albumId, bool deleteFiles);
         List<Album> GetAllAlbums();
@@ -76,9 +76,9 @@ namespace NzbDrone.Core.Music
             return _albumRepository.FindById(lidarrId);
         }
 
-        public Album FindByTitle(int artistId, string title)
+        public Album FindByTitle(int artistMetadataId, string title)
         {
-            return _albumRepository.FindByTitle(artistId, title);
+            return _albumRepository.FindByTitle(artistMetadataId, title);
         }
 
         private List<Tuple<Func<Album, string, double>, string>> AlbumScoringFunctions(string title, string cleanTitle)
