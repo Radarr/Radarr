@@ -102,7 +102,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                 // set the correct release to be monitored before importing the new files
                 _logger.Debug("Updating release to {0} [{1} tracks]", newRelease, newRelease.TrackCount);
-                _releaseService.SetMonitored(newRelease);
+                album.AlbumReleases = _releaseService.SetMonitored(newRelease);
 
                 // Publish album edited event.
                 // Deliberatly don't put in the old album since we don't want to trigger an ArtistScan.
@@ -111,6 +111,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             var filesToAdd = new List<TrackFile>(qualifiedImports.Count);
             var albumReleasesDict = new Dictionary<int, List<AlbumRelease>>(albumDecisions.Count);
+            var trackImportedEvents = new List<TrackImportedEvent>(qualifiedImports.Count);
             
             foreach (var importDecision in qualifiedImports.OrderBy(e => e.Item.Tracks.Select(track => track.AbsoluteTrackNumber).MinOrDefault())
                                                            .ThenByDescending(e => e.Item.Size))
@@ -209,7 +210,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     allImportedTrackFiles.Add(trackFile);
                     allOldTrackFiles.AddRange(oldFiles);
 
-                    _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, !localTrack.ExistingFile, downloadClientItem));
+                    // create all the import events here, but we can't publish until the trackfiles have been
+                    // inserted and ids created
+                    trackImportedEvents.Add(new TrackImportedEvent(localTrack, trackFile, oldFiles, !localTrack.ExistingFile, downloadClientItem));
                 }
                 catch (RootFolderNotFoundException e)
                 {
@@ -244,7 +247,13 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             filesToAdd.ForEach(f => f.Tracks.Value.ForEach(t => t.TrackFileId = f.Id));
             _trackService.SetFileIds(filesToAdd.SelectMany(x => x.Tracks.Value).ToList());
             _logger.Debug($"TrackFileIds updated, total {watch.ElapsedMilliseconds}ms");
-            
+
+            // now that trackfiles have been inserted and ids generated, publish the import events
+            foreach (var trackImportedEvent in trackImportedEvents)
+            {
+                _eventAggregator.PublishEvent(trackImportedEvent);
+            }
+
             var albumImports = importResults.Where(e => e.ImportDecision.Item.Album != null)
                 .GroupBy(e => e.ImportDecision.Item.Album.Id).ToList();
 

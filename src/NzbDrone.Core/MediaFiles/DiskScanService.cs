@@ -275,7 +275,7 @@ namespace NzbDrone.Core.MediaFiles
             if (message.ArtistId.HasValue)
             {
                 var artist = _artistService.GetArtist(message.ArtistId.Value);
-                Scan(artist);
+                Scan(artist, message.Filter);
             }
 
             else
@@ -284,7 +284,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 foreach (var artist in allArtists)
                 {
-                    Scan(artist);
+                    Scan(artist, message.Filter);
                 }
             }
         }
