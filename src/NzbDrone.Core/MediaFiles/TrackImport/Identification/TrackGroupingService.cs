@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Parser.Model;
@@ -176,15 +177,16 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             // and group them.
 
             // we only bother doing this for the immediate parent directory.
-            var paths = tracks.Select(x => x.Path);
-            var folders = paths.Select(x => Path.GetDirectoryName(x)).Distinct().ToList();
-            folders.Sort();
+            var trackFolders = tracks.Select(x => Tuple.Create(x, Path.GetDirectoryName(x.Path)));
+            
+            var distinctFolders = trackFolders.Select(x => x.Item2).Distinct().ToList();
+            distinctFolders.Sort();
 
-            _logger.Trace("Folders:\n{0}", string.Join("\n", folders));
+            _logger.Trace("Folders:\n{0}", string.Join("\n", distinctFolders));
 
             Regex subdirRegex = null;
             var output = new List<LocalTrack>();
-            foreach (var folder in folders)
+            foreach (var folder in distinctFolders)
             {
                 if (subdirRegex != null)
                 {
@@ -208,7 +210,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
                 // reset and put current folder into output
                 subdirRegex = null;
-                output.AddRange(tracks.Where(x => PathEqualityComparer.Instance.Equals(Path.GetDirectoryName(x.Path), folder)));
+                var currentTracks = trackFolders.Where(x => x.Item2.Equals(folder, DiskProviderBase.PathStringComparison))
+                    .Select(x => x.Item1);
+                output.AddRange(currentTracks);
 
                 // check if the start of another multi disc match
                 foreach (var marker in multiDiscMarkers)
