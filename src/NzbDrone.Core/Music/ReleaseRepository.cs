@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Music
 
             if (release == null && checkRedirect)
             {
-                release = Query.Where(x => x.OldForeignReleaseIds.Contains(foreignReleaseId))
+                var id = "\"" + foreignReleaseId + "\"";
+                release = Query.Where(x => x.OldForeignReleaseIds.Contains(id))
                                .SingleOrDefault();
             }
             
