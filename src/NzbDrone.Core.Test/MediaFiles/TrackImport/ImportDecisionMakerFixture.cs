@@ -16,7 +16,6 @@ using FizzWare.NBuilder;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
 using System.IO.Abstractions.TestingHelpers;
 
@@ -86,7 +85,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             _artist = Builder<Artist>.CreateNew()
                                      .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
-                                     .With(e => e.LanguageProfile = new LanguageProfile { Languages = Languages.LanguageFixture.GetDefaultLanguages() })
                                      .Build();
 
             _albumRelease = Builder<AlbumRelease>.CreateNew()

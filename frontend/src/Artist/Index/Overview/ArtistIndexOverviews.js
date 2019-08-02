@@ -200,7 +200,6 @@ class ArtistIndexOverviews extends Component {
         isSmallScreen={isSmallScreen}
         style={style}
         artistId={artist.id}
-        languageProfileId={artist.languageProfileId}
         qualityProfileId={artist.qualityProfileId}
         metadataProfileId={artist.metadataProfileId}
       />

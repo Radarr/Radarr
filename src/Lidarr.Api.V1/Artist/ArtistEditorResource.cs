@@ -8,7 +8,6 @@ namespace Lidarr.Api.V1.Artist
         public List<int> ArtistIds { get; set; }
         public bool? Monitored { get; set; }
         public int? QualityProfileId { get; set; }
-        public int? LanguageProfileId { get; set; }
         public int? MetadataProfileId { get; set; }
         public bool? AlbumFolder { get; set; }
         public string RootFolderPath { get; set; }

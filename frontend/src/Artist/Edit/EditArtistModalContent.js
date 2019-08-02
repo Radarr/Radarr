@@ -59,7 +59,6 @@ class EditArtistModalContent extends Component {
       artistName,
       item,
       isSaving,
-      showLanguageProfile,
       showMetadataProfile,
       originalPath,
       onInputChange,
@@ -72,7 +71,6 @@ class EditArtistModalContent extends Component {
       monitored,
       albumFolder,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       path,
       tags
@@ -120,20 +118,6 @@ class EditArtistModalContent extends Component {
                 onChange={onInputChange}
               />
             </FormGroup>
-
-            {
-              showLanguageProfile &&
-                <FormGroup>
-                  <FormLabel>Language Profile</FormLabel>
-
-                  <FormInputGroup
-                    type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                    name="languageProfileId"
-                    {...languageProfileId}
-                    onChange={onInputChange}
-                  />
-                </FormGroup>
-            }
 
             {
               showMetadataProfile &&
@@ -214,7 +198,6 @@ EditArtistModalContent.propTypes = {
   artistName: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   isPathChanging: PropTypes.bool.isRequired,
   originalPath: PropTypes.string.isRequired,

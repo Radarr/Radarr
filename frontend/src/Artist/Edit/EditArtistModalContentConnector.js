@@ -27,11 +27,10 @@ function createIsPathChangingSelector() {
 function createMapStateToProps() {
   return createSelector(
     (state) => state.artist,
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createArtistSelector(),
     createIsPathChangingSelector(),
-    (artistState, languageProfiles, metadataProfiles, artist, isPathChanging) => {
+    (artistState, metadataProfiles, artist, isPathChanging) => {
       const {
         isSaving,
         saveError,
@@ -42,7 +41,6 @@ function createMapStateToProps() {
         'monitored',
         'albumFolder',
         'qualityProfileId',
-        'languageProfileId',
         'metadataProfileId',
         'path',
         'tags'
@@ -57,7 +55,6 @@ function createMapStateToProps() {
         isPathChanging,
         originalPath: artist.path,
         item: settings.settings,
-        showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         ...settings
       };

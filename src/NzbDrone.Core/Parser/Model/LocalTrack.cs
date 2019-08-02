@@ -1,7 +1,6 @@
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
 using System;
 
@@ -27,7 +26,6 @@ namespace NzbDrone.Core.Parser.Model
         public List<Track> Tracks { get; set; }
         public Distance Distance { get; set; }
         public QualityModel Quality { get; set; }
-        public Language Language { get; set; }
         public bool ExistingFile { get; set; }
         public bool AdditionalFile { get; set; }
         public bool SceneSource { get; set; }

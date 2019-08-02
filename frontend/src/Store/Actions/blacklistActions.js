@@ -39,11 +39,6 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'language',
-      label: 'Language',
-      isVisible: false
-    },
-    {
       name: 'quality',
       label: 'Quality',
       isVisible: true

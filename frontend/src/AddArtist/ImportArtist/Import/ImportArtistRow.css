@@ -17,7 +17,6 @@
 }
 
 .qualityProfile,
-.languageProfile,
 .metadataProfile {
   composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
 
@@ -39,7 +38,6 @@
   min-width: 300px;
 }
 
-.hideLanguageProfile,
 .hideMetadataProfile {
   composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
 

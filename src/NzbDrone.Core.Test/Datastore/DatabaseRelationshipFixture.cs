@@ -6,7 +6,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Languages;
 using System;
 
 namespace NzbDrone.Core.Test.Datastore

@@ -5,9 +5,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
@@ -23,13 +21,11 @@ namespace Lidarr.Api.V1.Queue
         private readonly IQueueService _queueService;
         private readonly IPendingReleaseService _pendingReleaseService;
 
-        private readonly LanguageComparer LANGUAGE_COMPARER;
         private readonly QualityModelComparer QUALITY_COMPARER;
 
         public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage,
                            IQueueService queueService,
                            IPendingReleaseService pendingReleaseService,
-                           ILanguageProfileService languageProfileService,
                            QualityProfileService qualityProfileService)
             : base(broadcastSignalRMessage)
         {
@@ -37,7 +33,6 @@ namespace Lidarr.Api.V1.Queue
             _pendingReleaseService = pendingReleaseService;
             GetResourcePaged = GetQueue;
 
-            LANGUAGE_COMPARER = new LanguageComparer(languageProfileService.GetDefaultProfile(string.Empty));
             QUALITY_COMPARER = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
         }
 
@@ -98,13 +93,6 @@ namespace Lidarr.Api.V1.Queue
                     : fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
             }
 
-            else if (pagingSpec.SortKey == "language")
-            {
-                ordered = ascending
-                    ? fullQueue.OrderBy(q => q.Language, LANGUAGE_COMPARER)
-                    : fullQueue.OrderByDescending(q => q.Language, LANGUAGE_COMPARER);
-            }
-
             else if (pagingSpec.SortKey == "quality")
             {
                 ordered = ascending
@@ -147,8 +135,6 @@ namespace Lidarr.Api.V1.Queue
                     return q => q.Album?.Title;
                 case "album.releaseDate":
                     return q => q.Album?.ReleaseDate;
-                case "language":
-                    return q => q.Language;
                 case "quality":
                     return q => q.Quality;
                 case "progress":

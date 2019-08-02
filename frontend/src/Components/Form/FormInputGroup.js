@@ -14,7 +14,6 @@ import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
-import LanguageProfileSelectInputConnector from './LanguageProfileSelectInputConnector';
 import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
 import AlbumReleaseSelectInputConnector from './AlbumReleaseSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
@@ -63,9 +62,6 @@ function getComponent(type) {
 
     case inputTypes.QUALITY_PROFILE_SELECT:
       return QualityProfileSelectInputConnector;
-
-    case inputTypes.LANGUAGE_PROFILE_SELECT:
-      return LanguageProfileSelectInputConnector;
 
     case inputTypes.METADATA_PROFILE_SELECT:
       return MetadataProfileSelectInputConnector;

@@ -1,6 +1,5 @@
 const growableColumns = [
   'qualityProfileId',
-  'languageProfileId',
   'path',
   'tags'
 ];

@@ -4,7 +4,6 @@ using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {

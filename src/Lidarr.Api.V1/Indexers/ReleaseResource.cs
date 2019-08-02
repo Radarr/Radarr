@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using Lidarr.Http.REST;
@@ -28,8 +27,6 @@ namespace Lidarr.Api.V1.Indexers
         public string Title { get; set; }
         public bool Discography { get; set; }
         public bool SceneSource { get; set; }
-        public Language Language { get; set; }
-        public int LanguageWeight { get; set; }
         public string AirDate { get; set; }
         public string ArtistName { get; set; }
         public string AlbumTitle { get; set; }
@@ -86,7 +83,6 @@ namespace Lidarr.Api.V1.Indexers
                 ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
                 ReleaseHash = parsedAlbumInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                Language = parsedAlbumInfo.Language,
                 ArtistName = parsedAlbumInfo.ArtistName,
                 AlbumTitle = parsedAlbumInfo.AlbumTitle,
                 Discography = parsedAlbumInfo.Discography,

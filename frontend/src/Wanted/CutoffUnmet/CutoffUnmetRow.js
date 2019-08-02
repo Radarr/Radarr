@@ -4,7 +4,6 @@ import albumEntities from 'Album/albumEntities';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
 import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
-import TrackFileLanguageConnector from 'TrackFile/TrackFileLanguageConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
@@ -83,19 +82,6 @@ function CutoffUnmetRow(props) {
                 key={name}
                 date={releaseDate}
               />
-            );
-          }
-
-          if (name === 'language') {
-            return (
-              <TableRowCell
-                key={name}
-                className={styles.language}
-              >
-                <TrackFileLanguageConnector
-                  trackFileId={trackFileId}
-                />
-              </TableRowCell>
             );
           }
 

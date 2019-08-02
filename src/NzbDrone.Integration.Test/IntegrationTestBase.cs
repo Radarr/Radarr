@@ -216,7 +216,6 @@ namespace NzbDrone.Integration.Test
                 var lookup = Artist.Lookup("lidarr:" + lidarrId);
                 var artist = lookup.First();
                 artist.QualityProfileId = 1;
-                artist.LanguageProfileId = 1;
                 artist.MetadataProfileId = 1;
                 artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
                 artist.Monitored = true;

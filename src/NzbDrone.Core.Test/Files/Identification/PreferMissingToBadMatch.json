@@ -187,11 +187,7 @@
         },
         "trackNumbers": [
           10
-        ],
-        "language": {
-          "id": 1,
-          "name": "English"
-        }
+        ]
       }
     },
     {
@@ -228,11 +224,7 @@
         },
         "trackNumbers": [
           11
-        ],
-        "language": {
-          "id": 1,
-          "name": "English"
-        }
+        ]
       }
     }
   ]

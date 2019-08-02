@@ -42,10 +42,6 @@ class AddNewArtistModalContent extends Component {
     this.props.onInputChange({ name: 'qualityProfileId', value: parseInt(value) });
   }
 
-  onLanguageProfileIdChange = ({ value }) => {
-    this.props.onInputChange({ name: 'languageProfileId', value: parseInt(value) });
-  }
-
   onMetadataProfileIdChange = ({ value }) => {
     this.props.onInputChange({ name: 'metadataProfileId', value: parseInt(value) });
   }
@@ -66,11 +62,9 @@ class AddNewArtistModalContent extends Component {
       rootFolderPath,
       monitor,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       albumFolder,
       tags,
-      showLanguageProfile,
       showMetadataProfile,
       isSmallScreen,
       onModalClose,
@@ -159,17 +153,6 @@ class AddNewArtistModalContent extends Component {
                   />
                 </FormGroup>
 
-                <FormGroup className={showLanguageProfile ? undefined : styles.hideLanguageProfile}>
-                  <FormLabel>Language Profile</FormLabel>
-
-                  <FormInputGroup
-                    type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                    name="languageProfileId"
-                    onChange={this.onLanguageProfileIdChange}
-                    {...languageProfileId}
-                  />
-                </FormGroup>
-
                 <FormGroup className={showMetadataProfile ? undefined : styles.hideMetadataProfile}>
                   <FormLabel>Metadata Profile</FormLabel>
 
@@ -245,11 +228,9 @@ AddNewArtistModalContent.propTypes = {
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
-  languageProfileId: PropTypes.object,
   metadataProfileId: PropTypes.object,
   albumFolder: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,

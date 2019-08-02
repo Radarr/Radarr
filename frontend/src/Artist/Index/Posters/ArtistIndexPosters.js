@@ -234,7 +234,6 @@ class ArtistIndexPosters extends Component {
         timeFormat={timeFormat}
         style={style}
         artistId={artist.id}
-        languageProfileId={artist.languageProfileId}
         qualityProfileId={artist.qualityProfileId}
         metadataProfileId={artist.metadataProfileId}
       />

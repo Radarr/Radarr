@@ -15,7 +15,6 @@ class ImportArtistTable extends Component {
       unmappedFolders,
       defaultMonitor,
       defaultQualityProfileId,
-      defaultLanguageProfileId,
       defaultMetadataProfileId,
       defaultAlbumFolder,
       onArtistLookup,
@@ -25,7 +24,6 @@ class ImportArtistTable extends Component {
     const values = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
-      languageProfileId: defaultLanguageProfileId,
       metadataProfileId: defaultMetadataProfileId,
       albumFolder: defaultAlbumFolder
     };
@@ -105,7 +103,6 @@ class ImportArtistTable extends Component {
       rootFolderId,
       items,
       selectedState,
-      showLanguageProfile,
       showMetadataProfile,
       onSelectedChange
     } = this.props;
@@ -117,7 +114,6 @@ class ImportArtistTable extends Component {
         key={key}
         style={style}
         rootFolderId={rootFolderId}
-        showLanguageProfile={showLanguageProfile}
         showMetadataProfile={showMetadataProfile}
         isSelected={selectedState[item.id]}
         onSelectedChange={onSelectedChange}
@@ -136,7 +132,6 @@ class ImportArtistTable extends Component {
       allUnselected,
       isSmallScreen,
       contentBody,
-      showLanguageProfile,
       showMetadataProfile,
       scrollTop,
       selectedState,
@@ -159,7 +154,6 @@ class ImportArtistTable extends Component {
         rowRenderer={this.rowRenderer}
         header={
           <ImportArtistHeader
-            showLanguageProfile={showLanguageProfile}
             showMetadataProfile={showMetadataProfile}
             allSelected={allSelected}
             allUnselected={allUnselected}
@@ -179,7 +173,6 @@ ImportArtistTable.propTypes = {
   unmappedFolders: PropTypes.arrayOf(PropTypes.object),
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
-  defaultLanguageProfileId: PropTypes.number,
   defaultMetadataProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
   allSelected: PropTypes.bool.isRequired,
@@ -188,7 +181,6 @@ ImportArtistTable.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   allArtists: PropTypes.arrayOf(PropTypes.object),
   contentBody: PropTypes.object.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   onSelectAllChange: PropTypes.func.isRequired,

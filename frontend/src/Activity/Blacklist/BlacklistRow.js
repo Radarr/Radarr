@@ -5,7 +5,6 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
@@ -42,7 +41,6 @@ class BlacklistRow extends Component {
     const {
       artist,
       sourceTitle,
-      language,
       quality,
       date,
       protocol,
@@ -80,19 +78,6 @@ class BlacklistRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {sourceTitle}
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'language') {
-              return (
-                <TableRowCell
-                  key={name}
-                  className={styles.language}
-                >
-                  <TrackLanguage
-                    language={language}
-                  />
                 </TableRowCell>
               );
             }
@@ -172,7 +157,6 @@ BlacklistRow.propTypes = {
   id: PropTypes.number.isRequired,
   artist: PropTypes.object.isRequired,
   sourceTitle: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,

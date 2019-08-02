@@ -4,7 +4,6 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
-import TrackFileLanguageConnector from 'TrackFile/TrackFileLanguageConnector';
 import MediaInfoConnector from 'TrackFile/MediaInfoConnector';
 import TrackActionsCell from './TrackActionsCell';
 import * as mediaInfoTypes from 'TrackFile/mediaInfoTypes';
@@ -123,19 +122,6 @@ class TrackRow extends Component {
                   {
                     formatTimeSpan(duration)
                   }
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'language') {
-              return (
-                <TableRowCell
-                  key={name}
-                  className={styles.language}
-                >
-                  <TrackFileLanguageConnector
-                    episodeFileId={trackFileId}
-                  />
                 </TableRowCell>
               );
             }

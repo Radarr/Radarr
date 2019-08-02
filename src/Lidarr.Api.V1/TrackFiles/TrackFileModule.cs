@@ -123,11 +123,6 @@ namespace Lidarr.Api.V1.TrackFiles
 
             foreach (var trackFile in trackFiles)
             {
-                if (resource.Language != null)
-                {
-                    trackFile.Language = resource.Language;
-                }
-
                 if (resource.Quality != null)
                 {
                     trackFile.Quality = resource.Quality;

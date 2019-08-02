@@ -10,10 +10,9 @@ import AddNewArtistModalContent from './AddNewArtistModalContent';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.addArtist,
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createDimensionsSelector(),
-    (addArtistState, languageProfiles, metadataProfiles, dimensions) => {
+    (addArtistState, metadataProfiles, dimensions) => {
       const {
         isAdding,
         addError,
@@ -29,7 +28,6 @@ function createMapStateToProps() {
       return {
         isAdding,
         addError,
-        showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         isSmallScreen: dimensions.isSmallScreen,
         validationErrors,
@@ -60,7 +58,6 @@ class AddNewArtistModalContentConnector extends Component {
       rootFolderPath,
       monitor,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       albumFolder,
       tags
@@ -71,7 +68,6 @@ class AddNewArtistModalContentConnector extends Component {
       rootFolderPath: rootFolderPath.value,
       monitor: monitor.value,
       qualityProfileId: qualityProfileId.value,
-      languageProfileId: languageProfileId.value,
       metadataProfileId: metadataProfileId.value,
       albumFolder: albumFolder.value,
       tags: tags.value,
@@ -98,7 +94,6 @@ AddNewArtistModalContentConnector.propTypes = {
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
-  languageProfileId: PropTypes.object,
   metadataProfileId: PropTypes.object,
   albumFolder: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,

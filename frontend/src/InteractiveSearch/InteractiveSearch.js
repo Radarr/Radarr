@@ -49,12 +49,6 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'languageWeight',
-    label: 'Language',
-    isSortable: true,
-    isVisible: true
-  },
-  {
     name: 'qualityWeight',
     label: 'Quality',
     isSortable: true,

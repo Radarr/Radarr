@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { kinds } from 'Helpers/Props';
 import SelectInput from 'Components/Form/SelectInput';
-import LanguageProfileSelectInputConnector from 'Components/Form/LanguageProfileSelectInputConnector';
 import MetadataProfileSelectInputConnector from 'Components/Form/MetadataProfileSelectInputConnector';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
@@ -27,7 +26,6 @@ class ArtistEditorFooter extends Component {
     this.state = {
       monitored: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
-      languageProfileId: NO_CHANGE,
       metadataProfileId: NO_CHANGE,
       albumFolder: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
@@ -49,7 +47,6 @@ class ArtistEditorFooter extends Component {
       this.setState({
         monitored: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
-        languageProfileId: NO_CHANGE,
         metadataProfileId: NO_CHANGE,
         albumFolder: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
@@ -146,7 +143,6 @@ class ArtistEditorFooter extends Component {
       isDeleting,
       isOrganizingArtist,
       isRetaggingArtist,
-      showLanguageProfile,
       showMetadataProfile,
       onOrganizeArtistPress,
       onRetagArtistPress
@@ -155,7 +151,6 @@ class ArtistEditorFooter extends Component {
     const {
       monitored,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       albumFolder,
       rootFolderPath,
@@ -209,24 +204,6 @@ class ArtistEditorFooter extends Component {
             onChange={this.onInputChange}
           />
         </div>
-
-        {
-          showLanguageProfile &&
-            <div className={styles.inputContainer}>
-              <ArtistEditorFooterLabel
-                label="Language Profile"
-                isSaving={isSaving && languageProfileId !== NO_CHANGE}
-              />
-
-              <LanguageProfileSelectInputConnector
-                name="languageProfileId"
-                value={languageProfileId}
-                includeNoChange={true}
-                isDisabled={!selectedCount}
-                onChange={this.onInputChange}
-              />
-            </div>
-        }
 
         {
           showMetadataProfile &&
@@ -363,7 +340,6 @@ ArtistEditorFooter.propTypes = {
   deleteError: PropTypes.object,
   isOrganizingArtist: PropTypes.bool.isRequired,
   isRetaggingArtist: PropTypes.bool.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
   onOrganizeArtistPress: PropTypes.func.isRequired,

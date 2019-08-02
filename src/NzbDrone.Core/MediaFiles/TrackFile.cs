@@ -5,7 +5,6 @@ using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
@@ -21,7 +20,6 @@ namespace NzbDrone.Core.MediaFiles
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
-        public Language Language { get; set; }
         public int AlbumId { get; set; }
         
         // These are queried from the database

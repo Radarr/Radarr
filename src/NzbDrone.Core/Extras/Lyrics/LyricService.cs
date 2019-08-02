@@ -10,7 +10,6 @@ using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Extras.Lyrics
 {
@@ -56,7 +55,7 @@ namespace NzbDrone.Core.Extras.Lyrics
             foreach (var trackFile in trackFiles)
             {
                 var groupedExtraFilesForTrackFile = subtitleFiles.Where(m => m.TrackFileId == trackFile.Id)
-                                                            .GroupBy(s => s.Language + s.Extension).ToList();
+                                                            .GroupBy(s => s.Extension).ToList();
 
                 foreach (var group in groupedExtraFilesForTrackFile)
                 {
@@ -65,12 +64,12 @@ namespace NzbDrone.Core.Extras.Lyrics
 
                     if (groupCount > 1)
                     {
-                        _logger.Warn("Multiple lyric files found with the same language and extension for {0}", trackFile.Path);
+                        _logger.Warn("Multiple lyric files found with the same extension for {0}", trackFile.Path);
                     }
 
                     foreach (var subtitleFile in group)
                     {
-                        var suffix = GetSuffix(subtitleFile.Language, copy, groupCount > 1);
+                        var suffix = GetSuffix(copy, groupCount > 1);
                         movedFiles.AddIfNotNull(MoveFile(artist, trackFile, subtitleFile, suffix));
 
                         copy++;
@@ -87,10 +86,8 @@ namespace NzbDrone.Core.Extras.Lyrics
         {
             if (LyricFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
-                var language = LanguageParser.ParseSubtitleLanguage(path);
-                var suffix = GetSuffix(language, 1, false);
+                var suffix = GetSuffix(1, false);
                 var subtitleFile = ImportFile(artist, trackFile, path, readOnly, extension, suffix);
-                subtitleFile.Language = language;
 
                 _lyricFileService.Upsert(subtitleFile);
 
@@ -100,7 +97,7 @@ namespace NzbDrone.Core.Extras.Lyrics
             return null;
         }
 
-        private string GetSuffix(Language language, int copy, bool multipleCopies = false)
+        private string GetSuffix(int copy, bool multipleCopies = false)
         {
             var suffixBuilder = new StringBuilder();
 
@@ -108,12 +105,6 @@ namespace NzbDrone.Core.Extras.Lyrics
             {
                 suffixBuilder.Append(".");
                 suffixBuilder.Append(copy);
-            }
-
-            if (language != Language.Unknown)
-            {
-                suffixBuilder.Append(".");
-                suffixBuilder.Append(IsoLanguages.Get(language).TwoLetterCode);
             }
 
             return suffixBuilder.ToString();

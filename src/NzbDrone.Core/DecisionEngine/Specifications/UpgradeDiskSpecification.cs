@@ -50,18 +50,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (!tracksMissing && trackFiles.Any())
                 {
                     var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
-                    var currentLanguages = trackFiles.Select(c => c.Language).Distinct().ToList();
 
                     if (!_upgradableSpecification.IsUpgradable(subject.Artist.QualityProfile,
-                                                               subject.Artist.LanguageProfile,
                                                                currentQualities,
-                                                               currentLanguages,
                                                                _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
                                                                subject.ParsedAlbumInfo.Quality,
-                                                               subject.ParsedAlbumInfo.Language,
                                                                subject.PreferredWordScore))
                     {
-                        return Decision.Reject("Existing files on disk is of equal or higher preference: {0} - {1}", currentQualities.ConcatToString(), currentLanguages.ConcatToString());
+                        return Decision.Reject("Existing files on disk is of equal or higher preference: {0}", currentQualities.ConcatToString());
                     }
                 }
 

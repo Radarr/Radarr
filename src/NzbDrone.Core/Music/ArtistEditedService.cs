@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Music
         public void Handle(ArtistEditedEvent message)
         {
             // Refresh Artist is we change AlbumType Preferences
-            if (message.Artist.LanguageProfileId != message.OldArtist.LanguageProfileId)
+            if (message.Artist.MetadataProfileId != message.OldArtist.MetadataProfileId)
             {
                 _commandQueueManager.Push(new RefreshArtistCommand(message.Artist.Id, false));
             }

@@ -22,7 +22,6 @@
   width: 250px;
 }
 
-.language,
 .duration,
 .status {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';

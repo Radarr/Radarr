@@ -14,12 +14,10 @@ function ImportArtistRow(props) {
     id,
     monitor,
     qualityProfileId,
-    languageProfileId,
     metadataProfileId,
     albumFolder,
     selectedArtist,
     isExistingArtist,
-    showLanguageProfile,
     showMetadataProfile,
     isSelected,
     onSelectedChange,
@@ -59,17 +57,6 @@ function ImportArtistRow(props) {
       </VirtualTableRowCell>
 
       <VirtualTableRowCell
-        className={showLanguageProfile ? styles.languageProfile : styles.hideLanguageProfile}
-      >
-        <FormInputGroup
-          type={inputTypes.LANGUAGE_PROFILE_SELECT}
-          name="languageProfileId"
-          value={languageProfileId}
-          onChange={onInputChange}
-        />
-      </VirtualTableRowCell>
-
-      <VirtualTableRowCell
         className={showMetadataProfile ? styles.metadataProfile : styles.hideMetadataProfile}
       >
         <FormInputGroup
@@ -104,13 +91,11 @@ ImportArtistRow.propTypes = {
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
-  languageProfileId: PropTypes.number.isRequired,
   metadataProfileId: PropTypes.number.isRequired,
   albumFolder: PropTypes.bool.isRequired,
   selectedArtist: PropTypes.object,
   isExistingArtist: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,

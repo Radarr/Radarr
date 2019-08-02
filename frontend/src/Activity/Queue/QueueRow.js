@@ -12,7 +12,6 @@ import Icon from 'Components/Icon';
 import Popover from 'Components/Tooltip/Popover';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
-import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import ArtistNameLink from 'Artist/ArtistNameLink';
@@ -73,7 +72,6 @@ class QueueRow extends Component {
       errorMessage,
       artist,
       album,
-      language,
       quality,
       protocol,
       indexer,
@@ -181,16 +179,6 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   -
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'language') {
-              return (
-                <TableRowCell key={name}>
-                  <TrackLanguage
-                    language={language}
-                  />
                 </TableRowCell>
               );
             }
@@ -364,7 +352,6 @@ QueueRow.propTypes = {
   errorMessage: PropTypes.string,
   artist: PropTypes.object,
   album: PropTypes.object,
-  language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

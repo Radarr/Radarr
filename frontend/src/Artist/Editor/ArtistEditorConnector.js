@@ -12,16 +12,14 @@ import ArtistEditor from './ArtistEditor';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createClientSideCollectionSelector('artist', 'artistEditor'),
     createCommandExecutingSelector(commandNames.RENAME_ARTIST),
     createCommandExecutingSelector(commandNames.RETAG_ARTIST),
-    (languageProfiles, metadataProfiles, artist, isOrganizingArtist, isRetaggingArtist) => {
+    (metadataProfiles, artist, isOrganizingArtist, isRetaggingArtist) => {
       return {
         isOrganizingArtist,
         isRetaggingArtist,
-        showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         ...artist
       };

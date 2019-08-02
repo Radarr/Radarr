@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
@@ -16,10 +15,8 @@ namespace Lidarr.Api.V1.History
         public int ArtistId { get; set; }
         public int TrackId { get; set; }
         public string SourceTitle { get; set; }
-        public Language Language { get; set; }
         public QualityModel Quality { get; set; }
         public bool QualityCutoffNotMet { get; set; }
-        public bool LanguageCutoffNotMet { get; set; }
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
 
@@ -46,7 +43,6 @@ namespace Lidarr.Api.V1.History
                 ArtistId = model.ArtistId,
                 TrackId = model.TrackId,
                 SourceTitle = model.SourceTitle,
-                Language = model.Language,
                 Quality = model.Quality,
                 //QualityCutoffNotMet
                 Date = model.Date,

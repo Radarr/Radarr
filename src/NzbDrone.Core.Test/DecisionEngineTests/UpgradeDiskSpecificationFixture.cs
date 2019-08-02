@@ -12,8 +12,6 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -31,13 +29,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now, Language = Language.English };
-            _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now, Language = Language.English };
+            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
+            _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             var singleAlbumList = new List<Album> { new Album {}};
             var doubleAlbumList = new List<Album> { new Album {}, new Album {}, new Album {} };
-
-            var languages = Languages.LanguageFixture.GetDefaultLanguages(Language.English, Language.Spanish);
 
             var fakeArtist = Builder<Artist>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile
@@ -45,12 +41,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                              UpgradeAllowed = true,
                              Cutoff = Quality.MP3_320.Id,
                              Items = Qualities.QualityFixture.GetDefaultQualities()
-                         })
-                         .With(l => l.LanguageProfile = new LanguageProfile
-                         {
-                             UpgradeAllowed = true,
-                             Cutoff = Language.Spanish,
-                             Languages = languages
                          })
                          .Build();
 
@@ -65,14 +55,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _parseResultMulti = new RemoteAlbum
             {
                 Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)), Language = Language.English },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
                 Albums = doubleAlbumList
             };
 
             _parseResultSingle = new RemoteAlbum
             {
                 Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)), Language = Language.English },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
                 Albums = singleAlbumList
             };
 

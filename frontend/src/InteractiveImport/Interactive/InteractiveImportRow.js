@@ -11,12 +11,10 @@ import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import TrackQuality from 'Album/TrackQuality';
-import TrackLanguage from 'Album/TrackLanguage';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
 import SelectTrackModal from 'InteractiveImport/Track/SelectTrackModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
-import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import styles from './InteractiveImportRow.css';
@@ -33,8 +31,7 @@ class InteractiveImportRow extends Component {
       isSelectArtistModalOpen: false,
       isSelectAlbumModalOpen: false,
       isSelectTrackModalOpen: false,
-      isSelectQualityModalOpen: false,
-      isSelectLanguageModalOpen: false
+      isSelectQualityModalOpen: false
     };
   }
 
@@ -44,16 +41,14 @@ class InteractiveImportRow extends Component {
       artist,
       album,
       tracks,
-      quality,
-      language
+      quality
     } = this.props;
 
     if (
       artist &&
       album != null &&
       tracks.length &&
-      quality &&
-      language
+      quality
     ) {
       this.props.onSelectedChange({ id, value: true });
     }
@@ -66,7 +61,6 @@ class InteractiveImportRow extends Component {
       album,
       tracks,
       quality,
-      language,
       isSelected,
       onValidRowChange
     } = this.props;
@@ -76,7 +70,6 @@ class InteractiveImportRow extends Component {
       prevProps.album === album &&
       !hasDifferentItems(prevProps.tracks, tracks) &&
       prevProps.quality === quality &&
-      prevProps.language === language &&
       prevProps.isSelected === isSelected
     ) {
       return;
@@ -86,8 +79,7 @@ class InteractiveImportRow extends Component {
       artist &&
       album &&
       tracks.length &&
-      quality &&
-      language
+      quality
     );
 
     if (isSelected && !isValid) {
@@ -130,10 +122,6 @@ class InteractiveImportRow extends Component {
     this.setState({ isSelectQualityModalOpen: true });
   }
 
-  onSelectLanguagePress = () => {
-    this.setState({ isSelectLanguageModalOpen: true });
-  }
-
   onSelectArtistModalClose = (changed) => {
     this.setState({ isSelectArtistModalOpen: false });
     this.selectRowAfterChange(changed);
@@ -154,11 +142,6 @@ class InteractiveImportRow extends Component {
     this.selectRowAfterChange(changed);
   }
 
-  onSelectLanguageModalClose = (changed) => {
-    this.setState({ isSelectLanguageModalOpen: false });
-    this.selectRowAfterChange(changed);
-  }
-
   //
   // Render
 
@@ -172,7 +155,6 @@ class InteractiveImportRow extends Component {
       albumReleaseId,
       tracks,
       quality,
-      language,
       size,
       rejections,
       audioTags,
@@ -186,8 +168,7 @@ class InteractiveImportRow extends Component {
       isSelectArtistModalOpen,
       isSelectAlbumModalOpen,
       isSelectTrackModalOpen,
-      isSelectQualityModalOpen,
-      isSelectLanguageModalOpen
+      isSelectQualityModalOpen
     } = this.state;
 
     const artistName = artist ? artist.artistName : '';
@@ -203,7 +184,6 @@ class InteractiveImportRow extends Component {
     const showTrackNumbersPlaceholder = !isSaving && isSelected && !!album && !tracks.length;
     const showTrackNumbersLoading = isSaving && !tracks.length;
     const showQualityPlaceholder = isSelected && !quality;
-    const showLanguagePlaceholder = isSelected && !language;
 
     const pathCellContents = (
       <div>
@@ -288,25 +268,6 @@ class InteractiveImportRow extends Component {
           }
         </TableRowCellButton>
 
-        <TableRowCellButton
-          className={styles.language}
-          title="Click to change language"
-          onPress={this.onSelectLanguagePress}
-        >
-          {
-            showLanguagePlaceholder &&
-              <InteractiveImportRowCellPlaceholder />
-          }
-
-          {
-            !showLanguagePlaceholder && !!language &&
-              <TrackLanguage
-                className={styles.label}
-                language={language}
-              />
-          }
-        </TableRowCellButton>
-
         <TableRowCell>
           {formatBytes(size)}
         </TableRowCell>
@@ -376,13 +337,6 @@ class InteractiveImportRow extends Component {
           real={quality ? quality.revision.real > 0 : false}
           onModalClose={this.onSelectQualityModalClose}
         />
-
-        <SelectLanguageModal
-          isOpen={isSelectLanguageModalOpen}
-          id={id}
-          languageId={language ? language.id : 0}
-          onModalClose={this.onSelectLanguageModalClose}
-        />
       </TableRow>
     );
   }
@@ -398,7 +352,6 @@ InteractiveImportRow.propTypes = {
   albumReleaseId: PropTypes.number,
   tracks: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object,
-  language: PropTypes.object,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   audioTags: PropTypes.object.isRequired,

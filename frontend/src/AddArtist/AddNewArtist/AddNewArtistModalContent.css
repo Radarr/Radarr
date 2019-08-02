@@ -58,7 +58,6 @@
   composes: button from '~Components/Link/SpinnerButton.css';
 }
 
-.hideLanguageProfile,
 .hideMetadataProfile {
   composes: group from '~Components/Form/FormGroup.css';
 

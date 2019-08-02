@@ -139,7 +139,6 @@ export const actionHandlers = handleThunks({
   [UPDATE_TRACK_FILES]: function(getState, payload, dispatch) {
     const {
       trackFileIds,
-      language,
       quality
     } = payload;
 
@@ -148,10 +147,6 @@ export const actionHandlers = handleThunks({
     const data = {
       trackFileIds
     };
-
-    if (language) {
-      data.language = language;
-    }
 
     if (quality) {
       data.quality = quality;
@@ -168,10 +163,6 @@ export const actionHandlers = handleThunks({
       dispatch(batchActions([
         ...trackFileIds.map((id) => {
           const props = {};
-
-          if (language) {
-            props.language = language;
-          }
 
           if (quality) {
             props.quality = quality;

@@ -4,7 +4,6 @@
   margin-right: auto;
 }
 
-.hideLanguageProfile,
 .hideMetadataProfile {
   composes: group from '~Components/Form/FormGroup.css';
 

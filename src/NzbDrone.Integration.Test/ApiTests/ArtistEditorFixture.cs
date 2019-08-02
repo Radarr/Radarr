@@ -16,7 +16,6 @@ namespace NzbDrone.Integration.Test.ApiTests
                 var newArtist = Artist.Lookup(name).First();
 
                 newArtist.QualityProfileId = 1;
-                newArtist.LanguageProfileId = 1;
                 newArtist.MetadataProfileId = 1;
                 newArtist.Path = string.Format(@"C:\Test\{0}", name).AsOsAgnostic();
 

@@ -10,7 +10,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Common.Serializer;
@@ -148,8 +147,7 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.Album.Release.Title,
                     ArtistId = album.ArtistId,
                     AlbumId = album.Id,
-                    DownloadId = message.DownloadId,
-                    Language = message.Album.ParsedAlbumInfo.Language
+                    DownloadId = message.DownloadId
                 };
 
                 history.Data.Add("Indexer", message.Album.Release.Indexer);
@@ -194,8 +192,7 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.TrackedDownload.DownloadItem.Title,
                     ArtistId = album.ArtistId,
                     AlbumId = album.Id,
-                    DownloadId = message.TrackedDownload.DownloadItem.DownloadId,
-                    Language = message.TrackedDownload.RemoteAlbum.ParsedAlbumInfo?.Language ?? Language.English
+                    DownloadId = message.TrackedDownload.DownloadItem.DownloadId
                 };
 
                 history.Data.Add("StatusMessages", message.TrackedDownload.StatusMessages.ToJson());
@@ -228,8 +225,7 @@ namespace NzbDrone.Core.History
                         ArtistId = message.TrackInfo.Artist.Id,
                         AlbumId = message.TrackInfo.Album.Id,
                         TrackId = track.Id,
-                        DownloadId = downloadId,
-                        Language = message.TrackInfo.Language
+                        DownloadId = downloadId
                 };
 
                 //Won't have a value since we publish this event before saving to DB.
@@ -254,8 +250,7 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.SourceTitle,
                     ArtistId = message.ArtistId,
                     AlbumId = albumId,
-                    DownloadId = message.DownloadId,
-                    Language = message.Language
+                    DownloadId = message.DownloadId
                 };
 
                 history.Data.Add("DownloadClient", message.DownloadClient);
@@ -277,8 +272,7 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.TrackedDownload.DownloadItem.Title,
                     ArtistId = album.ArtistId,
                     AlbumId = album.Id,
-                    DownloadId = message.TrackedDownload.DownloadItem.DownloadId,
-                    Language = message.TrackedDownload.RemoteAlbum.ParsedAlbumInfo?.Language ?? Language.English
+                    DownloadId = message.TrackedDownload.DownloadItem.DownloadId
                 };
 
                 _historyRepository.Insert(history);

@@ -23,7 +23,6 @@ class ImportArtistFooter extends Component {
     const {
       defaultMonitor,
       defaultQualityProfileId,
-      defaultLanguageProfileId,
       defaultMetadataProfileId,
       defaultAlbumFolder
     } = props;
@@ -31,7 +30,6 @@ class ImportArtistFooter extends Component {
     this.state = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
-      languageProfileId: defaultLanguageProfileId,
       metadataProfileId: defaultMetadataProfileId,
       albumFolder: defaultAlbumFolder
     };
@@ -41,12 +39,10 @@ class ImportArtistFooter extends Component {
     const {
       defaultMonitor,
       defaultQualityProfileId,
-      defaultLanguageProfileId,
       defaultMetadataProfileId,
       defaultAlbumFolder,
       isMonitorMixed,
       isQualityProfileIdMixed,
-      isLanguageProfileIdMixed,
       isMetadataProfileIdMixed,
       isAlbumFolderMixed
     } = this.props;
@@ -54,7 +50,6 @@ class ImportArtistFooter extends Component {
     const {
       monitor,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       albumFolder
     } = this.state;
@@ -71,12 +66,6 @@ class ImportArtistFooter extends Component {
       newState.qualityProfileId = MIXED;
     } else if (!isQualityProfileIdMixed && qualityProfileId !== defaultQualityProfileId) {
       newState.qualityProfileId = defaultQualityProfileId;
-    }
-
-    if (isLanguageProfileIdMixed && languageProfileId !== MIXED) {
-      newState.languageProfileId = MIXED;
-    } else if (!isLanguageProfileIdMixed && languageProfileId !== defaultLanguageProfileId) {
-      newState.languageProfileId = defaultLanguageProfileId;
     }
 
     if (isMetadataProfileIdMixed && metadataProfileId !== MIXED) {
@@ -114,10 +103,8 @@ class ImportArtistFooter extends Component {
       isLookingUpArtist,
       isMonitorMixed,
       isQualityProfileIdMixed,
-      isLanguageProfileIdMixed,
       isMetadataProfileIdMixed,
       hasUnsearchedItems,
-      showLanguageProfile,
       showMetadataProfile,
       onImportPress,
       onLookupPress,
@@ -127,7 +114,6 @@ class ImportArtistFooter extends Component {
     const {
       monitor,
       qualityProfileId,
-      languageProfileId,
       metadataProfileId,
       albumFolder
     } = this.state;
@@ -163,24 +149,6 @@ class ImportArtistFooter extends Component {
             onChange={this.onInputChange}
           />
         </div>
-
-        {
-          showLanguageProfile &&
-            <div className={styles.inputContainer}>
-              <div className={styles.label}>
-                Language Profile
-              </div>
-
-              <FormInputGroup
-                type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                name="languageProfileId"
-                value={languageProfileId}
-                isDisabled={!selectedCount}
-                includeMixed={isLanguageProfileIdMixed}
-                onChange={this.onInputChange}
-              />
-            </div>
-        }
 
         {
           showMetadataProfile &&
@@ -276,16 +244,13 @@ ImportArtistFooter.propTypes = {
   isLookingUpArtist: PropTypes.bool.isRequired,
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
-  defaultLanguageProfileId: PropTypes.number,
   defaultMetadataProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
-  isLanguageProfileIdMixed: PropTypes.bool.isRequired,
   isMetadataProfileIdMixed: PropTypes.bool.isRequired,
   isAlbumFolderMixed: PropTypes.bool.isRequired,
   hasUnsearchedItems: PropTypes.bool.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired,

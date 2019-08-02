@@ -43,7 +43,6 @@ namespace Lidarr.Api.V1.Artist
         //View & Edit
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
-        public int LanguageProfileId { get; set; }
         public int MetadataProfileId { get; set; }
 
         //Editing Only
@@ -85,7 +84,6 @@ namespace Lidarr.Api.V1.Artist
 
                 Path = model.Path,
                 QualityProfileId = model.QualityProfileId,
-                LanguageProfileId = model.LanguageProfileId,
                 MetadataProfileId = model.MetadataProfileId,
                 Links = model.Metadata.Value.Links,
 
@@ -133,7 +131,6 @@ namespace Lidarr.Api.V1.Artist
                 SortName = resource.SortName,
                 Path = resource.Path,
                 QualityProfileId = resource.QualityProfileId,
-                LanguageProfileId = resource.LanguageProfileId,
                 MetadataProfileId = resource.MetadataProfileId,
 
 

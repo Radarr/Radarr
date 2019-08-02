@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -18,7 +17,6 @@ namespace NzbDrone.Core.Parser.Model
         public bool Discography { get; set; }
         public int DiscographyStart { get; set; }
         public int DiscographyEnd { get; set; }
-        public Language Language { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
         public string ReleaseVersion { get; set; }

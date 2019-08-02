@@ -77,7 +77,6 @@ namespace NzbDrone.Core.Extras.Lyrics
                                            AlbumId = localTrack.Album.Id,
                                            TrackFileId = localTrack.Tracks.First().TrackFileId,
                                            RelativePath = artist.Path.GetRelativePath(possibleLyricFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleLyricFile),
                                            Extension = extension
                                        };
 

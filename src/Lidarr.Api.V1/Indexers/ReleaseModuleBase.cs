@@ -32,12 +32,6 @@ namespace Lidarr.Api.V1.Indexers
                                                 .Artist
                                                 .QualityProfile.Value
                                                 .Items.FindIndex(v => v.Quality == release.Quality.Quality) * 100;
-
-                release.LanguageWeight = decision.RemoteAlbum
-                                 .Artist
-                                 .LanguageProfile.Value
-                                 .Languages.FindIndex(v => v.Language == release.Language) * 100;
-
             }
 
             release.QualityWeight += release.Quality.Revision.Real * 10;

@@ -12,7 +12,6 @@
 }
 
 .qualityProfile,
-.languageProfile,
 .metadataProfile {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

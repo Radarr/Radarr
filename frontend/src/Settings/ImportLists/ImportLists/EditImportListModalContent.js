@@ -62,7 +62,6 @@ function EditImportListModalContent(props) {
     onSavePress,
     onTestPress,
     onDeleteImportListPress,
-    showLanguageProfile,
     showMetadataProfile,
     ...otherProps
   } = props;
@@ -74,7 +73,6 @@ function EditImportListModalContent(props) {
     shouldMonitor,
     rootFolderPath,
     qualityProfileId,
-    languageProfileId,
     metadataProfileId,
     tags,
     fields
@@ -174,18 +172,6 @@ function EditImportListModalContent(props) {
                 />
               </FormGroup>
 
-              <FormGroup className={showLanguageProfile ? undefined : styles.hideLanguageProfile}>
-                <FormLabel>Language Profile</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                  name="languageProfileId"
-                  helpText={'Language Profile list items should be added with'}
-                  {...languageProfileId}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-
               <FormGroup className={showMetadataProfile ? undefined : styles.hideMetadataProfile}>
                 <FormLabel>Metadata Profile</FormLabel>
 
@@ -280,7 +266,6 @@ EditImportListModalContent.propTypes = {
   isTesting: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,

@@ -6,9 +6,6 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
-using NzbDrone.Core.Test.Languages;
 using Marr.Data.QGen;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,17 +26,7 @@ namespace NzbDrone.Core.Test.Datastore
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             };
 
-            var languageProfile = new LanguageProfile
-            {
-                Name = "Test",
-                Languages = LanguageFixture.GetDefaultLanguages(Language.English),
-                Cutoff = Language.English
-            };
-
-
-
             profile = Db.Insert(profile);
-            languageProfile = Db.Insert(languageProfile);
 
             var metadata = Builder<ArtistMetadata>.CreateNew()
                 .With(v => v.Id = 0)
@@ -50,7 +37,6 @@ namespace NzbDrone.Core.Test.Datastore
                 .All()
                 .With(v => v.Id = 0)
                 .With(v => v.QualityProfileId = profile.Id)
-                .With(v => v.LanguageProfileId = languageProfile.Id)
                 .With(v => v.ArtistMetadataId = metadata.Id)
                 .BuildListOfNew();
 
@@ -130,7 +116,6 @@ namespace NzbDrone.Core.Test.Datastore
                 Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
                 Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
                 Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.QualityProfile.IsLoaded);
-                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
             }
         }
 
@@ -306,33 +291,7 @@ namespace NzbDrone.Core.Test.Datastore
                 Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
                 Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
                 Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.Value.QualityProfile.IsLoaded);
-                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
             }
         }
-
-        [Test]
-        public void should_explicit_load_languageprofile_if_joined()
-        {
-            var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
-
-            var tracks = DataMapper.Query<Track>()
-                .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
-                .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
-                .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
-                .Join<Artist, LanguageProfile>(JoinType.Inner, v => v.LanguageProfile, (l, r) => l.LanguageProfileId == r.Id)
-                .ToList();
-
-            foreach (var track in tracks)
-            {
-                Assert.IsTrue(track.AlbumRelease.IsLoaded);
-                Assert.IsTrue(track.AlbumRelease.Value.Album.IsLoaded);
-                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.IsLoaded);
-                Assert.IsNotNull(track.AlbumRelease.Value.Album.Value.Artist.Value);
-                Assert.IsFalse(track.AlbumRelease.Value.Album.Value.Artist.Value.QualityProfile.IsLoaded);
-                Assert.IsTrue(track.AlbumRelease.Value.Album.Value.Artist.Value.LanguageProfile.IsLoaded);
-            }
-        }
-
     }
 }

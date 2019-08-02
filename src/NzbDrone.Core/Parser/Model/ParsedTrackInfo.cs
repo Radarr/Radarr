@@ -1,7 +1,6 @@
 using NzbDrone.Core.Qualities;
 using System;
 using System.Linq;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -29,7 +28,6 @@ namespace NzbDrone.Core.Parser.Model
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public int[] TrackNumbers { get; set; }
-        public Language Language { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
 

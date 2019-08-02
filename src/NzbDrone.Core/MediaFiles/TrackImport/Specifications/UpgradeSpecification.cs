@@ -4,7 +4,6 @@ using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
@@ -24,7 +23,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         {
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
             var qualityComparer = new QualityModelComparer(localTrack.Artist.QualityProfile);
-            var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
 
             foreach (var track in localTrack.Tracks.Where(e => e.TrackFileId > 0))
             {
@@ -41,12 +39,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                     localTrack.Quality.Revision.CompareTo(trackFile.Quality.Revision) < 0)
                 {
                     _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
-                    return Decision.Reject("Not an upgrade for existing track file(s)");
-                }
-
-                if (languageComparer.Compare(localTrack.Language, trackFile.Language) < 0 && qualityCompare == 0)
-                {
-                    _logger.Debug("This file isn't a language upgrade for all tracks. Skipping {0}", localTrack.Path);
                     return Decision.Reject("Not an upgrade for existing track file(s)");
                 }
             }

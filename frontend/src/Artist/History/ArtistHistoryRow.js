@@ -8,7 +8,6 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
@@ -73,8 +72,6 @@ class ArtistHistoryRow extends Component {
     const {
       eventType,
       sourceTitle,
-      language,
-      languageCutoffNotMet,
       quality,
       qualityCutoffNotMet,
       date,
@@ -99,13 +96,6 @@ class ArtistHistoryRow extends Component {
 
         <TableRowCell>
           {sourceTitle}
-        </TableRowCell>
-
-        <TableRowCell>
-          <TrackLanguage
-            language={language}
-            isCutoffNotMet={languageCutoffNotMet}
-          />
         </TableRowCell>
 
         <TableRowCell>
@@ -167,8 +157,6 @@ ArtistHistoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
-  languageCutoffNotMet: PropTypes.bool.isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,

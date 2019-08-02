@@ -34,11 +34,11 @@ namespace NzbDrone.Core.Datastore.Converters
 
             if (clrValue as ReleaseStatus == null)
             {
-                throw new InvalidOperationException("Attempted to save a albumtype that isn't really a albumtype");
+                throw new InvalidOperationException("Attempted to save a release status that isn't really a release status");
             }
 
-            var language = (ReleaseStatus) clrValue;
-            return (int) language;
+            var releaseStatus = (ReleaseStatus) clrValue;
+            return (int) releaseStatus;
         }
 
         public Type DbType => typeof(int);

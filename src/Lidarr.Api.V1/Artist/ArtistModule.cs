@@ -57,7 +57,6 @@ namespace Lidarr.Api.V1.Artist
                             ArtistAncestorValidator artistAncestorValidator,
                             SystemFolderValidator systemFolderValidator,
                             ProfileExistsValidator profileExistsValidator,
-                            LanguageProfileExistsValidator languageProfileExistsValidator,
                             MetadataProfileExistsValidator metadataProfileExistsValidator
             )
             : base(signalRBroadcaster)
@@ -78,7 +77,6 @@ namespace Lidarr.Api.V1.Artist
             DeleteResource = DeleteArtist;
 
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));
-            Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.LanguageProfileId));
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.MetadataProfileId));
 
             SharedValidator.RuleFor(s => s.Path)
@@ -92,7 +90,6 @@ namespace Lidarr.Api.V1.Artist
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
             SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);
-            SharedValidator.RuleFor(s => s.LanguageProfileId).SetValidator(languageProfileExistsValidator);
             SharedValidator.RuleFor(s => s.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());

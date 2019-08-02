@@ -224,7 +224,6 @@ namespace NzbDrone.Core.Notifications
                 DownloadId = message.DownloadId,
                 DownloadClient = message.DownloadClient,
                 Quality = message.Quality,
-                Language = message.Language,
                 SourceTitle = message.SourceTitle,
                 Message = message.Message
             };

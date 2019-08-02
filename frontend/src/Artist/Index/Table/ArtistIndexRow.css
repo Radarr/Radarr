@@ -61,7 +61,6 @@
 }
 
 .qualityProfileId,
-.languageProfileId,
 .metadataProfileId {
   composes: cell;
 

@@ -45,7 +45,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation
             }
 
             localTrack.Size = _diskProvider.GetFileSize(localTrack.Path);
-            localTrack.Language = localTrack.FileTrackInfo.Language;
 
             foreach (var augmenter in _trackAugmenters)
             {

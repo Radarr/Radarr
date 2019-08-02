@@ -4,8 +4,7 @@
   word-break: break-all;
 }
 
-.quality,
-.language {
+.quality {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   text-align: center;

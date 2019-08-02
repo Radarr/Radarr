@@ -121,7 +121,6 @@
     <Compile Include="Datastore\Converters\ReleaseStatusIntConverter.cs" />
     <Compile Include="Datastore\Converters\SecondaryAlbumTypeIntConverter.cs" />
     <Compile Include="Datastore\Converters\PrimaryAlbumTypeIntConverter.cs" />
-    <Compile Include="Datastore\Converters\LanguageIntConverter.cs" />
     <Compile Include="Datastore\Converters\TimeSpanConverter.cs" />
     <Compile Include="Datastore\Converters\Int32Converter.cs" />
     <Compile Include="Datastore\Converters\GuidConverter.cs" />
@@ -172,6 +171,7 @@
     <Compile Include="Datastore\Migration\028_clean_artistmetadata_table.cs" />
     <Compile Include="Datastore\Migration\030_add_mediafilerepository_mtime.cs" />
     <Compile Include="Datastore\Migration\031_add_artistmetadataid_constraint.cs" />
+    <Compile Include="Datastore\Migration\034_remove_language_profiles.cs" />
     <Compile Include="Datastore\Migration\032_old_ids_and_artist_alias.cs" />
     <Compile Include="Datastore\Migration\033_download_propers_config.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
@@ -212,7 +212,6 @@
     <Compile Include="DecisionEngine\Specifications\EarlyReleaseSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ProtocolSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\LanguageSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\QueueSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ReleaseRestrictionsSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\NotSampleSpecification.cs" />
@@ -509,7 +508,6 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTags.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\DeleteBadMediaCovers.cs" />
-    <Compile Include="Housekeeping\Housekeepers\EnsureValidLanguageProfileId.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureDownloadClientStatusTimes.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureImportListStatusTimes.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimes.cs" />
@@ -692,9 +690,6 @@
     <Compile Include="Jobs\ScheduledTask.cs" />
     <Compile Include="Jobs\Scheduler.cs" />
     <Compile Include="Jobs\TaskManager.cs" />
-    <Compile Include="Languages\Language.cs" />
-    <Compile Include="Languages\LanguageComparer.cs" />
-    <Compile Include="Languages\LanguagesBelowCutoff.cs" />
     <Compile Include="MetadataSource\IMetadataRequestBuilder.cs" />
     <Compile Include="Notifications\Discord\Discord.cs" />
     <Compile Include="Notifications\Discord\DiscordColors.cs" />
@@ -1008,7 +1003,6 @@
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\IsoCountry.cs" />
     <Compile Include="Parser\IsoCountries.cs" />
-    <Compile Include="Parser\LanguageParser.cs" />
     <Compile Include="Parser\Model\ArtistTitleInfo.cs" />
     <Compile Include="Parser\Model\ImportListItemInfo.cs" />
     <Compile Include="Parser\Model\LocalAlbumRelease.cs" />
@@ -1020,11 +1014,6 @@
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
-    <Compile Include="Profiles\Languages\LanguageProfile.cs" />
-    <Compile Include="Profiles\Languages\LanguageProfileInUseException.cs" />
-    <Compile Include="Profiles\Languages\LanguageProfileRepository.cs" />
-    <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
-    <Compile Include="Profiles\Languages\LanguageProfileItem.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileService.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileInUseException.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfile.cs" />
@@ -1221,7 +1210,6 @@
     <Compile Include="Validation\FolderValidator.cs" />
     <Compile Include="Validation\GuidValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
-    <Compile Include="Validation\LanguageProfileExistsValidator.cs" />
     <Compile Include="Validation\MetadataProfileExistsValidator.cs" />
     <Compile Include="Validation\NzbDroneValidationExtensions.cs" />
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />

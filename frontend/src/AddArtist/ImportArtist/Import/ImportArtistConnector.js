@@ -17,7 +17,6 @@ function createMapStateToProps() {
     (state) => state.addArtist,
     (state) => state.importArtist,
     (state) => state.settings.qualityProfiles,
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     (
       match,
@@ -25,7 +24,6 @@ function createMapStateToProps() {
       addArtist,
       importArtistState,
       qualityProfiles,
-      languageProfiles,
       metadataProfiles
     ) => {
       const {
@@ -43,12 +41,9 @@ function createMapStateToProps() {
         rootFoldersPopulated,
         rootFoldersError,
         qualityProfiles: qualityProfiles.items,
-        languageProfiles: languageProfiles.items,
         metadataProfiles: metadataProfiles.items,
-        showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         defaultQualityProfileId: addArtist.defaults.qualityProfileId,
-        defaultLanguageProfileId: addArtist.defaults.languageProfileId,
         defaultMetadataProfileId: addArtist.defaults.metadataProfileId
       };
 
@@ -83,10 +78,8 @@ class ImportArtistConnector extends Component {
   componentDidMount() {
     const {
       qualityProfiles,
-      languageProfiles,
       metadataProfiles,
       defaultQualityProfileId,
-      defaultLanguageProfileId,
       defaultMetadataProfileId,
       dispatchFetchRootFolders,
       dispatchSetAddArtistDefault
@@ -105,14 +98,6 @@ class ImportArtistConnector extends Component {
     ) {
       setDefaults = true;
       setDefaultPayload.qualityProfileId = qualityProfiles[0].id;
-    }
-
-    if (
-      !defaultLanguageProfileId ||
-      !languageProfiles.some((p) => p.id === defaultLanguageProfileId)
-    ) {
-      setDefaults = true;
-      setDefaultPayload.languageProfileId = languageProfiles[0].id;
     }
 
     if (
@@ -172,10 +157,8 @@ ImportArtistConnector.propTypes = {
   match: routeMatchShape.isRequired,
   rootFoldersPopulated: PropTypes.bool.isRequired,
   qualityProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  languageProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   metadataProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   defaultQualityProfileId: PropTypes.number.isRequired,
-  defaultLanguageProfileId: PropTypes.number.isRequired,
   defaultMetadataProfileId: PropTypes.number.isRequired,
   dispatchSetImportArtistValue: PropTypes.func.isRequired,
   dispatchImportArtist: PropTypes.func.isRequired,

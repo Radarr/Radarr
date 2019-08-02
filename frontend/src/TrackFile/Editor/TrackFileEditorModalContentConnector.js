@@ -8,30 +8,25 @@ import getQualities from 'Utilities/Quality/getQualities';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import { deleteTrackFiles, updateTrackFiles } from 'Store/Actions/trackFileActions';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
-import { fetchLanguageProfileSchema, fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
+import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
 import TrackFileEditorModalContent from './TrackFileEditorModalContent';
 
 function createSchemaSelector() {
   return createSelector(
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.qualityProfiles,
-    (languageProfiles, qualityProfiles) => {
-      const languages = _.map(languageProfiles.schema.languages, 'language');
+    (qualityProfiles) => {
       const qualities = getQualities(qualityProfiles.schema.items);
 
       let error = null;
 
-      if (languageProfiles.schemaError) {
-        error = 'Unable to load languages';
-      } else if (qualityProfiles.schemaError) {
+      if (qualityProfiles.schemaError) {
         error = 'Unable to load qualities';
       }
 
       return {
-        isFetching: languageProfiles.isSchemaFetching || qualityProfiles.isSchemaFetching,
-        isPopulated: languageProfiles.isSchemaPopulated && qualityProfiles.isSchemaPopulated,
+        isFetching: qualityProfiles.isSchemaFetching,
+        isPopulated: qualityProfiles.isSchemaPopulated,
         error,
-        languages,
         qualities
       };
     }
@@ -71,7 +66,6 @@ function createMapStateToProps() {
 
         return {
           relativePath: trackFile.relativePath,
-          language: trackFile.language,
           quality: trackFile.quality,
           ...track
         };
@@ -96,10 +90,6 @@ function createMapDispatchToProps(dispatch, props) {
 
     dispatchFetchTracks(updateProps) {
       dispatch(fetchTracks(updateProps));
-    },
-
-    dispatchFetchLanguageProfileSchema(name, path) {
-      dispatch(fetchLanguageProfileSchema());
     },
 
     dispatchFetchQualityProfileSchema(name, path) {
@@ -127,7 +117,6 @@ class TrackFileEditorModalContentConnector extends Component {
 
     this.props.dispatchFetchTracks({ artistId, albumId });
 
-    this.props.dispatchFetchLanguageProfileSchema();
     this.props.dispatchFetchQualityProfileSchema();
   }
 
@@ -137,12 +126,6 @@ class TrackFileEditorModalContentConnector extends Component {
 
   //
   // Listeners
-
-  onLanguageChange = (trackFileIds, languageId) => {
-    const language = _.find(this.props.languages, { id: languageId });
-
-    this.props.dispatchUpdateTrackFiles({ trackFileIds, language });
-  }
 
   onQualityChange = (trackFileIds, qualityId) => {
     const quality = {
@@ -161,7 +144,6 @@ class TrackFileEditorModalContentConnector extends Component {
 
   render() {
     const {
-      dispatchFetchLanguageProfileSchema,
       dispatchFetchQualityProfileSchema,
       dispatchUpdateTrackFiles,
       dispatchFetchTracks,
@@ -172,7 +154,6 @@ class TrackFileEditorModalContentConnector extends Component {
     return (
       <TrackFileEditorModalContent
         {...otherProps}
-        onLanguageChange={this.onLanguageChange}
         onQualityChange={this.onQualityChange}
       />
     );
@@ -182,11 +163,9 @@ class TrackFileEditorModalContentConnector extends Component {
 TrackFileEditorModalContentConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   albumId: PropTypes.number,
-  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchFetchTracks: PropTypes.func.isRequired,
   dispatchClearTracks: PropTypes.func.isRequired,
-  dispatchFetchLanguageProfileSchema: PropTypes.func.isRequired,
   dispatchFetchQualityProfileSchema: PropTypes.func.isRequired,
   dispatchUpdateTrackFiles: PropTypes.func.isRequired
 };

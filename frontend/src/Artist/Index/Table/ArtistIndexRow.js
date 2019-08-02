@@ -87,7 +87,6 @@ class ArtistIndexRow extends Component {
       foreignArtistId,
       artistType,
       qualityProfile,
-      languageProfile,
       metadataProfile,
       nextAlbum,
       lastAlbum,
@@ -207,17 +206,6 @@ class ArtistIndexRow extends Component {
                   className={styles[name]}
                 >
                   {qualityProfile.name}
-                </VirtualTableRowCell>
-              );
-            }
-
-            if (name === 'languageProfileId') {
-              return (
-                <VirtualTableRowCell
-                  key={name}
-                  className={styles[name]}
-                >
-                  {languageProfile.name}
                 </VirtualTableRowCell>
               );
             }
@@ -462,7 +450,6 @@ ArtistIndexRow.propTypes = {
   foreignArtistId: PropTypes.string.isRequired,
   artistType: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
-  languageProfile: PropTypes.object.isRequired,
   metadataProfile: PropTypes.object.isRequired,
   nextAlbum: PropTypes.object,
   lastAlbum: PropTypes.object,

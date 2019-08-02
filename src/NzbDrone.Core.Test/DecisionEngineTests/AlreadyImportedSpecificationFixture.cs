@@ -14,7 +14,6 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -46,7 +45,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _artist = Builder<Artist>.CreateNew()
                                      .Build();
 
-            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now, Language = Language.English };
+            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             _mp3 = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _flac = new QualityModel(Quality.FLAC, new Revision(version: 1));

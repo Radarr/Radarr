@@ -69,7 +69,6 @@
     <Compile Include="Datastore\Converters\EnumIntConverterFixture.cs" />
     <Compile Include="Datastore\Converters\GuidConverterFixture.cs" />
     <Compile Include="Datastore\Converters\Int32ConverterFixture.cs" />
-    <Compile Include="Datastore\Converters\LanguageIntConverterFixture.cs" />
     <Compile Include="Datastore\Converters\OsPathConverterFixture.cs" />
     <Compile Include="Datastore\Converters\ProviderSettingConverterFixture.cs" />
     <Compile Include="Datastore\Converters\QualityIntConverterFixture.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="DecisionEngineTests\CutoffSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\DownloadDecisionMakerFixture.cs" />
     <Compile Include="DecisionEngineTests\HistorySpecificationFixture.cs" />
-    <Compile Include="DecisionEngineTests\LanguageSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MonitoredAlbumSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\QueueSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\ReleaseRestrictionsSpecificationFixture.cs" />
@@ -242,9 +240,6 @@
     <Compile Include="Instrumentation\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
     <Compile Include="JobTests\TestJobs.cs" />
-    <Compile Include="Languages\LanguageFixture.cs" />
-    <Compile Include="Languages\LanguageProfileRepositoryFixture.cs" />
-    <Compile Include="Languages\LanguageProfileServiceFixture.cs" />
     <Compile Include="MediaCoverTests\CoverExistsSpecificationFixture.cs" />
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
@@ -327,7 +322,6 @@
     <Compile Include="ParserTests\ExtendedQualityParserRegex.cs" />
     <Compile Include="ParserTests\CrapParserFixture.cs" />
     <Compile Include="ParserTests\HashedReleaseFixture.cs" />
-    <Compile Include="ParserTests\LanguageParserFixture.cs" />
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\GetArtistFixture.cs" />

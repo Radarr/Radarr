@@ -19,7 +19,7 @@ function Legend(props) {
         name="Cutoff Not Met"
         icon={icons.TRACK_FILE}
         kind={kinds.WARNING}
-        tooltip="Quality or language cutoff has not been met"
+        tooltip="Quality cutoff has not been met"
       />
     );
   }

@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using NzbDrone.Core.Test.Qualities;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {
@@ -23,7 +21,6 @@ namespace NzbDrone.Core.Test.HistoryTests
     {
         private QualityProfile _profile;
         private QualityProfile _profileCustom;
-        private LanguageProfile _languageProfile;
 
         [SetUp]
         public void Setup()
@@ -41,16 +38,6 @@ namespace NzbDrone.Core.Test.HistoryTests
                 Items = QualityFixture.GetDefaultQualities(Quality.MP3_256),
 
             };
-
-
-            _languageProfile = new LanguageProfile
-
-            {
-                Cutoff = Language.Spanish,
-                Languages = Languages.LanguageFixture.GetDefaultLanguages()
-            };
-
-
         }
 
         [Test]

@@ -125,11 +125,6 @@ export const defaultState = {
         isSortable: true,
         isVisible: true
       },
-      {
-        name: 'language',
-        label: 'Language',
-        isVisible: false
-      },
       // {
       //  name: 'status',
       //  label: 'Status',

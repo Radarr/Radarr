@@ -10,8 +10,6 @@ using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
@@ -30,11 +28,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                      .With(e => e.QualityProfile = new QualityProfile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
-                                     })
-                                     .With(l => l.LanguageProfile = new LanguageProfile
-                                     {
-                                         Languages = Languages.LanguageFixture.GetDefaultLanguages(),
-                                         Cutoff = Language.Spanish,
                                      }).Build();
 
             _album = Builder<Album>.CreateNew().Build();
@@ -43,7 +36,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
             {
                 Path = @"C:\Test\Imagine Dragons\Imagine.Dragons.Song.1.mp3",
                 Quality = new QualityModel(Quality.MP3_256, new Revision(version: 1)),
-                Language = Language.Spanish,
                 Artist = _artist,
                 Album = _album
             };
@@ -93,24 +85,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         }
 
         [Test]
-        public void should_return_false_if_language_upgrade_for_existing_trackFile_and_quality_is_worse()
-        {
-            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
-                                                     .All()
-                                                     .With(e => e.TrackFileId = 1)
-                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
-                                                                              new TrackFile
-                                                                              {
-                                                                                  Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
-                                                                                  Language = Language.English
-                                                                              }))
-                                                     .Build()
-                                                     .ToList();
-
-            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
-        }
-
-        [Test]
         public void should_return_true_if_upgrade_for_existing_trackFile_for_multi_tracks()
         {
             _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
@@ -125,42 +99,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                                      .ToList();
 
             Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_true_if_language_upgrade_for_existing_trackFile_for_multi_tracks_and_quality_is_same()
-        {
-            _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
-                                                     .All()
-                                                     .With(e => e.TrackFileId = 1)
-                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
-                                                                              new TrackFile
-                                                                              {
-                                                                                  Quality = new QualityModel(Quality.MP3_256, new Revision(version: 1)),
-                                                                                  Language = Language.English
-                                                                              }))
-                                                     .Build()
-                                                     .ToList();
-
-            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_false_if_language_upgrade_for_existing_trackFile_for_multi_tracks_and_quality_is_worse()
-        {
-            _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
-                                                     .All()
-                                                     .With(e => e.TrackFileId = 1)
-                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
-                                                                              new TrackFile
-                                                                              {
-                                                                                  Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
-                                                                                  Language = Language.English
-                                                                              }))
-                                                     .Build()
-                                                     .ToList();
-
-            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
         }
 
         [Test]

@@ -56,15 +56,6 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="languageProfileId"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          Language Profile
-        </SortMenuItem>
-
-        <SortMenuItem
           name="metadataProfileId"
           sortKey={sortKey}
           sortDirection={sortDirection}

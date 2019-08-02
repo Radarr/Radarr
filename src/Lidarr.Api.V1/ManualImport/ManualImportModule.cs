@@ -78,7 +78,6 @@ namespace Lidarr.Api.V1.ManualImport
                         Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
                         Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
                         Quality = resource.Quality,
-                        Language = resource.Language,
                         DownloadId = resource.DownloadId,
                         AdditionalFile = resource.AdditionalFile,
                         ReplaceExistingFiles = resource.ReplaceExistingFiles,

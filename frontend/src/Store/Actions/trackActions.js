@@ -56,11 +56,6 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'language',
-      label: 'Language',
-      isVisible: false
-    },
-    {
       name: 'audioInfo',
       label: 'Audio Info',
       isVisible: true

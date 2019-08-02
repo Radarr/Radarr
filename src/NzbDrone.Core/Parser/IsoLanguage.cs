@@ -1,4 +1,3 @@
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {
@@ -6,13 +5,11 @@ namespace NzbDrone.Core.Parser
     {
         public string TwoLetterCode { get; set; }
         public string ThreeLetterCode { get; set; }
-        public Language Language { get; set; }
 
-        public IsoLanguage(string twoLetterCode, string threeLetterCode, Language language)
+        public IsoLanguage(string twoLetterCode, string threeLetterCode)
         {
             TwoLetterCode = twoLetterCode;
             ThreeLetterCode = threeLetterCode;
-            Language = language;
         }
     }
 }

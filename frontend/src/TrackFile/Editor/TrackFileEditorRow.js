@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import padNumber from 'Utilities/Number/padNumber';
-import Label from 'Components/Label';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
@@ -12,7 +11,6 @@ function TrackFileEditorRow(props) {
     id,
     trackNumber,
     relativePath,
-    language,
     quality,
     isSelected,
     onSelectedChange
@@ -35,12 +33,6 @@ function TrackFileEditorRow(props) {
       </TableRowCell>
 
       <TableRowCell>
-        <Label>
-          {language.name}
-        </Label>
-      </TableRowCell>
-
-      <TableRowCell>
         <TrackQuality
           quality={quality}
         />
@@ -53,7 +45,6 @@ TrackFileEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
   trackNumber: PropTypes.string.isRequired,
   relativePath: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired

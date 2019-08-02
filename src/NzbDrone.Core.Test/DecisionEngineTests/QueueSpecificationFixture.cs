@@ -10,8 +10,6 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Profiles.Languages;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -38,12 +36,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                          UpgradeAllowed = true,
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
                                      })
-                                     .With(l => l.LanguageProfile = new LanguageProfile
-                                     {
-                                         Languages = Languages.LanguageFixture.GetDefaultLanguages(),
-                                         UpgradeAllowed = true,
-                                         Cutoff = Language.Spanish
-                                     })
                                      .Build();
 
             _album = Builder<Album>.CreateNew()
@@ -65,7 +57,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                    .With(r => r.Artist = _artist)
                                                    .With(r => r.Albums = new List<Album> { _album })
-                                                   .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256), Language = Language.Spanish })
+                                                   .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256) })
                                                    .With(r => r.PreferredWordScore = 0)
                                                    .Build();
         }
@@ -119,8 +111,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(r => r.Albums = new List<Album> { _album })
                 .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                 {
-                    Quality = new QualityModel(Quality.MP3_256),
-                    Language = Language.Spanish
+                    Quality = new QualityModel(Quality.MP3_256)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
@@ -134,36 +125,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_when_quality_in_queue_is_lower()
         {
             _artist.QualityProfile.Value.Cutoff = Quality.MP3_320.Id;
-            _artist.LanguageProfile.Value.Cutoff = Language.Spanish;
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                       .With(r => r.Artist = _artist)
                                                       .With(r => r.Albums = new List<Album> { _album })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_192),
-                                                          Language = Language.Spanish
-                                                      })
-                                                      .With(r => r.Release = _releaseInfo)
-                                                      .Build();
-
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_true_when_quality_in_queue_is_lower_but_language_is_higher()
-        {
-            _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
-            _artist.LanguageProfile.Value.Cutoff = Language.Spanish;
-
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Album> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
-                                                      {
-                                                          Quality = new QualityModel(Quality.MP3_192),
-                                                          Language = Language.English
+                                                          Quality = new QualityModel(Quality.MP3_192)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
@@ -190,7 +158,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_when_qualities_are_the_same_and_languages_are_the_same_with_higher_preferred_word_score()
+        public void should_return_true_when_qualities_are_the_same_with_higher_preferred_word_score()
         {
             _remoteAlbum.PreferredWordScore = 1;
 
@@ -199,8 +167,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(r => r.Albums = new List<Album> { _album })
                 .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                 {
-                    Quality = new QualityModel(Quality.MP3_256),
-                    Language = Language.Spanish,
+                    Quality = new QualityModel(Quality.MP3_256)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
@@ -210,60 +177,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_false_when_qualities_are_the_same_and_languages_are_the_same()
+        public void should_return_false_when_qualities_are_the_same()
         {
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                       .With(r => r.Artist = _artist)
                                                       .With(r => r.Albums = new List<Album> { _album })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_192),
-                                                          Language = Language.Spanish
+                                                          Quality = new QualityModel(Quality.MP3_192)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
             GivenQueue(new List<RemoteAlbum> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void should_return_true_when_qualities_are_the_same_but_language_is_better()
-        {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Album> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
-                                                      {
-                                                          Quality = new QualityModel(Quality.MP3_192),
-                                                          Language = Language.English,
-                                                      })
-                                                      .With(r => r.Release = _releaseInfo)
-                                                      .Build();
-
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_true_when_quality_is_better_language_is_better_and_upgrade_allowed_is_false_for_quality_profile()
-        {
-            _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
-            _artist.QualityProfile.Value.UpgradeAllowed = false;
-
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Album> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
-                {
-                    Quality = new QualityModel(Quality.MP3_224),
-                    Language = Language.English
-                })
-                .With(r => r.Release = _releaseInfo)
-                .Build();
-
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -276,8 +203,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Albums = new List<Album> { _album })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_320),
-                                                          Language = Language.English
+                                                          Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
@@ -294,8 +220,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Albums = new List<Album> { _album, _otherAlbum })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_320),
-                                                          Language = Language.English
+                                                          Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
@@ -312,8 +237,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Albums = new List<Album> { _album })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_320),
-                                                          Language = Language.English
+                                                          Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
@@ -332,8 +256,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Albums = new List<Album> { _album, _otherAlbum })
                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3_320),
-                                                          Language = Language.English
+                                                          Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
@@ -352,8 +275,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        .With(r => r.Artist = _artist)
                                                        .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                        {
-                                                           Quality = new QualityModel(Quality.MP3_320),
-                                                           Language = Language.English
+                                                           Quality = new QualityModel(Quality.MP3_320)
                                                        })
                                                        .With(r => r.Release = _releaseInfo)
                                                        .TheFirst(1)
@@ -368,48 +290,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_false_if_quality_and_language_in_queue_meets_cutoff()
-        {
-            _artist.QualityProfile.Value.Cutoff = _remoteAlbum.ParsedAlbumInfo.Quality.Quality.Id;
-
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Album> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
-                                                      {
-                                                          Quality = new QualityModel(Quality.MP3_256),
-                                                          Language = Language.Spanish
-                                                      })
-                                                      .With(r => r.Release = _releaseInfo)
-                                                      .Build();
-
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
-
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void should_return_false_when_quality_are_the_same_language_is_better_and_upgrade_allowed_is_false_for_language_profile()
-        {
-            _artist.LanguageProfile.Value.UpgradeAllowed = false;
-
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Album> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
-                {
-                    Quality = new QualityModel(Quality.MP3_256),
-                    Language = Language.English
-                })
-                .With(r => r.Release = _releaseInfo)
-                .Build();
-
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
-        }
-
-        [Test]
-        public void should_return_false_when_quality_is_better_languages_are_the_same_and_upgrade_allowed_is_false_for_quality_profile()
+        public void should_return_false_when_quality_is_better_and_upgrade_allowed_is_false_for_quality_profile()
         {
             _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
             _artist.QualityProfile.Value.UpgradeAllowed = false;
@@ -419,8 +300,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(r => r.Albums = new List<Album> { _album })
                 .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                 {
-                    Quality = new QualityModel(Quality.FLAC),
-                    Language = Language.Spanish
+                    Quality = new QualityModel(Quality.FLAC)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();

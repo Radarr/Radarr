@@ -6,7 +6,6 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
-import TrackLanguage from 'Album/TrackLanguage';
 import TrackQuality from 'Album/TrackQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
@@ -55,8 +54,6 @@ class HistoryRow extends Component {
       artist,
       album,
       track,
-      language,
-      languageCutoffNotMet,
       quality,
       qualityCutoffNotMet,
       eventType,
@@ -124,17 +121,6 @@ class HistoryRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {track.title}
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'language') {
-              return (
-                <TableRowCell key={name}>
-                  <TrackLanguage
-                    language={language}
-                    isCutoffMet={languageCutoffNotMet}
-                  />
                 </TableRowCell>
               );
             }
@@ -232,8 +218,6 @@ HistoryRow.propTypes = {
   artist: PropTypes.object.isRequired,
   album: PropTypes.object,
   track: PropTypes.object,
-  language: PropTypes.object.isRequired,
-  languageCutoffNotMet: PropTypes.bool.isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   eventType: PropTypes.string.isRequired,

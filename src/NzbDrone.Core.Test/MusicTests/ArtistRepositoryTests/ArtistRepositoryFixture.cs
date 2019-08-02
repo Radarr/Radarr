@@ -2,13 +2,10 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Linq;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Common.Extensions;
 using System;
@@ -68,13 +65,6 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 Name = "TestProfile"
             };
 
-            var langProfile = new LanguageProfile
-            {
-                Name = "TestProfile",
-                Languages = Languages.LanguageFixture.GetDefaultLanguages(Language.English),
-                Cutoff = Language.English
-            };
-
             var metaProfile = new MetadataProfile
             {
                 Name = "TestProfile",
@@ -85,19 +75,16 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
 
             Mocker.Resolve<QualityProfileRepository>().Insert(profile);
-            Mocker.Resolve<LanguageProfileRepository>().Insert(langProfile);
             Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
             var artist = Builder<Artist>.CreateNew().BuildNew();
             artist.QualityProfileId = profile.Id;
-            artist.LanguageProfileId = langProfile.Id;
             artist.MetadataProfileId = metaProfile.Id;
 
             Subject.Insert(artist);
 
 
             StoredModel.QualityProfile.Should().NotBeNull();
-            StoredModel.LanguageProfile.Should().NotBeNull();
             StoredModel.MetadataProfile.Should().NotBeNull();
 
         }

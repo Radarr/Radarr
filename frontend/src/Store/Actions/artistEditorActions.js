@@ -50,12 +50,6 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {
-      name: 'languageProfileId',
-      label: 'Language Profile',
-      type: filterBuilderTypes.EXACT,
-      valueType: filterBuilderValueTypes.LANGUAGE_PROFILE
-    },
-    {
       name: 'metadataProfileId',
       label: 'Metadata Profile',
       type: filterBuilderTypes.EXACT,

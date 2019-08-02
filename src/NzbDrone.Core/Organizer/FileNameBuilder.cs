@@ -356,34 +356,6 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Preferred Words}"] = m => string.Join(" ", preferredWords);
         }
 
-
-        private string GetLanguagesToken(string mediaInfoLanguages)
-        {
-            List<string> tokens = new List<string>();
-            foreach (var item in mediaInfoLanguages.Split('/'))
-            {
-                if (!string.IsNullOrWhiteSpace(item))
-                    tokens.Add(item.Trim());
-            }
-
-            var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.NeutralCultures);
-            for (int i = 0; i < tokens.Count; i++)
-            {
-                try
-                {
-                    var cultureInfo = cultures.FirstOrDefault(p => p.EnglishName == tokens[i]);
-
-                    if (cultureInfo != null)
-                        tokens[i] = cultureInfo.TwoLetterISOLanguageName.ToUpper();
-                }
-                catch
-                {
-                }
-            }
-
-            return string.Join("+", tokens.Distinct());
-        }
-
         private string ReplaceTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, NamingConfig namingConfig)
         {
             return TitleRegex.Replace(pattern, match => ReplaceToken(match, tokenHandlers, namingConfig));

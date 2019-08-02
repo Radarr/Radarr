@@ -113,7 +113,6 @@ namespace NzbDrone.Core.Music
                     Metadata = remote.ArtistMetadata.Value,
                     MetadataProfileId = oldArtist.MetadataProfileId,
                     QualityProfileId = oldArtist.QualityProfileId,
-                    LanguageProfileId = oldArtist.LanguageProfileId,
                     RootFolderPath = oldArtist.RootFolderPath,
                     Monitored = oldArtist.Monitored,
                     AlbumFolder = oldArtist.AlbumFolder

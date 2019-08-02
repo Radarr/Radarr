@@ -140,7 +140,6 @@ namespace NzbDrone.Core.ImportLists
                         Monitored = monitored,
                         RootFolderPath = importList.RootFolderPath,
                         QualityProfileId = importList.ProfileId,
-                        LanguageProfileId = importList.LanguageProfileId,
                         MetadataProfileId = importList.MetadataProfileId,
                         Tags = importList.Tags,
                         AlbumFolder = true,

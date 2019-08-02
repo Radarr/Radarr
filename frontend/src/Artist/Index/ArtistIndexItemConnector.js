@@ -7,7 +7,6 @@ import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import createArtistQualityProfileSelector from 'Store/Selectors/createArtistQualityProfileSelector';
-import createArtistLanguageProfileSelector from 'Store/Selectors/createArtistLanguageProfileSelector';
 import createArtistMetadataProfileSelector from 'Store/Selectors/createArtistMetadataProfileSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -36,14 +35,12 @@ function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
     createArtistQualityProfileSelector(),
-    createArtistLanguageProfileSelector(),
     createArtistMetadataProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
     (
       artist,
       qualityProfile,
-      languageProfile,
       metadataProfile,
       showSearchAction,
       executingCommands
@@ -77,7 +74,6 @@ function createMapStateToProps() {
       return {
         ...artist,
         qualityProfile,
-        languageProfile,
         metadataProfile,
         latestAlbum,
         showSearchAction,

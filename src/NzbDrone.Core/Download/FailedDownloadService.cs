@@ -96,7 +96,6 @@ namespace NzbDrone.Core.Download
                 Message = message,
                 Data = historyItem.Data,
                 TrackedDownload = trackedDownload,
-                Language = historyItem.Language,
                 SkipReDownload = skipReDownload
             };
 

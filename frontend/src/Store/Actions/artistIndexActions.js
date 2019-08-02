@@ -86,12 +86,6 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'languageProfileId',
-      label: 'Language Profile',
-      isSortable: true,
-      isVisible: false
-    },
-    {
       name: 'metadataProfileId',
       label: 'Metadata Profile',
       isSortable: true,
@@ -249,12 +243,6 @@ export const defaultState = {
       label: 'Quality Profile',
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
-    },
-    {
-      name: 'languageProfileId',
-      label: 'Language Profile',
-      type: filterBuilderTypes.EXACT,
-      valueType: filterBuilderValueTypes.LANGUAGE_PROFILE
     },
     {
       name: 'metadataProfileId',

@@ -6,7 +6,6 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
@@ -47,7 +46,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var qualityProfile = subject.Artist.QualityProfile.Value;
-            var languageProfile = subject.Artist.LanguageProfile.Value;
             var delayProfile = _delayProfileService.BestForTags(subject.Artist.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
@@ -59,7 +57,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var qualityComparer = new QualityModelComparer(qualityProfile);
-            var languageComparer = new LanguageComparer(languageProfile);
 
             if (isPreferredProtocol)
             {
@@ -70,15 +67,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     if (trackFiles.Any())
                     {
                         var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
-                        var currentLanguages = trackFiles.Select(c => c.Language).Distinct().ToList();
 
                         var upgradable = _upgradableSpecification.IsUpgradable(qualityProfile,
-                                                                               languageProfile,
                                                                                currentQualities,
-                                                                               currentLanguages,
                                                                                _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
                                                                                subject.ParsedAlbumInfo.Quality,
-                                                                               subject.ParsedAlbumInfo.Language,
                                                                                subject.PreferredWordScore);
                         if (upgradable)
                         {
@@ -92,11 +85,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = qualityProfile.LastAllowedQuality();
             var isBestInProfile = qualityComparer.Compare(subject.ParsedAlbumInfo.Quality.Quality, bestQualityInProfile) >= 0;
-            var isBestInProfileLanguage = languageComparer.Compare(subject.ParsedAlbumInfo.Language, languageProfile.LastAllowedLanguage()) >= 0;
 
-            if (isBestInProfile && isBestInProfileLanguage && isPreferredProtocol)
+            if (isBestInProfile && isPreferredProtocol)
             {
-                _logger.Debug("Quality and language is highest in profile for preferred protocol, will not delay");
+                _logger.Debug("Quality is highest in profile for preferred protocol, will not delay");
                 return Decision.Accept();
             }
 

@@ -7,7 +7,6 @@ import downloadClientOptions from './Settings/downloadClientOptions';
 import general from './Settings/general';
 import indexerOptions from './Settings/indexerOptions';
 import indexers from './Settings/indexers';
-import languageProfiles from './Settings/languageProfiles';
 import importLists from './Settings/importLists';
 import importListExclusions from './Settings/importListExclusions';
 import metadataProfiles from './Settings/metadataProfiles';
@@ -31,7 +30,6 @@ export * from './Settings/importLists';
 export * from './Settings/importListExclusions';
 export * from './Settings/indexerOptions';
 export * from './Settings/indexers';
-export * from './Settings/languageProfiles';
 export * from './Settings/metadataProfiles';
 export * from './Settings/mediaManagement';
 export * from './Settings/metadata';
@@ -62,7 +60,6 @@ export const defaultState = {
   general: general.defaultState,
   indexerOptions: indexerOptions.defaultState,
   indexers: indexers.defaultState,
-  languageProfiles: languageProfiles.defaultState,
   importLists: importLists.defaultState,
   importListExclusions: importListExclusions.defaultState,
   metadataProfiles: metadataProfiles.defaultState,
@@ -103,7 +100,6 @@ export const actionHandlers = handleThunks({
   ...general.actionHandlers,
   ...indexerOptions.actionHandlers,
   ...indexers.actionHandlers,
-  ...languageProfiles.actionHandlers,
   ...importLists.actionHandlers,
   ...importListExclusions.actionHandlers,
   ...metadataProfiles.actionHandlers,
@@ -135,7 +131,6 @@ export const reducers = createHandleActions({
   ...general.reducers,
   ...indexerOptions.reducers,
   ...indexers.reducers,
-  ...languageProfiles.reducers,
   ...importLists.reducers,
   ...importListExclusions.reducers,
   ...metadataProfiles.reducers,

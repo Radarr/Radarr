@@ -137,8 +137,7 @@ namespace NzbDrone.Core.MediaFiles
                         Modified = decision.Item.Modified,
                         DateAdded = DateTime.UtcNow,
                         Quality = decision.Item.Quality,
-                        MediaInfo = decision.Item.FileTrackInfo.MediaInfo,
-                        Language = decision.Item.Language
+                        MediaInfo = decision.Item.FileTrackInfo.MediaInfo
                     })
                 .ToList();
             _mediaFileService.AddMany(newFiles);

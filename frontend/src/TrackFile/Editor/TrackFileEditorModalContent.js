@@ -33,11 +33,6 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'language',
-    label: 'Language',
-    isVisible: true
-  },
-  {
     name: 'quality',
     label: 'Quality',
     isVisible: true
@@ -112,16 +107,6 @@ class TrackFileEditorModalContent extends Component {
     this.setState({ isConfirmDeleteModalOpen: false });
   }
 
-  onLanguageChange = ({ value }) => {
-    const selectedIds = this.getSelectedIds();
-
-    if (!selectedIds.length) {
-      return;
-    }
-
-    this.props.onLanguageChange(selectedIds, parseInt(value));
-  }
-
   onQualityChange = ({ value }) => {
     const selectedIds = this.getSelectedIds();
 
@@ -142,7 +127,6 @@ class TrackFileEditorModalContent extends Component {
       isPopulated,
       error,
       items,
-      languages,
       qualities,
       onModalClose
     } = this.props;
@@ -153,15 +137,6 @@ class TrackFileEditorModalContent extends Component {
       selectedState,
       isConfirmDeleteModalOpen
     } = this.state;
-
-    const languageOptions = _.reduceRight(languages, (acc, language) => {
-      acc.push({
-        key: language.id,
-        value: language.name
-      });
-
-      return acc;
-    }, [{ key: 'selectLanguage', value: 'Select Language', disabled: true }]);
 
     const qualityOptions = _.reduceRight(qualities, (acc, quality) => {
       acc.push({
@@ -242,16 +217,6 @@ class TrackFileEditorModalContent extends Component {
 
             <div className={styles.selectInput}>
               <SelectInput
-                name="language"
-                value="selectLanguage"
-                values={languageOptions}
-                isDisabled={!hasSelectedFiles}
-                onChange={this.onLanguageChange}
-              />
-            </div>
-
-            <div className={styles.selectInput}>
-              <SelectInput
                 name="quality"
                 value="selectQuality"
                 values={qualityOptions}
@@ -288,10 +253,8 @@ TrackFileEditorModalContent.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDeletePress: PropTypes.func.isRequired,
-  onLanguageChange: PropTypes.func.isRequired,
   onQualityChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

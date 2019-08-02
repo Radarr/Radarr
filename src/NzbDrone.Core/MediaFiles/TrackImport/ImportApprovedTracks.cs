@@ -7,7 +7,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
@@ -63,7 +62,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.Item.Artist.Id, (i, s) => s
                    .OrderByDescending(c => c.Item.Quality, new QualityModelComparer(s.First().Item.Artist.QualityProfile))
-                   .ThenByDescending(c => c.Item.Language, new LanguageComparer(s.First().Item.Artist.LanguageProfile))
                    .ThenByDescending(c => c.Item.Size))
                .SelectMany(c => c)
                .ToList();
@@ -159,7 +157,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         ReleaseGroup = localTrack.ReleaseGroup,
                         Quality = localTrack.Quality,
                         MediaInfo = localTrack.FileTrackInfo.MediaInfo,
-                        Language = localTrack.Language,
                         AlbumId = localTrack.Album.Id,
                         Artist = localTrack.Artist,
                         Album = localTrack.Album,

@@ -19,7 +19,6 @@ function createMapStateToProps() {
       const {
         monitor: defaultMonitor,
         qualityProfileId: defaultQualityProfileId,
-        languageProfileId: defaultLanguageProfileId,
         metadataProfileId: defaultMetadataProfileId,
         albumFolder: defaultAlbumFolder
       } = addArtist.defaults;
@@ -32,7 +31,6 @@ function createMapStateToProps() {
 
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
-      const isLanguageProfileIdMixed = isMixed(items, selectedIds, defaultLanguageProfileId, 'languageProfileId');
       const isMetadataProfileIdMixed = isMixed(items, selectedIds, defaultMetadataProfileId, 'metadataProfileId');
       const isAlbumFolderMixed = isMixed(items, selectedIds, defaultAlbumFolder, 'albumFolder');
       const hasUnsearchedItems = !isLookingUpArtist && items.some((item) => !item.isPopulated);
@@ -43,12 +41,10 @@ function createMapStateToProps() {
         isImporting,
         defaultMonitor,
         defaultQualityProfileId,
-        defaultLanguageProfileId,
         defaultMetadataProfileId,
         defaultAlbumFolder,
         isMonitorMixed,
         isQualityProfileIdMixed,
-        isLanguageProfileIdMixed,
         isMetadataProfileIdMixed,
         isAlbumFolderMixed,
         hasUnsearchedItems

@@ -14,8 +14,3 @@ export const SET_IS_SIDEBAR_VISIBLE = 'SET_IS_SIDEBAR_VISIBLE';
 export const FETCH_GENERAL_SETTINGS = 'settings/general/fetchGeneralSettings';
 export const SET_GENERAL_SETTINGS_VALUE = 'settings/general/setGeneralSettingsValue';
 export const SAVE_GENERAL_SETTINGS = 'settings/general/saveGeneralSettings';
-
-//
-// Languages
-
-export const FETCH_LANGUAGES = 'FETCH_LANGUAGES';

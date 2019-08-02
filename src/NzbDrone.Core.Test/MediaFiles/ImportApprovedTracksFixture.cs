@@ -17,8 +17,6 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
-using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -38,11 +36,6 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             var artist = Builder<Artist>.CreateNew()
                                         .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
-                                        .With(l => l.LanguageProfile = new LanguageProfile
-                                        {
-                                            Cutoff = Language.Spanish,
-                                            Languages = Languages.LanguageFixture.GetDefaultLanguages()
-                                        })
                                         .With(s => s.Path = @"C:\Test\Music\Alien Ant Farm".AsOsAgnostic())
                                         .Build();
 

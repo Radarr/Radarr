@@ -10,18 +10,15 @@ namespace Lidarr.Api.V1.ImportLists
 
         public ImportListModule(ImportListFactory importListFactory,
                                 ProfileExistsValidator profileExistsValidator,
-                                LanguageProfileExistsValidator languageProfileExistsValidator,
                                 MetadataProfileExistsValidator metadataProfileExistsValidator
             )
             : base(importListFactory, "importlist", ResourceMapper)
         {
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));
-            Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.LanguageProfileId));
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.MetadataProfileId));
 
             SharedValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
-            SharedValidator.RuleFor(c => c.LanguageProfileId).SetValidator(languageProfileExistsValidator);
             SharedValidator.RuleFor(c => c.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
         }
 

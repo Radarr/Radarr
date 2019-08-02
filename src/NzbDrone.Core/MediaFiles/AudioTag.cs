@@ -1,6 +1,5 @@
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Languages;
 using System.Linq;
 using System.Collections.Generic;
 using System;
@@ -533,7 +532,6 @@ namespace NzbDrone.Core.MediaFiles
             if (!tag.IsValid)
             {
                 return new ParsedTrackInfo {
-                    Language = Language.English,
                     Quality = tag.Quality ?? new QualityModel { Quality = NzbDrone.Core.Qualities.Quality.Unknown },
                     MediaInfo = tag.MediaInfo ?? new MediaInfoModel()
                 };
@@ -553,7 +551,6 @@ namespace NzbDrone.Core.MediaFiles
             };
 
             return new ParsedTrackInfo {
-                Language = Language.English,
                 AlbumTitle = tag.Album,
                 ArtistTitle = artist,
                 ArtistMBId = tag.MusicBrainzReleaseArtistId,

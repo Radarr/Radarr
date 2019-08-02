@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
@@ -74,7 +73,6 @@ namespace NzbDrone.Core.Queue
             {
                 Artist = trackedDownload.RemoteAlbum?.Artist,
                 Album = album,
-                Language = trackedDownload.RemoteAlbum?.ParsedAlbumInfo.Language ?? Language.Unknown,
                 Quality = trackedDownload.RemoteAlbum?.ParsedAlbumInfo.Quality ?? new QualityModel(Quality.Unknown),
                 Title = Parser.Parser.RemoveFileExtension(trackedDownload.DownloadItem.Title),
                 Size = trackedDownload.DownloadItem.TotalSize,

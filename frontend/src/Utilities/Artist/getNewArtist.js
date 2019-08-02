@@ -4,7 +4,6 @@ function getNewArtist(artist, payload) {
     rootFolderPath,
     monitor,
     qualityProfileId,
-    languageProfileId,
     metadataProfileId,
     artistType,
     albumFolder,
@@ -20,7 +19,6 @@ function getNewArtist(artist, payload) {
   artist.addOptions = addOptions;
   artist.monitored = true;
   artist.qualityProfileId = qualityProfileId;
-  artist.languageProfileId = languageProfileId;
   artist.metadataProfileId = metadataProfileId;
   artist.rootFolderPath = rootFolderPath;
   artist.artistType = artistType;

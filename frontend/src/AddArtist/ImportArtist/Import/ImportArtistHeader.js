@@ -12,7 +12,6 @@ import styles from './ImportArtistHeader.css';
 
 function ImportArtistHeader(props) {
   const {
-    showLanguageProfile,
     showMetadataProfile,
     allSelected,
     allUnselected,
@@ -61,16 +60,6 @@ function ImportArtistHeader(props) {
       </VirtualTableHeaderCell>
 
       {
-        showLanguageProfile &&
-          <VirtualTableHeaderCell
-            className={styles.languageProfile}
-            name="languageProfileId"
-          >
-            Language Profile
-          </VirtualTableHeaderCell>
-      }
-
-      {
         showMetadataProfile &&
           <VirtualTableHeaderCell
             className={styles.metadataProfile}
@@ -98,7 +87,6 @@ function ImportArtistHeader(props) {
 }
 
 ImportArtistHeader.propTypes = {
-  showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,

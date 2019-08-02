@@ -197,7 +197,6 @@ namespace NzbDrone.Core.Download.Pending
                         Artist = pendingRelease.RemoteAlbum.Artist,
                         Album = album,
                         Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
-                        Language = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Language,
                         Title = pendingRelease.Title,
                         Size = pendingRelease.RemoteAlbum.Release.Size,
                         Sizeleft = pendingRelease.RemoteAlbum.Release.Size,

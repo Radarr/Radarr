@@ -9,13 +9,11 @@ import EditImportListModalContent from './EditImportListModalContent';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
     createProviderSettingsSelector('importLists'),
-    (advancedSettings, languageProfiles, metadataProfiles, importList) => {
+    (advancedSettings, metadataProfiles, importList) => {
       return {
         advancedSettings,
-        showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
         ...importList
       };

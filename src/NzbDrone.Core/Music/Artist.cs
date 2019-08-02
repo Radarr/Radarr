@@ -2,7 +2,6 @@ using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Metadata;
 using System;
 using System.Collections.Generic;
@@ -31,8 +30,6 @@ namespace NzbDrone.Core.Music
         public DateTime Added { get; set; }
         public int QualityProfileId { get; set; }
         public LazyLoaded<QualityProfile> QualityProfile { get; set; }
-        public int LanguageProfileId { get; set; }        
-        public LazyLoaded<LanguageProfile> LanguageProfile { get; set; }
         public int MetadataProfileId { get; set; }        
         public LazyLoaded<MetadataProfile> MetadataProfile { get; set; }
         public LazyLoaded<List<Album>> Albums { get; set; }
@@ -50,7 +47,6 @@ namespace NzbDrone.Core.Music
             Path = otherArtist.Path;
             QualityProfileId = otherArtist.QualityProfileId;
             QualityProfile = otherArtist.QualityProfile;
-            LanguageProfileId = otherArtist.LanguageProfileId;
             MetadataProfileId = otherArtist.MetadataProfileId;
 
             Albums = otherArtist.Albums;
