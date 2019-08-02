@@ -43,7 +43,6 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
             if (response == null || response.Ids.Empty())
             {
-                return response.Ids.First();
                 throw new DownloadClientRejectedReleaseException(remoteAlbum.Release, "SABnzbd rejected the NZB for an unknown reason");
             }
 
