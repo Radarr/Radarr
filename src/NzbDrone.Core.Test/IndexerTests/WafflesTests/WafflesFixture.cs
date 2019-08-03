@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.IndexerTests.WafflesTests
         [Test]
         public void should_parse_recent_feed_from_waffles()
         {
-            var recentFeed = ReadAllText(@"Files/Indexers/Waffles/Waffles.xml");
+            var recentFeed = ReadAllText(@"Files/Indexers/Waffles/waffles.xml");
 
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))

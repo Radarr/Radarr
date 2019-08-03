@@ -2,7 +2,7 @@ version: '0.6.2.{build}'
 
 image:
   - Visual Studio 2017
-  - Previous Ubuntu1804
+  - Ubuntu1804
 
 assembly_info:
   patch: true

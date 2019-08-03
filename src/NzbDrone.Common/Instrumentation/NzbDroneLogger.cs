@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using LogentriesNLog;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -45,7 +44,6 @@ namespace NzbDrone.Common.Instrumentation
             if (updateApp)
             {
                 RegisterUpdateFile(appFolderInfo);
-                RegisterLogEntries();
             }
             else
             {
@@ -70,19 +68,6 @@ namespace NzbDrone.Common.Instrumentation
             }
 
             LogManager.ReconfigExistingLoggers();
-        }
-
-        private static void RegisterLogEntries()
-        {
-            var target = new LogentriesTarget();
-            target.Name = "logentriesTarget";
-            target.Token = "d3a83ee9-74fb-4045-ad25-a84c1d4d7c81";
-            target.LogHostname = true;
-            target.Debug = false;
-
-            var loggingRule = new LoggingRule("*", LogLevel.Info, target);
-            LogManager.Configuration.AddTarget("logentries", target);
-            LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
 
         private static void RegisterSentry(bool updateClient)

@@ -420,7 +420,7 @@
     <Content Include="Files\Indexers\TorrentRss\LimeTorrents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Files\Indexers\Waffles\Waffles.xml">
+    <Content Include="Files\Indexers\Waffles\waffles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\html_image.jpg">
