@@ -125,6 +125,7 @@ class BlacklistRow extends Component {
                     name={icons.INFO}
                     onPress={this.onDetailsPress}
                   />
+
                   <IconButton
                     title="Remove from blacklist"
                     name={icons.REMOVE}
