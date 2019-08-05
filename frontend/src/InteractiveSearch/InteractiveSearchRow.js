@@ -123,7 +123,7 @@ class InteractiveSearchRow extends Component {
 
     return (
       <TableRow>
-        <TableRowCell>
+        <TableRowCell className={styles.protocol}>
           <ProtocolLabel
             protocol={protocol}
           />
@@ -142,7 +142,7 @@ class InteractiveSearchRow extends Component {
           </Link>
         </TableRowCell>
 
-        <TableRowCell>
+        <TableRowCell className={styles.indexer}>
           {indexer}
         </TableRowCell>
 
@@ -150,7 +150,7 @@ class InteractiveSearchRow extends Component {
           {formatBytes(size)}
         </TableRowCell>
 
-        <TableRowCell>
+        <TableRowCell className={styles.peers}>
           {
             protocol === 'torrent' &&
               <Peers
