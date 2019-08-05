@@ -197,7 +197,7 @@ export const toggleAlbumMonitored = createThunk(TOGGLE_ALBUM_MONITORED);
 
 export const setArtistValue = createAction(SET_ARTIST_VALUE, (payload) => {
   return {
-    section: 'artist',
+    section,
     ...payload
   };
 });
