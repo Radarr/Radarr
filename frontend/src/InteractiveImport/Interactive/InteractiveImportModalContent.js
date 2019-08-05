@@ -20,6 +20,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
 import SelectAlbumReleaseModal from 'InteractiveImport/AlbumRelease/SelectAlbumReleaseModal';
@@ -76,6 +77,17 @@ const filterExistingFilesOptions = {
   NEW: 'new'
 };
 
+const importModeOptions = [
+  { key: 'move', value: 'Move Files' },
+  { key: 'copy', value: 'Copy Files' }
+];
+
+const SELECT = 'select';
+const ARTIST = 'artist';
+const ALBUM = 'album';
+const ALBUM_RELEASE = 'albumRelease';
+const QUALITY = 'quality';
+
 const replaceExistingFilesOptions = {
   COMBINE: 'combine',
   DELETE: 'delete'
@@ -95,9 +107,7 @@ class InteractiveImportModalContent extends Component {
       lastToggled: null,
       selectedState: {},
       invalidRowsSelected: [],
-      isSelectArtistModalOpen: false,
-      isSelectAlbumModalOpen: false,
-      isSelectAlbumReleaseModalOpen: false,
+      selectModalOpen: null,
       albumsImported: [],
       isConfirmImportModalOpen: false,
       showClearTracks: false,
@@ -204,16 +214,8 @@ class InteractiveImportModalContent extends Component {
     this.props.onImportModeChange(value);
   }
 
-  onSelectArtistPress = () => {
-    this.setState({ isSelectArtistModalOpen: true });
-  }
-
-  onSelectAlbumPress = () => {
-    this.setState({ isSelectAlbumModalOpen: true });
-  }
-
-  onSelectAlbumReleasePress = () => {
-    this.setState({ isSelectAlbumReleaseModalOpen: true });
+  onSelectModalSelect = ({ value }) => {
+    this.setState({ selectModalOpen: value });
   }
 
   onClearTrackMappingPress = () => {
@@ -232,16 +234,8 @@ class InteractiveImportModalContent extends Component {
     this.props.saveInteractiveImportItem({ id: this.getSelectedIds() });
   }
 
-  onSelectArtistModalClose = () => {
-    this.setState({ isSelectArtistModalOpen: false });
-  }
-
-  onSelectAlbumModalClose = () => {
-    this.setState({ isSelectAlbumModalOpen: false });
-  }
-
-  onSelectAlbumReleaseModalClose = () => {
-    this.setState({ isSelectAlbumReleaseModalOpen: false });
+  onSelectModalClose = () => {
+    this.setState({ selectModalOpen: null });
   }
 
   onConfirmImportModalClose = () => {
@@ -280,9 +274,7 @@ class InteractiveImportModalContent extends Component {
       allUnselected,
       selectedState,
       invalidRowsSelected,
-      isSelectArtistModalOpen,
-      isSelectAlbumModalOpen,
-      isSelectAlbumReleaseModalOpen,
+      selectModalOpen,
       albumsImported,
       isConfirmImportModalOpen,
       showClearTracks,
@@ -293,10 +285,19 @@ class InteractiveImportModalContent extends Component {
     const selectedItem = selectedIds.length ? _.find(items, { id: selectedIds[0] }) : null;
     const errorMessage = getErrorMessage(error, 'Unable to load manual import items');
 
-    const importModeOptions = [
-      { key: 'move', value: 'Move Files' },
-      { key: 'copy', value: 'Copy Files' }
+    const bulkSelectOptions = [
+      { key: SELECT, value: 'Select...', disabled: true },
+      { key: ALBUM, value: 'Select Album' },
+      { key: ALBUM_RELEASE, value: 'Select Album Release' },
+      { key: QUALITY, value: 'Select Quality' }
     ];
+
+    if (allowArtistChange) {
+      bulkSelectOptions.splice(1, 0, {
+        key: ARTIST,
+        value: 'Select Artist'
+      });
+    }
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -429,41 +430,25 @@ class InteractiveImportModalContent extends Component {
         <ModalFooter className={styles.footer}>
           <div className={styles.leftButtons}>
             {
-              !downloadId && showImportMode &&
+              !downloadId && showImportMode ?
                 <SelectInput
                   className={styles.importMode}
                   name="importMode"
                   value={importMode}
                   values={importModeOptions}
                   onChange={this.onImportModeChange}
-                />
-            }
-          </div>
-
-          <div className={styles.centerButtons}>
-            {
-              allowArtistChange &&
-                <Button
-                  onPress={this.onSelectArtistPress}
-                  isDisabled={!selectedIds.length}
-                >
-                  Select Artist
-                </Button>
+                /> :
+                null
             }
 
-            <Button
-              onPress={this.onSelectAlbumPress}
+            <SelectInput
+              className={styles.bulkSelect}
+              name="select"
+              value={SELECT}
+              values={bulkSelectOptions}
               isDisabled={!selectedIds.length}
-            >
-              Select Album
-            </Button>
-
-            <Button
-              onPress={this.onSelectAlbumReleasePress}
-              isDisabled={!selectedIds.length}
-            >
-              Select Release
-            </Button>
+              onChange={this.onSelectModalSelect}
+            />
 
             {
               showClearTracks ? (
@@ -505,23 +490,32 @@ class InteractiveImportModalContent extends Component {
         </ModalFooter>
 
         <SelectArtistModal
-          isOpen={isSelectArtistModalOpen}
+          isOpen={selectModalOpen === ARTIST}
           ids={selectedIds}
-          onModalClose={this.onSelectArtistModalClose}
+          onModalClose={this.onSelectModalClose}
         />
 
         <SelectAlbumModal
-          isOpen={isSelectAlbumModalOpen}
+          isOpen={selectModalOpen === ALBUM}
           ids={selectedIds}
           artistId={selectedItem && selectedItem.artist && selectedItem.artist.id}
-          onModalClose={this.onSelectAlbumModalClose}
+          onModalClose={this.onSelectModalClose}
         />
 
         <SelectAlbumReleaseModal
-          isOpen={isSelectAlbumReleaseModalOpen}
+          isOpen={selectModalOpen === ALBUM_RELEASE}
           importIdsByAlbum={_.chain(items).filter((x) => x.album).groupBy((x) => x.album.id).mapValues((x) => x.map((y) => y.id)).value()}
           albums={_.chain(items).filter((x) => x.album).keyBy((x) => x.album.id).mapValues((x) => ({ matchedReleaseId: x.albumReleaseId, album: x.album })).values().value()}
-          onModalClose={this.onSelectAlbumReleaseModalClose}
+          onModalClose={this.onSelectModalClose}
+        />
+
+        <SelectQualityModal
+          isOpen={selectModalOpen === QUALITY}
+          ids={selectedIds}
+          qualityId={0}
+          proper={false}
+          real={false}
+          onModalClose={this.onSelectModalClose}
         />
 
         <ConfirmImportModal

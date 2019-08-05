@@ -16,25 +16,21 @@
 }
 
 .leftButtons,
-.centerButtons,
 .rightButtons {
   display: flex;
-  flex: 1 2 20%;
+  flex: 1 0 50%;
   flex-wrap: wrap;
-}
-
-.centerButtons {
-  justify-content: center;
-  flex: 2 1 60%;
 }
 
 .rightButtons {
   justify-content: flex-end;
 }
 
-.importMode {
+.importMode,
+.bulkSelect {
   composes: select from '~Components/Form/SelectInput.css';
 
+  margin-right: 10px;
   width: auto;
 }
 
@@ -45,17 +41,12 @@
 @media only screen and (max-width: $breakpointSmall) {
   .footer {
     .leftButtons,
-    .centerButtons,
     .rightButtons {
       flex-direction: column;
     }
 
     .leftButtons {
       align-items: flex-start;
-    }
-
-    .centerButtons {
-      align-items: center;
     }
 
     .rightButtons {
