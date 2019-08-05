@@ -61,7 +61,7 @@ class ImportListExclusion extends Component {
     return (
       <div
         className={classNames(
-          styles.importListExclusion,
+          styles.importListExclusion
         )}
       >
         <div className={styles.artistName}>{artistName}</div>

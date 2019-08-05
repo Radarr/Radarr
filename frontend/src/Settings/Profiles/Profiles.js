@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -8,6 +8,9 @@ import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import MetadataProfilesConnector from './Metadata/MetadataProfilesConnector';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
 import ReleaseProfilesConnector from './Release/ReleaseProfilesConnector';
+
+// Only a single DragDrop Context can exist so it's done here to allow editing
+// quality profiles and reordering delay profiles to work.
 
 class Profiles extends Component {
 
@@ -22,18 +25,16 @@ class Profiles extends Component {
         />
 
         <PageContentBodyConnector>
-          <QualityProfilesConnector />
-          <MetadataProfilesConnector />
-          <DelayProfilesConnector />
-          <ReleaseProfilesConnector />
+          <DndProvider backend={HTML5Backend}>
+            <QualityProfilesConnector />
+            <MetadataProfilesConnector />
+            <DelayProfilesConnector />
+            <ReleaseProfilesConnector />
+          </DndProvider>
         </PageContentBodyConnector>
       </PageContent>
     );
   }
 }
 
-// Only a single DragDropContext can exist so it's done here to allow editing
-// quality profiles and reordering delay profiles to work.
-/* eslint-disable new-cap */
-export default DragDropContext(HTML5Backend)(Profiles);
-/* eslint-enable new-cap */
+export default Profiles;

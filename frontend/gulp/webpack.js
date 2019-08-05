@@ -6,7 +6,6 @@ const webpack = require('webpack');
 const errorHandler = require('./helpers/errorHandler');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const browsers = require('../browsers');
 
 const uiFolder = 'UI';
 const frontendFolder = path.join(__dirname, '..');
@@ -103,7 +102,7 @@ const config = {
                     loose: true,
                     debug: false,
                     useBuiltIns: 'entry',
-                    targets: browsers
+                    corejs: 3
                   }
                 ]
               ]
@@ -122,8 +121,9 @@ const config = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              localIdentName: '[name]/[local]/[hash:base64:5]',
-              modules: true
+              modules: {
+                localIdentName: '[name]/[local]/[hash:base64:5]'
+              }
             }
           },
           {

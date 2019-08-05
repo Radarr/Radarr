@@ -226,7 +226,7 @@ class TagInput extends Component {
         className={styles.internalInput}
         inputContainerClassName={classNames(
           inputContainerClassName,
-          isFocused && styles.isFocused,
+          isFocused && styles.isFocused
         )}
         value={value}
         suggestions={suggestions}
@@ -260,7 +260,7 @@ TagInput.propTypes = {
   minQueryLength: PropTypes.number.isRequired,
   hasError: PropTypes.bool,
   hasWarning: PropTypes.bool,
-  tagComponent: PropTypes.func.isRequired,
+  tagComponent: PropTypes.elementType.isRequired,
   onTagAdd: PropTypes.func.isRequired,
   onTagDelete: PropTypes.func.isRequired
 };
