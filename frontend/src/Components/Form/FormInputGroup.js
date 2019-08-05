@@ -18,7 +18,7 @@ import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputCon
 import AlbumReleaseSelectInputConnector from './AlbumReleaseSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
-import SelectInput from './SelectInput';
+import EnhancedSelectInput from './EnhancedSelectInput';
 import TagInputConnector from './TagInputConnector';
 import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
@@ -73,7 +73,7 @@ function getComponent(type) {
       return RootFolderSelectInputConnector;
 
     case inputTypes.SELECT:
-      return SelectInput;
+      return EnhancedSelectInput;
 
     case inputTypes.SERIES_TYPE_SELECT:
       return SeriesTypeSelectInput;
