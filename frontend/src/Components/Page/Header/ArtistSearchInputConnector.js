@@ -25,9 +25,15 @@ function createCleanArtistSelector() {
           sortName,
           foreignArtistId,
           images,
-          tags: tags.map((id) => {
-            return allTags.find((tag) => tag.id === id);
-          })
+          tags: tags.reduce((acc, id) => {
+            const matchingTag = allTags.find((tag) => tag.id === id);
+
+            if (matchingTag) {
+              acc.push(matchingTag);
+            }
+
+            return acc;
+          }, [])
         };
       });
     }
