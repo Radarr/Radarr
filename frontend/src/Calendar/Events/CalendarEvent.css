@@ -5,6 +5,10 @@
   border-bottom: 1px solid $borderColor;
   border-left: 4px solid $borderColor;
   font-size: 12px;
+
+  &:global(.colorImpaired) {
+    border-left-width: 5px;
+  }
 }
 
 .info,
@@ -38,37 +42,38 @@
  */
 
 .downloaded {
-  border-left-color: $successColor;
-}
+  border-left-color: $successColor !important;
 
-.partial {
-  border-left-color: $yellow;
+  &:global(.colorImpaired) {
+    border-left-color: color($successColor, saturation(+15%)) !important;
+  }
 }
 
 .downloading {
-  border-left-color: $purple;
+  border-left-color: $purple !important;
 }
 
 .unmonitored {
-  border-left-color: $gray;
+  border-left-color: $gray !important;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }
 
 .missing {
-  border-left-color: $dangerColor;
+  border-left-color: $dangerColor !important;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+    border-left-color: color($dangerColor saturation(+15%)) !important;
+    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }
 
 .unreleased {
-  border-left-color: $blue;
+  border-left-color: $primaryColor !important;
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
   }
 }
