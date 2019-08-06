@@ -18,11 +18,6 @@ class MovieIndexFooter extends PureComponent {
     let totalFileSize = 0;
 
     movies.forEach((s) => {
-      const { statistics = {} } = s;
-
-      const {
-        sizeOnDisk = 0
-      } = statistics;
 
       if (s.hasFile) {
         movieFiles += 1;
@@ -38,7 +33,7 @@ class MovieIndexFooter extends PureComponent {
         monitored++;
       }
 
-      totalFileSize += sizeOnDisk;
+      totalFileSize += s.sizeOnDisk;
     });
 
     return (

@@ -17,6 +17,11 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'size',
+    label: 'Size',
+    isVisible: true
+  },
+  {
     name: 'languages',
     label: 'Languages',
     isVisible: true

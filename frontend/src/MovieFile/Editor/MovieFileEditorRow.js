@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import formatBytes from 'Utilities/Number/formatBytes';
 import IconButton from 'Components/Link/IconButton';
 import { icons, kinds } from 'Helpers/Props';
 import TableRow from 'Components/Table/TableRow';
@@ -70,6 +71,7 @@ class MovieFileEditorRow extends Component {
     const {
       id,
       relativePath,
+      size,
       quality,
       qualityCutoffNotMet,
       languages
@@ -103,6 +105,13 @@ class MovieFileEditorRow extends Component {
             movieFileId={id}
             type={mediaInfoTypes.AUDIO}
           />
+        </TableRowCell>
+
+        <TableRowCell
+          className={styles.size}
+          title={size}
+        >
+          {formatBytes(size)}
         </TableRowCell>
 
         <TableRowCellButton

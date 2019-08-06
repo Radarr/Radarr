@@ -27,11 +27,14 @@ const selectMovieFiles = createSelector(
 
     const hasMovieFiles = !!items.length;
 
+    const sizeOnDisk = items.map((item) => item.size).reduce((prev, curr) => prev + curr, 0);
+
     return {
       isMovieFilesFetching: isFetching,
       isMovieFilesPopulated: isPopulated,
       movieFilesError: error,
-      hasMovieFiles
+      hasMovieFiles,
+      sizeOnDisk
     };
   }
 );
@@ -54,8 +57,9 @@ function createMapStateToProps() {
       const {
         isMovieFilesFetching,
         isMovieFilesPopulated,
-        episodeFilesError,
-        hasMovieFiles
+        movieFilesError,
+        hasMovieFiles,
+        sizeOnDisk
       } = movieFiles;
 
       const previousMovie = sortedMovies[movieIndex - 1] || _.last(sortedMovies);
@@ -78,11 +82,7 @@ function createMapStateToProps() {
       const isFetching = isMovieFilesFetching;
       const isPopulated = isMovieFilesPopulated;
       const alternateTitles = _.reduce(movie.alternateTitles, (acc, alternateTitle) => {
-        if ((alternateTitle.seasonNumber === -1 || alternateTitle.seasonNumber === undefined) &&
-            (alternateTitle.sceneSeasonNumber === -1 || alternateTitle.sceneSeasonNumber === undefined)) {
-          acc.push(alternateTitle.title);
-        }
-
+        acc.push(alternateTitle.title);
         return acc;
       }, []);
 
@@ -97,8 +97,9 @@ function createMapStateToProps() {
         isRenamingMovie,
         isFetching,
         isPopulated,
-        episodeFilesError,
+        movieFilesError,
         hasMovieFiles,
+        sizeOnDisk,
         previousMovie,
         nextMovie
       };

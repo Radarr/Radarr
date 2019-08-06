@@ -12,13 +12,15 @@ function createUnoptimizedSelector() {
         const {
           monitored,
           status,
-          statistics
+          statistics,
+          sizeOnDisk
         } = s;
 
         return {
           monitored,
           status,
-          statistics
+          statistics,
+          sizeOnDisk
         };
       });
     }

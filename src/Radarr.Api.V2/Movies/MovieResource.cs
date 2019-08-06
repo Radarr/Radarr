@@ -64,7 +64,6 @@ namespace Radarr.Api.V2.Movies
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        //public List<string> AlternativeTitles { get; set; }
         public MovieFileResource MovieFile { get; set; }
         
     }
@@ -75,47 +74,24 @@ namespace Radarr.Api.V2.Movies
         {
             if (model == null) return null;
 
-
-            //long size = model.MovieFile?.Size ?? 0;
-            //bool downloaded = model.MovieFile != null;
-            //MovieFileResource movieFile = model.MovieFile?.ToResource(model);
-            
-
-            
-            /*if(model.MovieFile != null)
-            {
-                model.MovieFile.LazyLoad();
-            }
-
-            if (model.MovieFile != null && model.MovieFile.IsLoaded && model.MovieFile.Value != null)
-            {
-                size = model.MovieFile.Value.Size;
-                downloaded = true;
-                movieFile = model.MovieFile.Value.ToResource();
-            }*/
-            
-            //model.AlternativeTitles.LazyLoad();
+            long size = model.MovieFile?.Size ?? 0;
+            MovieFileResource movieFile = model.MovieFile?.ToResource(model);
 
             return new MovieResource
             {
                 Id = model.Id,
                 TmdbId = model.TmdbId,
                 Title = model.Title,
-                //AlternateTitles
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
                 PhysicalReleaseNote = model.PhysicalReleaseNote,
                 HasFile = model.HasFile,
-                //Downloaded = downloaded,
-                //TotalEpisodeCount
-                //EpisodeCount
-                //EpisodeFileCount
-                //SizeOnDisk = size,
+
+                SizeOnDisk = size,
                 Status = model.Status,
                 Overview = model.Overview,
-                //NextAiring
-                //PreviousAiring
+
                 Images = model.Images,
                 
                 Year = model.Year,
@@ -132,8 +108,6 @@ namespace Radarr.Api.V2.Movies
                 IsAvailable = model.IsAvailable(),
                 FolderName = model.FolderName(),
 
-                //SizeOnDisk = size,
-
                 Runtime = model.Runtime,
                 LastInfoSync = model.LastInfoSync,
                 CleanTitle = model.CleanTitle,
@@ -148,7 +122,7 @@ namespace Radarr.Api.V2.Movies
                 AddOptions = model.AddOptions,
                 AlternateTitles = model.AlternativeTitles.ToResource(),
                 Ratings = model.Ratings,
-                //MovieFile = movieFile,
+                MovieFile = movieFile,
                 YouTubeTrailerId = model.YouTubeTrailerId,
                 Studio = model.Studio
             };
@@ -164,18 +138,13 @@ namespace Radarr.Api.V2.Movies
                 TmdbId = resource.TmdbId,
 
                 Title = resource.Title,
-                //AlternateTitles
                 SortTitle = resource.SortTitle,
                 InCinemas = resource.InCinemas,
                 PhysicalRelease = resource.PhysicalRelease,
                 PhysicalReleaseNote = resource.PhysicalReleaseNote,
-                //TotalEpisodeCount
-                //EpisodeCount
-                //EpisodeFileCount
-                //SizeOnDisk
+
                 Overview = resource.Overview,
-                //NextAiring
-                //PreviousAiring
+
                 Images = resource.Images,
 
                 Year = resource.Year,
@@ -201,7 +170,6 @@ namespace Radarr.Api.V2.Movies
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
-                //AlternativeTitles = resource.AlternativeTitles,
                 Ratings = resource.Ratings,
                 YouTubeTrailerId = resource.YouTubeTrailerId,
                 Studio = resource.Studio
