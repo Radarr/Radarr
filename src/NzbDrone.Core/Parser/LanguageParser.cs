@@ -15,8 +15,6 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>german\b|videomann)|(?<flemish>flemish)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VOSTFR|VO|VFF|VFQ|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<dutch>nl\W?subs?)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<czech>\b(?:CZ|SK)\b)|(?<ukrainian>\bukr\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        // jpogs: updated regex to match RARBG subtitle naming convention
         private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex RarbgSubtitleLanguageRegex = new Regex("^[0-9]{1,2}_(?<iso_code>[A-Za-z]{2,3}).*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static List<Language> ParseLanguages(string title)
@@ -154,8 +152,7 @@ namespace NzbDrone.Core.Parser
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
-
-                // jpogs: retry match for RARBG subs
+                
                 if (!languageMatch.Success)
                 {
                     languageMatch = RarbgSubtitleLanguageRegex.Match(simpleFilename);

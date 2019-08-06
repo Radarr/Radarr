@@ -88,11 +88,6 @@ namespace NzbDrone.Core.Extras.Subtitles
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
                 var language = LanguageParser.ParseSubtitleLanguage(path);
-
-                // jpogs: accomodate multiple subtitle files
-                //var subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
-                //subtitleFile.Language = language;
-
                 var subtitleFiles = _subtitleFileService.GetFilesByMovie(movie.Id);
                 var existingSrtSubs = subtitleFiles.Where(m => m.MovieFileId == movieFile.Id)
                     .Where(m => m.Language == language)
