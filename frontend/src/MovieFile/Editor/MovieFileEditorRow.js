@@ -71,6 +71,7 @@ class MovieFileEditorRow extends Component {
       id,
       relativePath,
       quality,
+      qualityCutoffNotMet,
       languages
     } = this.props;
 
@@ -138,6 +139,7 @@ class MovieFileEditorRow extends Component {
               <MovieQuality
                 className={styles.label}
                 quality={quality}
+                isCutoffNotMet={qualityCutoffNotMet}
               />
           }
         </TableRowCellButton>
@@ -187,6 +189,7 @@ MovieFileEditorRow.propTypes = {
   size: PropTypes.number.isRequired,
   relativePath: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   mediaInfo: PropTypes.object.isRequired,
   onDeletePress: PropTypes.func.isRequired
