@@ -26,25 +26,38 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var queue = _queueService.GetQueue()
-                            .Select(q => q.RemoteMovie).ToList();
 
-            var matchingSeries = queue.Where(q => q.Movie.Id == subject.Movie.Id);
+            var queue = _queueService.GetQueue();
+            var matchingMovies = queue.Where(q => q.RemoteMovie?.Movie != null &&
+                                                   q.RemoteMovie.Movie.Id == subject.Movie.Id)
+                                       .ToList();
 
-            foreach (var remoteEpisode in matchingSeries)
+            foreach (var queueItem in matchingMovies)
             {
-                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteEpisode.ParsedMovieInfo.Quality);
+                var remoteMovie = queueItem.RemoteMovie;
+                var qualityProfile = subject.Movie.Profile.Value;
 
-                if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, remoteEpisode.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
+                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteMovie.ParsedMovieInfo.Quality);
+
+                if (!_qualityUpgradableSpecification.CutoffNotMet(qualityProfile, remoteMovie.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
                 {
-                    return Decision.Reject("Quality for release in queue already meets cutoff: {0}", remoteEpisode.ParsedMovieInfo.Quality);
+                    return Decision.Reject("Quality for release in queue already meets cutoff: {0}", remoteMovie.ParsedMovieInfo.Quality);
                 }
 
-                _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0}", remoteEpisode.ParsedMovieInfo.Quality);
+                _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0}", remoteMovie.ParsedMovieInfo.Quality);
 
-                if (!_qualityUpgradableSpecification.IsUpgradable(subject.Movie.Profile, remoteEpisode.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
+                if (!_qualityUpgradableSpecification.IsUpgradable(qualityProfile, remoteMovie.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
                 {
-                    return Decision.Reject("Quality for release in queue is of equal or higher preference: {0}", remoteEpisode.ParsedMovieInfo.Quality);
+                    return Decision.Reject("Quality for release in queue is of equal or higher preference: {0}", remoteMovie.ParsedMovieInfo.Quality);
+                }
+
+                _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteMovie.ParsedMovieInfo.Quality);
+
+                if (!_qualityUpgradableSpecification.IsUpgradeAllowed(subject.Movie.Profile,
+                                                               remoteMovie.ParsedMovieInfo.Quality,
+                                                               subject.ParsedMovieInfo.Quality))
+                {
+                    return Decision.Reject("Another release is queued and the Quality profile does not allow upgrades");
                 }
             }
 
