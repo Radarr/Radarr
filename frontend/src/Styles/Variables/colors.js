@@ -164,8 +164,8 @@ module.exports = {
   popoverShadowColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderColor: '#fff',
 
-  popoverTitleBackgroundInverseColor: '#3a3f51',
-  popoverTitleBorderInverseColor: '#4f566f',
+  popoverTitleBackgroundInverseColor: '#595959',
+  popoverTitleBorderInverseColor: '#707070',
   popoverShadowInverseColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderInverseColor: 'rgba(58, 63, 81, 0.75)',
 
