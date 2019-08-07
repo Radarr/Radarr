@@ -27,7 +27,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
 
             _movie = Builder<Movie>.CreateNew()
-                                     .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                     .With(e => e.Profile = new Profile {
+                                         Items = Qualities.QualityFixture.GetDefaultQualities(),
+                                         UpgradeAllowed = true
+                                     })
                                      .Build();
 
             _otherMovie = Builder<Movie>.CreateNew()
@@ -47,11 +50,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Returns(new List<Queue.Queue>());
         }
 
-        private void GivenQueue(IEnumerable<RemoteMovie> remoteEpisodes)
+        private void GivenQueue(IEnumerable<RemoteMovie> remoteMovies)
         {
-            var queue = remoteEpisodes.Select(remoteEpisode => new Queue.Queue
+            var queue = remoteMovies.Select(remoteMovie => new Queue.Queue
             {
-                RemoteMovie = remoteEpisode
+                RemoteMovie = remoteMovie
             });
 
             Mocker.GetMock<IQueueService>()
@@ -67,13 +70,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_when_series_doesnt_match()
+        public void should_return_true_when_movie_doesnt_match()
         {
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                        .With(r => r.Movie = _otherMovie)
                                                        .Build();
 
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
@@ -82,7 +85,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
 
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
@@ -90,14 +93,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_when_qualities_are_the_same()
         {
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
@@ -105,7 +108,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
 
@@ -114,7 +117,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
 
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
@@ -122,7 +125,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
 
@@ -131,7 +134,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality.Id;
 
-            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                       {
@@ -139,8 +142,27 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       })
                                                       .Build();
 
-            GivenQueue(new List<RemoteMovie> { remoteEpisode });
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
 
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+
+        [Test]
+        public void should_return_false_when_quality_is_better_and_upgrade_allowed_is_false_for_quality_profile()
+        {
+            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
+            _movie.Profile.Value.UpgradeAllowed = false;
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                .With(r => r.Movie = _movie)
+                .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    Quality = new QualityModel(Quality.Bluray1080p)
+                })
+                .Build();
+
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
     }
