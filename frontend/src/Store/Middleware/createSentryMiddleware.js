@@ -60,33 +60,35 @@ function createMiddleware() {
 
 export default function createSentryMiddleware() {
   const {
-    // analytics,
+    analytics,
     branch,
     version,
     release,
+    userHash,
     isProduction
   } = window.Radarr;
 
-  // TODO update with Radarr Sentry dsn if used.
-  // if (!analytics) {
-  if (true) {
+  console.log(window.Radarr);
+
+  if (!analytics) {
     return;
   }
 
-  const dsn = isProduction ? 'https://b80ca60625b443c38b242e0d21681eb7@sentry.sonarr.tv/13' :
-    'https://8dbaacdfe2ff4caf97dc7945aecf9ace@sentry.sonarr.tv/12';
+  const dsn = isProduction ? 'https://cf0559cfe5c84ccfae3d907daef1b6bb@sentry.io/1523530' :
+    'https://df167d10dc51480b9e4f22e4e77c7315@sentry.io/1523531';
 
   sentry.init({
     dsn,
-    environment: isProduction ? 'production' : 'development',
+    environment: branch,
     release,
     sendDefaultPii: true,
     beforeSend: cleanseData
   });
 
   sentry.configureScope((scope) => {
-    scope.setTag('branch', branch);
+    scope.setUser({ username: userHash });
     scope.setTag('version', version);
+    scope.setTag('production', isProduction);
   });
 
   return createMiddleware();
