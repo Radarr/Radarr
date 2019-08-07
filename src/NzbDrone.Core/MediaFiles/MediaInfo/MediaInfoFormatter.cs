@@ -154,6 +154,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             Logger.Debug()
                   .Message("Unknown audio format: '{0}' in '{1}'.", string.Join(", ", audioFormat, audioCodecID, audioProfile, audioCodecLibrary), sceneName)
+                  .WriteSentryWarn("UnknownAudioFormat", mediaInfo.ContainerFormat, audioFormat, audioCodecID)
                   .Write();
 
             return audioFormat;
@@ -330,7 +331,10 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "XviD";
             }
 
-            Logger.Debug("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName);
+            Logger.Debug()
+                  .Message("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName)
+                  .WriteSentryWarn("UnknownVideoFormat", mediaInfo.ContainerFormat, videoFormat, videoCodecID)
+                  .Write();
 
             return result;
         }

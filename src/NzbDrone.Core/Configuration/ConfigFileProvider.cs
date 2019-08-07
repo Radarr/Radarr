@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Configuration
                     SetValue("AuthenticationMethod", AuthenticationType.Basic);
                     return AuthenticationType.Basic;
                 }
-                
+
                 return GetValueEnum("AuthenticationMethod", AuthenticationType.None);
             }
         }
@@ -364,6 +364,11 @@ namespace NzbDrone.Core.Configuration
         {
             EnsureDefaultConfigFile();
             DeleteOldValues();
+
+            if (!AnalyticsEnabled)
+            {
+                NzbDroneLogger.UnRegisterRemoteLoggers();
+            }
         }
 
         public void Execute(ResetApiKeyCommand message)

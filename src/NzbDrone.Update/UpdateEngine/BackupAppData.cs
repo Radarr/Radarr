@@ -43,7 +43,6 @@ namespace NzbDrone.Update.UpdateEngine
                 _diskProvider.CreateFolder(backupFolderAppData);
             }
 
-
             try
             {
                 _diskTransferService.TransferFile(_appFolderInfo.GetConfigPath(), _appFolderInfo.GetUpdateBackupConfigFile(), TransferMode.Copy);
