@@ -68,6 +68,30 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
         [TestCase(".png")]
         [TestCase(".jpg")]
+        public void convert_to_local_url_should_not_change_extension(string extension)
+        {
+            var covers = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover
+                    {
+                        Url = "http://dummy.com/test" + extension,
+                        CoverType = MediaCoverTypes.Banner
+                    }
+                };
+
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
+                  .Returns(new DateTime(1234));
+
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
+                  .Returns(true);
+
+            Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
+
+            covers.Single().Extension.Should().Be(extension);
+        }
+
+        [TestCase(".png")]
+        [TestCase(".jpg")]
         public void should_convert_album_cover_urls_to_local(string extension)
         {
             var covers = new List<MediaCover.MediaCover>

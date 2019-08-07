@@ -1,4 +1,5 @@
 using System.IO;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
@@ -25,9 +26,25 @@ namespace NzbDrone.Core.MediaCover
 
     public class MediaCover : IEmbeddedDocument
     {
+        private string _url;
+        public string Url
+        {
+            get
+            {
+                return _url;
+            }
+            set
+            {
+                _url = value;
+                if (Extension.IsNullOrWhiteSpace())
+                {
+                    Extension = Path.GetExtension(value);
+                }
+            }
+        }
+
         public MediaCoverTypes CoverType { get; set; }
-        public string Url { get; set; }
-        public string Extension => Path.GetExtension(Url);
+        public string Extension { get; private set; }
 
         public MediaCover()
         {
