@@ -48,7 +48,7 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.0-rc06\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Org.Mentalis, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNet4.SocksProxy.1.3.4.0\lib\net40\Org.Mentalis.dll</HintPath>
@@ -270,10 +270,6 @@
     <ProjectReference Include="..\ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj">
       <Project>{74420a79-cc16-442c-8b1e-7c1b913844f0}</Project>
       <Name>CurlSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogentriesNLog\LogentriesNLog.csproj">
-      <Project>{9DC31DE3-79FF-47A8-96B4-6BA18F6BB1CB}</Project>
-      <Name>LogentriesNLog</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
