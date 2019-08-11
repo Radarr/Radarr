@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Configuration
         //Media Management
         bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         string RecycleBin { get; set; }
+        int RecycleBinCleanupDays { get; set; }
         ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
         bool CreateEmptyArtistFolders { get; set; }
         bool DeleteEmptyFolders { get; set; }

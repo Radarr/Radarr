@@ -9,6 +9,7 @@ namespace Lidarr.Api.V1.Config
     {
         public bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         public string RecycleBin { get; set; }
+        public int RecycleBinCleanupDays { get; set; }
         public ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
         public bool CreateEmptyArtistFolders { get; set; }
         public bool DeleteEmptyFolders { get; set; }
@@ -36,6 +37,7 @@ namespace Lidarr.Api.V1.Config
             {
                 AutoUnmonitorPreviouslyDownloadedTracks = model.AutoUnmonitorPreviouslyDownloadedTracks,
                 RecycleBin = model.RecycleBin,
+                RecycleBinCleanupDays = model.RecycleBinCleanupDays,
                 DownloadPropersAndRepacks = model.DownloadPropersAndRepacks,
                 CreateEmptyArtistFolders = model.CreateEmptyArtistFolders,
                 DeleteEmptyFolders = model.DeleteEmptyFolders,

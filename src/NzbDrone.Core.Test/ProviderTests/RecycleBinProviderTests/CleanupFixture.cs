@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         public void Setup()
         {
             Mocker.GetMock<IConfigService>().SetupGet(s => s.RecycleBin).Returns(RecycleBin);
+            Mocker.GetMock<IConfigService>().SetupGet(s => s.RecycleBinCleanupDays).Returns(7);
 
             Mocker.GetMock<IDiskProvider>().Setup(s => s.GetDirectories(RecycleBin))
                     .Returns(new [] { @"C:\Test\RecycleBin\Folder1", @"C:\Test\RecycleBin\Folder2", @"C:\Test\RecycleBin\Folder3" });
@@ -56,12 +57,13 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         }
 
         [Test]
-        public void should_delete_all_expired_folders()
-        {          
-            WithExpired();
+        public void should_return_if_recycleBinCleanupDays_is_zero()
+        {
+            Mocker.GetMock<IConfigService>().SetupGet(s => s.RecycleBinCleanupDays).Returns(0);
+
             Mocker.Resolve<RecycleBinProvider>().Cleanup();
 
-            Mocker.GetMock<IDiskProvider>().Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Exactly(3));
+            Mocker.GetMock<IDiskProvider>().Verify(v => v.GetDirectories(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
