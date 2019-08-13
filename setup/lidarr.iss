@@ -7,9 +7,9 @@
 #define ForumsURL "https://forums.lidarr.audio/"
 #define AppExeName "Lidarr.exe"
 #define BaseVersion "0.6.2"
-#define BuildNumber GetEnv('APPVEYOR_BUILD_NUMBER')
-#define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
-#define BranchName GetEnv('APPVEYOR_REPO_BRANCH')
+#define BuildNumber GetEnv('MINORVERSION')
+#define BuildVersion GetEnv('LIDARRVERSION')
+#define BranchName GetEnv('BUILD_SOURCEBRANCHNAME')
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Automation.Test.PageModel;
 using OpenQA.Selenium;
@@ -21,7 +21,7 @@ namespace NzbDrone.Automation.Test
         {
             page.ArtistNavIcon.Click();
             page.WaitForNoSpinner();
-            page.FindByClass("iv-artist-index-artistindexlayout").Should().NotBeNull();
+            page.Find(By.CssSelector("div[class*='ArtistIndex']")).Should().NotBeNull();
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace NzbDrone.Automation.Test
             page.CalendarNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-calendar-calendarlayout").Should().NotBeNull();
+            page.Find(By.CssSelector("div[class*='CalendarPage']")).Should().NotBeNull();
         }
 
         [Test]
@@ -39,7 +39,9 @@ namespace NzbDrone.Automation.Test
             page.ActivityNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-activity-activitylayout").Should().NotBeNull();
+            page.Find(By.LinkText("Queue")).Should().NotBeNull();
+            page.Find(By.LinkText("History")).Should().NotBeNull();
+            page.Find(By.LinkText("Blacklist")).Should().NotBeNull();
         }
 
         [Test]
@@ -48,7 +50,8 @@ namespace NzbDrone.Automation.Test
             page.WantedNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-wanted-missing-missinglayout").Should().NotBeNull();
+            page.Find(By.LinkText("Missing")).Should().NotBeNull();
+            page.Find(By.LinkText("Cutoff Unmet")).Should().NotBeNull();
         }
 
         [Test]
@@ -57,20 +60,20 @@ namespace NzbDrone.Automation.Test
             page.SystemNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-system-systemlayout").Should().NotBeNull();
+            page.Find(By.CssSelector("div[class*='Health']")).Should().NotBeNull();
         }
 
         [Test]
-        public void add_series_page()
+        public void add_artist_page()
         {
             page.ArtistNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Add Artist")).Click();
+            page.Find(By.LinkText("Add New")).Click();
 
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-addartist-addartistlayout").Should().NotBeNull();
+            page.Find(By.CssSelector("input[class*='AddNewArtist-searchInput']")).Should().NotBeNull();
         }
     }
 }

@@ -122,6 +122,8 @@ _rawPackage/
 _dotTrace*
 _tests/
 *.Result.xml
+coverage*.xml
+coverage*.json
 setup/Output/
 *.~is
 

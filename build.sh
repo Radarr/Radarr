@@ -145,26 +145,6 @@ RunGulp()
     ProgressEnd 'Running gulp'
 }
 
-CreateMdbs()
-{
-    local path=$1
-    if [ $runtime = "dotnet" ] ; then
-        local pdbFiles=( $(find $path -name "*.pdb") )
-        for filename in "${pdbFiles[@]}"
-        do
-          if [ -e ${filename%.pdb}.dll ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.dll
-          fi
-          if [ -e ${filename%.pdb}.exe ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.exe
-          fi
-        done
-
-        echo "Removing PDBs"
-        find $path -name "*.pdb" -exec rm "{}" \;
-    fi
-}
-
 PackageMono()
 {
     ProgressStart 'Creating Mono Package'
@@ -173,9 +153,6 @@ PackageMono()
 
     echo "Copying Binaries"
     cp -r $outputFolder $outputFolderLinux
-
-    echo "Creating MDBs"
-    CreateMdbs $outputFolderLinux
 
     echo "Removing Service helpers"
     rm -f $outputFolderLinux/ServiceUninstall.*
@@ -268,10 +245,7 @@ PackageTests()
     cp $outputFolder/*.dll $testPackageFolder
     cp $outputFolder/*.exe $testPackageFolder
     cp $outputFolder/fpcalc $testPackageFolder
-    cp ./*.sh $testPackageFolder
-
-    echo "Creating MDBs for tests"
-    CreateMdbs $testPackageFolder
+    cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config
 
@@ -283,8 +257,8 @@ PackageTests()
     echo "Copying CurlSharp libraries"
     cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
-    echo "Copying dylibs"
-    cp -r $outputFolderMacOS/*.dylib $testPackageFolder
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
 
     ProgressEnd 'Creating Test Package'
 }
@@ -338,11 +312,51 @@ case "$(uname -s)" in
         ;;
 esac
 
-Build
-RunGulp
-PackageMono
-PackageMacOS
-PackageMacOSApp
-PackageTests
-CleanupWindowsPackage
-PackageArtifacts
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    --only-backend)
+        ONLY_BACKEND=YES
+        shift # past argument
+        ;;
+    --only-frontend)
+        ONLY_FRONTEND=YES
+        shift # past argument
+        ;;
+    --only-packages)
+        ONLY_PACKAGES=YES
+        shift # past argument
+        ;;
+    *)    # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+# Only build backend if we haven't set only-frontend or only-packages
+if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
+    Build
+    PackageTests
+fi
+
+# Only build frontend if we haven't set only-backend or only-packages
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
+   RunGulp
+fi
+
+# Only package if we haven't set only-backend or only-frontend
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
+then
+    PackageMono
+    PackageMacOS
+    PackageMacOSApp
+    CleanupWindowsPackage
+    PackageArtifacts
+fi

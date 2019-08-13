@@ -34,7 +34,9 @@ namespace NzbDrone.Automation.Test
         [OneTimeSetUp]
         public void SmokeTestSetup()
         {
-            driver = new FirefoxDriver();
+            var options = new FirefoxOptions();
+            options.AddArguments("--headless");
+            driver = new FirefoxDriver(options);
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
@@ -45,7 +47,7 @@ namespace NzbDrone.Automation.Test
             var page = new PageBase(driver);
             page.WaitForNoSpinner();
 
-            driver.ExecuteScript("window.NzbDrone.NameViews = true;");
+            driver.ExecuteScript("window.Lidarr.NameViews = true;");
 
             GetPageErrors().Should().BeEmpty();
         }
