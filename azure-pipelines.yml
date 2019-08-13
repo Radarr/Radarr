@@ -219,6 +219,7 @@ stages:
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
         env:
           SENTRY_AUTH_TOKEN: $(sentryAuthToken)
+          SENTRY_ORG: $(sentryOrg)
     
   - stage: Unit_Test
     displayName: Unit Tests
