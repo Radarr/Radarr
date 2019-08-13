@@ -210,10 +210,11 @@ stages:
         displayName: Publish Packages
       - bash: |
           echo "Uploading source maps to sentry"
-          yarn sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${LIDARRVERSION}-debug"
-          yarn sentry-cli releases -p lidarr-ui files "${LIDARRVERSION}-debug" upload-sourcemaps _output/UI/ --rewrite
-          yarn sentry-cli releases set-commits --auto "${LIDARRVERSION}-debug"
-          yarn sentry-cli releases deploys "${LIDARRVERSION}-debug" new -e nightly
+          curl -sL https://sentry.io/get-cli/ | bash
+          sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${LIDARRVERSION}-debug"
+          sentry-cli releases -p lidarr-ui files "${LIDARRVERSION}-debug" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases set-commits --auto "${LIDARRVERSION}-debug"
+          sentry-cli releases deploys "${LIDARRVERSION}-debug" new -e nightly
         displayName: Publish Sentry Source Maps
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
         env:
