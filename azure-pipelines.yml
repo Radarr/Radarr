@@ -61,6 +61,7 @@ stages:
           InsertAttributes: false
           FileEncoding: 'auto'
           WriteBOM: false
+          Configuration: 'debug'
           VersionNumber: '$(lidarrVersion)'
           FileVersionNumber: '$(lidarrVersion)'
           InformationalVersion: '$(lidarrVersion)-rc1'
@@ -69,10 +70,6 @@ stages:
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
         displayName: Publish Backend
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: $(Build.SourcesDirectory)
-        artifact: 'CoverageBuild'
-        displayName: Publish Coverage Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: $(testsFolder)
         artifact: '$(osName)Tests'
@@ -295,10 +292,6 @@ stages:
             osName: 'Linux'
             imageName: 'ubuntu-16.04'
             pattern: 'Lidarr.**.linux.tar.gz'
-          # Mac:
-          #   osName: 'Mac'
-          #   imageName: 'macos-10.13'
-          #   pattern: 'Lidarr.**.osx.tar.gz'
           Windows:
             osName: 'Windows'
             imageName: 'vs2017-win2016'
@@ -358,7 +351,7 @@ stages:
             pattern: 'Lidarr.**.linux.tar.gz'
           Mac:
             osName: 'Mac'
-            imageName: 'macos-10.13'
+            imageName: 'macos-10.13' # Fails due to firefox not being installed on image
             pattern: 'Lidarr.**.osx.tar.gz'
           Windows:
             osName: 'Windows'
@@ -420,76 +413,17 @@ stages:
           testRunTitle: '$(osName) Automation Tests'
         displayName: Publish Test Results
 
-  - stage: Coverage
-    dependsOn: Build_Backend
-    condition: succeeded()
-    jobs:
-    - job: Windows_Coverage
-      displayName: Windows
-      pool:
-        vmImage: 'vs2017-win2016'
-      steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: CoverageBuild
-          targetPath: $(Build.SourcesDirectory)
-      - task: Bash@3
-        displayName: Coverage Unit Tests
-        inputs:
-          targetType: 'filePath'
-          filePath: ./test.sh
-          arguments: Windows Unit Coverage
-      - publish: ./_tests/CoverageResults
-        artifact: 'CoverageResults'
-        displayName: Publish Coverage Result Artifact
-
-  - stage: Coverage_Upload
-    dependsOn: Coverage
-    condition: succeeded()
-    displayName: Coverage Upload
-    jobs:
-    - job: Upload
-      pool:
-        vmImage: 'vs2017-win2016'
-      steps:
-      - checkout: self
-        fetchDepth: 1
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: CoverageResults
-          targetPath: 'CoverageResults'
-      - task: PublishCodeCoverageResults@1
-        displayName: Publish Coverage Results
-        inputs:
-          codeCoverageTool: 'cobertura'
-          summaryFileLocation: './CoverageResults/coverage.cobertura.xml'
-
   - stage: Analyze
-    dependsOn: 
-    - Coverage
-    - Unit_Test
+    dependsOn: []
     displayName: Analyze
 
     jobs:
-    - job: Analyze
+    - job: Analyze_Frontend
+      displayName: Frontend
       pool:
         vmImage: vs2017-win2016
       steps:
-      - checkout: self
-        submodules: true
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: CoverageResults
-          targetPath: $(Build.SourcesDirectory)/CoverageResults
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: TestResult
-          targetPath: $(Build.SourcesDirectory)/TestResults
+      - checkout: self # Need history for Sonar analysis
       - task: SonarCloudPrepare@1
         env:
           SONAR_SCANNER_OPTS: ''
@@ -498,11 +432,41 @@ stages:
           organization: 'lidarr'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: 'lidarr_Lidarr'
-          cliProjectName: 'Lidarr'
-          cliSources: '.'
+          cliProjectKey: 'lidarr_Lidarr.UI'
+          cliProjectName: 'LidarrUI'
+          cliProjectVersion: '$(lidarrVersion)'
+          cliSources: './frontend'
+      - task: SonarCloudAnalyze@1
+
+    - job: Analyze_Backend
+      displayName: Backend
+      pool:
+        vmImage: vs2017-win2016
+      steps:
+      - checkout: self # Need history for Sonar analysis
+        submodules: true
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: 'lidarr'
+          scannerMode: 'MSBuild'
+          projectKey: 'lidarr_Lidarr'
+          projectName: 'Lidarr'
           extraProperties: |
-            sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*
-            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
-            sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResults/**/TestResult.xml
+            sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
+            sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
+      - bash: ./build.sh --only-backend
+        displayName: Build Lidarr Backend
+      - task: Bash@3
+        displayName: Coverage Unit Tests
+        inputs:
+          targetType: 'filePath'
+          filePath: ./test.sh
+          arguments: Windows Unit Coverage
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish Coverage Results
+        inputs:
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: './_tests/CoverageResults/coverage.cobertura.xml'
       - task: SonarCloudAnalyze@1
