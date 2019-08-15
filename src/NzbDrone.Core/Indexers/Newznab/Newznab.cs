@@ -51,6 +51,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 yield return GetDefinition("omgwtfnzbs", GetSettings("https://api.omgwtfnzbs.me", categories: new[] { 2000, 2020, 2030, 2040, 2045, 2050, 2070 }));
                 yield return GetDefinition("OZnzb.com", GetSettings("https://api.oznzb.com"));
                 yield return GetDefinition("SimplyNZBs", GetSettings("https://simplynzbs.com"));
+                yield return GetDefinition("Tabula Rasa", GetSettings("https://www.tabula-rasa.pw", apiPath: @"/api/v1/api"));
                 yield return GetDefinition("Usenet Crawler", GetSettings("https://www.usenet-crawler.com"));
             }
         }
