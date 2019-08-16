@@ -163,6 +163,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         item.Status = DownloadItemStatus.Warning;
                         item.Message = "The download is stalled with no connections";
                         break;
+                        
+                    ase "metaDL": // torrent metadata is being retrieved
+                        item.Status = DownloadItemStatus.Downloading;
+                        item.Message = "The download metadata is being retrieved";
+                        break;
 
                     case "downloading": // torrent is being downloaded and data is being transfered
                         item.Status = DownloadItemStatus.Downloading;
