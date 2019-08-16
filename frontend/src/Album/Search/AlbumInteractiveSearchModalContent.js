@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { scrollDirections } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
@@ -20,7 +21,7 @@ function AlbumInteractiveSearchModalContent(props) {
         Interactive Search  {albumId != null && `- ${albumTitle}`}
       </ModalHeader>
 
-      <ModalBody>
+      <ModalBody scrollDirection={scrollDirections.BOTH}>
         <InteractiveSearchConnector
           type="album"
           searchPayload={{
