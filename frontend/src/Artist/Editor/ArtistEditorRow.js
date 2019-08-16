@@ -101,7 +101,7 @@ ArtistEditorRow.propTypes = {
   status: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  artistType: PropTypes.string.isRequired,
+  artistType: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   metadataProfile: PropTypes.object.isRequired,
   qualityProfile: PropTypes.object.isRequired,

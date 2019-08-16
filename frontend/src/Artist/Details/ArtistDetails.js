@@ -680,7 +680,7 @@ ArtistDetails.propTypes = {
   statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
-  artistType: PropTypes.string.isRequired,
+  artistType: PropTypes.string,
   albumTypes: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
