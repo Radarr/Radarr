@@ -538,7 +538,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!Genres.SequenceEqual(other.Genres))
             {
-                output.Add("Genres", Tuple.Create(string.Join(", ", Genres), string.Join(", ", other.Genres)));
+                output.Add("Genres", Tuple.Create(string.Join(" / ", Genres), string.Join(" / ", other.Genres)));
             }
 
             if (ImageSize != other.ImageSize)
