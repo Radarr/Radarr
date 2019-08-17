@@ -6,7 +6,10 @@ function createMovieSelector() {
     (state) => state.movies.itemMap,
     (state) => state.movies.items,
     (movieId, itemMap, allMovies) => {
-      return allMovies[itemMap[movieId]];
+      if (allMovies && itemMap && movieId in itemMap) {
+        return allMovies[itemMap[movieId]];
+      }
+      return undefined;
     }
   );
 }

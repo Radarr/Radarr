@@ -4,25 +4,42 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { push } from 'connected-react-router';
-import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
 import MovieDetailsConnector from './MovieDetailsConnector';
+import styles from './MovieDetails.css';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { match }) => match,
-    createAllMoviesSelector(),
-    (match, allMovies) => {
+    (state) => state.movies,
+    (match, movies) => {
       const titleSlug = match.params.titleSlug;
-      const movieIndex = _.findIndex(allMovies, { titleSlug });
+      const {
+        isFetching,
+        isPopulated,
+        error,
+        items
+      } = movies;
+
+      const movieIndex = _.findIndex(items, { titleSlug });
 
       if (movieIndex > -1) {
         return {
+          isFetching,
+          isPopulated,
           titleSlug
         };
       }
 
-      return {};
+      return {
+        isFetching,
+        isPopulated,
+        error
+      };
     }
   );
 }
@@ -48,8 +65,29 @@ class MovieDetailsPageConnector extends Component {
 
   render() {
     const {
-      titleSlug
+      titleSlug,
+      isFetching,
+      isPopulated,
+      error
     } = this.props;
+
+    if (isFetching && !isPopulated) {
+      return (
+        <PageContent title='loading'>
+          <PageContentBodyConnector>
+            <LoadingIndicator />
+          </PageContentBodyConnector>
+        </PageContent>
+      );
+    }
+
+    if (!isFetching && !!error) {
+      return (
+        <div className={styles.errorMessage}>
+          {getErrorMessage(error, 'Failed to load movie from API')}
+        </div>
+      );
+    }
 
     if (!titleSlug) {
       return (
@@ -69,6 +107,9 @@ class MovieDetailsPageConnector extends Component {
 
 MovieDetailsPageConnector.propTypes = {
   titleSlug: PropTypes.string,
+  isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   match: PropTypes.shape({ params: PropTypes.shape({ titleSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };

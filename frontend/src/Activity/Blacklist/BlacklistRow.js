@@ -53,6 +53,10 @@ class BlacklistRow extends Component {
       onRemovePress
     } = this.props;
 
+    if (!movie) {
+      return null;
+    }
+
     return (
       <TableRow>
         {

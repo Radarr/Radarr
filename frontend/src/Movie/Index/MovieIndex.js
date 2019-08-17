@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -504,7 +505,9 @@ class MovieIndex extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to load movies</div>
+                <div className={styles.errorMessage}>
+                  {getErrorMessage(error, 'Failed to load movie from API')}
+                </div>
             }
 
             {
