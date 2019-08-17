@@ -50,6 +50,10 @@ class BlacklistRow extends Component {
       onRemovePress
     } = this.props;
 
+    if (!artist) {
+      return null;
+    }
+
     return (
       <TableRow>
         {

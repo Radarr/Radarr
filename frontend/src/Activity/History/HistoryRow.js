@@ -67,7 +67,7 @@ class HistoryRow extends Component {
       onMarkAsFailedPress
     } = this.props;
 
-    if (!album) {
+    if (!artist || !album) {
       return null;
     }
 

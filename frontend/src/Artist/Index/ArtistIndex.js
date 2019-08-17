@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -340,7 +341,9 @@ class ArtistIndex extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to load artist</div>
+                <div className={styles.errorMessage}>
+                  {getErrorMessage(error, 'Failed to load artist from API')}
+                </div>
             }
 
             {

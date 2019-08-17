@@ -72,7 +72,8 @@ function createMapStateToProps() {
         selectedFilterKey,
         filters,
         colorImpairedMode: uiSettings.enableColorImpairedMode,
-        hasArtist: !!artistCount,
+        hasArtist: !!artistCount.count,
+        artistError: artistCount.error,
         missingAlbumIds,
         isSearchingForMissing
       };

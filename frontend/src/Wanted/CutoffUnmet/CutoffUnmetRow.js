@@ -26,6 +26,10 @@ function CutoffUnmetRow(props) {
     onSelectedChange
   } = props;
 
+  if (!artist) {
+    return null;
+  }
+
   return (
     <TableRow>
       <TableSelectCell

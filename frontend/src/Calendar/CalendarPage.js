@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import { align, icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import Measure from 'Components/Measure';
@@ -75,6 +76,7 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasArtist,
+      artistError,
       missingAlbumIds,
       isSearchingForMissing,
       useCurrentPage,
@@ -131,21 +133,31 @@ class CalendarPage extends Component {
           className={styles.calendarPageBody}
           innerClassName={styles.calendarInnerPageBody}
         >
-          <Measure
-            whitelist={['width']}
-            onMeasure={this.onMeasure}
-          >
-            {
-              isMeasured ?
-                <PageComponent
-                  useCurrentPage={useCurrentPage}
-                /> :
-                <div />
-            }
-          </Measure>
+          {
+            artistError &&
+            <div className={styles.errorMessage}>
+              {getErrorMessage(artistError, 'Failed to load artist from API')}
+            </div>
+          }
 
           {
-            hasArtist &&
+            !artistError &&
+              <Measure
+                whitelist={['width']}
+                onMeasure={this.onMeasure}
+              >
+                {
+                  isMeasured ?
+                    <PageComponent
+                      useCurrentPage={useCurrentPage}
+                    /> :
+                    <div />
+                }
+              </Measure>
+          }
+
+          {
+            hasArtist && !!artistError &&
               <LegendConnector />
           }
         </PageContentBodyConnector>
@@ -169,6 +181,7 @@ CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasArtist: PropTypes.bool.isRequired,
+  artistError: PropTypes.object,
   missingAlbumIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,

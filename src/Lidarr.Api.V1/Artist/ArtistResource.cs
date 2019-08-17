@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Music;
 using Lidarr.Http.REST;
+using Newtonsoft.Json;
 
 namespace Lidarr.Api.V1.Artist
 {
@@ -14,6 +15,8 @@ namespace Lidarr.Api.V1.Artist
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
 
+        [JsonIgnore]
+        public int ArtistMetadataId { get; set; }
         public ArtistStatusType Status { get; set; }
 
         public bool Ended => Status == ArtistStatusType.Ended;
@@ -70,6 +73,7 @@ namespace Lidarr.Api.V1.Artist
             return new ArtistResource
             {
                 Id = model.Id,
+                ArtistMetadataId = model.ArtistMetadataId,
 
                 ArtistName = model.Name,
                 //AlternateTitles

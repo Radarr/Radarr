@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Datastore
 
         public IEnumerable<TModel> All()
         {
-            return DataMapper.Query<TModel>().ToList();
+            return Query.ToList();
         }
 
         public int Count()

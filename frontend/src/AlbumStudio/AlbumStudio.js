@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -145,7 +146,7 @@ class AlbumStudio extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load the Album Studio</div>
+              <div>{getErrorMessage(error, 'Failed to load artist from API')}</div>
           }
 
           {

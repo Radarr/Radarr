@@ -43,7 +43,6 @@ const selectAppProps = createSelector(
 );
 
 const selectIsPopulated = createSelector(
-  (state) => state.artist.isPopulated,
   (state) => state.customFilters.isPopulated,
   (state) => state.tags.isPopulated,
   (state) => state.settings.ui.isPopulated,
@@ -52,7 +51,6 @@ const selectIsPopulated = createSelector(
   (state) => state.settings.importLists.isPopulated,
   (state) => state.system.status.isPopulated,
   (
-    artistIsPopulated,
     customFiltersIsPopulated,
     tagsIsPopulated,
     uiSettingsIsPopulated,
@@ -62,7 +60,6 @@ const selectIsPopulated = createSelector(
     systemStatusIsPopulated
   ) => {
     return (
-      artistIsPopulated &&
       customFiltersIsPopulated &&
       tagsIsPopulated &&
       uiSettingsIsPopulated &&
@@ -75,7 +72,6 @@ const selectIsPopulated = createSelector(
 );
 
 const selectErrors = createSelector(
-  (state) => state.artist.error,
   (state) => state.customFilters.error,
   (state) => state.tags.error,
   (state) => state.settings.ui.error,
@@ -84,7 +80,6 @@ const selectErrors = createSelector(
   (state) => state.settings.importLists.error,
   (state) => state.system.status.error,
   (
-    artistError,
     customFiltersError,
     tagsError,
     uiSettingsError,
@@ -94,7 +89,6 @@ const selectErrors = createSelector(
     systemStatusError
   ) => {
     const hasError = !!(
-      artistError ||
       customFiltersError ||
       tagsError ||
       uiSettingsError ||
@@ -106,7 +100,6 @@ const selectErrors = createSelector(
 
     return {
       hasError,
-      artistError,
       customFiltersError,
       tagsError,
       uiSettingsError,

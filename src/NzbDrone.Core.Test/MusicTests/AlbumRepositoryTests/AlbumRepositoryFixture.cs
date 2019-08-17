@@ -3,7 +3,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
@@ -13,6 +15,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         private Artist _artist;
         private Album _album;
         private Album _albumSpecial;
+        private List<Album> _albums;
         private AlbumRelease _release;
         private AlbumRepository _albumRepo;
         private ReleaseRepository _releaseRepo;
@@ -149,6 +152,48 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
             var album = _albumRepo.FindAlbumByRelease(id);
 
             album.Should().BeNull();
+        }
+
+        private void GivenMultipleAlbums()
+        {
+            _albums = Builder<Album>.CreateListOfSize(4)
+                .All()
+                .With(x => x.Id = 0)
+                .With(x => x.Artist = _artist)
+                .With(x => x.ArtistMetadataId = _artist.ArtistMetadataId)
+                .TheFirst(1)
+                // next
+                .With(x => x.ReleaseDate = DateTime.UtcNow.AddDays(1))
+                .TheNext(1)
+                // another future one
+                .With(x => x.ReleaseDate = DateTime.UtcNow.AddDays(2))
+                .TheNext(1)
+                // most recent
+                .With(x => x.ReleaseDate = DateTime.UtcNow.AddDays(-1))
+                .TheNext(1)
+                // an older one
+                .With(x => x.ReleaseDate = DateTime.UtcNow.AddDays(-2))
+                .BuildList();
+
+            _albumRepo.InsertMany(_albums);
+        }
+
+        [Test]
+        public void get_next_albums_should_return_next_album()
+        {
+            GivenMultipleAlbums();
+
+            var result = _albumRepo.GetNextAlbums(new [] { _artist.ArtistMetadataId });
+            result.Should().BeEquivalentTo(_albums.Take(1));
+        }
+
+        [Test]
+        public void get_last_albums_should_return_next_album()
+        {
+            GivenMultipleAlbums();
+
+            var result = _albumRepo.GetLastAlbums(new [] { _artist.ArtistMetadataId });
+            result.Should().BeEquivalentTo(_albums.Skip(2).Take(1));
         }
     }
 }

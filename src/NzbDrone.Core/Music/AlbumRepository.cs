@@ -14,6 +14,8 @@ namespace NzbDrone.Core.Music
     public interface IAlbumRepository : IBasicRepository<Album>
     {
         List<Album> GetAlbums(int artistId);
+        List<Album> GetLastAlbums(IEnumerable<int> artistMetadataIds);
+        List<Album> GetNextAlbums(IEnumerable<int> artistMetadataIds);
         List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId);
         List<Album> GetAlbumsForRefresh(int artistId, IEnumerable<string> foreignIds);
         Album FindByTitle(int artistMetadataId, string title);
@@ -45,6 +47,32 @@ namespace NzbDrone.Core.Music
         {
             return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
                 .Where<Artist>(a => a.Id == artistId).ToList();
+        }
+
+        public List<Album> GetLastAlbums(IEnumerable<int> artistMetadataIds)
+        {
+            string query = string.Format("SELECT Albums.* " +
+                                         "FROM Albums " +
+                                         "WHERE Albums.ArtistMetadataId IN ({0}) " +
+                                         "AND Albums.ReleaseDate < datetime('now') " +
+                                         "GROUP BY Albums.ArtistMetadataId " +
+                                         "HAVING Albums.ReleaseDate = MAX(Albums.ReleaseDate)",
+                                         string.Join(", ", artistMetadataIds));
+
+            return Query.QueryText(query);
+        }
+
+        public List<Album> GetNextAlbums(IEnumerable<int> artistMetadataIds)
+        {
+            string query = string.Format("SELECT Albums.* " +
+                                         "FROM Albums " +
+                                         "WHERE Albums.ArtistMetadataId IN ({0}) " +
+                                         "AND Albums.ReleaseDate > datetime('now') " +
+                                         "GROUP BY Albums.ArtistMetadataId " +
+                                         "HAVING Albums.ReleaseDate = MIN(Albums.ReleaseDate)",
+                                         string.Join(", ", artistMetadataIds));
+
+            return Query.QueryText(query);
         }
 
         public List<Album> GetAlbumsByArtistMetadataId(int artistMetadataId)

@@ -184,11 +184,13 @@ namespace Lidarr.Api.V1.Artist
 
         private void LinkNextPreviousAlbums(params ArtistResource[] artists)
         {
+            var nextAlbums = _albumService.GetNextAlbumsByArtistMetadataId(artists.Select(x => x.ArtistMetadataId));
+            var lastAlbums = _albumService.GetLastAlbumsByArtistMetadataId(artists.Select(x => x.ArtistMetadataId));
+
             foreach (var artistResource in artists)
             {
-                var artistAlbums = _albumService.GetAlbumsByArtist(artistResource.Id).OrderBy(s=>s.ReleaseDate);
-                artistResource.NextAlbum = artistAlbums.Where(s => s.ReleaseDate >= DateTime.UtcNow && s.Monitored).FirstOrDefault();
-                artistResource.LastAlbum = artistAlbums.Where(s => s.ReleaseDate <= DateTime.UtcNow && s.Monitored).LastOrDefault();
+                artistResource.NextAlbum = nextAlbums.FirstOrDefault(x => x.ArtistMetadataId == artistResource.ArtistMetadataId);
+                artistResource.LastAlbum = lastAlbums.FirstOrDefault(x => x.ArtistMetadataId == artistResource.ArtistMetadataId);
             }
         }
 

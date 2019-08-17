@@ -4,8 +4,12 @@ import createAllArtistSelector from './createAllArtistSelector';
 function createArtistCountSelector() {
   return createSelector(
     createAllArtistSelector(),
-    (artists) => {
-      return artists.length;
+    (state) => state.artist.error,
+    (artists, error) => {
+      return {
+        count: artists.length,
+        error
+      };
     }
   );
 }
