@@ -452,9 +452,10 @@ stages:
           scannerMode: 'MSBuild'
           projectKey: 'lidarr_Lidarr'
           projectName: 'Lidarr'
+          projectVersion: '$(lidarrVersion)'
           extraProperties: |
             sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
-            sonar.coverage.exclusions=**/Lidarr.Api.V1/**
+            sonar.coverage.exclusions=**/Lidarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: ./build.sh --only-backend
