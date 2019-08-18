@@ -5,6 +5,8 @@ import { createSelector } from 'reselect';
 import { push } from 'connected-react-router';
 import NotFound from 'Components/NotFound';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import AlbumDetailsConnector from './AlbumDetailsConnector';
 
@@ -12,15 +14,16 @@ function createMapStateToProps() {
   return createSelector(
     (state, { match }) => match,
     (state) => state.albums,
-    (match, albums) => {
+    (state) => state.artist,
+    (match, albums, artist) => {
       const foreignAlbumId = match.params.foreignAlbumId;
-      const isAlbumsFetching = albums.isFetching;
-      const isAlbumsPopulated = albums.isPopulated;
+      const isFetching = albums.isFetching || artist.isFetching;
+      const isPopulated = albums.isPopulated && artist.isPopulated;
 
       return {
         foreignAlbumId,
-        isAlbumsFetching,
-        isAlbumsPopulated
+        isFetching,
+        isPopulated
       };
     }
   );
@@ -71,8 +74,8 @@ class AlbumDetailsPageConnector extends Component {
   render() {
     const {
       foreignAlbumId,
-      isAlbumsFetching,
-      isAlbumsPopulated
+      isFetching,
+      isPopulated
     } = this.props;
 
     if (!foreignAlbumId) {
@@ -83,19 +86,18 @@ class AlbumDetailsPageConnector extends Component {
       );
     }
 
-    if (isAlbumsFetching || !this.state.hasMounted) {
+    if ((isFetching || !this.state.hasMounted) ||
+        (!isFetching && !isPopulated)) {
       return (
-        <LoadingIndicator />
+        <PageContent title='loading'>
+          <PageContentBodyConnector>
+            <LoadingIndicator />
+          </PageContentBodyConnector>
+        </PageContent>
       );
     }
 
-    if (!isAlbumsFetching && !isAlbumsPopulated) {
-      return (
-        <LoadingIndicator />
-      );
-    }
-
-    if (!isAlbumsFetching && isAlbumsPopulated && this.state.hasMounted) {
+    if (!isFetching && isPopulated && this.state.hasMounted) {
       return (
         <AlbumDetailsConnector
           foreignAlbumId={foreignAlbumId}
@@ -111,8 +113,8 @@ AlbumDetailsPageConnector.propTypes = {
   push: PropTypes.func.isRequired,
   fetchAlbums: PropTypes.func.isRequired,
   clearAlbums: PropTypes.func.isRequired,
-  isAlbumsFetching: PropTypes.bool.isRequired,
-  isAlbumsPopulated: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AlbumDetailsPageConnector);

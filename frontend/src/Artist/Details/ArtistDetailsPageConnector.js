@@ -4,25 +4,42 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { push } from 'connected-react-router';
-import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
 import ArtistDetailsConnector from './ArtistDetailsConnector';
+import styles from './ArtistDetails.css';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { match }) => match,
-    createAllArtistSelector(),
-    (match, allArtists) => {
+    (state) => state.artist,
+    (match, artist) => {
       const foreignArtistId = match.params.foreignArtistId;
-      const artistIndex = _.findIndex(allArtists, { foreignArtistId });
+      const {
+        isFetching,
+        isPopulated,
+        error,
+        items
+      } = artist;
+
+      const artistIndex = _.findIndex(items, { foreignArtistId });
 
       if (artistIndex > -1) {
         return {
+          isFetching,
+          isPopulated,
           foreignArtistId
         };
       }
 
-      return {};
+      return {
+        isFetching,
+        isPopulated,
+        error
+      };
     }
   );
 }
@@ -48,8 +65,29 @@ class ArtistDetailsPageConnector extends Component {
 
   render() {
     const {
-      foreignArtistId
+      foreignArtistId,
+      isFetching,
+      isPopulated,
+      error
     } = this.props;
+
+    if (isFetching && !isPopulated) {
+      return (
+        <PageContent title='loading'>
+          <PageContentBodyConnector>
+            <LoadingIndicator />
+          </PageContentBodyConnector>
+        </PageContent>
+      );
+    }
+
+    if (!isFetching && !!error) {
+      return (
+        <div className={styles.errorMessage}>
+          {getErrorMessage(error, 'Failed to load artist from API')}
+        </div>
+      );
+    }
 
     if (!foreignArtistId) {
       return (
@@ -69,6 +107,9 @@ class ArtistDetailsPageConnector extends Component {
 
 ArtistDetailsPageConnector.propTypes = {
   foreignArtistId: PropTypes.string,
+  isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   match: PropTypes.shape({ params: PropTypes.shape({ foreignArtistId: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };
