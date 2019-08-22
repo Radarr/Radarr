@@ -59,7 +59,7 @@ namespace Lidarr.Api.V1.Indexers
                 throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new[] { firstDecision }).AsResponse();
+            return MapDecisions(new[] { firstDecision }).First().AsResponse();
         }
 
         private void ResolveIndexer(ReleaseInfo release)
