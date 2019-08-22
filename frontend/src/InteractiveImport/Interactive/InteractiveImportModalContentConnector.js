@@ -152,7 +152,6 @@ class InteractiveImportModalContentConnector extends Component {
 
         files.push({
           path: item.path,
-          folderName: item.folderName,
           artistId: artist.id,
           albumId: album.id,
           albumReleaseId,
