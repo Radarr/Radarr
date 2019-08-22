@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Model;
@@ -12,6 +13,8 @@ using NzbDrone.Test.Dummy;
 
 namespace NzbDrone.Common.Test
 {
+    // We don't want one tests setup killing processes used in another
+    [NonParallelizable]
     [TestFixture]
     public class ProcessProviderTests : TestBase<ProcessProvider>
     {
@@ -64,8 +67,24 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        public void should_be_able_to_start_process()
+        {
+            var process = StartDummyProcess();
+
+            var check = Subject.GetProcessById(process.Id);
+            check.Should().NotBeNull();
+
+            process.Refresh();
+            process.HasExited.Should().BeFalse();
+
+            process.Kill();
+            process.WaitForExit();
+            process.HasExited.Should().BeTrue();
+        }
+
+        [Test]
         [Platform(Exclude="MacOsX")]
-        public void Should_be_able_to_start_process()
+        public void exists_should_find_running_process()
         {
             var process = StartDummyProcess();
 
@@ -94,8 +113,22 @@ namespace NzbDrone.Common.Test
 
         private Process StartDummyProcess()
         {
+            var processStarted = new ManualResetEventSlim();
+
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe");
-            return Subject.Start(path);
+            var process = Subject.Start(path, onOutputDataReceived: (string data) => {
+                    if (data.StartsWith("Dummy process. ID:"))
+                    {
+                        processStarted.Set();
+                    }
+                });
+
+            if (!processStarted.Wait(2000))
+            {
+                Assert.Fail("Failed to start process within 2 sec");
+            }
+
+            return process;
         }
 
         [Test]
