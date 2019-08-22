@@ -281,6 +281,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Unit Tests'
+          failTaskOnFailedTests: true
 
   - stage: Integration_Automation
     displayName: Integration / Automation
@@ -294,6 +295,10 @@ stages:
             osName: 'Linux'
             imageName: 'ubuntu-16.04'
             pattern: 'Lidarr.**.linux.tar.gz'
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13'
+            pattern: 'Lidarr.**.osx.tar.gz'
           Windows:
             osName: 'Windows'
             imageName: 'vs2017-win2016'
@@ -308,6 +313,14 @@ stages:
           sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
         displayName: Install fpcalc
         condition: and(succeeded(), eq(variables['osName'], 'Linux'))
+      - bash: |
+          SYMLINK=5_18_1
+          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+          echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;].:$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+        displayName: Set Mono Version
+        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -342,6 +355,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Integration Tests'
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
     - job: Automation
@@ -351,14 +365,17 @@ stages:
             osName: 'Linux'
             imageName: 'ubuntu-16.04'
             pattern: 'Lidarr.**.linux.tar.gz'
+            failBuild: true
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.13' # Fails due to firefox not being installed on image
             pattern: 'Lidarr.**.osx.tar.gz'
+            failBuild: false
           Windows:
             osName: 'Windows'
             imageName: 'vs2017-win2016'
             pattern: 'Lidarr.**.windows.zip'
+            failBuild: true
 
       pool:
         vmImage: $(imageName)
@@ -413,6 +430,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Automation Tests'
+          failTaskOnFailedTests: $(failBuild)
         displayName: Publish Test Results
 
   - stage: Analyze

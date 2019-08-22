@@ -6,6 +6,7 @@ using Nancy.Responses;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using Lidarr.Http;
+using NLog;
 
 namespace Lidarr.Api.V1.Logs
 {
@@ -54,6 +55,8 @@ namespace Lidarr.Api.V1.Logs
 
         private Response GetLogFileResponse(string filename)
         {
+            LogManager.Flush();
+
             var filePath = GetLogFilePath(filename);
 
             if (!_diskProvider.FileExists(filePath))

@@ -74,6 +74,7 @@
     <Compile Include="Client\CommandClient.cs" />
     <Compile Include="Client\ReleaseClient.cs" />
     <Compile Include="Client\ArtistClient.cs" />
+    <Compile Include="Client\LogsClient.cs" />
     <Compile Include="ApiTests\CommandFixture.cs" />
     <Compile Include="CorsFixture.cs" />
     <Compile Include="ApiTests\TrackFixture.cs" />

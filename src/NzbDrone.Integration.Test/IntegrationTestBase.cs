@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -30,6 +31,8 @@ using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
 using RestSharp;
+using NzbDrone.Core.MediaFiles.TrackImport.Manual;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Integration.Test
 {
@@ -46,6 +49,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
+        public LogsClient Logs;
         public ClientBase<NamingConfigResource> NamingConfig;
         public NotificationClient Notifications;
         public ClientBase<QualityProfileResource> Profiles;
@@ -108,6 +112,7 @@ namespace NzbDrone.Integration.Test
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
+            Logs = new LogsClient(RestClient, ApiKey);
             NamingConfig = new ClientBase<NamingConfigResource>(RestClient, ApiKey, "config/naming");
             Notifications = new NotificationClient(RestClient, ApiKey);
             Profiles = new ClientBase<QualityProfileResource>(RestClient, ApiKey);
@@ -129,7 +134,10 @@ namespace NzbDrone.Integration.Test
         [SetUp]
         public void IntegrationSetUp()
         {
-            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + DateTime.UtcNow.Ticks);
+            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + TestBase.GetUID());
+
+            // Wait for things to get quiet, otherwise the previous test might influence the current one.
+            Commands.WaitAll();
         }
 
         [TearDown]
@@ -149,6 +157,17 @@ namespace NzbDrone.Integration.Test
 
                 _signalrConnection = null;
                 _signalRReceived = new List<SignalRMessage>();
+            }
+
+            if (Directory.Exists(TempDirectory))
+            {
+                try
+                {
+                    Directory.Delete(TempDirectory, true);
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -227,19 +246,27 @@ namespace NzbDrone.Integration.Test
                 WaitForCompletion(() => Tracks.GetTracksInArtist(result.Id).Count > 0);
             }
 
+            var changed = false;
+
+            if (result.RootFolderPath != ArtistRootFolder)
+            {
+                changed = true;
+                result.RootFolderPath = ArtistRootFolder;
+                result.Path = Path.Combine(ArtistRootFolder, result.ArtistName);
+            }
+
             if (monitored.HasValue)
             {
-                var changed = false;
                 if (result.Monitored != monitored.Value)
                 {
                     result.Monitored = monitored.Value;
                     changed = true;
                 }
+            }
 
-                if (changed)
-                {
-                    Artist.Put(result);
-                }
+            if (changed)
+            {
+                Artist.Put(result);
             }
 
             return result;
@@ -256,35 +283,45 @@ namespace NzbDrone.Integration.Test
             }
         }
 
-        public TrackFileResource EnsureTrackFile(ArtistResource artist, int albumId, int track, Quality quality)
+        public void EnsureTrackFile(ArtistResource artist, int albumId, int albumReleaseId, int trackId, Quality quality)
         {
-            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.AbsoluteTrackNumber == track);
+            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.Id == trackId);
 
             if (result.TrackFile == null)
             {
-                var path = Path.Combine(ArtistRootFolder, artist.ArtistName, string.Format("{0} - {1} - Track.mp3", track, artist.ArtistName));
+                var path = Path.Combine(ArtistRootFolder, artist.ArtistName, "Track.mp3");
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path, "Fake Track");
 
-                Commands.PostAndWait(new CommandResource { Name = "refreshartist", Body = new RefreshArtistCommand(artist.Id) });
+                Commands.PostAndWait(new ManualImportCommand {
+                        Files = new List<ManualImportFile> {
+                            new ManualImportFile {
+                                Path = path,
+                                ArtistId = artist.Id,
+                                AlbumId = albumId,
+                                AlbumReleaseId = albumReleaseId,
+                                TrackIds = new List<int> { trackId },
+                                Quality = new QualityModel(quality)
+                            }
+                        }
+                    });
                 Commands.WaitAll();
                 
-                result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.AbsoluteTrackNumber == track);
+                var track = Tracks.GetTracksInArtist(artist.Id).Single(x => x.Id == trackId);
 
-                result.TrackFile.Should().NotBeNull();
+                track.TrackFileId.Should().NotBe(0);
             }
-
-            return result.TrackFile;
         }
 
-        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
+        public QualityProfileResource EnsureProfileCutoff(int profileId, string cutoff)
         {
             var profile = Profiles.Get(profileId);
+            var cutoffItem = profile.Items.First(x => x.Name == cutoff);
 
-            if (profile.Cutoff != cutoff.Id)
+            if (profile.Cutoff != cutoffItem.Id)
             {
-                profile.Cutoff = cutoff.Id;
+                profile.Cutoff = cutoffItem.Id;
                 profile = Profiles.Put(profile);
             }
 

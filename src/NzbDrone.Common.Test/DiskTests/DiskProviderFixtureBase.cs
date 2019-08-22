@@ -245,14 +245,20 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
         public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_none()
         {
+            WindowsOnly();
+
             Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.None));
         }
 
         [Test]
+        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
         public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_write()
         {
+            WindowsOnly();
+
             Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.Read));
         }
     }

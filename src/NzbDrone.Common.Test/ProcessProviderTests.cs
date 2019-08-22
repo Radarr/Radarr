@@ -64,6 +64,7 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        [Platform(Exclude="MacOsX")]
         public void Should_be_able_to_start_process()
         {
             var process = StartDummyProcess();
@@ -79,6 +80,7 @@ namespace NzbDrone.Common.Test
 
 
         [Test]
+        [Platform(Exclude="MacOsX")]
         public void kill_all_should_kill_all_process_with_name()
         {
             var dummy1 = StartDummyProcess();
@@ -92,7 +94,8 @@ namespace NzbDrone.Common.Test
 
         private Process StartDummyProcess()
         {
-            return Subject.Start(Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe"));
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe");
+            return Subject.Start(path);
         }
 
         [Test]

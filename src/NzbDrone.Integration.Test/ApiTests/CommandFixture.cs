@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Lidarr.Api.V1.Commands;
+using NzbDrone.Integration.Test.Client;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -11,7 +11,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_run_rss_sync()
         {
-            var response = Commands.Post(new CommandResource { Name = "rsssync" });
+            var response = Commands.Post(new SimpleCommandResource { Name = "rsssync" });
 
             response.Id.Should().NotBe(0);
         }

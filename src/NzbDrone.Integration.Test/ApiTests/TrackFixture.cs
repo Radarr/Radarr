@@ -3,7 +3,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using Lidarr.Api.V1.Artist;
 using System.Linq;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -15,30 +14,16 @@ namespace NzbDrone.Integration.Test.ApiTests
         [SetUp]
         public void Setup()
         {
-            _artist = GivenArtistWithTracks();
+            _artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
         }
 
-        private ArtistResource GivenArtistWithTracks()
-        {
-            var newArtist = Artist.Lookup("archer").Single(c => c.ForeignArtistId == "110381");
-
-            newArtist.QualityProfileId = 1;
-            newArtist.Path = @"C:\Test\Archer".AsOsAgnostic();
-
-            newArtist = Artist.Post(newArtist);
-
-            WaitForCompletion(() => Tracks.GetTracksInArtist(newArtist.Id).Count > 0);
-
-            return newArtist;
-        }
-
-        [Test]
+        [Test, Order(0)]
         public void should_be_able_to_get_all_tracks_in_artist()
         {
             Tracks.GetTracksInArtist(_artist.Id).Count.Should().BeGreaterThan(0);
         }
 
-        [Test]
+        [Test, Order(1)]
         public void should_be_able_to_get_a_single_track()
         {
             var tracks = Tracks.GetTracksInArtist(_artist.Id);

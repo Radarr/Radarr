@@ -15,7 +15,7 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo.VersionAdapters
     {
         [Test]
         [IntegrationTest]
-        [Platform("Mono")]
+        [Platform("Linux")]
         public void should_get_version_info_from_actual_linux()
         {
             Mocker.SetConstant<IDiskProvider>(Mocker.Resolve<DiskProvider>());

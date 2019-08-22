@@ -7,6 +7,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Test.Common;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.Test.ValidationTests
 {
@@ -52,8 +53,9 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             MonoOnly();
 
+            var bin = OsInfo.IsOsx ? "/System" : "/bin";
             var artist = Builder<Artist>.CreateNew()
-                                        .With(s => s.Path = "/bin")
+                                        .With(s => s.Path = bin)
                                         .Build();
 
             _validator.Validate(artist).IsValid.Should().BeFalse();
@@ -64,9 +66,10 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             MonoOnly();
 
+            var bin = OsInfo.IsOsx ? "/System" : "/bin";
             var artist = Builder<Artist>.CreateNew()
-                                        .With(s => s.Path = "/bin/test")
-                                        .Build();
+                .With(s => s.Path = Path.Combine(bin, "test"))
+                .Build();
 
             _validator.Validate(artist).IsValid.Should().BeFalse();
         }
