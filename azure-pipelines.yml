@@ -53,18 +53,6 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
-      - task: Assembly-Info-NetFramework@2
-        displayName: Patch AssemblyInfo
-        inputs:
-          Path: '$(Build.SourcesDirectory)'
-          FileNames: 'src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs'
-          InsertAttributes: false
-          FileEncoding: 'auto'
-          WriteBOM: false
-          Configuration: 'debug'
-          VersionNumber: '$(lidarrVersion)'
-          FileVersionNumber: '$(lidarrVersion)'
-          InformationalVersion: '$(lidarrVersion)-rc1'
       - bash: ./build.sh --only-backend
         displayName: Build Lidarr Backend
       - publish: $(outputFolder)
@@ -210,10 +198,11 @@ stages:
       - bash: |
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
-          sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${LIDARRVERSION}-debug"
-          sentry-cli releases -p lidarr-ui files "${LIDARRVERSION}-debug" upload-sourcemaps _output/UI/ --rewrite
-          sentry-cli releases set-commits --auto "${LIDARRVERSION}-debug"
-          sentry-cli releases deploys "${LIDARRVERSION}-debug" new -e nightly
+          RELEASENAME="${LIDARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
+          sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${RELEASENAME}"
+          sentry-cli releases -p lidarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases set-commits --auto "${RELEASENAME}"
+          sentry-cli releases deploys "${RELEASENAME}" new -e nightly
         displayName: Publish Sentry Source Maps
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
         env:

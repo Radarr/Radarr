@@ -5,7 +5,6 @@ outputFolderLinux='./_output_linux'
 outputFolderMacOS='./_output_macos'
 outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
-testSearchPattern='*.Test/bin/x86/Release/*'
 sourceFolder='./src'
 slnFile=$sourceFolder/Lidarr.sln
 updateFolder=$outputFolder/Lidarr.Update
@@ -40,6 +39,15 @@ ProgressStart()
 ProgressEnd()
 {
     echo "Finish '$1'"
+}
+
+UpdateVersionNumber()
+{
+    if [ "$LIDARRVERSION" != "" ]; then
+        echo "Updating Version Info"
+        sed -i "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" ./src/Directory.Build.props
+        sed -i "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" ./src/Directory.Build.props
+    fi
 }
 
 CleanFolder()
@@ -113,6 +121,7 @@ Build()
     ProgressStart 'Build'
 
     rm -rf $outputFolder
+    rm -rf $testPackageFolder
 
     if [ $runtime = "dotnet" ] ; then
         BuildWithMSBuild
@@ -231,20 +240,12 @@ PackageTests()
 {
     ProgressStart 'Creating Test Package'
 
-    rm -rf $testPackageFolder
-    mkdir $testPackageFolder
-
-    find . -maxdepth 6 -path $testSearchPattern -exec cp -r "{}" $testPackageFolder \;
-
     if [ $runtime = "dotnet" ] ; then
-        $nuget install NUnit.ConsoleRunner -Version 3.7.0 -Output $testPackageFolder
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.7.0 -Output $testPackageFolder
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     fi
 
-    cp $outputFolder/*.dll $testPackageFolder
-    cp $outputFolder/*.exe $testPackageFolder
-    cp $outputFolder/fpcalc $testPackageFolder
     cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config
@@ -341,6 +342,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 # Only build backend if we haven't set only-frontend or only-packages
 if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
 then
+    UpdateVersionNumber
     Build
     PackageTests
 fi

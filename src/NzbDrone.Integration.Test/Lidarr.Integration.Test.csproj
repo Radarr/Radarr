@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lidarr.Api.V1\Lidarr.Api.V1.csproj" />
+    <ProjectReference Include="..\NzbDrone.Test.Common\Lidarr.Test.Common.csproj" />
+  </ItemGroup>
+</Project>

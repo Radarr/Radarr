@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +15,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             var attributes = assembly.GetCustomAttributes(true);
 
-            Branch = "unknow";
+            Branch = "unknown";
 
             var config = attributes.OfType<AssemblyConfigurationAttribute>().FirstOrDefault();
             if (config != null)
