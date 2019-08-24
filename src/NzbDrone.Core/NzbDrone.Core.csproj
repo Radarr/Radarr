@@ -135,6 +135,7 @@
     <Compile Include="Datastore\Converters\CustomFormatIntConverter.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\152_remove_nyaa.cs" />
     <Compile Include="Datastore\Migration\148_remove_extra_naming_config.cs" />
     <Compile Include="Datastore\Migration\146_naming_config_colon_replacement_format.cs" />
     <Compile Include="Datastore\Migration\147_add_custom_formats.cs" />
@@ -738,10 +739,7 @@
     <Compile Include="Indexers\Newznab\NewznabRssParser.cs" />
     <Compile Include="Indexers\Newznab\NewznabSettings.cs" />
     <Compile Include="Indexers\Exceptions\SizeParsingException.cs" />
-    <Compile Include="Indexers\Nyaa\NyaaRequestGenerator.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsRequestGenerator.cs" />
-    <Compile Include="Indexers\Nyaa\Nyaa.cs" />
-    <Compile Include="Indexers\Nyaa\NyaaSettings.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\Omgwtfnzbs.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsRssParser.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsSettings.cs" />

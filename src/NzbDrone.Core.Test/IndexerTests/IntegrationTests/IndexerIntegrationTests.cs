@@ -4,11 +4,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Nyaa;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
@@ -30,37 +28,37 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
                 };
         }
 
-        [Test]
-        public void nyaa_fetch_recent()
-        {
-            var indexer = Mocker.Resolve<Nyaa>();
+        //[Test]
+        //public void nyaa_fetch_recent()
+        //{
+        //    var indexer = Mocker.Resolve<Nyaa>();
 
-            indexer.Definition = new IndexerDefinition
-            {
-                Name = "MyIndexer",
-                Settings = new NyaaSettings()
-            };
+        //    indexer.Definition = new IndexerDefinition
+        //    {
+        //        Name = "MyIndexer",
+        //        Settings = new NyaaSettings()
+        //    };
 
-            var result = indexer.FetchRecent();
+        //    var result = indexer.FetchRecent();
 
-            ValidateTorrentResult(result, hasSize: true);
-        }
+        //    ValidateTorrentResult(result, hasSize: true);
+        //}
 
-        [Test]
-        public void nyaa_search_single()
-        {
-            var indexer = Mocker.Resolve<Nyaa>();
+        //[Test]
+        //public void nyaa_search_single()
+        //{
+        //    var indexer = Mocker.Resolve<Nyaa>();
 
-            indexer.Definition = new IndexerDefinition
-            {
-                Name = "MyIndexer",
-                Settings = new NyaaSettings()
-            };
+        //    indexer.Definition = new IndexerDefinition
+        //    {
+        //        Name = "MyIndexer",
+        //        Settings = new NyaaSettings()
+        //    };
 
-            var result = indexer.Fetch(_singleSearchCriteria);
+        //    var result = indexer.Fetch(_singleSearchCriteria);
 
-            ValidateTorrentResult(result, hasSize: true);
-        }
+        //    ValidateTorrentResult(result, hasSize: true);
+        //}
 
 
 
