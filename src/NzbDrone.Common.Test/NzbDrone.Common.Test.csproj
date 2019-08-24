@@ -86,11 +86,11 @@
     <Compile Include="LevenshteinDistanceFixture.cs" />
     <Compile Include="OsPathFixture.cs" />
     <Compile Include="PathExtensionFixture.cs" />
-    <Compile Include="ProcessProviderTests.cs" />
+    <Compile Include="ProcessProviderFixture.cs" />
     <Compile Include="ReflectionExtensions.cs" />
     <Compile Include="ReflectionTests\ReflectionExtensionFixture.cs" />
     <Compile Include="ServiceFactoryFixture.cs" />
-    <Compile Include="ServiceProviderTests.cs" />
+    <Compile Include="ServiceProviderFixture.cs" />
     <Compile Include="TPLTests\DebouncerFixture.cs" />
     <Compile Include="TPLTests\RateLimitServiceFixture.cs" />
     <Compile Include="WebClientTests.cs" />

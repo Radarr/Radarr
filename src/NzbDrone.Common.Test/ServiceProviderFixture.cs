@@ -11,7 +11,7 @@ namespace NzbDrone.Common.Test
 {
     [TestFixture]
     [Timeout(15000)]
-    public class ServiceProviderTests : TestBase<ServiceProvider>
+    public class ServiceProviderFixture : TestBase<ServiceProvider>
     {
         private const string ALWAYS_INSTALLED_SERVICE = "SCardSvr"; //Smart Card
         private const string TEMP_SERVICE_NAME = "NzbDrone_Nunit";

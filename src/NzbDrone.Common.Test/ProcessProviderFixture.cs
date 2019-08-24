@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Test
     // We don't want one tests setup killing processes used in another
     [NonParallelizable]
     [TestFixture]
-    public class ProcessProviderTests : TestBase<ProcessProvider>
+    public class ProcessProviderFixture : TestBase<ProcessProvider>
     {
 
         [SetUp]
