@@ -21,7 +21,6 @@ namespace NzbDrone.Common.Test.Http
 {
     [IntegrationTest]
     [TestFixture(typeof(ManagedHttpDispatcher))]
-    [TestFixture(typeof(CurlHttpDispatcher))]
     public class HttpClientFixture<TDispatcher> : TestBase<HttpClient> where TDispatcher : IHttpDispatcher
     {
         private static string[] _httpBinHosts = new[] { "eu.httpbin.org", "httpbin.org" };

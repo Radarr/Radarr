@@ -171,9 +171,6 @@ PackageMono()
     rm -f $outputFolderLinux/sqlite3.*
     rm -f $outputFolderLinux/fpcalc*
 
-    echo "Adding CurlSharp.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderLinux
-
     echo "Renaming Lidarr.Console.exe to Lidarr.exe"
     rm $outputFolderLinux/Lidarr.exe*
     for file in $outputFolderLinux/Lidarr.Console.exe*; do
@@ -251,12 +248,6 @@ PackageTests()
     rm -f $testPackageFolder/*.log.config
 
     CleanFolder $testPackageFolder true
-
-    echo "Adding CurlSharp.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
-
-    echo "Copying CurlSharp libraries"
-    cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
     echo "Adding sqlite dylibs"
     cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
