@@ -84,6 +84,7 @@ namespace NzbDrone.Common.Test
 
         [Test]
         [Platform(Exclude="MacOsX")]
+        [Retry(3)]
         public void exists_should_find_running_process()
         {
             var process = StartDummyProcess();
@@ -132,6 +133,7 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        [Retry(3)]
         public void ToString_on_new_processInfo()
         {
             Console.WriteLine(new ProcessInfo().ToString());
