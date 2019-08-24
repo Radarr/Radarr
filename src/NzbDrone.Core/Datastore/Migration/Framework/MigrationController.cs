@@ -50,8 +50,6 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 {
                     runner.MigrateUp(true);
                 }
-
-                processor.Dispose();
             }
             catch (SQLiteException)
             {
@@ -59,6 +57,8 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 SQLiteConnection.ClearAllPools();
                 throw;
             }
+
+            processor.Dispose();
 
             sw.Stop();
 
