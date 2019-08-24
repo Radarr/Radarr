@@ -36,6 +36,7 @@ namespace NzbDrone.Host
                 LongPathSupport.Enable();
 
                 _container = MainAppContainerBuilder.BuildContainer(startupContext);
+                _container.Resolve<InitializeLogger>().Initialize();
                 _container.Resolve<IAppFolderFactory>().Register();
                 _container.Resolve<IProvidePidFile>().Write();
 

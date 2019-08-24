@@ -90,10 +90,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             {
                 IsDocker = true;
             }
-
-            Environment.SetEnvironmentVariable("OS_NAME", Name);
-            Environment.SetEnvironmentVariable("OS_VERSION", Version);
-            Environment.SetEnvironmentVariable("OS_IS_DOCKER", IsDocker.ToString());
         }
     }
 

@@ -1,4 +1,6 @@
+using System.Linq;
 using NLog;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation.Sentry;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
@@ -10,25 +12,26 @@ namespace NzbDrone.Core.Instrumentation
     public class ReconfigureSentry : IHandleAsync<ApplicationStartedEvent>
     {
         private readonly IConfigFileProvider _configFileProvider;
+        private readonly IPlatformInfo _platformInfo;
         private readonly IMainDatabase _database;
 
         public ReconfigureSentry(IConfigFileProvider configFileProvider,
-                                  IMainDatabase database)
+                                 IPlatformInfo platformInfo,
+                                 IMainDatabase database)
         {
             _configFileProvider = configFileProvider;
+            _platformInfo = platformInfo;
             _database = database;
         }
 
         public void Reconfigure()
         {
             // Extended sentry config
-            var sentry = LogManager.Configuration.FindTargetByName<SentryTarget>("sentryTarget");
-            sentry.FilterEvents = _configFileProvider.FilterSentryEvents;
-            sentry.UpdateBranch = _configFileProvider.Branch;
-            sentry.DatabaseVersion = _database.Version;
-            sentry.DatabaseMigration = _database.Migration;
-
-            LogManager.ReconfigExistingLoggers();
+            var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
+            if (sentryTarget != null)
+            {
+                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.Branch, _platformInfo);
+            }
         }
 
         public void HandleAsync(ApplicationStartedEvent message)
