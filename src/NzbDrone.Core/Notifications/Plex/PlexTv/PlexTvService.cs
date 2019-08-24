@@ -31,10 +31,10 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             var requestBuilder = new HttpRequestBuilder("https://plex.tv/api/v2/pins")
                                  .Accept(HttpAccept.Json)
                                  .AddQueryParam("X-Plex-Client-Identifier", clientIdentifier)
-                                 .AddQueryParam("X-Plex-Product", "Lidarr")
+                                 .AddQueryParam("X-Plex-Product", BuildInfo.AppName)
                                  .AddQueryParam("X-Plex-Platform", "Windows")
                                  .AddQueryParam("X-Plex-Platform-Version", "7")
-                                 .AddQueryParam("X-Plex-Device-Name", "Lidarr")
+                                 .AddQueryParam("X-Plex-Device-Name", BuildInfo.AppName)
                                  .AddQueryParam("X-Plex-Version", BuildInfo.Version.ToString())
                                  .AddQueryParam("strong", true);
 
@@ -43,10 +43,10 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             var request = requestBuilder.Build();
 
             return new PlexTvPinUrlResponse
-            {
-                Url = request.Url.ToString(),
-                Headers = request.Headers.ToDictionary(h => h.Key, h => h.Value)
-            };
+                   {
+                       Url = request.Url.ToString(),
+                       Headers = request.Headers.ToDictionary(h => h.Key, h => h.Value)
+                   };
         }
 
         public PlexTvSignInUrlResponse GetSignInUrl(string callbackUrl, int pinId, string pinCode)
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
                                  .AddQueryParam("clientID", clientIdentifier)
                                  .AddQueryParam("forwardUrl", callbackUrl)
                                  .AddQueryParam("code", pinCode)
-                                 .AddQueryParam("context[device][product]", "Lidarr")
+                                 .AddQueryParam("context[device][product]", BuildInfo.AppName)
                                  .AddQueryParam("context[device][platform]", "Windows")
                                  .AddQueryParam("context[device][platformVersion]", "7")
                                  .AddQueryParam("context[device][version]", BuildInfo.Version.ToString());
@@ -68,14 +68,16 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             var request = requestBuilder.Build();
 
             return new PlexTvSignInUrlResponse
-            {
-                OauthUrl = request.Url.ToString(),
-                PinId = pinId
-            };
+                   {
+                       OauthUrl = request.Url.ToString(),
+                       PinId = pinId
+                   };
         }
+
         public string GetAuthToken(int pinId)
         {
             var authToken = _proxy.GetAuthToken(_configService.PlexClientIdentifier, pinId);
+
             return authToken;
         }
     }

@@ -8,6 +8,7 @@ using Microsoft.Owin.Hosting.Engine;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Tracing;
 using NLog;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Host.Owin.MiddleWare;
 using Owin;
@@ -60,7 +61,7 @@ namespace NzbDrone.Host.Owin
 
                 if (ex.InnerException is HttpListenerException)
                 {
-                    throw new PortInUseException("Port {0} is already in use, please ensure Lidarr is not already running.", ex, _configFileProvider.Port);
+                    throw new PortInUseException("Port {0} is already in use, please ensure {1} is not already running.", ex, _configFileProvider.Port, BuildInfo.AppName);
                 }
 
                 throw ex.InnerException;
@@ -70,7 +71,7 @@ namespace NzbDrone.Host.Owin
 
         private void BuildApp(IAppBuilder appBuilder)
         {
-            appBuilder.Properties["host.AppName"] = "Lidarr";
+            appBuilder.Properties["host.AppName"] = BuildInfo.AppName;
 
             foreach (var middleWare in _owinMiddleWares.OrderBy(c => c.Order))
             {
