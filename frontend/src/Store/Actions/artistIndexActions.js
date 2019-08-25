@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import sortByName from 'Utilities/Array/sortByName';
-import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, sortDirections } from 'Helpers/Props';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -223,7 +223,27 @@ export const defaultState = {
   selectedFilterKey: 'all',
 
   filters,
-  filterPredicates,
+
+  filterPredicates: {
+    ...filterPredicates,
+
+    trackProgress: function(item, filterValue, type) {
+      const { statistics = {} } = item;
+
+      const {
+        trackCount = 0,
+        trackFileCount
+      } = statistics;
+
+      const progress = trackCount ?
+        trackFileCount / trackCount * 100 :
+        100;
+
+      const predicate = filterTypePredicates[type];
+
+      return predicate(progress, filterValue);
+    }
+  },
 
   filterBuilderProps: [
     {
