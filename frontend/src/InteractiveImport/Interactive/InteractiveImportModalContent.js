@@ -79,7 +79,7 @@ const filterExistingFilesOptions = {
 
 const importModeOptions = [
   { key: 'move', value: 'Move Files' },
-  { key: 'copy', value: 'Copy Files' }
+  { key: 'copy', value: 'Hardlink/Copy Files' }
 ];
 
 const SELECT = 'select';
