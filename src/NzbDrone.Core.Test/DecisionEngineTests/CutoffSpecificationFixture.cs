@@ -101,5 +101,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 new QualityModel(Quality.FLAC, new Revision(version: 2)),
                 10).Should().BeTrue();
         }
+
+
+        [Test]
+        public void should_return_true_if_cutoffs_are_met_but_is_a_revision_upgrade()
+        {
+            QualityProfile _profile = new QualityProfile
+            {
+                Cutoff = Quality.MP3_320.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+            };
+
+            Subject.CutoffNotMet(
+                _profile,
+                new List<QualityModel> { new QualityModel(Quality.FLAC, new Revision(version: 1)) },
+                NoPreferredWordScore,
+                new QualityModel(Quality.FLAC, new Revision(version: 2)),
+                NoPreferredWordScore).Should().BeTrue();
+        }
     }
 }
