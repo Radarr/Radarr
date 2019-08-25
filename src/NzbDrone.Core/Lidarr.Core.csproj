@@ -6,7 +6,6 @@
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner" Version="1.6.2" />
     <PackageReference Include="FluentValidation" Version="6.2.1" />
-    <PackageReference Include="ImageResizer" Version="4.2.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="NLog" Version="4.5.4" />
     <PackageReference Include="OAuth" Version="1.0.3" />
@@ -16,6 +15,7 @@
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="xmlrpcnet" Version="2.5.0" />
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0006" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />

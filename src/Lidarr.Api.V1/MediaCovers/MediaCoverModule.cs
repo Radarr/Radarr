@@ -10,7 +10,7 @@ namespace Lidarr.Api.V1.MediaCovers
 {
     public class MediaCoverModule : LidarrV1Module
     {
-        private static readonly Regex RegexResizedImage = new Regex(@"-\d+\.jpg$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexResizedImage = new Regex(@"-\d+(?=\.(jpg|png|gif)$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private const string MEDIA_COVER_ARTIST_ROUTE = @"/Artist/(?<artistId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
         private const string MEDIA_COVER_ALBUM_ROUTE = @"/Album/(?<artistId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
@@ -35,7 +35,7 @@ namespace Lidarr.Api.V1.MediaCovers
             {
                 // Return the full sized image if someone requests a non-existing resized one.
                 // TODO: This code can be removed later once everyone had the update for a while.
-                var basefilePath = RegexResizedImage.Replace(filePath, ".jpg");
+                var basefilePath = RegexResizedImage.Replace(filePath, "");
                 if (basefilePath == filePath || !_diskProvider.FileExists(basefilePath))
                 {
                     return new NotFoundResponse();
@@ -54,7 +54,7 @@ namespace Lidarr.Api.V1.MediaCovers
             {
                 // Return the full sized image if someone requests a non-existing resized one.
                 // TODO: This code can be removed later once everyone had the update for a while.
-                var basefilePath = RegexResizedImage.Replace(filePath, ".jpg");
+                var basefilePath = RegexResizedImage.Replace(filePath, "");
                 if (basefilePath == filePath || !_diskProvider.FileExists(basefilePath))
                 {
                     return new NotFoundResponse();

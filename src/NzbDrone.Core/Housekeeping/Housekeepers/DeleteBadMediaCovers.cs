@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -35,11 +36,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             if (!_configService.CleanupMetadataImages) return;
 
             var artists = _artistService.GetAllArtists();
+            var imageExtensions = new List<string> { ".jpg", ".png", ".gif" };
 
             foreach (var artist in artists)
             {
                 var images = _metaFileService.GetFilesByArtist(artist.Id)
-                    .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && c.RelativePath.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase));
+                    .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && imageExtensions.Any(x => c.RelativePath.EndsWith(x, StringComparison.InvariantCultureIgnoreCase)));
 
                 foreach (var image in images)
                 {

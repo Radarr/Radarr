@@ -10,7 +10,7 @@ namespace Lidarr.Http.Frontend.Mappers
 {
     public class MediaCoverMapper : StaticResourceMapperBase
     {
-        private static readonly Regex RegexResizedImage = new Regex(@"-\d+\.jpg($|\?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexResizedImage = new Regex(@"-\d+(?=\.(jpg|png|gif)($|\?))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
@@ -31,7 +31,7 @@ namespace Lidarr.Http.Frontend.Mappers
 
             if (!_diskProvider.FileExists(resourcePath) || _diskProvider.GetFileSize(resourcePath) == 0)
             {
-                var baseResourcePath = RegexResizedImage.Replace(resourcePath, ".jpg$1");
+                var baseResourcePath = RegexResizedImage.Replace(resourcePath, "");
                 if (baseResourcePath != resourcePath)
                 {
                     return baseResourcePath;

@@ -163,8 +163,6 @@ namespace NzbDrone.Core.MediaCover
                 {
                     _logger.Error(e, "Couldn't download media cover for {0}", album);
                 }
-
-                EnsureResizedAlbumCovers(album, cover, !alreadyExists);
             }
         }
 
@@ -227,31 +225,6 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private void EnsureResizedAlbumCovers(Album album, MediaCover cover, bool forceResize)
-        {
-            int[] heights = GetDefaultHeights(cover.CoverType);
-
-            foreach (var height in heights)
-            {
-                var mainFileName = GetCoverPath(album.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, null);
-                var resizeFileName = GetCoverPath(album.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, height);
-
-                if (forceResize || !_diskProvider.FileExists(resizeFileName) || _diskProvider.GetFileSize(resizeFileName) == 0)
-                {
-                    _logger.Debug("Resizing {0}-{1} for {2}", cover.CoverType, height, album);
-                    
-                    try
-                    {
-                        _resizer.Resize(mainFileName, resizeFileName, height);
-                    }
-                    catch
-                    {
-                        _logger.Debug("Couldn't resize media cover {0}-{1} for album {2}, using full size image instead.", cover.CoverType, height, album);
-                    }
-                }
-            }
-        }
-
         private int[] GetDefaultHeights(MediaCoverTypes coverType)
         {
             switch (coverType)
@@ -261,6 +234,7 @@ namespace NzbDrone.Core.MediaCover
 
                 case MediaCoverTypes.Poster:
                 case MediaCoverTypes.Disc:
+                case MediaCoverTypes.Cover:
                 case MediaCoverTypes.Logo:
                 case MediaCoverTypes.Headshot:
                     return new[] { 500, 250 };
@@ -271,8 +245,6 @@ namespace NzbDrone.Core.MediaCover
                 case MediaCoverTypes.Fanart:
                 case MediaCoverTypes.Screenshot:
                     return new[] { 360, 180 };
-                case MediaCoverTypes.Cover:
-                    return new[] { 250 };
             }
         }
 

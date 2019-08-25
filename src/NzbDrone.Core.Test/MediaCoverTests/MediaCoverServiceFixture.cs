@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistRefreshCompleteEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistRefreshCompleteEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [Test]
@@ -224,7 +224,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistRefreshCompleteEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.HandleAsync(new ArtistRefreshCompleteEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
-                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
+                  .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
         }
     }
 }
