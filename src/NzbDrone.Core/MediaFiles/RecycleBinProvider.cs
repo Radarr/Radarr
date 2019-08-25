@@ -202,6 +202,9 @@ namespace NzbDrone.Core.MediaFiles
             catch (IOException)
             {
             }
+            catch (UnauthorizedAccessException)
+            {
+            }
         }
 
         public void Execute(CleanUpRecycleBinCommand message)
