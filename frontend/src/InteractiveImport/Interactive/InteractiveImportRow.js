@@ -176,7 +176,10 @@ class InteractiveImportRow extends Component {
     if (album) {
       albumTitle = album.disambiguation ? `${album.title} (${album.disambiguation})` : album.title;
     }
-    const trackNumbers = tracks.map((track) => `${track.mediumNumber}x${track.trackNumber}`)
+
+    const sortedTracks = tracks.sort((a, b) => parseInt(a.absoluteTrackNumber) - parseInt(b.absoluteTrackNumber));
+
+    const trackNumbers = sortedTracks.map((track) => `${track.mediumNumber}x${track.trackNumber}`)
       .join(', ');
 
     const showArtistPlaceholder = isSelected && !artist;
