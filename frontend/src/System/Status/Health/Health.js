@@ -26,6 +26,7 @@ function getInternalLink(source) {
         />
       );
     case 'DownloadClientCheck':
+    case 'DownloadClientStatusCheck':
     case 'ImportMechanismCheck':
     case 'RemotePathMappingCheck':
       return (
@@ -68,6 +69,7 @@ function getTestLink(source, props) {
         />
       );
     case 'DownloadClientCheck':
+    case 'DownloadClientStatusCheck':
       return (
         <SpinnerIconButton
           name={icons.TEST}
