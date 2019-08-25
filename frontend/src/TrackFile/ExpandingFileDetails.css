@@ -9,18 +9,20 @@
   }
 }
 
+.filename {
+  flex-grow: 1;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: 14px;
+  font-family: $monoSpaceFontFamily;
+}
+
 .header {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   font-size: 18px;
-}
-
-.filename {
-  flex-grow: 1;
-  margin-right: 10px;
-  margin-left: 10px;
 }
 
 .expandButton {
@@ -33,12 +35,6 @@
   composes: button from '~Components/Link/IconButton.css';
 
   width: 30px;
-}
-
-.audioTags {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  border-top: 1px solid $borderColor;
 }
 
 .expandButtonIcon {

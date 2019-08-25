@@ -1,0 +1,11 @@
+.audioTags {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* border-top: 1px solid $borderColor; */
+}
+
+.filename {
+  composes: description from '~Components/DescriptionList/DescriptionListItemDescription.css';
+
+  font-family: $monoSpaceFontFamily;
+}

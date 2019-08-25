@@ -2,7 +2,11 @@ import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
+import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createClearReducer from './Creators/Reducers/createClearReducer';
 import albumEntities from 'Album/albumEntities';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
@@ -20,13 +24,61 @@ export const section = 'trackFiles';
 export const defaultState = {
   isFetching: false,
   isPopulated: false,
+  sortKey: 'path',
+  sortDirection: sortDirections.ASCENDING,
+
   error: null,
   isDeleting: false,
   deleteError: null,
   isSaving: false,
   saveError: null,
-  items: []
+  items: [],
+
+  sortPredicates: {
+    quality: function(item, direction) {
+      return item.quality ? item.qualityWeight : 0;
+    }
+  },
+
+  columns: [
+    {
+      name: 'path',
+      label: 'Path',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
+      name: 'size',
+      label: 'Size',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'dateAdded',
+      label: 'Date Added',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'quality',
+      label: 'Quality',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'actions',
+      columnLabel: 'Actions',
+      isVisible: true,
+      isModifiable: false
+    }
+  ]
 };
+
+export const persistState = [
+  'trackFiles.sortKey',
+  'trackFiles.sortDirection'
+];
 
 //
 // Actions Types
@@ -35,6 +87,8 @@ export const FETCH_TRACK_FILES = 'trackFiles/fetchTrackFiles';
 export const DELETE_TRACK_FILE = 'trackFiles/deleteTrackFile';
 export const DELETE_TRACK_FILES = 'trackFiles/deleteTrackFiles';
 export const UPDATE_TRACK_FILES = 'trackFiles/updateTrackFiles';
+export const SET_TRACK_FILES_SORT = 'trackFiles/setTrackFilesSort';
+export const SET_TRACK_FILES_TABLE_OPTION = 'trackFiles/setTrackFilesTableOption';
 export const CLEAR_TRACK_FILES = 'trackFiles/clearTrackFiles';
 
 //
@@ -44,6 +98,8 @@ export const fetchTrackFiles = createThunk(FETCH_TRACK_FILES);
 export const deleteTrackFile = createThunk(DELETE_TRACK_FILE);
 export const deleteTrackFiles = createThunk(DELETE_TRACK_FILES);
 export const updateTrackFiles = createThunk(UPDATE_TRACK_FILES);
+export const setTrackFilesSort = createAction(SET_TRACK_FILES_SORT);
+export const setTrackFilesTableOption = createAction(SET_TRACK_FILES_TABLE_OPTION);
 export const clearTrackFiles = createAction(CLEAR_TRACK_FILES);
 
 //
@@ -193,9 +249,14 @@ export const actionHandlers = handleThunks({
 // Reducers
 
 export const reducers = createHandleActions({
+  [SET_TRACK_FILES_SORT]: createSetClientSideCollectionSortReducer(section),
+  [SET_TRACK_FILES_TABLE_OPTION]: createSetTableOptionReducer(section),
 
-  [CLEAR_TRACK_FILES]: (state) => {
-    return Object.assign({}, state, defaultState);
-  }
+  [CLEAR_TRACK_FILES]: createClearReducer(section, {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    items: []
+  })
 
 }, defaultState, section);

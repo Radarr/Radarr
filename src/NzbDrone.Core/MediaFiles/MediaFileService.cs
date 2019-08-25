@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using NLog;
@@ -20,9 +19,11 @@ namespace NzbDrone.Core.MediaFiles
         void Update(TrackFile trackFile);
         void Update(List<TrackFile> trackFile);
         void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
+        void DeleteMany(List<TrackFile> trackFiles, DeleteMediaFileReason reason);
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesByRelease(int releaseId);
+        List<TrackFile> GetUnmappedFiles();
         List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, Artist artist, FilterFilesType filter);
         TrackFile Get(int id);
         List<TrackFile> Get(IEnumerable<int> ids);
@@ -76,6 +77,17 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.Delete(trackFile);
             // If the trackfile wasn't mapped to a track, don't publish an event
             if (trackFile.AlbumId > 0)
+            {
+                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+            }
+        }
+
+        public void DeleteMany(List<TrackFile> trackFiles, DeleteMediaFileReason reason)
+        {
+            _mediaFileRepository.DeleteMany(trackFiles);
+
+            // publish events where trackfile was mapped to a track
+            foreach (var trackFile in trackFiles.Where(x => x.AlbumId > 0))
             {
                 _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
             }
@@ -164,6 +176,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesByRelease(int releaseId)
         {
             return _mediaFileRepository.GetFilesByRelease(releaseId);
+        }
+
+        public List<TrackFile> GetUnmappedFiles()
+        {
+            return _mediaFileRepository.GetUnmappedFiles();
         }
 
         public void UpdateMediaInfo(List<TrackFile> trackFiles)

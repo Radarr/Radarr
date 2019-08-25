@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Music
         List<Track> GetTracksByReleases(List<int> albumReleaseId);
         List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds);
         List<Track> GetTracksByFileId(int fileId);
+        List<Track> GetTracksByFileId(IEnumerable<int> ids);
         List<Track> TracksWithFiles(int artistId);
         List<Track> TracksWithoutFiles(int albumId);
         void SetFileId(List<Track> tracks);
@@ -83,6 +84,11 @@ namespace NzbDrone.Core.Music
         public List<Track> GetTracksByFileId(int fileId)
         {
             return Query.Where(e => e.TrackFileId == fileId).ToList();
+        }
+
+        public List<Track> GetTracksByFileId(IEnumerable<int> ids)
+        {
+            return Query.Where($"[TrackFileId] IN ({string.Join(", ", ids)})").ToList();
         }
 
         public List<Track> TracksWithFiles(int artistId)

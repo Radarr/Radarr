@@ -13,24 +13,6 @@ import styles from './TrackRow.css';
 class TrackRow extends Component {
 
   //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      isDetailsModalOpen: false
-    };
-  }
-
-  //
-  // Listeners
-
-  onDetailsModalClose = () => {
-    this.setState({ isDetailsModalOpen: false });
-  }
-
-  //
   // Render
 
   render() {
@@ -44,7 +26,8 @@ class TrackRow extends Component {
       duration,
       trackFilePath,
       trackFileRelativePath,
-      columns
+      columns,
+      deleteTrackFile
     } = this.props;
 
     return (
@@ -160,6 +143,9 @@ class TrackRow extends Component {
                   key={name}
                   albumId={albumId}
                   id={id}
+                  trackFilePath={trackFilePath}
+                  trackFileId={trackFileId}
+                  deleteTrackFile={deleteTrackFile}
                 />
               );
             }
@@ -173,6 +159,7 @@ class TrackRow extends Component {
 }
 
 TrackRow.propTypes = {
+  deleteTrackFile: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   albumId: PropTypes.number.isRequired,
   trackFileId: PropTypes.number,

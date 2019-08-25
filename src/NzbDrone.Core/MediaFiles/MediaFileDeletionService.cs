@@ -17,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IDeleteMediaFiles
     {
         void DeleteTrackFile(Artist artist, TrackFile trackFile);
+        void DeleteTrackFile(TrackFile trackFile, string subfolder = "");
     }
 
     public class MediaFileDeletionService : IDeleteMediaFiles,
@@ -62,11 +63,25 @@ namespace NzbDrone.Core.MediaFiles
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Artist's root folder ({0}) is empty.", rootFolder);
             }
 
-            if (_diskProvider.FolderExists(artist.Path) && _diskProvider.FileExists(fullPath))
+            if (_diskProvider.FolderExists(artist.Path))
+            {
+                var subfolder = _diskProvider.GetParentFolder(artist.Path).GetRelativePath(_diskProvider.GetParentFolder(fullPath));
+                DeleteTrackFile(trackFile, subfolder);
+            }
+            else
+            {
+                // delete from db even if the artist folder is missing
+                _mediaFileService.Delete(trackFile, DeleteMediaFileReason.Manual);
+            }
+        }
+
+        public void DeleteTrackFile(TrackFile trackFile, string subfolder = "")
+        {
+            var fullPath = trackFile.Path;
+
+            if (_diskProvider.FileExists(fullPath))
             {
                 _logger.Info("Deleting track file: {0}", fullPath);
-
-                var subfolder = _diskProvider.GetParentFolder(artist.Path).GetRelativePath(_diskProvider.GetParentFolder(fullPath));
 
                 try
                 {

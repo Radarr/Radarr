@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private Artist artist;
         private Album album;
+        private List<AlbumRelease> releases;
         
         [SetUp]
         public void Setup()
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
             Db.Insert(album);
             
-            var releases = Builder<AlbumRelease>.CreateListOfSize(2)
+            releases = Builder<AlbumRelease>.CreateListOfSize(2)
                 .All()
                 .With(a => a.Id = 0)
                 .With(a => a.AlbumId = album.Id)
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(a => a.Monitored = true)
                 .TheNext(1)
                 .With(a => a.Monitored = false)
-                .Build();
+                .Build().ToList();
             Db.InsertMany(releases);
             
             var files = Builder<TrackFile>.CreateListOfSize(10)
@@ -53,6 +54,10 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(c => c.Quality =new QualityModel(Quality.MP3_192))
                 .TheFirst(5)
                 .With(c => c.AlbumId = album.Id)
+                .TheFirst(1)
+                .With(c => c.Path = "/Test/Path/Artist/somefile1.flac")
+                .TheNext(1)
+                .With(c => c.Path = "/Test/Path/Artist/somefile2.flac")
                 .BuildListOfNew();
             Db.InsertMany(files);
             
@@ -86,6 +91,55 @@ namespace NzbDrone.Core.Test.MediaFiles
             VerifyEagerLoaded(artistFiles);
 
             artistFiles.Should().OnlyContain(c => c.Artist.Value.Id == artist.Id);
+        }
+
+        [Test]
+        public void get_unmapped_files()
+        {
+            VerifyData();
+            var unmappedfiles = Subject.GetUnmappedFiles();
+            VerifyUnmapped(unmappedfiles);
+
+            unmappedfiles.Should().HaveCount(5);
+        }
+
+        [Test]
+        public void get_files_by_release()
+        {
+            VerifyData();
+            var firstReleaseFiles = Subject.GetFilesByRelease(releases[0].Id);
+            var secondReleaseFiles = Subject.GetFilesByRelease(releases[1].Id);
+            VerifyEagerLoaded(firstReleaseFiles);
+            VerifyEagerLoaded(secondReleaseFiles);
+
+            firstReleaseFiles.Should().HaveCount(4);
+            secondReleaseFiles.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void get_files_by_base_path()
+        {
+            VerifyData();
+            var firstReleaseFiles = Subject.GetFilesWithBasePath("/Test/Path");
+            VerifyEagerLoaded(firstReleaseFiles);
+
+            firstReleaseFiles.Should().HaveCount(2);
+        }
+
+        [Test]
+        public void get_file_by_path()
+        {
+            VerifyData();
+            var file = Subject.GetFileWithPath("/Test/Path/Artist/somefile2.flac");
+
+            file.Should().NotBeNull();
+            file.Tracks.IsLoaded.Should().BeTrue();
+            file.Tracks.Value.Should().NotBeNull();
+            file.Tracks.Value.Should().NotBeEmpty();
+            file.Album.IsLoaded.Should().BeTrue();
+            file.Album.Value.Should().NotBeNull();
+            file.Artist.IsLoaded.Should().BeTrue();
+            file.Artist.Value.Should().NotBeNull();
         }
 
         [Test]
@@ -139,6 +193,20 @@ namespace NzbDrone.Core.Test.MediaFiles
                 file.Artist.Value.Should().NotBeNull();
                 file.Artist.Value.Metadata.IsLoaded.Should().BeTrue();
                 file.Artist.Value.Metadata.Value.Should().NotBeNull();
+            }
+        }
+
+        private void VerifyUnmapped(List<TrackFile> files)
+        {
+            foreach (var file in files)
+            {
+                file.Tracks.IsLoaded.Should().BeFalse();
+                file.Tracks.Value.Should().NotBeNull();
+                file.Tracks.Value.Should().BeEmpty();
+                file.Album.IsLoaded.Should().BeFalse();
+                file.Album.Value.Should().BeNull();
+                file.Artist.IsLoaded.Should().BeFalse();
+                file.Artist.Value.Should().BeNull();
             }
         }
 

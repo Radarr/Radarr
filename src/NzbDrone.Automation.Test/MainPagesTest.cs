@@ -19,7 +19,7 @@ namespace NzbDrone.Automation.Test
         [Test]
         public void artist_page()
         {
-            page.ArtistNavIcon.Click();
+            page.LibraryNavIcon.Click();
             page.WaitForNoSpinner();
             page.Find(By.CssSelector("div[class*='ArtistIndex']")).Should().NotBeNull();
         }
@@ -66,7 +66,7 @@ namespace NzbDrone.Automation.Test
         [Test]
         public void add_artist_page()
         {
-            page.ArtistNavIcon.Click();
+            page.LibraryNavIcon.Click();
             page.WaitForNoSpinner();
 
             page.Find(By.LinkText("Add New")).Click();

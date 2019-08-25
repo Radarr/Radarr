@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Marr.Data;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 
@@ -12,6 +14,7 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesByRelease(int releaseId);
+        List<TrackFile> GetUnmappedFiles();
         List<TrackFile> GetFilesWithBasePath(string path);
         TrackFile GetFileWithPath(string path);
         void DeleteFilesByAlbum(int albumId);
@@ -50,6 +53,16 @@ namespace NzbDrone.Core.MediaFiles
                 .Where<AlbumRelease>(r => r.Monitored == true)
                 .AndWhere(f => f.AlbumId == albumId)
                 .ToList();
+        }
+
+        public List<TrackFile> GetUnmappedFiles()
+        {
+            var query = "SELECT TrackFiles.* " +
+                        "FROM TrackFiles " +
+                        "LEFT JOIN Tracks ON Tracks.TrackFileId = TrackFiles.Id " +
+                        "WHERE Tracks.Id IS NULL ";
+
+            return DataMapper.Query<TrackFile>().QueryText(query).ToList();
         }
 
         public void DeleteFilesByAlbum(int albumId)

@@ -47,7 +47,7 @@ namespace NzbDrone.Automation.Test.PageModel
             });
         }
 
-        public IWebElement ArtistNavIcon => Find(By.LinkText("Artist"));
+        public IWebElement LibraryNavIcon => Find(By.LinkText("Library"));
 
         public IWebElement CalendarNavIcon => Find(By.LinkText("Calendar"));
 

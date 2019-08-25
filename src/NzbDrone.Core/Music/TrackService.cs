@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Music
         List<Track> TracksWithFiles(int artistId);
         List<Track> TracksWithoutFiles(int albumId);
         List<Track> GetTracksByFileId(int trackFileId);
+        List<Track> GetTracksByFileId(IEnumerable<int> trackFileIds);
         void UpdateTrack(Track track);
         void InsertMany(List<Track> tracks);
         void UpdateMany(List<Track> tracks);
@@ -91,6 +92,11 @@ namespace NzbDrone.Core.Music
         public List<Track> GetTracksByFileId(int trackFileId)
         {
             return _trackRepository.GetTracksByFileId(trackFileId);
+        }
+
+        public List<Track> GetTracksByFileId(IEnumerable<int> trackFileIds)
+        {
+            return _trackRepository.GetTracksByFileId(trackFileIds);
         }
 
         public void UpdateTrack(Track track)

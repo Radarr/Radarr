@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 {
     public class MediaFileTableCleanupServiceFixture : CoreTest<MediaFileTableCleanupService>
     {
-        private readonly string DELETED_PATH = @"c:\ANY FILE WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
+        private readonly string DELETED_PATH = @"c:\ANY FILE STARTING WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
         private List<Track> _tracks;
         private Artist _artist;
 
@@ -29,29 +29,23 @@ namespace NzbDrone.Core.Test.MediaFiles
                                      .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
                                      .Build();
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(e => e.FileExists(It.Is<string>(c => !c.Contains(DELETED_PATH))))
-                  .Returns(true);
-
             Mocker.GetMock<ITrackService>()
-                  .Setup(c => c.GetTracksByArtist(It.IsAny<int>()))
-                  .Returns(_tracks);
+                  .Setup(c => c.GetTracksByFileId(It.IsAny<IEnumerable<int>>()))
+                  .Returns((IEnumerable<int> ids) => _tracks.Where(y => ids.Contains(y.TrackFileId)).ToList());
         }
 
         private void GivenTrackFiles(IEnumerable<TrackFile> trackFiles)
         {
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByArtist(It.IsAny<int>()))
+                  .Setup(c => c.GetFilesWithBasePath(It.IsAny<string>()))
                   .Returns(trackFiles.ToList());
         }
 
         private void GivenFilesAreNotAttachedToTrack()
         {
-            _tracks.ForEach(e => e.TrackFileId = 0);
-
             Mocker.GetMock<ITrackService>()
-                  .Setup(c => c.GetTracksByArtist(It.IsAny<int>()))
-                  .Returns(_tracks);
+                  .Setup(c => c.GetTracksByFileId(It.IsAny<int>()))
+                  .Returns(new List<Track>());
         }
 
         private List<string> FilesOnDisk(IEnumerable<TrackFile> trackFiles)
@@ -71,7 +65,8 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.Clean(_artist, FilesOnDisk(trackFiles));
 
-            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.IsAny<Track>()), Times.Never());
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(x => x.Count == 0), DeleteMediaFileReason.MissingFromDisk), Times.Once());
         }
 
         [Test]
@@ -81,24 +76,31 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .All()
                 .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Random(2)
-                .With(c => c.Path = DELETED_PATH)
+                .With(c => c.Path = Path.Combine(DELETED_PATH, Path.GetRandomFileName()))
                 .Build();
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => e.Path != DELETED_PATH)));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(DELETED_PATH))));
 
-            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.Is<TrackFile>(e => e.Path == DELETED_PATH), DeleteMediaFileReason.MissingFromDisk), Times.Exactly(2));
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(DELETED_PATH))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
         }
 
         [Test]
         public void should_unlink_track_when_trackFile_does_not_exist()
         {
-            GivenTrackFiles(new List<TrackFile>());
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+                .Random(10)
+                .With(c => c.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
+                .Build();
+
+            GivenTrackFiles(trackFiles);
 
             Subject.Clean(_artist, new List<string>());
 
-            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.Is<Track>(e => e.TrackFileId == 0)), Times.Exactly(10));
+            Mocker.GetMock<ITrackService>()
+                .Verify(c => c.SetFileIds(It.Is<List<Track>>(e => e.Count == 10 && e.All(y => y.TrackFileId == 0))), Times.Once());
         }
 
         [Test]
@@ -113,7 +115,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.Clean(_artist, FilesOnDisk(trackFiles));
 
-            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.IsAny<Track>()), Times.Never());
+            Mocker.GetMock<ITrackService>().Verify(c => c.SetFileIds(It.Is<List<Track>>(x => x.Count == 0)), Times.Once());
         }
     }
 }

@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
@@ -30,42 +29,20 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Clean(Artist artist, List<string> filesOnDisk)
         {
-            var artistFiles = _mediaFileService.GetFilesByArtist(artist.Id);
-            var tracks = _trackService.GetTracksByArtist(artist.Id);
+            var dbFiles = _mediaFileService.GetFilesWithBasePath(artist.Path);
 
+            // get files in database that are missing on disk and remove from database
+            var missingFiles = dbFiles.ExceptBy(x => x.Path, filesOnDisk, x => x, PathEqualityComparer.Instance).ToList();
 
-            var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
-            
-            foreach (var artistFile in artistFiles)
-            {
-                var trackFile = artistFile;
-                var trackFilePath = trackFile.Path;
+            _logger.Debug("The following files no longer exist on disk, removing from db:\n{0}",
+                          string.Join("\n", missingFiles.Select(x => x.Path)));
 
-                try
-                {
-                    if (!filesOnDiskKeys.Contains(trackFilePath))
-                    {
-                        _logger.Debug("File [{0}] no longer exists on disk, removing from db", trackFilePath);
-                        _mediaFileService.Delete(artistFile, DeleteMediaFileReason.MissingFromDisk);
-                        continue;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error(ex, "Unable to cleanup TrackFile in DB: {0}", trackFile.Id);
-                }
-            }
+            _mediaFileService.DeleteMany(missingFiles, DeleteMediaFileReason.MissingFromDisk);
 
-            foreach (var t in tracks)
-            {
-                var track = t;
-
-                if (track.TrackFileId > 0 && artistFiles.None(f => f.Id == track.TrackFileId))
-                {
-                    track.TrackFileId = 0;
-                    _trackService.UpdateTrack(track);
-                }
-            }
+            // get any tracks matched to these trackfiles and unlink them
+            var orphanedTracks = _trackService.GetTracksByFileId(missingFiles.Select(x => x.Id));
+            orphanedTracks.ForEach(x => x.TrackFileId = 0);
+            _trackService.SetFileIds(orphanedTracks);
         }
     }
 }

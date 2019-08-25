@@ -208,12 +208,12 @@ class SignalRConnector extends Component {
 
     if (body.action === 'updated') {
       this.props.dispatchUpdateItem({ section, ...body.resource });
-
-      // Repopulate the page to handle recently imported file
-      repopulatePage('trackFileUpdated');
     } else if (body.action === 'deleted') {
       this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
+
+    // Repopulate the page to handle recently imported file
+    repopulatePage('trackFileUpdated');
   }
 
   handleHealth = () => {

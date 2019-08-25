@@ -15,7 +15,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import SelectTrackRow from './SelectTrackRow';
-import FileDetails from '../FileDetails';
+import ExpandingFileDetails from 'TrackFile/ExpandingFileDetails';
 
 const columns = [
   {
@@ -151,7 +151,7 @@ class SelectTrackModalContent extends Component {
               <div>{errorMessage}</div>
           }
 
-          <FileDetails
+          <ExpandingFileDetails
             audioTags={audioTags}
             filename={filename}
             rejections={rejections}

@@ -9,6 +9,7 @@ import AddNewArtistConnector from 'AddArtist/AddNewArtist/AddNewArtistConnector'
 import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
 import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
 import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
+import UnmappedFilesTableConnector from 'UnmappedFiles/UnmappedFilesTableConnector';
 import ArtistDetailsPageConnector from 'Artist/Details/ArtistDetailsPageConnector';
 import AlbumDetailsPageConnector from 'Album/Details/AlbumDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
@@ -88,6 +89,11 @@ function AppRoutes(props) {
       <Route
         path="/albumstudio"
         component={AlbumStudioConnector}
+      />
+
+      <Route
+        path="/unmapped"
+        component={UnmappedFilesTableConnector}
       />
 
       <Route
