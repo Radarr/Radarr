@@ -11,6 +11,7 @@ using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 using Lidarr.Http.Extensions;
 using Lidarr.Http.Extensions.Pipelines;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace Lidarr.Http.Authentication
 {
@@ -42,12 +43,21 @@ namespace Lidarr.Http.Authentication
 
             else if (_configFileProvider.AuthenticationMethod == AuthenticationType.Basic)
             {
-                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, "Lidarr"));
+                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, BuildInfo.AppName));
+                pipelines.BeforeRequest.AddItemToStartOfPipeline(CaptureContext);
             }
 
             pipelines.BeforeRequest.AddItemToEndOfPipeline((Func<NancyContext, Response>)RequiresAuthentication);
             pipelines.AfterRequest.AddItemToEndOfPipeline((Action<NancyContext>)RemoveLoginHooksForApiCalls);
         }
+
+        private Response CaptureContext(NancyContext context)
+        {
+            _authenticationService.SetContext(context);
+
+            return null;
+        }
+
 
         private Response RequiresAuthentication(NancyContext context)
         {
@@ -55,6 +65,7 @@ namespace Lidarr.Http.Authentication
 
             if (!_authenticationService.IsAuthenticated(context))
             {
+                _authenticationService.LogUnauthorized(context);
                 response = new Response { StatusCode = HttpStatusCode.Unauthorized };
             }
 
