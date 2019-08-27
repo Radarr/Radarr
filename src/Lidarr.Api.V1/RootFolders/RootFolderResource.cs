@@ -8,6 +8,7 @@ namespace Lidarr.Api.V1.RootFolders
     public class RootFolderResource : RestResource
     {
         public string Path { get; set; }
+        public bool Accessible { get; set; }
         public long? FreeSpace { get; set; }
         public long? TotalSpace { get; set; }
 
@@ -25,6 +26,7 @@ namespace Lidarr.Api.V1.RootFolders
                 Id = model.Id,
 
                 Path = model.Path,
+                Accessible = model.Accessible,
                 FreeSpace = model.FreeSpace,
                 TotalSpace = model.TotalSpace,
                 UnmappedFolders = model.UnmappedFolders
@@ -40,6 +42,7 @@ namespace Lidarr.Api.V1.RootFolders
                 Id = resource.Id,
 
                 Path = resource.Path,
+                //Accessible
                 //FreeSpace
                 //UnmappedFolders
             };
