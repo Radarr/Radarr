@@ -259,7 +259,7 @@ namespace NzbDrone.Core.Music
                     // note the children that will be merged into remoteChild (once added)
                     foreach (var child in mergedChildren)
                     {
-                        sortedChildren.Merged.Add(Tuple.Create(child, existingChild));
+                        sortedChildren.Merged.Add(Tuple.Create(child, remoteChild));
                         sortedChildren.Deleted.Remove(child);
                     }
 

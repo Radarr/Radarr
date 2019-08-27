@@ -120,7 +120,8 @@ namespace NzbDrone.Core.Music
                     QualityProfileId = oldArtist.QualityProfileId,
                     RootFolderPath = oldArtist.RootFolderPath,
                     Monitored = oldArtist.Monitored,
-                    AlbumFolder = oldArtist.AlbumFolder
+                    AlbumFolder = oldArtist.AlbumFolder,
+                    Tags = oldArtist.Tags
                 };
                 _logger.Debug($"Adding missing parent artist {addArtist}");
                 _addArtistService.AddArtist(addArtist);
@@ -162,27 +163,16 @@ namespace NzbDrone.Core.Music
             }
 
             // Force update and fetch covers if images have changed so that we can write them into tags
-            if (remote.Images.Any() && !local.Images.Select(x => x.Url).SequenceEqual(remote.Images.Select(x => x.Url)))
+            if (remote.Images.Any() && !local.Images.SequenceEqual(remote.Images))
             {
                 _mediaCoverService.EnsureAlbumCovers(remote);
                 result = UpdateResult.UpdateTags;
             }
-            
+
+            local.UseMetadataFrom(remote);
+
             local.ArtistMetadataId = remote.ArtistMetadata.Value.Id;
-            local.ForeignAlbumId = remote.ForeignAlbumId;
-            local.OldForeignAlbumIds = remote.OldForeignAlbumIds;
             local.LastInfoSync = DateTime.UtcNow;
-            local.CleanTitle = remote.CleanTitle;
-            local.Title = remote.Title ?? "Unknown";
-            local.Overview = remote.Overview.IsNullOrWhiteSpace() ? local.Overview : remote.Overview;
-            local.Disambiguation = remote.Disambiguation;
-            local.AlbumType = remote.AlbumType;
-            local.SecondaryTypes = remote.SecondaryTypes;
-            local.Genres = remote.Genres;
-            local.Images = remote.Images.Any() ? remote.Images : local.Images;
-            local.Links = remote.Links;
-            local.ReleaseDate = remote.ReleaseDate;
-            local.Ratings = remote.Ratings;
             local.AlbumReleases = new List<AlbumRelease>();
 
             return result;
@@ -274,10 +264,8 @@ namespace NzbDrone.Core.Music
         {
             local.AlbumId = entity.Id;
             local.Album = entity;
-            remote.Id = local.Id;
-            remote.Album = entity;
-            remote.AlbumId = entity.Id;
-            remote.Monitored = local.Monitored;
+
+            remote.UseDbFieldsFrom(local);
         }
 
         protected override void AddChildren(List<AlbumRelease> children)

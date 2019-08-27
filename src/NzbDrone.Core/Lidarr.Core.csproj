@@ -16,6 +16,7 @@
     <PackageReference Include="xmlrpcnet" Version="2.5.0" />
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0006" />
+    <PackageReference Include="Equ" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />

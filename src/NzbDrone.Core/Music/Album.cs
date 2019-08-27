@@ -1,26 +1,26 @@
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Datastore;
 using System;
 using System.Collections.Generic;
 using Marr.Data;
+using Equ;
 using System.Linq;
-using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Music
 {
-    public class Album : ModelBase, IEquatable<Album>
+    public class Album : Entity<Album>
     {
         public Album()
         {
-            Genres = new List<string>();
+            OldForeignAlbumIds = new List<string>();
+
             Images = new List<MediaCover.MediaCover>();
             Links = new List<Links>();
+            Genres = new List<string>();
+            SecondaryTypes = new List<SecondaryAlbumType>();
             Ratings = new Ratings();
             Artist = new Artist();
-            OldForeignAlbumIds = new List<string>();
-        }
 
-        public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
+        }
 
         // These correspond to columns in the Albums table
         // These are metadata entries
@@ -45,14 +45,19 @@ namespace NzbDrone.Core.Music
         public bool AnyReleaseOk { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public DateTime Added { get; set; }
+        [MemberwiseEqualityIgnore]
         public AddArtistOptions AddOptions { get; set; }
 
         // These are dynamically queried from other tables
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<ArtistMetadata> ArtistMetadata { get; set; }
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<List<AlbumRelease>> AlbumReleases { get; set; }
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<Artist> Artist { get; set; }
 
         //compatibility properties with old version of Album
+        [MemberwiseEqualityIgnore]
         public int ArtistId { get { return Artist?.Value?.Id ?? 0; } set { Artist.Value.Id = value; } }
 
         public override string ToString()
@@ -60,80 +65,42 @@ namespace NzbDrone.Core.Music
             return string.Format("[{0}][{1}]", ForeignAlbumId, Title.NullSafe());
         }
 
-        public void ApplyChanges(Album otherAlbum)
+        public override void UseMetadataFrom(Album other)
+        {
+            ForeignAlbumId = other.ForeignAlbumId;
+            OldForeignAlbumIds = other.OldForeignAlbumIds;
+            Title = other.Title;
+            Overview = other.Overview.IsNullOrWhiteSpace() ? Overview : other.Overview;
+            Disambiguation = other.Disambiguation;
+            ReleaseDate = other.ReleaseDate;
+            Images = other.Images.Any() ? other.Images : Images;
+            Links = other.Links;
+            Genres = other.Genres;
+            AlbumType = other.AlbumType;
+            SecondaryTypes = other.SecondaryTypes;
+            Ratings = other.Ratings;
+            CleanTitle = other.CleanTitle;
+        }
+
+        public override void UseDbFieldsFrom(Album other)
+        {
+            Id = other.Id;
+            ArtistMetadataId = other.ArtistMetadataId;
+            ProfileId = other.ProfileId;
+            Monitored = other.Monitored;
+            AnyReleaseOk = other.AnyReleaseOk;
+            LastInfoSync = other.LastInfoSync;
+            Added = other.Added;
+            AddOptions = other.AddOptions;
+        }
+
+        public override void ApplyChanges(Album otherAlbum)
         {
             ForeignAlbumId = otherAlbum.ForeignAlbumId;
             ProfileId = otherAlbum.ProfileId;
             AddOptions = otherAlbum.AddOptions;
             Monitored = otherAlbum.Monitored;
             AnyReleaseOk = otherAlbum.AnyReleaseOk;
-        }
-
-        public bool Equals(Album other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            if (Id == other.Id &&
-                ForeignAlbumId == other.ForeignAlbumId &&
-                (OldForeignAlbumIds?.SequenceEqual(other.OldForeignAlbumIds) ?? true) &&
-                Title == other.Title &&
-                Overview == other.Overview &&
-                Disambiguation == other.Disambiguation &&
-                ReleaseDate == other.ReleaseDate &&
-                Images?.ToJson() == other.Images?.ToJson() &&
-                Links?.ToJson() == other.Links?.ToJson() &&
-                (Genres?.SequenceEqual(other.Genres) ?? true) &&
-                AlbumType == other.AlbumType &&
-                (SecondaryTypes?.SequenceEqual(other.SecondaryTypes) ?? true) &&
-                Ratings?.ToJson() == other.Ratings?.ToJson())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            var other = obj as Album;
-            if (other == null)
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(other);
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + Id;
-                hash = hash * 23 + ForeignAlbumId.GetHashCode();
-                hash = hash * 23 + OldForeignAlbumIds?.GetHashCode() ?? 0;
-                hash = hash * 23 + Title?.GetHashCode() ?? 0;
-                hash = hash * 23 + Overview?.GetHashCode() ?? 0;
-                hash = hash * 23 + Disambiguation?.GetHashCode() ?? 0;
-                hash = hash * 23 + ReleaseDate?.GetHashCode() ?? 0;
-                hash = hash * 23 + Images?.GetHashCode() ?? 0;
-                hash = hash * 23 + Links?.GetHashCode() ?? 0;
-                hash = hash * 23 + Genres?.GetHashCode() ?? 0;
-                hash = hash * 23 + AlbumType?.GetHashCode() ?? 0;
-                hash = hash * 23 + SecondaryTypes?.GetHashCode() ?? 0;
-                hash = hash * 23 + Ratings?.GetHashCode() ?? 0;
-                return hash;
-            }
         }
     }
 }

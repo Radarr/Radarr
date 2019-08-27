@@ -54,18 +54,9 @@ namespace NzbDrone.Core.Music
             {
                 return UpdateResult.None;
             }
-            
-            local.OldForeignReleaseIds = remote.OldForeignReleaseIds;
-            local.Title = remote.Title;
-            local.Status = remote.Status;
-            local.Duration = remote.Duration;
-            local.Label = remote.Label;
-            local.Disambiguation = remote.Disambiguation;
-            local.Country = remote.Country;
-            local.ReleaseDate = remote.ReleaseDate;
-            local.Media = remote.Media;
-            local.TrackCount = remote.TrackCount;
-            
+
+            local.UseMetadataFrom(remote);
+
             return UpdateResult.UpdateTags;
         }
 

@@ -31,13 +31,11 @@ namespace NzbDrone.Core.Music
             var updateList = new List<Track>();
 
             // for tracks that need updating, just grab the remote track and set db ids
-            foreach (var trackToUpdate in update)
+            foreach (var track in update)
             {
-                var track = remoteTracks.Single(e => e.ForeignTrackId == trackToUpdate.ForeignTrackId);
+                var remoteTrack = remoteTracks.Single(e => e.ForeignTrackId == track.ForeignTrackId);
+                track.UseMetadataFrom(remoteTrack);
 
-                // copy across the db keys to the remote track and check if we need to update
-                track.Id = trackToUpdate.Id;
-                track.TrackFileId = trackToUpdate.TrackFileId;
                 // make sure title is not null
                 track.Title = track.Title ?? "Unknown";
                 updateList.Add(track);
@@ -60,6 +58,9 @@ namespace NzbDrone.Core.Music
                 }
             }
 
+            _trackService.DeleteMany(delete.Concat(merge.Select(x => x.Item1)).ToList());
+            _trackService.UpdateMany(updateList);
+
             var tagsToUpdate = updateList;
             if (forceUpdateFileTags)
             {
@@ -67,9 +68,6 @@ namespace NzbDrone.Core.Music
                 tagsToUpdate = updateList.Concat(upToDate).ToList();
             }
             _audioTagService.SyncTags(tagsToUpdate);
-                
-            _trackService.DeleteMany(delete.Concat(merge.Select(x => x.Item1)).ToList());
-            _trackService.UpdateMany(updateList);
 
             return delete.Any() || updateList.Any() || merge.Any();
         }

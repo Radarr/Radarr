@@ -103,8 +103,8 @@ namespace NzbDrone.Core.Music
                 result = UpdateResult.UpdateTags;
             }
 
-            local.CleanName = remote.CleanName;
-            local.SortName = remote.SortName;
+            local.UseMetadataFrom(remote);
+            local.Metadata = remote.Metadata;
             local.LastInfoSync = DateTime.UtcNow;
 
             try

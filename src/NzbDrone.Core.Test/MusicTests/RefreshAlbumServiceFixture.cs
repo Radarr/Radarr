@@ -9,10 +9,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Commands;
 using NzbDrone.Test.Common;
-using FluentAssertions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.History;
 
@@ -179,51 +176,6 @@ namespace NzbDrone.Core.Test.MusicTests
                         Times.Once());
             
             ExceptionVerification.ExpectedWarns(1);
-        }
-
-        [Test]
-        public void two_equivalent_albums_should_be_equal()
-        {
-            var album = Builder<Album>.CreateNew().Build();
-            var album2 = Builder<Album>.CreateNew().Build();
-
-            ReferenceEquals(album, album2).Should().BeFalse();
-            album.Equals(album2).Should().BeTrue();
-        }
-
-        [Test]
-        public void two_equivalent_releases_should_be_equal()
-        {
-            var release = Builder<AlbumRelease>.CreateNew().Build();
-            var release2 = Builder<AlbumRelease>.CreateNew().Build();
-
-            ReferenceEquals(release, release2).Should().BeFalse();
-            release.Equals(release2).Should().BeTrue();
-
-            release.Label?.ToJson().Should().Be(release2.Label?.ToJson());
-            release.Country?.ToJson().Should().Be(release2.Country?.ToJson());
-            release.Media?.ToJson().Should().Be(release2.Media?.ToJson());
-                                    
-        }
-
-        [Test]
-        public void two_equivalent_tracks_should_be_equal()
-        {
-            var track = Builder<Track>.CreateNew().Build();
-            var track2 = Builder<Track>.CreateNew().Build();
-
-            ReferenceEquals(track, track2).Should().BeFalse();
-            track.Equals(track2).Should().BeTrue();
-        }
-
-        [Test]
-        public void two_equivalent_metadata_should_be_equal()
-        {
-            var meta = Builder<ArtistMetadata>.CreateNew().Build();
-            var meta2 = Builder<ArtistMetadata>.CreateNew().Build();
-
-            ReferenceEquals(meta, meta2).Should().BeFalse();
-            meta.Equals(meta2).Should().BeTrue();
         }
 
         [Test]

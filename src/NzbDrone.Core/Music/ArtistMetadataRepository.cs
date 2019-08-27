@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Music
                 var existing = existingMetadata.SingleOrDefault(x => x.ForeignArtistId == meta.ForeignArtistId);
                 if (existing != null)
                 {
-                    meta.Id = existing.Id;
+                    meta.UseDbFieldsFrom(existing);
                     if (!meta.Equals(existing))
                     {
                         updateMetadataList.Add(meta);

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Equ;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Music
 {
-    public class Member : IEmbeddedDocument
+    public class Member : MemberwiseEquatable<Member>, IEmbeddedDocument
     {
         public Member()
         {

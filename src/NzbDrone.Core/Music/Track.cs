@@ -1,20 +1,18 @@
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using Marr.Data;
 using NzbDrone.Common.Extensions;
-using System;
-using NzbDrone.Common.Serializer;
 using System.Collections.Generic;
-using System.Linq;
+using Equ;
 
 namespace NzbDrone.Core.Music
 {
-    public class Track : ModelBase, IEquatable<Track>
+    public class Track : Entity<Track>
     {
         public Track()
         {
             OldForeignTrackIds = new List<string>();
             OldForeignRecordingIds = new List<string>();
+            Ratings = new Ratings();
         }
 
         // These are model fields
@@ -32,17 +30,25 @@ namespace NzbDrone.Core.Music
         public Ratings Ratings { get; set; }
         public int MediumNumber { get; set; }
         public int TrackFileId { get; set; }
+
+        [MemberwiseEqualityIgnore]
         public bool HasFile => TrackFileId > 0;
 
         // These are dynamically queried from the DB
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<AlbumRelease> AlbumRelease { get; set; }
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<ArtistMetadata> ArtistMetadata { get; set; }
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<TrackFile> TrackFile { get; set; }
+        [MemberwiseEqualityIgnore]
         public LazyLoaded<Artist> Artist { get; set; }
 
         // These are retained for compatibility
         // TODO: Remove set, bodged in because tests expect this to be writable
+        [MemberwiseEqualityIgnore]
         public int AlbumId { get { return AlbumRelease?.Value?.Album?.Value?.Id ?? 0; } set { /* empty */ } }
+        [MemberwiseEqualityIgnore]
         public Album Album { get; set; }
 
         public override string ToString()
@@ -50,75 +56,27 @@ namespace NzbDrone.Core.Music
             return string.Format("[{0}]{1}", ForeignTrackId, Title.NullSafe());
         }
 
-        public bool Equals(Track other)
+        public override void UseMetadataFrom(Track other)
         {
-            if (other == null)
-            {
-                return false;
-            }
-
-            if (Id == other.Id &&
-                ForeignTrackId == other.ForeignTrackId &&
-                (OldForeignTrackIds?.SequenceEqual(other.OldForeignTrackIds) ?? true) &&
-                ForeignRecordingId == other.ForeignRecordingId &&
-                (OldForeignRecordingIds?.SequenceEqual(other.OldForeignRecordingIds) ?? true) &&
-                AlbumReleaseId == other.AlbumReleaseId &&
-                ArtistMetadataId == other.ArtistMetadataId &&
-                TrackNumber == other.TrackNumber &&
-                AbsoluteTrackNumber == other.AbsoluteTrackNumber &&
-                Title == other.Title &&
-                Duration == other.Duration &&
-                Explicit == other.Explicit &&
-                Ratings?.ToJson() == other.Ratings?.ToJson() &&
-                MediumNumber == other.MediumNumber &&
-                TrackFileId == other.TrackFileId)
-            {
-                return true;
-            }
-
-            return false;
+            ForeignTrackId = other.ForeignTrackId;
+            OldForeignTrackIds = other.OldForeignTrackIds;
+            ForeignRecordingId = other.ForeignRecordingId;
+            OldForeignRecordingIds = other.OldForeignRecordingIds;
+            TrackNumber = other.TrackNumber;
+            AbsoluteTrackNumber = other.AbsoluteTrackNumber;
+            Title = other.Title;
+            Duration = other.Duration;
+            Explicit = other.Explicit;
+            Ratings = other.Ratings;
+            MediumNumber = other.MediumNumber;
         }
 
-        public override bool Equals(object obj)
+        public override void UseDbFieldsFrom(Track other)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            var other = obj as Track;
-            if (other == null)
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(other);
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + Id;
-                hash = hash * 23 + ForeignTrackId.GetHashCode();
-                hash = hash * 23 + OldForeignTrackIds?.GetHashCode() ?? 0;
-                hash = hash * 23 + ForeignRecordingId.GetHashCode();
-                hash = hash * 23 + OldForeignRecordingIds?.GetHashCode() ?? 0;
-                hash = hash * 23 + AlbumReleaseId;
-                hash = hash * 23 + ArtistMetadataId;
-                hash = hash * 23 + TrackNumber?.GetHashCode() ?? 0;
-                hash = hash * 23 + AbsoluteTrackNumber;
-                hash = hash * 23 + Title?.GetHashCode() ?? 0;
-                hash = hash * 23 + Duration;
-                hash = hash * 23 + Explicit.GetHashCode();
-                hash = hash * 23 + Ratings?.GetHashCode() ?? 0;
-                hash = hash * 23 + MediumNumber;
-                hash = hash * 23 + TrackFileId;
-                return hash;
-            }
+            Id = other.Id;
+            AlbumReleaseId = other.AlbumReleaseId;
+            ArtistMetadataId = other.ArtistMetadataId;
+            TrackFileId = other.TrackFileId;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.IO;
 using NzbDrone.Common.Extensions;
+using Equ;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
@@ -24,7 +25,7 @@ namespace NzbDrone.Core.MediaCover
         Album = 1
     }
 
-    public class MediaCover : IEmbeddedDocument
+    public class MediaCover : MemberwiseEquatable<MediaCover>, IEmbeddedDocument
     {
         private string _url;
         public string Url
