@@ -36,10 +36,10 @@ namespace Radarr.Api.V2.Indexers
             PostValidator.RuleFor(s => s.Protocol).NotEmpty();
             PostValidator.RuleFor(s => s.PublishDate).NotEmpty();
 
-            Post["/push"] = x => ProcessRelease(ReadResourceFromRequest());
+            Post("/push",  x => ProcessRelease(ReadResourceFromRequest()));
         }
 
-        private Response ProcessRelease(ReleaseResource release)
+        private object ProcessRelease(ReleaseResource release)
         {
             _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl);
 
@@ -59,7 +59,7 @@ namespace Radarr.Api.V2.Indexers
                 throw new ValidationException(new List<ValidationFailure>{ new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new [] { firstDecision }).AsResponse();
+            return MapDecisions(new [] { firstDecision });
         }
 
         private void ResolveIndexer(ReleaseInfo release)

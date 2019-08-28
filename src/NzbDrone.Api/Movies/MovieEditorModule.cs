@@ -18,22 +18,22 @@ namespace NzbDrone.Api.Movies
             : base("/movie/editor")
         {
             _movieService = movieService;
-            Put["/"] = Movie => SaveAll();
-            Put["/delete"] = Movie => DeleteSelected();
+            Put("/",  Movie => SaveAll());
+            Put("/delete",  Movie => DeleteSelected());
         }
 
-        private Response SaveAll()
+        private object SaveAll()
         {
             var resources = Request.Body.FromJson<List<MovieResource>>();
 
             var Movie = resources.Select(MovieResource => MovieResource.ToModel(_movieService.GetMovie(MovieResource.Id))).ToList();
 
-            return _movieService.UpdateMovie(Movie)
+            return ResponseWithCode(_movieService.UpdateMovie(Movie)
                                  .ToResource()
-                                 .AsResponse(HttpStatusCode.Accepted);
+                                 , HttpStatusCode.Accepted);
         }
 
-        private Response DeleteSelected()
+        private object DeleteSelected()
         {
             var deleteFiles = false;
             var addExclusion = false;

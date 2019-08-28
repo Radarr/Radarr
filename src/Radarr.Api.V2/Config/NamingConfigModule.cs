@@ -2,13 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
-using Nancy.Responses;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
 using Nancy.ModelBinding;
-using Radarr.Http.Extensions;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace Radarr.Api.V2.Config
 {
@@ -33,7 +30,7 @@ namespace Radarr.Api.V2.Config
             GetResourceById = GetNamingConfig;
             UpdateResource = UpdateNamingConfig;
 
-            Get["/examples"] = x => GetExamples(this.Bind<NamingConfigResource>());
+            Get("/examples",  x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
@@ -66,7 +63,7 @@ namespace Radarr.Api.V2.Config
             return GetNamingConfig();
         }
 
-        private JsonResponse<NamingExampleResource> GetExamples(NamingConfigResource config)
+        private object GetExamples(NamingConfigResource config)
         {
             if (config.Id == 0)
             {
@@ -86,7 +83,7 @@ namespace Radarr.Api.V2.Config
                 ? "Invalid format"
                 : _filenameSampleService.GetMovieFolderSample(nameSpec);
 
-            return sampleResource.AsResponse();
+            return sampleResource;
         }
 
         private void ValidateFormatResult(NamingConfig nameSpec)

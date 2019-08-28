@@ -3,7 +3,6 @@ using Nancy.Bootstrapper;
 using Radarr.Http;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.SignalR;
 
 namespace Radarr.Host

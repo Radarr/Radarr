@@ -45,8 +45,8 @@ namespace Radarr.Api.V2.MovieFiles
             UpdateResource = SetMovieFile;
             DeleteResource = DeleteMovieFile;
 
-            Put["/editor"] = movieFiles => SetMovieFile();
-            Delete["/bulk"] = movieFiles => DeleteMovieFiles();
+            Put("/editor",  movieFiles => SetMovieFile());
+            Delete("/bulk",  movieFiles => DeleteMovieFiles());
         }
 
         private MovieFileResource GetMovieFile(int id)
@@ -100,7 +100,7 @@ namespace Radarr.Api.V2.MovieFiles
             _mediaFileService.Update(movieFile);
         }
 
-        private Response SetMovieFile()
+        private object SetMovieFile()
         {
             var resource = Request.Body.FromJson<MovieFileListResource>();
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
@@ -123,8 +123,8 @@ namespace Radarr.Api.V2.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification))
-                               .AsResponse(HttpStatusCode.Accepted);
+            return ResponseWithCode(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification))
+                               , HttpStatusCode.Accepted);
         }
 
         private void DeleteMovieFile(int id)
@@ -140,7 +140,7 @@ namespace Radarr.Api.V2.MovieFiles
             //_mediaFileDeletionService.Delete(series, episodeFile);
         }
 
-        private Response DeleteMovieFiles()
+        private object DeleteMovieFiles()
         {
             var resource = Request.Body.FromJson<MovieFileListResource>();
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
@@ -156,7 +156,7 @@ namespace Radarr.Api.V2.MovieFiles
                 //_mediaFileDeletionService.DeleteEpisodeFile(movie, movieFile);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
 
         public void Handle(MovieFileAddedEvent message)

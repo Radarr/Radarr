@@ -14,16 +14,16 @@ namespace Radarr.Api.V2.Movies
             : base("/movie/import")
         {
             _movieService = movieService;
-            Post["/"] = x => Import();
+            Post("/",  x => Import());
         }
 
 
-        private Response Import()
+        private object Import()
         {
             var resource = Request.Body.FromJson<List<MovieResource>>();
             var newSeries = resource.ToModel();
 
-            return _movieService.AddMovies(newSeries).ToResource().AsResponse();
+            return _movieService.AddMovies(newSeries).ToResource();
         }
     }
 }

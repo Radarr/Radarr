@@ -54,7 +54,8 @@ namespace NzbDrone.Api.Movies
 
             GetResourceAll = AllMovie;
             GetResourceById = GetMovie;
-            Get[TITLE_SLUG_ROUTE] = GetByTitleSlug;
+            Get(TITLE_SLUG_ROUTE, GetByTitleSlug);
+
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
             DeleteResource = DeleteMovie;
@@ -105,7 +106,7 @@ namespace NzbDrone.Api.Movies
             return moviesResources;
         }
 
-        private Response GetByTitleSlug(dynamic options)
+        private object GetByTitleSlug(dynamic options)
         {
             string slug;
             try
@@ -120,7 +121,7 @@ namespace NzbDrone.Api.Movies
 
             try
             {
-                return MapToResource(_moviesService.FindByTitleSlug(slug)).AsResponse(HttpStatusCode.OK);
+                return ResponseWithCode(MapToResource(_moviesService.FindByTitleSlug(slug)), HttpStatusCode.OK);
             }
             catch (ModelNotFoundException)
             {

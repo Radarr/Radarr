@@ -48,11 +48,11 @@ namespace NzbDrone.Api.Qualities
 
             DeleteResource = DeleteFormat;
 
-            Get["/test"] = x => Test();
+            Get("/test",  x => Test());
 
-            Post["/test"] = x => TestWithNewModel();
+            Post("/test",  x => TestWithNewModel());
 
-            Get["schema"] = x => GetTemplates();
+            Get("schema",  x => GetTemplates());
         }
 
         private int Create(CustomFormatResource customFormatResource)
@@ -82,7 +82,7 @@ namespace NzbDrone.Api.Qualities
             _formatService.Delete(id);
         }
 
-        private Response GetTemplates()
+        private object GetTemplates()
         {
             return CustomFormatService.Templates.SelectMany(t =>
             {
@@ -92,7 +92,7 @@ namespace NzbDrone.Api.Qualities
                     r.Simplicity = t.Key;
                     return r;
                 });
-            }).AsResponse();
+            });
         }
 
         private CustomFormatTestResource Test()

@@ -2,13 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
-using Nancy.Responses;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
 using Nancy.ModelBinding;
-using Radarr.Http.Extensions;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Config
 {
@@ -33,7 +30,7 @@ namespace NzbDrone.Api.Config
             GetResourceById = GetNamingConfig;
             UpdateResource = UpdateNamingConfig;
 
-            Get["/samples"] = x => GetExamples(this.Bind<NamingConfigResource>());
+            Get("/samples",  x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.MultiEpisodeStyle).InclusiveBetween(0, 5);
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
@@ -67,7 +64,7 @@ namespace NzbDrone.Api.Config
             return GetNamingConfig();
         }
 
-        private JsonResponse<NamingSampleResource> GetExamples(NamingConfigResource config)
+        private object GetExamples(NamingConfigResource config)
         {
             var nameSpec = config.ToModel();
             var sampleResource = new NamingSampleResource();
@@ -82,7 +79,7 @@ namespace NzbDrone.Api.Config
                 ? "Invalid format"
                 : _filenameSampleService.GetMovieFolderSample(nameSpec);
 
-            return sampleResource.AsResponse();
+            return sampleResource;
         }
 
         private void ValidateFormatResult(NamingConfig nameSpec)

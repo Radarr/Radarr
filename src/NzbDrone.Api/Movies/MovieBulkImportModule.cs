@@ -53,11 +53,11 @@ namespace NzbDrone.Api.Movies
             _movieService = movieService;
             _profileService = profileService;
             _parsingService = parsingService;
-            Get["/"] = x => Search();
+            Get("/",  x => Search());
         }
 
 
-        private Response Search()
+        private object Search()
         {
             if (Request.Query.Id == 0)
             {
@@ -166,7 +166,7 @@ namespace NzbDrone.Api.Movies
                 SortKey = Request.Query.sort_by,
                 TotalRecords = total_count - mapped.Where(m => m == null).Count(),
                 Records = MapToResource(mapped.Where(m => m != null)).ToList()
-            }.AsResponse();
+            };
         }
 
 

@@ -26,12 +26,12 @@ namespace NzbDrone.Api.Calendar
             _movieService = movieService;
             _tagService = tagService;
 
-            Get["/NzbDrone.ics"] = options => GetCalendarFeed();
-            Get["/Sonarr.ics"] = options => GetCalendarFeed();
-            Get["/Radarr.ics"] = options => GetCalendarFeed();
+            Get("/NzbDrone.ics",  options => GetCalendarFeed());
+            Get("/Sonarr.ics",  options => GetCalendarFeed());
+            Get("/Radarr.ics",  options => GetCalendarFeed());
         }
 
-        private Response GetCalendarFeed()
+        private object GetCalendarFeed()
         {
             var pastDays = 7;
             var futureDays = 28;
