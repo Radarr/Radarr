@@ -27,7 +27,7 @@ namespace NzbDrone.Api.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Post["/failed"] = x => MarkAsFailed();
+            Post("/failed",  x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(Core.History.History model)
@@ -64,11 +64,11 @@ namespace NzbDrone.Api.History
             return ApplyToPage(_historyService.Paged, pagingSpec, MapToResource);
         }
 
-        private Response MarkAsFailed()
+        private object MarkAsFailed()
         {
             var id = (int)Request.Form.Id;
             _failedDownloadService.MarkAsFailed(id);
-            return new object().AsResponse();
+            return new object();
         }
     }
 }

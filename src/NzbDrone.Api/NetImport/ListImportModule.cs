@@ -19,16 +19,16 @@ namespace NzbDrone.Api.NetImport
         {
             _movieService = movieService;
             _movieSearch = movieSearch;
-            Put["/"] = Movie => SaveAll();
+            Put("/",  Movie => SaveAll());
         }
 
-        private Response SaveAll()
+        private object SaveAll()
         {
             var resources = Request.Body.FromJson<List<MovieResource>>();
 
             var Movies = resources.Select(MovieResource => _movieSearch.MapMovieToTmdbMovie(MovieResource.ToModel())).Where(m => m != null).DistinctBy(m => m.TmdbId).ToList();
 
-            return _movieService.AddMovies(Movies).ToResource().AsResponse(HttpStatusCode.Accepted);
+            return ResponseWithCode(_movieService.AddMovies(Movies).ToResource(), HttpStatusCode.Accepted);
         }
     }
 }

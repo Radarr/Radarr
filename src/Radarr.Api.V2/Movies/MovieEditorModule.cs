@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
-using Nancy.Responses;
 using Radarr.Http.Extensions;
-using Radarr.Http.REST;
 using NzbDrone.Core.Movies;
-using Radarr.Http.Mapping;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Messaging.Commands;
@@ -23,11 +19,11 @@ namespace Radarr.Api.V2.Movies
         {
             _movieService = movieService;
             _commandQueueManager = commandQueueManager;
-            Put["/"] = movie => SaveAll();
-            Delete["/"] = movie => DeleteMovies();
+            Put("/",  movie => SaveAll());
+            Delete("/",  movie => DeleteMovies());
         }
 
-        private Response SaveAll()
+        private object SaveAll()
         {
             var resource = Request.Body.FromJson<MovieEditorResource>();
             var moviesToUpdate = _movieService.GetMovies(resource.MovieIds);
@@ -84,12 +80,12 @@ namespace Radarr.Api.V2.Movies
                 });
             }
 
-            return _movieService.UpdateMovie(moviesToUpdate)
+            return ResponseWithCode(_movieService.UpdateMovie(moviesToUpdate)
                                  .ToResource()
-                                 .AsResponse(HttpStatusCode.Accepted);
+                                 , HttpStatusCode.Accepted);
         }
 
-        private Response DeleteMovies()
+        private object DeleteMovies()
         {
             var resource = Request.Body.FromJson<MovieEditorResource>();
 
@@ -98,7 +94,7 @@ namespace Radarr.Api.V2.Movies
                 _movieService.DeleteMovie(id, false, false);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
     }
 }

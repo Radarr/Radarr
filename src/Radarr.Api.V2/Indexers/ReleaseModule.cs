@@ -47,12 +47,12 @@ namespace Radarr.Api.V2.Indexers
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             GetResourceAll = GetReleases;
-            Post["/"] = x => DownloadRelease(ReadResourceFromRequest());
+            Post("/",  x => DownloadRelease(ReadResourceFromRequest()));
 
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
 
-        private Response DownloadRelease(ReleaseResource release)
+        private object DownloadRelease(ReleaseResource release)
         {
             var remoteMovie = _remoteMovieCache.Find(GetCacheKey(release));
 
@@ -73,7 +73,7 @@ namespace Radarr.Api.V2.Indexers
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 
-            return release.AsResponse();
+            return release;
         }
 
         private List<ReleaseResource> GetReleases()

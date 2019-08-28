@@ -21,34 +21,34 @@ namespace Radarr.Api.V2.Movies
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
-            Get["/"] = x => Search();
-            Get["/tmdb"] = x => SearchByTmdbId();
-            Get["/imdb"] = x => SearchByImdbId();
+            Get("/",  x => Search());
+            Get("/tmdb",  x => SearchByTmdbId());
+            Get("/imdb",  x => SearchByImdbId());
         }
 
-        private Response SearchByTmdbId()
+        private object SearchByTmdbId()
         {
             int tmdbId = -1;
             if(Int32.TryParse(Request.Query.tmdbId, out tmdbId))
             {
                 var result = _movieInfo.GetMovieInfo(tmdbId, null, true);
-                return result.ToResource().AsResponse();
+                return result.ToResource();
             }
 
             throw new BadRequestException("Tmdb Id was not valid");
         }
 
-        private Response SearchByImdbId()
+        private object SearchByImdbId()
         {
             string imdbId = Request.Query.imdbId;
             var result = _movieInfo.GetMovieInfo(imdbId);
-            return result.ToResource().AsResponse();
+            return result.ToResource();
         }
 
-        private Response Search()
+        private object Search()
         {
             var imdbResults = _searchProxy.SearchForNewMovie((string)Request.Query.term);
-            return MapToResource(imdbResults).AsResponse();
+            return MapToResource(imdbResults);
         }
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)

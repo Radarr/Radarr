@@ -26,10 +26,10 @@ namespace Radarr.Api.V2.Calendar
             _movieService = movieService;
             _tagService = tagService;
             
-            Get["/Radarr.ics"] = options => GetCalendarFeed();
+            Get("/Radarr.ics",  options => GetCalendarFeed());
         }
 
-        private Response GetCalendarFeed()
+        private object GetCalendarFeed()
         {
             var pastDays = 7;
             var futureDays = 28;

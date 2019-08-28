@@ -28,9 +28,9 @@ namespace Radarr.Api.V2.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Get["/since"] = x => GetHistorySince();
-            Get["/movie"] = x => GetMovieHistory();
-            Post["/failed"] = x => MarkAsFailed();
+            Get("/since",  x => GetHistorySince());
+            Get("/movie",  x => GetMovieHistory());
+            Post("/failed",  x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeMovie)
@@ -117,11 +117,11 @@ namespace Radarr.Api.V2.History
             return _historyService.GetByMovieId(movieId, eventType).Select(h => MapToResource(h, includeMovie)).ToList();
         }
 
-        private Response MarkAsFailed()
+        private object MarkAsFailed()
         {
             var id = (int)Request.Form.Id;
             _failedDownloadService.MarkAsFailed(id);
-            return new object().AsResponse();
+            return new object();
         }
     }
 }

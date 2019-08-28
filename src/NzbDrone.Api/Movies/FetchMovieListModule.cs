@@ -19,11 +19,11 @@ namespace NzbDrone.Api.Movies
         {
             _fetchNetImport = netImport;
             _movieSearch = movieSearch;
-            Get["/"] = x => Search();
+            Get("/",  x => Search());
         }
 
 
-        private Response Search()
+        private object Search()
         {
             var results = _fetchNetImport.FetchAndFilter((int) Request.Query.listId, false);
 
@@ -39,7 +39,7 @@ namespace NzbDrone.Api.Movies
                 }
             }*/
 
-            return MapToResource(results).AsResponse();
+            return MapToResource(results);
         }
 
 

@@ -22,17 +22,17 @@ namespace Radarr.Api.V2.Movies
         {
             _searchProxy = searchProxy;
             _netImportFactory = netImportFactory;
-            Get["/lists"] = x => GetLists();
-            Get["/{action?recommendations}"] = x => Search(x.action);
+            Get("/lists",  x => GetLists());
+            Get("/{action?recommendations}",  x => Search(x.action));
         }
 
-        private Response Search(string action)
+        private object Search(string action)
         {
             var imdbResults = _searchProxy.DiscoverNewMovies(action);
-            return MapToResource(imdbResults).AsResponse();
+            return MapToResource(imdbResults);
         }
 
-        private Response GetLists()
+        private object GetLists()
         {
             var lists = _netImportFactory.Discoverable();
 
@@ -43,7 +43,7 @@ namespace Radarr.Api.V2.Movies
                 resource.Name = definition.Definition.Name;
 
                 return resource;
-            }).AsResponse();
+            });
         }
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
