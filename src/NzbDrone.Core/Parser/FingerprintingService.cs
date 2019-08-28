@@ -375,6 +375,11 @@ namespace NzbDrone.Core.Parser
                 _logger.Warn(e, "AcoustId API gave invalid response");
                 return;
             }
+            catch (Exception e)
+            {
+                _logger.Warn(e, "AcoustId API lookup failed");
+                return;
+            }
 
             var response = httpResponse.Resource;
 

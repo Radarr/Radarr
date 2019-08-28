@@ -200,5 +200,19 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
 
             ExceptionVerification.ExpectedWarns(1);
         }
+
+        [Test]
+        public void should_not_throw_if_api_times_out()
+        {
+            Mocker.GetMock<IHttpClient>().Setup(x => x.Post<LookupResponse>(It.IsAny<HttpRequest>()))
+                .Throws(new System.Net.WebException("The operation has timed out."));
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
+            var localTrack = new LocalTrack { Path = path };
+            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            localTrack.AcoustIdResults.Should().BeNull();
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
     }
 }
