@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Parser
         public string TwoLetterCode { get; set; }
         public string ThreeLetterCode { get; set; }
         public List<string> AltCodes = new List<string>();
-        public RuList<string> RusCodes = new RuList<string>();
+        public List<string> RusCodes = new List<string>();
         public Language Language { get; set; }
 
         public IsoLanguage(List<string> twoLetterCode, string threeLetterCode, Language language)
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Parser
             Language = language;
         }
 
-        public IsoLanguage(RuList<string> twoLetterCodes, string threeLetterCode, Language language)
+        public IsoLanguage(List<string> twoLetterCodes, string threeLetterCode, Language language)
         {
             TwoLetterCode = twoLetterCodes.First();
             twoLetterCodes.RemoveAt(0);
