@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Parser
@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Parser
         public List<string> AltCodes = new List<string>();
         public Language Language { get; set; }
 
-        public IsoLanguage(List<string> twoLetterCode, string threeLetterCode, Language language)
+        public IsoLanguage(string twoLetterCode, string threeLetterCode, Language language)
         {
             TwoLetterCode = twoLetterCode;
             ThreeLetterCode = threeLetterCode;
