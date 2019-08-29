@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("ja", "jpn", Language.Japanese),
 //                                                             new IsoLanguage("", "", Language.Cantonese),
 //                                                             new IsoLanguage("", "", Language.Mandarin),
-                                                               new IsoLanguage(new List2<string>{"дб", "пм"}, "ru", "rus",  Language.Russian),
+                                                               new IsoLanguage(new List<string>{"дб", "пм"}, "ru", "rus",  Language.Russian),
                                                                new IsoLanguage("pl", "pol", Language.Polish),
                                                                new IsoLanguage("vi", "vie", Language.Vietnamese),
                                                                new IsoLanguage("sv", "swe", Language.Swedish),
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Parser
             }
             else if (isoCode.Length == 4)
             {
-                return All.SingleOrDefault(l => l.RussianLetterCode == isoCode);
+                return All.SingleOrDefault(l => l.FourLetterCode == isoCode);
             }
             return null;
         }
