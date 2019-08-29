@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Parser
             }
             else if (isoCode.Length == 4)
             {
-                return All.SingleOrDefault(l => l.FourLetterCode == isoCode);
+                return All.SingleOrDefault(l => l.RussianLetterCode == rusCode);
             }
             return null;
         }
