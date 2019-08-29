@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
-                                                               new IsoLanguage(new List<string> {"us", "uk", "en"}, "eng", Language.English),
+                                                               new IsoLanguage(new List<string> {"us", "ст", "uk", "en"}, "eng", Language.English),
                                                                new IsoLanguage("fr", "fra", Language.French),
                                                                new IsoLanguage("es", "spa", Language.Spanish),
                                                                new IsoLanguage("de", "deu", Language.German),
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("ja", "jpn", Language.Japanese),
 //                                                             new IsoLanguage("", "", Language.Cantonese),
 //                                                             new IsoLanguage("", "", Language.Mandarin),
-                                                               new IsoLanguage("дб", "rus",  Language.Russian),
+                                                               new IsoLanguage(new List2<string>{"дб", "пм"}, "ru", "rus",  Language.Russian),
                                                                new IsoLanguage("pl", "pol", Language.Polish),
                                                                new IsoLanguage("vi", "vie", Language.Vietnamese),
                                                                new IsoLanguage("sv", "swe", Language.Swedish),
@@ -47,7 +47,10 @@ namespace NzbDrone.Core.Parser
                 //Lookup ISO639-2T code
                 return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
             }
-
+            else if (isoCode.Length == 4)
+            {
+                return All.SingleOrDefault(l => l.RussianLetterCode == isoCode);
+            }
             return null;
         }
 
