@@ -49,7 +49,6 @@ namespace NzbDrone.Core.Parser
      }
      else if (isoCode.Length == 4)
      {
-         //Lookup ISO639-2T code
          return All.SingleOrDefault(l => l.FourLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
      }
      return null;

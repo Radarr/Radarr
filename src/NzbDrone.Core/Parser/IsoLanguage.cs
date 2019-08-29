@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Parser
         public List<string> AltCodes = new List<string>();
         public Language Language { get; set; }
 
-        public IsoLanguage(string twoLetterCode, string threeLetterCode, Language language)
+        public IsoLanguage(string twoLetterCode, string threeLetterCode, string fourLetterCode, Language language)
         {
             TwoLetterCode = twoLetterCode;
             ThreeLetterCode = threeLetterCode;
@@ -19,14 +19,14 @@ namespace NzbDrone.Core.Parser
             Language = language;
         }
 
-        public IsoLanguage(List<string> twoLetterCodes, string threeLetterCode, Language language)
+        public IsoLanguage(List<string> twoLetterCodes, string threeLetterCode, string fourLetterCode, Language language)
         {
             TwoLetterCode = twoLetterCodes.First();
             twoLetterCodes.RemoveAt(0);
             ThreeLetterCode = threeLetterCode;
             FourLetterCode = fourLetterCode;
             Language = language;
-            AltCodes.AddRange(fourLetterCodes);
+            AltCodes.AddRange(fourLetterCode);
         }
 
     }
