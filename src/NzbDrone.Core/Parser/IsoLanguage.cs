@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Parser
         {
             TwoLetterCode = twoLetterCode;
             ThreeLetterCode = threeLetterCode;
-            RussianLetterCode = RussianLetterCode
+            RussianLetterCode = russianLetterCode;
             Language = language;
         }
 
