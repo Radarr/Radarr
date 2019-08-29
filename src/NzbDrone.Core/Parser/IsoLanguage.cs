@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Parser
     {
         public string TwoLetterCode { get; set; }
         public string ThreeLetterCode { get; set; }
+        public string FourLetterCode { get; set; }
         public List<string> AltCodes = new List<string>();
         public Language Language { get; set; }
 
@@ -14,6 +15,7 @@ namespace NzbDrone.Core.Parser
         {
             TwoLetterCode = twoLetterCode;
             ThreeLetterCode = threeLetterCode;
+            FourLetterCode = fourLetterCode;
             Language = language;
         }
 
@@ -22,8 +24,9 @@ namespace NzbDrone.Core.Parser
             TwoLetterCode = twoLetterCodes.First();
             twoLetterCodes.RemoveAt(0);
             ThreeLetterCode = threeLetterCode;
+            FourLetterCode = fourLetterCode;
             Language = language;
-            AltCodes.AddRange(twoLetterCodes);
+            AltCodes.AddRange(fourLetterCodes);
         }
 
     }
