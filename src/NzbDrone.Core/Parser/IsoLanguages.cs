@@ -47,9 +47,9 @@ namespace NzbDrone.Core.Parser
                 //Lookup ISO639-2T code
                 return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
             }
-            else if (isoCode.Length == 4)
+            else if (rusCode.Length == 4)
             {
-                return All.SingleOrDefault(l => l.RussianLetterCode == isoCode);
+                return All.SingleOrDefault(l => l.RussianLetterCode == rusCode);
             }
             return null;
         }
