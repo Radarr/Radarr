@@ -35,28 +35,26 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("an", "any", Language.Any)
                                                            };
 
- public static IsoLanguage Find(string isoCode)
- {
-     if (isoCode.Length == 2)
-     {
-         //Lookup ISO639-1 code
-         return All.SingleOrDefault(l => l.TwoLetterCode == isoCode);
-     }
-     else if (isoCode.Length == 3)
-     {
-         //Lookup ISO639-2T code
-         return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
-     }
-     else if (isoCode.Length == 4)
-     {
-         return All.SingleOrDefault(l => l.FourLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
-     }
-     return null;
- }
 
- public static IsoLanguage Get(Language language)
- {
-     return All.SingleOrDefault(l => l.Language == language);
- }
-}
+        public static IsoLanguage Find(string isoCode)
+        {
+            if (isoCode.Length == 2)
+            {
+                //Lookup ISO639-1 code
+                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
+            }
+            else if (isoCode.Length == 3)
+            {
+                //Lookup ISO639-2T code
+                return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
+            }
+
+            return null;
+        }
+
+        public static IsoLanguage Get(Language language)
+        {
+            return All.SingleOrDefault(l => l.Language == language);
+        }
+    }
 }
