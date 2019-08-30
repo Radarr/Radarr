@@ -425,7 +425,7 @@ stages:
   - stage: Analyze
     dependsOn: []
     displayName: Analyze
-    condition: not(variables['System.PullRequest.IsFork'])
+    condition: eq(variables['system.pullrequest.isfork'], false)
       
     jobs:
     - job: Analyze_Frontend
