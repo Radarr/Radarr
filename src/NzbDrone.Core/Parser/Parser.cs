@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SixDigitAirDateRegex = new Regex(@"(?<=[_.-])(?<airdate>(?<!\d)(?<airyear>[1-9]\d{1})(?<airmonth>[0-1][0-9])(?<airday>[0-3][0-9]))(?=[_.-])",
                                                                         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ](S\d+E\d+)[-._ ])|(-(RP|1|NZBGeek|Obfuscated|sample|Pre|postbot|xpost|Rakuv[a-z]*|WhiteRev|BUYMORE|AsRequested|AlternativeToRequested|GEROV|Z0iDS3N|Chamele0n))+$",
+        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ](S\d+E\d+)[-._ ])|(-(RP|1|NZBGeek|Obfuscated|sample|Pre|postbot|xpost|Rakuv[a-z0-9]*|WhiteRev|BUYMORE|AsRequested|AlternativeToRequested|GEROV|Z0iDS3N|Chamele0n))+$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex CleanTorrentSuffixRegex = new Regex(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SpecialEpisodeWordRegex = new Regex(@"\b(part|special|edition|christmas)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex DuplicateSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
-        private static readonly Regex RequestInfoRegex = new Regex(@"\[.+?\]", RegexOptions.Compiled);
+        private static readonly Regex RequestInfoRegex = new Regex(@"^(?:\[.+?\])+", RegexOptions.Compiled);
 
         private static readonly Regex ReportYearRegex = new Regex(@"^.*(?<year>(19|20)\d{2}).*$", RegexOptions.Compiled);
 

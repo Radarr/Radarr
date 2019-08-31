@@ -176,7 +176,7 @@ export const toggleMovieMonitored = createThunk(TOGGLE_MOVIE_MONITORED);
 
 export const setMovieValue = createAction(SET_MOVIE_VALUE, (payload) => {
   return {
-    section: 'movies',
+    section,
     ...payload
   };
 });

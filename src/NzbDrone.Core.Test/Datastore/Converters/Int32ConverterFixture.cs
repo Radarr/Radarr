@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         {
             var i = 5;
 
-            Subject.ToDB(i).Should().Be(5);
+            Subject.ToDB(i).Should().Be(i);
         }
 
         [Test]

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import { icons } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Link from 'Components/Link/Link';
@@ -120,8 +121,13 @@ class AddNewMovie extends Component {
           }
 
           {
-            !isFetching && !!error &&
-              <div>Failed to load search results, please try again.</div>
+            !isFetching && !!error ?
+              <div className={styles.message}>
+                <div className={styles.helpText}>
+                  Failed to load search results, please try again.
+                </div>
+                <div>{getErrorMessage(error)}</div>
+              </div> : null
           }
 
           {

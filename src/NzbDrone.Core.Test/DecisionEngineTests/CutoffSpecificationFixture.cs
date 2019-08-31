@@ -83,5 +83,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
                 }, old, newQ).Should().BeFalse();
         }
+
+        [Test]
+        public void should_return_true_if_cutoffs_are_met_but_is_a_revision_upgrade()
+        {
+            Profile _profile = new Profile
+            {
+                Cutoff = Quality.HDTV1080p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+            };
+
+            Subject.CutoffNotMet(
+                _profile,
+                new QualityModel(Quality.WEBDL1080p, new Revision(version: 1)),
+                new QualityModel(Quality.WEBDL1080p, new Revision(version: 2))).Should().BeTrue();
+        }
     }
 }

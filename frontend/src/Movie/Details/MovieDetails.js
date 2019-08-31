@@ -22,6 +22,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
+import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
@@ -35,7 +36,6 @@ import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from '../../InteractiveSearch/InteractiveSearchTable';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
-import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -528,6 +528,7 @@ class MovieDetails extends Component {
 
           <InteractiveImportModal
             isOpen={isInteractiveImportModalOpen}
+            movieId={id}
             folder={path}
             allowMovieChange={false}
             showFilterExistingFiles={true}

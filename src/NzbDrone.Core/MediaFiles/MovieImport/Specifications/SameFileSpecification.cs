@@ -19,9 +19,17 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         {
             var movieFile = localMovie.Movie.MovieFile;
 
-            if (localMovie.Movie.MovieFileId == 0 || movieFile == null)
+            if (localMovie.Movie.MovieFileId == 0)
             {
                 _logger.Debug("No existing movie file, skipping");
+                return Decision.Accept();
+            }
+
+            if (movieFile == null)
+            {
+                var movie = localMovie.Movie;
+                _logger.Trace("Unable to get movie file details from the DB. MovieId: {0} MovieFileId: {1}", movie.Id, movie.MovieFileId);
+
                 return Decision.Accept();
             }
 

@@ -27,11 +27,13 @@ namespace NzbDrone.Core.Configuration
         //Media Management
         bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         string RecycleBin { get; set; }
+        int RecycleBinCleanupDays { get; set; }
         bool AutoDownloadPropers { get; set; }
         bool CreateEmptyMovieFolders { get; set; }
         bool DeleteEmptyFolders { get; set; }
         FileDateType FileDate { get; set; }
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
+        int MinimumFreeSpaceWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
         bool EnableMediaInfo { get; set; }
         bool ImportExtraFiles { get; set; }

@@ -12,6 +12,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import RootFoldersConnector from 'RootFolder/RootFoldersConnector';
 import NamingConnector from './Naming/NamingConnector';
+import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
 
 const rescanAfterRefreshOptions = [
   { key: 'always', value: 'Always' },
@@ -134,6 +135,23 @@ class MediaManagement extends Component {
                             />
                           </FormGroup>
                       }
+
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>Minimum Free Space</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.NUMBER}
+                          unit='MB'
+                          name="minimumFreeSpaceWhenImporting"
+                          helpText="Prevent import if it would leave less than this amount of disk space available"
+                          onChange={onInputChange}
+                          {...settings.minimumFreeSpaceWhenImporting}
+                        />
+                      </FormGroup>
 
                       <FormGroup
                         advancedSettings={advancedSettings}
@@ -281,6 +299,23 @@ class MediaManagement extends Component {
                       {...settings.recycleBin}
                     />
                   </FormGroup>
+
+                  <FormGroup
+                    advancedSettings={advancedSettings}
+                    isAdvanced={true}
+                  >
+                    <FormLabel>Recycling Bin Cleanup</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.NUMBER}
+                      name="recycleBinCleanupDays"
+                      helpText="Set to 0 to disable automatic cleanup"
+                      helpTextWarning="Files in the recycle bin older than the selected number of days will be cleaned up automatically"
+                      min={0}
+                      onChange={onInputChange}
+                      {...settings.recycleBinCleanupDays}
+                    />
+                  </FormGroup>
                 </FieldSet>
 
                 {
@@ -374,6 +409,7 @@ class MediaManagement extends Component {
 
           <FieldSet legend="Root Folders">
             <RootFoldersConnector />
+            <AddRootFolderConnector />
           </FieldSet>
         </PageContentBodyConnector>
       </PageContent>

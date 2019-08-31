@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                 try {
                     indexerSettings = _indexerFactory.Get(releaseInfo.IndexerId)?.Settings as IIndexerSettings;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //_logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
                 }                // First, let's augment the language!

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IRecycleBinProvider
     {
         void DeleteFolder(string path);
-        void DeleteFile(string path);
+        void DeleteFile(string path, string subfolder = "");
         void Empty();
         void Cleanup();
     }
@@ -62,18 +62,14 @@ namespace NzbDrone.Core.MediaFiles
                 _diskProvider.FolderSetLastWriteTime(destination, DateTime.UtcNow);
                 foreach (var file in _diskProvider.GetFiles(destination, SearchOption.AllDirectories))
                 {
-                    if (OsInfo.IsWindows)
-                    {
-                        //TODO: Better fix than this for non-Windows?
-                        _diskProvider.FileSetLastWriteTime(file, DateTime.UtcNow);
-                    }
+                    SetLastWriteTime(file, DateTime.UtcNow);
                 }
 
                 _logger.Debug("Folder has been moved to the recycling bin: {0}", destination);
             }
         }
 
-        public void DeleteFile(string path)
+        public void DeleteFile(string path, string subfolder = "")
         {
             _logger.Debug("Attempting to send '{0}' to recycling bin", path);
             var recyclingBin = _configService.RecycleBin;
@@ -94,7 +90,10 @@ namespace NzbDrone.Core.MediaFiles
             else
             {
                 var fileInfo = new FileInfo(path);
-                var destination = Path.Combine(recyclingBin, fileInfo.Name);
+                var destinationFolder = Path.Combine(recyclingBin, subfolder);
+                var destination = Path.Combine(destinationFolder, fileInfo.Name);
+
+                _diskProvider.CreateFolder(destinationFolder);
 
                 var index = 1;
                 while (_diskProvider.FileExists(destination))
@@ -102,11 +101,11 @@ namespace NzbDrone.Core.MediaFiles
                     index++;
                     if (fileInfo.Extension.IsNullOrWhiteSpace())
                     {
-                        destination = Path.Combine(recyclingBin, fileInfo.Name + "_" + index);
+                        destination = Path.Combine(destinationFolder, fileInfo.Name + "_" + index);
                     }
                     else
                     {
-                        destination = Path.Combine(recyclingBin, Path.GetFileNameWithoutExtension(fileInfo.Name) + "_" + index + fileInfo.Extension);
+                        destination = Path.Combine(destinationFolder, Path.GetFileNameWithoutExtension(fileInfo.Name) + "_" + index + fileInfo.Extension);
                     }
                 }
 
@@ -117,16 +116,11 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 catch (IOException e)
                 {
-                    var message = string.Format("Unable to move '{0}' to the recycling bin: '{1}'", path, destination);
-                    _logger.Error(e, message);
+                    _logger.Error(e, "Unable to move '{0}' to the recycling bin: '{1}'", path, destination);
                     throw;
                 }
-                
-                //TODO: Better fix than this for non-Windows?
-                if (OsInfo.IsWindows)
-                {
-                    _diskProvider.FileSetLastWriteTime(destination, DateTime.UtcNow);
-                }
+
+                SetLastWriteTime(destination, DateTime.UtcNow);
 
                 _logger.Debug("File has been moved to the recycling bin: {0}", destination);
             }
@@ -163,22 +157,19 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            _logger.Info("Removing items older than 7 days from the recycling bin");
+            var cleanupDays = _configService.RecycleBinCleanupDays;
 
-            foreach (var folder in _diskProvider.GetDirectories(_configService.RecycleBin))
+            if (cleanupDays == 0)
             {
-                if (_diskProvider.FolderGetLastWrite(folder).AddDays(7) > DateTime.UtcNow)
-                {
-                    _logger.Debug("Folder hasn't expired yet, skipping: {0}", folder);
-                    continue;
-                }
-
-                _diskProvider.DeleteFolder(folder, true);
+                _logger.Info("Automatic cleanup of Recycle Bin is disabled");
+                return;
             }
 
-            foreach (var file in _diskProvider.GetFiles(_configService.RecycleBin, SearchOption.TopDirectoryOnly))
+            _logger.Info("Removing items older than {0} days from the recycling bin", cleanupDays);
+
+            foreach (var file in _diskProvider.GetFiles(_configService.RecycleBin, SearchOption.AllDirectories))
             {
-                if (_diskProvider.FileGetLastWrite(file).AddDays(7) > DateTime.UtcNow)
+                if (_diskProvider.FileGetLastWrite(file).AddDays(cleanupDays) > DateTime.UtcNow)
                 {
                     _logger.Debug("File hasn't expired yet, skipping: {0}", file);
                     continue;
@@ -187,7 +178,24 @@ namespace NzbDrone.Core.MediaFiles
                 _diskProvider.DeleteFile(file);
             }
 
+            _diskProvider.RemoveEmptySubfolders(_configService.RecycleBin);
+
             _logger.Debug("Recycling Bin has been cleaned up.");
+        }
+
+        private void SetLastWriteTime(string file, DateTime dateTime)
+        {
+            // Swallow any IOException that may be thrown due to "Invalid parameter"
+            try
+            {
+                _diskProvider.FileSetLastWriteTime(file, dateTime);
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
         }
 
         public void HandleAsync(MovieDeletedEvent message)

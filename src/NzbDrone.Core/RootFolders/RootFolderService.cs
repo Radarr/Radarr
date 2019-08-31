@@ -2,6 +2,8 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
@@ -71,11 +73,9 @@ namespace NzbDrone.Core.RootFolders
             {
                 try
                 {
-                    if (folder.Path.IsPathValid() && _diskProvider.FolderExists(folder.Path))
+                    if (folder.Path.IsPathValid())
                     {
-                        folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
-                        folder.TotalSpace = _diskProvider.GetTotalSize(folder.Path);
-                        folder.UnmappedFolders = GetUnmappedFolders(folder.Path);
+                        GetDetails(folder);
                     }
                 }
                 //We don't want an exception to prevent the root folders from loading in the UI, so they can still be deleted
@@ -115,9 +115,7 @@ namespace NzbDrone.Core.RootFolders
 
             _rootFolderRepository.Insert(rootFolder);
 
-            rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
-            rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
-            rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            GetDetails(rootFolder);
 
             return rootFolder;
         }
@@ -168,9 +166,8 @@ namespace NzbDrone.Core.RootFolders
         public RootFolder Get(int id)
         {
             var rootFolder = _rootFolderRepository.Get(id);
-            rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
-            rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
-            rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            GetDetails(rootFolder);
+
             return rootFolder;
         }
 
@@ -186,6 +183,20 @@ namespace NzbDrone.Core.RootFolders
             }
 
             return possibleRootFolder.Path;
+        }
+
+        private void GetDetails(RootFolder rootFolder)
+        {
+            Task.Run(() =>
+            {
+                if (_diskProvider.FolderExists(rootFolder.Path))
+                {
+                    rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
+                    rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
+                    rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+                }
+            })
+                .Wait(5000);
         }
     }
 }

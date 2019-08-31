@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Movies
                     movie.SecondaryYearSourceId = 0;
                 }
             }
-            catch (RadarrAPIException ex)
+            catch (RadarrAPIException)
             {
                 //Not that wild, could just be a 404.
             }

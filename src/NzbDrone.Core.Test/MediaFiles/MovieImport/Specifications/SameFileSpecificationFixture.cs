@@ -63,5 +63,16 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_be_accepted_if_file_cannot_be_fetched()
+        {
+            _localMovie.Movie = Builder<Movie>.CreateNew()
+                .With(e => e.MovieFileId = 1)
+                .With(e => e.MovieFile = new LazyLoaded<MovieFile>((MovieFile)null))
+                .Build();
+
+            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+        }
     }
 }

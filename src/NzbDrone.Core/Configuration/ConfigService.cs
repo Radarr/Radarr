@@ -93,6 +93,12 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RecycleBin", value); }
         }
 
+        public int RecycleBinCleanupDays
+        {
+            get { return GetValueInt("RecycleBinCleanupDays", 7); }
+            set { SetValue("RecycleBinCleanupDays", value); }
+        }
+
         public int RssSyncInterval
         {
             get { return GetValueInt("RssSyncInterval", 60); }
@@ -285,6 +291,13 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueBoolean("SkipFreeSpaceCheckWhenImporting", false); }
 
             set { SetValue("SkipFreeSpaceCheckWhenImporting", value); }
+        }
+
+        public int MinimumFreeSpaceWhenImporting
+        {
+            get { return GetValueInt("MinimumFreeSpaceWhenImporting", 100); }
+
+            set { SetValue("MinimumFreeSpaceWhenImporting", value); }
         }
 
         public bool CopyUsingHardlinks

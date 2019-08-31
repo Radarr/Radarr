@@ -174,6 +174,7 @@ module.exports = {
 
   calendarTodayBackgroundColor: '#ddd',
   calendarBorderColor: '#cecece',
+  calendarTextDim: '#666',
 
   //
   // Table

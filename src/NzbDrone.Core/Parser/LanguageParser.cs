@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Parser
                 Logger.Debug("Unable to parse langauge from subtitle file: {0}", fileName);
 #endif
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 #if !LIBRARY
                 Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);

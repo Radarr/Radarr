@@ -47,7 +47,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                     return Decision.Accept();
                 }
 
-                if (freeSpace < localMovie.Size + 100.Megabytes())
+                if (freeSpace < localMovie.Size + _configService.MinimumFreeSpaceWhenImporting.Megabytes())
                 {
                     _logger.Warn("Not enough free space ({0}) to import: {1} ({2})", freeSpace, localMovie, localMovie.Size);
                     return Decision.Reject("Not enough free space");

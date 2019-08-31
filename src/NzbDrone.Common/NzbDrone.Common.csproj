@@ -117,7 +117,6 @@
     <Compile Include="Disk\FileSystemModel.cs" />
     <Compile Include="Disk\FileSystemResult.cs" />
     <Compile Include="Disk\SystemFolders.cs" />
-    <Compile Include="EnvironmentInfo\IOperatingSystemVersionInfo.cs" />
     <Compile Include="EnvironmentInfo\IOsVersionAdapter.cs" />
     <Compile Include="EnvironmentInfo\IPlatformInfo.cs" />
     <Compile Include="EnvironmentInfo\OsVersionModel.cs" />

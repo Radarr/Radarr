@@ -15,11 +15,11 @@ namespace Radarr.Api.V2.Restrictions
         {
             _restrictionService = restrictionService;
 
-            GetResourceById = Get;
+            GetResourceById = GetById;
             GetResourceAll = GetAll;
             CreateResource = Create;
             UpdateResource = Update;
-            DeleteResource = Delete;
+            DeleteResource = DeleteRestriction;
 
             SharedValidator.Custom(restriction =>
             {
@@ -32,7 +32,7 @@ namespace Radarr.Api.V2.Restrictions
             });
         }
 
-        private RestrictionResource Get(int id)
+        private RestrictionResource GetById(int id)
         {
             return _restrictionService.Get(id).ToResource();
         }
@@ -52,7 +52,7 @@ namespace Radarr.Api.V2.Restrictions
             _restrictionService.Update(resource.ToModel());
         }
 
-        private void Delete(int id)
+        private void DeleteRestriction(int id)
         {
             _restrictionService.Delete(id);
         }

@@ -29,8 +29,7 @@ namespace Radarr.Api.V2.Indexers
             if (decision.RemoteMovie.Movie != null)
             {
                 release.QualityWeight = decision.RemoteMovie.Movie
-                                                              .Profile.Value
-                                                              .Items.FindIndex(v => v.Quality == release.Quality.Quality) * 100;
+                                                              .Profile.Value.GetIndex(release.Quality.Quality).Index * 100;
             }
 
             release.QualityWeight += release.Quality.Revision.Real * 10;

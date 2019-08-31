@@ -13,11 +13,11 @@ namespace Radarr.Api.V2.Tags
         {
             _tagService = tagService;
 
-            GetResourceById = Get;
+            GetResourceById = GetById;
             GetResourceAll = GetAll;
         }
 
-        private TagDetailsResource Get(int id)
+        private TagDetailsResource GetById(int id)
         {
             return _tagService.Details(id).ToResource();
         }

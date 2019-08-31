@@ -385,7 +385,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         return new List<Movie>();
                     }
@@ -538,7 +538,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
                     imdbMovie.Images.Add(imdbPoster);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     _logger.Debug(result);
                 }

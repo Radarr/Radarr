@@ -8,6 +8,7 @@ namespace Radarr.Api.V2.Config
     {
         public bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         public string RecycleBin { get; set; }
+        public int RecycleBinCleanupDays { get; set; }
         public bool AutoDownloadPropers { get; set; }
         public bool CreateEmptyMovieFolders { get; set; }
         public bool DeleteEmptyFolders { get; set; }
@@ -23,6 +24,7 @@ namespace Radarr.Api.V2.Config
         public string ChownGroup { get; set; }
 
         public bool SkipFreeSpaceCheckWhenImporting { get; set; }
+        public int MinimumFreeSpaceWhenImporting { get; set; }
         public bool CopyUsingHardlinks { get; set; }
         public bool ImportExtraFiles { get; set; }
         public string ExtraFileExtensions { get; set; }
@@ -37,6 +39,7 @@ namespace Radarr.Api.V2.Config
             {
                 AutoUnmonitorPreviouslyDownloadedMovies = model.AutoUnmonitorPreviouslyDownloadedMovies,
                 RecycleBin = model.RecycleBin,
+                RecycleBinCleanupDays = model.RecycleBinCleanupDays,
                 AutoDownloadPropers = model.AutoDownloadPropers,
                 CreateEmptyMovieFolders = model.CreateEmptyMovieFolders,
                 DeleteEmptyFolders = model.DeleteEmptyFolders,
@@ -52,6 +55,7 @@ namespace Radarr.Api.V2.Config
                 ChownGroup = model.ChownGroup,
 
                 SkipFreeSpaceCheckWhenImporting = model.SkipFreeSpaceCheckWhenImporting,
+                MinimumFreeSpaceWhenImporting = model.MinimumFreeSpaceWhenImporting,
                 CopyUsingHardlinks = model.CopyUsingHardlinks,
                 ImportExtraFiles = model.ImportExtraFiles,
                 ExtraFileExtensions = model.ExtraFileExtensions,

@@ -24,8 +24,9 @@ namespace Radarr.Api.V2.ManualImport
             var folder = (string)Request.Query.folder;
             var downloadId = (string)Request.Query.downloadId;
             var filterExistingFiles = Request.GetBooleanQueryParameter("filterExistingFiles", true);
+            var movieId = Request.GetNullableIntegerQueryParameter("movieId", null);
 
-            return _manualImportService.GetMediaFiles(folder, downloadId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
+            return _manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

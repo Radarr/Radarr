@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Qualities
 
             CreateResource = Create;
 
-            DeleteResource = Delete;
+            DeleteResource = DeleteFormat;
 
             Get["/test"] = x => Test();
 
@@ -77,7 +77,7 @@ namespace NzbDrone.Api.Qualities
             return _formatService.All().ToResource();
         }
 
-        private void Delete(int id)
+        private void DeleteFormat(int id)
         {
             _formatService.Delete(id);
         }

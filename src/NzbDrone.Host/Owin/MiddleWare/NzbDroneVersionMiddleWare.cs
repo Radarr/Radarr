@@ -36,7 +36,7 @@ namespace Radarr.Host.Owin.MiddleWare
                 context.Response.Headers.Add(_versionHeader);
                 await Next.Invoke(context);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Logger.Debug("Unable to set version header");
             }

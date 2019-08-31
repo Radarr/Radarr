@@ -256,6 +256,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTagsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleasesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureRunScheduledTasksFixture.cs" />
     <Compile Include="Http\HttpProxySettingsProviderFixture.cs" />
     <Compile Include="Http\TorCacheHttpRequestInterceptorFixture.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="IndexerTests\IntegrationTests\IndexerIntegrationTests.cs" />
     <Compile Include="IndexerTests\NewznabTests\NewznabCapabilitiesProviderFixture.cs" />
     <Compile Include="IndexerTests\RarbgTests\RarbgFixture.cs" />
+    <Compile Include="IndexerTests\SeedConfigProviderFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TorrentRssParserFactoryFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TorrentRssSettingsDetectorFixture.cs" />
     <Compile Include="IndexerTests\TorznabTests\TorznabFixture.cs" />

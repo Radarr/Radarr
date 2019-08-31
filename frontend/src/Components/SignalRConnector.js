@@ -9,6 +9,7 @@ import titleCase from 'Utilities/String/titleCase';
 import { fetchCommands, updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
+import { fetchMovies } from 'Store/Actions/movieActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
@@ -72,6 +73,7 @@ const mapDispatchToProps = {
   dispatchFetchQueue: fetchQueue,
   dispatchFetchQueueDetails: fetchQueueDetails,
   dispatchFetchRootFolders: fetchRootFolders,
+  dispatchFetchMovies: fetchMovies,
   dispatchFetchTags: fetchTags,
   dispatchFetchTagDetails: fetchTagDetails
 };
@@ -258,6 +260,7 @@ class SignalRConnector extends Component {
 
       const {
         dispatchFetchCommands,
+        dispatchFetchMovies,
         dispatchSetAppValue
       } = this.props;
 
@@ -265,6 +268,7 @@ class SignalRConnector extends Component {
       // are in sync after reconnecting.
 
       if (this.props.isReconnecting || this.props.isDisconnected) {
+        dispatchFetchMovies();
         dispatchFetchCommands();
         repopulatePage();
       }
@@ -346,6 +350,7 @@ SignalRConnector.propTypes = {
   dispatchFetchQueue: PropTypes.func.isRequired,
   dispatchFetchQueueDetails: PropTypes.func.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
+  dispatchFetchMovies: PropTypes.func.isRequired,
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchTagDetails: PropTypes.func.isRequired
 };

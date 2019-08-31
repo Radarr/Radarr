@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 {
     public interface IManualImportService
     {
-        List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles);
+        List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _logger = logger;
         }
 
-        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles)
+        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles)
         {
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -96,14 +96,17 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return new List<ManualImportItem> { ProcessFile(rootFolder, rootFolder, path, downloadId) };
             }
 
-            return ProcessFolder(path, path, downloadId, filterExistingFiles);
+            return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
-        private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, bool filterExistingFiles)
+        private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
         {
             DownloadClientItem downloadClientItem = null;
             var directoryInfo = new DirectoryInfo(baseFolder);
-            var movie = _parsingService.GetMovie(directoryInfo.Name);
+
+            var movie = movieId.HasValue ?
+                _movieService.GetMovie(movieId.Value) :
+                _parsingService.GetMovie(directoryInfo.Name);
 
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -116,20 +119,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 }
             }
 
-            // Try a lookup by the path if the movie is still unknown, this will handle
-            // the case where the movie folder doesn't match the movie title.
-            if (movie == null)
-            {
-                movie = _movieService.FindByPath(rootFolder);
-            }
-
             if (movie == null)
             {
                 var files = _diskScanService.FilterFiles(baseFolder, _diskScanService.GetVideoFiles(baseFolder, false));
                 var subfolders = _diskScanService.FilterFiles(baseFolder, _diskProvider.GetDirectories(baseFolder));
 
                 var processedFiles = files.Select(file => ProcessFile(rootFolder, baseFolder, file, downloadId));
-                var processedFolders = subfolders.SelectMany(subfolder => ProcessFolder(rootFolder, subfolder, downloadId, filterExistingFiles));
+                var processedFolders = subfolders.SelectMany(subfolder => ProcessFolder(rootFolder, subfolder, downloadId, null, filterExistingFiles));
 
                 return processedFiles.Concat(processedFolders).Where(i => i != null).ToList();
             }
@@ -159,11 +155,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             if (downloadId.IsNotNullOrWhiteSpace())
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
-                downloadClientItem = trackedDownload.DownloadItem;
+                downloadClientItem = trackedDownload?.DownloadItem;
 
                 if (movie == null)
                 {
-                    movie = trackedDownload.RemoteMovie.Movie;
+                    movie = trackedDownload?.RemoteMovie?.Movie;
                 }
             }
 

@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Messaging.Commands
                 _logger.Error(ex, "Thread aborted: " + ex.Message);
                 Thread.ResetAbort();
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException)
             {
                 _logger.Trace("Stopped one command execution pipeline");
             }

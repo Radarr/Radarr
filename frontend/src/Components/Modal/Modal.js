@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import elementClass from 'element-class';
 import getUniqueElememtId from 'Utilities/getUniqueElementId';
+import { isIOS } from 'Utilities/mobile';
+import { setScrollLock } from 'Utilities/scrollLock';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import { sizes } from 'Helpers/Props';
 import ErrorBoundary from 'Components/Error/ErrorBoundary';
@@ -31,6 +33,7 @@ class Modal extends Component {
     this._node = document.getElementById('portal-root');
     this._backgroundRef = null;
     this._modalId = getUniqueElememtId();
+    this._bodyScrollTop = 0;
   }
 
   componentDidMount() {
@@ -69,7 +72,14 @@ class Modal extends Component {
     window.addEventListener('keydown', this.onKeyDown);
 
     if (openModals.length === 1) {
-      elementClass(document.body).add(styles.modalOpen);
+      if (isIOS()) {
+        setScrollLock(true);
+        const scrollTop = document.body.scrollTop;
+        this._bodyScrollTop = scrollTop;
+        elementClass(document.body).add(styles.modalOpenIOS);
+      } else {
+        elementClass(document.body).add(styles.modalOpen);
+      }
     }
   }
 
@@ -78,7 +88,14 @@ class Modal extends Component {
     window.removeEventListener('keydown', this.onKeyDown);
 
     if (openModals.length === 0) {
-      elementClass(document.body).remove(styles.modalOpen);
+      setScrollLock(false);
+
+      if (isIOS()) {
+        elementClass(document.body).remove(styles.modalOpenIOS);
+        document.body.scrollTop = this._bodyScrollTop;
+      } else {
+        elementClass(document.body).remove(styles.modalOpen);
+      }
     }
   }
 
