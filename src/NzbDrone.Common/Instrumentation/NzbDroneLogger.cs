@@ -82,7 +82,7 @@ namespace NzbDrone.Common.Instrumentation
             else
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://fd45b801b1af445f919dbca8ca0ead89@sentry.io/1485284"
+                    ? "https://ef61083de8e54a8cb81b63fee479c4ee@sentry.io/1485284"
                     : "https://e4e7bfd3cc0e45a4814613a096c79cc3@sentry.io/1523529";
             }
 
