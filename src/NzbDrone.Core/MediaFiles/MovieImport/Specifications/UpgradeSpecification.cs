@@ -19,10 +19,24 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var qualityComparer = new QualityModelComparer(localMovie.Movie.Profile);
-            if (localMovie.Movie.MovieFile != null && qualityComparer.Compare(localMovie.Movie.MovieFile.Quality, localMovie.Quality) > 0)
+
+            if (localMovie.Movie.MovieFileId > 0)
             {
-                _logger.Debug("This file isn't an upgrade for all movies. Skipping {0}", localMovie.Path);
-                return Decision.Reject("Not an upgrade for existing movie file(s)");
+                var movieFile = localMovie.Movie.MovieFile;
+
+                if (movieFile == null)
+                {
+                    _logger.Trace("Unable to get movie file details from the DB. MovieId: {0} MovieFileId: {1}", localMovie.Movie.Id, localMovie.Movie.MovieFileId);
+                    return Decision.Accept();
+                }
+
+                var qualityCompare = qualityComparer.Compare(localMovie.Quality.Quality, movieFile.Quality.Quality);
+
+                if (qualityCompare < 0)
+                {
+                    _logger.Debug("This file isn't a quality upgrade for movie. Skipping {0}", localMovie.Path);
+                    return Decision.Reject("Not an upgrade for existing movie file(s)");
+                }
             }
 
             return Decision.Accept();
