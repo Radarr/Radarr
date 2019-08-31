@@ -45,7 +45,7 @@ namespace NzbDrone.Api.Profiles
             var profile = new Profile();
             profile.Cutoff = Quality.Unknown.Id;
             profile.Items = items;
-            profile.FormatCutoff = CustomFormat.None;
+            profile.FormatCutoff = CustomFormat.None.Id;
             profile.FormatItems = formatItems;
             profile.Language = Language.English;
 

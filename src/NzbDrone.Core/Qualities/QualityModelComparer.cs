@@ -94,5 +94,15 @@ namespace NzbDrone.Core.Qualities
 
             return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
         }
+
+        public int Compare(List<CustomFormat> left, int right)
+        {
+            left = left.WithNone();
+
+            var leftIndicies = GetIndicies(left, _profile);
+            var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
+
+            return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
+        }
     }
 }

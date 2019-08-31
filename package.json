@@ -6,6 +6,7 @@
     "build": "gulp build",
     "start": "gulp watch",
     "watch": "gulp watch",
+    "clean": "git clean -fXd",
     "lint": "esprint check",
     "lint-fix": "eslint start --fix",
     "stylelint": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
@@ -53,7 +54,7 @@
     "eslint": "6.0.1",
     "eslint-plugin-filenames": "1.3.2",
     "eslint-plugin-react": "7.14.2",
-    "esprint": "0.4.0",
+    "esprint": "0.5.0",
     "file-loader": "4.0.0",
     "filesize": "4.1.2",
     "fuse.js": "3.4.5",

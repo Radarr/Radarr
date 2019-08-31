@@ -7,7 +7,7 @@ import Card from 'Components/Card';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import CustomFormat from './CustomFormat';
-// import EditCustomFormatModalConnector from './EditCustomFormatModalConnector';
+import EditCustomFormatModalConnector from './EditCustomFormatModalConnector';
 import styles from './CustomFormats.css';
 
 class CustomFormats extends Component {
@@ -57,7 +57,7 @@ class CustomFormats extends Component {
           errorMessage="Unable to load Custom Formats"
           {...otherProps}c={true}
         >
-          <div className={styles.CustomFormats}>
+          <div className={styles.customFormats}>
             {
               items.sort(sortByName).map((item) => {
                 return (
@@ -85,11 +85,10 @@ class CustomFormats extends Component {
             </Card>
           </div>
 
-          {/*
           <EditCustomFormatModalConnector
             isOpen={this.state.isCustomFormatModalOpen}
             onModalClose={this.onModalClose}
-          /> */}
+          />
 
         </PageSectionContent>
       </FieldSet>

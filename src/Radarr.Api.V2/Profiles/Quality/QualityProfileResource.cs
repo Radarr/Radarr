@@ -6,6 +6,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.CustomFormats;
 
 namespace Radarr.Api.V2.Profiles.Quality
 {
@@ -16,7 +17,7 @@ namespace Radarr.Api.V2.Profiles.Quality
         public int Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<QualityProfileQualityItemResource> Items { get; set; }
-        public CustomFormatResource FormatCutoff { get; set; }
+        public int FormatCutoff { get; set; }
         public List<ProfileFormatItemResource> FormatItems { get; set; }
         public Language Language { get; set; }
     }
@@ -36,7 +37,7 @@ namespace Radarr.Api.V2.Profiles.Quality
 
     public class ProfileFormatItemResource : RestResource
     {
-        public CustomFormatResource Format { get; set; }
+        public CustomFormat Format { get; set; }
         public bool Allowed { get; set; }
     }
 
@@ -54,7 +55,7 @@ namespace Radarr.Api.V2.Profiles.Quality
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
-                FormatCutoff = model.FormatCutoff.ToResource(),
+                FormatCutoff = model.FormatCutoff,
                 FormatItems = model.FormatItems.ConvertAll(ToResource),
                 Language = model.Language
             };
@@ -78,7 +79,7 @@ namespace Radarr.Api.V2.Profiles.Quality
         {
             return new ProfileFormatItemResource
             {
-                Format = model.Format.ToResource(),
+                Format = model.Format,
                 Allowed = model.Allowed
             };
         }
@@ -95,7 +96,7 @@ namespace Radarr.Api.V2.Profiles.Quality
                 Cutoff = resource.Cutoff,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
-                FormatCutoff = resource.FormatCutoff.ToModel(),
+                FormatCutoff = resource.FormatCutoff,
                 FormatItems = resource.FormatItems.ConvertAll(ToModel),
                 Language = resource.Language
             };
@@ -119,7 +120,7 @@ namespace Radarr.Api.V2.Profiles.Quality
         {
             return new ProfileFormatItem
             {
-                Format = resource.Format.ToModel(),
+                Format = resource.Format,
                 Allowed = resource.Allowed
             };
         }

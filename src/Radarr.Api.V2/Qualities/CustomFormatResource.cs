@@ -8,7 +8,7 @@ namespace Radarr.Api.V2.Qualities
     public class CustomFormatResource : RestResource
     {
         public string Name { get; set; }
-        public List<string> FormatTags { get; set; }
+        public string FormatTags { get; set; }
         public string Simplicity { get; set; }
     }
 
@@ -20,7 +20,7 @@ namespace Radarr.Api.V2.Qualities
             {
                 Id = model.Id,
                 Name = model.Name,
-                FormatTags = model.FormatTags.Select(t => t.Raw.ToUpper()).ToList(),
+                FormatTags = string.Join(",", model.FormatTags.Select(t => t.Raw.ToUpper()).ToList()),
             };
         }
 
@@ -30,7 +30,7 @@ namespace Radarr.Api.V2.Qualities
             {
                 Id = resource.Id,
                 Name = resource.Name,
-                FormatTags = resource.FormatTags.Select(s => new FormatTag(s)).ToList(),
+                FormatTags = resource.FormatTags.Split(',').Select(s => new FormatTag(s)).ToList()
             };
         }
 
