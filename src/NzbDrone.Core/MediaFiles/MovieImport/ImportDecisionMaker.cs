@@ -174,12 +174,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 _logger.Warn(e, "Spec " + spec.ToString() + " currently does not implement evaluation for movies.");
                 return null;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //e.Data.Add("report", remoteEpisode.Report.ToJson());
-                //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on " + localMovie.Path);
-                return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));
+                _logger.Error(ex, "Couldn't evaluate decision on {0}", localMovie.Path);
+                return new Rejection($"{spec.GetType().Name}: {ex.Message}");
             }
 
             return null;
