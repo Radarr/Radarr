@@ -288,6 +288,11 @@ namespace NzbDrone.Common.Test.Http
             Subject.DownloadFile(url, file);
 
             File.Exists(file).Should().BeTrue();
+            File.Exists(file + ".part").Should().BeFalse();
+
+            var fileInfo = new FileInfo(file);
+
+            fileInfo.Length.Should().Be(307054);
         }
 
         [Test]
@@ -295,9 +300,10 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.readarr.com/wrongpath", file));
+            Assert.Throws<HttpException>(() => Subject.DownloadFile("https://download.readarr.com/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
+            File.Exists(file + ".part").Should().BeFalse();
 
             ExceptionVerification.ExpectedWarns(1);
         }

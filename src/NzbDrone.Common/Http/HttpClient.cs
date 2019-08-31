@@ -231,6 +231,8 @@ namespace NzbDrone.Common.Http
 
         public void DownloadFile(string url, string fileName, string userAgent = null)
         {
+            var fileNamePart = fileName + ".part";
+
             try
             {
                 var fileInfo = new FileInfo(fileName);
@@ -242,7 +244,7 @@ namespace NzbDrone.Common.Http
                 _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
 
                 var stopWatch = Stopwatch.StartNew();
-                using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
+                using (var fileStream = new FileStream(fileNamePart, FileMode.Create, FileAccess.ReadWrite))
                 {
                     var request = new HttpRequest(url);
 
@@ -256,17 +258,15 @@ namespace NzbDrone.Common.Http
                 }
 
                 stopWatch.Stop();
+                File.Move(fileNamePart, fileName);
                 _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
             }
-            catch (WebException e)
+            finally
             {
-                _logger.Warn("Failed to get response from: {0} {1}", url, e.Message);
-                throw;
-            }
-            catch (Exception e)
-            {
-                _logger.Warn(e, "Failed to get response from: " + url);
-                throw;
+                if (File.Exists(fileNamePart))
+                {
+                    File.Delete(fileNamePart);
+                }  
             }
         }
 
