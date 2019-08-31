@@ -30,7 +30,7 @@ namespace Radarr.Api.V2.Qualities
                     return !allFormats.Any(f =>
                     {
                         var allTags = f.FormatTags.Select(t => t.Raw.ToLower());
-                        var allNewTags = c.Select(t => t.ToLower());
+                        var allNewTags = c.Split(',').Select(t => t.ToLower());
                         var enumerable = allTags.ToList();
                         var newTags = allNewTags.ToList();
                         return (enumerable.All(newTags.Contains) && f.Id != v.Id && enumerable.Count() == newTags.Count());

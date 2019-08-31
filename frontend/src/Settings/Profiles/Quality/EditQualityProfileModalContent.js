@@ -15,6 +15,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import QualityProfileItems from './QualityProfileItems';
+import QualityProfileFormatItems from './QualityProfileFormatItems';
 import styles from './EditQualityProfileModalContent.css';
 
 const MODAL_BODY_PADDING = parseInt(dimensions.modalBodyPadding);
@@ -92,6 +93,7 @@ class EditQualityProfileModalContent extends Component {
       isSaving,
       saveError,
       qualities,
+      customFormats,
       languages,
       item,
       isInUse,
@@ -109,11 +111,13 @@ class EditQualityProfileModalContent extends Component {
       name,
       upgradeAllowed,
       cutoff,
+      formatCutoff,
       language,
-      items
+      items,
+      formatItems
     } = item;
 
-    const languageId = language.value.id;
+    const languageId = language ? language.value.id : 0;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -181,7 +185,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                              Upgrade Until
+                              Upgrade Until Quality
                               </FormLabel>
 
                               <FormInputGroup
@@ -190,6 +194,24 @@ class EditQualityProfileModalContent extends Component {
                                 {...cutoff}
                                 values={qualities}
                                 helpText="Once this quality is reached Radarr will no longer download movies"
+                                onChange={onCutoffChange}
+                              />
+                            </FormGroup>
+                        }
+
+                        {
+                          upgradeAllowed.value &&
+                            <FormGroup size={sizes.EXTRA_SMALL}>
+                              <FormLabel size={sizes.SMALL}>
+                              Upgrade Until Format
+                              </FormLabel>
+
+                              <FormInputGroup
+                                type={inputTypes.SELECT}
+                                name="formatCutoff"
+                                {...formatCutoff}
+                                values={customFormats}
+                                helpText="Once this custom format is reached Radarr will no longer download movies"
                                 onChange={onCutoffChange}
                               />
                             </FormGroup>
@@ -217,6 +239,15 @@ class EditQualityProfileModalContent extends Component {
                           qualityProfileItems={items.value}
                           errors={items.errors}
                           warnings={items.warnings}
+                          {...otherProps}
+                        />
+                      </div>
+
+                      <div className={styles.formGroupWrapper}>
+                        <QualityProfileFormatItems
+                          profileFormatItems={formatItems.value}
+                          errors={formatItems.errors}
+                          warnings={formatItems.warnings}
                           {...otherProps}
                         />
                       </div>
@@ -282,6 +313,7 @@ EditQualityProfileModalContent.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   item: PropTypes.object.isRequired,
   isInUse: PropTypes.bool.isRequired,

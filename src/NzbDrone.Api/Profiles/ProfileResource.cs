@@ -51,6 +51,17 @@ namespace NzbDrone.Api.Profiles
                 ? cutoffItem.Quality
                 : cutoffItem.Items.First().Quality;
 
+            var formatCutoffItem = model.FormatItems.First(q =>
+            {
+                if (q.Id == model.FormatCutoff) return true;
+
+                if (q.Format == null) return false;
+
+                return q.Format.Id == model.FormatCutoff;
+            });
+
+            var formatCutoff = formatCutoffItem.Format;
+
             return new ProfileResource
             {
                 Id = model.Id,
@@ -74,7 +85,7 @@ namespace NzbDrone.Api.Profiles
 
                     return new List<ProfileQualityItemResource> { ToResource(i) };
                 }).ToList(),
-                FormatCutoff = model.FormatCutoff.ToResource(),
+                FormatCutoff = formatCutoff.ToResource(),
                 FormatItems = model.FormatItems.ConvertAll(ToResource),
                 Language = model.Language
             };
@@ -112,7 +123,7 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = resource.Cutoff.Id,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
-                FormatCutoff = resource.FormatCutoff.ToModel(),
+                FormatCutoff = resource.FormatCutoff.ToModel().Id,
                 FormatItems = resource.FormatItems.ConvertAll(ToModel),
                 Language = resource.Language
             };

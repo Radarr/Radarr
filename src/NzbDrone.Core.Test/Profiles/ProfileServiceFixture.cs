@@ -7,6 +7,8 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
+using NzbDrone.Core.CustomFormats;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Profiles
 {
@@ -17,6 +19,10 @@ namespace NzbDrone.Core.Test.Profiles
         [Test]
         public void init_should_add_default_profiles()
         {
+            Mocker.GetMock<ICustomFormatService>()
+                .Setup(s => s.All())
+                .Returns(new List<CustomFormats.CustomFormat>());
+
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IProfileRepository>()

@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 {
                     Cutoff = Quality.HDTV720p.Id,
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
-                    FormatCutoff = CustomFormats.CustomFormat.None,
+                    FormatCutoff = CustomFormats.CustomFormat.None.Id,
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
                 }, old, newQ).Should().BeFalse();
         }

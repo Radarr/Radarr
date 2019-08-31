@@ -74,9 +74,9 @@ namespace NzbDrone.Core.Profiles
             foreach (var profile in all)
             {
                 profile.FormatItems = profile.FormatItems.Where(c => c.Format.Id != formatId).ToList();
-                if (profile.FormatCutoff.Id == formatId)
+                if (profile.FormatCutoff == formatId)
                 {
-                    profile.FormatCutoff = CustomFormat.None;
+                    profile.FormatCutoff = CustomFormat.None.Id;
                 }
 
                 Update(profile);
@@ -187,7 +187,9 @@ namespace NzbDrone.Core.Profiles
         public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
         {
             var groupedQualites = Quality.DefaultQualityDefinitions.GroupBy(q => q.Weight);
+            var formats = _formatService.All();
             var items = new List<ProfileQualityItem>();
+            var formatItems = new List<ProfileFormatItem>();
             var groupId = 1000;
             var profileCutoff = cutoff == null ? Quality.Unknown.Id : cutoff.Id;
 
@@ -223,22 +225,35 @@ namespace NzbDrone.Core.Profiles
                 groupId++;
             }
 
+            foreach (var format in formats)
+            {
+                formatItems.Add(new ProfileFormatItem
+                {
+                    Id = format.Id,
+                    Format = format,
+                    Allowed = false
+                });
+            }
+
             var qualityProfile = new Profile
             {
                 Name = name,
                 Cutoff = profileCutoff,
                 Items = items,
                 Language = Language.English,
-                FormatCutoff = CustomFormat.None,
+                FormatCutoff = CustomFormat.None.Id,
                 FormatItems = new List<ProfileFormatItem>
                 {
                     new ProfileFormatItem
                     {
+                        Id = 0,
                         Allowed = true,
                         Format = CustomFormat.None
                     }
                 }
             };
+
+            qualityProfile.FormatItems.AddRange(formatItems);
 
             return qualityProfile;
         }
