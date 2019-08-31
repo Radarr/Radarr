@@ -300,12 +300,12 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<HttpException>(() => Subject.DownloadFile("https://download.readarr.com/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.readarr.com/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
             File.Exists(file + ".part").Should().BeFalse();
 
-            ExceptionVerification.ExpectedWarns(1);
+            ExceptionVerification.ExpectedWarns(0);
         }
 
         [Test]
