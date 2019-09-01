@@ -51,7 +51,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public void UpdateAlbumCache(int albumId)
         {
-            var updateCacheItems = _cache.Values.Where(x => x.RemoteAlbum.Albums.Any(a => a.Id == albumId)).ToList();
+
+            var updateCacheItems = _cache.Values.Where(x => x.RemoteAlbum != null && x.RemoteAlbum.Albums.Any(a => a.Id == albumId)).ToList();
 
             foreach (var item in updateCacheItems)
             {
