@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?Remux)\b",
+        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD|UHD)?Remux)\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",

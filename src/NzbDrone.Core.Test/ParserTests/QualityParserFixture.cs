@@ -251,6 +251,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Contract.to.Kill.2016.REMUX.2160p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.2160p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        [TestCase("Los Vengadores (2012) [UHDRemux HDR HEVC 2160p][Dolby Atmos TrueHD 7 1 Eng DTS 5 1 Esp]")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160P, Modifier.REMUX);
