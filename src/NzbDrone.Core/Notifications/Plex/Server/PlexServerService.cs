@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         private int? GetMetadataId(int sectionId, Artist artist, string language, PlexServerSettings settings)
         {
-            _logger.Debug("Getting metadata from Plex host: {0} for series: {1}", settings.Host, artist);
+            _logger.Debug("Getting metadata from Plex host: {0} for artist: {1}", settings.Host, artist);
 
             return _plexServerProxy.GetMetadataId(sectionId, artist.Metadata.Value.ForeignArtistId, language, settings);
         }
