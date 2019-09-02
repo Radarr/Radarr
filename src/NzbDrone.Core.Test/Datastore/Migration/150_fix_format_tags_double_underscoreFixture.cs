@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             var convertedTags = items.First().DeserializedTags;
 
             convertedTags.Should().HaveCount(1);
-            convertedTags.First().ShouldBeEquivalentTo(converted);
+            convertedTags.First().Should().BeEquivalentTo(converted);
         }
 
         private List<regex_required_tagsFixture.CustomFormatTest149> QueryItems(IDirectDataMapper db)

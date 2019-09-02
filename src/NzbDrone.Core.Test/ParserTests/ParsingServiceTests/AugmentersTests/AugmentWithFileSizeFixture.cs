@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             };
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, localMovie);
-            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(1500);
+            movieInfo.ExtraInfo["Size"].Should().BeEquivalentTo(1500);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.ThingiProvider
 
             var storedSetting = (NewznabSettings)storedProvider.Settings;
 
-            storedSetting.ShouldBeEquivalentTo(newznabSettings, o=>o.IncludingAllRuntimeProperties());
+            storedSetting.Should().BeEquivalentTo(newznabSettings, o=>o.IncludingAllRuntimeProperties());
         }
     }
 }
