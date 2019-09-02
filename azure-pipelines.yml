@@ -1,0 +1,485 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:
+  outputFolder: './_output'
+  artifactsFolder: './_artifacts'
+  testsFolder: './_tests'
+  majorVersion: '2.0.0'
+  minorVersion: $[counter('minorVersion', 2000)]
+  radarrVersion: '$(majorVersion).$(minorVersion)'
+  buildName: '$(Build.SourceBranchName).$(radarrVersion)'
+  windowsInstaller: 'Radarr.$(buildName).windows-installer.exe'
+  windowsZip: 'Radarr.$(buildName).windows.zip'
+  macOsApp: 'Radarr.$(buildName).osx-app.zip'
+  macOsTar: 'Radarr.$(buildName).osx.tar.gz'
+  linuxTar: 'Radarr.$(buildName).linux.tar.gz'
+  sentryOrg: 'radarr'
+
+trigger:
+  branches:
+    include:
+    - develop
+    - aphrodite
+
+pr:
+- develop
+- aphrodite
+
+stages:
+  - stage: Build_Backend
+    displayName: Build Backend
+          
+    jobs:
+    - job: Backend
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13'
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+
+      pool:
+        vmImage: $(imageName)
+      steps:
+      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
+      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:RADARRVERSION)"
+        displayName: Set Build Name
+      - checkout: self
+        submodules: true
+        fetchDepth: 1
+      - bash: ./build.sh --only-backend
+        displayName: Build Radarr Backend
+      - publish: $(outputFolder)
+        artifact: '$(osName)Backend'
+        displayName: Publish Backend
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: $(testsFolder)
+        artifact: '$(osName)Tests'
+        displayName: Publish Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+
+  - stage: Build_Frontend
+    displayName: Build Frontend
+    dependsOn: []
+    
+    jobs:
+    - job: Frontend
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13'
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+      pool:
+        vmImage: $(imageName)
+      steps:
+      - task: NodeTool@0
+        displayName: Set Node.js version
+        inputs:
+          versionSpec: '10.x'
+      - checkout: self
+        submodules: true
+        fetchDepth: 1
+      - bash: ./build.sh --only-frontend
+        displayName: Build Radarr Frontend
+        env:
+          FORCE_COLOR: 0
+      - publish: $(outputFolder)
+        artifact: '$(osName)Frontend'
+        displayName: Publish Frontend
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+        
+  - stage: Package
+    dependsOn:
+    - Build_Backend
+    - Build_Frontend
+    jobs:
+    - job: Windows_Installer
+      displayName: Create Installer
+      pool:
+        vmImage: 'vs2017-win2016'
+      steps:
+      - checkout: self
+        fetchDepth: 1
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsBackend
+          targetPath: _output
+        displayName: Fetch Backend
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsFrontend
+          targetPath: _output
+        displayName: Fetch Frontend
+      - bash: ./build.sh --only-packages
+        displayName: Create Packages
+      - bash: |
+          ./setup/inno/ISCC.exe "./setup/radarr.iss"
+          cp ./setup/output/Radarr.*windows.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/${WINDOWSINSTALLER}
+        displayName: Create Windows installer
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: 'WindowsInstaller'
+        displayName: Publish Installer
+      
+    - job: Other_Packages
+      displayName: Create Standard Packages
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - bash: sudo apt install dos2unix
+      - checkout: self
+        fetchDepth: 1
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsBackend
+          targetPath: _output
+        displayName: Fetch Backend
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsFrontend
+          targetPath: _output
+        displayName: Fetch Frontend
+      - bash: ./build.sh --only-packages
+        displayName: Create Packages
+      - bash: |
+          chmod a+x $(artifactsFolder)/macos/Radarr/Radarr
+          chmod a+x $(artifactsFolder)/macos-app/Radarr.app/Contents/MacOS/Radarr
+        displayName: Set Mac executable bits
+      - task: ArchiveFiles@2
+        displayName: Create Windows zip
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(windowsZip)'
+          archiveType: 'zip'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/windows
+      - task: ArchiveFiles@2
+        displayName: Create MacOS app
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(macOsApp)'
+          archiveType: 'zip'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/macos-app
+      - task: ArchiveFiles@2
+        displayName: Create MacOS tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(macOsTar)'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/macos
+      - task: ArchiveFiles@2
+        displayName: Create Linux tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(linuxTar)'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: 'Packages'
+        displayName: Publish Packages
+      - bash: |
+          echo "Uploading source maps to sentry"
+          curl -sL https://sentry.io/get-cli/ | bash
+          RELEASENAME="${RADARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
+          sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
+          sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases set-commits --auto "${RELEASENAME}"
+          sentry-cli releases deploys "${RELEASENAME}" new -e nightly
+        displayName: Publish Sentry Source Maps
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+        env:
+          SENTRY_AUTH_TOKEN: $(sentryAuthToken)
+          SENTRY_ORG: $(sentryOrg)
+    
+  - stage: Unit_Test
+    displayName: Unit Tests
+    dependsOn: Build_Backend
+    condition: succeeded()
+    jobs:
+    - job: Unit
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13'
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+
+      pool:
+        vmImage: $(imageName)
+
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsTests
+          targetPath: $(testsFolder)
+      - powershell: Set-Service SCardSvr -StartupType Manual
+        displayName: Enable Windows Test Service
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - bash: |
+          sudo apt install dos2unix
+          dos2unix ${TESTSFOLDER}/test.sh
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
+      - bash: |
+          brew install dos2unix
+          dos2unix ${TESTSFOLDER}/test.sh
+        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - task: Bash@3
+        displayName: Run Tests
+        env:
+          DYLD_FALLBACK_LIBRARY_PATH: $(Build.SourcesDirectory)/_tests
+          TEST_DIR: $(Build.SourcesDirectory)/_tests
+        inputs:
+          targetType: 'filePath'
+          filePath: '$(testsFolder)/test.sh'
+          arguments: '$(osName) Unit Test'
+      - publish: TestResult.xml
+        artifact: 'TestResult'
+        displayName: Publish Test Result
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: '$(osName) Unit Tests'
+          failTaskOnFailedTests: true
+
+  - stage: Integration_Automation
+    displayName: Integration / Automation
+    dependsOn: Package
+    jobs:
+    
+    - job: Integration
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+            pattern: 'Radarr.**.linux.tar.gz'
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13'
+            pattern: 'Radarr.**.osx.tar.gz'
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+            pattern: 'Radarr.**.windows.zip'
+
+      pool:
+        vmImage: $(imageName)
+        
+      steps:
+      - bash: |
+          SYMLINK=5_18_1
+          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+          echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;].:$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+        displayName: Set Mono Version
+        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsTests
+          targetPath: $(testsFolder)
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Build Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: Packages
+          itemPattern: '**/$(pattern)'
+          targetPath: $(Build.ArtifactStagingDirectory)
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/**/$(pattern)' 
+          destinationFolder: '$(Build.ArtifactStagingDirectory)/bin'
+        displayName: Extract Package
+      - bash: |
+          mkdir -p ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
+        displayName: Move Package Contents
+      - bash: |
+          sudo apt install dos2unix
+          dos2unix ${TESTSFOLDER}/test.sh
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
+      - bash: |
+          brew install dos2unix
+          dos2unix ${TESTSFOLDER}/test.sh
+        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - task: Bash@3
+        displayName: Run Integration Tests
+        inputs:
+          targetType: 'filePath'
+          filePath: '$(testsFolder)/test.sh'
+          arguments: $(osName) Integration Test
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: '$(osName) Integration Tests'
+          failTaskOnFailedTests: true
+        displayName: Publish Test Results
+
+    - job: Automation
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+            pattern: 'Radarr.**.linux.tar.gz'
+            failBuild: true
+          Mac:
+            osName: 'Mac'
+            imageName: 'macos-10.13' # Fails due to firefox not being installed on image
+            pattern: 'Radarr.**.osx.tar.gz'
+            failBuild: false
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+            pattern: 'Radarr.**.windows.zip'
+            failBuild: true
+
+      pool:
+        vmImage: $(imageName)
+        
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsTests
+          targetPath: $(testsFolder)
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Build Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: Packages
+          itemPattern: '**/$(pattern)'
+          targetPath: $(Build.ArtifactStagingDirectory)
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/**/$(pattern)' 
+          destinationFolder: '$(Build.ArtifactStagingDirectory)/bin'
+        displayName: Extract Package
+      - bash: |
+          mkdir -p ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
+        displayName: Move Package Contents
+      - bash: |
+          if [[ $OSNAME == "Mac" ]]; then
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-macos.tar.gz
+          elif [[ $OSNAME == "Linux" ]]; then
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+          else
+          echo "Unhandled OS"
+          exit 1
+          fi
+          curl -s -L "$url" | tar -xz
+          chmod +x geckodriver
+          mv geckodriver _tests
+        displayName: Install Gecko Driver
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
+      - bash: ls -lR
+      - task: Bash@3
+        displayName: Run Automation Tests
+        inputs:
+          targetType: 'filePath'
+          filePath: '$(testsFolder)/test.sh'
+          arguments: $(osName) Automation Test
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: '$(osName) Automation Tests'
+          failTaskOnFailedTests: $(failBuild)
+        displayName: Publish Test Results
+
+  # - stage: Analyze
+  #   dependsOn: []
+  #   displayName: Analyze
+  #   condition: eq(variables['system.pullrequest.isfork'], false)
+      
+  #   jobs:
+  #   # - job: Analyze_Frontend
+  #   #   displayName: Frontend
+  #   #   pool:
+  #   #     vmImage: vs2017-win2016
+  #   #   steps:
+  #   #   - checkout: self # Need history for Sonar analysis
+  #   #   - task: SonarCloudPrepare@1
+  #   #     env:
+  #   #       SONAR_SCANNER_OPTS: ''
+  #   #     inputs:
+  #   #       SonarCloud: 'SonarCloud'
+  #   #       organization: 'radarr'
+  #   #       scannerMode: 'CLI'
+  #   #       configMode: 'manual'
+  #   #       cliProjectKey: 'radarr_Radarr.UI'
+  #   #       cliProjectName: 'RadarrUI'
+  #   #       cliProjectVersion: '$(radarrVersion)'
+  #   #       cliSources: './frontend'
+  #   #   - task: SonarCloudAnalyze@1
+
+  #   - job: Analyze_Backend
+  #     displayName: Backend
+  #     pool:
+  #       vmImage: vs2017-win2016
+  #     steps:
+  #     - checkout: self # Need history for Sonar analysis
+  #       submodules: true
+  #     - task: SonarCloudPrepare@1
+  #       inputs:
+  #         SonarCloud: 'SonarCloud'
+  #         organization: 'radarr'
+  #         scannerMode: 'MSBuild'
+  #         projectKey: 'radarr_Radarr'
+  #         projectName: 'Radarr'
+  #         projectVersion: '$(radarrVersion)'
+  #         extraProperties: |
+  #           sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
+  #           sonar.coverage.exclusions=**/Radarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
+  #           sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
+  #           sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
+  #     - bash: ./build.sh --only-backend
+  #       displayName: Build Radarr Backend
+  #     - task: Bash@3
+  #       displayName: Coverage Unit Tests
+  #       inputs:
+  #         targetType: 'filePath'
+  #         filePath: ./test.sh
+  #         arguments: Windows Unit Coverage
+  #     - task: PublishCodeCoverageResults@1
+  #       displayName: Publish Coverage Results
+  #       inputs:
+  #         codeCoverageTool: 'cobertura'
+  #         summaryFileLocation: './_tests/CoverageResults/coverage.cobertura.xml'
+  #     # - task: SonarCloudAnalyze@1
