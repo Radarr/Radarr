@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             };
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, releaseInfo);
-            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(1500);
+            movieInfo.ExtraInfo["Size"].Should().BeEquivalentTo(1500);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             MovieInfo.ExtraInfo["Size"] = 1600;
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, releaseInfo);
-            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(1600);
+            movieInfo.ExtraInfo["Size"].Should().BeEquivalentTo(1600);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             };
 
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, releaseInfo);
-            movieInfo.ExtraInfo["IndexerFlags"].ShouldBeEquivalentTo(IndexerFlags.PTP_Approved | IndexerFlags.PTP_Golden);
+            movieInfo.ExtraInfo["IndexerFlags"].Should().BeEquivalentTo(IndexerFlags.PTP_Approved | IndexerFlags.PTP_Golden);
         }
 
     }

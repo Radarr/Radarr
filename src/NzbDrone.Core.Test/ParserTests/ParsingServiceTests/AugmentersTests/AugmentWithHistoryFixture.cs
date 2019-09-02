@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         {
             var history = HistoryWithData("IndexerFlags", (IndexerFlags.PTP_Approved | IndexerFlags.PTP_Golden).ToString());
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, history);
-            movieInfo.ExtraInfo["IndexerFlags"].ShouldBeEquivalentTo(IndexerFlags.PTP_Golden | IndexerFlags.PTP_Approved);
+            movieInfo.ExtraInfo["IndexerFlags"].Should().BeEquivalentTo(IndexerFlags.PTP_Golden | IndexerFlags.PTP_Approved);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         {
             var history = HistoryWithData("Size", 1500.ToString());
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, history);
-            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(1500);
+            movieInfo.ExtraInfo["Size"].Should().BeEquivalentTo(1500);
         }
 
         [Test]

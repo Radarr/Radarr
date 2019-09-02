@@ -1,0 +1,77 @@
+<Project>
+  <!-- Common to all Radarr Projects -->
+  <PropertyGroup>
+    <RadarrRootDir>$(MSBuildThisFileDirectory)..\</RadarrRootDir>
+
+    <!-- Specifies the type of output -->
+    <RadarrOutputType>Library</RadarrOutputType>
+    <RadarrOutputType Condition="$(MSBuildProjectName.Contains('.Test'))">Test</RadarrOutputType>
+    <RadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceInstall'">Exe</RadarrOutputType>
+    <RadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</RadarrOutputType>
+    <RadarrOutputType Condition="'$(MSBuildProjectName)'=='Radarr'">Exe</RadarrOutputType>
+    <RadarrOutputType Condition="'$(MSBuildProjectName)'=='Radarr.Console'">Exe</RadarrOutputType>
+    <RadarrOutputType Condition="'$(MSBuildProjectName)'=='Radarr.Update'">Update</RadarrOutputType>
+
+    <!-- Specifies whether it's one of our own libraries -->
+    <RadarrProject>false</RadarrProject>
+    <RadarrProject Condition="$(MSBuildProjectName.StartsWith('Radarr'))">true</RadarrProject>
+    <RadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</RadarrProject>
+    <RadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</RadarrProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Centralize intermediate and default outputs -->
+    <IntermediateOutputPath>$(RadarrRootDir)_temp\obj\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <OutputPath>$(RadarrRootDir)_temp\bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+
+    <!-- Output to _output and _tests respectively -->
+    <OutputPath Condition="'$(RadarrProject)'=='true'">$(RadarrRootDir)_output\</OutputPath>
+    <OutputPath Condition="'$(RadarrOutputType)'=='Test'">$(RadarrRootDir)_tests\</OutputPath>
+    <OutputPath Condition="'$(RadarrOutputType)'=='Update'">$(RadarrRootDir)_output\Radarr.Update\</OutputPath>
+
+    <!-- Paths relative to project file for better readability -->
+    <IntermediateOutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)'))</IntermediateOutputPath>
+    <OutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(OutputPath)'))</OutputPath>
+
+    <!-- below net4.7.1 the new portable pdb format has no line numbers, pdb to mdb probably doesn't like it either -->
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  
+  <!-- Test projects need bindingRedirects -->
+  <PropertyGroup Condition="'$(RadarrOutputType)'=='Test'">
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+
+  <!-- Set the Product and Version info for our own projects -->
+  <PropertyGroup Condition="'$(RadarrProject)'=='true'">
+    <Product>Radarr</Product>
+    <Company>radarr.video</Company>
+    <Copyright>Copyright 2014-$([System.DateTime]::Now.ToString('yyyy')) radarr.video (GNU General Public v3)</Copyright>
+    
+    <!-- Should be replaced by CI -->
+    <AssemblyVersion>10.0.0.*</AssemblyVersion>
+    <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
+
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    
+    <Deterministic Condition="$(AssemblyVersion.EndsWith('*'))">False</Deterministic>
+  </PropertyGroup>
+  <!-- Set the AssemblyConfiguration attribute for projects -->
+  <ItemGroup Condition="'$(RadarrProject)'=='true'">
+    <AssemblyAttribute Include="System.Reflection.AssemblyConfigurationAttribute">
+      <_Parameter1>$(AssemblyConfiguration)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- We don't want separate framework directories till we go dotnet core -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- For now keep the NzbDrone namespace -->
+    <RootNamespace Condition="'$(RadarrProject)'=='true'">$(MSBuildProjectName.Replace('Radarr','NzbDrone'))</RootNamespace>
+  </PropertyGroup>
+</Project>

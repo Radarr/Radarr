@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Common.Test\Radarr.Common.Test.csproj" />
+    <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
+    <ProjectReference Include="..\NzbDrone.Windows\Radarr.Windows.csproj" />
+  </ItemGroup>
+</Project>

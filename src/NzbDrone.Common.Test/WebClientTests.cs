@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -32,8 +31,8 @@ namespace NzbDrone.Common.Test
         [TestCase("http://")]
         public void DownloadString_should_throw_on_not_supported_string_mono(string url)
         {
-            MonoOnly();
-            Assert.Throws<System.Net.WebException>(() => Subject.DownloadString(url));
+            Action action = () => Subject.DownloadString(url);
+            action.Should().Throw<Exception>();
             ExceptionVerification.ExpectedWarns(1);
         }
     }

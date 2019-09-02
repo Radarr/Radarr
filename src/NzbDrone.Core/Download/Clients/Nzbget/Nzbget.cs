@@ -14,7 +14,6 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Organizer;
-using System.Globalization;
 
 namespace NzbDrone.Core.Download.Clients.Nzbget
 {

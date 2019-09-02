@@ -14,15 +14,15 @@ namespace NzbDrone.Integration.Test.Client
 
         public List<MovieResource> Lookup(string term)
         {
-            var request = BuildRequest("lookup?term={term}");
-            request.AddUrlSegment("term", term);
+            var request = BuildRequest("lookup");
+            request.AddQueryParameter("term", term);
             return Get<List<MovieResource>>(request);
         }
 
         public List<MovieResource> Editor(List<MovieResource> movie)
         {
             var request = BuildRequest("editor");
-            request.AddBody(movie);
+            request.AddJsonBody(movie);
             return Put<List<MovieResource>>(request);
         }
 
