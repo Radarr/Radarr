@@ -24,6 +24,8 @@ namespace NzbDrone.Core.Datastore
 
         public Version Version => _database.Version;
 
+        public int Migration => _database.Migration;
+
         public void Vacuum()
         {
             _database.Vacuum();

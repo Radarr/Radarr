@@ -16,7 +16,9 @@ class About extends Component {
     const {
       version,
       isMonoRuntime,
+      isDocker,
       runtimeVersion,
+      migrationVersion,
       appData,
       startupPath,
       mode,
@@ -40,6 +42,19 @@ class About extends Component {
                 data={runtimeVersion}
               />
           }
+
+          {
+            isDocker &&
+              <DescriptionListItem
+                title="Docker"
+                data={'True'}
+              />
+          }
+
+          <DescriptionListItem
+            title="DB Migration"
+            data={migrationVersion}
+          />
 
           <DescriptionListItem
             title="AppData directory"
@@ -77,6 +92,8 @@ About.propTypes = {
   version: PropTypes.string.isRequired,
   isMonoRuntime: PropTypes.bool.isRequired,
   runtimeVersion: PropTypes.string.isRequired,
+  isDocker: PropTypes.bool.isRequired,
+  migrationVersion: PropTypes.number.isRequired,
   appData: PropTypes.string.isRequired,
   startupPath: PropTypes.string.isRequired,
   mode: PropTypes.string.isRequired,

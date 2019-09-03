@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NzbDrone.Api.DownloadClient;
+using Radarr.Api.V2.DownloadClient;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

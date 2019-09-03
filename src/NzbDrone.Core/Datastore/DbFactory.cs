@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -124,7 +125,11 @@ namespace NzbDrone.Core.Datastore
                     throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Sonarr/Sonarr/wiki/FAQ#i-use-sonarr-on-a-mac-and-it-suddenly-stopped-working-what-happened", e, fileName);
                 }
 
-                throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Sonarr/Sonarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);
+                throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Lidarr/Lidarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);
+            }
+            catch (Exception e)
+            {
+                throw new RadarrStartupException(e, "Error creating main database");
             }
         }
 
@@ -153,6 +158,10 @@ namespace NzbDrone.Core.Datastore
                 }
 
                 _migrationController.Migrate(connectionString, migrationContext);
+            }
+            catch (Exception e)
+            {
+                throw new RadarrStartupException(e, "Error creating log database");
             }
         }
     }

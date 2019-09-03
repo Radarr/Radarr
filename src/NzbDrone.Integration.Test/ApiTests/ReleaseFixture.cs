@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Indexers;
+using Radarr.Api.V2.Indexers;
 using System.Linq;
 using System.Net;
 

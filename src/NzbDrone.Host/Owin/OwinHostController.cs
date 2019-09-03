@@ -8,41 +8,26 @@ namespace Radarr.Host.Owin
     public class OwinHostController : IHostController
     {
         private readonly IOwinAppFactory _owinAppFactory;
-        private readonly IRuntimeInfo _runtimeInfo;
+        private readonly IRemoteAccessAdapter _removeAccessAdapter;
         private readonly IUrlAclAdapter _urlAclAdapter;
-        private readonly IFirewallAdapter _firewallAdapter;
-        private readonly ISslAdapter _sslAdapter;
         private readonly Logger _logger;
         private IDisposable _owinApp;
 
         public OwinHostController(
                                   IOwinAppFactory owinAppFactory,
-                                  IRuntimeInfo runtimeInfo,
+                                  IRemoteAccessAdapter removeAccessAdapter,
                                   IUrlAclAdapter urlAclAdapter,
-                                  IFirewallAdapter firewallAdapter,
-                                  ISslAdapter sslAdapter,
                                   Logger logger)
         {
             _owinAppFactory = owinAppFactory;
-            _runtimeInfo = runtimeInfo;
+            _removeAccessAdapter = removeAccessAdapter;
             _urlAclAdapter = urlAclAdapter;
-            _firewallAdapter = firewallAdapter;
-            _sslAdapter = sslAdapter;
             _logger = logger;
         }
 
         public void StartServer()
         {
-            if (OsInfo.IsWindows)
-            {
-                if (_runtimeInfo.IsAdmin)
-                {
-                    _firewallAdapter.MakeAccessible();
-                    _sslAdapter.Register();
-                }
-            }
-
-            _urlAclAdapter.ConfigureUrls();
+            _removeAccessAdapter.MakeAccessible(true);
 
             _logger.Info("Listening on the following URLs:");
             foreach (var url in _urlAclAdapter.Urls)
@@ -53,7 +38,6 @@ namespace Radarr.Host.Owin
             _owinApp = _owinAppFactory.CreateApp(_urlAclAdapter.Urls);
         }
 
-
         public void StopServer()
         {
             if (_owinApp == null) return;
@@ -63,8 +47,5 @@ namespace Radarr.Host.Owin
             _owinApp = null;
             _logger.Info("Host has stopped");
         }
-
-
-
     }
 }

@@ -155,10 +155,10 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             var requestBuilder = new HttpRequestBuilder($"{scheme}://{settings.Host}:{settings.Port}")
                                  .Accept(HttpAccept.Json)
                                  .AddQueryParam("X-Plex-Client-Identifier", _configService.PlexClientIdentifier)
-                                 .AddQueryParam("X-Plex-Product", "Radarr")
+                                 .AddQueryParam("X-Plex-Product", BuildInfo.AppName)
                                  .AddQueryParam("X-Plex-Platform", "Windows")
                                  .AddQueryParam("X-Plex-Platform-Version", "7")
-                                 .AddQueryParam("X-Plex-Device-Name", "Radarr")
+                                 .AddQueryParam("X-Plex-Device-Name", BuildInfo.AppName)
                                  .AddQueryParam("X-Plex-Version", BuildInfo.Version.ToString());
 
             if (settings.AuthToken.IsNotNullOrWhiteSpace())

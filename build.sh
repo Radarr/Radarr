@@ -139,7 +139,7 @@ Build()
 RunGulp()
 {
     ProgressStart 'yarn install'
-    yarn install
+    yarn install --frozen-lockfile
     ProgressEnd 'yarn install'
 
     LintUI
@@ -254,8 +254,6 @@ PackageTests()
 
     echo "Adding Radarr.Core.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Core/Radarr.Core.dll.config $testPackageFolder
-    echo "Copying CurlSharp libraries"
-    cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
     echo "Adding sqlite dylibs"
     cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder

@@ -26,10 +26,11 @@ namespace NzbDrone.Integration.Test
 
         protected override void InitializeTestTarget()
         {
-            Indexers.Post(new Api.Indexers.IndexerResource
+            Indexers.Post(new Radarr.Api.V2.Indexers.IndexerResource
             {
                 EnableRss = false,
-                EnableSearch = false,
+                EnableInteractiveSearch = false,
+                EnableAutomaticSearch = false,
                 ConfigContract = nameof(NewznabSettings),
                 Implementation = nameof(Newznab),
                 Name = "NewznabTest",

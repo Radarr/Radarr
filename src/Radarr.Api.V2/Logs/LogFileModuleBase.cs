@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Nancy;
 using Nancy.Responses;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using Radarr.Http;
@@ -44,7 +45,7 @@ namespace Radarr.Api.V2.Logs
                     Id = i + 1,
                     Filename = filename,
                     LastWriteTime = _diskProvider.FileGetLastWrite(file),
-                    ContentsUrl = string.Format("{0}/api/v3/{1}/{2}", _configFileProvider.UrlBase, Resource, filename),
+                    ContentsUrl = string.Format("{0}/api/v2/{1}/{2}", _configFileProvider.UrlBase, Resource, filename),
                     DownloadUrl = string.Format("{0}/{1}/{2}", _configFileProvider.UrlBase, DownloadUrlRoot, filename)
                 });
             }
@@ -54,6 +55,8 @@ namespace Radarr.Api.V2.Logs
 
         private Response GetLogFileResponse(string filename)
         {
+            LogManager.Flush();
+
             var filePath = GetLogFilePath(filename);
 
             if (!_diskProvider.FileExists(filePath))

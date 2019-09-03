@@ -7,6 +7,7 @@ import { fetchUpdates } from 'Store/Actions/systemActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import * as commandNames from 'Commands/commandNames';
 import Updates from './Updates';
 
@@ -16,12 +17,14 @@ function createMapStateToProps() {
     (state) => state.system.updates,
     (state) => state.settings.general,
     createUISettingsSelector(),
+    createSystemStatusSelector(),
     createCommandExecutingSelector(commandNames.APPLICATION_UPDATE),
     (
       currentVersion,
       updates,
       generalSettings,
       uiSettings,
+      systemStatus,
       isInstallingUpdate
     ) => {
       const {
@@ -40,6 +43,7 @@ function createMapStateToProps() {
         generalSettingsError: generalSettings.error,
         items,
         isInstallingUpdate,
+        isDocker: systemStatus.isDocker,
         updateMechanism: generalSettings.item.updateMechanism,
         shortDateFormat: uiSettings.shortDateFormat
       };

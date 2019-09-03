@@ -12,9 +12,6 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>

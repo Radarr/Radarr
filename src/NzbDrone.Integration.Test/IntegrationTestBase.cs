@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -10,16 +11,16 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using NzbDrone.Api.Blacklist;
-using NzbDrone.Api.Commands;
-using NzbDrone.Api.Config;
-using NzbDrone.Api.DownloadClient;
-using NzbDrone.Api.MovieFiles;
-using NzbDrone.Api.History;
-using NzbDrone.Api.Profiles;
-using NzbDrone.Api.RootFolders;
-using NzbDrone.Api.Movies;
-using NzbDrone.Api.Tags;
+using Radarr.Api.V2.Blacklist;
+using Radarr.Api.V2.Commands;
+using Radarr.Api.V2.Config;
+using Radarr.Api.V2.DownloadClient;
+using Radarr.Api.V2.MovieFiles;
+using Radarr.Api.V2.History;
+using Radarr.Api.V2.Profiles.Quality;
+using Radarr.Api.V2.RootFolders;
+using Radarr.Api.V2.Movies;
+using Radarr.Api.V2.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaFiles.Events;
@@ -43,9 +44,10 @@ namespace NzbDrone.Integration.Test
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
+        public LogsClient Logs;
         public ClientBase<NamingConfigResource> NamingConfig;
         public NotificationClient Notifications;
-        public ClientBase<ProfileResource> Profiles;
+        public ClientBase<QualityProfileResource> Profiles;
         public ReleaseClient Releases;
         public ClientBase<RootFolderResource> RootFolders;
         public MovieClient Movies;
@@ -63,11 +65,9 @@ namespace NzbDrone.Integration.Test
             new StartupContext();
 
             LogManager.Configuration = new LoggingConfiguration();
-            var consoleTarget = new ConsoleTarget { Layout = "${level}: ${message} ${exception}", DetectConsoleAvailable = true};
+            var consoleTarget = new ConsoleTarget { Layout = "${level}: ${message} ${exception}" };
             LogManager.Configuration.AddTarget(consoleTarget.GetType().Name, consoleTarget);
             LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, consoleTarget));
-
-            LogManager.ReconfigExistingLoggers();
         }
 
         public string TempDirectory { get; private set; }
@@ -94,7 +94,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/");
+            RestClient = new RestClient(RootUrl + "api/v2/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 
@@ -104,9 +104,10 @@ namespace NzbDrone.Integration.Test
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
+            Logs = new LogsClient(RestClient, ApiKey);
             NamingConfig = new ClientBase<NamingConfigResource>(RestClient, ApiKey, "config/naming");
             Notifications = new NotificationClient(RestClient, ApiKey);
-            Profiles = new ClientBase<ProfileResource>(RestClient, ApiKey);
+            Profiles = new ClientBase<QualityProfileResource>(RestClient, ApiKey);
             Releases = new ReleaseClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
             Movies = new MovieClient(RestClient, ApiKey);
@@ -124,7 +125,7 @@ namespace NzbDrone.Integration.Test
         [SetUp]
         public void IntegrationSetUp()
         {
-            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + DateTime.UtcNow.Ticks);
+            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + Process.GetCurrentProcess().Id + "_" + DateTime.UtcNow.Ticks);
 
             // Wait for things to get quiet, otherwise the previous test might influence the current one.
             Commands.WaitAll();
@@ -147,6 +148,17 @@ namespace NzbDrone.Integration.Test
 
                 _signalrConnection = null;
                 _signalRReceived = new List<SignalRMessage>();
+            }
+
+            if (Directory.Exists(TempDirectory))
+            {
+                try
+                {
+                    Directory.Delete(TempDirectory, true);
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -213,7 +225,7 @@ namespace NzbDrone.Integration.Test
             {
                 var lookup = Movies.Lookup("tmdb:" + tmdbid);
                 var movie = lookup.First();
-                movie.ProfileId = 1;
+                movie.QualityProfileId = 1;
                 movie.Path = Path.Combine(MovieRootFolder, movie.Title);
                 movie.Monitored = true;
                 movie.AddOptions = new Core.Movies.AddMovieOptions();
@@ -268,7 +280,7 @@ namespace NzbDrone.Integration.Test
                 //File.Copy(sourcePath, path);
                 File.WriteAllText(path, "Fake Movie");
 
-                Commands.PostAndWait(new CommandResource { Name = "refreshmovie", Body = new RefreshMovieCommand(movie.Id) });
+                Commands.PostAndWait(new RefreshMovieCommand(movie.Id));
                 Commands.WaitAll();
 
                 result = Movies.Get(movie.Id);
@@ -279,13 +291,13 @@ namespace NzbDrone.Integration.Test
             return result.MovieFile;
         }
 
-        public ProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
+        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
         {
             var profile = Profiles.Get(profileId);
 
-            if (profile.Cutoff != cutoff)
+            if (profile.Cutoff != cutoff.Id)
             {
-                profile.Cutoff = cutoff;
+                profile.Cutoff = cutoff.Id;
                 profile = Profiles.Put(profile);
             }
 
@@ -324,8 +336,8 @@ namespace NzbDrone.Integration.Test
 
                 schema.Enable = enabled;
                 schema.Name = "Test UsenetBlackhole";
-                schema.Fields.First(v => v.Name == "WatchFolder").Value = GetTempDirectory("Download", "UsenetBlackhole", "Watch");
-                schema.Fields.First(v => v.Name == "NzbFolder").Value = GetTempDirectory("Download", "UsenetBlackhole", "Nzb");
+                schema.Fields.First(v => v.Name == "watchFolder").Value = GetTempDirectory("Download", "UsenetBlackhole", "Watch");
+                schema.Fields.First(v => v.Name == "nzbFolder").Value = GetTempDirectory("Download", "UsenetBlackhole", "Nzb");
 
                 client = DownloadClients.Post(schema);
             }

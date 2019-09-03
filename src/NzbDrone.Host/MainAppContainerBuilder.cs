@@ -31,7 +31,6 @@ namespace Radarr.Host
             AutoRegisterImplementations<NzbDronePersistentConnection>();
 
             Container.Register<INancyBootstrapper, RadarrBootstrapper>();
-            Container.Register<IHttpDispatcher, FallbackHttpDispatcher>();
         }
     }
 }

@@ -4,7 +4,7 @@ using NzbDrone.Core.Movies;
 
 namespace Radarr.Api.V2.Movies
 {
-    class MovieEditorResource
+    public class MovieEditorResource
     {
         public List<int> MovieIds { get; set; }
         public bool? Monitored { get; set; }

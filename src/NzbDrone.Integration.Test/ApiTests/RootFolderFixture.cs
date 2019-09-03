@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.RootFolders;
+using Radarr.Api.V2.RootFolders;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

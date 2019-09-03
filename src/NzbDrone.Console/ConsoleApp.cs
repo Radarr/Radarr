@@ -5,6 +5,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using Radarr.Host;
+using Radarr.Host.AccessControl;
 
 namespace NzbDrone.Console
 {
@@ -49,6 +50,13 @@ namespace NzbDrone.Console
                 System.Console.WriteLine("");
                 Logger.Fatal(ex.Message + ". This can happen if another instance of Radarr is already running another application is using the same port (default: 7878) or the user has insufficient permissions");
                 Exit(ExitCodes.RecoverableFailure);
+            }
+            catch (RemoteAccessException ex)
+            {
+                System.Console.WriteLine("");
+                System.Console.WriteLine("");
+                Logger.Fatal(ex, "EPIC FAIL!");
+                Exit(ExitCodes.Normal);
             }
             catch (Exception ex)
             {

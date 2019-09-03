@@ -58,18 +58,6 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.ReconfigExistingLoggers();
         }
 
-        public static void UnRegisterRemoteLoggers()
-        {
-            var sentryRules = LogManager.Configuration.LoggingRules.Where(r => r.Targets.Any(t => t.Name == "sentryTarget"));
-
-            foreach (var rules in sentryRules)
-            {
-                rules.Targets.Clear();
-            }
-
-            LogManager.ReconfigExistingLoggers();
-        }
-
         private static void RegisterSentry(bool updateClient)
         {
             string dsn;

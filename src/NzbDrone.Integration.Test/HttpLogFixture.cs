@@ -1,8 +1,7 @@
-using System.IO;
+using System;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Movies;
 
 namespace NzbDrone.Integration.Test
 {
@@ -18,16 +17,18 @@ namespace NzbDrone.Integration.Test
 
             var resultGet = Movies.All();
 
-            var logFile = Path.Combine(_runner.AppData, "logs", "radarr.trace.txt");
-            var logLines = File.ReadAllLines(logFile);
+            var logFile = "radarr.trace.txt";
+            var logLines = Logs.GetLogFileLines(logFile);
 
-            var resultPost = Movies.InvalidPost(new MovieResource());
+            var resultPost = Movies.InvalidPost(new Radarr.Api.V2.Movies.MovieResource());
 
-            logLines = File.ReadAllLines(logFile).Skip(logLines.Length).ToArray();
+            // Skip 2 and 1 to ignore the logs endpoint
+            logLines = Logs.GetLogFileLines(logFile).Skip(logLines.Length + 2).ToArray();
+            Array.Resize(ref logLines, logLines.Length - 1);
 
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req"));
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res"));
-            logLines.Should().Contain(v => v.Contains("|Debug|Api|"));
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req") && v.Contains("/api/v2/movie/"));
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res") && v.Contains("/api/v2/movie/: 400.BadRequest"));
+            logLines.Should().Contain(v => v.Contains("|Debug|Api|") && v.Contains("/api/v2/movie/: 400.BadRequest"));
         }
     }
 }

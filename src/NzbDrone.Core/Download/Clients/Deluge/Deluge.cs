@@ -237,7 +237,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Unble to test connection");
+                _logger.Error(ex, "Unable to test connection");
                 switch (ex.Status)
                 {
                     case WebExceptionStatus.ConnectFailure:

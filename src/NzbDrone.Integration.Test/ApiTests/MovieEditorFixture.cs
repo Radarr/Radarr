@@ -1,6 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
+using Radarr.Api.V2.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -10,11 +11,11 @@ namespace NzbDrone.Integration.Test.ApiTests
     {
         private void GivenExistingMovie()
         {
-            foreach (var title in new[] { "90210", "Dexter" })
+            foreach (var title in new[] { "The Dark Knight", "Pulp Fiction" })
             {
                 var newMovie = Movies.Lookup(title).First();
 
-                newMovie.ProfileId = 1;
+                newMovie.QualityProfileId = 1;
                 newMovie.Path = string.Format(@"C:\Test\{0}", title).AsOsAgnostic();
 
                 Movies.Post(newMovie);
@@ -26,17 +27,18 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             GivenExistingMovie();
 
-            var movie = Movies.All();
+            var movies = Movies.All();
 
-            foreach (var s in movie)
+            var movieEditor = new MovieEditorResource
             {
-                s.ProfileId = 2;
-            }
+                QualityProfileId = 2,
+                MovieIds = movies.Select(o => o.Id).ToList()
+            };
 
-            var result = Movies.Editor(movie);
+            var result = Movies.Editor(movieEditor);
 
             result.Should().HaveCount(2);
-            result.TrueForAll(s => s.ProfileId == 2).Should().BeTrue();
+            result.TrueForAll(s => s.QualityProfileId == 2).Should().BeTrue();
         }
     }
 }

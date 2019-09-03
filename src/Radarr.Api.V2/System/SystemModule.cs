@@ -64,6 +64,7 @@ namespace Radarr.Api.V2.System
                        IsLinux = OsInfo.IsLinux,
                        IsOsx = OsInfo.IsOsx,
                        IsWindows = OsInfo.IsWindows,
+                       IsDocker = _osInfo.IsDocker,
                        Mode = _runtimeInfo.Mode,
                        Branch = _configFileProvider.Branch,
                        Authentication = _configFileProvider.AuthenticationMethod,

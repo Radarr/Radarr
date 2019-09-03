@@ -238,17 +238,16 @@ stages:
           buildType: 'current'
           artifactName: WindowsTests
           targetPath: $(testsFolder)
+      - bash: |
+          wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-9_all.deb 
+          sudo dpkg -i repo-mediaarea_1.0-9_all.deb
+          sudo apt-get update
+          sudo apt-get install -y libmediainfo-dev libmediainfo0v5 mediainfo
+        displayName: Install mediainfo
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - bash: |
-          sudo apt install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
-      - bash: |
-          brew install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - task: Bash@3
         displayName: Run Tests
         env:
@@ -326,14 +325,6 @@ stages:
           mkdir -p ./bin/
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
         displayName: Move Package Contents
-      - bash: |
-          sudo apt install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
-      - bash: |
-          brew install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - task: Bash@3
         displayName: Run Integration Tests
         inputs:
