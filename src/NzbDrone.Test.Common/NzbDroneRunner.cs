@@ -9,6 +9,7 @@ using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.Configuration;
 using RestSharp;
 
 namespace NzbDrone.Test.Common
@@ -30,7 +31,10 @@ namespace NzbDrone.Test.Common
 
         public void Start()
         {
-            AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + DateTime.Now.Ticks);
+            AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + TestBase.GetUID());
+            Directory.CreateDirectory(AppData);
+
+            GenerateConfigFile();
 
             var radarrConsoleExe = OsInfo.IsWindows ? "Radarr.Console.exe" : "Radarr.exe";
 
@@ -40,7 +44,7 @@ namespace NzbDrone.Test.Common
             }
             else
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "bin", radarrConsoleExe));
+                Start(Path.Combine("bin", radarrConsoleExe));
             }
 
             while (true)
@@ -51,8 +55,6 @@ namespace NzbDrone.Test.Common
                 {
                     Assert.Fail("Process has exited");
                 }
-
-                SetApiKey();
 
                 var request = new RestRequest("system/status");
                 request.AddHeader("Authorization", ApiKey);
@@ -74,13 +76,22 @@ namespace NzbDrone.Test.Common
 
         public void KillAll()
         {
-            if (_nzbDroneProcess != null)
+            try
             {
-                _processProvider.Kill(_nzbDroneProcess.Id);
+                if (_nzbDroneProcess != null)
+                {
+                    _processProvider.Kill(_nzbDroneProcess.Id);
+                }
+
+                _processProvider.KillAll(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME);
+                _processProvider.KillAll(ProcessProvider.RADARR_PROCESS_NAME);
+            }
+            catch (InvalidOperationException)
+            {
+                // May happen if the process closes while being closed
             }
 
-            _processProvider.KillAll(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME);
-            _processProvider.KillAll(ProcessProvider.RADARR_PROCESS_NAME);
+            TestBase.DeleteTempFolder(AppData);
         }
 
         private void Start(string outputRadarrConsoleExe)
@@ -100,33 +111,26 @@ namespace NzbDrone.Test.Common
             }
         }
 
-        private void SetApiKey()
+        private void GenerateConfigFile()
         {
             var configFile = Path.Combine(AppData, "config.xml");
-            var attempts = 0;
 
-            while (ApiKey == null && attempts < 50)
-            {
-                try
-                {
-                    if (File.Exists(configFile))
-                    {
-                        var apiKeyElement = XDocument.Load(configFile)
-                            .XPathSelectElement("Config/ApiKey");
-                        if (apiKeyElement != null)
-                        {
-                            ApiKey = apiKeyElement.Value;
-                        }
-                    }
-                }
-                catch (XmlException ex)
-                {
-                    Console.WriteLine("Error getting API Key from XML file: " + ex.Message, ex);
-                }
+            // Generate and set the api key so we don't have to poll the config file
+            var apiKey = Guid.NewGuid().ToString().Replace("-", "");
 
-                attempts++;
-                Thread.Sleep(1000);
-            }
+            var xDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", "yes"),
+                new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
+                             new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)
+                    )
+                );
+
+            var data = xDoc.ToString();
+
+            File.WriteAllText(configFile, data);
+
+            ApiKey = apiKey;
         }
     }
 }

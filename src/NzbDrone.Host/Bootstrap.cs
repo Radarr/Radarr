@@ -29,6 +29,7 @@ namespace Radarr.Host
                 }
 
                 _container = MainAppContainerBuilder.BuildContainer(startupContext);
+                _container.Resolve<InitializeLogger>().Initialize();
                 _container.Resolve<IAppFolderFactory>().Register();
                 _container.Resolve<IProvidePidFile>().Write();
 
@@ -109,10 +110,16 @@ namespace Radarr.Host
 
         private static ApplicationModes GetApplicationMode(IStartupContext startupContext)
         {
-            if (startupContext.Flags.Contains(StartupContext.HELP))
+            if (startupContext.Help)
             {
                 return ApplicationModes.Help;
             }
+
+            if (OsInfo.IsWindows && startupContext.RegisterUrl)
+            {
+                return ApplicationModes.RegisterUrl;
+            }
+
 
             if (OsInfo.IsWindows && startupContext.InstallService)
             {
@@ -138,6 +145,7 @@ namespace Radarr.Host
             {
                 case ApplicationModes.InstallService:
                 case ApplicationModes.UninstallService:
+                case ApplicationModes.RegisterUrl:
                 case ApplicationModes.Help:
                     {
                         return true;

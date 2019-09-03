@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using FluentMigrator.Runner;
@@ -99,7 +100,6 @@ namespace NzbDrone.Core.Test.Framework
         {
             WithTempAsAppPath();
 
-            Mocker.SetConstant<IAnnouncer>(Mocker.Resolve<MigrationLogger>());
             Mocker.SetConstant<IConnectionStringFactory>(Mocker.Resolve<ConnectionStringFactory>());
             Mocker.SetConstant<IMigrationController>(Mocker.Resolve<MigrationController>());
 
@@ -116,21 +116,14 @@ namespace NzbDrone.Core.Test.Framework
         [TearDown]
         public void TearDown()
         {
-            if (TestFolderInfo != null && Directory.Exists(TestFolderInfo.AppDataFolder))
+            // Make sure there are no lingering connections. (When this happens it means we haven't disposed something properly)
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            SQLiteConnection.ClearAllPools();
+
+            if (TestFolderInfo != null)
             {
-                var files = Directory.GetFiles(TestFolderInfo.AppDataFolder);
-
-                foreach (var file in files)
-                {
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
+                DeleteTempFolder(TestFolderInfo.AppDataFolder);
             }
         }
     }

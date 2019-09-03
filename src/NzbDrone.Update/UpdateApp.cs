@@ -35,7 +35,7 @@ namespace NzbDrone.Update
                 Logger.Info("Starting Radarr Update Client");
 
                 _container = UpdateContainerBuilder.Build(startupArgument);
-
+                _container.Resolve<InitializeLogger>().Initialize();
                 _container.Resolve<UpdateApp>().Start(args);
 
                 Logger.Info("Update completed successfully");

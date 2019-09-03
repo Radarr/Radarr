@@ -42,9 +42,9 @@ namespace NzbDrone.Core.Test.MovieTests
             _movie.LastInfoSync = DateTime.UtcNow.AddDays(-1);
         }
 
-        private void GivenMovieLastRefreshedHalfADayAgo()
+        private void GivenMovieLastRefreshedADayAgo()
         {
-            _movie.LastInfoSync = DateTime.UtcNow.AddHours(-12);
+            _movie.LastInfoSync = DateTime.UtcNow.AddHours(-24);
         }
 
         private void GivenMovieLastRefreshedRecently()
@@ -58,15 +58,15 @@ namespace NzbDrone.Core.Test.MovieTests
         }
 
         [Test]
-        public void should_return_true_if_in_cinemas_movie_last_refreshed_more_than_6_hours_ago()
+        public void should_return_true_if_in_cinemas_movie_last_refreshed_more_than_12_hours_ago()
         {
-            GivenMovieLastRefreshedHalfADayAgo();
+            GivenMovieLastRefreshedADayAgo();
 
             Subject.ShouldRefresh(_movie).Should().BeTrue();
         }
 
         [Test]
-        public void should_return_false_if_in_cinemas_movie_last_refreshed_less_than_6_hours_ago()
+        public void should_return_false_if_in_cinemas_movie_last_refreshed_less_than_12_hours_ago()
         {
             GivenMovieLastRefreshedRecently();
 

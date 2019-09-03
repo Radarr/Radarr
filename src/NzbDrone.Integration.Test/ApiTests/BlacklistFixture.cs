@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Movies;
+using Radarr.Api.V2.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -15,7 +15,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             _movie = EnsureMovie(11, "The Blacklist");
 
-            Blacklist.Post(new Api.Blacklist.BlacklistResource
+            Blacklist.Post(new Radarr.Api.V2.Blacklist.BlacklistResource
             {
                 MovieId = _movie.Id,
                 SourceTitle = "Blacklist.S01E01.Brought.To.You.By-BoomBoxHD"

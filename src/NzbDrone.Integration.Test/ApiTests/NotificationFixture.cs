@@ -34,7 +34,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var xbmc = schema.Single(s => s.Implementation.Equals("Xbmc", StringComparison.InvariantCultureIgnoreCase));
 
             xbmc.Name = "Test XBMC";
-            xbmc.Fields.Single(f => f.Name.Equals("Host")).Value = "localhost";
+            xbmc.Fields.Single(f => f.Name.Equals("host")).Value = "localhost";
 
             var result = Notifications.Post(xbmc);
             Notifications.Delete(result.Id);

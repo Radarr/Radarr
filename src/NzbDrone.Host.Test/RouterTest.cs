@@ -29,7 +29,6 @@ namespace NzbDrone.App.Test
 
             Mocker.GetMock<IProcessProvider>()
                   .Setup(c => c.SpawnNewProcess("sc.exe", It.IsAny<string>(), null, true));
-
             Mocker.GetMock<IRuntimeInfo>().SetupGet(c => c.IsUserInteractive).Returns(true);
 
             Subject.Route(ApplicationModes.InstallService);

@@ -47,16 +47,14 @@ namespace NzbDrone.Automation.Test.PageModel
             });
         }
 
-        public IWebElement SeriesNavIcon => FindByClass("x-series-nav");
+        public IWebElement MovieNavIcon => Find(By.LinkText("Movies"));
 
-        public IWebElement CalendarNavIcon => FindByClass("x-calendar-nav");
+        public IWebElement CalendarNavIcon => Find(By.LinkText("Calendar"));
 
-        public IWebElement ActivityNavIcon => FindByClass("x-activity-nav");
+        public IWebElement ActivityNavIcon => Find(By.LinkText("Activity"));
 
-        public IWebElement WantedNavIcon => FindByClass("x-wanted-nav");
+        public IWebElement SettingNavIcon => Find(By.LinkText("Settings"));
 
-        public IWebElement SettingNavIcon => FindByClass("x-settings-nav");
-
-        public IWebElement SystemNavIcon => FindByClass("x-system-nav");
+        public IWebElement SystemNavIcon => Find(By.PartialLinkText("System"));
     }
 }

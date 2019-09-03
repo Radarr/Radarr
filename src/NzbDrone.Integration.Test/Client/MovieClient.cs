@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
-using NzbDrone.Api.Movies;
+using Radarr.Api.V2.Movies;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
@@ -19,7 +19,7 @@ namespace NzbDrone.Integration.Test.Client
             return Get<List<MovieResource>>(request);
         }
 
-        public List<MovieResource> Editor(List<MovieResource> movie)
+        public List<MovieResource> Editor(MovieEditorResource movie)
         {
             var request = BuildRequest("editor");
             request.AddJsonBody(movie);

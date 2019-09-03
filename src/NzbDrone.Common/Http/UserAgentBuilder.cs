@@ -33,8 +33,8 @@ namespace NzbDrone.Common.Http
 
             var osVersion = osInfo.Version?.ToLower();
 
-            _userAgent = $"Radarr/{BuildInfo.Version} ({osName} {osVersion})";
-            _userAgentSimplified = $"Radarr/{BuildInfo.Version.ToString(2)}";
+            _userAgent = $"{BuildInfo.AppName}/{BuildInfo.Version} ({osName} {osVersion})";
+            _userAgentSimplified = $"{BuildInfo.AppName}/{BuildInfo.Version.ToString(2)}";
         }
     }
 }

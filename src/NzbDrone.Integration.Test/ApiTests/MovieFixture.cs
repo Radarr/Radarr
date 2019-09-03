@@ -18,7 +18,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
-            movie.ProfileId = 1;
+            movie.QualityProfileId = 1;
             movie.Path = Path.Combine(MovieRootFolder, movie.Title);
             movie.Tags = new HashSet<int>();
             movie.Tags.Add(tag.Id);
@@ -48,7 +48,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
-            movie.ProfileId = 1;
+            movie.QualityProfileId = 1;
 
             Movies.InvalidPost(movie);
         }
@@ -60,14 +60,14 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
-            movie.ProfileId = 1;
+            movie.QualityProfileId = 1;
             movie.Path = Path.Combine(MovieRootFolder, movie.Title);
 
             var result = Movies.Post(movie);
 
             result.Should().NotBeNull();
             result.Id.Should().NotBe(0);
-            result.ProfileId.Should().Be(1);
+            result.QualityProfileId.Should().Be(1);
             result.Path.Should().Be(Path.Combine(MovieRootFolder, movie.Title));
         }
 
@@ -105,16 +105,16 @@ namespace NzbDrone.Integration.Test.ApiTests
             var movie = EnsureMovie(680, "Pulp Fiction");
 
             var profileId = 1;
-            if (movie.ProfileId == profileId)
+            if (movie.QualityProfileId == profileId)
             {
                 profileId = 2;
             }
 
-            movie.ProfileId = profileId;
+            movie.QualityProfileId = profileId;
 
             var result = Movies.Put(movie);
 
-            Movies.Get(movie.Id).ProfileId.Should().Be(profileId);
+            Movies.Get(movie.Id).QualityProfileId.Should().Be(profileId);
         }
 
         [Test, Order(3)]

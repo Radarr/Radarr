@@ -11,6 +11,7 @@ using NLog;
 using NzbDrone.Core.Configuration;
 using Radarr.Host.Owin.MiddleWare;
 using Owin;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace Radarr.Host.Owin
 {
@@ -70,7 +71,7 @@ namespace Radarr.Host.Owin
 
         private void BuildApp(IAppBuilder appBuilder)
         {
-            appBuilder.Properties["host.AppName"] = "NzbDrone";
+            appBuilder.Properties["host.AppName"] = BuildInfo.AppName;
 
             foreach (var middleWare in _owinMiddleWares.OrderBy(c => c.Order))
             {
