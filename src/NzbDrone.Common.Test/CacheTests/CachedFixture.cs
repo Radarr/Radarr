@@ -100,7 +100,7 @@ namespace NzbDrone.Common.Test.CacheTests
                 Thread.Sleep(100);
             }
 
-            hitCount.Should().BeInRange(3, 6);
+            hitCount.Should().BeInRange(3, 7);
         }
 
         [Test]
