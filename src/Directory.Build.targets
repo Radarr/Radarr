@@ -1,3 +1,4 @@
 <Project>
   <Import Project="PublishAllRids.targets" />
+  <Import Project="MonoFacades.targets" Condition="$(TargetFramework.StartsWith('net4')) and '$(RuntimeIdentifier)'!='win-x64'" />
 </Project>

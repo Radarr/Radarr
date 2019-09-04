@@ -25,6 +25,7 @@ function createMapStateToProps() {
         advancedSettings,
         isResettingApiKey,
         isMono: systemStatus.isMono,
+        isNetCore: systemStatus.isNetCore,
         isWindows: systemStatus.isWindows,
         isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service',
         mode: systemStatus.mode,

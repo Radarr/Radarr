@@ -3,8 +3,11 @@
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.1" />
-    <PackageReference Include="Nancy.Owin" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.2.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.5.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Api\Radarr.Api.csproj" />
@@ -16,6 +19,10 @@
     <ProjectReference Include="..\Radarr.Http\Radarr.Http.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Fix the duff System.Diagnostics.Tracing version copied over by msbuild -->
+    <None Include="..\Libraries\Mono\System.Diagnostics.Tracing.dll" Condition="'$(RuntimeIdentifier)'!='win-x64'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Reference Include="Interop.NetFwTypeLib">
       <HintPath>..\Libraries\Interop.NetFwTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>

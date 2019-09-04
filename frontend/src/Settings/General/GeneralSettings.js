@@ -23,6 +23,8 @@ const requiresRestartKeys = [
   'enableSsl',
   'sslPort',
   'sslCertHash',
+  'sslCertPath',
+  'sslCertPassword',
   'authenticationMethod',
   'username',
   'password',

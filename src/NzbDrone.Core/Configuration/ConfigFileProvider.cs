@@ -38,6 +38,8 @@ namespace NzbDrone.Core.Configuration
         string Branch { get; }
         string ApiKey { get; }
         string SslCertHash { get; }
+        string SslCertPath { get; }
+        string SslCertPassword { get; }
         string UrlBase { get; }
         string UiFolder { get; }
         bool UpdateAutomatically { get; }
@@ -185,6 +187,9 @@ namespace NzbDrone.Core.Configuration
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
         public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
         public string SslCertHash => GetValue("SslCertHash", "");
+        public string SslCertPath => GetValue("SslCertPath", "");
+
+        public string SslCertPassword => GetValue("SslCertPassword", "");
 
         public string UrlBase
         {
