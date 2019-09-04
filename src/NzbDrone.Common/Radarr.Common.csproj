@@ -9,6 +9,7 @@
     <PackageReference Include="Sentry" Version="1.2.0" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-4" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration.Install" />

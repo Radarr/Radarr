@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NBuilder" Version="6.0.1" />
+    <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
@@ -14,9 +15,6 @@
       <Link>Files\1024.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <None Update="Files\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -30,10 +28,12 @@
   <Target Name="CopyMacOSRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
     <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\Libraries\System.Data.SQLite.dll.config" DestinationFolder="$(OutDir)" />
   </Target>
   <Target Name="CopyMacOSRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
     <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(PublishDir)" />
     <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(PublishDir)" />
+    <Copy SourceFiles="..\Libraries\System.Data.SQLite.dll.config" DestinationFolder="$(PublishDir)" />
   </Target>
   <Target Name="CopyLinuxRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='linux-x64'">
     <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
