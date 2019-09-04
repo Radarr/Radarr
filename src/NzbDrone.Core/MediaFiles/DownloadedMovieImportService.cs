@@ -128,9 +128,7 @@ namespace NzbDrone.Core.MediaFiles
                     return false;
                 }
 
-                var size = _diskProvider.GetFileSize(videoFile);
-
-                if (_detectSample.IsSample(movie, videoFile, false) == DetectSampleResult.NotSample)
+                if (_detectSample.IsSample(movie, videoFile, false) != DetectSampleResult.Sample)
                 {
                     _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                     return false;
