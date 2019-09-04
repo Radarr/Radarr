@@ -13,7 +13,7 @@ namespace NzbDrone.Common.Cloud
     {
         public RadarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("https://radarr.aeonlucid.com/v1/")
+            Services = new HttpRequestBuilder("https://radarr.lidarr.audio/v1/")
                 .CreateFactory();
 
             TMDB = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}/{id}{secondaryRoute}")
