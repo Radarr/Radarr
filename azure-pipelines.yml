@@ -202,9 +202,9 @@ stages:
           sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
           sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
-          sentry-cli releases deploys "${RELEASENAME}" new -e nightly
+          sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
         displayName: Publish Sentry Source Maps
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
           SENTRY_AUTH_TOKEN: $(sentryAuthToken)
           SENTRY_ORG: $(sentryOrg)
