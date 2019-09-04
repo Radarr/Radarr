@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net462</TargetFramework>
-    <Platforms>x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.7" />

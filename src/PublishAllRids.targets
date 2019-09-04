@@ -1,0 +1,28 @@
+<Project DefaultTargets="Build">
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+
+    <!-- Enable roll-forward to latest patch.  This allows one restore operation
+         to apply to all of the self-contained publish operations. -->
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+  </PropertyGroup>
+
+  <Target Name="PublishAllRids">
+    <ItemGroup>
+      <!-- Transform RuntimeIdentifiers property to item -->
+      <RuntimeIdentifierForPublish Include="$(RuntimeIdentifiers)" />
+
+      <!-- Transform RuntimeIdentifierForPublish items to project items to pass to MSBuild task -->
+      <ProjectToPublish Include="@(RuntimeIdentifierForPublish->'$(MSBuildProjectFullPath)')">
+        <AdditionalProperties>RuntimeIdentifier=%(RuntimeIdentifierForPublish.Identity)</AdditionalProperties>
+      </ProjectToPublish>
+    </ItemGroup>
+
+    <MSBuild Projects="@(ProjectToPublish)"
+             Targets="Publish"
+             BuildInParallel="true"
+             />
+  </Target>
+
+</Project>
