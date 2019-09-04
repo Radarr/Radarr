@@ -325,7 +325,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             tag.OriginalReleaseDate.HasValue.Should().BeFalse();
         }
 
-        private TrackFile GivenPopulatedTrackfile()
+        private TrackFile GivenPopulatedTrackfile(int mediumOffset)
         {
             var meta = Builder<ArtistMetadata>.CreateNew().Build();
             var artist = Builder<Artist>.CreateNew()
@@ -337,6 +337,8 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .Build();
 
             var media = Builder<Medium>.CreateListOfSize(2).Build() as List<Medium>;
+            media.ForEach(x => x.Number += mediumOffset);
+
             var release = Builder<AlbumRelease>.CreateNew()
                 .With(x => x.Album = album)
                 .With(x => x.Media = media)
@@ -349,9 +351,9 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .With(x => x.AlbumRelease = release)
                 .With(x => x.ArtistMetadata = meta)
                 .TheFirst(5)
-                .With(x => x.MediumNumber = 1)
+                .With(x => x.MediumNumber = 1 + mediumOffset)
                 .TheNext(5)
-                .With(x => x.MediumNumber = 2)
+                .With(x => x.MediumNumber = 2 + mediumOffset)
                 .Build() as List<Track>;
             release.Tracks = tracks;
 
@@ -366,10 +368,22 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
         [Test]
         public void get_metadata_should_not_fail_with_missing_country()
         {
-            var file = GivenPopulatedTrackfile();
+            var file = GivenPopulatedTrackfile(0);
             var tag = Subject.GetTrackMetadata(file);
         
             tag.MusicBrainzReleaseCountry.Should().BeNull();
+        }
+
+        [Test]
+        public void should_not_fail_if_media_has_been_omitted()
+        {
+            // make sure that we aren't relying on index of items in
+            // Media being the same as the medium number
+
+            var file = GivenPopulatedTrackfile(100);
+            var tag = Subject.GetTrackMetadata(file);
+
+            tag.Media.Should().NotBeNull();
         }
 
         [TestCase("nin.mp3")]
@@ -381,7 +395,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 
             GivenFileCopy(filename);
 
-            var file = GivenPopulatedTrackfile();
+            var file = GivenPopulatedTrackfile(0);
 
             file.Path = copiedFile;
             Subject.WriteTags(file, false, true);

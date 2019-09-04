@@ -107,7 +107,8 @@ namespace NzbDrone.Core.MediaFiles
                 Album = album.Title,
                 Disc = (uint)track.MediumNumber,
                 DiscCount = (uint)release.Media.Count,
-                Media = release.Media[track.MediumNumber - 1].Format,
+                // We may have omitted media so index in the list isn't the same as medium number
+                Media = release.Media.SingleOrDefault(x => x.Number == track.MediumNumber).Format,
                 Date = release.ReleaseDate,
                 Year = (uint)album.ReleaseDate?.Year,
                 OriginalReleaseDate = album.ReleaseDate,
