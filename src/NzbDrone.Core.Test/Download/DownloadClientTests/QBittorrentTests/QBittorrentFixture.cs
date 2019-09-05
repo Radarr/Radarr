@@ -9,6 +9,7 @@ using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.QBittorrent;
 using NzbDrone.Test.Common;
+using NzbDrone.Core.Exceptions;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 {
@@ -37,8 +38,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                   .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new Byte[0]));
 
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
-                .Returns(new QBittorrentPreferences());
+                  .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new QBittorrentPreferences() { DhtEnabled = true });
+
+            Mocker.GetMock<IQBittorrentProxySelector>()
+                  .Setup(s => s.GetProxy(It.IsAny<QBittorrentSettings>(), It.IsAny<bool>()))
+                  .Returns(Mocker.GetMock<IQBittorrentProxy>().Object);
         }
 
         protected void GivenRedirectToMagnet()
@@ -154,7 +159,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyPaused(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [TestCase("pausedUP")]
@@ -162,6 +167,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         [TestCase("uploading")]
         [TestCase("stalledUP")]
         [TestCase("checkingUP")]
+        [TestCase("forcedUP")]
         public void completed_item_should_have_required_properties(string state)
         {
             var torrent = new QBittorrentTorrent
@@ -184,6 +190,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         [TestCase("queuedDL")]
         [TestCase("checkingDL")]
+        [TestCase("metaDL")]
         public void queued_item_should_have_required_properties(string state)
         {
             var torrent = new QBittorrentTorrent
@@ -201,7 +208,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyQueued(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [Test]
@@ -243,7 +250,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             VerifyWarning(item);
-            item.RemainingTime.Should().NotBe(TimeSpan.Zero);
+            item.RemainingTime.Should().NotHaveValue();
         }
 
         [Test]
@@ -269,6 +276,35 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var id = Subject.Download(remoteMovie);
 
             id.Should().Be(expectedHash);
+        }
+
+        [Test]
+        public void Download_should_refuse_magnet_if_no_trackers_provided_and_dht_is_disabled()
+        {
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new QBittorrentPreferences() { DhtEnabled = false });
+
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR";
+
+            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie));
+        }
+
+        [Test]
+        public void Download_should_accept_magnet_if_trackers_provided_and_dht_is_disabled()
+        {
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new QBittorrentPreferences() { DhtEnabled = false });
+
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
+
+            Assert.DoesNotThrow(() => Subject.Download(remoteMovie));
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
         }
 
         [Test]
@@ -493,6 +529,20 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var item = Subject.GetItems().Single();
             item.Category.Should().Be(category);
+        }
+
+        [Test]
+        public void Test_should_force_api_version_check()
+        {
+            // Set TestConnection up to fail quick
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(v => v.GetApiVersion(It.IsAny<QBittorrentSettings>()))
+                  .Returns(new Version(1, 0));
+
+            Subject.Test();
+
+            Mocker.GetMock<IQBittorrentProxySelector>()
+                  .Verify(v => v.GetProxy(It.IsAny<QBittorrentSettings>(), true), Times.Once());
         }
     }
 }
