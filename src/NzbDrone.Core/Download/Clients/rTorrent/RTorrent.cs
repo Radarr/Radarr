@@ -93,11 +93,11 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                 foreach (RTorrentTorrent torrent in torrents)
                 {
                     // Don't concern ourselves with categories other than specified
-                    if (torrent.Category != Settings.MovieCategory) continue;
+                    if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && torrent.Category != Settings.MovieCategory) continue;
 
                     if (torrent.Path.StartsWith("."))
                     {
-                        throw new DownloadClientException("Download paths paths must be absolute. Please specify variable \"directory\" in rTorrent.");
+                        throw new DownloadClientException("Download paths must be absolute. Please specify variable \"directory\" in rTorrent.");
                     }
 
                     var item = new DownloadClientItem();
