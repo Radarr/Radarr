@@ -989,6 +989,9 @@ namespace NzbDrone.Common.Test.DiskTests
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.GetFileInfos(It.IsAny<string>(), It.IsAny<SearchOption>()))
                 .Returns(new List<IFileInfo>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.CopyPermissions(It.IsAny<string>(), It.IsAny<string>(), false));
         }
 
         private void WithRealDiskProvider()
@@ -1045,6 +1048,9 @@ namespace NzbDrone.Common.Test.DiskTests
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.OpenReadStream(It.IsAny<string>()))
                 .Returns<string>(s => new FileStream(s, FileMode.Open, FileAccess.Read));
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.CopyPermissions(It.IsAny<string>(), It.IsAny<string>(), false));
         }
 
         private void WithMockMount(string root)
