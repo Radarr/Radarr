@@ -104,7 +104,7 @@ BuildWithXbuild()
 LintUI()
 {
     ProgressStart 'ESLint'
-    CheckExitCode yarn eslint
+    CheckExitCode yarn lint
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'
