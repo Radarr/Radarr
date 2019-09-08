@@ -47,6 +47,7 @@ UpdateVersionNumber()
         echo "Updating Version Info"
         sed -i "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" ./src/Directory.Build.props
         sed -i "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" ./src/Directory.Build.props
+        sed -i "s/<string>10.0.0.0<\/string>/<string>$LIDARRVERSION<\/string>/g" ./macOS/Lidarr.app/Contents/Info.plist
     fi
 }
 
@@ -347,6 +348,7 @@ fi
 # Only package if we haven't set only-backend or only-frontend
 if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
 then
+    UpdateVersionNumber
     PackageMono
     PackageMacOS
     PackageMacOSApp
