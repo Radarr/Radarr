@@ -15,13 +15,14 @@ namespace NzbDrone.Core.ImportLists.Spotify
 {
     public class SpotifyPlaylist : SpotifyImportListBase<SpotifyPlaylistSettings>
     {
-        public SpotifyPlaylist(IImportListStatusService importListStatusService,
+        public SpotifyPlaylist(ISpotifyProxy spotifyProxy,
+                               IImportListStatusService importListStatusService,
                                IImportListRepository importListRepository,
                                IConfigService configService,
                                IParsingService parsingService,
-                               HttpClient httpClient,
+                               IHttpClient httpClient,
                                Logger logger)
-        : base(importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
+        : base(spotifyProxy, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
         {
         }
 
@@ -29,44 +30,60 @@ namespace NzbDrone.Core.ImportLists.Spotify
 
         public override IList<ImportListItemInfo> Fetch(SpotifyWebAPI api)
         {
+            return Settings.PlaylistIds.SelectMany(x => Fetch(api, x)).ToList();
+        }
+
+        public IList<ImportListItemInfo> Fetch(SpotifyWebAPI api, string playlistId)
+        {
             var result = new List<ImportListItemInfo>();
 
-            foreach (var id in Settings.PlaylistIds)
+            _logger.Trace($"Processing playlist {playlistId}");
+
+            var playlistTracks = _spotifyProxy.GetPlaylistTracks(this, api, playlistId, "next, items(track(name, album(name,artists)))");
+
+            while (true)
             {
-                _logger.Trace($"Processing playlist {id}");
-
-                var playlistTracks = Execute(api, (x) => x.GetPlaylistTracks(id, fields: "next, items(track(name, album(name,artists)))"));
-                while (true)
+                if (playlistTracks?.Items == null)
                 {
-                    foreach (var track in playlistTracks.Items)
-                    {
-                        var fullTrack = track.Track;
-                        // From spotify docs: "Note, a track object may be null. This can happen if a track is no longer available."
-                        if (fullTrack != null)
-                        {
-                            var album = fullTrack.Album?.Name;
-                            var artist = fullTrack.Album?.Artists?.FirstOrDefault()?.Name ?? fullTrack.Artists.FirstOrDefault()?.Name;
-
-                            if (album.IsNotNullOrWhiteSpace() && artist.IsNotNullOrWhiteSpace())
-                            {
-                                result.AddIfNotNull(new ImportListItemInfo
-                                                    {
-                                                        Artist = artist,
-                                                        Album = album,
-                                                        ReleaseDate = ParseSpotifyDate(fullTrack.Album.ReleaseDate, fullTrack.Album.ReleaseDatePrecision)
-                                                    });
-                                
-                            }
-                        }
-                    }
-                        
-                    if (!playlistTracks.HasNextPage())
-                        break;
-                    playlistTracks = Execute(api, (x) => x.GetNextPage(playlistTracks));
+                    return result;
                 }
+
+                foreach (var playlistTrack in playlistTracks.Items)
+                {
+                    result.AddIfNotNull(ParsePlaylistTrack(playlistTrack));
+                }
+                        
+                if (!playlistTracks.HasNextPage())
+                {
+                    break;
+                }
+
+                playlistTracks = _spotifyProxy.GetNextPage(this, api, playlistTracks);
             }
 
             return result;
+        }
+
+        private ImportListItemInfo ParsePlaylistTrack(PlaylistTrack playlistTrack)
+        {
+            // From spotify docs: "Note, a track object may be null. This can happen if a track is no longer available."
+            if (playlistTrack?.Track?.Album != null)
+            {
+                var album = playlistTrack.Track.Album;
+                var albumName = album.Name;
+                var artistName = album.Artists?.FirstOrDefault()?.Name ?? playlistTrack.Track?.Artists?.FirstOrDefault()?.Name;
+
+                if (albumName.IsNotNullOrWhiteSpace() && artistName.IsNotNullOrWhiteSpace())
+                {
+                    return new ImportListItemInfo {
+                        Artist = artistName,
+                        Album = albumName,
+                        ReleaseDate = ParseSpotifyDate(album.ReleaseDate, album.ReleaseDatePrecision)
+                    };
+                }
+            }
+
+            return null;
         }
 
         public override object RequestAction(string action, IDictionary<string, string> query)
@@ -87,18 +104,26 @@ namespace NzbDrone.Core.ImportLists.Spotify
                 {
                     try
                     {
-                        var profile = Execute(api, (x) => x.GetPrivateProfile());
-                        var playlistPage = Execute(api, (x) => x.GetUserPlaylists(profile.Id));
+                        var profile = _spotifyProxy.GetPrivateProfile(this, api);
+                        var playlistPage = _spotifyProxy.GetUserPlaylists(this, api, profile.Id);
                         _logger.Trace($"Got {playlistPage.Total} playlists");
 
                         var playlists = new List<SimplePlaylist>(playlistPage.Total);
                         while (true)
                         {
+                            if (playlistPage == null)
+                            {
+                                break;
+                            }
+
                             playlists.AddRange(playlistPage.Items);
 
                             if (!playlistPage.HasNextPage())
+                            {
                                 break;
-                            playlistPage = Execute(api, (x) => x.GetNextPage(playlistPage));
+                            }
+
+                            playlistPage = _spotifyProxy.GetNextPage(this, api, playlistPage);
                         }
 
                         return new

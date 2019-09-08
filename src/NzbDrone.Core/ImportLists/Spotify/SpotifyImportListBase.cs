@@ -20,21 +20,27 @@ namespace NzbDrone.Core.ImportLists.Spotify
         private IHttpClient _httpClient;
         private IImportListRepository _importListRepository;
 
-        public SpotifyImportListBase(IImportListStatusService importListStatusService,
-                                     IImportListRepository importListRepository,
-                                     IConfigService configService,
-                                     IParsingService parsingService,
-                                     HttpClient httpClient,
-                                     Logger logger)
+        protected ISpotifyProxy _spotifyProxy;
+
+        protected SpotifyImportListBase(ISpotifyProxy spotifyProxy,
+                                        IImportListStatusService importListStatusService,
+                                        IImportListRepository importListRepository,
+                                        IConfigService configService,
+                                        IParsingService parsingService,
+                                        IHttpClient httpClient,
+                                        Logger logger)
         : base(importListStatusService, configService, parsingService, logger)
         {
             _httpClient = httpClient;
             _importListRepository = importListRepository;
+            _spotifyProxy = spotifyProxy;
         }
 
         public override ImportListType ListType => ImportListType.Spotify;
 
-        private void RefreshToken()
+        public string AccessToken => Settings.AccessToken;
+
+        public void RefreshToken()
         {
             _logger.Trace("Refreshing Token");
 
@@ -68,7 +74,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
 
         }
         
-        protected SpotifyWebAPI GetApi()
+        public SpotifyWebAPI GetApi()
         {
             Settings.Validate().Filter("AccessToken", "RefreshToken").ThrowOnError();
             _logger.Trace($"Access token expires at {Settings.Expires}");
@@ -83,35 +89,6 @@ namespace NzbDrone.Core.ImportLists.Spotify
                 AccessToken = Settings.AccessToken,
                 TokenType = "Bearer"
             };
-        }
-
-        protected T Execute<T>(SpotifyWebAPI api, Func<SpotifyWebAPI, T> method, bool allowReauth = true) where T : BasicModel
-        {
-            T result = method(api);
-            if (result.HasError())
-            {
-                // If unauthorized, refresh token and try again
-                if (result.Error.Status == 401)
-                {
-                    if (allowReauth)
-                    {
-                        _logger.Debug("Spotify authorization error, refreshing token and retrying");
-                        RefreshToken();
-                        api.AccessToken = Settings.AccessToken;
-                        return Execute(api, method, false);
-                    }
-                    else
-                    {
-                        throw new SpotifyAuthorizationException(result.Error.Message);
-                    }
-                }
-                else
-                {
-                    throw new SpotifyException("[{0}] {1}", result.Error.Status, result.Error.Message);
-                }
-            }
-
-            return result;
         }
 
         public override IList<ImportListItemInfo> Fetch()
@@ -162,7 +139,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
             {
                 using (var api = GetApi())
                 {
-                    var profile = Execute(api, (x) => x.GetPrivateProfile());
+                    var profile = _spotifyProxy.GetPrivateProfile(this, api);
                     _logger.Debug($"Connected to spotify profile {profile.DisplayName} [{profile.Id}]");
                     return null;
                 }

@@ -7,6 +7,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using SpotifyAPI.Web;
+using SpotifyAPI.Web.Models;
 
 namespace NzbDrone.Core.ImportLists.Spotify
 {
@@ -17,13 +18,14 @@ namespace NzbDrone.Core.ImportLists.Spotify
 
     public class SpotifySavedAlbums : SpotifyImportListBase<SpotifySavedAlbumsSettings>
     {
-        public SpotifySavedAlbums(IImportListStatusService importListStatusService,
+        public SpotifySavedAlbums(ISpotifyProxy spotifyProxy,
+                                  IImportListStatusService importListStatusService,
                                   IImportListRepository importListRepository,
                                   IConfigService configService,
                                   IParsingService parsingService,
-                                  HttpClient httpClient,
+                                  IHttpClient httpClient,
                                   Logger logger)
-        : base(importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
+        : base(spotifyProxy, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
         {
         }
 
@@ -33,32 +35,49 @@ namespace NzbDrone.Core.ImportLists.Spotify
         {
             var result = new List<ImportListItemInfo>();
 
-            var albums = Execute(api, (x) => x.GetSavedAlbums(50));
-            _logger.Trace($"Got {albums.Total} saved albums");
+            var savedAlbums = _spotifyProxy.GetSavedAlbums(this, api);
+
+            _logger.Trace($"Got {savedAlbums?.Total ?? 0} saved albums");
 
             while (true)
             {
-                foreach (var album in albums.Items)
+                if (savedAlbums?.Items == null)
                 {
-                    var artistName = album.Album.Artists.FirstOrDefault()?.Name;
-                    var albumName = album.Album.Name;
-                    _logger.Trace($"Adding {artistName} - {albumName}");
-
-                    if (artistName.IsNotNullOrWhiteSpace() && albumName.IsNotNullOrWhiteSpace())
-                    {
-                        result.AddIfNotNull(new ImportListItemInfo
-                                            {
-                                                Artist = artistName,
-                                                Album = albumName
-                                            });
-                    }
+                    return result;
                 }
-                if (!albums.HasNextPage())
+
+                foreach (var savedAlbum in savedAlbums.Items)
+                {
+                    result.AddIfNotNull(ParseSavedAlbum(savedAlbum));
+                }
+
+                if (!savedAlbums.HasNextPage())
+                {
                     break;
-                albums = Execute(api, (x) => x.GetNextPage(albums));
+                }
+
+                savedAlbums = _spotifyProxy.GetNextPage(this, api, savedAlbums);
             }
 
             return result;
+        }
+
+        private ImportListItemInfo ParseSavedAlbum(SavedAlbum savedAlbum)
+        {
+            var artistName = savedAlbum?.Album?.Artists?.FirstOrDefault()?.Name;
+            var albumName = savedAlbum?.Album?.Name;
+            _logger.Trace($"Adding {artistName} - {albumName}");
+
+            if (artistName.IsNotNullOrWhiteSpace() && albumName.IsNotNullOrWhiteSpace())
+            {
+                return new ImportListItemInfo {
+                    Artist = artistName,
+                    Album = albumName,
+                    ReleaseDate = ParseSpotifyDate(savedAlbum?.Album?.ReleaseDate, savedAlbum?.Album?.ReleaseDatePrecision)
+                };
+            }
+
+            return null;
         }
     }
 }
