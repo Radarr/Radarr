@@ -54,7 +54,6 @@ namespace NzbDrone.Api.Movies
 
             GetResourceAll = AllMovie;
             GetResourceById = GetMovie;
-            Get(TITLE_SLUG_ROUTE, GetByTitleSlug);
 
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
@@ -104,29 +103,6 @@ namespace NzbDrone.Api.Movies
             MapCoversToLocal(moviesResources.ToArray());
 
             return moviesResources;
-        }
-
-        private object GetByTitleSlug(dynamic options)
-        {
-            string slug;
-            try
-            {
-                slug = options.slug;
-                // do stuff with x
-            }
-            catch (RuntimeBinderException)
-            {
-                return new NotFoundResponse();
-            }
-
-            try
-            {
-                return ResponseWithCode(MapToResource(_moviesService.FindByTitleSlug(slug)), HttpStatusCode.OK);
-            }
-            catch (ModelNotFoundException)
-            {
-                return new NotFoundResponse();
-            }
         }
 
         private int AddMovie(MovieResource moviesResource)
