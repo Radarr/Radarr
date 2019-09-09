@@ -1,6 +1,6 @@
 {
-  "name": "Radarr",
-  "version": "2.0.0",
+  "name": "radarr",
+  "version": "1.0.0",
   "description": "Radarr",
   "main": "main.js",
   "scripts": {
