@@ -220,12 +220,15 @@ stages:
           Linux:
             osName: 'Linux'
             imageName: 'ubuntu-16.04'
+            failBuild: true
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.13'
+            failBuild: false
           Windows:
             osName: 'Windows'
             imageName: 'vs2017-win2016'
+            failBuild: true
 
       pool:
         vmImage: $(imageName)
@@ -267,7 +270,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Unit Tests'
-          failTaskOnFailedTests: true
+          failTaskOnFailedTests: $(failBuild)
 
   - stage: Integration_Automation
     displayName: Integration / Automation

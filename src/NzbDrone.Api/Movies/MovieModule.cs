@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -14,8 +12,6 @@ using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.Validation;
 using NzbDrone.SignalR;
-using NzbDrone.Core.Datastore;
-using Microsoft.CSharp.RuntimeBinder;
 using Nancy;
 using Radarr.Http;
 
