@@ -1,18 +1,18 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace NzbDrone.Core.Download
 {
@@ -26,31 +26,32 @@ namespace NzbDrone.Core.Download
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IHistoryService _historyService;
-        private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
+        private readonly IDownloadedTracksImportService _downloadedTracksImportService;
         private readonly IParsingService _parsingService;
         private readonly Logger _logger;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
 
         public CompletedDownloadService(IConfigService configService,
                                         IEventAggregator eventAggregator,
                                         IHistoryService historyService,
-                                        IDownloadedEpisodesImportService downloadedEpisodesImportService,
+                                        IDownloadedTracksImportService downloadedTracksImportService,
                                         IParsingService parsingService,
-                                        ISeriesService seriesService,
+                                        IArtistService artistService,
                                         Logger logger)
         {
             _configService = configService;
             _eventAggregator = eventAggregator;
             _historyService = historyService;
-            _downloadedEpisodesImportService = downloadedEpisodesImportService;
+            _downloadedTracksImportService = downloadedTracksImportService;
             _parsingService = parsingService;
             _logger = logger;
-            _seriesService = seriesService;
+            _artistService = artistService;
         }
 
         public void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false)
         {
-            if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed)
+            if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed ||
+                trackedDownload.RemoteAlbum == null)
             {
                 return;
             }
@@ -61,7 +62,7 @@ namespace NzbDrone.Core.Download
 
                 if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
                 {
-                    trackedDownload.Warn("Download wasn't grabbed by Sonarr and not in a category, Skipping.");
+                    trackedDownload.Warn("Download wasn't grabbed by Lidarr and not in a category, Skipping.");
                     return;
                 }
 
@@ -80,26 +81,18 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-                var downloadedEpisodesFolder = new OsPath(_configService.DownloadedEpisodesFolder);
+                var artist = trackedDownload.RemoteAlbum.Artist;
 
-                if (downloadedEpisodesFolder.Contains(downloadItemOutputPath))
-                {
-                    trackedDownload.Warn("Intermediate Download path inside drone factory, Skipping.");
-                    return;
-                }
-
-                var series = _parsingService.GetSeries(trackedDownload.DownloadItem.Title);
-
-                if (series == null)
+                if (artist == null)
                 {
                     if (historyItem != null)
                     {
-                        series = _seriesService.GetSeries(historyItem.SeriesId);
+                        artist = _artistService.GetArtist(historyItem.ArtistId);
                     }
 
-                    if (series == null)
+                    if (artist == null)
                     {
-                        trackedDownload.Warn("Series title mismatch, automatic import is not possible.");
+                        trackedDownload.Warn("Artist name mismatch, automatic import is not possible.");
                         return;
                     }
                 }
@@ -111,15 +104,18 @@ namespace NzbDrone.Core.Download
         private void Import(TrackedDownload trackedDownload)
         {
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
-            var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
+            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteAlbum.Artist, trackedDownload.DownloadItem);
 
             if (importResults.Empty())
             {
+                trackedDownload.State = TrackedDownloadStage.ImportFailed;
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
                 return;
             }
 
-            if (importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
+            if (importResults.All(c => c.Result == ImportResultType.Imported)
+                || importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount))))
             {
                 trackedDownload.State = TrackedDownloadStage.Imported;
                 _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
@@ -128,14 +124,15 @@ namespace NzbDrone.Core.Download
 
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
+                trackedDownload.State = TrackedDownloadStage.ImportFailed;
                 var statusMessages = importResults
                     .Where(v => v.Result != ImportResultType.Imported)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalEpisode.Path), v.Errors))
+                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.Item.Path), v.Errors))
                     .ToArray();
 
                 trackedDownload.Warn(statusMessages);
+                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
             }
-
         }
     }
 }

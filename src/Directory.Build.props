@@ -1,0 +1,80 @@
+<Project>
+  <!-- Common to all Lidarr Projects -->
+  <PropertyGroup>
+    <LidarrRootDir>$(MSBuildThisFileDirectory)..\</LidarrRootDir>
+
+    <!-- Specifies the type of output -->
+    <LidarrOutputType>Library</LidarrOutputType>
+    <LidarrOutputType Condition="$(MSBuildProjectName.Contains('.Test'))">Test</LidarrOutputType>
+    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceInstall'">Exe</LidarrOutputType>
+    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</LidarrOutputType>
+    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr'">Exe</LidarrOutputType>
+    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr.Console'">Exe</LidarrOutputType>
+    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr.Update'">Update</LidarrOutputType>
+
+    <!-- Specifies whether it's one of our own libraries -->
+    <LidarrProject>false</LidarrProject>
+    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('Lidarr'))">true</LidarrProject>
+    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</LidarrProject>
+    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</LidarrProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)'==''">Release</Configuration>
+    <!-- Centralize intermediate and default outputs -->
+    <BaseIntermediateOutputPath>$(LidarrRootDir)_temp\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(LidarrRootDir)_temp\obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath>$(LidarrRootDir)_temp\bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+
+    <!-- Output to _output and _tests respectively -->
+    <OutputPath Condition="'$(LidarrProject)'=='true'">$(LidarrRootDir)_output\</OutputPath>
+    <OutputPath Condition="'$(LidarrOutputType)'=='Test'">$(LidarrRootDir)_tests\</OutputPath>
+    <OutputPath Condition="'$(LidarrOutputType)'=='Update'">$(LidarrRootDir)_output\Lidarr.Update\</OutputPath>
+
+    <!-- Paths relative to project file for better readability -->
+    <BaseIntermediateOutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)'))</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)'))</IntermediateOutputPath>
+    <OutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(OutputPath)'))</OutputPath>
+
+    <!-- below net4.7.1 the new portable pdb format has no line numbers, pdb to mdb probably doesn't like it either -->
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  
+  <!-- Test projects need bindingRedirects -->
+  <PropertyGroup Condition="'$(LidarrOutputType)'=='Test'">
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+
+  <!-- Set the Product and Version info for our own projects -->
+  <PropertyGroup Condition="'$(LidarrProject)'=='true'">
+    <Product>Lidarr</Product>
+    <Company>lidarr.audio</Company>
+    <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) lidarr.audio (GNU General Public v3)</Copyright>
+    
+    <!-- Should be replaced by CI -->
+    <AssemblyVersion>10.0.0.*</AssemblyVersion>
+    <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
+
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    
+    <Deterministic Condition="$(AssemblyVersion.EndsWith('*'))">False</Deterministic>
+  </PropertyGroup>
+  <!-- Set the AssemblyConfiguration attribute for projects -->
+  <ItemGroup Condition="'$(LidarrProject)'=='true'">
+    <AssemblyAttribute Include="System.Reflection.AssemblyConfigurationAttribute">
+      <_Parameter1>$(AssemblyConfiguration)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- We don't want separate framework directories till we go dotnet core -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- For now keep the NzbDrone namespace -->
+    <RootNamespace Condition="'$(LidarrProject)'=='true'">$(MSBuildProjectName.Replace('Lidarr','NzbDrone'))</RootNamespace>
+  </PropertyGroup>
+</Project>

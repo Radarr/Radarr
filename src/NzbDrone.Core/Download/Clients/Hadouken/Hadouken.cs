@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -35,17 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            HadoukenTorrent[] torrents;
-
-            try
-            {
-                torrents = _proxy.GetTorrents(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.ErrorException(ex.Message, ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = _proxy.GetTorrents(Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -72,7 +62,9 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     RemainingSize = torrent.TotalSize - torrent.DownloadedBytes,
                     RemainingTime = eta,
                     Title = torrent.Name,
-                    TotalSize = torrent.TotalSize
+                    TotalSize = torrent.TotalSize,
+                    SeedRatio = torrent.DownloadedBytes <= 0 ? 0 :
+                        (double)torrent.UploadedBytes / torrent.DownloadedBytes
                 };
 
                 if (!string.IsNullOrEmpty(torrent.Error))
@@ -97,14 +89,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                if (torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused)
-                {
-                    item.IsReadOnly = false;
-                }
-                else
-                {
-                    item.IsReadOnly = true;
-                }
+                item.CanMoveFiles = item.CanBeRemoved = (torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused);
 
                 items.Add(item);
             }
@@ -124,12 +109,12 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             }
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var destDir = new OsPath(config.GetValueOrDefault("bittorrent.defaultSavePath") as string);
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -149,14 +134,14 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             failures.AddIfNotNull(TestGetTorrents());
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentUri(Settings, magnetLink);
 
             return hash.ToUpper();
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             return _proxy.AddTorrentFile(Settings, fileContent).ToUpper();
         }
@@ -170,12 +155,12 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
                 if (version < new Version("5.1"))
                 {
-                    return new ValidationFailure(string.Empty, "Old Hadouken client with unsupported API, need 5.1 or higher");                    
+                    return new ValidationFailure(string.Empty, "Old Hadouken client with unsupported API, need 5.1 or higher");
                 }
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.ErrorException(ex.Message, ex);
+                _logger.Error(ex, "Unable to authenticate");
 
                 return new NzbDroneValidationFailure("Password", "Authentication failed");
             }
@@ -191,7 +176,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             }
             catch (Exception ex)
             {
-                _logger.ErrorException(ex.Message, ex);
+                _logger.Error(ex, "Unable to validate");
                 return new NzbDroneValidationFailure(String.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.EnvironmentInfo;
 using Prowlin;
 
 namespace NzbDrone.Core.Notifications.Prowl
@@ -26,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Prowl
             {
                 var notification = new Prowlin.Notification
                                    {
-                                       Application = "Sonarr",
+                                       Application = BuildInfo.AppName,
                                        Description = message,
                                        Event = title,
                                        Priority = priority,
@@ -88,7 +89,7 @@ namespace NzbDrone.Core.Notifications.Prowl
                 Verify(settings.ApiKey);
 
                 const string title = "Test Notification";
-                const string body = "This is a test message from Sonarr";
+                string body = $"This is a test message from {BuildInfo.AppName}";
 
                 SendNotification(title, body, settings.ApiKey);
             }

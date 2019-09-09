@@ -1,0 +1,194 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "0ce2d66f-e871-415a-9a85-e564f99d4021"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "7ac055fa-e357-4890-9098-010b8094a900",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": true
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": false,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "D:\\Test2\\Alabama\\The Touch\\06 Touch Me When We're Dancing.mp3",
+      "fileTrackInfo": {
+        "title": "Touch Me When We're Dancing",
+        "cleanTitle": "Touch Me When We're Dancing",
+        "artistTitle": "Alabama",
+        "albumTitle": "The Touch",
+        "artistTitleInfo": {
+          "title": "Alabama",
+          "year": 1986
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 1986,
+        "duration": "00:03:43.2950000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 161,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    }
+  ]
+}

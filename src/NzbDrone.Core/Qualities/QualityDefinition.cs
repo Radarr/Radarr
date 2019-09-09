@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 
 
 namespace NzbDrone.Core.Qualities
@@ -9,6 +9,8 @@ namespace NzbDrone.Core.Qualities
 
         public string Title { get; set; }
 
+        public string GroupName { get; set; }
+        public int GroupWeight { get; set; }
         public int Weight { get; set; }
 
         public double? MinSize { get; set; }

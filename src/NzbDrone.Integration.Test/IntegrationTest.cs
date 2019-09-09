@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Test.Common;
+using Lidarr.Http.ClientSchema;
 
 namespace NzbDrone.Integration.Test
 {
@@ -9,9 +9,9 @@ namespace NzbDrone.Integration.Test
     {
         protected NzbDroneRunner _runner;
 
-        public override string SeriesRootFolder => GetTempDirectory("SeriesRootFolder");
+        public override string ArtistRootFolder => GetTempDirectory("ArtistRootFolder");
 
-        protected override string RootUrl => "http://localhost:8989/";
+        protected override string RootUrl => "http://localhost:8686/";
 
         protected override string ApiKey => _runner.ApiKey;
 
@@ -25,16 +25,22 @@ namespace NzbDrone.Integration.Test
 
         protected override void InitializeTestTarget()
         {
-            Indexers.Post(new Api.Indexers.IndexerResource
+            Indexers.Post(new Lidarr.Api.V1.Indexers.IndexerResource
             {
                 EnableRss = false,
-                EnableSearch = false,
+                EnableInteractiveSearch = false,
+                EnableAutomaticSearch = false,
                 ConfigContract = nameof(NewznabSettings),
                 Implementation = nameof(Newznab),
                 Name = "NewznabTest",
                 Protocol = Core.Indexers.DownloadProtocol.Usenet,
-                Fields = Api.ClientSchema.SchemaBuilder.ToSchema(new NewznabSettings())
+                Fields = SchemaBuilder.ToSchema(new NewznabSettings())
             });
+
+            // Change Console Log Level to Debug so we get more details.
+            var config = HostConfig.Get(1);
+            config.ConsoleLogLevel = "Debug";
+            HostConfig.Put(config);
         }
 
         protected override void StopTestTarget()

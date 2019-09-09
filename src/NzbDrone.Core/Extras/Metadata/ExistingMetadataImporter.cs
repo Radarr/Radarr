@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.Extras.Subtitles;
+using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Metadata
 {
@@ -15,73 +17,96 @@ namespace NzbDrone.Core.Extras.Metadata
     {
         private readonly IExtraFileService<MetadataFile> _metadataFileService;
         private readonly IParsingService _parsingService;
+        private readonly IAugmentingService _augmentingService;
         private readonly Logger _logger;
         private readonly List<IMetadata> _consumers;
 
         public ExistingMetadataImporter(IExtraFileService<MetadataFile> metadataFileService,
                                         IEnumerable<IMetadata> consumers,
                                         IParsingService parsingService,
+                                        IAugmentingService augmentingService,
                                         Logger logger)
         : base(metadataFileService)
         {
             _metadataFileService = metadataFileService;
             _parsingService = parsingService;
+            _augmentingService = augmentingService;
             _logger = logger;
             _consumers = consumers.ToList();
         }
 
         public override int Order => 0;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing metadata in {0}", series.Path);
+            _logger.Debug("Looking for existing metadata in {0}", artist.Path);
 
             var metadataFiles = new List<MetadataFile>();
-            var filterResult = FilterAndClean(series, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
 
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
                 // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
 
-                if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
+                if (LyricFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
                 {
                     continue;
                 }
 
                 foreach (var consumer in _consumers)
                 {
-                    var metadata = consumer.FindMetadataFile(series, possibleMetadataFile);
+                    var metadata = consumer.FindMetadataFile(artist, possibleMetadataFile);
 
                     if (metadata == null)
                     {
                         continue;
                     }
 
-                    if (metadata.Type == MetadataType.EpisodeImage ||
-                        metadata.Type == MetadataType.EpisodeMetadata)
+                    if (metadata.Type == MetadataType.AlbumImage || metadata.Type == MetadataType.AlbumMetadata)
                     {
-                        var localEpisode = _parsingService.GetLocalEpisode(possibleMetadataFile, series);
+                        var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, artist);
 
-                        if (localEpisode == null)
+                        if (localAlbum == null)
+                        {
+                            _logger.Debug("Extra file folder has multiple Albums: {0}", possibleMetadataFile);
+                            continue;
+                        }
+
+                        metadata.AlbumId = localAlbum.Id;
+                    }
+
+                    if (metadata.Type == MetadataType.TrackMetadata)
+                    {
+                        var localTrack = new LocalTrack
+                        {
+                            FileTrackInfo = Parser.Parser.ParseMusicPath(possibleMetadataFile),
+                            Artist = artist,
+                            Path = possibleMetadataFile
+                        };
+                
+                        try
+                        {
+                            _augmentingService.Augment(localTrack, false);
+                        }
+                        catch (AugmentingFailedException)
                         {
                             _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
                             continue;
                         }
 
-                        if (localEpisode.Episodes.Empty())
+                        if (localTrack.Tracks.Empty())
                         {
-                            _logger.Debug("Cannot find related episodes for: {0}", possibleMetadataFile);
+                            _logger.Debug("Cannot find related tracks for: {0}", possibleMetadataFile);
                             continue;
                         }
 
-                        if (localEpisode.Episodes.DistinctBy(e => e.EpisodeFileId).Count() > 1)
+                        if (localTrack.Tracks.DistinctBy(e => e.TrackFileId).Count() > 1)
                         {
                             _logger.Debug("Extra file: {0} does not match existing files.", possibleMetadataFile);
                             continue;
                         }
-
-                        metadata.SeasonNumber = localEpisode.SeasonNumber;
-                        metadata.EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId;
+                        
+                        metadata.TrackFileId = localTrack.Tracks.First().TrackFileId;
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);

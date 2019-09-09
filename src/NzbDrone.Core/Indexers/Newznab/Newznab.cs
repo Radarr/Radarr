@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -43,10 +43,9 @@ namespace NzbDrone.Core.Indexers.Newznab
                 yield return GetDefinition("DrunkenSlug", GetSettings("https://api.drunkenslug.com"));
                 yield return GetDefinition("Nzb.su", GetSettings("https://api.nzb.su"));
                 yield return GetDefinition("NZBCat", GetSettings("https://nzb.cat"));
-                yield return GetDefinition("NZBFinder.ws", GetSettings("https://nzbfinder.ws", 5010, 5030, 5040, 5045));
+                yield return GetDefinition("NZBFinder.ws", GetSettings("https://nzbfinder.ws"));
                 yield return GetDefinition("NZBgeek", GetSettings("https://api.nzbgeek.info"));
                 yield return GetDefinition("nzbplanet.net", GetSettings("https://api.nzbplanet.net"));
-                yield return GetDefinition("Nzbs.org", GetSettings("http://nzbs.org", 5000));
                 yield return GetDefinition("omgwtfnzbs", GetSettings("https://api.omgwtfnzbs.me"));
                 yield return GetDefinition("OZnzb.com", GetSettings("https://api.oznzb.com"));
                 yield return GetDefinition("PFmonkey", GetSettings("https://www.pfmonkey.com"));
@@ -66,7 +65,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             return new IndexerDefinition
                    {
                        EnableRss = false,
-                       EnableSearch = false,
+                       EnableAutomaticSearch = false,
+                       EnableInteractiveSearch = false,
                        Name = name,
                        Implementation = GetType().Name,
                        Settings = settings,
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private NewznabSettings GetSettings(string url, params int[] categories)
         {
-            var settings = new NewznabSettings { Url = url };
+            var settings = new NewznabSettings { BaseUrl = url };
 
             if (categories.Any())
             {
@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             base.Test(failures);
 
+            if (failures.Any()) return;
             failures.AddIfNotNull(TestCapabilities());
         }
 
@@ -102,6 +103,12 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
                 if (capabilities.SupportedSearchParameters != null && capabilities.SupportedSearchParameters.Contains("q"))
+                {
+                    return null;
+                }
+
+                if (capabilities.SupportedAudioSearchParameters != null &&
+                    new[] { "artist", "album" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
                 {
                     return null;
                 }

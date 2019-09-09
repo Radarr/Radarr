@@ -2,7 +2,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -24,41 +24,24 @@ namespace NzbDrone.Core.Test.OrganizerTests
         }
 
         [Test]
-        [TestCase("30 Rock - S01E05 - Episode Title", 1, true, "Season {season:00}", @"C:\Test\30 Rock\Season 01\30 Rock - S01E05 - Episode Title.mkv")]
-        [TestCase("30 Rock - S01E05 - Episode Title", 1, true, "Season {season}", @"C:\Test\30 Rock\Season 1\30 Rock - S01E05 - Episode Title.mkv")]
-        [TestCase("30 Rock - S01E05 - Episode Title", 1, false, "Season {season:00}", @"C:\Test\30 Rock\30 Rock - S01E05 - Episode Title.mkv")]
-        [TestCase("30 Rock - S01E05 - Episode Title", 1, false, "Season {season}", @"C:\Test\30 Rock\30 Rock - S01E05 - Episode Title.mkv")]
-        [TestCase("30 Rock - S01E05 - Episode Title", 1, true, "ReallyUglySeasonFolder {season}", @"C:\Test\30 Rock\ReallyUglySeasonFolder 1\30 Rock - S01E05 - Episode Title.mkv")]
-        [TestCase("30 Rock - S00E05 - Episode Title", 0, true, "Season {season}", @"C:\Test\30 Rock\Specials\30 Rock - S00E05 - Episode Title.mkv")]
-        public void CalculateFilePath_SeasonFolder_SingleNumber(string filename, int seasonNumber, bool useSeasonFolder, string seasonFolderFormat, string expectedPath)
+        public void should_clean_album_folder_when_it_contains_illegal_characters_in_album_or_artist_title()
         {
-            var fakeSeries = Builder<Series>.CreateNew()
-                .With(s => s.Title = "30 Rock")
-                .With(s => s.Path = @"C:\Test\30 Rock".AsOsAgnostic())
-                .With(s => s.SeasonFolder = useSeasonFolder)
+            var filename = @"02 - Track Title";
+            var expectedPath = @"C:\Test\Fake- The Artist\Fake- The Artist Fake- Album\02 - Track Title.flac";
+
+            var fakeArtist = Builder<Artist>.CreateNew()
+                .With(s => s.Name = "Fake: The Artist")
+                .With(s => s.Path = @"C:\Test\Fake- The Artist".AsOsAgnostic())
+                .With(s => s.AlbumFolder = true)
                 .Build();
 
-            namingConfig.SeasonFolderFormat = seasonFolderFormat;
-
-            Subject.BuildFilePath(fakeSeries, seasonNumber, filename, ".mkv").Should().Be(expectedPath.AsOsAgnostic());
-        }
-
-        [Test]
-        public void should_clean_season_folder_when_it_contains_illegal_characters_in_series_title()
-        {
-            var filename = @"S01E05 - Episode Title";
-            var seasonNumber = 1;
-            var expectedPath = @"C:\Test\NCIS- Los Angeles\NCIS- Los Angeles Season 1\S01E05 - Episode Title.mkv";
-
-            var fakeSeries = Builder<Series>.CreateNew()
-                .With(s => s.Title = "NCIS: Los Angeles")
-                .With(s => s.Path = @"C:\Test\NCIS- Los Angeles".AsOsAgnostic())
-                .With(s => s.SeasonFolder = true)
+            var fakeAlbum = Builder<Album>.CreateNew()
+                .With(s => s.Title = "Fake: Album")
                 .Build();
 
-            namingConfig.SeasonFolderFormat = "{Series Title} Season {season:0}";
+            namingConfig.AlbumFolderFormat = "{Artist Name} {Album Title}";
 
-            Subject.BuildFilePath(fakeSeries, seasonNumber, filename, ".mkv").Should().Be(expectedPath.AsOsAgnostic());
+            Subject.BuildTrackFilePath(fakeArtist, fakeAlbum, filename, ".flac").Should().Be(expectedPath.AsOsAgnostic());
         }
     }
 }

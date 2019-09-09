@@ -4,44 +4,44 @@ using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
     [TestFixture]
     public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, History.History>
     {
-        private Series _series;
-        private Episode _episode;
+        private Artist _artist;
+        private Album _album;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _artist = Builder<Artist>.CreateNew()
                                      .BuildNew();
 
-            _episode = Builder<Episode>.CreateNew()
-                                       .BuildNew();
+            _album = Builder<Album>.CreateNew()
+                .BuildNew();
         }
 
-        private void GivenSeries()
+        private void GivenArtist()
         {
-            Db.Insert(_series);
+            Db.Insert(_artist);
         }
 
-        private void GivenEpisode()
+        private void GivenAlbum()
         {
-            Db.Insert(_episode);
+            Db.Insert(_album);
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_series()
+        public void should_delete_orphaned_items_by_artist()
         {
-            GivenEpisode();
+            GivenAlbum();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.EpisodeId = _episode.Id)
+                                                  .With(h => h.AlbumId = _album.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -50,13 +50,13 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_episode()
+        public void should_delete_orphaned_items_by_album()
         {
-            GivenSeries();
+            GivenArtist();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.SeriesId = _series.Id)
+                                                  .With(h => h.ArtistId = _artist.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -65,45 +65,45 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_unorphaned_data_by_series()
+        public void should_not_delete_unorphaned_data_by_artist()
         {
-            GivenSeries();
-            GivenEpisode();
+            GivenArtist();
+            GivenAlbum();
 
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.EpisodeId = _episode.Id)
+                                                  .With(h => h.AlbumId = _album.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.SeriesId = _series.Id)
+                                                  .With(h => h.ArtistId = _artist.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.SeriesId == _series.Id);
+            AllStoredModels.Should().Contain(h => h.ArtistId == _artist.Id);
         }
 
         [Test]
-        public void should_not_delete_unorphaned_data_by_episode()
+        public void should_not_delete_unorphaned_data_by_album()
         {
-            GivenSeries();
-            GivenEpisode();
+            GivenArtist();
+            GivenAlbum();
 
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.SeriesId = _series.Id)
+                                                  .With(h => h.ArtistId = _artist.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.EpisodeId = _episode.Id)
+                                                  .With(h => h.AlbumId = _album.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.EpisodeId == _episode.Id);
+            AllStoredModels.Should().Contain(h => h.AlbumId == _album.Id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,7 +8,7 @@ namespace NzbDrone.Common.Http
 {
     public class HttpUri : IEquatable<HttpUri>
     {
-        private static readonly Regex RegexUri = new Regex(@"^(?:(?<scheme>[a-z]+):)?(?://(?<host>[-A-Z0-9.]+)(?::(?<port>[0-9]{1,5}))?)?(?<path>(?:(?:(?<=^)|/)[^/?#\r\n]+)+/?|/)?(?:\?(?<query>[^#\r\n]*))?(?:\#(?<fragment>.*))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexUri = new Regex(@"^(?:(?<scheme>[a-z]+):)?(?://(?<host>[-_A-Z0-9.]+)(?::(?<port>[0-9]{1,5}))?)?(?<path>(?:(?:(?<=^)|/)[^/?#\r\n]+)+/?|/)?(?:\?(?<query>[^#\r\n]*))?(?:\#(?<fragment>.*))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly string _uri;
         public string FullUri => _uri;
@@ -135,7 +135,7 @@ namespace NzbDrone.Common.Http
             return new HttpUri(Scheme, Host, Port, CombinePath(Path, path), Query, Fragment);
         }
 
-        private static string CombinePath(string basePath, string relativePath)
+        public static string CombinePath(string basePath, string relativePath)
         {
             if (relativePath.IsNullOrWhiteSpace())
             {

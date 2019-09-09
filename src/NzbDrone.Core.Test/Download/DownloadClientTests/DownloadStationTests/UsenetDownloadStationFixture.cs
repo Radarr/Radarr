@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -9,10 +9,10 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.DownloadStation;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 {
@@ -28,19 +28,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         protected DownloadStationTask _seeding;
 
         protected string _serialNumber = "SERIALNUMBER";
-        protected string _category = "sonarr";
-        protected string _tvDirectory = @"video/Series";
+        protected string _category = "lidarr";
+        protected string _musicDirectory = @"music/Artist";
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
-        protected RemoteEpisode _remoteEpisode;
+        protected RemoteAlbum _remoteAlbum;
 
         protected Dictionary<string, object> _downloadStationConfigItems;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = CreateRemoteEpisode();
+            _remoteAlbum = CreateRemoteAlbum();
 
             _settings = new DownloadStationSettings()
             {
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -177,7 +177,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 { "default_destination", _defaultDestination },
             };
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationInfoProxy>()
               .Setup(v => v.GetConfig(It.IsAny<DownloadStationSettings>()))
               .Returns(_downloadStationConfigItems);
         }
@@ -189,6 +189,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Returns<OsPath, DownloadStationSettings, string>((path, setttings, serial) => _physicalPath);
         }
 
+        protected void GivenSharedFolder(string share)
+        {
+            Mocker.GetMock<ISharedFolderResolver>()
+                  .Setup(s => s.RemapToFullPath(It.IsAny<OsPath>(), It.IsAny<DownloadStationSettings>(), It.IsAny<string>()))
+                  .Throws(new DownloadClientException("There is no matching shared folder"));
+
+            Mocker.GetMock<ISharedFolderResolver>()
+                  .Setup(s => s.RemapToFullPath(It.Is<OsPath>(x => x.FullPath == share), It.IsAny<DownloadStationSettings>(), It.IsAny<string>()))
+                  .Returns<OsPath, DownloadStationSettings, string>((path, setttings, serial) => _physicalPath);
+        }
+
+
         protected void GivenSerialNumber()
         {
             Mocker.GetMock<ISerialNumberProvider>()
@@ -196,14 +208,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 .Returns(_serialNumber);
         }
 
-        protected void GivenTvCategory()
+        protected void GivenMusicCategory()
         {
-            _settings.TvCategory = _category;
+            _settings.MusicCategory = _category;
         }
 
         protected void GivenTvDirectory()
         {
-            _settings.TvDirectory = _tvDirectory;
+            _settings.TvDirectory = _musicDirectory;
         }
 
         protected virtual void GivenTasks(List<DownloadStationTask> nzbs)
@@ -213,7 +225,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 nzbs = new List<DownloadStationTask>();
             }
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Setup(s => s.GetTasks(It.IsAny<DownloadStationSettings>()))
                   .Returns(nzbs);
         }
@@ -233,7 +245,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new byte[1000]));
             */
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Setup(s => s.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DownloadStationSettings>()))
                   .Callback(PrepareClientToReturnQueuedItem);
         }
@@ -242,7 +254,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         {
             var tasks = new List<DownloadStationTask>() { _queued, _completed, _failed, _downloading, _seeding };
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Setup(d => d.GetTasks(_settings))
                   .Returns(tasks);
         }
@@ -254,30 +266,30 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
-            Mocker.GetMock<IDownloadStationProxy>()
-                  .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), _tvDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
+            Mocker.GetMock<IDownloadStationTaskProxy>()
+                  .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), _musicDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
         }
 
         [Test]
         public void Download_with_category_should_force_directory()
         {
             GivenSerialNumber();
-            GivenTvCategory();
+            GivenMusicCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), $"{_defaultDestination}/{_category}", It.IsAny<DownloadStationSettings>()), Times.Once());
         }
 
@@ -287,13 +299,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), null, It.IsAny<DownloadStationSettings>()), Times.Once());
         }
 
@@ -362,16 +374,51 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))
                   .Throws(new ApplicationException("Some unknown exception, HttpException or DownloadClientException"));
 
-            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteEpisode));
+            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteAlbum));
 
-            Mocker.GetMock<IDownloadStationProxy>()
+            Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), null, _settings), Times.Never());
+        }
+        
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_default()
+        {
+            GivenSerialNumber();
+            GivenSharedFolder("/somepath");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
+        }
+
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_destination()
+        {
+            GivenSerialNumber();
+            GivenTvDirectory();
+            GivenSharedFolder($"/{_musicDirectory}");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
+        }
+
+        [Test]
+        public void GetStatus_should_map_outputpath_when_using_category()
+        {
+            GivenSerialNumber();
+            GivenMusicCategory();
+            GivenSharedFolder($"/somepath/{_category}");
+
+            var status = Subject.GetStatus();
+
+            status.OutputRootFolders.First().Should().Be(_physicalPath);
         }
 
         [Test]
@@ -408,32 +455,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             items.Should().OnlyContain(v => !v.OutputPath.IsEmpty);
         }
 
-        [TestCase(DownloadStationTaskStatus.Downloading, DownloadItemStatus.Downloading, true)]
-        [TestCase(DownloadStationTaskStatus.Finished, DownloadItemStatus.Completed, false)]
-        [TestCase(DownloadStationTaskStatus.Waiting, DownloadItemStatus.Queued, true)]
-        public void GetItems_should_return_readonly_expected(DownloadStationTaskStatus apiStatus, DownloadItemStatus expectedItemStatus, bool readOnlyExpected)
-        {
-            GivenSerialNumber();
-            GivenSharedFolder();
-
-            _queued.Status = apiStatus;
-
-            GivenTasks(new List<DownloadStationTask>() { _queued });
-
-            var items = Subject.GetItems();
-
-            items.Should().HaveCount(1);
-            items.First().IsReadOnly.Should().Be(readOnlyExpected);
-        }
-
         [TestCase(DownloadStationTaskStatus.Downloading, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Error, DownloadItemStatus.Failed)]
         [TestCase(DownloadStationTaskStatus.Extracting, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Finished, DownloadItemStatus.Completed)]
         [TestCase(DownloadStationTaskStatus.Finishing, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.HashChecking, DownloadItemStatus.Downloading)]
+        [TestCase(DownloadStationTaskStatus.CaptchaNeeded, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Paused, DownloadItemStatus.Paused)]
+        [TestCase(DownloadStationTaskStatus.Seeding, DownloadItemStatus.Completed)]
+        [TestCase(DownloadStationTaskStatus.FilehostingWaiting, DownloadItemStatus.Queued)]
         [TestCase(DownloadStationTaskStatus.Waiting, DownloadItemStatus.Queued)]
+        [TestCase(DownloadStationTaskStatus.Unknown, DownloadItemStatus.Queued)]
         public void GetItems_should_return_item_as_downloadItemStatus(DownloadStationTaskStatus apiStatus, DownloadItemStatus expectedItemStatus)
         {
             GivenSerialNumber();

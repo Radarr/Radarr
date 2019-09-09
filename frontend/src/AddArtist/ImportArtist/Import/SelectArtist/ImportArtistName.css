@@ -1,0 +1,19 @@
+.artistNameContainer {
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+.artistName {
+  @add-mixin truncate;
+}
+
+.disambiguation {
+  margin-right: 5px;
+  color: $disabledColor;
+}
+
+.existing {
+  margin-left: 5px;
+}

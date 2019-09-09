@@ -1,0 +1,1284 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "e34999c7-36bd-4d77-a10b-627b1b4f3904"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "401c3991-b76b-499d-8082-9f2df958ef78",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": true,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/101-phil_collins-going_back.flac",
+      "fileTrackInfo": {
+        "artistTitle": "Phil Collins The Essential Going Back (081227946470) REMASTERED DELUXE EDITION 2CD FLAC 2016 WRE 101",
+        "artistTitleInfo": {
+          "title": "Phil Collins The Essential Going Back (081227946470) REMASTERED DELUXE EDITION 2CD FLAC 2016 WRE 101",
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:00:00",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "trackNumbers": []
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/102-phil_collins-girl_(why_you_wanna_make_me_blue).flac",
+      "fileTrackInfo": {
+        "title": "Girl (Why You Wanna Make Me Blue)",
+        "cleanTitle": "Girl (Why You Wanna Make Me Blue)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:32.6530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1016,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/103-phil_collins-(love_is_like_a)_heatwave.flac",
+      "fileTrackInfo": {
+        "title": "(Love Is Like A) Heatwave",
+        "cleanTitle": "(Love Is Like A) Heatwave",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:53.4000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 969,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/104-phil_collins-some_of_your_lovin.flac",
+      "fileTrackInfo": {
+        "title": "Some Of Your Lovin'",
+        "cleanTitle": "Some Of Your Lovin'",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:18.7730000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 942,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/105-phil_collins-going_to_a_go-go.flac",
+      "fileTrackInfo": {
+        "title": "Going To A Go-Go",
+        "cleanTitle": "Going To A Go-Go",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:48.8530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 931,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/106-phil_collins-papa_was_a_rolling_stone.flac",
+      "fileTrackInfo": {
+        "title": "Papa Was A Rolling Stone",
+        "cleanTitle": "Papa Was A Rolling Stone",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:06:44.6000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 803,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/107-phil_collins-loving_you_is_sweeter_than_ever.flac",
+      "fileTrackInfo": {
+        "title": "Loving You Is Sweeter Than Ever",
+        "cleanTitle": "Loving You Is Sweeter Than Ever",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:47.8000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 978,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/108-phil_collins-something_about_you.flac",
+      "fileTrackInfo": {
+        "title": "Something About You",
+        "cleanTitle": "Something About You",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:46.3870000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 961,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/109-phil_collins-talkin_about_my_baby.flac",
+      "fileTrackInfo": {
+        "title": "Talkin' About My Baby",
+        "cleanTitle": "Talkin' About My Baby",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:48.0400000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 925,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/110-phil_collins-do_i_love_you.flac",
+      "fileTrackInfo": {
+        "title": "Do I Love You",
+        "cleanTitle": "Do I Love You",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:50.4530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 958,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/111-phil_collins-never_dreamed_youd_leave_in_summer.flac",
+      "fileTrackInfo": {
+        "title": "Never Dreamed You'd Leave In Summer",
+        "cleanTitle": "Never Dreamed You'd Leave In Summer",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:00.0530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 827,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/112-phil_collins-take_me_in_your_arms_(rock_me_for_a_little_while).flac",
+      "fileTrackInfo": {
+        "title": "Take Me In Your Arms (Rock Me For A Little While)",
+        "cleanTitle": "Take Me In Your Arms (Rock Me For A Little While)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:57.7070000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 937,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/113-phil_collins-too_many_fish_in_the_sea.flac",
+      "fileTrackInfo": {
+        "title": "Too Many Fish In The Sea",
+        "cleanTitle": "Too Many Fish In The Sea",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:30.6670000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 960,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/114-phil_collins-uptight_(everythings_alright).flac",
+      "fileTrackInfo": {
+        "title": "Uptight (Everything's Alright)",
+        "cleanTitle": "Uptight (Everything's Alright)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:03.9330000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1009,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/201-phil_collins-signed_sealed_delivered_(im_yours)_intro_(live).flac",
+      "fileTrackInfo": {
+        "title": "Signed, Sealed, Delivered (I'm Yours) Intro (Live)",
+        "cleanTitle": "Signed, Sealed, Delivered (I'm Yours) Intro (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:01:16.1070000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 976,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/202-phil_collins-aint_too_proud_to_beg_(live).flac",
+      "fileTrackInfo": {
+        "title": "Ain't Too Proud To Beg (Live)",
+        "cleanTitle": "Ain't Too Proud To Beg (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:40.9600000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1041,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/203-phil_collins-girl_(why_you_wanna_make_me_blue)_(live).flac",
+      "fileTrackInfo": {
+        "title": "Girl (Why You Wanna Make Me Blue) (Live)",
+        "cleanTitle": "Girl (Why You Wanna Make Me Blue) (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:41.1730000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1023,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/204-phil_collins-dancing_in_the_street_(live).flac",
+      "fileTrackInfo": {
+        "title": "Dancing In The Street (Live)",
+        "cleanTitle": "Dancing In The Street (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:43.5870000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1048,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/205-phil_collins-(love_is_like_a)_heatwave_(live).flac",
+      "fileTrackInfo": {
+        "title": "(Love Is Like A) Heatwave (Live)",
+        "cleanTitle": "(Love Is Like A) Heatwave (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:20",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1050,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/206-phil_collins-papa_was_a_rolling_stone_(live).flac",
+      "fileTrackInfo": {
+        "title": "Papa Was A Rolling Stone (Live)",
+        "cleanTitle": "Papa Was A Rolling Stone (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:07:27.0530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 938,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/207-phil_collins-never_dreamed_youd_leave_in_summer_(live).flac",
+      "fileTrackInfo": {
+        "title": "Never Dreamed You'd Leave In Summer (Live)",
+        "cleanTitle": "Never Dreamed You'd Leave In Summer (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:57.7070000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 817,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/208-phil_collins-talkin_about_my_baby_(live).flac",
+      "fileTrackInfo": {
+        "title": "Talkin' About My Baby (Live)",
+        "cleanTitle": "Talkin' About My Baby (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:11.4670000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 998,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/209-phil_collins-do_i_love_you_(live).flac",
+      "fileTrackInfo": {
+        "title": "Do I Love You (Live)",
+        "cleanTitle": "Do I Love You (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:12.5330000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1033,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/210-phil_collins-aint_that_peculiar_(live).flac",
+      "fileTrackInfo": {
+        "title": "Ain't That Peculiar (Live)",
+        "cleanTitle": "Ain't That Peculiar (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:30.4530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1065,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/211-phil_collins-too_many_fish_in_the_sea_(live).flac",
+      "fileTrackInfo": {
+        "title": "Too Many Fish In The Sea (Live)",
+        "cleanTitle": "Too Many Fish In The Sea (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:02:50.4400000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1061,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/212-phil_collins-you_really_got_a_hold_on_me_(live).flac",
+      "fileTrackInfo": {
+        "title": "You Really Got A Hold On Me (Live)",
+        "cleanTitle": "You Really Got A Hold On Me (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:45.2800000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 988,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/213-phil_collins-something_about_you_(live).flac",
+      "fileTrackInfo": {
+        "title": "Something About You (Live)",
+        "cleanTitle": "Something About You (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:20.6400000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1057,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/214-phil_collins-uptight_(everythings_alright)_(live).flac",
+      "fileTrackInfo": {
+        "title": "Uptight (Everything's Alright) (Live)",
+        "cleanTitle": "Uptight (Everything's Alright) (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:04:17.6000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1066,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/215-phil_collins-my_girl_(live).flac",
+      "fileTrackInfo": {
+        "title": "My Girl (Live)",
+        "cleanTitle": "My Girl (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:03:44.6530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1020,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          15
+        ]
+      }
+    },
+    {
+      "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/216-phil_collins-going_back_(live).flac",
+      "fileTrackInfo": {
+        "title": "Going Back (Live)",
+        "cleanTitle": "Going Back (Live)",
+        "artistTitle": "Phil Collins",
+        "albumTitle": "The Essential Going Back",
+        "artistTitleInfo": {
+          "title": "Phil Collins",
+          "year": 2016
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2016,
+        "label": "Atlantic",
+        "duration": "00:05:08.0530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 954,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          16
+        ]
+      }
+    }
+  ]
+}

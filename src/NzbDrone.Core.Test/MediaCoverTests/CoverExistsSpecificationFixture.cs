@@ -1,72 +1,75 @@
-﻿using System.Net;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Http;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Test.Framework;
+using System;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
 {
     [TestFixture]
     public class CoverAlreadyExistsSpecificationFixture : CoreTest<CoverAlreadyExistsSpecification>
     {
-        private HttpResponse _httpResponse;
-
-        [SetUp]
-        public void Setup()
-        {
-            _httpResponse = new HttpResponse(null, new HttpHeader(), "", HttpStatusCode.OK);
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(100);
-            Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
-
-        }
-
-
-        private void GivenFileExistsOnDisk()
+        private void GivenFileExistsOnDisk(DateTime? givenDate)
         {
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>())).Returns(true);
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>())).Returns(givenDate ?? DateTime.Now);
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(1000);
         }
-
-
-        private void GivenExistingFileSize(long bytes)
-        {
-            GivenFileExistsOnDisk();
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(bytes);
-
-        }
-
 
         [Test]
         public void should_return_false_if_file_not_exists()
         {
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>())).Returns(false);
+
+            Subject.AlreadyExists(DateTime.Now, 0, "c:\\file.exe").Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_file_exists_but_diffrent_size()
+        public void should_return_false_if_file_exists_but_different_date()
         {
-            GivenExistingFileSize(100);
-            _httpResponse.Headers.ContentLength = 200;
+            GivenFileExistsOnDisk(DateTime.Now);
 
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            Subject.AlreadyExists(DateTime.Now.AddHours(-5), 0, "c:\\file.exe").Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_if_file_exists_and_same_date_but_no_length_header()
+        {
+            var givenDate = DateTime.Now;
+
+            GivenFileExistsOnDisk(givenDate);
+
+            Subject.AlreadyExists(givenDate, null, "c:\\file.exe").Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_false_if_file_exists_and_same_date_but_length_header_different()
+        {
+            var givenDate = DateTime.Now;
+
+            GivenFileExistsOnDisk(givenDate);
+
+            Subject.AlreadyExists(givenDate, 999, "c:\\file.exe").Should().BeFalse();
         }
 
 
         [Test]
-        public void should_return_ture_if_file_exists_and_same_size()
+        public void should_return_true_if_file_exists_and_date_header_is_null_but_has_length_header()
         {
-            GivenExistingFileSize(100);
-            _httpResponse.Headers.ContentLength = 100;
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeTrue();
+            GivenFileExistsOnDisk(DateTime.Now);
+
+            Subject.AlreadyExists(null, 1000, "c:\\file.exe").Should().BeTrue();
         }
 
         [Test]
-        public void should_return_true_if_there_is_no_size_header_and_file_exist()
+        public void should_return_true_if_file_exists_and_date_header_is_different_but_length_header_the_same()
         {
-            GivenExistingFileSize(100);
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            GivenFileExistsOnDisk(DateTime.Now.AddDays(-1));
+
+            Subject.AlreadyExists(DateTime.Now, 1000, "c:\\file.exe").Should().BeTrue();
         }
+
     }
 }

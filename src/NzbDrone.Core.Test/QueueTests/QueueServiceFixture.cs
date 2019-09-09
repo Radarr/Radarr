@@ -1,14 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.Queue;
-using NzbDrone.Core.Test.Framework;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using NzbDrone.Core.Tv;
+using Moq;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.History;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Queue;
 using NzbDrone.Core.Parser.Model;
+
 
 namespace NzbDrone.Core.Test.QueueTests
 {
@@ -21,29 +24,38 @@ namespace NzbDrone.Core.Test.QueueTests
         public void SetUp()
         {
             var downloadItem = Builder<NzbDrone.Core.Download.DownloadClientItem>.CreateNew()
-                                        .With(v => v.RemainingTime = TimeSpan.FromSeconds(10))
-                                        .Build();
+                .With(v => v.RemainingTime = TimeSpan.FromSeconds(10))
+                .Build();
 
-            var series = Builder<Series>.CreateNew()
-                                        .Build();
+            var artist = Builder<Artist>.CreateNew()
+                .Build();
 
-            var episodes = Builder<Episode>.CreateListOfSize(3)
-                                          .All()
-                                          .With(e => e.SeriesId = series.Id)
-                                          .Build();
-            
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                   .With(r => r.Series = series)
-                                                   .With(r => r.Episodes = new List<Episode>(episodes))
-                                                   .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo())
-                                                   .Build();
+            var albums = Builder<Album>.CreateListOfSize(3)
+                .All()
+                .With(e => e.ArtistId = artist.Id)
+                .Build();
+
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                .With(r => r.Artist = artist)
+                .With(r => r.Albums = new List<Album>(albums))
+                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo())
+                .Build();
 
             _trackedDownloads = Builder<TrackedDownload>.CreateListOfSize(1)
                 .All()
                 .With(v => v.DownloadItem = downloadItem)
-                .With(v => v.RemoteEpisode = remoteEpisode)
+                .With(v => v.RemoteAlbum = remoteAlbum)
                 .Build()
                 .ToList();
+
+            var historyItem = Builder<History.History>.CreateNew()
+                .Build();
+
+            Mocker.GetMock<IHistoryService>()
+                .Setup(c => c.Find(It.IsAny<string>(), HistoryEventType.Grabbed)).Returns
+                (
+                    new List<History.History> { historyItem }
+                );
         }
 
         [Test]

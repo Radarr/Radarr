@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -19,6 +19,11 @@ namespace NzbDrone.Core.Indexers
     public class RssParser : IParseIndexerResponse
     {
         private static readonly Regex ReplaceEntities = new Regex("&[a-z]+;", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        public const string NzbEnclosureMimeType = "application/x-nzb";
+        public const string TorrentEnclosureMimeType = "application/x-bittorrent";
+        public const string MagnetEnclosureMimeType = "application/x-bittorrent;x-scheme-handler/magnet";
+        public static readonly string[] UsenetEnclosureMimeTypes = new[] { NzbEnclosureMimeType };
+        public static readonly string[] TorrentEnclosureMimeTypes = new[] { TorrentEnclosureMimeType, MagnetEnclosureMimeType };
 
         protected readonly Logger _logger;
 
@@ -32,7 +37,7 @@ namespace NzbDrone.Core.Indexers
         // Parse "Size: 1.3 GB" or "1.3 GB" parts in the description element and use that as Size.
         public bool ParseSizeInDescription { get; set; }
 
-        public string PreferredEnclosureMimeType { get; set; }
+        public string[] PreferredEnclosureMimeTypes { get; set; }
 
         private IndexerResponse _indexerResponse;
 
@@ -53,7 +58,7 @@ namespace NzbDrone.Core.Indexers
             }
 
             var document = LoadXmlDocument(indexerResponse);
-            var items = GetItems(document);
+            var items = GetItems(document).ToList();
 
             foreach (var item in items)
             {
@@ -63,11 +68,23 @@ namespace NzbDrone.Core.Indexers
 
                     releases.AddIfNotNull(reportInfo);
                 }
+                catch (UnsupportedFeedException itemEx)
+                {
+                    itemEx.WithData("FeedUrl", indexerResponse.Request.Url);
+                    itemEx.WithData("ItemTitle", item.Title());
+                    throw;
+                }
                 catch (Exception itemEx)
                 {
-                    itemEx.Data.Add("Item", item.Title());
+                    itemEx.WithData("FeedUrl", indexerResponse.Request.Url);
+                    itemEx.WithData("ItemTitle", item.Title());
                     _logger.Error(itemEx, "An error occurred while processing feed item from {0}", indexerResponse.Request.Url);
                 }
+            }
+
+            if (!PostProcess(indexerResponse, items, releases))
+            {
+                return new List<ReleaseInfo>();
             }
 
             return releases;
@@ -77,8 +94,8 @@ namespace NzbDrone.Core.Indexers
         {
             try
             {
-                var content = indexerResponse.Content;
-                content = ReplaceEntities.Replace(content, ReplaceEntity);
+                var content = XmlCleaner.ReplaceEntities(indexerResponse.Content);
+                content = XmlCleaner.ReplaceUnicode(content);
 
                 using (var xmlTextReader = XmlReader.Create(new StringReader(content), new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, IgnoreComments = true }))
                 {
@@ -90,23 +107,9 @@ namespace NzbDrone.Core.Indexers
                 var contentSample = indexerResponse.Content.Substring(0, Math.Min(indexerResponse.Content.Length, 512));
                 _logger.Debug("Truncated response content (originally {0} characters): {1}", indexerResponse.Content.Length, contentSample);
 
-                ex.Data.Add("ContentLength", indexerResponse.Content.Length);
-                ex.Data.Add("ContentSample", contentSample);
+                ex.WithData(indexerResponse.HttpResponse);
 
                 throw;
-            }
-        }
-
-        protected virtual string ReplaceEntity(Match match)
-        {
-            try
-            {
-                var character = WebUtility.HtmlDecode(match.Value);
-                return string.Concat("&#", (int)character[0], ";");
-            }
-            catch
-            {
-                return match.Value;
             }
         }
 
@@ -131,6 +134,11 @@ namespace NzbDrone.Core.Indexers
             return true;
         }
 
+        protected virtual bool PostProcess(IndexerResponse indexerResponse, List<XElement> elements, List<ReleaseInfo> releases)
+        {
+            return true;
+        }
+
         protected ReleaseInfo ProcessItem(XElement item)
         {
             var releaseInfo = CreateNewReleaseInfo();
@@ -139,7 +147,7 @@ namespace NzbDrone.Core.Indexers
 
             _logger.Trace("Parsed: {0}", releaseInfo.Title);
 
-            return PostProcess(item, releaseInfo);
+            return PostProcessItem(item, releaseInfo);
         }
 
         protected virtual ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
@@ -148,6 +156,7 @@ namespace NzbDrone.Core.Indexers
             releaseInfo.Title = GetTitle(item);
             releaseInfo.PublishDate = GetPublishDate(item);
             releaseInfo.DownloadUrl = GetDownloadUrl(item);
+            releaseInfo.BasicAuthString = GetBasicAuth();
             releaseInfo.InfoUrl = GetInfoUrl(item);
             releaseInfo.CommentUrl = GetCommentUrl(item);
 
@@ -163,7 +172,7 @@ namespace NzbDrone.Core.Indexers
             return releaseInfo;
         }
 
-        protected virtual ReleaseInfo PostProcess(XElement item, ReleaseInfo releaseInfo)
+        protected virtual ReleaseInfo PostProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             return releaseInfo;
         }
@@ -190,11 +199,17 @@ namespace NzbDrone.Core.Indexers
             return XElementExtensions.ParseDate(dateString);
         }
 
+        protected virtual string GetBasicAuth()
+        {
+            return null;
+        }
+
         protected virtual string GetDownloadUrl(XElement item)
         {
             if (UseEnclosureUrl)
             {
-                return ParseUrl((string)GetEnclosure(item).Attribute("url"));
+                var enclosure = GetEnclosure(item);
+                return enclosure != null ? ParseUrl(enclosure.Url) : null;
             }
 
             return ParseUrl((string)item.Element("link"));
@@ -235,37 +250,73 @@ namespace NzbDrone.Core.Indexers
 
             if (enclosure != null)
             {
-                return (long)enclosure.Attribute("length");
+                return enclosure.Length;
             }
 
             return 0;
         }
 
-        protected virtual XElement GetEnclosure(XElement item)
+        protected virtual RssEnclosure[] GetEnclosures(XElement item)
         {
-            var enclosures = item.Elements("enclosure").ToArray();
+            var enclosures = item.Elements("enclosure")
+                                 .Select(v =>
+                                 {
+                                     try
+                                     {
+                                         return new RssEnclosure
+                                         {
+                                             Url = v.Attribute("url").Value,
+                                             Type = v.Attribute("type").Value,
+                                             Length = (long)v.Attribute("length")
+                                         };
+                                     }
+                                     catch (Exception e)
+                                     {
+                                         _logger.Warn(e, "Failed to get enclosure for: {0}", item.Title());
+                                     }
+
+                                     return null;
+                                 })
+                                 .Where(v => v != null)
+                                 .ToArray();
+
+            return enclosures;
+        }
+
+        protected RssEnclosure GetEnclosure(XElement item, bool enforceMimeType = true)
+        {
+            var enclosures = GetEnclosures(item);
+
+            return GetEnclosure(enclosures, enforceMimeType);
+        }
+
+        protected virtual RssEnclosure GetEnclosure(RssEnclosure[] enclosures, bool enforceMimeType = true)
+        {
 
             if (enclosures.Length == 0)
             {
                 return null;
             }
 
-            if (enclosures.Length == 1)
+            if (PreferredEnclosureMimeTypes != null)
             {
-                return enclosures.First();
-            }
-
-            if (PreferredEnclosureMimeType != null)
-            {
-                var preferredEnclosure = enclosures.FirstOrDefault(v => v.Attribute("type").Value == PreferredEnclosureMimeType);
-
-                if (preferredEnclosure != null)
+                foreach (var preferredEnclosureType in PreferredEnclosureMimeTypes)
                 {
-                    return preferredEnclosure;
+                    var preferredEnclosure = enclosures.FirstOrDefault(v => v.Type == preferredEnclosureType);
+
+                    if (preferredEnclosure != null)
+                    {
+                        return preferredEnclosure;
+                    }
+                }
+
+                if (enforceMimeType)
+                {
+                    return null;
                 }
             }
 
-            return item.Elements("enclosure").SingleOrDefault();
+            return enclosures.SingleOrDefault();
         }
 
         protected IEnumerable<XElement> GetItems(XDocument document)
@@ -312,6 +363,11 @@ namespace NzbDrone.Core.Indexers
 
         public static long ParseSize(string sizeString, bool defaultToBinaryPrefix)
         {
+            if (sizeString.IsNullOrWhiteSpace())
+            {
+                return 0;
+            }
+
             if (sizeString.All(char.IsDigit))
             {
                 return long.Parse(sizeString);

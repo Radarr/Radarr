@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,47 +11,44 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
     public class XbmcMetadata : MetadataBase<XbmcMetadataSettings>
     {
-        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
+        private readonly IMapCoversToLocal _mediaCoverService;
+        private readonly IDetectXbmcNfo _detectNfo;
 
-        public XbmcMetadata(IMapCoversToLocal mediaCoverService,
+        public XbmcMetadata(IDetectXbmcNfo detectNfo,
+                            IMapCoversToLocal mediaCoverService,
                             Logger logger)
         {
-            _mediaCoverService = mediaCoverService;
             _logger = logger;
+            _mediaCoverService = mediaCoverService;
+            _detectNfo = detectNfo;
         }
 
-        private static readonly Regex SeriesImagesRegex = new Regex(@"^(?<type>poster|banner|fanart)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex SeasonImagesRegex = new Regex(@"^season(?<season>\d{2,}|-all|-specials)-(?<type>poster|banner|fanart)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex EpisodeImageRegex = new Regex(@"-thumb\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>folder|banner|fanart|logo)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex AlbumImagesRegex = new Regex(@"^(?<type>cover|disc)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Kodi (XBMC) / Emby";
 
-        public override string GetFilenameAfterMove(Series series, EpisodeFile episodeFile, MetadataFile metadataFile)
+        public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
         {
-            var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
+            var trackFilePath = trackFile.Path;
 
-            if (metadataFile.Type == MetadataType.EpisodeImage)
+            if (metadataFile.Type == MetadataType.TrackMetadata)
             {
-                return GetEpisodeImageFilename(episodeFilePath);
+                return GetTrackMetadataFilename(trackFilePath);
             }
 
-            if (metadataFile.Type == MetadataType.EpisodeMetadata)
-            {
-                return GetEpisodeMetadataFilename(episodeFilePath);
-            }
-
-            _logger.Debug("Unknown episode file metadata: {0}", metadataFile.RelativePath);
-            return Path.Combine(series.Path, metadataFile.RelativePath);
+            _logger.Debug("Unknown track file metadata: {0}", metadataFile.RelativePath);
+            return Path.Combine(artist.Path, metadataFile.RelativePath);
         }
 
-        public override MetadataFile FindMetadataFile(Series series, string path)
+        public override MetadataFile FindMetadataFile(Artist artist, string path)
         {
             var filename = Path.GetFileName(path);
 
@@ -59,335 +56,196 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
             var metadata = new MetadataFile
             {
-                SeriesId = series.Id,
+                ArtistId = artist.Id,
                 Consumer = GetType().Name,
-                RelativePath = series.Path.GetRelativePath(path)
+                RelativePath = artist.Path.GetRelativePath(path)
             };
 
-            if (SeriesImagesRegex.IsMatch(filename))
+            if (ArtistImagesRegex.IsMatch(filename))
             {
-                metadata.Type = MetadataType.SeriesImage;
+                metadata.Type = MetadataType.ArtistImage;
                 return metadata;
             }
 
-            var seasonMatch = SeasonImagesRegex.Match(filename);
+            var albumMatch = AlbumImagesRegex.Match(filename);
 
-            if (seasonMatch.Success)
+            if (albumMatch.Success)
             {
-                metadata.Type = MetadataType.SeasonImage;
-
-                var seasonNumberMatch = seasonMatch.Groups["season"].Value;
-                int seasonNumber;
-
-                if (seasonNumberMatch.Contains("specials"))
-                {
-                    metadata.SeasonNumber = 0;
-                }
-
-                else if (int.TryParse(seasonNumberMatch, out seasonNumber))
-                {
-                    metadata.SeasonNumber = seasonNumber;
-                }
-
-                else
-                {
-                    return null;
-                }
-
+                metadata.Type = MetadataType.AlbumImage;
                 return metadata;
             }
 
-            if (EpisodeImageRegex.IsMatch(filename))
+            var isXbmcNfoFile = _detectNfo.IsXbmcNfoFile(path);
+
+            if (filename.Equals("artist.nfo", StringComparison.OrdinalIgnoreCase) &&
+                isXbmcNfoFile)
             {
-                metadata.Type = MetadataType.EpisodeImage;
+                metadata.Type = MetadataType.ArtistMetadata;
                 return metadata;
             }
 
-            if (filename.Equals("tvshow.nfo", StringComparison.InvariantCultureIgnoreCase))
+            if (filename.Equals("album.nfo", StringComparison.OrdinalIgnoreCase) &&
+                isXbmcNfoFile)
             {
-                metadata.Type = MetadataType.SeriesMetadata;
-                return metadata;
-            }
-
-            var parseResult = Parser.Parser.ParseTitle(filename);
-
-            if (parseResult != null &&
-                !parseResult.FullSeason &&
-                Path.GetExtension(filename) == ".nfo")
-            {
-                metadata.Type = MetadataType.EpisodeMetadata;
+                metadata.Type = MetadataType.AlbumMetadata;
                 return metadata;
             }
 
             return null;
         }
 
-        public override MetadataFileResult SeriesMetadata(Series series)
+        public override MetadataFileResult ArtistMetadata(Artist artist)
         {
-            if (!Settings.SeriesMetadata)
+            if (!Settings.ArtistMetadata)
             {
                 return null;
             }
 
-            _logger.Debug("Generating tvshow.nfo for: {0}", series.Title);
+            _logger.Debug("Generating artist.nfo for: {0}", artist.Name);
             var sb = new StringBuilder();
             var xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
             xws.Indent = false;
 
-            var episodeGuideUrl = string.Format("http://www.thetvdb.com/api/1D62F2F90030C444/series/{0}/all/en.zip", series.TvdbId);
-
             using (var xw = XmlWriter.Create(sb, xws))
             {
-                var tvShow = new XElement("tvshow");
+                var artistElement = new XElement("artist");
 
-                tvShow.Add(new XElement("title", series.Title));
+                artistElement.Add(new XElement("title", artist.Name));
 
-                if (series.Ratings != null && series.Ratings.Votes > 0)
+                if (artist.Metadata.Value.Ratings != null && artist.Metadata.Value.Ratings.Votes > 0)
                 {
-                    tvShow.Add(new XElement("rating", series.Ratings.Value));
+                    artistElement.Add(new XElement("rating", artist.Metadata.Value.Ratings.Value));
                 }
 
-                tvShow.Add(new XElement("plot", series.Overview));
-                tvShow.Add(new XElement("episodeguide", new XElement("url", episodeGuideUrl)));
-                tvShow.Add(new XElement("episodeguideurl", episodeGuideUrl));
-                tvShow.Add(new XElement("mpaa", series.Certification));
-                tvShow.Add(new XElement("id", series.TvdbId));
+                artistElement.Add(new XElement("musicbrainzartistid", artist.Metadata.Value.ForeignArtistId));
+                artistElement.Add(new XElement("biography", artist.Metadata.Value.Overview));
+                artistElement.Add(new XElement("outline", artist.Metadata.Value.Overview));
 
-                foreach (var genre in series.Genres)
-                {
-                    tvShow.Add(new XElement("genre", genre));
-                }
-
-                if (series.FirstAired.HasValue)
-                {
-                    tvShow.Add(new XElement("premiered", series.FirstAired.Value.ToString("yyyy-MM-dd")));
-                }
-
-                tvShow.Add(new XElement("studio", series.Network));
-
-                foreach (var actor in series.Actors)
-                {
-                    var xmlActor = new XElement("actor",
-                        new XElement("name", actor.Name),
-                        new XElement("role", actor.Character));
-
-                    if (actor.Images.Any())
-                    {
-                        xmlActor.Add(new XElement("thumb", actor.Images.First().Url));
-                    }
-
-                    tvShow.Add(xmlActor);
-                }
-
-                var doc = new XDocument(tvShow);
+                var doc = new XDocument(artistElement);
                 doc.Save(xw);
 
-                _logger.Debug("Saving tvshow.nfo for {0}", series.Title);
+                _logger.Debug("Saving artist.nfo for {0}", artist.Metadata.Value.Name);
 
-                return new MetadataFileResult("tvshow.nfo", doc.ToString());
+                return new MetadataFileResult("artist.nfo", doc.ToString());
             }
         }
 
-        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
+        public override MetadataFileResult AlbumMetadata(Artist artist, Album album, string albumPath)
         {
-            if (!Settings.EpisodeMetadata)
+            if (!Settings.AlbumMetadata)
             {
                 return null;
             }
 
-            _logger.Debug("Generating Episode Metadata for: {0}", Path.Combine(series.Path, episodeFile.RelativePath));
+            _logger.Debug("Generating album.nfo for: {0}", album.Title);
+            var sb = new StringBuilder();
+            var xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = false;
 
-            var xmlResult = string.Empty;
-            foreach (var episode in episodeFile.Episodes.Value)
+            using (var xw = XmlWriter.Create(sb, xws))
             {
-                var sb = new StringBuilder();
-                var xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Indent = false;
+                var albumElement = new XElement("album");
 
-                using (var xw = XmlWriter.Create(sb, xws))
+                albumElement.Add(new XElement("title", album.Title));
+
+                if (album.Ratings != null && album.Ratings.Votes > 0)
                 {
-                    var doc = new XDocument();
-                    var image = episode.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-                    var details = new XElement("episodedetails");
-                    details.Add(new XElement("title", episode.Title));
-                    details.Add(new XElement("season", episode.SeasonNumber));
-                    details.Add(new XElement("episode", episode.EpisodeNumber));
-                    details.Add(new XElement("aired", episode.AirDate));
-                    details.Add(new XElement("plot", episode.Overview));
-
-                    //If trakt ever gets airs before information for specials we should add set it
-                    details.Add(new XElement("displayseason"));
-                    details.Add(new XElement("displayepisode"));
-
-                    if (image == null)
-                    {
-                        details.Add(new XElement("thumb"));
-                    }
-
-                    else
-                    {
-                        details.Add(new XElement("thumb", image.Url));
-                    }
-
-                    details.Add(new XElement("watched", "false"));
-
-                    if (episode.Ratings != null && episode.Ratings.Votes > 0)
-                    {
-                        details.Add(new XElement("rating", episode.Ratings.Value));
-                    }
-
-                    if (episodeFile.MediaInfo != null)
-                    {
-                        var fileInfo = new XElement("fileinfo");
-                        var streamDetails = new XElement("streamdetails");
-
-                        var video = new XElement("video");
-                        video.Add(new XElement("aspect", (float)episodeFile.MediaInfo.Width / (float)episodeFile.MediaInfo.Height));
-                        video.Add(new XElement("bitrate", episodeFile.MediaInfo.VideoBitrate));
-                        video.Add(new XElement("codec", episodeFile.MediaInfo.VideoCodec));
-                        video.Add(new XElement("framerate", episodeFile.MediaInfo.VideoFps));
-                        video.Add(new XElement("height", episodeFile.MediaInfo.Height));
-                        video.Add(new XElement("scantype", episodeFile.MediaInfo.ScanType));
-                        video.Add(new XElement("width", episodeFile.MediaInfo.Height));
-
-                        if (episodeFile.MediaInfo.RunTime != null)
-                        {
-                            video.Add(new XElement("duration", episodeFile.MediaInfo.RunTime.TotalMinutes));
-                            video.Add(new XElement("durationinseconds", episodeFile.MediaInfo.RunTime.TotalSeconds));
-                        }
-
-                        streamDetails.Add(video);
-
-                        var audio = new XElement("audio");
-                        audio.Add(new XElement("bitrate", episodeFile.MediaInfo.AudioBitrate));
-                        audio.Add(new XElement("channels", episodeFile.MediaInfo.AudioChannels));
-                        audio.Add(new XElement("codec", GetAudioCodec(episodeFile.MediaInfo.AudioFormat)));
-                        audio.Add(new XElement("language", episodeFile.MediaInfo.AudioLanguages));
-                        streamDetails.Add(audio);
-
-                        if (episodeFile.MediaInfo.Subtitles != null && episodeFile.MediaInfo.Subtitles.Length > 0)
-                        {
-                            var subtitle = new XElement("subtitle");
-                            subtitle.Add(new XElement("language", episodeFile.MediaInfo.Subtitles));
-                            streamDetails.Add(subtitle);
-                        }
-
-                        fileInfo.Add(streamDetails);
-                        details.Add(fileInfo);
-                    }
-
-                    //Todo: get guest stars, writer and director
-                    //details.Add(new XElement("credits", tvdbEpisode.Writer.FirstOrDefault()));
-                    //details.Add(new XElement("director", tvdbEpisode.Directors.FirstOrDefault()));
-
-                    doc.Add(details);
-                    doc.Save(xw);
-
-                    xmlResult += doc.ToString();
-                    xmlResult += Environment.NewLine;
-                }
-            }
-
-            return new MetadataFileResult(GetEpisodeMetadataFilename(episodeFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
-        }
-
-        public override List<ImageFileResult> SeriesImages(Series series)
-        {
-            if (!Settings.SeriesImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            return ProcessSeriesImages(series).ToList();
-        }
-
-        public override List<ImageFileResult> SeasonImages(Series series, Season season)
-        {
-            if (!Settings.SeasonImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            return ProcessSeasonImages(series, season).ToList();
-        }
-
-        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
-        {
-            if (!Settings.EpisodeImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            try
-            {
-                var screenshot = episodeFile.Episodes.Value.First().Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-                if (screenshot == null)
-                {
-                    _logger.Debug("Episode screenshot not available");
-                    return new List<ImageFileResult>();
+                    albumElement.Add(new XElement("rating", album.Ratings.Value));
                 }
 
-                return new List<ImageFileResult>
-                   {
-                       new ImageFileResult(GetEpisodeImageFilename(episodeFile.RelativePath), screenshot.Url)
-                   };
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Unable to process episode image for file: {0}", Path.Combine(series.Path, episodeFile.RelativePath));
+                albumElement.Add(new XElement("musicbrainzalbumid", album.ForeignAlbumId));
+                albumElement.Add(new XElement("artistdesc", artist.Metadata.Value.Overview));
+                albumElement.Add(new XElement("releasedate", album.ReleaseDate.Value.ToShortDateString()));
 
-                return new List<ImageFileResult>();
+                var doc = new XDocument(albumElement);
+                doc.Save(xw);
+
+                _logger.Debug("Saving album.nfo for {0}", album.Title);
+                
+                var fileName = Path.Combine(albumPath, "album.nfo");
+
+                return new MetadataFileResult(fileName, doc.ToString());
             }
         }
 
-        private IEnumerable<ImageFileResult> ProcessSeriesImages(Series series)
+        public override MetadataFileResult TrackMetadata(Artist artist, TrackFile trackFile)
         {
-            foreach (var image in series.Images)
+            return null;
+        }
+
+        public override List<ImageFileResult> ArtistImages(Artist artist)
+        {
+            if (!Settings.ArtistImages)
             {
-                var source = _mediaCoverService.GetCoverPath(series.Id, image.CoverType);
-                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
+                return new List<ImageFileResult>();
+            }
+
+            return ProcessArtistImages(artist).ToList();
+        }
+
+        public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumPath)
+        {
+            if (!Settings.AlbumImages)
+            {
+                return new List<ImageFileResult>();
+            }
+
+            return ProcessAlbumImages(artist, album, albumPath).ToList();
+        }
+
+        public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
+        {
+
+            return new List<ImageFileResult>();
+        }
+
+        private IEnumerable<ImageFileResult> ProcessArtistImages(Artist artist)
+        {
+            foreach (var image in artist.Metadata.Value.Images)
+            {
+                var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType, image.Extension);
+                var destination = image.CoverType.ToString().ToLowerInvariant() + image.Extension;
+                if (image.CoverType == MediaCoverTypes.Poster)
+                {
+                    destination = "folder" + image.Extension;
+                }
 
                 yield return new ImageFileResult(destination, source);
             }
         }
 
-        private IEnumerable<ImageFileResult> ProcessSeasonImages(Series series, Season season)
+        private IEnumerable<ImageFileResult> ProcessAlbumImages(Artist artist, Album album, string albumPath)
         {
-            foreach (var image in season.Images)
+            foreach (var image in album.Images)
             {
-                var filename = string.Format("season{0:00}-{1}.jpg", season.SeasonNumber, image.CoverType.ToString().ToLower());
+                // TODO: Make Source fallback to URL if local does not exist
+                // var source = _mediaCoverService.GetCoverPath(album.ArtistId, image.CoverType, null, album.Id);
+                string filename;
 
-                if (season.SeasonNumber == 0)
+                switch(image.CoverType)
                 {
-                    filename = string.Format("season-specials-{0}.jpg", image.CoverType.ToString().ToLower());
+                    case MediaCoverTypes.Cover:
+                        filename = "folder";
+                        break;
+                    case MediaCoverTypes.Disc:
+                        filename = "discart";
+                        break;
+                    default:
+                        continue;
                 }
 
-                yield return new ImageFileResult(filename, image.Url);
+                var destination = Path.Combine(albumPath, filename + image.Extension);
+
+                yield return new ImageFileResult(destination, image.Url);
             }
         }
 
-        private string GetEpisodeMetadataFilename(string episodeFilePath)
+        private string GetTrackMetadataFilename(string trackFilePath)
         {
-            return Path.ChangeExtension(episodeFilePath, "nfo");
+            return Path.ChangeExtension(trackFilePath, "nfo");
         }
 
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return Path.ChangeExtension(episodeFilePath, "").Trim('.') + "-thumb.jpg";
-        }
-
-        private string GetAudioCodec(string audioCodec)
-        {
-            if (audioCodec == "AC-3")
-            {
-                return "AC3";
-            }
-
-            return audioCodec;
-        }
     }
 }

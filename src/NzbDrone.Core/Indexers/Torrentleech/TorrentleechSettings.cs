@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Torrentleech
@@ -11,16 +10,19 @@ namespace NzbDrone.Core.Indexers.Torrentleech
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
             RuleFor(c => c.ApiKey).NotEmpty();
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
-    public class TorrentleechSettings : IProviderConfig
+    public class TorrentleechSettings : ITorrentIndexerSettings
     {
         private static readonly TorrentleechSettingsValidator Validator = new TorrentleechSettingsValidator();
 
         public TorrentleechSettings()
         {
             BaseUrl = "http://rss.torrentleech.org";
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
         [FieldDefinition(0, Label = "Website URL")]
@@ -28,6 +30,15 @@ namespace NzbDrone.Core.Indexers.Torrentleech
 
         [FieldDefinition(1, Label = "API Key")]
         public string ApiKey { get; set; }
+
+        [FieldDefinition(2, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
+
+        [FieldDefinition(3)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
+        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Advanced = true)]
+        public int? EarlyReleaseLimit { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

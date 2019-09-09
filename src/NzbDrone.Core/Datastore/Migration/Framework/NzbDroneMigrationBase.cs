@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentMigrator;
 using NLog;
 using NzbDrone.Common.Instrumentation;

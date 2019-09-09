@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using FluentAssertions;
 using NUnit.Framework;
@@ -20,10 +20,26 @@ namespace NzbDrone.Common.Test
         }
 
         [TestCase("")]
-        [TestCase("http://")]
-        public void DownloadString_should_throw_on_error(string url)
+        public void DownloadString_should_throw_on_empty_string(string url)
         {
             Assert.Throws<ArgumentException>(() => Subject.DownloadString(url));
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+        // .net 4.6.2 throws NotSupportedException instead of ArgumentException here
+        [TestCase("http://")]
+        public void DownloadString_should_throw_on_not_supported_string_windows(string url)
+        {
+            WindowsOnly();
+            Assert.Throws<NotSupportedException>(() => Subject.DownloadString(url));
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [TestCase("http://")]
+        public void DownloadString_should_throw_on_not_supported_string_mono(string url)
+        {
+            MonoOnly();
+            Assert.Throws<System.Net.WebException>(() => Subject.DownloadString(url));
             ExceptionVerification.ExpectedWarns(1);
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,13 +11,15 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation
 {
     public class UsenetDownloadStation : UsenetClientBase<DownloadStationSettings>
     {
-        protected readonly IDownloadStationProxy _proxy;
+        protected readonly IDownloadStationInfoProxy _dsInfoProxy;
+        protected readonly IDownloadStationTaskProxy _dsTaskProxy;
         protected readonly ISharedFolderResolver _sharedFolderResolver;
         protected readonly ISerialNumberProvider _serialNumberProvider;
         protected readonly IFileStationProxy _fileStationProxy;
@@ -25,16 +27,19 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         public UsenetDownloadStation(ISharedFolderResolver sharedFolderResolver,
                                      ISerialNumberProvider serialNumberProvider,
                                      IFileStationProxy fileStationProxy,
-                                     IDownloadStationProxy proxy,
+                                     IDownloadStationInfoProxy dsInfoProxy,
+                                     IDownloadStationTaskProxy dsTaskProxy,
                                      IHttpClient httpClient,
                                      IConfigService configService,
                                      IDiskProvider diskProvider,
                                      IRemotePathMappingService remotePathMappingService,
+                                     IValidateNzbs nzbValidationService,
                                      Logger logger
                                      )
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
-            _proxy = proxy;
+            _dsInfoProxy = dsInfoProxy;
+            _dsTaskProxy = dsTaskProxy;
             _fileStationProxy = fileStationProxy;
             _sharedFolderResolver = sharedFolderResolver;
             _serialNumberProvider = serialNumberProvider;
@@ -42,9 +47,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public override string Name => "Download Station";
 
+        public override ProviderMessage Message => new ProviderMessage("Lidarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
+
         protected IEnumerable<DownloadStationTask> GetTasks()
         {
-            return _proxy.GetTasks(Settings).Where(v => v.Type.ToLower() == DownloadStationTaskType.NZB.ToString().ToLower());
+            return _dsTaskProxy.GetTasks(Settings).Where(v => v.Type.ToLower() == DownloadStationTaskType.NZB.ToString().ToLower());
         }
 
         public override IEnumerable<DownloadClientItem> GetItems()
@@ -77,10 +84,10 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                         continue;
                     }
                 }
-                else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
                     var directories = outputPath.FullPath.Split('\\', '/');
-                    if (!directories.Contains(Settings.TvCategory))
+                    if (!directories.Contains(Settings.MusicCategory))
                     {
                         continue;
                     }
@@ -88,7 +95,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 var item = new DownloadClientItem()
                 {
-                    Category = Settings.TvCategory,
+                    Category = Settings.MusicCategory,
                     DownloadClient = Definition.Name,
                     DownloadId = CreateDownloadId(nzb.Id, serialNumber),
                     Title = nzb.Title,
@@ -96,7 +103,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                     RemainingSize = taskRemainingSize,
                     Status = GetStatus(nzb),
                     Message = GetMessage(nzb),
-                    IsReadOnly = !IsFinished(nzb)
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
 
                 if (item.Status != DownloadItemStatus.Paused)
@@ -126,23 +134,26 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return finalPath;
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             try
             {
-                var path = GetDownloadDirectory();
+                var serialNumber = _serialNumberProvider.GetSerialNumber(Settings);
+                var sharedFolder = GetDownloadDirectory() ?? GetDefaultDir();
+                var outputPath = new OsPath($"/{sharedFolder.TrimStart('/')}");
+                var path = _sharedFolderResolver.RemapToFullPath(outputPath, Settings, serialNumber);
 
-                return new DownloadClientStatus
+                return new DownloadClientInfo
                 {
                     IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
-                    OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(path)) }
+                    OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, path) }
                 };
             }
             catch (DownloadClientException e)
             {
                 _logger.Debug(e, "Failed to get config from Download Station");
 
-                throw e;
+                throw;
             }
         }
 
@@ -153,15 +164,15 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 DeleteItemData(downloadId);
             }
 
-            _proxy.RemoveTask(ParseDownloadId(downloadId), Settings);
+            _dsTaskProxy.RemoveTask(ParseDownloadId(downloadId), Settings);
             _logger.Debug("{0} removed correctly", downloadId);
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
-            _proxy.AddTaskFromData(fileContent, filename, GetDownloadDirectory(), Settings);
+            _dsTaskProxy.AddTaskFromData(fileContent, filename, GetDownloadDirectory(), Settings);
 
             var items = GetTasks().Where(t => t.Additional.Detail["uri"] == filename);
 
@@ -169,7 +180,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (item != null)
             {
-                _logger.Debug("{0} added correctly", remoteEpisode);
+                _logger.Debug("{0} added correctly", remoteAlbum);
                 return CreateDownloadId(item.Id, hashedSerialNumber);
             }
 
@@ -205,7 +216,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 if (downloadDir != null)
                 {
                     var sharedFolder = downloadDir.Split('\\', '/')[0];
-                    var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.TvCategory);
+                    var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.MusicCategory);
 
                     var folderInfo = _fileStationProxy.GetInfoFileOrDirectory($"/{downloadDir}", Settings);
 
@@ -230,12 +241,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (DownloadClientAuthenticationException ex) // User could not have permission to access to downloadstation
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Error testing Usenet Download Station");
                 return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
             }
         }
@@ -248,15 +259,15 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
-                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Sonarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
+                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Lidarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
                 };
             }
             catch (WebException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to Usenet Download Station");
 
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
@@ -269,28 +280,23 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Error testing Torrent Download Station");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
         }
 
         protected ValidationFailure ValidateVersion()
         {
-            var versionRange = _proxy.GetApiVersion(Settings);
+            var info = _dsTaskProxy.GetApiInfo(Settings);
 
-            _logger.Debug("Download Station api version information: Min {0} - Max {1}", versionRange.Min(), versionRange.Max());
+            _logger.Debug("Download Station api version information: Min {0} - Max {1}", info.MinVersion, info.MaxVersion);
 
-            if (!versionRange.Contains(2))
+            if (info.MinVersion > 2 || info.MaxVersion < 2)
             {
-                return new ValidationFailure(string.Empty, $"Download Station API version not supported, should be at least 2. It supports from {versionRange.Min()} to {versionRange.Max()}");
+                return new ValidationFailure(string.Empty, $"Download Station API version not supported, should be at least 2. It supports from {info.MinVersion} to {info.MaxVersion}");
             }
 
             return null;
-        }
-
-        protected bool IsFinished(DownloadStationTask task)
-        {
-            return task.Status == DownloadStationTaskStatus.Finished;
         }
 
         protected string GetMessage(DownloadStationTask task)
@@ -315,7 +321,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         {
             switch (task.Status)
             {
+                case DownloadStationTaskStatus.Unknown:
                 case DownloadStationTaskStatus.Waiting:
+                case DownloadStationTaskStatus.FilehostingWaiting:
                     return task.Size == 0 || GetRemainingSize(task) > 0 ? DownloadItemStatus.Queued : DownloadItemStatus.Completed;
                 case DownloadStationTaskStatus.Paused:
                     return DownloadItemStatus.Paused;
@@ -394,7 +402,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         protected string GetDefaultDir()
         {
-            var config = _proxy.GetConfig(Settings);
+            var config = _dsInfoProxy.GetConfig(Settings);
 
             var path = config["default_destination"] as string;
 
@@ -407,11 +415,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             {
                 return Settings.TvDirectory.TrimStart('/');
             }
-            else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 var destDir = GetDefaultDir();
 
-                return $"{destDir.TrimEnd('/')}/{Settings.TvCategory}";
+                return $"{destDir.TrimEnd('/')}/{Settings.MusicCategory}";
             }
 
             return null;

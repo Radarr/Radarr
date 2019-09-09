@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Net;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -7,6 +8,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 {
@@ -24,7 +26,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                     Name = "Newznab",
                     Settings = new NewznabSettings()
                         {
-                            Url = "http://indexer.local/",
+                            BaseUrl = "http://indexer.local/",
                             Categories = new int[] { 1 }
                         }
                 };
@@ -50,15 +52,15 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             var releaseInfo = releases.First();
 
-            releaseInfo.Title.Should().Be("White.Collar.S03E05.720p.HDTV.X264-DIMENSION");
+            releaseInfo.Title.Should().Be("Brainstorm-Scary Creatures-CD-FLAC-2016-NBFLAC");
             releaseInfo.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
-            releaseInfo.DownloadUrl.Should().Be("http://nzb.su/getnzb/24967ef4c2e26296c65d3bbfa97aa8fe.nzb&i=37292&r=xxx");
-            releaseInfo.InfoUrl.Should().Be("http://nzb.su/details/24967ef4c2e26296c65d3bbfa97aa8fe");
-            releaseInfo.CommentUrl.Should().Be("http://nzb.su/details/24967ef4c2e26296c65d3bbfa97aa8fe#comments");
+            releaseInfo.DownloadUrl.Should().Be("http://api.nzbgeek.info/api?t=get&id=38884827e1e56b9336278a449e0a38ec&apikey=xxx");
+            releaseInfo.InfoUrl.Should().Be("https://nzbgeek.info/geekseek.php?guid=38884827e1e56b9336278a449e0a38ec");
+            releaseInfo.CommentUrl.Should().Be("https://nzbgeek.info/geekseek.php?guid=38884827e1e56b9336278a449e0a38ec");
             releaseInfo.IndexerId.Should().Be(Subject.Definition.Id);
             releaseInfo.Indexer.Should().Be(Subject.Definition.Name);
-            releaseInfo.PublishDate.Should().Be(DateTime.Parse("2012/02/27 16:09:39"));
-            releaseInfo.Size.Should().Be(1183105773);
+            releaseInfo.PublishDate.Should().Be(DateTime.Parse("2017/05/26 05:54:31"));
+            releaseInfo.Size.Should().Be(492735000);
         }
 
         [Test]
@@ -69,5 +71,27 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             Subject.PageSize.Should().Be(25);
         }
-    }
+
+        [Test]
+        public void should_record_indexer_failure_if_caps_throw()
+        {
+            var request = new HttpRequest("http://my.indexer.com");
+            var response = new HttpResponse(request, new HttpHeader(), new byte[0], (HttpStatusCode)429);
+            response.Headers["Retry-After"] = "300";
+
+            Mocker.GetMock<INewznabCapabilitiesProvider>()
+                .Setup(v => v.GetCapabilities(It.IsAny<NewznabSettings>()))
+                .Throws(new TooManyRequestsException(request, response));
+
+            _caps.MaxPageSize = 30;
+            _caps.DefaultPageSize = 25;
+
+            Subject.FetchRecent().Should().BeEmpty();
+
+            Mocker.GetMock<IIndexerStatusService>()
+                  .Verify(v => v.RecordFailure(It.IsAny<int>(), TimeSpan.FromMinutes(5.0)), Times.Once());
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
+}
 }

@@ -1,0 +1,12 @@
+.menuContent {
+  z-index: $popperZIndex;
+  display: flex;
+  flex-direction: column;
+  background-color: $toolbarMenuItemBackgroundColor;
+  line-height: 20px;
+}
+
+.scroller {
+  display: flex;
+  flex-direction: column;
+}

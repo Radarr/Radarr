@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -7,37 +7,48 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
     [TestFixture]
     public class CleanTitleFixture : CoreTest<FileNameBuilder>
     {
-        private Series _series;
-        private Episode _episode;
-        private EpisodeFile _episodeFile;
+        private Artist _artist;
+        private Album _album;
+        private AlbumRelease _release;
+        private Track _track;
+        private TrackFile _trackFile;
         private NamingConfig _namingConfig;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>
+            _artist = Builder<Artist>
                     .CreateNew()
-                    .With(s => s.Title = "South Park")
+                    .With(s => s.Name = "Avenged Sevenfold")
                     .Build();
 
-            _episode = Builder<Episode>.CreateNew()
-                            .With(e => e.Title = "City Sushi")
-                            .With(e => e.SeasonNumber = 15)
-                            .With(e => e.EpisodeNumber = 6)
-                            .With(e => e.AbsoluteEpisodeNumber = 100)
+            _album = Builder<Album>
+                    .CreateNew()
+                    .With(s => s.Title = "Hail to the King")
+                    .Build();
+
+            _release = Builder<AlbumRelease>
+                .CreateNew()
+                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
+                .Build();
+
+            _track = Builder<Track>.CreateNew()
+                            .With(e => e.Title = "Doing Time")
+                            .With(e => e.AbsoluteTrackNumber = 3)
+                            .With(e => e.AlbumRelease = _release)
                             .Build();
 
-            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
+            _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
 
             _namingConfig = NamingConfig.Default;
-            _namingConfig.RenameEpisodes = true;
+            _namingConfig.RenameTracks = true;
 
             Mocker.GetMock<INamingConfigService>()
                   .Setup(c => c.GetConfig()).Returns(_namingConfig);
@@ -65,31 +76,32 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("[a] title", "a title")]
         [TestCase("backslash \\ backlash", "backslash backlash")]
         [TestCase("I'm the Boss", "Im the Boss")]
-        //[TestCase("", "")]
-        public void should_get_expected_title_back(string title, string expected)
+        public void should_get_expected_title_back(string name, string expected)
         {
-            _series.Title = title;
-            _namingConfig.StandardEpisodeFormat = "{Series CleanTitle}";
+            _artist.Name = name;
+            _namingConfig.StandardTrackFormat = "{Artist CleanName}";
 
-            Subject.BuildFileName(new List<Episode> { _episode }, _series, _episodeFile)
+            Subject.BuildTrackFileName(new List<Track> { _track }, _artist, _album, _trackFile)
                    .Should().Be(expected);
         }
 
         [Test]
         public void should_use_and_as_separator_for_multiple_episodes()
         {
-            var episodes = Builder<Episode>.CreateListOfSize(2)
+            var tracks = Builder<Track>.CreateListOfSize(2)
                                            .TheFirst(1)
                                            .With(e => e.Title = "Surrender Benson")
                                            .TheNext(1)
                                            .With(e => e.Title = "Imprisoned Lives")
+                                           .All()
+                                           .With(e => e.AlbumRelease = _release)
                                            .Build()
                                            .ToList();
 
-            _namingConfig.StandardEpisodeFormat = "{Episode CleanTitle}";
+            _namingConfig.StandardTrackFormat = "{Track CleanTitle}";
 
-            Subject.BuildFileName(episodes, _series, _episodeFile)
-                   .Should().Be(episodes.First().Title + " and " + episodes.Last().Title);
+            Subject.BuildTrackFileName(tracks, _artist, _album, _trackFile)
+                   .Should().Be(tracks.First().Title + " and " + tracks.Last().Title);
         }
     }
 }

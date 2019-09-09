@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -23,22 +23,32 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string header = "Sonarr - Grabbed";
+            const string header = "Lidarr - Grabbed";
 
             Notify(Settings, header, grabMessage.Message);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            const string header = "Sonarr - Downloaded";
+            const string header = "Lidarr - Downloaded";
 
             Notify(Settings, header, message.Message);
-            UpdateAndClean(message.Series, message.OldFiles.Any());
+            UpdateAndClean(message.Artist, message.OldFiles.Any());
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
-            UpdateAndClean(series);
+            UpdateAndClean(artist);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            UpdateAndClean(message.Artist);
         }
 
         public override string Name => "Kodi (XBMC)";
@@ -47,7 +57,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         {
             var failures = new List<ValidationFailure>();
 
-            failures.AddIfNotNull(_xbmcService.Test(Settings, "Success! XBMC has been successfully configured!"));
+            failures.AddIfNotNull(_xbmcService.Test(Settings, "Success! Kodi has been successfully configured!"));
 
             return new ValidationResult(failures);
         }
@@ -63,18 +73,18 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (SocketException ex)
             {
-                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
+                var logMessage = string.Format("Unable to connect to Kodi Host: {0}:{1}", Settings.Host, Settings.Port);
                 _logger.Debug(ex, logMessage);
             }
         }
 
-        private void UpdateAndClean(Series series, bool clean = true)
+        private void UpdateAndClean(Artist artist, bool clean = true)
         {
             try
             {
                 if (Settings.UpdateLibrary)
                 {
-                    _xbmcService.Update(Settings, series);
+                    _xbmcService.Update(Settings, artist);
                 }
 
                 if (clean && Settings.CleanLibrary)
@@ -84,7 +94,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (SocketException ex)
             {
-                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
+                var logMessage = string.Format("Unable to connect to Kodi Host: {0}:{1}", Settings.Host, Settings.Port);
                 _logger.Debug(ex, logMessage);
             }
         }

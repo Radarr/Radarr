@@ -57,7 +57,8 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 SQLiteConnection.ClearAllPools();
                 throw;
             }
-            
+
+            processor.Dispose();
 
             sw.Stop();
 

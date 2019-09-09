@@ -1,15 +1,17 @@
-﻿using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
     public class GrabMessage
     {
         public string Message { get; set; }
-        public Series Series { get; set; }
-        public RemoteEpisode Episode { get; set; }
-        public QualityModel Quality { get; set; }   
+        public Artist Artist { get; set; }
+        public RemoteAlbum Album { get; set; }
+        public QualityModel Quality { get; set; }
+        public string DownloadClient { get; set; }
+        public string DownloadId { get; set; }
 
         public override string ToString()
         {

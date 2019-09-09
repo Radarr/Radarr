@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         {
             Host = "localhost";
             Port = 7070;
-            Category = "sonarr-tv";
+            Category = "lidarr-music";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]

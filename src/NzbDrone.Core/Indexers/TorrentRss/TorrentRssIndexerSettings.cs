@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.TorrentRss
@@ -10,10 +9,12 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         public TorrentRssIndexerSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
-    public class TorrentRssIndexerSettings : IProviderConfig
+    public class TorrentRssIndexerSettings : ITorrentIndexerSettings
     {
         private static readonly TorrentRssIndexerSettingsValidator validator = new TorrentRssIndexerSettingsValidator();
 
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         {
             BaseUrl = string.Empty;
             AllowZeroSize = false;
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
         [FieldDefinition(0, Label = "Full RSS Feed URL")]
@@ -31,6 +33,15 @@ namespace NzbDrone.Core.Indexers.TorrentRss
 
         [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Allow Zero Size", HelpText="Enabling this will allow you to use feeds that don't specify release size, but be careful, size related checks will not be performed.")]
         public bool AllowZeroSize { get; set; }
+
+        [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
+
+        [FieldDefinition(4)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
+        [FieldDefinition(5, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Advanced = true)]
+        public int? EarlyReleaseLimit { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

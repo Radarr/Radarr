@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Parser
 {
@@ -15,201 +15,125 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
 
-        private static readonly Regex[] ReportTitleRegex = new[]
-            {
-                //Anime - Absolute Episode Number + Title + Season+Episode
-                //Todo: This currently breaks series that start with numbers
-//                new Regex(@"^(?:(?<absoluteepisode>\d{2,3})(?:_|-|\s|\.)+)+(?<title>.+?)(?:\W|_)+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]){1,2}(?<episode>\d{2}(?!\d+)))+)",
-//                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        private static readonly Regex[] ReportMusicTitleRegex = new[]
+        {
+            // Track with artist (01 - artist - trackName)
+            new Regex(@"(?<trackNumber>\d*){0,1}([-| ]{0,1})(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                        RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Multi-Part episodes without a title (S01E05.S01E06)
-                new Regex(@"^(?:\W*S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[ex]){1,2}(?<episode>\d{1,3}(?!\d+)))+){2,}",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without artist (01 - trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes without a title, Single (S01E05, 1x05) AND Multi (S01E04E05, 1x04x05, etc)
-                new Regex(@"^(?:S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>\d{2,3}(?!\d+)))+)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without trackNumber or artist(trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title Episode Absolute Episode Number ([SubGroup] Series Title Episode 01)
-                new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>.+?)[-_. ](?:Episode)(?:[-_. ]+(?<absoluteepisode>(?<!\d+)\d{2,3}(?!\d+)))+(?:_|-|\s|\.)*?(?<hash>\[.{8}\])?(?:$|\.)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without trackNumber and  with artist(artist - trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title Absolute Episode Number + Season+Episode
-                new Regex(@"^(?:\[(?<subgroup>.+?)\](?:_|-|\s|\.)?)(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+(?<absoluteepisode>\d{2,3}))+(?:_|-|\s|\.)+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]){1,2}(?<episode>\d{2}(?!\d+)))+).*?(?<hash>[(\[]\w{8}[)\]])?(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track with artist and starting title (01 - artist - trackName)
+            new Regex(@"(?<trackNumber>\d*){0,1}[-| ]{0,1}(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
 
-                //Anime - [SubGroup] Title Season+Episode + Absolute Episode Number
-                new Regex(@"^(?:\[(?<subgroup>.+?)\](?:_|-|\s|\.)?)(?<title>.+?)(?:[-_\W](?<![()\[!]))+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]){1,2}(?<episode>\d{2}(?!\d+)))+)(?:(?:_|-|\s|\.)+(?<absoluteepisode>(?<!\d+)\d{2,3}(?!\d+)))+.*?(?<hash>\[\w{8}\])?(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        private static readonly Regex[] ReportAlbumTitleRegex = new[]
+        {
+            //ruTracker - (Genre) [Source]? Artist - Discography
+            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title Season+Episode
-                new Regex(@"^(?:\[(?<subgroup>.+?)\](?:_|-|\s|\.)?)(?<title>.+?)(?:[-_\W](?<![()\[!]))+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:[ex]|\W[ex]){1,2}(?<episode>\d{2}(?!\d+)))+)(?:\s|\.).*?(?<hash>\[\w{8}\])?(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Discography with two years
+            new Regex(@"^(?<artist>.+?)(?: - )(?:.+?)?(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title with trailing number Absolute Episode Number
-                new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>[^-]+?\d+?)[-_. ]+(?:[-_. ]?(?<absoluteepisode>\d{3}(?!\d+)))+(?:[-_. ]+(?<special>special|ova|ovd))?.*?(?<hash>\[\w{8}\])?(?:$|\.mkv)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Discography with end year
+            new Regex(@"^(?<artist>.+?)(?: - )(?:.+?)?(?<discography>Discography|Discografia).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title - Absolute Episode Number
-                new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>.+?)(?:[. ]-[. ](?<absoluteepisode>\d{2,3}(?!\d+|[-])))+(?:[-_. ]+(?<special>special|ova|ovd))?.*?(?<hash>\[\w{8}\])?(?:$|\.mkv)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist Discography with two years
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - [SubGroup] Title Absolute Episode Number
-                new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>.+?)[-_. ]+\(?(?:[-_. ]?(?<absoluteepisode>\d{2,3}(?!\d+)))+\)?(?:[-_. ]+(?<special>special|ova|ovd))?.*?(?<hash>\[\w{8}\])?(?:$|\.mkv)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist Discography with end year
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - Title Season EpisodeNumber + Absolute Episode Number [SubGroup]
-                new Regex(@"^(?<title>.+?)(?:[-_\W](?<![()\[!]))+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:[ex]|\W[ex]){1,2}(?<episode>(?<!\d+)\d{2}(?!\d+)))+).+?(?:[-_. ]?(?<absoluteepisode>(?<!\d+)\d{3}(?!\d+)))+.+?\[(?<subgroup>.+?)\](?:$|\.mkv)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist Discography
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - Title Absolute Episode Number [SubGroup]
-                new Regex(@"^(?<title>.+?)(?:(?:_|-|\s|\.)+(?<absoluteepisode>\d{3}(?!\d+)))+(?:.+?)\[(?<subgroup>.+?)\].*?(?<hash>\[\w{8}\])?(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //ruTracker - (Genre) [Source]? Artist - Album - Year
+            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<album>.+?)(?: - )(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Anime - Title Absolute Episode Number [Hash]
-                new Regex(@"^(?<title>.+?)(?:(?:_|-|\s|\.)+(?<absoluteepisode>\d{2,3}(?!\d+)))+(?:[-_. ]+(?<special>special|ova|ovd))?[-_. ]+.*?(?<hash>\[\w{8}\])(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-Version-Source-Year
+            //ex. Imagine Dragons-Smoke And Mirrors-Deluxe Edition-2CD-FLAC-2015-JLM
+            new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?:[\(|\[]?)(?<version>.+?(?:Edition)?)(?:[\)|\]]?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes with airdate AND season/episode number, capture season/epsiode only
-                new Regex(@"^(?<title>.+?)?\W*(?<airdate>\d{4}\W+[0-1][0-9]\W+[0-3][0-9])(?!\W+[0-3][0-9])[-_. ](?:s?(?<season>(?<!\d+)(?:\d{1,2})(?!\d+)))(?:[ex](?<episode>(?<!\d+)(?:\d{1,3})(?!\d+)))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-Source-Year
+            //ex. Dani_Sbert-Togheter-WEB-2017-FURY
+            new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes with airdate AND season/episode number
-                new Regex(@"^(?<title>.+?)?\W*(?<airyear>\d{4})\W+(?<airmonth>[0-1][0-9])\W+(?<airday>[0-3][0-9])(?!\W+[0-3][0-9]).+?(?:s?(?<season>(?<!\d+)(?:\d{1,2})(?!\d+)))(?:[ex](?<episode>(?<!\d+)(?:\d{1,3})(?!\d+)))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album (Year) Strict
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Multi-episode Repeated (S01E05 - S01E06, 1x05 - 1x06, etc)
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[ex]|[-_. ]e){1,2}(?<episode>\d{1,3}(?!\d+)))+){2,}",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album (Year)
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes with a title, Single episodes (S01E05, 1x05, etc) & Multi-episode (S01E05E06, S01E05-06, S01E05 E06, etc)
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+S?(?<season>(?<!\d+)(?:\d{1,2})(?!\d+))(?:[ex]|\W[ex]|_){1,2}(?<episode>\d{2,3}(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>\d{2,3}(?!\d+)))*)\W?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album - Year [something]
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?: - )(?<releaseyear>\d{4})\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes with a title, 4 digit season number, Single episodes (S2016E05, etc) & Multi-episode (S2016E05E06, S2016E05-06, S2016E05 E06, etc)
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+S(?<season>(?<!\d+)(?:\d{4})(?!\d+))(?:e|\We|_){1,2}(?<episode>\d{2,3}(?!\d+))(?:(?:\-|e|\We|_){1,2}(?<episode>\d{2,3}(?!\d+)))*)\W?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album [something] or Artist - Album (something)
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Episodes with a title, 4 digit season number, Single episodes (2016x05, etc) & Multi-episode (2016x05x06, 2016x05-06, 2016x05 x06, etc)
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+(?<season>(?<!\d+)(?:\d{4})(?!\d+))(?:x|\Wx|_){1,2}(?<episode>\d{2,3}(?!\d+))(?:(?:\-|x|\Wx|_){1,2}(?<episode>\d{2,3}(?!\d+)))*)\W?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album Year
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Mini-Series with year in title, treated as season 1, episodes are labelled as Part01, Part 01, Part.1
-                new Regex(@"^(?<title>.+?\d{4})(?:\W+(?:(?:Part\W?|e)(?<episode>\d{1,2}(?!\d+)))+)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album (Year) Strict
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Mini-Series, treated as season 1, episodes are labelled as Part01, Part 01, Part.1
-                new Regex(@"^(?<title>.+?)(?:\W+(?:(?:Part\W?|(?<!\d+\W+)e)(?<episode>\d{1,2}(?!\d+)))+)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album (Year)
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Mini-Series, treated as season 1, episodes are labelled as Part One/Two/Three/...Nine, Part.One, Part_One
-                new Regex(@"^(?<title>.+?)(?:\W+(?:Part[-._ ](?<episode>One|Two|Three|Four|Five|Six|Seven|Eight|Nine)(?>[-._ ])))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album [something] or Artist-Album (something)
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Mini-Series, treated as season 1, episodes are labelled as XofY
-                new Regex(@"^(?<title>.+?)(?:\W+(?:(?<episode>(?<!\d+)\d{1,2}(?!\d+))of\d+)+)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-something-Year
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)(?:-.+?)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Supports Season 01 Episode 03
-                new Regex(@"(?:.*(?:\""|^))(?<title>.*?)(?:[-_\W](?<![()\[]))+(?:\W?Season\W?)(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:\W|_)+(?:Episode\W)(?:[-_. ]?(?<episode>(?<!\d+)\d{1,2}(?!\d+)))+",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album Year
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?:(?<album>.+?)(?:-)+)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Multi-episode release with no space between series title and season (S01E11E12)
-                new Regex(@"(?:.*(?:^))(?<title>.*?)(?:\W?|_)S(?<season>(?<!\d+)\d{2}(?!\d+))(?:E(?<episode>(?<!\d+)\d{2}(?!\d+)))+",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Multi-episode with single episode numbers (S6.E1-E2, S6.E1E2, S6E1E2, etc)
-                new Regex(@"^(?<title>.+?)[-_. ]S(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:[-_. ]?[ex]?(?<episode>(?<!\d+)\d{1,2}(?!\d+)))+",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Single episode season or episode S1E1 or S1-E1
-                new Regex(@"(?:.*(?:\""|^))(?<title>.*?)(?:\W?|_)S(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:\W|_)?E(?<episode>(?<!\d+)\d{1,2}(?!\d+))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //3 digit season S010E05
-                new Regex(@"(?:.*(?:\""|^))(?<title>.*?)(?:\W?|_)S(?<season>(?<!\d+)\d{3}(?!\d+))(?:\W|_)?E(?<episode>(?<!\d+)\d{1,2}(?!\d+))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //5 digit episode number with a title
-                new Regex(@"^(?:(?<title>.+?)(?:_|-|\s|\.)+)(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+)))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>(?<!\d+)\d{5}(?!\d+)))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //5 digit multi-episode with a title
-                new Regex(@"^(?:(?<title>.+?)(?:_|-|\s|\.)+)(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+)))(?:(?:[-_. ]{1,3}ep){1,2}(?<episode>(?<!\d+)\d{5}(?!\d+)))+",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                // Separated season and episode numbers S01 - E01
-                new Regex(@"^(?<title>.+?)(?:_|-|\s|\.)+S(?<season>\d{2}(?!\d+))(\W-\W)E(?<episode>(?<!\d+)\d{2}(?!\d+))(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Season only releases
-                new Regex(@"^(?<title>.+?)\W(?:S|Season)\W?(?<season>\d{1,2}(?!\d+))(\W+|_|$)(?<extras>EXTRAS|SUBPACK)?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //4 digit season only releases
-                new Regex(@"^(?<title>.+?)\W(?:S|Season)\W?(?<season>\d{4}(?!\d+))(\W+|_|$)(?<extras>EXTRAS|SUBPACK)?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Episodes with a title and season/episode in square brackets
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+\[S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>(?<!\d+)\d{2}(?!\d+|i|p)))+\])\W?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Supports 103/113 naming
-                new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))+(?<season>(?<!\d+)[1-9])(?<episode>[1-9][0-9]|[0][1-9])(?![a-z]|\d+))+",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Episodes with airdate
-                new Regex(@"^(?<title>.+?)?\W*(?<airyear>\d{4})\W+(?<airmonth>[0-1][0-9])\W+(?<airday>[0-3][0-9])(?!\W+[0-3][0-9])",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Supports 1103/1113 naming
-                new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<season>(?<!\d+|\(|\[|e|x)\d{2})(?<episode>(?<!e|x)\d{2}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //4 digit episode number
-                //Episodes without a title, Single (S01E05, 1x05) AND Multi (S01E04E05, 1x04x05, etc)
-                new Regex(@"^(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>\d{4}(?!\d+|i|p)))+)(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //4 digit episode number
-                //Episodes with a title, Single episodes (S01E05, 1x05, etc) & Multi-episode (S01E05E06, S01E05-06, S01E05 E06, etc)
-                new Regex(@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>\d{4}(?!\d+|i|p)))+)\W?(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Episodes with single digit episode number (S01E1, S01E5E6, etc)
-                new Regex(@"^(?<title>.*?)(?:(?:[-_\W](?<![()\[!]))+S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]){1,2}(?<episode>\d{1}))+)+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //iTunes Season 1\05 Title (Quality).ext
-                new Regex(@"^(?:Season(?:_|-|\s|\.)(?<season>(?<!\d+)\d{1,2}(?!\d+)))(?:_|-|\s|\.)(?<episode>(?<!\d+)\d{1,2}(?!\d+))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Anime - Title Absolute Episode Number (e66)
-                new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)?(?<title>.+?)(?:(?:_|-|\s|\.)+(?:e|ep)(?<absoluteepisode>\d{2,3}))+.*?(?<hash>\[\w{8}\])?(?:$|\.)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Anime - Title Episode Absolute Episode Number (Series Title Episode 01)
-                new Regex(@"^(?<title>.+?)[-_. ](?:Episode)(?:[-_. ]+(?<absoluteepisode>(?<!\d+)\d{2,3}(?!\d+)))+(?:_|-|\s|\.)*?(?<hash>\[.{8}\])?(?:$|\.)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Anime - Title Absolute Episode Number
-                new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)?(?<title>.+?)(?:[-_. ]+(?<absoluteepisode>(?<!\d+)\d{2,3}(?!\d+)))+(?:_|-|\s|\.)*?(?<hash>\[.{8}\])?(?:$|\.)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Anime - Title {Absolute Episode Number}
-                new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)?(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+(?<absoluteepisode>(?<!\d+)\d{2,3}(?!\d+)))+(?:_|-|\s|\.)*?(?<hash>\[.{8}\])?(?:$|\.)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-                //Extant, terrible multi-episode naming (extant.10708.hdtv-lol.mp4)
-                new Regex(@"^(?<title>.+?)[-_. ](?<season>[0]?\d?)(?:(?<episode>\d{2}){2}(?!\d+))[-_. ]",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled)
-            };
+            //Artist - Year - Album
+            // Hypen with no or more spaces between artist/album/year
+            new Regex(@"^(?:(?<artist>.+?)(?:-))(?<releaseyear>\d{4})(?:-)(?<album>[^-]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            
+        };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
             {
                 // Generic match for md5 and mixed-case hashes.
                 new Regex(@"^[0-9a-zA-Z]{32}", RegexOptions.Compiled),
-                
+
                 // Generic match for shorter lower-case hashes.
                 new Regex(@"^[a-z0-9]{24}$", RegexOptions.Compiled),
 
@@ -231,19 +155,17 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             };
 
-        //Regex to detect whether the title was reversed.
-        private static readonly Regex ReversedTitleRegex = new Regex(@"[-._ ](p027|p0801|\d{2}E\d{2}S)[-._ ]", RegexOptions.Compiled);
-
         private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^)(a(?!$)|an|the|and|or|of)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
+        //TODO Rework this Regex for Music
+        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*",
+        private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net)[ -]*",
                                                                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AirDateRegex = new Regex(@"^(.*?)(?<!\d)((?<airyear>\d{4})[_.-](?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])|(?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])[_.-](?<airyear>\d{4}))(?!\d)",
@@ -252,13 +174,13 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SixDigitAirDateRegex = new Regex(@"(?<=[_.-])(?<airdate>(?<!\d)(?<airyear>[1-9]\d{1})(?<airmonth>[0-1][0-9])(?<airday>[0-3][0-9]))(?=[_.-])",
                                                                         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ](S\d+E\d+)[-._ ])|(-(RP|1|NZBGeek|Obfuscated|sample))+$",
+        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ])|(-(RP|1|NZBGeek|Obfuscated|Scrambled|sample|Pre|postbot|xpost))+$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex CleanTorrentSuffixRegex = new Regex(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
                                                                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex ReleaseGroupRegex = new Regex(@"-(?<releasegroup>[a-z0-9]+)(?<!WEB-DL|480p|720p|1080p|2160p)(?:\b|[-._ ])",
+        private static readonly Regex ReleaseGroupRegex = new Regex(@"-(?<releasegroup>[a-z0-9]+)(?<!MP3|ALAC|FLAC|WEB)(?:\b|[-._ ])",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AnimeReleaseGroupRegex = new Regex(@"^(?:\[(?<subgroup>(?!\s).+?(?<!\s))\](?:_|-|\s|\.)?)",
@@ -277,28 +199,38 @@ namespace NzbDrone.Core.Parser
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-        public static ParsedEpisodeInfo ParsePath(string path)
+        private static readonly Regex[] CommonTagRegex = new Regex[] {
+            new Regex(@"(\[|\()*\b((featuring|feat.|feat|ft|ft.)\s{1}){1}\s*.*(\]|\))*", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"(?:\(|\[)(?:[^\(\[]*)(?:version|limited|deluxe|single|clean|album|special|bonus|promo|remastered)(?:[^\)\]]*)(?:\)|\])", RegexOptions.IgnoreCase | RegexOptions.Compiled)
+        };
+
+        private static readonly Regex[] BracketRegex = new Regex[]
+        {
+            new Regex(@"\(.*\)", RegexOptions.Compiled),
+            new Regex(@"\[.*\]", RegexOptions.Compiled)
+        };
+
+        private static readonly Regex AfterDashRegex = new Regex(@"[-:].*", RegexOptions.Compiled);
+        
+        public static ParsedTrackInfo ParseMusicPath(string path)
         {
             var fileInfo = new FileInfo(path);
 
-            var result = ParseTitle(fileInfo.Name);
+            ParsedTrackInfo result = null;
+
+            Logger.Debug("Attempting to parse track info using directory and file names. {0}", fileInfo.Directory.Name);
+            result = ParseMusicTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse episode info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
-            }
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse episode info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + fileInfo.Extension);
+                Logger.Debug("Attempting to parse track info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMusicTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
             return result;
         }
 
-        public static ParsedEpisodeInfo ParseTitle(string title)
+        public static ParsedTrackInfo ParseMusicTitle(string title)
         {
             try
             {
@@ -306,19 +238,9 @@ namespace NzbDrone.Core.Parser
 
                 Logger.Debug("Parsing string '{0}'", title);
 
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
+                var releaseTitle = RemoveFileExtension(title);
 
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
-
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
-
-                simpleTitle = RemoveFileExtension(simpleTitle);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
@@ -346,7 +268,7 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
-                foreach (var regex in ReportTitleRegex)
+                foreach (var regex in ReportMusicTitleRegex)
                 {
                     var match = regex.Matches(simpleTitle);
 
@@ -355,23 +277,159 @@ namespace NzbDrone.Core.Parser
                         Logger.Trace(regex);
                         try
                         {
-                            var result = ParseMatchCollection(match);
+                            var result = ParseMatchMusicCollection(match);
 
                             if (result != null)
                             {
-                                if (result.FullSeason && title.ContainsIgnoreCase("Special"))
-                                {
-                                    result.FullSeason = false;
-                                    result.Special = true;
-                                }
-
-                                result.Language = LanguageParser.ParseLanguage(title);
-                                Logger.Debug("Language parsed: {0}", result.Language);
-
-                                result.Quality = QualityParser.ParseQuality(title);
+                                result.Quality = QualityParser.ParseQuality(title, null, 0);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                                result.ReleaseGroup = ParseReleaseGroup(title);
+                                return result;
+                            }
+                        }
+                        catch (InvalidDateException ex)
+                        {
+                            Logger.Debug(ex, ex.Message);
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
+        }
+
+        public static ParsedAlbumInfo ParseAlbumTitleWithSearchCriteria(string title, Artist artist, List<Album> album)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}' using search criteria artist: '{1}' album: '{2}'",
+                             title, artist.Name.RemoveAccent(), string.Join(", ", album.Select(a => a.Title.RemoveAccent())));
+
+                var releaseTitle = RemoveFileExtension(title);
+
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                var escapedArtist = Regex.Escape(artist.Name.RemoveAccent()).Replace(@"\ ", @"[\W_]");
+                var escapedAlbums = string.Join("|", album.Select(s => Regex.Escape(s.Title.RemoveAccent())).ToList()).Replace(@"\ ", @"[\W_]");
+
+                var releaseRegex = new Regex(@"^(\W*|\b)(?<artist>" + escapedArtist + @")(\W*|\b).*(\W*|\b)(?<album>" + escapedAlbums + @")(\W*|\b)", RegexOptions.IgnoreCase);
+
+                var match = releaseRegex.Matches(simpleTitle);
+
+                if (match.Count != 0)
+                {
+                    try
+                    {
+                        var result = ParseAlbumMatchCollection(match);
+
+                        if (result != null)
+                        {
+                            result.Quality = QualityParser.ParseQuality(title, null, 0);
+                            Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                            result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+
+                            var subGroup = GetSubGroup(match);
+                            if (!subGroup.IsNullOrWhiteSpace())
+                            {
+                                result.ReleaseGroup = subGroup;
+                            }
+
+                            Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                            result.ReleaseHash = GetReleaseHash(match);
+                            if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                            {
+                                Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                            }
+
+                            return result;
+                        }
+                    }
+                    catch (InvalidDateException ex)
+                    {
+                        Logger.Debug(ex, ex.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
+        }
+
+        public static ParsedAlbumInfo ParseAlbumTitle(string title)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}'", title);
+
+                var releaseTitle = RemoveFileExtension(title);
+
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+
+                // TODO: Quick fix stripping [url] - prefixes.
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                var airDateMatch = AirDateRegex.Match(simpleTitle);
+                if (airDateMatch.Success)
+                {
+                    simpleTitle = airDateMatch.Groups[1].Value + airDateMatch.Groups["airyear"].Value + "." + airDateMatch.Groups["airmonth"].Value + "." + airDateMatch.Groups["airday"].Value;
+                }
+
+                var sixDigitAirDateMatch = SixDigitAirDateRegex.Match(simpleTitle);
+                if (sixDigitAirDateMatch.Success)
+                {
+                    var airYear = sixDigitAirDateMatch.Groups["airyear"].Value;
+                    var airMonth = sixDigitAirDateMatch.Groups["airmonth"].Value;
+                    var airDay = sixDigitAirDateMatch.Groups["airday"].Value;
+
+                    if (airMonth != "00" || airDay != "00")
+                    {
+                        var fixedDate = string.Format("20{0}.{1}.{2}", airYear, airMonth, airDay);
+
+                        simpleTitle = simpleTitle.Replace(sixDigitAirDateMatch.Groups["airdate"].Value, fixedDate);
+                    }
+                }
+
+                foreach (var regex in ReportAlbumTitleRegex)
+                {
+                    var match = regex.Matches(simpleTitle);
+
+                    if (match.Count != 0)
+                    {
+                        Logger.Trace(regex);
+                        try
+                        {
+                            var result = ParseAlbumMatchCollection(match);
+
+                            if (result != null)
+                            {
+                                result.Quality = QualityParser.ParseQuality(title, null, 0);
+                                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                                result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
 
                                 var subGroup = GetSubGroup(match);
                                 if (!subGroup.IsNullOrWhiteSpace())
@@ -408,39 +466,24 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public static string ParseSeriesName(string title)
-        {
-            Logger.Debug("Parsing string '{0}'", title);
-
-            var parseResult = ParseTitle(title);
-
-            if (parseResult == null)
-            {
-                return CleanSeriesTitle(title);
-            }
-
-            return parseResult.SeriesTitle;
-        }
-
-        public static string CleanSeriesTitle(this string title)
+        public static string CleanArtistName(this string name)
         {
             long number = 0;
 
             //If Title only contains numbers return it as is.
-            if (long.TryParse(title, out number))
-                return title;
+            if (long.TryParse(name, out number))
+                return name;
 
-            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+            return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
         }
 
-        public static string NormalizeEpisodeTitle(string title)
+        public static string NormalizeTrackTitle(this string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
             title = PunctuationRegex.Replace(title, " ");
             title = DuplicateSpacesRegex.Replace(title, " ");
 
-            return title.Trim()
-                        .ToLower();
+            return title.Trim().ToLower();
         }
 
         public static string NormalizeTitle(string title)
@@ -501,157 +544,158 @@ namespace NzbDrone.Core.Parser
             return title;
         }
 
-        private static SeriesTitleInfo GetSeriesTitleInfo(string title)
+        public static string CleanAlbumTitle(this string album)
         {
-            var seriesTitleInfo = new SeriesTitleInfo();
-            seriesTitleInfo.Title = title;
-
-            var match = YearInTitleRegex.Match(title);
-
-            if (!match.Success)
-            {
-                seriesTitleInfo.TitleWithoutYear = title;
-            }
-
-            else
-            {
-                seriesTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
-                seriesTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
-            }
-
-            return seriesTitleInfo;
+            return CommonTagRegex[1].Replace(album, string.Empty).Trim();
         }
 
-        private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
+        public static string RemoveBracketsAndContents(this string album)
         {
-            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
-            seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
-
-            int airYear;
-            int.TryParse(matchCollection[0].Groups["airyear"].Value, out airYear);
-
-            ParsedEpisodeInfo result;
-
-            if (airYear < 1900)
+            var intermediate = album;
+            foreach (var regex in BracketRegex)
             {
-                var seasons = new List<int>();
+                intermediate = regex.Replace(intermediate, string.Empty).Trim();
+            }
+            
+            return intermediate;
+        }
 
-                foreach (Capture seasonCapture in matchCollection[0].Groups["season"].Captures)
-                {
-                    int parsedSeason;
-                    if (int.TryParse(seasonCapture.Value, out parsedSeason))
-                        seasons.Add(parsedSeason);
-                }
+        public static string RemoveAfterDash(this string text)
+        {
+            return AfterDashRegex.Replace(text, string.Empty).Trim();
+        }
 
-                //If no season was found it should be treated as a mini series and season 1
-                if (seasons.Count == 0) seasons.Add(1);
-
-                //If more than 1 season was parsed go to the next REGEX (A multi-season release is unlikely)
-                if (seasons.Distinct().Count() > 1) return null;
-
-                result = new ParsedEpisodeInfo
-                {
-                    SeasonNumber = seasons.First(),
-                    EpisodeNumbers = new int[0],
-                    AbsoluteEpisodeNumbers = new int[0]
-                };
-
-                foreach (Match matchGroup in matchCollection)
-                {
-                    var episodeCaptures = matchGroup.Groups["episode"].Captures.Cast<Capture>().ToList();
-                    var absoluteEpisodeCaptures = matchGroup.Groups["absoluteepisode"].Captures.Cast<Capture>().ToList();
-
-                    //Allows use to return a list of 0 episodes (We can handle that as a full season release)
-                    if (episodeCaptures.Any())
-                    {
-                        var first = ParseNumber(episodeCaptures.First().Value);
-                        var last = ParseNumber(episodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.EpisodeNumbers = Enumerable.Range(first, count).ToArray();
-                    }
-
-                    if (absoluteEpisodeCaptures.Any())
-                    {
-                        var first = Convert.ToInt32(absoluteEpisodeCaptures.First().Value);
-                        var last = Convert.ToInt32(absoluteEpisodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.AbsoluteEpisodeNumbers = Enumerable.Range(first, count).ToArray();
-
-                        if (matchGroup.Groups["special"].Success)
-                        {
-                            result.Special = true;
-                        }
-                    }
-
-                    if (!episodeCaptures.Any() && !absoluteEpisodeCaptures.Any())
-                    {
-                        //Check to see if this is an "Extras" or "SUBPACK" release, if it is, return NULL
-                        //Todo: Set a "Extras" flag in EpisodeParseResult if we want to download them ever
-                        if (!matchCollection[0].Groups["extras"].Value.IsNullOrWhiteSpace()) return null;
-
-                        result.FullSeason = true;
-                    }
-                }
-
-                if (result.AbsoluteEpisodeNumbers.Any() && !result.EpisodeNumbers.Any())
-                {
-                    result.SeasonNumber = 0;
-                }
+        public static string CleanTrackTitle(this string title)
+        {
+            var intermediateTitle = title;
+            foreach (var regex in CommonTagRegex)
+            {
+                intermediateTitle = regex.Replace(intermediateTitle, string.Empty).Trim();
             }
 
-            else
+            return intermediateTitle;
+        }
+
+        private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)
+        {
+            var artistName = matchCollection[0].Groups["artist"].Value./*Removed for cases like Will.I.Am Replace('.', ' ').*/Replace('_', ' ');
+            artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
+
+            // Coppied from Radarr (https://github.com/Radarr/Radarr/blob/develop/src/NzbDrone.Core/Parser/Parser.cs)
+            // TODO: Split into separate method and write unit tests for. 
+            var parts = artistName.Split('.');
+            artistName = "";
+            int n = 0;
+            bool previousAcronym = false;
+            string nextPart = "";
+            foreach (var part in parts)
             {
-                //Try to Parse as a daily show
-                var airmonth = Convert.ToInt32(matchCollection[0].Groups["airmonth"].Value);
-                var airday = Convert.ToInt32(matchCollection[0].Groups["airday"].Value);
-
-                //Swap day and month if month is bigger than 12 (scene fail)
-                if (airmonth > 12)
+                if (parts.Length >= n + 2)
                 {
-                    var tempDay = airday;
-                    airday = airmonth;
-                    airmonth = tempDay;
+                    nextPart = parts[n + 1];
                 }
-
-                DateTime airDate;
-
-                try
+                if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
                 {
-                    airDate = new DateTime(airYear, airmonth, airday);
+                    artistName += part + ".";
+                    previousAcronym = true;
                 }
-                catch (Exception)
+                else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
                 {
-                    throw new InvalidDateException("Invalid date found: {0}-{1}-{2}", airYear, airmonth, airday);
+                    artistName += part + ".";
+                    previousAcronym = true;
                 }
-
-                //Check if episode is in the future (most likely a parse error)
-                if (airDate > DateTime.Now.AddDays(1).Date || airDate < new DateTime(1970, 1, 1))
+                else
                 {
-                    throw new InvalidDateException("Invalid date found: {0}", airDate);
+                    if (previousAcronym)
+                    {
+                        artistName += " ";
+                        previousAcronym = false;
+                    }
+                    artistName += part + " ";
                 }
-
-                result = new ParsedEpisodeInfo
-                {
-                    AirDate = airDate.ToString(Episode.AIR_DATE_FORMAT),
-                };
+                n++;
             }
 
-            result.SeriesTitle = seriesName;
-            result.SeriesTitleInfo = GetSeriesTitleInfo(result.SeriesTitle);
+            artistName = artistName.Trim(' ');
 
-            Logger.Debug("Episode Parsed. {0}", result);
+            int trackNumber;
+            int.TryParse(matchCollection[0].Groups["trackNumber"].Value, out trackNumber);
+
+            ParsedTrackInfo result = new ParsedTrackInfo();
+
+            result.ArtistTitle = artistName;
+            result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistTitle);
+
+            Logger.Debug("Track Parsed. {0}", result);
+            return result;
+        }
+
+        private static ArtistTitleInfo GetArtistTitleInfo(string title)
+        {
+            var artistTitleInfo = new ArtistTitleInfo();
+            artistTitleInfo.Title = title;
+
+            return artistTitleInfo;
+        }
+
+        public static string ParseArtistName(string title)
+        {
+            Logger.Debug("Parsing string '{0}'", title);
+
+            var parseResult = ParseAlbumTitle(title);
+
+            if (parseResult == null)
+            {
+                return CleanArtistName(title);
+            }
+
+            return parseResult.ArtistName;
+        }
+
+        private static ParsedAlbumInfo ParseAlbumMatchCollection(MatchCollection matchCollection)
+        {
+            var artistName = matchCollection[0].Groups["artist"].Value.Replace('.', ' ').Replace('_', ' ');
+            var albumTitle = matchCollection[0].Groups["album"].Value.Replace('.', ' ').Replace('_', ' ');
+            var releaseVersion = matchCollection[0].Groups["version"].Value.Replace('.', ' ').Replace('_', ' ');
+            artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
+            albumTitle = RequestInfoRegex.Replace(albumTitle, "").Trim(' ');
+            releaseVersion = RequestInfoRegex.Replace(releaseVersion, "").Trim(' ');
+
+            int releaseYear;
+            int.TryParse(matchCollection[0].Groups["releaseyear"].Value, out releaseYear);
+
+            ParsedAlbumInfo result;
+
+            result = new ParsedAlbumInfo();
+
+            result.ArtistName = artistName;
+            result.AlbumTitle = albumTitle;
+            result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
+            result.ReleaseDate = releaseYear.ToString();
+            result.ReleaseVersion = releaseVersion;
+
+            if (matchCollection[0].Groups["discography"].Success)
+            {
+                int discStart;
+                int discEnd;
+                int.TryParse(matchCollection[0].Groups["startyear"].Value, out discStart);
+                int.TryParse(matchCollection[0].Groups["endyear"].Value, out discEnd);
+                result.Discography = true;
+
+                if (discStart > 0 && discEnd > 0)
+                {
+                    result.DiscographyStart = discStart;
+                    result.DiscographyEnd = discEnd;
+                }
+                else if (discEnd > 0)
+                {
+                    result.DiscographyEnd = discEnd;
+                }
+
+                result.AlbumTitle = "Discography";
+            }
+
+            Logger.Debug("Album Parsed. {0}", result);
 
             return result;
         }

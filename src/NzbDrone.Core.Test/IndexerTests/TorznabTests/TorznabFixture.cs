@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorznabTests
                     Name = "Torznab",
                     Settings = new TorznabSettings()
                         {
-                            Url = "http://indexer.local/",
+                            BaseUrl = "http://indexer.local/",
                             Categories = new int[] { 1 }
                         }
                 };
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorznabTests
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
                 .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
-            
+
             var releases = Subject.FetchRecent();
 
             releases.Should().HaveCount(5);
@@ -60,8 +60,6 @@ namespace NzbDrone.Core.Test.IndexerTests.TorznabTests
             releaseInfo.Indexer.Should().Be(Subject.Definition.Name);
             releaseInfo.PublishDate.Should().Be(DateTime.Parse("2015/03/14 21:10:42"));
             releaseInfo.Size.Should().Be(2538463390);
-            releaseInfo.TvdbId.Should().Be(273181);
-            releaseInfo.TvRageId.Should().Be(37780);
             releaseInfo.InfoHash.Should().Be("63e07ff523710ca268567dad344ce1e0e6b7e8a3");
             releaseInfo.Seeders.Should().Be(7);
             releaseInfo.Peers.Should().Be(7);

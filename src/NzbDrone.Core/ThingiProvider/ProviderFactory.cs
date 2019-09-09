@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.ThingiProvider
             return definitions;
         }
 
-        public ValidationResult Test(TProviderDefinition definition)
+        public virtual ValidationResult Test(TProviderDefinition definition)
         {
             return GetInstance(definition).Test();
         }
@@ -98,7 +98,9 @@ namespace NzbDrone.Core.ThingiProvider
 
         public virtual TProviderDefinition Create(TProviderDefinition definition)
         {
-            return _providerRepository.Insert(definition);
+            var addedDefinition = _providerRepository.Insert(definition);
+            _eventAggregator.PublishEvent(new ProviderAddedEvent<TProvider>(definition));
+            return addedDefinition;
         }
 
         public virtual void Update(TProviderDefinition definition)
@@ -166,6 +168,12 @@ namespace NzbDrone.Core.ThingiProvider
                 _logger.Debug("Removing {0} ", invalidDefinition.Name);
                 _providerRepository.Delete(invalidDefinition);
             }
+        }
+
+        public List<TProviderDefinition> AllForTag(int tagId)
+        {
+            return All().Where(p => p.Tags.Contains(tagId))
+                        .ToList();
         }
     }
 }

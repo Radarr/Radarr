@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using NLog;
@@ -54,6 +55,23 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(sourcePath, () => sourcePath).IsValidPath();
             Ensure.That(targetPath, () => targetPath).IsValidPath();
+
+            if (mode == TransferMode.Move && !_diskProvider.FolderExists(targetPath))
+            {
+                if (verificationMode == DiskTransferVerificationMode.TryTransactional || verificationMode == DiskTransferVerificationMode.VerifyOnly)
+                {
+                    var sourceMount = _diskProvider.GetMount(sourcePath);
+                    var targetMount = _diskProvider.GetMount(targetPath);
+
+                    // If we're on the same mount, do a simple folder move.
+                    if (sourceMount != null && targetMount != null && sourceMount.RootDirectory == targetMount.RootDirectory)
+                    {
+                        _logger.Debug("Move Directory [{0}] > [{1}]", sourcePath, targetPath);
+                        _diskProvider.MoveFolder(sourcePath, targetPath);
+                        return mode;
+                    }
+                }
+            }
 
             if (!_diskProvider.FolderExists(targetPath))
             {
@@ -223,7 +241,7 @@ namespace NzbDrone.Common.Disk
                     _diskProvider.MoveFile(sourcePath, tempPath, true);
                     try
                     {
-                        ClearTargetPath(targetPath, overwrite);
+                        ClearTargetPath(sourcePath, targetPath, overwrite);
 
                         _diskProvider.MoveFile(tempPath, targetPath);
 
@@ -253,7 +271,7 @@ namespace NzbDrone.Common.Disk
                 throw new IOException(string.Format("Destination cannot be a child of the source [{0}] => [{1}]", sourcePath, targetPath));
             }
 
-            ClearTargetPath(targetPath, overwrite);
+            ClearTargetPath(sourcePath, targetPath, overwrite);
 
             if (mode.HasFlag(TransferMode.HardLink))
             {
@@ -330,7 +348,7 @@ namespace NzbDrone.Common.Disk
             return TransferMode.None;
         }
 
-        private void ClearTargetPath(string targetPath, bool overwrite)
+        private void ClearTargetPath(string sourcePath, string targetPath, bool overwrite)
         {
             if (_diskProvider.FileExists(targetPath))
             {
@@ -340,7 +358,7 @@ namespace NzbDrone.Common.Disk
                 }
                 else
                 {
-                    throw new IOException(string.Format("Destination already exists [{0}]", targetPath));
+                    throw new DestinationAlreadyExistsException($"Destination {targetPath} already exists.");
                 }
             }
         }
@@ -577,7 +595,7 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        private bool ShouldIgnore(DirectoryInfo folder)
+        private bool ShouldIgnore(IDirectoryInfo folder)
         {
             if (folder.Name.StartsWith(".nfs"))
             {
@@ -588,9 +606,9 @@ namespace NzbDrone.Common.Disk
             return false;
         }
 
-        private bool ShouldIgnore(FileInfo file)
+        private bool ShouldIgnore(IFileInfo file)
         {
-            if (file.Name.StartsWith(".nfs"))
+            if (file.Name.StartsWith(".nfs") || file.Name == "debug.log" || file.Name.EndsWith(".socket"))
             {
                 _logger.Trace("Ignoring file {0}", file.FullName);
                 return true;

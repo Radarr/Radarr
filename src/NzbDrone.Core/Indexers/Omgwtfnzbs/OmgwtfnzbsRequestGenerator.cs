@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -25,65 +25,27 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            foreach (var queryTitle in searchCriteria.QueryTitles)
-            {
-                pageableRequests.Add(GetPagedRequests(string.Format("{0}+S{1:00}E{2:00}",
-                    queryTitle,
-                    searchCriteria.SeasonNumber,
-                    searchCriteria.EpisodeNumber)));
-            }
+
+            pageableRequests.Add(GetPagedRequests(string.Format("{0}+{1}",
+                searchCriteria.ArtistQuery,
+                searchCriteria.AlbumQuery)));
+
 
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            foreach (var queryTitle in searchCriteria.QueryTitles)
-            {
-                pageableRequests.Add(GetPagedRequests(string.Format("{0}+S{1:00}",
-                    queryTitle,
-                    searchCriteria.SeasonNumber)));
-            }
 
-            return pageableRequests;
-        }
+            pageableRequests.Add(GetPagedRequests(string.Format("{0}",
+                searchCriteria.ArtistQuery)));
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.QueryTitles)
-            {
-                pageableRequests.Add(GetPagedRequests(string.Format("{0}+{1:yyyy MM dd}",
-                    queryTitle,
-                    searchCriteria.AirDate)));
-            }
-
-            return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.EpisodeQueryTitles)
-            {
-                var query = queryTitle.Replace('+', ' ');
-                query = System.Web.HttpUtility.UrlEncode(query);
-
-                pageableRequests.Add(GetPagedRequests(query));
-            }
 
             return pageableRequests;
         }
@@ -91,7 +53,9 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
-            url.AppendFormat("{0}?catid=19,20&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
+
+            // Category 22 is Music-FLAC, category 7 is Music-MP3
+            url.AppendFormat("{0}?catid=22,7&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
 
             if (query.IsNotNullOrWhiteSpace())
             {

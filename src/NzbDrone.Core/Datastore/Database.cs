@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Marr.Data;
 using NLog;
 using NzbDrone.Common.Instrumentation;
@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Datastore
     {
         IDataMapper GetDataMapper();
         Version Version { get; }
+        int Migration { get; }
         void Vacuum();
     }
 
@@ -25,7 +26,6 @@ namespace NzbDrone.Core.Datastore
             _datamapperFactory = datamapperFactory;
         }
 
-
         public IDataMapper GetDataMapper()
         {
             return _datamapperFactory();
@@ -37,6 +37,16 @@ namespace NzbDrone.Core.Datastore
             {
                 var version = _datamapperFactory().ExecuteScalar("SELECT sqlite_version()").ToString();
                 return new Version(version);
+            }
+        }
+
+        public int Migration
+        {
+            get
+            {
+                var migration = _datamapperFactory()
+                    .ExecuteScalar("SELECT version from VersionInfo ORDER BY version DESC LIMIT 1").ToString();
+                return Convert.ToInt32(migration);
             }
         }
 

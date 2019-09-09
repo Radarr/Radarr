@@ -1,0 +1,37 @@
+.album {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  margin: 2px 4px;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+  background-color: #eee;
+  cursor: default;
+}
+
+.info {
+  padding: 0 4px;
+}
+
+.albumType {
+  padding: 0 4px;
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: $borderColor;
+  background-color: $white;
+  color: $defaultColor;
+}
+
+.tracks {
+  padding: 0 4px;
+  background-color: $white;
+  color: $defaultColor;
+}
+
+.allTracks {
+  background-color: #e0ffe0;
+}
+
+.missingWanted {
+  background-color: #ffe0e0;
+}

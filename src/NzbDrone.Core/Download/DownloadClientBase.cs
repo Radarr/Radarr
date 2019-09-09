@@ -57,10 +57,10 @@ namespace NzbDrone.Core.Download
             get;
         }
 
-        public abstract string Download(RemoteEpisode remoteEpisode);
+        public abstract string Download(RemoteAlbum remoteAlbum);
         public abstract IEnumerable<DownloadClientItem> GetItems();
         public abstract void RemoveItem(string downloadId, bool deleteData);
-        public abstract DownloadClientStatus GetStatus();
+        public abstract DownloadClientInfo GetStatus();
 
         protected virtual void DeleteItemData(string downloadId)
         {
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Download
         public ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
-            
+
             try
             {
                 Test(failures);
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Download
             {
                 return new NzbDroneValidationFailure(propertyName, "Folder does not exist")
                 {
-                    DetailedDescription = string.Format("The folder you specified does not exist or is inaccessible. Please verify the folder permissions for the user account '{0}', which is used to execute Sonarr.", Environment.UserName)
+                    DetailedDescription = string.Format("The folder you specified does not exist or is inaccessible. Please verify the folder permissions for the user account '{0}', which is used to execute Lidarr.", Environment.UserName)
                 };
             }
 
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.Download
                 _logger.Error("Folder '{0}' is not writable.", folder);
                 return new NzbDroneValidationFailure(propertyName, "Unable to write to folder")
                 {
-                    DetailedDescription = string.Format("The folder you specified is not writable. Please verify the folder permissions for the user account '{0}', which is used to execute Sonarr.", Environment.UserName)
+                    DetailedDescription = string.Format("The folder you specified is not writable. Please verify the folder permissions for the user account '{0}', which is used to execute Lidarr.", Environment.UserName)
                 };
             }
 

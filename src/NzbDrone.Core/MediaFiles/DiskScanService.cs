@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -10,149 +11,226 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Common;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IDiskScanService
     {
-        void Scan(Series series);
-        string[] GetVideoFiles(string path, bool allDirectories = true);
-        string[] GetNonVideoFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(Series series, IEnumerable<string> files);
+        void Scan(Artist artist, FilterFilesType filter = FilterFilesType.Known);
+        IFileInfo[] GetAudioFiles(string path, bool allDirectories = true);
+        string[] GetNonAudioFiles(string path, bool allDirectories = true);
+        List<IFileInfo> FilterFiles(string basePath, IEnumerable<IFileInfo> files);
+        List<string> FilterFiles(string basePath, IEnumerable<string> files);
     }
 
     public class DiskScanService :
         IDiskScanService,
-        IHandle<SeriesUpdatedEvent>,
-        IExecute<RescanSeriesCommand>
+        IExecute<RescanArtistCommand> 
     {
         private readonly IDiskProvider _diskProvider;
+        private readonly IMediaFileService _mediaFileService;
         private readonly IMakeImportDecision _importDecisionMaker;
-        private readonly IImportApprovedEpisodes _importApprovedEpisodes;
+        private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly IConfigService _configService;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
+        private readonly IRootFolderService _rootFolderService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
+                               IMediaFileService mediaFileService,
                                IMakeImportDecision importDecisionMaker,
-                               IImportApprovedEpisodes importApprovedEpisodes,
+                               IImportApprovedTracks importApprovedTracks,
                                IConfigService configService,
-                               ISeriesService seriesService,
+                               IArtistService artistService,
+                               IRootFolderService rootFolderService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IEventAggregator eventAggregator,
                                Logger logger)
         {
             _diskProvider = diskProvider;
+            _mediaFileService = mediaFileService;
             _importDecisionMaker = importDecisionMaker;
-            _importApprovedEpisodes = importApprovedEpisodes;
+            _importApprovedTracks = importApprovedTracks;
             _configService = configService;
-            _seriesService = seriesService;
+            _artistService = artistService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
+            _rootFolderService = rootFolderService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
+        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$|^\.DS_store$|\.partial~$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(extras|@eadir|extrafanart|plex\sversions|\..+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|Thumbs\.db", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public void Scan(Series series)
+        public void Scan(Artist artist, FilterFilesType filter = FilterFilesType.Known)
         {
-            var rootFolder = _diskProvider.GetParentFolder(series.Path);
+            var rootFolder = _rootFolderService.GetBestRootFolderPath(artist.Path);
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
-                _logger.Warn("Series' root folder ({0}) doesn't exist.", rootFolder);
-                _eventAggregator.PublishEvent(new SeriesScanSkippedEvent(series, SeriesScanSkippedReason.RootFolderDoesNotExist));
+                _logger.Warn("Artist' root folder ({0}) doesn't exist.", rootFolder);
+                _eventAggregator.PublishEvent(new ArtistScanSkippedEvent(artist, ArtistScanSkippedReason.RootFolderDoesNotExist));
                 return;
             }
 
             if (_diskProvider.GetDirectories(rootFolder).Empty())
             {
-                _logger.Warn("Series' root folder ({0}) is empty.", rootFolder);
-                _eventAggregator.PublishEvent(new SeriesScanSkippedEvent(series, SeriesScanSkippedReason.RootFolderIsEmpty));
-                return; 
-            }
-
-            _logger.ProgressInfo("Scanning disk for {0}", series.Title);
-            
-            if (!_diskProvider.FolderExists(series.Path))
-            {
-                if (_configService.CreateEmptySeriesFolders &&
-                    _diskProvider.FolderExists(rootFolder))
-                {
-                    _logger.Debug("Creating missing series folder: {0}", series.Path);
-                    _diskProvider.CreateFolder(series.Path);
-                    SetPermissions(series.Path);
-                }
-                else
-                {
-                    _logger.Debug("Series folder doesn't exist: {0}", series.Path);
-                }
-
-                _eventAggregator.PublishEvent(new SeriesScanSkippedEvent(series, SeriesScanSkippedReason.SeriesFolderDoesNotExist));
+                _logger.Warn("Artist' root folder ({0}) is empty.", rootFolder);
+                _eventAggregator.PublishEvent(new ArtistScanSkippedEvent(artist, ArtistScanSkippedReason.RootFolderIsEmpty));
                 return;
             }
 
-            var videoFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(series, GetVideoFiles(series.Path)).ToList();
+            _logger.ProgressInfo("Scanning {0}", artist.Name);
 
-            videoFilesStopwatch.Stop();
-            _logger.Trace("Finished getting episode files for: {0} [{1}]", series, videoFilesStopwatch.Elapsed);
+            if (!_diskProvider.FolderExists(artist.Path))
+            {
+                if (_configService.CreateEmptyArtistFolders)
+                {
+                    _logger.Debug("Creating missing artist folder: {0}", artist.Path);
+                    _diskProvider.CreateFolder(artist.Path);
+                    SetPermissions(artist.Path);
+                }
+                else
+                {
+                    _logger.Debug("Artist folder doesn't exist: {0}", artist.Path);
+                }
 
-            _logger.Debug("{0} Cleaning up media files in DB", series);
-            _mediaFileTableCleanupService.Clean(series, mediaFileList);
+                CleanMediaFiles(artist, new List<string>());
+                CompletedScanning(artist);
+
+                return;
+            }
+
+            var musicFilesStopwatch = Stopwatch.StartNew();
+            var mediaFileList = FilterFiles(artist.Path, GetAudioFiles(artist.Path)).ToList();
+            musicFilesStopwatch.Stop();
+            _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
             
+            CleanMediaFiles(artist, mediaFileList.Select(x => x.FullName).ToList());
+
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, series);
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist, filter, true);
             decisionsStopwatch.Stop();
-            _logger.Trace("Import decisions complete for: {0} [{1}]", series, decisionsStopwatch.Elapsed);
+            _logger.Debug("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
+            
+            var importStopwatch = Stopwatch.StartNew();
+            _importApprovedTracks.Import(decisions, false);
 
-            _importApprovedEpisodes.Import(decisions, false);
+            // decisions may have been filtered to just new files.  Anything new and approved will have been inserted.
+            // Now we need to make sure anything new but not approved gets inserted
+            // Note that knownFiles will include anything imported just now
+            var knownFiles = _mediaFileService.GetFilesWithBasePath(artist.Path);
+            
+            var newFiles = decisions
+                .ExceptBy(x => x.Item.Path, knownFiles, x => x.Path, PathEqualityComparer.Instance)
+                .Select(decision => new TrackFile {
+                        Path = decision.Item.Path,
+                        Size = decision.Item.Size,
+                        Modified = decision.Item.Modified,
+                        DateAdded = DateTime.UtcNow,
+                        Quality = decision.Item.Quality,
+                        MediaInfo = decision.Item.FileTrackInfo.MediaInfo
+                    })
+                .ToList();
+            _mediaFileService.AddMany(newFiles);
+            
+            _logger.Debug($"Inserted {newFiles.Count} new unmatched trackfiles");
 
-            _logger.Info("Completed scanning disk for {0}", series.Title);
-            _eventAggregator.PublishEvent(new SeriesScannedEvent(series));
+            // finally update info on size/modified for existing files
+            var updatedFiles = knownFiles
+                .Join(decisions,
+                      x => x.Path,
+                      x => x.Item.Path,
+                      (file, decision) => new {
+                          File = file,
+                          Item = decision.Item
+                      },
+                      PathEqualityComparer.Instance)
+                .Where(x => x.File.Size != x.Item.Size ||
+                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1 )
+                .Select(x => {
+                        x.File.Size = x.Item.Size;
+                        x.File.Modified = x.Item.Modified;
+                        x.File.MediaInfo = x.Item.FileTrackInfo.MediaInfo;
+                        x.File.Quality = x.Item.Quality;
+                        return x.File;
+                    })
+                .ToList();
+
+            _mediaFileService.Update(updatedFiles);
+            
+            _logger.Debug($"Updated info for {updatedFiles.Count} known files");
+
+            RemoveEmptyArtistFolder(artist.Path);
+            
+            CompletedScanning(artist);
+            importStopwatch.Stop();
+            _logger.Debug("Track import complete for: {0} [{1}]", artist, importStopwatch.Elapsed);
         }
 
-        public string[] GetVideoFiles(string path, bool allDirectories = true)
+        private void CleanMediaFiles(Artist artist, List<string> mediaFileList)
         {
-            _logger.Debug("Scanning '{0}' for video files", path);
+            _logger.Debug("{0} Cleaning up media files in DB", artist);
+            _mediaFileTableCleanupService.Clean(artist, mediaFileList);
+        }
+
+        private void CompletedScanning(Artist artist)
+        {
+            _logger.Info("Completed scanning disk for {0}", artist.Name);
+            _eventAggregator.PublishEvent(new ArtistScannedEvent(artist));
+        }
+
+        public IFileInfo[] GetAudioFiles(string path, bool allDirectories = true)
+        {
+            _logger.Debug("Scanning '{0}' for music files", path);
 
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var filesOnDisk = _diskProvider.GetFiles(path, searchOption);
+            var filesOnDisk = _diskProvider.GetFileInfos(path, searchOption);
 
-            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(file.Extension))
                                            .ToList();
 
-            _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
+            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
+            _logger.Debug("{0} audio files were found in {1}", mediaFileList.Count, path);
+
             return mediaFileList.ToArray();
         }
 
-        public string[] GetNonVideoFiles(string path, bool allDirectories = true)
+        public string[] GetNonAudioFiles(string path, bool allDirectories = true)
         {
-            _logger.Debug("Scanning '{0}' for non-video files", path);
+            _logger.Debug("Scanning '{0}' for non-music files", path);
 
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var filesOnDisk = _diskProvider.GetFiles(path, searchOption);
+            var filesOnDisk = _diskProvider.GetFiles(path, searchOption).ToList();
 
-            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
-            _logger.Debug("{0} non-video files were found in {1}", mediaFileList.Count, path);
+            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
+            _logger.Debug("{0} non-music files were found in {1}", mediaFileList.Count, path);
+
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(Series series, IEnumerable<string> files)
+        public List<string> FilterFiles(string basePath, IEnumerable<string> files)
         {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(series.Path.GetRelativePath(file)))
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
+                        .ToList();
+        }
+
+        public List<IFileInfo> FilterFiles(string basePath, IEnumerable<IFileInfo> files)
+        {
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file.FullName)))
+                        .Where(file => !ExcludedFilesRegex.IsMatch(file.Name))
                         .ToList();
         }
 
@@ -175,28 +253,38 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
-        }       
-
-        public void Handle(SeriesUpdatedEvent message)
-        {
-            Scan(message.Series);
         }
 
-        public void Execute(RescanSeriesCommand message)
+        private void RemoveEmptyArtistFolder(string path)
         {
-            if (message.SeriesId.HasValue)
+            if (_configService.DeleteEmptyFolders)
             {
-                var series = _seriesService.GetSeries(message.SeriesId.Value);
-                Scan(series);
+                if (_diskProvider.GetFiles(path, SearchOption.AllDirectories).Empty())
+                {
+                    _diskProvider.DeleteFolder(path, true);
+                }
+                else
+                {
+                    _diskProvider.RemoveEmptySubfolders(path);
+                }
+            }
+        }
+
+        public void Execute(RescanArtistCommand message)
+        {
+            if (message.ArtistId.HasValue)
+            {
+                var artist = _artistService.GetArtist(message.ArtistId.Value);
+                Scan(artist, message.Filter);
             }
 
             else
             {
-                var allSeries = _seriesService.GetAllSeries();
+                var allArtists = _artistService.GetAllArtists();
 
-                foreach (var series in allSeries)
+                foreach (var artist in allArtists)
                 {
-                    Scan(series);
+                    Scan(artist, message.Filter);
                 }
             }
         }

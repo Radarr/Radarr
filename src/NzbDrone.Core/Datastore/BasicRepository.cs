@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Datastore
         bool HasItems();
         void DeleteMany(IEnumerable<int> ids);
         void SetFields(TModel model, params Expression<Func<TModel, object>>[] properties);
+        void SetFields(IEnumerable<TModel> models, params Expression<Func<TModel, object>>[] properties);
         TModel Single();
         PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec);
     }
@@ -48,7 +49,7 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
+        protected virtual QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
@@ -57,7 +58,7 @@ namespace NzbDrone.Core.Datastore
 
         public IEnumerable<TModel> All()
         {
-            return DataMapper.Query<TModel>().ToList();
+            return Query.ToList();
         }
 
         public int Count()
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.Datastore
         public IEnumerable<TModel> Get(IEnumerable<int> ids)
         {
             var idList = ids.ToList();
-            var query = string.Format("Id IN ({0})", string.Join(",", idList));
+            var query = string.Format("[t0].[Id] IN ({0})", string.Join(",", idList));
             var result = Query.Where(query).ToList();
 
             if (result.Count != idList.Count())
@@ -244,6 +245,30 @@ namespace NzbDrone.Core.Datastore
             ModelUpdated(model);
         }
 
+        public void SetFields(IEnumerable<TModel> models, params Expression<Func<TModel, object>>[] properties)
+        {
+            using (var unitOfWork = new UnitOfWork(() => DataMapper))
+            {
+                unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
+
+                foreach (var model in models)
+                {
+                    if (model.Id == 0)
+                    {
+                        throw new InvalidOperationException("Can't update model with ID 0");
+                    }
+
+                    unitOfWork.DB.Update<TModel>()
+                        .Where(c => c.Id == model.Id)
+                        .ColumnsIncluding(properties)
+                        .Entity(model)
+                        .Execute();
+                }
+
+                unitOfWork.Commit();
+            }
+        }
+
         public virtual PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec)
         {
             pagingSpec.Records = GetPagedQuery(Query, pagingSpec).ToList();
@@ -254,10 +279,21 @@ namespace NzbDrone.Core.Datastore
 
         protected virtual SortBuilder<TModel> GetPagedQuery(QueryBuilder<TModel> query, PagingSpec<TModel> pagingSpec)
         {
-            return query.Where(pagingSpec.FilterExpression)
-                        .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
-                        .Skip(pagingSpec.PagingOffset())
-                        .Take(pagingSpec.PageSize);
+            var filterExpressions = pagingSpec.FilterExpressions;
+            var sortQuery = query.Where(filterExpressions.FirstOrDefault());
+
+            if (filterExpressions.Count > 1)
+            {
+                // Start at the second item for the AndWhere clauses
+                for (var i = 1; i < filterExpressions.Count; i++)
+                {
+                    sortQuery.AndWhere(filterExpressions[i]);
+                }
+            }
+
+            return sortQuery.OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                .Skip(pagingSpec.PagingOffset())
+                .Take(pagingSpec.PageSize);
         }
 
         protected void ModelCreated(TModel model)

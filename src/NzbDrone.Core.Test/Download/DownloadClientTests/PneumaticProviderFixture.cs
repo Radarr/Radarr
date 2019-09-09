@@ -4,7 +4,6 @@ using System.Net;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Pneumatic;
 using NzbDrone.Core.Parser.Model;
@@ -19,9 +18,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private const string _nzbUrl = "http://www.nzbs.com/url";
         private const string _title = "30.Rock.S01E05.hdtv.xvid-LoL";
         private string _pneumaticFolder;
-        private string _sabDrop;
+        private string _strmFolder;
         private string _nzbPath;
-        private RemoteEpisode _remoteEpisode;
+        private RemoteAlbum _remoteAlbum;
 
         [SetUp]
         public void Setup()
@@ -29,22 +28,20 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _pneumaticFolder = @"d:\nzb\pneumatic\".AsOsAgnostic();
 
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
-            _sabDrop = @"d:\unsorted tv\".AsOsAgnostic();
+            _strmFolder = @"d:\unsorted tv\".AsOsAgnostic();
 
-            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedEpisodesFolder).Returns(_sabDrop);
+            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum.Release = new ReleaseInfo();
+            _remoteAlbum.Release.Title = _title;
+            _remoteAlbum.Release.DownloadUrl = _nzbUrl;
 
-            _remoteEpisode = new RemoteEpisode();
-            _remoteEpisode.Release = new ReleaseInfo();
-            _remoteEpisode.Release.Title = _title;
-            _remoteEpisode.Release.DownloadUrl = _nzbUrl;
-
-            _remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            _remoteEpisode.ParsedEpisodeInfo.FullSeason = false;
+            _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
             {
-                NzbFolder = _pneumaticFolder
+                NzbFolder = _pneumaticFolder,
+                StrmFolder = _strmFolder
             };
         }
 
@@ -56,27 +53,26 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         [Test]
         public void should_download_file_if_it_doesnt_exist()
         {
-            Subject.Download(_remoteEpisode);
+            Subject.Download(_remoteAlbum);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_nzbUrl, _nzbPath), Times.Once());
         }
-
 
         [Test]
         public void should_throw_on_failed_download()
         {
             WithFailedDownload();
 
-            Assert.Throws<WebException>(() => Subject.Download(_remoteEpisode));
+            Assert.Throws<WebException>(() => Subject.Download(_remoteAlbum));
         }
 
         [Test]
-        public void should_throw_if_full_season_download()
+        public void should_throw_if_discography_download()
         {
-            _remoteEpisode.Release.Title = "30 Rock - Season 1";
-            _remoteEpisode.ParsedEpisodeInfo.FullSeason = true;
+            _remoteAlbum.Release.Title = "Alien Ant Farm - Discography";
+            _remoteAlbum.ParsedAlbumInfo.Discography = true;
 
-            Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteEpisode));
+            Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteAlbum));
         }
 
         [Test]
@@ -90,9 +86,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         {
             var illegalTitle = "Saturday Night Live - S38E08 - Jeremy Renner/Maroon 5 [SDTV]";
             var expectedFilename = Path.Combine(_pneumaticFolder, "Saturday Night Live - S38E08 - Jeremy Renner+Maroon 5 [SDTV].nzb");
-            _remoteEpisode.Release.Title = illegalTitle;
+            _remoteAlbum.Release.Title = illegalTitle;
 
-            Subject.Download(_remoteEpisode);
+            Subject.Download(_remoteAlbum);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), expectedFilename), Times.Once());
         }

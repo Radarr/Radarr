@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Test.IndexerTests
         [TestCase("100 Kb/s")]
         [TestCase(" 12341234")]
         [TestCase("12341234 other")]
+        [TestCase("")]
         public void should_not_parse_size(string sizeString)
         {
             var result = RssParser.ParseSize(sizeString, true);

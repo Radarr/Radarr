@@ -20,6 +20,11 @@ namespace NzbDrone.Core
             return actual;
         }
 
+        public static long Kilobits(this int kilobits)
+        {
+            return Convert.ToInt64(kilobits * 128L);
+        }
+
         public static long Megabytes(this int megabytes)
         {
             return Convert.ToInt64(megabytes * 1024L * 1024L);
@@ -28,6 +33,11 @@ namespace NzbDrone.Core
         public static long Gigabytes(this int gigabytes)
         {
             return Convert.ToInt64(gigabytes * 1024L * 1024L * 1024L);
+        }
+
+        public static long Kilobits(this double kilobits)
+        {
+            return Convert.ToInt64(kilobits * 128L);
         }
 
         public static long Megabytes(this double megabytes)

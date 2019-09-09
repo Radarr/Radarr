@@ -1,47 +1,53 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Synology;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using System.IO;
 
 namespace NzbDrone.Core.Test.NotificationTests
 {
     [TestFixture]
     public class SynologyIndexerFixture : CoreTest<SynologyIndexer>
     {
-        private Series _series;
-        private DownloadMessage _upgrade;
+        private Artist _artist;
+        private AlbumDownloadMessage _upgrade;
+        private string rootPath = @"C:\Test\".AsOsAgnostic();
 
         [SetUp]
         public void SetUp()
         {
-            _series = new Series()
+            _artist = new Artist()
             {
-                Path = @"C:\Test\".AsOsAgnostic()
+                Path = rootPath,
             };
 
-            _upgrade = new DownloadMessage()
+            _upgrade = new AlbumDownloadMessage()
             {
-                Series = _series,
+                Artist = _artist,
 
-                EpisodeFile = new EpisodeFile
+                TrackFiles = new List<TrackFile>
                 {
-                    RelativePath = "file1.S01E01E02.mkv"
+                    new TrackFile
+                    {
+                        Path = Path.Combine(rootPath, "file1.S01E01E02.mkv")
+                    }
+                    
                 },
 
-                OldFiles = new List<EpisodeFile>
+                OldFiles = new List<TrackFile>
                 {
-                    new EpisodeFile
+                    new TrackFile
                     {
-                        RelativePath = "file1.S01E01.mkv"
+                        Path = Path.Combine(rootPath, "file1.S01E01.mkv")
                     },
-                    new EpisodeFile
+                    new TrackFile
                     {
-                        RelativePath = "file1.S01E02.mkv"
+                        Path = Path.Combine(rootPath, "file1.S01E02.mkv")
                     }
                 }
             };
@@ -60,16 +66,16 @@ namespace NzbDrone.Core.Test.NotificationTests
         {
             (Subject.Definition.Settings as SynologyIndexerSettings).UpdateLibrary = false;
 
-            Subject.OnRename(_series);
+            Subject.OnRename(_artist);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.UpdateFolder(_series.Path), Times.Never());
+                .Verify(v => v.UpdateFolder(_artist.Path), Times.Never());
         }
 
         [Test]
         public void should_remove_old_episodes_on_upgrade()
         {
-            Subject.OnDownload(_upgrade);
+            Subject.OnReleaseImport(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.DeleteFile(@"C:\Test\file1.S01E01.mkv".AsOsAgnostic()), Times.Once());
@@ -81,7 +87,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_add_new_episode_on_upgrade()
         {
-            Subject.OnDownload(_upgrade);
+            Subject.OnReleaseImport(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.AddFile(@"C:\Test\file1.S01E01E02.mkv".AsOsAgnostic()), Times.Once());
@@ -90,7 +96,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_update_entire_series_folder_on_rename()
         {
-            Subject.OnRename(_series);
+            Subject.OnRename(_artist);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.UpdateFolder(@"C:\Test\".AsOsAgnostic()), Times.Once());

@@ -1,56 +1,76 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Others
 {
     public class ExistingOtherExtraImporter : ImportExistingExtraFilesBase<OtherExtraFile>
     {
         private readonly IExtraFileService<OtherExtraFile> _otherExtraFileService;
-        private readonly IParsingService _parsingService;
+        private readonly IAugmentingService _augmentingService;
         private readonly Logger _logger;
 
         public ExistingOtherExtraImporter(IExtraFileService<OtherExtraFile> otherExtraFileService,
-                                          IParsingService parsingService,
+                                          IAugmentingService augmentingService,
                                           Logger logger)
             : base(otherExtraFileService)
         {
             _otherExtraFileService = otherExtraFileService;
-            _parsingService = parsingService;
+            _augmentingService = augmentingService;
             _logger = logger;
         }
 
         public override int Order => 2;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing extra files in {0}", series.Path);
+            _logger.Debug("Looking for existing extra files in {0}", artist.Path);
 
             var extraFiles = new List<OtherExtraFile>();
-            var filterResult = FilterAndClean(series, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
 
             foreach (var possibleExtraFile in filterResult.FilesOnDisk)
             {
-                var localEpisode = _parsingService.GetLocalEpisode(possibleExtraFile, series);
+                var extension = Path.GetExtension(possibleExtraFile);
 
-                if (localEpisode == null)
+                if (extension.IsNullOrWhiteSpace())
+                {
+                    _logger.Debug("No extension for file: {0}", possibleExtraFile);
+                    continue;
+                }
+
+                var localTrack = new LocalTrack
+                {
+                    FileTrackInfo = Parser.Parser.ParseMusicPath(possibleExtraFile),
+                    Artist = artist,
+                    Path = possibleExtraFile
+                };
+                
+                try
+                {
+                    _augmentingService.Augment(localTrack, false);
+                }
+                catch (AugmentingFailedException)
                 {
                     _logger.Debug("Unable to parse extra file: {0}", possibleExtraFile);
                     continue;
                 }
 
-                if (localEpisode.Episodes.Empty())
+                if (localTrack.Tracks.Empty())
                 {
-                    _logger.Debug("Cannot find related episodes for: {0}", possibleExtraFile);
+                    _logger.Debug("Cannot find related tracks for: {0}", possibleExtraFile);
                     continue;
                 }
 
-                if (localEpisode.Episodes.DistinctBy(e => e.EpisodeFileId).Count() > 1)
+                if (localTrack.Tracks.DistinctBy(e => e.TrackFileId).Count() > 1)
                 {
                     _logger.Debug("Extra file: {0} does not match existing files.", possibleExtraFile);
                     continue;
@@ -58,11 +78,11 @@ namespace NzbDrone.Core.Extras.Others
 
                 var extraFile = new OtherExtraFile
                 {
-                    SeriesId = series.Id,
-                    SeasonNumber = localEpisode.SeasonNumber,
-                    EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
-                    RelativePath = series.Path.GetRelativePath(possibleExtraFile),
-                    Extension = Path.GetExtension(possibleExtraFile)
+                    ArtistId = artist.Id,
+                    AlbumId = localTrack.Album.Id,
+                    TrackFileId = localTrack.Tracks.First().TrackFileId,
+                    RelativePath = artist.Path.GetRelativePath(possibleExtraFile),
+                    Extension = extension
                 };
 
                 extraFiles.Add(extraFile);

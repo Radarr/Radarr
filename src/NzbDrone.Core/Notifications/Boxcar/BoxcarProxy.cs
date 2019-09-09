@@ -4,6 +4,7 @@ using FluentValidation.Results;
 using NLog;
 using RestSharp;
 using NzbDrone.Core.Rest;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.Notifications.Boxcar
 {
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Sonarr";
+                const string body = "This is a test message from Lidarr";
 
                 SendNotification(title, body, settings);
                 return null;
@@ -75,8 +76,8 @@ namespace NzbDrone.Core.Notifications.Boxcar
                 request.AddParameter("user_credentials", settings.Token);
                 request.AddParameter("notification[title]", title);
                 request.AddParameter("notification[long_message]", message);
-                request.AddParameter("notification[source_name]", "Sonarr");
-                request.AddParameter("notification[icon_url]", "https://raw.githubusercontent.com/Sonarr/Sonarr/7818f0c59b787312f0bcbc5c0eafc3c9dd7e5451/Logo/64.png");
+                request.AddParameter("notification[source_name]", BuildInfo.AppName);
+                request.AddParameter("notification[icon_url]", "https://github.com/lidarr/Lidarr/raw/develop/Logo/64.png");
 
                 client.ExecuteAndValidate(request);
             }

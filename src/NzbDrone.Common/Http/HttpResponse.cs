@@ -35,7 +35,7 @@ namespace NzbDrone.Common.Http
 
         private string _content;
 
-        public string Content 
+        public string Content
         {
             get
             {
@@ -51,20 +51,27 @@ namespace NzbDrone.Common.Http
 
         public bool HasHttpError => (int)StatusCode >= 400;
 
+        public bool HasHttpRedirect => StatusCode == HttpStatusCode.Moved ||
+                                       StatusCode == HttpStatusCode.MovedPermanently ||
+                                       StatusCode == HttpStatusCode.TemporaryRedirect ||
+                                       StatusCode == HttpStatusCode.Found;
+
+        public string[] GetCookieHeaders()
+        {
+            return Headers.GetValues("Set-Cookie") ?? new string[0];
+        }
+
         public Dictionary<string, string> GetCookies()
         {
             var result = new Dictionary<string, string>();
 
-            var setCookieHeaders = Headers.GetValues("Set-Cookie");
-            if (setCookieHeaders != null)
+            var setCookieHeaders = GetCookieHeaders();
+            foreach (var cookie in setCookieHeaders)
             {
-                foreach (var cookie in setCookieHeaders)
+                var match = RegexSetCookie.Match(cookie);
+                if (match.Success)
                 {
-                    var match = RegexSetCookie.Match(cookie);
-                    if (match.Success)
-                    {
-                        result[match.Groups[1].Value] = match.Groups[2].Value;
-                    }
+                    result[match.Groups[1].Value] = match.Groups[2].Value;
                 }
             }
 

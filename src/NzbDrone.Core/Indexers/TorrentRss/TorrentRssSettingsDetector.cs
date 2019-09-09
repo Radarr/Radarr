@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
@@ -39,22 +40,30 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         {
             _logger.Debug("Evaluating TorrentRss feed '{0}'", indexerSettings.BaseUrl);
 
-            var requestGenerator = new TorrentRssIndexerRequestGenerator { Settings = indexerSettings };
-            var request = requestGenerator.GetRecentRequests().GetAllTiers().First().First();
-
-            HttpResponse httpResponse = null;
             try
             {
-                httpResponse = _httpClient.Execute(request.HttpRequest);
+                var requestGenerator = new TorrentRssIndexerRequestGenerator { Settings = indexerSettings };
+                var request = requestGenerator.GetRecentRequests().GetAllTiers().First().First();
+
+                HttpResponse httpResponse = null;
+                try
+                {
+                    httpResponse = _httpClient.Execute(request.HttpRequest);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, string.Format("Unable to connect to indexer {0}: {1}", request.Url, ex.Message));
+                    return null;
+                }
+
+                var indexerResponse = new IndexerResponse(request, httpResponse);
+                return GetParserSettings(indexerResponse, indexerSettings);
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, string.Format("Unable to connect to indexer {0}: {1}", request.Url, ex.Message));
-                return null;
+                ex.WithData("FeedUrl", indexerSettings.BaseUrl);
+                throw;
             }
-
-            var indexerResponse = new IndexerResponse(request, httpResponse);
-            return GetParserSettings(indexerResponse, indexerSettings);
         }
 
         private TorrentRssIndexerParserSettings GetParserSettings(IndexerResponse response, TorrentRssIndexerSettings indexerSettings)
@@ -191,7 +200,10 @@ namespace NzbDrone.Core.Indexers.TorrentRss
 
         private bool IsEZTVFeed(IndexerResponse response)
         {
-            using (var xmlTextReader = XmlReader.Create(new StringReader(response.Content), new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse, ValidationType = ValidationType.None, IgnoreComments = true, XmlResolver = null }))
+            var content = XmlCleaner.ReplaceEntities(response.Content);
+            content = XmlCleaner.ReplaceUnicode(content);
+
+            using (var xmlTextReader = XmlReader.Create(new StringReader(content), new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse, ValidationType = ValidationType.None, IgnoreComments = true, XmlResolver = null }))
             {
                 var document = XDocument.Load(xmlTextReader);
 

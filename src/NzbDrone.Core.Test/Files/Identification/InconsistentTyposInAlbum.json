@@ -1,0 +1,1304 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "134f5f3e-8b5f-46ab-809d-8c0dbc794f3e"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "c296e10c-110a-4103-9e77-47bfebb7fb2e",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": false,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-101-positive_vibration-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Positive Vibration",
+        "cleanTitle": "Positive Vibration",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:33.9620000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-102-roots_rock_reggae-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Roots Rock Reggae",
+        "cleanTitle": "Roots Rock Reggae",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:38.4480000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-103-johnny_was-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Johnny Was",
+        "cleanTitle": "Johnny Was",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:47.8900000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-104-cry_to_me-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Cry To Me",
+        "cleanTitle": "Cry To Me",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:02:36.1090000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-105-want_more-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Want More",
+        "cleanTitle": "Want More",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:16.6600000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-106-crazy_baldhead-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Crazy Baldhead",
+        "cleanTitle": "Crazy Baldhead",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:11.9210000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-107-who_the_cap_fit-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Who The Cap Fit",
+        "cleanTitle": "Who The Cap Fit",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:43.1350000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-108-night_shift-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Night Shift",
+        "cleanTitle": "Night Shift",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:11.0080000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-109-war-rns.mp3",
+      "fileTrackInfo": {
+        "title": "War",
+        "cleanTitle": "War",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:36.5180000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-110-rat_race-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Rat Race",
+        "cleanTitle": "Rat Race",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:02:54.5240000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-111-jah_live_(original_mix)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Jah Live (Original Mix)",
+        "cleanTitle": "Jah Live (Original Mix)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:17.1030000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-112-concrete-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Concrete",
+        "cleanTitle": "Concrete",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:23.6760000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-113-roots_rock_reggae-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Roots Rock Reggae",
+        "cleanTitle": "Roots Rock Reggae",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:37.7700000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-114-roots_rock_dub-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Roots Rock Dub",
+        "cleanTitle": "Roots Rock Dub",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:37.6390000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-115-want_more_(alternate_mix)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Want More (Alternate Mix)",
+        "cleanTitle": "Want More (Alternate Mix)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:05:10.2870000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          15
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-116-crazy_baldhead_(alternate_mix)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Crazy Baldhead (Alternate Mix)",
+        "cleanTitle": "Crazy Baldhead (Alternate Mix)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:08.1650000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          16
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-117-war_(alternate_mix)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "War (Alternate Mix)",
+        "cleanTitle": "War (Alternate Mix)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:03.0180000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          17
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-118-johnny_was_(alternate_mix)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Johnny Was (Alternate Mix)",
+        "cleanTitle": "Johnny Was (Alternate Mix)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:41.0560000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          18
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-201-introduction-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Introduction",
+        "cleanTitle": "Introduction",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:00:38.4210000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-202-trenchtown_rock_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Trenchtown Rock (Live)",
+        "cleanTitle": "Trenchtown Rock (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:55.7590000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-203-burnin_and_looting_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Burnin And Looting (Live)",
+        "cleanTitle": "Burnin And Looting (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:53.8030000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-204-them_belly_full_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Them Belly Full (Live)",
+        "cleanTitle": "Them Belly Full (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:04:12.8520000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-205-rebel_music_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Rebel Music (Live)",
+        "cleanTitle": "Rebel Music (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:06:07.9840000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-206-i_shot_the_sheriff_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "I Shot The Sheriff (Live)",
+        "cleanTitle": "I Shot The Sheriff (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:06:33.6500000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-207-want_more_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Want More (Live)",
+        "cleanTitle": "Want More (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:07:02.2890000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-208-no_woman_no_cry_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "No Woman No Cry (Live)",
+        "cleanTitle": "No Woman No Cry (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:05:18.9210000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-209-lively_up_yourself_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Lively Up Yourself (Live)",
+        "cleanTitle": "Lively Up Yourself (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:05:44.1700000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-210-roots_rock_reggae_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Roots Rock Reggae (Live)",
+        "cleanTitle": "Roots Rock Reggae (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:05:32.2230000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-211-rat_race_(live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Rat Race (Live)",
+        "cleanTitle": "Rat Race (Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:07:53.4390000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-212-smile_jamica_(part_one_live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Smile Jamica (Part One Live)",
+        "cleanTitle": "Smile Jamica (Part One Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:18.9900000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bob Marley & The Wailers/Bob Marley And The Wailers - Rastaman Vibration (Remastered)-2002-RNS/bob_marley_and_the_wailers-213-smile_jamica_(part_2_live)-rns.mp3",
+      "fileTrackInfo": {
+        "title": "Smile Jamica (Part 2 Live)",
+        "cleanTitle": "Smile Jamica (Part 2 Live)",
+        "artistTitle": "Bob Marley & The Wailers",
+        "albumTitle": "Rastaman Vibration (Remastered)",
+        "artistTitleInfo": {
+          "title": "Bob Marley & The Wailers",
+          "year": 2002
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2002,
+        "duration": "00:03:09.8870000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          13
+        ]
+      }
+    }
+  ]
+}

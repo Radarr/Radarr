@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using NLog;
@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
     {
         int GetVersion(UTorrentSettings settings);
         Dictionary<string, string> GetConfig(UTorrentSettings settings);
-        UTorrentResponse GetTorrents(string cacheID, UTorrentSettings settings);
+        UTorrentResponse GetTorrents(string cacheId, UTorrentSettings settings);
 
         void AddTorrentFromUrl(string torrentUrl, UTorrentSettings settings);
         void AddTorrentFromFile(string fileName, byte[] fileContent, UTorrentSettings settings);
@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         void RemoveTorrent(string hash, bool removeData, UTorrentSettings settings);
         void SetTorrentLabel(string hash, string label, UTorrentSettings settings);
         void MoveTorrentToTopInQueue(string hash, UTorrentSettings settings);
+        void SetState(string hash, UTorrentState state, UTorrentSettings settings);
     }
 
     public class UTorrentProxy : IUTorrentProxy
@@ -68,14 +69,14 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return configuration;
         }
 
-        public UTorrentResponse GetTorrents(string cacheID, UTorrentSettings settings)
+        public UTorrentResponse GetTorrents(string cacheId, UTorrentSettings settings)
         {
             var requestBuilder = BuildRequest(settings)
                 .AddQueryParam("list", 1);
 
-            if (cacheID.IsNotNullOrWhiteSpace())
+            if (cacheId.IsNotNullOrWhiteSpace())
             {
-                requestBuilder.AddQueryParam("cid", cacheID);
+                requestBuilder.AddQueryParam("cid", cacheId);
             }
 
             var result = ProcessRequest(requestBuilder, settings);
@@ -98,17 +99,22 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 .Post()
                 .AddQueryParam("action", "add-file")
                 .AddQueryParam("path", string.Empty)
-                .AddFormUpload("torrent_file", fileName, fileContent, @"application/octet-stream");
+                .AddFormUpload("torrent_file", fileName, fileContent);
 
             ProcessRequest(requestBuilder, settings);
         }
 
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, UTorrentSettings settings)
         {
+            if (seedConfiguration == null)
+            {
+                return;
+            }
+
             var requestBuilder = BuildRequest(settings)
                 .AddQueryParam("action", "setprops")
                 .AddQueryParam("hash", hash);
-            
+
             requestBuilder.AddQueryParam("s", "seed_override")
                           .AddQueryParam("v", 1);
 
@@ -157,6 +163,15 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             ProcessRequest(requestBuilder, settings);
         }
 
+        public void SetState(string hash, UTorrentState state, UTorrentSettings settings)
+        {
+            var requestBuilder = BuildRequest(settings)
+                .AddQueryParam("action", state.ToString().ToLowerInvariant())
+                .AddQueryParam("hash", hash);
+
+            ProcessRequest(requestBuilder, settings);
+        }
+ 
         private HttpRequestBuilder BuildRequest(UTorrentSettings settings)
         {
             var requestBuilder = new HttpRequestBuilder(false, settings.Host, settings.Port)
@@ -244,7 +259,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
                 catch (WebException ex)
                 {
-                    throw new DownloadClientException("Unable to connect to uTorrent, please check your settings", ex);
+                    throw new DownloadClientUnavailableException("Unable to connect to uTorrent, please check your settings", ex);
                 }
 
                 cookies = response.GetCookies();

@@ -1,0 +1,1138 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "9105a5b3-eb68-3a03-9aa8-f3495e602a4f"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": true,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 101 - Daydreamer.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:40.5520000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 173,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 102 - Best for Last.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:04:18.5340000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 170,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 103 - Chasing Pavements.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:29.7890000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 176,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 104 - Cold Shoulder.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:11.8960000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 189,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 105 - Crazy for You.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:27.7780000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 156,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 106 - Melt My Heart to Stone.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:23.9380000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 176,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 107 - First Love.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:10.3280000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 187,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 108 - Right as Rain.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:17.3810000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 189,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 109 - Make You Feel My Love.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:31.6960000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 173,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 110 - My Same.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:15.6830000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 190,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 111 - Tired.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:04:18.0110000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 177,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 112 - Hometown Glory.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:04:29.2700000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 186,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 201 - Chasing Pavements.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:52.2290000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 164,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 202 - Melt My Heart to Stone.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:21.9000000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 158,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 203 - That's It, I Quit, I'm Moving On.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:02:07.5560000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 173,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 204 - Crazy for You.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:43.4510000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 153,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 205 - Right as Rain.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:32.0620000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 175,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 206 - My Same.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:05.4690000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 169,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 207 - Make You Feel My Love.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:52.2290000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 164,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 208 - Daydreamer.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:41.5440000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 151,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 209 - Hometown Glory.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:03:48.6240000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 170,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 210 - Many Shades of Black.mp3",
+      "fileTrackInfo": {
+        "artistTitleInfo": {
+          "year": 0
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 0,
+        "duration": "00:04:28.1210000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 188,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          0
+        ]
+      }
+    }
+  ],
+  "fingerprints":
+  [
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 101 - Daydreamer.mp3",
+      "acoustIdResults": [
+        "09a43ae1-57a0-49e8-96f7-5be7c8ae1f4c",
+        "0dcedcea-945d-48c4-b42f-df65a78a5e0d",
+        "27e08fb0-6c66-4b1f-bbd8-ed847455022b",
+        "5958ef70-fcfb-4e12-9776-3330cf5d56cc",
+        "b94b9760-b6e8-4aa4-815c-1261231c4970",
+        "cb79fa12-8c02-4f87-8209-2041c3c07ede",
+        "ec7d4cc4-c6b6-4bd1-b301-681da015a0f3",
+        "efd854c2-30e5-40ab-828c-1c740ffeb438",
+        "17d6dca8-a59e-4b67-a15b-d8da83bfceb2",
+        "7fae315e-4738-4bb1-b2c1-de95047c69f6"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 102 - Best for Last.mp3",
+      "acoustIdResults": [
+        "6f05a7e7-0ce9-41f2-a27a-813d00165146",
+        "7502dd98-a7e6-41d0-90d1-16aa885f8fdb",
+        "89397822-80d8-498a-aded-5303144e867a",
+        "8ab211cb-b12f-4366-8803-8c65f666f1dd",
+        "8d5b16b6-6f0f-476d-8b18-802843e1a390",
+        "fbd7532b-66a2-4009-96c1-17c6178e4afc"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 103 - Chasing Pavements.mp3",
+      "acoustIdResults": [
+        "05957c8d-0dbf-41bc-bb66-65586e5f5fd7",
+        "1e748d2c-0194-425c-89a3-7a6e7669a12d",
+        "44171f6f-6e12-47f7-9c4a-bb783fe4a86d",
+        "453f8ecf-e853-45ec-8335-d240a15cd75f",
+        "59049052-8f7b-4be6-9cd9-897b0c8c5db3",
+        "6c1e4c08-d297-44ba-a828-2df24c5009d1",
+        "9eee5c07-326a-45c8-8666-eebde107b144",
+        "b317fac7-687f-4eac-a3a4-80b94355c2ab",
+        "1862f21e-c706-4505-923e-fa63ca2d6255",
+        "bb126c92-043c-4016-835e-3e23bb02e662",
+        "c4a1e56c-1f26-4a3a-8c76-327fb5d84d5e",
+        "ea889e42-b373-40b7-9497-f1d7f06146ec",
+        "95f62f74-c3c0-4232-98db-2556a3d9d553"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 104 - Cold Shoulder.mp3",
+      "acoustIdResults": [
+        "1683503d-785d-481a-81a4-e599d64eba66",
+        "4aa737c8-b899-4289-841f-41657c206aa1",
+        "834c740c-438e-41c7-ae92-61709021bcb4",
+        "baf61c23-fea1-4096-955c-ce61235cb0dd",
+        "bd355a93-9336-4ac6-b06e-b24117cb63d1",
+        "bd8f9ee4-6a83-46cc-a59e-190fbfc5012c",
+        "c009203d-a0f4-4292-9d10-8d198060c198",
+        "dc9e2f5c-225f-4685-aeda-6067e079d5dc",
+        "e6e15fe1-4fcf-40bf-abed-93dd0274bbdd"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 105 - Crazy for You.mp3",
+      "acoustIdResults": [
+        "20bc934e-899c-4230-946b-dc57349ae9b8",
+        "2c61207d-9063-4a43-81c6-1cf8cefbce92",
+        "54520823-a807-443f-821a-280944f7c0f1",
+        "68b8da42-bf81-40d8-807b-20b90d444aac",
+        "7427679e-9e1a-40c6-94e2-8881b48d2e18",
+        "95f62f74-c3c0-4232-98db-2556a3d9d553",
+        "d6848807-3548-45d6-8e51-c78bc49b44d2",
+        "e42df375-e203-4f9c-8e06-a385634e76c7"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 106 - Melt My Heart to Stone.mp3",
+      "acoustIdResults": [
+        "18828f6f-1085-4249-9566-a3e24210f52e",
+        "233b4c92-c38e-4baa-8200-2009bb69ecc2",
+        "44dc19cb-fe11-4e79-9d52-b5866812f2e0",
+        "4c24975a-998c-416c-9574-341dc487d86f",
+        "536cd321-d700-4763-ae9b-68994eaac087",
+        "67c8fb9c-d630-45b1-bb45-3a1d5462f622",
+        "72c0b78f-0491-490d-8d9d-5972bb80d903",
+        "8291ea15-fb2e-402b-9736-7be4c51c1f9a",
+        "8ac2bc99-9f9c-4096-af46-f6334d42f2bd",
+        "97b238f2-1e29-4a4c-9c7f-7dc7764a305a",
+        "983813b2-5119-4218-94fc-672229f7ca23",
+        "ab543f79-3103-479d-9bd4-ad982d1b7939",
+        "c2a01ae6-e5b3-4568-a4fc-3261e0fd9370"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 107 - First Love.mp3",
+      "acoustIdResults": [
+        "1683503d-785d-481a-81a4-e599d64eba66",
+        "1c981845-ab93-454e-bca1-e35e5670df4e",
+        "3fd5c4cc-a5a7-4bbf-be17-065769561468",
+        "4aa737c8-b899-4289-841f-41657c206aa1",
+        "81c0685c-f10c-4ac0-aad9-84d2c476011b",
+        "c009203d-a0f4-4292-9d10-8d198060c198"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 108 - Right as Rain.mp3",
+      "acoustIdResults": [
+        "3d3b00fb-1e80-47e5-932e-2f4f15fda2b1",
+        "6cb59533-f11f-42d0-9b91-b414b671b1be",
+        "6f05a7e7-0ce9-41f2-a27a-813d00165146",
+        "bb5cdd79-ba7f-40aa-8f51-ea9e803e9443",
+        "e5aa0386-15cc-43a8-a059-b14fc39b8301",
+        "f7b1bf72-78ba-4d5b-af3e-9e217be37a62"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 109 - Make You Feel My Love.mp3",
+      "acoustIdResults": [
+        "027c5431-70ff-400d-832d-1e5f607e8bd0",
+        "2412f7f5-7306-4419-bf42-37ea3025eb47",
+        "3dcdd899-eb81-482d-b495-45ec72c2d94e",
+        "453f8ecf-e853-45ec-8335-d240a15cd75f",
+        "5106d57f-9c3c-4971-8dd7-19a3370d53ef",
+        "589afaf4-f92e-4a64-8f38-ddb9f50e72e3",
+        "601594e1-7ba4-4d51-abf6-158586fea4ef",
+        "6f8d622f-1c68-4e00-9f68-6e7bd63147e9",
+        "88978d1c-625c-4e3e-85bb-80ed2329bb3e",
+        "983813b2-5119-4218-94fc-672229f7ca23",
+        "9efc6d4b-0ec8-4d68-b915-b0e00b3e5ae9",
+        "c329e4f9-743b-4681-900f-2e207b15a1bc",
+        "e2067c74-0284-47cd-8f7c-13689fb17337",
+        "e42df375-e203-4f9c-8e06-a385634e76c7",
+        "e82fa2b0-ed50-4d6f-93cc-7b7114431d6b",
+        "fb337643-87f6-44ee-8d3c-8e5562fb6cdd",
+        "ec79ad12-7d3d-4b4b-a6b5-61f83ffff841"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 110 - My Same.mp3",
+      "acoustIdResults": [
+        "217047d7-3482-4cac-a935-b941ecf92233",
+        "2a8df405-5bce-413d-9ad2-a3356fdab62b",
+        "2daf9540-e409-440c-8c25-94c580352ee9",
+        "5c0e4414-f352-440a-bc08-349331e6b105",
+        "7d759554-a1f6-480c-b963-88810b9d54fb",
+        "8658b791-e604-46ed-a8d1-113cb4058d64",
+        "8cfe1246-6aaa-4e33-86ea-3667330b0f0d",
+        "aab9b3f0-ef5c-44f0-ab83-be3bd6ab5553",
+        "b1a2fc67-6fe3-42e5-a461-3c75a7b43e9e",
+        "f3c651ae-2f43-46e4-a565-a7a66f6f3e07"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 111 - Tired.mp3",
+      "acoustIdResults": [
+        "03fc1567-d13b-48b6-8e2f-37d01f46eda0",
+        "1e288ef1-dfb8-4225-841a-a2684764985e",
+        "206cad73-0854-4f88-a5e2-5c7a0126093e",
+        "4c24975a-998c-416c-9574-341dc487d86f",
+        "6abe348e-9aa4-46ab-823f-8d32b0051321",
+        "8b27337e-af52-4868-a903-819678c3aeb7",
+        "b94b9760-b6e8-4aa4-815c-1261231c4970"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 112 - Hometown Glory.mp3",
+      "acoustIdResults": [
+        "268bcc34-42ab-4f1a-a684-31cbcee81441",
+        "3fd5c4cc-a5a7-4bbf-be17-065769561468",
+        "4415072c-2b81-4d90-a478-27586db19b47",
+        "669628d7-fe04-4a81-a8b3-422c86021e14",
+        "69bcf464-4714-4674-9076-1606e62a1c4e",
+        "70b9c246-0935-437c-9873-d24f4d78c388",
+        "894be7cc-6e73-4eaa-b259-d90d62a89acb",
+        "af9d4cef-2132-4a2a-bdae-56bc213378de",
+        "bce20d9f-0da5-46a0-98f6-335228849e99",
+        "fbd7532b-66a2-4009-96c1-17c6178e4afc"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 201 - Chasing Pavements.mp3",
+      "acoustIdResults": [
+        "05957c8d-0dbf-41bc-bb66-65586e5f5fd7",
+        "282a2ebf-31be-4e19-a262-664079f9a92a",
+        "56354a1b-9dae-448b-8a92-2240bdd68b9a",
+        "6e82c662-30b0-409c-9fa1-af2a3d8a62f3",
+        "ddfc9d63-ed67-42db-a16d-4cf805aed067",
+        "15ffe35b-72f5-475c-b27a-28350518f4a3"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 202 - Melt My Heart to Stone.mp3",
+      "acoustIdResults": [
+        "148efbf1-63cf-41b8-bc71-8c2bd00beb53",
+        "18828f6f-1085-4249-9566-a3e24210f52e",
+        "44dc19cb-fe11-4e79-9d52-b5866812f2e0",
+        "5846d785-ab9c-4e4e-a6a2-8bad09bbbbee",
+        "8ac2bc99-9f9c-4096-af46-f6334d42f2bd",
+        "983813b2-5119-4218-94fc-672229f7ca23",
+        "ab543f79-3103-479d-9bd4-ad982d1b7939",
+        "c2a01ae6-e5b3-4568-a4fc-3261e0fd9370",
+        "e065bd8e-537f-4112-b3e6-c234a16e2e93"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 203 - That's It, I Quit, I'm Moving On.mp3",
+      "acoustIdResults": [
+        "206cad73-0854-4f88-a5e2-5c7a0126093e",
+        "329d3b62-edf5-422d-8fb4-bc1db42c8b26",
+        "453f8ecf-e853-45ec-8335-d240a15cd75f",
+        "8cfe1246-6aaa-4e33-86ea-3667330b0f0d",
+        "ae73d295-b825-4740-b78f-d0e8187ac1a1",
+        "cefb4fe0-718e-4fea-869b-00a513a9a3e7",
+        "d1a4186b-3004-4cbc-ab08-593bc1b28803"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 204 - Crazy for You.mp3",
+      "acoustIdResults": [
+        "2c61207d-9063-4a43-81c6-1cf8cefbce92",
+        "55ad6ce0-3666-4d64-8e04-5ab71121ec7b",
+        "95f62f74-c3c0-4232-98db-2556a3d9d553"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 205 - Right as Rain.mp3",
+      "acoustIdResults": [
+        "3d3b00fb-1e80-47e5-932e-2f4f15fda2b1",
+        "e5aa0386-15cc-43a8-a059-b14fc39b8301",
+        "7502dd98-a7e6-41d0-90d1-16aa885f8fdb"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 206 - My Same.mp3",
+      "acoustIdResults": [
+        "217047d7-3482-4cac-a935-b941ecf92233",
+        "7d759554-a1f6-480c-b963-88810b9d54fb",
+        "8658b791-e604-46ed-a8d1-113cb4058d64",
+        "b12cb4dc-6192-43c6-8fad-6712de704cf0",
+        "e3acf02f-a90e-4ae0-b1e2-ea314c1beb54",
+        "eafc036b-5bd0-4cc2-a51f-fb1186038ad3",
+        "f3c651ae-2f43-46e4-a565-a7a66f6f3e07"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 207 - Make You Feel My Love.mp3",
+      "acoustIdResults": [
+        "3dcdd899-eb81-482d-b495-45ec72c2d94e",
+        "bc6a0d82-a3df-45b1-a4fe-f25e34ca27c0",
+        "e109f0b7-5c0c-494a-9f87-af2da08cc480",
+        "e42df375-e203-4f9c-8e06-a385634e76c7"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 208 - Daydreamer.mp3",
+      "acoustIdResults": [
+        "17d6dca8-a59e-4b67-a15b-d8da83bfceb2",
+        "b94b9760-b6e8-4aa4-815c-1261231c4970"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 209 - Hometown Glory.mp3",
+      "acoustIdResults": [
+        "e1b7e7a3-4f19-44cc-9573-e5fa884de765"
+      ]
+    },
+    {
+      "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 210 - Many Shades of Black.mp3",
+      "acoustIdResults": [
+        "26d08d36-934c-4d0a-9e26-04ed85819cd5",
+        "40fe2d4d-cadc-4860-926b-1dacd650df72",
+        "48bf3ebd-798d-46cc-b35c-75d8bca8c045",
+        "8a0c70de-178a-47c4-95ac-ca42d6483ec3",
+        "8b27337e-af52-4868-a903-819678c3aeb7",
+        "fa7826ed-a77d-45b3-b8c2-36835879a120",
+        "fbd7532b-66a2-4009-96c1-17c6178e4afc"
+      ]
+    }
+  ]
+}

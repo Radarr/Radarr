@@ -1,4 +1,4 @@
-using System.IO;
+using System;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -15,16 +15,20 @@ namespace NzbDrone.Integration.Test
             config.LogLevel = "Trace";
             HostConfig.Put(config);
 
-            var logFile = Path.Combine(_runner.AppData, "logs", "sonarr.trace.txt");
-            var logLines = File.ReadAllLines(logFile);
+            var resultGet = Artist.All();
 
-            var result = Series.InvalidPost(new Api.Series.SeriesResource());
+            var logFile = "Lidarr.trace.txt";
+            var logLines = Logs.GetLogFileLines(logFile);
 
-            logLines = File.ReadAllLines(logFile).Skip(logLines.Length).ToArray();
+            var result = Artist.InvalidPost(new Lidarr.Api.V1.Artist.ArtistResource());
 
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req"));
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res"));
-            logLines.Should().Contain(v => v.Contains("|Debug|Api|"));
+            // Skip 2 and 1 to ignore the logs endpoint
+            logLines = Logs.GetLogFileLines(logFile).Skip(logLines.Length + 2).ToArray();
+            Array.Resize(ref logLines, logLines.Length - 1);
+
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req") && v.Contains("/api/v1/artist/"));
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res") && v.Contains("/api/v1/artist/: 400.BadRequest"));
+            logLines.Should().Contain(v => v.Contains("|Debug|Api|") && v.Contains("/api/v1/artist/: 400.BadRequest"));
         }
     }
 }

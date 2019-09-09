@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -24,8 +24,11 @@ namespace NzbDrone.Core.Notifications.Slack
         [FieldDefinition(1, Label = "Username", HelpText = "Choose the username that this integration will post as", Type = FieldType.Textbox)]
         public string Username { get; set; }
 
-        [FieldDefinition(2, Label = "Icon", HelpText = "Change the icon that is used for messages from this integration", Type = FieldType.Textbox, HelpLink = "http://www.emoji-cheat-sheet.com/")]
+        [FieldDefinition(2, Label = "Icon", HelpText = "Change the icon that is used for messages from this integration (Emoji or URL)", Type = FieldType.Textbox, HelpLink = "http://www.emoji-cheat-sheet.com/")]
         public string Icon { get; set; }
+
+        [FieldDefinition(3, Label = "Channel", HelpText = "Overrides the default channel for the incoming webhook (#other-channel)", Type = FieldType.Textbox)]
+        public string Channel { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

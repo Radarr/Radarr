@@ -1,0 +1,61 @@
+.fileDetails {
+  margin-bottom: 20px;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+  background-color: $white;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.filename {
+  flex-grow: 1;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: 14px;
+  font-family: $monoSpaceFontFamily;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+}
+
+.expandButton {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.actionButton {
+  composes: button from '~Components/Link/IconButton.css';
+
+  width: 30px;
+}
+
+.expandButtonIcon {
+  composes: actionButton;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -15px;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .medium {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .expandButtonIcon {
+    position: static;
+    margin: 0;
+  }
+}

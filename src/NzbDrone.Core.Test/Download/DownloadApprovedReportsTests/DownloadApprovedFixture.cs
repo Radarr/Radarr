@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -6,12 +6,15 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
@@ -27,89 +30,89 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                 .Returns<List<DownloadDecision>>(v => v);
         }
 
-        private Episode GetEpisode(int id)
+        private Album GetAlbum(int id)
         {
-            return Builder<Episode>.CreateNew()
+            return Builder<Album>.CreateNew()
                             .With(e => e.Id = id)
-                            .With(e => e.EpisodeNumber = id)
                             .Build();
         }
 
-        private RemoteEpisode GetRemoteEpisode(List<Episode> episodes, QualityModel quality)
+        private RemoteAlbum GetRemoteAlbum(List<Album> albums, QualityModel quality, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
         {
-            var remoteEpisode = new RemoteEpisode();
-            remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            remoteEpisode.ParsedEpisodeInfo.Quality = quality;
+            var remoteAlbum = new RemoteAlbum();
+            remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
+            remoteAlbum.ParsedAlbumInfo.Quality = quality;
 
-            remoteEpisode.Episodes = new List<Episode>();
-            remoteEpisode.Episodes.AddRange(episodes);
+            remoteAlbum.Albums = new List<Album>();
+            remoteAlbum.Albums.AddRange(albums);
 
-            remoteEpisode.Release = new ReleaseInfo();
-            remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            remoteAlbum.Release = new ReleaseInfo();
+            remoteAlbum.Release.DownloadProtocol = downloadProtocol;
+            remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            remoteEpisode.Series = Builder<Series>.CreateNew()
-                .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+            remoteAlbum.Artist = Builder<Artist>.CreateNew()
+                .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
-            return remoteEpisode;
+            return remoteAlbum;
         }
 
         [Test]
-        public void should_download_report_if_epsiode_was_not_already_downloaded()
+        public void should_download_report_if_album_was_not_already_downloaded()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
         }
 
         [Test]
-        public void should_only_download_episode_once()
+        public void should_only_download_album_once()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
         }
 
         [Test]
-        public void should_not_download_if_any_episode_was_already_downloaded()
+        public void should_not_download_if_any_album_was_already_downloaded()
         {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum1 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(1) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1), GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum2 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(1), GetAlbum(2) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode1));
-            decisions.Add(new DownloadDecision(remoteEpisode2));
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
         }
 
         [Test]
         public void should_return_downloaded_reports()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(1);
         }
@@ -117,19 +120,19 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_return_all_downloaded_reports()
         {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum1 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(1) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum2 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(2) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode1));
-            decisions.Add(new DownloadDecision(remoteEpisode2));
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(2);
         }
@@ -137,25 +140,25 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_only_return_downloaded_reports()
         {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum1 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(1) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum2 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(2) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
-            var remoteEpisode3 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteAlbum3 = GetRemoteAlbum(
+                                                    new List<Album> { GetAlbum(2) },
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode1));
-            decisions.Add(new DownloadDecision(remoteEpisode2));
-            decisions.Add(new DownloadDecision(remoteEpisode3));
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+            decisions.Add(new DownloadDecision(remoteAlbum3));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(2);
         }
@@ -163,13 +166,13 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_add_to_downloaded_list_when_download_fails()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteEpisode>())).Throws(new Exception());
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>())).Throws(new Exception());
             Subject.ProcessDecisions(decisions).Grabbed.Should().BeEmpty();
             ExceptionVerification.ExpectedWarns(1);
         }
@@ -178,8 +181,8 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_return_an_empty_list_when_none_are_appproved()
         {
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(null, new Rejection("Failure!")));
-            decisions.Add(new DownloadDecision(null, new Rejection("Failure!")));
+            decisions.Add(new DownloadDecision(new RemoteAlbum(), new Rejection("Failure!")));
+            decisions.Add(new DownloadDecision(new RemoteAlbum(), new Rejection("Failure!")));
 
             Subject.GetQualifiedReports(decisions).Should().BeEmpty();
         }
@@ -187,43 +190,99 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_grab_if_pending()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
-            decisions.Add(new DownloadDecision(remoteEpisode));
+            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Never());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Never());
         }
 
         [Test]
-        public void should_not_add_to_pending_if_episode_was_grabbed()
+        public void should_not_add_to_pending_if_album_was_grabbed()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode));
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IPendingReleaseService>().Verify(v => v.Add(It.IsAny<DownloadDecision>()), Times.Never());
+            Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Never());
         }
 
         [Test]
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IPendingReleaseService>().Verify(v => v.Add(It.IsAny<DownloadDecision>()), Times.Exactly(2));
+            Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Once());
+        }
+
+        [Test]
+        public void should_add_to_failed_if_already_failed_for_that_protocol()
+        {
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteAlbum));
+
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>()))
+                  .Throws(new DownloadClientUnavailableException("Download client failed"));
+
+            Subject.ProcessDecisions(decisions);
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
+        }
+
+        [Test]
+        public void should_not_add_to_failed_if_failed_for_a_different_protocol()
+        {
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Usenet);
+            var remoteAlbum2 = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Torrent);
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
+                  .Throws(new DownloadClientUnavailableException("Download client failed"));
+
+            Subject.ProcessDecisions(decisions);
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent)), Times.Once());
+        }
+
+        [Test]
+        public void should_add_to_rejected_if_release_unavailable_on_indexer()
+        {
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum));
+
+            Mocker.GetMock<IDownloadService>()
+                  .Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>()))
+                  .Throws(new ReleaseUnavailableException(remoteAlbum.Release, "That 404 Error is not just a Quirk"));
+
+            var result = Subject.ProcessDecisions(decisions);
+
+            result.Grabbed.Should().BeEmpty();
+            result.Rejected.Should().NotBeEmpty();
+
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }

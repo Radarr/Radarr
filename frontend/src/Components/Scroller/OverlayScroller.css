@@ -1,0 +1,15 @@
+.scroller {
+  /* Placeholder */
+}
+
+.thumb {
+  min-height: 100px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-color: $scrollbarBackgroundColor;
+  background-clip: padding-box;
+
+  &:hover {
+    background-color: $scrollbarHoverBackgroundColor;
+  }
+}

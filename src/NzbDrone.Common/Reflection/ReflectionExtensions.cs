@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +7,7 @@ namespace NzbDrone.Common.Reflection
 {
     public static class ReflectionExtensions
     {
-        public static readonly Assembly CoreAssembly = Assembly.Load("NzbDrone.Core");
+        public static readonly Assembly CoreAssembly = Assembly.Load("Lidarr.Core");
 
         public static List<PropertyInfo> GetSimpleProperties(this Type type)
         {
@@ -58,6 +58,11 @@ namespace NzbDrone.Common.Reflection
             }
 
             return (T)attribute;
+        }
+
+        public static T[] GetAttributes<T>(this MemberInfo member) where T : Attribute
+        {
+            return member.GetCustomAttributes(typeof(T), false).OfType<T>().ToArray();
         }
 
         public static Type FindTypeByName(this Assembly assembly, string name)

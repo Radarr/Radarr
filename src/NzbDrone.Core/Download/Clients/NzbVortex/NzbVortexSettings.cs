@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             RuleFor(c => c.ApiKey).NotEmpty()
                                   .WithMessage("API Key is required");
 
-            RuleFor(c => c.TvCategory).NotEmpty()
+            RuleFor(c => c.MusicCategory).NotEmpty()
                                       .WithMessage("A category is recommended")
                                       .AsWarning();
         }
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         {
             Host = "localhost";
             Port = 4321;
-            TvCategory = "TV Shows";
+            MusicCategory = "Music";
             RecentTvPriority = (int)NzbVortexPriority.Normal;
             OlderTvPriority = (int)NzbVortexPriority.Normal;
         }
@@ -43,13 +43,13 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         [FieldDefinition(2, Label = "API Key", Type = FieldType.Textbox)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Sonarr avoids conflicts with unrelated downloads, but it's optional")]
-        public string TvCategory { get; set; }
+        [FieldDefinition(3, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
+        public string MusicCategory { get; set; }
 
-        [FieldDefinition(4, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
+        [FieldDefinition(4, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(5, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(5, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
         public NzbDroneValidationResult Validate()

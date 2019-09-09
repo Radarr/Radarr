@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NLog.Config;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation.Sentry;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -20,16 +23,27 @@ namespace NzbDrone.Core.Instrumentation
         public void Reconfigure()
         {
             var minimumLogLevel = LogLevel.FromString(_configFileProvider.LogLevel);
+            LogLevel minimumConsoleLogLevel;
+
+            if (_configFileProvider.ConsoleLogLevel.IsNotNullOrWhiteSpace())
+                minimumConsoleLogLevel = LogLevel.FromString(_configFileProvider.ConsoleLogLevel);
+            else if (minimumLogLevel > LogLevel.Info)
+                minimumConsoleLogLevel = minimumLogLevel;
+            else
+                minimumConsoleLogLevel = LogLevel.Info;
 
             var rules = LogManager.Configuration.LoggingRules;
 
             //Console
-            SetMinimumLogLevel(rules, "consoleLogger", minimumLogLevel);
+            SetMinimumLogLevel(rules, "consoleLogger", minimumConsoleLogLevel);
 
             //Log Files
             SetMinimumLogLevel(rules, "appFileInfo", minimumLogLevel <= LogLevel.Info ? LogLevel.Info : LogLevel.Off);
             SetMinimumLogLevel(rules, "appFileDebug", minimumLogLevel <= LogLevel.Debug ? LogLevel.Debug : LogLevel.Off);
             SetMinimumLogLevel(rules, "appFileTrace", minimumLogLevel <= LogLevel.Trace ? LogLevel.Trace : LogLevel.Off);
+
+            //Sentry
+            ReconfigureSentry();
 
             LogManager.ReconfigExistingLoggers();
         }
@@ -55,6 +69,16 @@ namespace NzbDrone.Core.Instrumentation
                 {
                     rule.EnableLoggingForLevel(logLevel);
                 }
+            }
+        }
+
+        private void ReconfigureSentry()
+        {
+            var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
+            if (sentryTarget != null)
+            {
+                sentryTarget.SentryEnabled = RuntimeInfo.IsProduction && _configFileProvider.AnalyticsEnabled || RuntimeInfo.IsDevelopment;
+                sentryTarget.FilterEvents = _configFileProvider.FilterSentryEvents;
             }
         }
 

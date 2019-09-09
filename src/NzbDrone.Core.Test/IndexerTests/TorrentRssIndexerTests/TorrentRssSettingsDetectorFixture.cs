@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -201,6 +201,26 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         }
 
         [Test]
+        public void should_detect_rss_settings_for_AlphaRatio()
+        {
+            _indexerSettings.AllowZeroSize = true;
+
+            GivenRecentFeedResponse("TorrentRss/AlphaRatio.xml");
+
+            var settings = Subject.Detect(_indexerSettings);
+
+            settings.ShouldBeEquivalentTo(new TorrentRssIndexerParserSettings
+            {
+                UseEZTVFormat = false,
+                UseEnclosureUrl = false,
+                UseEnclosureLength = false,
+                ParseSizeInDescription = true,
+                ParseSeedersInDescription = false,
+                SizeElementName = null
+            });
+        }
+
+        [Test]
         [Ignore("Cannot reliably reject unparseable titles")]
         public void should_reject_rss_settings_for_AwesomeHD()
         {
@@ -233,12 +253,8 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
             });
         }
 
-        [TestCase("BitMeTv/BitMeTv.xml")]
-        [TestCase("Fanzub/fanzub.xml")]
         [TestCase("IPTorrents/IPTorrents.xml")]
-        [TestCase("Newznab/newznab_nzb_su.xml")]
         [TestCase("Nyaa/Nyaa.xml")]
-        [TestCase("Omgwtfnzbs/Omgwtfnzbs.xml")]
         [TestCase("Torznab/torznab_hdaccess_net.xml")]
         [TestCase("Torznab/torznab_tpb.xml")]
         public void should_detect_recent_feed(string rssXmlFile)
@@ -267,9 +283,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
 
             var ex = Assert.Throws<UnsupportedFeedException>(() => Subject.Detect(_indexerSettings));
 
-            ex.Message.Should().Contain("Empty feed");
-
-            ExceptionVerification.ExpectedErrors(1);
+            ex.Message.Should().Contain("Rss feed must have a pubDate");
         }
 
         [TestCase("Torrentleech/Torrentleech.xml")]

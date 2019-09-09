@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -13,83 +13,83 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             new object[]
             {
-                @"C:\Test\Some.Hashed.Release.S01E01.720p.WEB-DL.AAC2.0.H.264-Mercury\0e895c37245186812cb08aab1529cf8ee389dd05.mkv".AsOsAgnostic(),
+                @"C:\Test\Some.Hashed.Release.(256kbps)-Mercury\0e895c37245186812cb08aab1529cf8ee389dd05.mp3".AsOsAgnostic(),
                 "Some Hashed Release",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "Mercury"
             },
             new object[]
             {
-                @"C:\Test\0e895c37245186812cb08aab1529cf8ee389dd05\Some.Hashed.Release.S01E01.720p.WEB-DL.AAC2.0.H.264-Mercury.mkv".AsOsAgnostic(),
+                @"C:\Test-[256]\0e895c37245186812cb08aab1529cf8ee389dd05\Some.Hashed.Release.S01E01.720p.WEB-DL.AAC2.0.H.264-Mercury.mp3".AsOsAgnostic(),
                 "Some Hashed Release",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "Mercury"
             },
             new object[]
             {
-                @"C:\Test\Fake.Dir.S01E01-Test\yrucreM-462.H.0.2CAA.LD-BEW.p027.10E10S.esaeleR.dehsaH.emoS.mkv".AsOsAgnostic(),
+                @"C:\Test\Fake.Dir.S01E01-Test\yrucreM-462.H.0.2CAA.LD-BEW.p027.10E10S.esaeleR.dehsaH.emoS.mp3".AsOsAgnostic(),
                 "Some Hashed Release",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "Mercury"
             },
             new object[]
             {
-                @"C:\Test\Fake.Dir.S01E01-Test\yrucreM-LN 1.5DD LD-BEW P0801 10E10S esaeleR dehsaH emoS.mkv".AsOsAgnostic(),
+                @"C:\Test\Fake.Dir.S01E01-Test\yrucreM-LN 1.5DD LD-BEW P0801 10E10S esaeleR dehsaH emoS.mp3".AsOsAgnostic(),
                 "Some Hashed Release",
-                Quality.WEBDL1080p,
+                Quality.MP3_256,
                 "Mercury"
             },
             new object[]
             {
-                @"C:\Test\Weeds.S01E10.DVDRip.XviD-SONARR\AHFMZXGHEWD660.mkv".AsOsAgnostic(),
+                @"C:\Test\Weeds.S01E10.DVDRip.XviD-Lidarr\AHFMZXGHEWD660.mp3".AsOsAgnostic(),
                 "Weeds",
-                Quality.DVD,
-                "SONARR"
+                Quality.MP3_256,
+                "Lidarr"
             },
             new object[]
             {
-                @"C:\Test\Deadwood.S02E12.1080p.BluRay.x264-SONARR\Backup_72023S02-12.mkv".AsOsAgnostic(),
+                @"C:\Test\Deadwood.S02E12.1080p.BluRay.x264-Lidarr\Backup_72023S02-12.mp3".AsOsAgnostic(),
                 "Deadwood",
-                Quality.Bluray1080p,
+                Quality.MP3_256,
                 null
             },
             new object[]
             {
-                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\123.mkv".AsOsAgnostic(),
+                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\123.mp3".AsOsAgnostic(),
                 "Grimm",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\abc.mkv".AsOsAgnostic(),
+                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\abc.mp3".AsOsAgnostic(),
                 "Grimm",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\b00bs.mkv".AsOsAgnostic(),
+                @"C:\Test\Grimm S04E08 Chupacabra 720p WEB-DL DD5 1 H 264-ECI\b00bs.mp3".AsOsAgnostic(),
                 "Grimm",
-                Quality.WEBDL720p,
+                Quality.MP3_256,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\The.Good.Wife.S02E23.720p.HDTV.x264-NZBgeek/cgajsofuejsa501.mkv".AsOsAgnostic(),
+                @"C:\Test\The.Good.Wife.S02E23.720p.HDTV.x264-NZBgeek/cgajsofuejsa501.mp3".AsOsAgnostic(),
                 "The Good Wife",
-                Quality.HDTV720p,
+                Quality.MP3_256,
                 "NZBgeek"
             }
         };
 
         [Test, TestCaseSource(nameof(HashedReleaseParserCases))]
+        [Ignore("Hashed code is not currently called with track parsing")]
         public void should_properly_parse_hashed_releases(string path, string title, Quality quality, string releaseGroup)
         {
-            var result = Parser.Parser.ParsePath(path);
-            result.SeriesTitle.Should().Be(title);
+            var result = Parser.Parser.ParseMusicPath(path);
+            //result.SeriesTitle.Should().Be(title);
             result.Quality.Quality.Should().Be(quality);
-            result.ReleaseGroup.Should().Be(releaseGroup);
         }
     }
 }

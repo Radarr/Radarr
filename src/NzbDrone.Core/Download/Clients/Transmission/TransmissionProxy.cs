@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
@@ -51,6 +51,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("filename", torrentUrl);
+            arguments.Add("paused", settings.AddPaused);
 
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
@@ -64,6 +65,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("metainfo", Convert.ToBase64String(torrentData));
+            arguments.Add("paused", settings.AddPaused);
 
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
@@ -75,8 +77,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, TransmissionSettings settings)
         {
+            if (seedConfiguration == null) return;
+
             var arguments = new Dictionary<string, object>();
-            arguments.Add("ids", new string[] { hash });
+            arguments.Add("ids", new[] { hash });
 
             if (seedConfiguration.Ratio != null)
             {
@@ -165,7 +169,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 "leftUntilDone",
                 "isFinished",
                 "eta",
-                "errorString"
+                "errorString",
+                "uploadedEver",
+                "downloadedEver",
+                "seedRatioLimit"
             };
             
             var arguments = new Dictionary<string, object>();
@@ -238,54 +245,65 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         
         public TransmissionResponse ProcessRequest(string action, object arguments, TransmissionSettings settings)
         {
-            var requestBuilder = BuildRequest(settings);
-            requestBuilder.Headers.ContentType = "application/json";
-            requestBuilder.SuppressHttpError = true;
-
-            AuthenticateClient(requestBuilder, settings);
-
-            var request = requestBuilder.Post().Build();
-
-            var data = new Dictionary<string, object>();
-            data.Add("method", action);
-
-            if (arguments != null)
+            try
             {
-                data.Add("arguments", arguments);
-            }
+                var requestBuilder = BuildRequest(settings);
+                requestBuilder.Headers.ContentType = "application/json";
+                requestBuilder.SuppressHttpError = true;
 
-            request.SetContent(data.ToJson());
-            request.ContentSummary = string.Format("{0}(...)", action);
+                AuthenticateClient(requestBuilder, settings);
 
-            var response = _httpClient.Execute(request);            
-            if (response.StatusCode == HttpStatusCode.Conflict)
-            {
-                AuthenticateClient(requestBuilder, settings, true);
+                var request = requestBuilder.Post().Build();
 
-                request = requestBuilder.Post().Build();
+                var data = new Dictionary<string, object>();
+                data.Add("method", action);
+
+                if (arguments != null)
+                {
+                    data.Add("arguments", arguments);
+                }
 
                 request.SetContent(data.ToJson());
                 request.ContentSummary = string.Format("{0}(...)", action);
 
-                response = _httpClient.Execute(request);
-            }
-            else if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                throw new DownloadClientAuthenticationException("User authentication failed.");
-            }
+                var response = _httpClient.Execute(request);
 
-            var transmissionResponse = Json.Deserialize<TransmissionResponse>(response.Content);
+                if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    AuthenticateClient(requestBuilder, settings, true);
 
-            if (transmissionResponse == null)
-            {
-                throw new TransmissionException("Unexpected response");
-            }
-            else if (transmissionResponse.Result != "success")
-            {
-                throw new TransmissionException(transmissionResponse.Result);
-            }
+                    request = requestBuilder.Post().Build();
 
-            return transmissionResponse;
+                    request.SetContent(data.ToJson());
+                    request.ContentSummary = string.Format("{0}(...)", action);
+
+                    response = _httpClient.Execute(request);
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new DownloadClientAuthenticationException("User authentication failed.");
+                }
+
+                var transmissionResponse = Json.Deserialize<TransmissionResponse>(response.Content);
+
+                if (transmissionResponse == null)
+                {
+                    throw new TransmissionException("Unexpected response");
+                }
+                else if (transmissionResponse.Result != "success")
+                {
+                    throw new TransmissionException(transmissionResponse.Result);
+                }
+                return transmissionResponse;
+            }
+            catch (HttpException ex)
+            {
+                throw new DownloadClientException("Unable to connect to Transmission, please check your settings", ex);
+            }
+            catch (WebException ex)
+            {
+                throw new DownloadClientUnavailableException("Unable to connect to Transmission, please check your settings", ex);
+            }
         }
     }
 }

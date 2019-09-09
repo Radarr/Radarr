@@ -1,0 +1,231 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "25f0fa1b-ae04-479a-a182-18a655ff6040"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "70248960-cb53-4ea4-943a-edb18f7d336f",
+      "metadataProfile": {
+        "name": "Album+Single",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": true
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          }
+        ],
+        "id": 2
+      }
+    }
+  ],
+  "newDownload": true,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/mnt/data1/LidarrTest/Bruce Springsteen/Album/10_Glory_Days.mp3",
+      "fileTrackInfo": {
+        "title": "Glory Days",
+        "cleanTitle": "Glory Days",
+        "artistTitle": "Bruce Springsteen",
+        "albumTitle": "Born in the U.S.A.",
+        "artistTitleInfo": {
+          "title": "Bruce Springsteen",
+          "year": 1984
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 1984,
+        "duration": "00:04:18.0680000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Bruce Springsteen/Album/11_Dancing_In_The_Dark.mp3",
+      "fileTrackInfo": {
+        "title": "Dancing In The Dark",
+        "cleanTitle": "Dancing In The Dark",
+        "artistTitle": "Bruce Springsteen",
+        "albumTitle": "Born in the U.S.A.",
+        "artistTitleInfo": {
+          "title": "Bruce Springsteen",
+          "year": 1984
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 1984,
+        "duration": "00:04:03.0450000",
+        "quality": {
+          "quality": {
+            "id": 1,
+            "name": "MP3-192"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 192,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    }
+  ]
+}

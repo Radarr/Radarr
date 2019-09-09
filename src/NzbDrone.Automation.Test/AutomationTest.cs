@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NLog;
@@ -31,21 +31,23 @@ namespace NzbDrone.Automation.Test
             LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Trace, consoleTarget));
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SmokeTestSetup()
         {
-            driver = new FirefoxDriver();
+            var options = new FirefoxOptions();
+            options.AddArguments("--headless");
+            driver = new FirefoxDriver(options);
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
             _runner.Start();
 
-            driver.Url = "http://localhost:8989";
+            driver.Url = "http://localhost:8686";
 
             var page = new PageBase(driver);
             page.WaitForNoSpinner();
 
-            driver.ExecuteScript("window.NzbDrone.NameViews = true;");
+            driver.ExecuteScript("window.Lidarr.NameViews = true;");
 
             GetPageErrors().Should().BeEmpty();
         }
@@ -56,7 +58,7 @@ namespace NzbDrone.Automation.Test
                 .Select(e => e.Text);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void SmokeTestTearDown()
         {
             _runner.KillAll();

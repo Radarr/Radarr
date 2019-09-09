@@ -5,36 +5,39 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Restrictions;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public class ReleaseRestrictionsSpecification : IDecisionEngineSpecification
     {
-        private readonly IRestrictionService _restrictionService;
         private readonly Logger _logger;
+        private readonly IReleaseProfileService _releaseProfileService;
+        private readonly ITermMatcherService _termMatcherService;
 
-        public ReleaseRestrictionsSpecification(IRestrictionService restrictionService, Logger logger)
+        public ReleaseRestrictionsSpecification(ITermMatcherService termMatcherService, IReleaseProfileService releaseProfileService, Logger logger)
         {
-            _restrictionService = restrictionService;
             _logger = logger;
+            _releaseProfileService = releaseProfileService;
+            _termMatcherService = termMatcherService;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Checking if release meets restrictions: {0}", subject);
 
             var title = subject.Release.Title;
-            var restrictions = _restrictionService.AllForTags(subject.Series.Tags);
+            var restrictions = _releaseProfileService.AllForTags(subject.Artist.Tags);
 
             var required = restrictions.Where(r => r.Required.IsNotNullOrWhiteSpace());
             var ignored = restrictions.Where(r => r.Ignored.IsNotNullOrWhiteSpace());
 
             foreach (var r in required)
             {
-                var requiredTerms = r.Required.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var requiredTerms = r.Required.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var foundTerms = ContainsAny(requiredTerms, title);
                 if (foundTerms.Empty())
@@ -62,9 +65,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return Decision.Accept();
         }
 
-        private static List<string> ContainsAny(List<string> terms, string title)
+        private List<string> ContainsAny(List<string> terms, string title)
         {
-            return terms.Where(t => title.ToLowerInvariant().Contains(t.ToLowerInvariant())).ToList();
+            return terms.Where(t => _termMatcherService.IsMatch(t, title)).ToList();
         }
     }
 }

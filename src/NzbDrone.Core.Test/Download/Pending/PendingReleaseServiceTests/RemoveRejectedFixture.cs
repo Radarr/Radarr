@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using Marr.Data;
@@ -11,10 +11,10 @@ using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -22,60 +22,64 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemoveRejectedFixture : CoreTest<PendingReleaseService>
     {
         private DownloadDecision _temporarilyRejected;
-        private Series _series;
-        private Episode _episode;
-        private Profile _profile;
+        private Artist _artist;
+        private Album _album;
+        private QualityProfile _profile;
         private ReleaseInfo _release;
-        private ParsedEpisodeInfo _parsedEpisodeInfo;
-        private RemoteEpisode _remoteEpisode;
+        private ParsedAlbumInfo _parsedAlbumInfo;
+        private RemoteAlbum _remoteAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _artist = Builder<Artist>.CreateNew()
                                      .Build();
 
-            _episode = Builder<Episode>.CreateNew()
+            _album = Builder<Album>.CreateNew()
                                        .Build();
 
-            _profile = new Profile
+            _profile = new QualityProfile
                        {
                            Name = "Test",
-                           Cutoff = Quality.HDTV720p,
-                           Items = new List<ProfileQualityItem>
+                           Cutoff = Quality.MP3_192.Id,
+                           Items = new List<QualityProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_192 },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 }
                                    },
                        };
 
-            _series.Profile = new LazyLoaded<Profile>(_profile);
+            _artist.QualityProfile = new LazyLoaded<QualityProfile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedEpisodeInfo = Builder<ParsedEpisodeInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _parsedAlbumInfo = Builder<ParsedAlbumInfo>.CreateNew().Build();
+            _parsedAlbumInfo.Quality = new QualityModel(Quality.MP3_192);
 
-            _remoteEpisode = new RemoteEpisode();
-            _remoteEpisode.Episodes = new List<Episode>{ _episode };
-            _remoteEpisode.Series = _series;
-            _remoteEpisode.ParsedEpisodeInfo = _parsedEpisodeInfo;
-            _remoteEpisode.Release = _release;
-            
-            _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
+            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum.Albums = new List<Album>{ _album };
+            _remoteAlbum.Artist = _artist;
+            _remoteAlbum.ParsedAlbumInfo = _parsedAlbumInfo;
+            _remoteAlbum.Release = _release;
+
+            _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
                   .Returns(new List<PendingRelease>());
 
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(s => s.GetSeries(It.IsAny<int>()))
-                  .Returns(_series);
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtist(It.IsAny<int>()))
+                  .Returns(_artist);
+
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
+                  .Returns(new List<Artist> { _artist });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetEpisodes(It.IsAny<ParsedEpisodeInfo>(), _series, true, null))
-                  .Returns(new List<Episode> {_episode});
+                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
+                  .Returns(new List<Album> {_album});
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisions(It.IsAny<List<DownloadDecision>>()))
@@ -91,7 +95,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
-                                                   .With(h => h.SeriesId = _series.Id)
+                                                   .With(h => h.ArtistId = _artist.Id)
                                                    .With(h => h.Title = title)
                                                    .With(h => h.Release = release)
                                                    .Build();

@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 using Growl.Connector;
 using Growl.CoreLibrary;
 using NzbDrone.Common.Extensions;
@@ -20,9 +20,8 @@ namespace NzbDrone.Core.Notifications.Growl
     public class GrowlService : IGrowlService
     {
         private readonly Logger _logger;
-
-        //TODO: Change this to Sonarr, but it is a breaking change (v3)
-        private readonly Application _growlApplication = new Application("NzbDrone");
+        
+        private readonly Application _growlApplication = new Application("Lidarr");
         private readonly NotificationType[] _notificationTypes;
 
         private class GrowlRequestState
@@ -102,7 +101,7 @@ namespace NzbDrone.Core.Notifications.Growl
 
         private void Register(string host, int port, string password)
         {
-            _logger.Debug("Registering Sonarr with Growl host: {0}:{1}", host, port);
+            _logger.Debug("Registering Lidarr with Growl host: {0}:{1}", host, port);
 
             var growlConnector = GetGrowlConnector(host, port, password);
 
@@ -133,8 +132,9 @@ namespace NzbDrone.Core.Notifications.Growl
         {
             var notificationTypes = new List<NotificationType>();
             notificationTypes.Add(new NotificationType("TEST", "Test"));
-            notificationTypes.Add(new NotificationType("GRAB", "Episode Grabbed"));
-            notificationTypes.Add(new NotificationType("DOWNLOAD", "Episode Complete"));
+            notificationTypes.Add(new NotificationType("GRAB", "Album Grabbed"));
+            notificationTypes.Add(new NotificationType("TRACKDOWNLOAD", "Track Complete"));
+            notificationTypes.Add(new NotificationType("ALBUMDOWNLOAD", "Album Complete"));
 
             return notificationTypes.ToArray();
         }
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Notifications.Growl
                 Register(settings.Host, settings.Port, settings.Password);
 
                 const string title = "Test Notification";
-                const string body = "This is a test message from Sonarr";
+                const string body = "This is a test message from Lidarr";
 
                 SendNotification(title, body, "TEST", settings.Host, settings.Port, settings.Password);
             }

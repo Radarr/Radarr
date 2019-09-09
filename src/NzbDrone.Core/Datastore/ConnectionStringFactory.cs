@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Datastore
     {
         public ConnectionStringFactory(IAppFolderInfo appFolderInfo)
         {
-            MainDbConnectionString = GetConnectionString(appFolderInfo.GetNzbDroneDatabase());
+            MainDbConnectionString = GetConnectionString(appFolderInfo.GetDatabase());
             LogDbConnectionString = GetConnectionString(appFolderInfo.GetLogDatabase());
         }
 
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Datastore
             var connectionBuilder = new SQLiteConnectionStringBuilder();
 
             connectionBuilder.DataSource = dbPath;
-            connectionBuilder.CacheSize = (int)-10.Megabytes();
+            connectionBuilder.CacheSize = (int)-10000;
             connectionBuilder.DateTimeKind = DateTimeKind.Utc;
             connectionBuilder.JournalMode = OsInfo.IsOsx ? SQLiteJournalModeEnum.Truncate : SQLiteJournalModeEnum.Wal;
             connectionBuilder.Pooling = true;

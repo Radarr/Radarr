@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using Moq;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.DecisionEngine.Specifications;
 
 using NzbDrone.Core.Test.Framework;
 
@@ -21,84 +22,82 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
     public class ProperSpecificationFixture : CoreTest<ProperSpecification>
     {
-        private RemoteEpisode _parseResultMulti;
-        private RemoteEpisode _parseResultSingle;
-        private EpisodeFile _firstFile;
-        private EpisodeFile _secondFile;
+        private RemoteAlbum _parseResultMulti;
+        private RemoteAlbum _parseResultSingle;
+        private TrackFile _firstFile;
+        private TrackFile _secondFile;
 
         [SetUp]
         public void Setup()
         {
-            Mocker.Resolve<QualityUpgradableSpecification>();
+            Mocker.Resolve<UpgradableSpecification>();
 
-            _firstFile = new EpisodeFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
-            _secondFile = new EpisodeFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
 
-            var singleEpisodeList = new List<Episode> { new Episode { EpisodeFile = _firstFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = null } };
-            var doubleEpisodeList = new List<Episode> { new Episode { EpisodeFile = _firstFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = _secondFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = null } };
+            var singleAlbumList = new List<Album> { new Album {}, new Album {} };
+            var doubleAlbumList = new List<Album> { new Album {}, new Album {}, new Album {} };
 
-            var fakeSeries = Builder<Series>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p })
+
+            var fakeArtist = Builder<Artist>.CreateNew()
+                         .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })
                          .Build();
 
-            _parseResultMulti = new RemoteEpisode
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                .Returns(new List<TrackFile> { _firstFile, _secondFile });
+
+            _parseResultMulti = new RemoteAlbum
             {
-                Series = fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
-                Episodes = doubleEpisodeList
+                Artist = fakeArtist,
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                Albums = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteEpisode
+            _parseResultSingle = new RemoteAlbum
             {
-                Series = fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
-                Episodes = singleEpisodeList
+                Artist = fakeArtist,
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                Albums = singleAlbumList
             };
         }
 
         private void WithFirstFileUpgradable()
         {
-            _firstFile.Quality = new QualityModel(Quality.SDTV);
-        }
-
-        private void GivenAutoDownloadPropers()
-        {
-            Mocker.GetMock<IConfigService>()
-                  .Setup(s => s.AutoDownloadPropers)
-                  .Returns(true);
+            _firstFile.Quality = new QualityModel(Quality.MP3_192);
         }
 
         [Test]
-        public void should_return_false_when_episodeFile_was_added_more_than_7_days_ago()
+        public void should_return_false_when_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.Quality = Quality.MP3_256;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_when_first_episodeFile_was_added_more_than_7_days_ago()
+        public void should_return_false_when_first_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
-            _secondFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.Quality = Quality.MP3_256;
+            _secondFile.Quality.Quality = Quality.MP3_256;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_when_second_episodeFile_was_added_more_than_7_days_ago()
+        public void should_return_false_when_second_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
-            _secondFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.Quality = Quality.MP3_256;
+            _secondFile.Quality.Quality = Quality.MP3_256;
 
             _secondFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_when_episodeFile_was_added_more_than_7_days_ago_but_proper_is_for_better_quality()
+        public void should_return_true_when_trackFile_was_added_more_than_7_days_ago_but_proper_is_for_better_quality()
         {
             WithFirstFileUpgradable();
 
@@ -107,29 +106,48 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         }
 
         [Test]
-        public void should_return_true_when_episodeFile_was_added_more_than_7_days_ago_but_is_for_search()
+        public void should_return_true_when_trackFile_was_added_more_than_7_days_ago_but_is_for_search()
         {
             WithFirstFileUpgradable();
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, new SingleEpisodeSearchCriteria()).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_when_proper_but_auto_download_propers_is_false()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.DownloadPropersAndRepacks)
+                .Returns(ProperDownloadTypes.DoNotUpgrade);
+
+            _firstFile.Quality.Quality = Quality.MP3_256;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_when_episodeFile_was_added_today()
+        public void should_return_true_when_trackFile_was_added_today()
         {
-            GivenAutoDownloadPropers();
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
 
-            _firstFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.Quality = Quality.MP3_256;
+
+            _firstFile.DateAdded = DateTime.Today;
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_true_when_propers_are_not_preferred()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            _firstFile.Quality.Quality = Quality.MP3_256;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();

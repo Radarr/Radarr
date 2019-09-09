@@ -4,250 +4,116 @@ using System.Globalization;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.IndexerSearch
 {
     public interface ISearchForNzb
     {
-        List<DownloadDecision> EpisodeSearch(int episodeId, bool userInvokedSearch);
-        List<DownloadDecision> EpisodeSearch(Episode episode, bool userInvokedSearch);
-        List<DownloadDecision> SeasonSearch(int seriesId, int seasonNumber, bool missingOnly, bool userInvokedSearch);
+        List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
+        List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
     {
         private readonly IIndexerFactory _indexerFactory;
-        private readonly ISceneMappingService _sceneMapping;
-        private readonly ISeriesService _seriesService;
-        private readonly IEpisodeService _episodeService;
+        private readonly IAlbumService _albumService;
+        private readonly IArtistService _artistService;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly Logger _logger;
 
         public NzbSearchService(IIndexerFactory indexerFactory,
-                                ISceneMappingService sceneMapping,
-                                ISeriesService seriesService,
-                                IEpisodeService episodeService,
+                                IAlbumService albumService,
+                                IArtistService artistService,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 Logger logger)
         {
             _indexerFactory = indexerFactory;
-            _sceneMapping = sceneMapping;
-            _seriesService = seriesService;
-            _episodeService = episodeService;
+            _albumService = albumService;
+            _artistService = artistService;
             _makeDownloadDecision = makeDownloadDecision;
             _logger = logger;
         }
 
-        public List<DownloadDecision> EpisodeSearch(int episodeId, bool userInvokedSearch)
+        public List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var episode = _episodeService.GetEpisode(episodeId);
-
-            return EpisodeSearch(episode, userInvokedSearch);
+            var album = _albumService.GetAlbum(albumId);
+            return AlbumSearch(album, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> EpisodeSearch(Episode episode, bool userInvokedSearch)
+        public List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var series = _seriesService.GetSeries(episode.SeriesId);
-
-            if (series.SeriesType == SeriesTypes.Daily)
-            {
-                if (string.IsNullOrWhiteSpace(episode.AirDate))
-                {
-                    throw new InvalidOperationException("Daily episode is missing AirDate. Try to refresh series info.");
-                }
-
-                return SearchDaily(series, episode, userInvokedSearch);
-            }
-            if (series.SeriesType == SeriesTypes.Anime)
-            {
-                return SearchAnime(series, episode, userInvokedSearch);
-            }
-
-            if (episode.SeasonNumber == 0)
-            {
-                // search for special episodes in season 0 
-                return SearchSpecial(series, new List<Episode> { episode }, userInvokedSearch);
-            }
-
-            return SearchSingle(series, episode, userInvokedSearch);
+            var artist = _artistService.GetArtist(artistId);
+            return ArtistSearch(artist, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> SeasonSearch(int seriesId, int seasonNumber, bool missingOnly, bool userInvokedSearch)
+        public List<DownloadDecision> ArtistSearch(Artist artist, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var series = _seriesService.GetSeries(seriesId);
-            var episodes = _episodeService.GetEpisodesBySeason(seriesId, seasonNumber);
+            var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch, interactiveSearch);
+            var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
-            if (missingOnly)
-            {
-                episodes = episodes.Where(e => e.Monitored && !e.HasFile).ToList();
-            }
+            albums = albums.Where(a => a.Monitored).ToList();
 
-            if (series.SeriesType == SeriesTypes.Anime)
-            {
-                return SearchAnimeSeason(series, episodes, userInvokedSearch);
-            }
-
-            if (seasonNumber == 0)
-            {
-                // search for special episodes in season 0 
-                return SearchSpecial(series, episodes, userInvokedSearch);
-            }
-
-            var downloadDecisions = new List<DownloadDecision>();
-
-            if (series.UseSceneNumbering)
-            {
-                var sceneSeasonGroups = episodes.GroupBy(v =>
-                {
-                    if (v.SceneSeasonNumber.HasValue && v.SceneEpisodeNumber.HasValue)
-                    {
-                        return v.SceneSeasonNumber.Value;
-                    }
-                    return v.SeasonNumber;
-                }).Distinct();
-
-                foreach (var sceneSeasonEpisodes in sceneSeasonGroups)
-                {
-                    if (sceneSeasonEpisodes.Count() == 1)
-                    {
-                        var episode = sceneSeasonEpisodes.First();
-                        var searchSpec = Get<SingleEpisodeSearchCriteria>(series, sceneSeasonEpisodes.ToList(), userInvokedSearch);
-
-                        searchSpec.SeasonNumber = sceneSeasonEpisodes.Key;
-                        searchSpec.MonitoredEpisodesOnly = true;
-
-                        if (episode.SceneSeasonNumber.HasValue && episode.SceneEpisodeNumber.HasValue)
-                        {
-                            searchSpec.EpisodeNumber = episode.SceneEpisodeNumber.Value;
-                        }
-                        else
-                        {
-                            searchSpec.EpisodeNumber = episode.EpisodeNumber;
-                        }
-
-                        var decisions = Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-                        downloadDecisions.AddRange(decisions);
-                    }
-                    else
-                    {
-                        var searchSpec = Get<SeasonSearchCriteria>(series, sceneSeasonEpisodes.ToList(), userInvokedSearch);
-                        searchSpec.SeasonNumber = sceneSeasonEpisodes.Key;
-
-                        var decisions = Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-                        downloadDecisions.AddRange(decisions);
-                    }
-                }
-            }
-            else
-            {
-                var searchSpec = Get<SeasonSearchCriteria>(series, episodes, userInvokedSearch);
-                searchSpec.SeasonNumber = seasonNumber;
-
-                var decisions = Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-                downloadDecisions.AddRange(decisions);
-            }
-
-            return downloadDecisions;
+            searchSpec.Albums = albums;
+            
+            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private List<DownloadDecision> SearchSingle(Series series, Episode episode, bool userInvokedSearch)
+        public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var searchSpec = Get<SingleEpisodeSearchCriteria>(series, new List<Episode> { episode }, userInvokedSearch);
+            var artist = _artistService.GetArtist(album.ArtistId);
 
-            if (series.UseSceneNumbering && episode.SceneSeasonNumber.HasValue && episode.SceneEpisodeNumber.HasValue)
+            var searchSpec = Get<AlbumSearchCriteria>(artist, new List<Album> { album }, userInvokedSearch, interactiveSearch);
+
+            searchSpec.AlbumTitle = album.Title;
+            if (album.ReleaseDate.HasValue)
             {
-                searchSpec.EpisodeNumber = episode.SceneEpisodeNumber.Value;
-                searchSpec.SeasonNumber = episode.SceneSeasonNumber.Value;
+                searchSpec.AlbumYear = album.ReleaseDate.Value.Year;
             }
-            else
+
+            if (album.Disambiguation.IsNotNullOrWhiteSpace())
             {
-                searchSpec.EpisodeNumber = episode.EpisodeNumber;
-                searchSpec.SeasonNumber = episode.SeasonNumber;
+                searchSpec.Disambiguation = album.Disambiguation;
             }
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private List<DownloadDecision> SearchDaily(Series series, Episode episode, bool userInvokedSearch)
-        {
-            var airDate = DateTime.ParseExact(episode.AirDate, Episode.AIR_DATE_FORMAT, CultureInfo.InvariantCulture);
-            var searchSpec = Get<DailyEpisodeSearchCriteria>(series, new List<Episode> { episode }, userInvokedSearch);
-            searchSpec.AirDate = airDate;
-
-            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-        }
-
-        private List<DownloadDecision> SearchAnime(Series series, Episode episode, bool userInvokedSearch)
-        {
-            var searchSpec = Get<AnimeEpisodeSearchCriteria>(series, new List<Episode> { episode }, userInvokedSearch);
-
-            if (episode.SceneAbsoluteEpisodeNumber.HasValue)
-            {
-                searchSpec.AbsoluteEpisodeNumber = episode.SceneAbsoluteEpisodeNumber.Value;
-            }
-            else if (episode.AbsoluteEpisodeNumber.HasValue)
-            {
-                searchSpec.AbsoluteEpisodeNumber = episode.AbsoluteEpisodeNumber.Value;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("AbsoluteEpisodeNumber", "Can not search for an episode without an absolute episode number");
-            }
-
-            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-        }
-
-        private List<DownloadDecision> SearchSpecial(Series series, List<Episode> episodes, bool userInvokedSearch)
-        {
-            var searchSpec = Get<SpecialEpisodeSearchCriteria>(series, episodes, userInvokedSearch);
-            // build list of queries for each episode in the form: "<series> <episode-title>"
-            searchSpec.EpisodeQueryTitles = episodes.Where(e => !string.IsNullOrWhiteSpace(e.Title))
-                                                    .SelectMany(e => searchSpec.QueryTitles.Select(title => title + " " + SearchCriteriaBase.GetQueryTitle(e.Title)))
-                                                    .ToArray();
-
-            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
-        }
-
-        private List<DownloadDecision> SearchAnimeSeason(Series series, List<Episode> episodes, bool userInvokedSearch)
-        {
-            var downloadDecisions = new List<DownloadDecision>();
-
-            foreach (var episode in episodes.Where(e => e.Monitored))
-            {
-                downloadDecisions.AddRange(SearchAnime(series, episode, userInvokedSearch));
-            }
-
-            return downloadDecisions;
-        }
-
-        private TSpec Get<TSpec>(Series series, List<Episode> episodes, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private TSpec Get<TSpec>(Artist artist, List<Album> albums, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
 
-            spec.Series = series;
-            spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
-                                                           episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
-                                                           episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
-
-            spec.Episodes = episodes;
-
-            spec.SceneTitles.Add(series.Title);
+            spec.Albums = albums;
+            spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
+            spec.InteractiveSearch = interactiveSearch;
+
+            return spec;
+        }
+
+        private static TSpec Get<TSpec>(Artist artist, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
+        {
+            var spec = new TSpec();
+            spec.Artist = artist;
+            spec.UserInvokedSearch = userInvokedSearch;
+            spec.InteractiveSearch = interactiveSearch;
 
             return spec;
         }
 
         private List<DownloadDecision> Dispatch(Func<IIndexer, IEnumerable<ReleaseInfo>> searchAction, SearchCriteriaBase criteriaBase)
         {
-            var indexers = _indexerFactory.SearchEnabled();
+            var indexers = criteriaBase.InteractiveSearch ?
+                _indexerFactory.InteractiveSearchEnabled() :
+                _indexerFactory.AutomaticSearchEnabled();
+
             var reports = new List<ReleaseInfo>();
 
             _logger.ProgressInfo("Searching {0} indexers for {1}", indexers.Count, criteriaBase);

@@ -1,21 +1,25 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        List<QualityModel> GetBestQualityInHistory(int episodeId);
-        History MostRecentForEpisode(int episodeId);
+        History MostRecentForAlbum(int albumId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
-        void DeleteForSeries(int seriesId);
+        List<History> GetByArtist(int artistId, HistoryEventType? eventType);
+        List<History> GetByAlbum(int albumId, HistoryEventType? eventType);
+        List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
+        void DeleteForArtist(int artistId);
+        List<History> Since(DateTime date, HistoryEventType? eventType);
+
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
@@ -27,16 +31,9 @@ namespace NzbDrone.Core.History
         }
 
 
-        public List<QualityModel> GetBestQualityInHistory(int episodeId)
+        public History MostRecentForAlbum(int albumId)
         {
-            var history = Query.Where(c => c.EpisodeId == episodeId);
-
-            return history.Select(h => h.Quality).ToList();
-        }
-
-        public History MostRecentForEpisode(int episodeId)
-        {
-            return Query.Where(h => h.EpisodeId == episodeId)
+            return Query.Where(h => h.AlbumId == albumId)
                         .OrderByDescending(h => h.Date)
                         .FirstOrDefault();
         }
@@ -50,31 +47,77 @@ namespace NzbDrone.Core.History
 
         public List<History> FindByDownloadId(string downloadId)
         {
-            return Query.Where(h => h.DownloadId == downloadId);
+            return Query.Join<History, Artist>(JoinType.Left, h => h.Artist, (h, a) => h.ArtistId == a.Id)
+                        .Join<History, Album>(JoinType.Left, h => h.Album, (h, r) => h.AlbumId == r.Id)
+                        .Where(h => h.DownloadId == downloadId);
         }
 
-        public List<History> FindDownloadHistory(int idSeriesId, QualityModel quality)
+        public List<History> GetByArtist(int artistId, HistoryEventType? eventType)
+        {
+            var query = Query.Where(h => h.ArtistId == artistId);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderByDescending(h => h.Date);
+
+            return query;
+        }
+
+        public List<History> GetByAlbum(int albumId, HistoryEventType? eventType)
+        {
+            var query = Query.Join<History, Album>(JoinType.Inner, h => h.Album, (h, e) => h.AlbumId == e.Id)
+                .Where(h => h.AlbumId == albumId);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderByDescending(h => h.Date);
+
+            return query;
+        }
+
+        public List<History> FindDownloadHistory(int idArtistId, QualityModel quality)
         {
             return Query.Where(h =>
-                 h.SeriesId == idSeriesId &&
+                 h.ArtistId == idArtistId &&
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.DownloadFolderImported)
+                 h.EventType == HistoryEventType.TrackFileImported)
                  ).ToList();
         }
 
-        public void DeleteForSeries(int seriesId)
+        public void DeleteForArtist(int artistId)
         {
-            Delete(c => c.SeriesId == seriesId);
+            Delete(c => c.ArtistId == artistId);
         }
 
         protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
         {
-            var baseQuery = query.Join<History, Series>(JoinType.Inner, h => h.Series, (h, s) => h.SeriesId == s.Id)
-                                 .Join<History, Episode>(JoinType.Inner, h => h.Episode, (h, e) => h.EpisodeId == e.Id);
+            var baseQuery = query.Join<History, Artist>(JoinType.Inner, h => h.Artist, (h, a) => h.ArtistId == a.Id)
+                                 .Join<History, Album>(JoinType.Inner, h => h.Album, (h, r) => h.AlbumId == r.Id)
+                                 .Join<History, Track>(JoinType.Left, h => h.Track, (h, t) => h.TrackId == t.Id);
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
+        }
+
+        public List<History> Since(DateTime date, HistoryEventType? eventType)
+        {
+            var query = Query.Where(h => h.Date >= date);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderBy(h => h.Date);
+
+            return query;
         }
     }
 }

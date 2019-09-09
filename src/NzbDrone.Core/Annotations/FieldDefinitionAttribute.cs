@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace NzbDrone.Core.Annotations
 {
@@ -12,25 +12,38 @@ namespace NzbDrone.Core.Annotations
 
         public int Order { get; private set; }
         public string Label { get; set; }
+        public string Unit { get; set; }
         public string HelpText { get; set; }
         public string HelpLink { get; set; }
         public FieldType Type { get; set; }
         public bool Advanced { get; set; }
         public Type SelectOptions { get; set; }
+        public string Section { get; set; }
+        public HiddenType Hidden { get; set; }
     }
 
     public enum FieldType
     {
         Textbox,
+        Number,
         Password,
         Checkbox,
         Select,
         Path,
         FilePath,
-        Hidden,
         Tag,
         Action,
         Url,
-        Captcha
+        Captcha,
+        OAuth,
+        Device,
+        Playlist
+    }
+
+    public enum HiddenType
+    {
+        Visible,
+        Hidden,
+        HiddenIfNotSet
     }
 }

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.IO.Abstractions;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
@@ -202,7 +203,7 @@ namespace NzbDrone.Common.Test.DiskTests
         [Test]
         public void GetParentFolder_should_remove_trailing_slash_before_getting_parent_folder()
         {
-            var path = @"C:\Test\TV\".AsOsAgnostic();
+            var path = @"C:\Test\Music\".AsOsAgnostic();
             var parent = @"C:\Test".AsOsAgnostic();
 
             Subject.GetParentFolder(path).Should().Be(parent);
@@ -244,14 +245,20 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
         public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_none()
         {
+            WindowsOnly();
+
             Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.None));
         }
 
         [Test]
+        [Ignore("No longer behaving this way in a Windows 10 Feature Update")]
         public void should_not_be_able_to_rename_open_hardlinks_with_fileshare_write()
         {
+            WindowsOnly();
+
             Assert.Throws<IOException>(() => DoHardLinkRename(FileShare.Read));
         }
     }

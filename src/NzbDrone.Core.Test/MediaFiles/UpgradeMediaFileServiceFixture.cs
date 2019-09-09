@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Marr.Data;
@@ -8,26 +9,27 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     public class UpgradeMediaFileServiceFixture : CoreTest<UpgradeMediaFileService>
     {
-        private EpisodeFile _episodeFile;
-        private LocalEpisode _localEpisode;
+        private TrackFile _trackFile;
+        private LocalTrack _localTrack;
+        private string rootPath = @"C:\Test\Music\Artist".AsOsAgnostic();
 
         [SetUp]
         public void Setup()
         {
-            _localEpisode = new LocalEpisode();
-            _localEpisode.Series = new Series
+            _localTrack = new LocalTrack();
+            _localTrack.Artist = new Artist
                                    {
-                                       Path = @"C:\Test\TV\Series".AsOsAgnostic()
+                                       Path = rootPath
                                    };
 
-            _episodeFile = Builder<EpisodeFile>
+            _trackFile = Builder<TrackFile>
                 .CreateNew()
                 .Build();
 
@@ -35,141 +37,149 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(c => c.FolderExists(It.IsAny<string>()))
+                .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
+                 .Setup(c => c.GetParentFolder(It.IsAny<string>()))
+                 .Returns<string>(c => Path.GetDirectoryName(c));
         }
 
-        private void GivenSingleEpisodeWithSingleEpisodeFile()
+        private void GivenSingleTrackWithSingleTrackFile()
         {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
                                                      .All()
-                                                     .With(e => e.EpisodeFileId = 1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                                                new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
+                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();
         }
 
-        private void GivenMultipleEpisodesWithSingleEpisodeFile()
+        private void GivenMultipleTracksWithSingleTrackFile()
         {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(2)
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
                                                      .All()
-                                                     .With(e => e.EpisodeFileId = 1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                                                new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
+                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();
         }
 
-        private void GivenMultipleEpisodesWithMultipleEpisodeFiles()
+        private void GivenMultipleTracksWithMultipleTrackFiles()
         {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(2)
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
                                                      .TheFirst(1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                                                new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
+                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .TheNext(1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
+                                                                                new TrackFile
                                                                                 {
                                                                                     Id = 2,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e02.avi",
+                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e02.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();
         }
 
         [Test]
-        public void should_delete_single_episode_file_once()
+        public void should_delete_single_track_file_once()
         {
-            GivenSingleEpisodeWithSingleEpisodeFile();
+            GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Once());
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void should_delete_the_same_episode_file_only_once()
+        public void should_delete_the_same_track_file_only_once()
         {
-            GivenMultipleEpisodesWithSingleEpisodeFile();
+            GivenMultipleTracksWithSingleTrackFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Once());
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void should_delete_multiple_different_episode_files()
+        public void should_delete_multiple_different_track_files()
         {
-            GivenMultipleEpisodesWithMultipleEpisodeFiles();
+            GivenMultipleTracksWithMultipleTrackFiles();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Exactly(2));
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Test]
-        public void should_delete_episode_file_from_database()
+        public void should_delete_track_file_from_database()
         {
-            GivenSingleEpisodeWithSingleEpisodeFile();
+            GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(It.IsAny<EpisodeFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(It.IsAny<TrackFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
         }
 
         [Test]
         public void should_delete_existing_file_fromdb_if_file_doesnt_exist()
         {
-            GivenSingleEpisodeWithSingleEpisodeFile();
+            GivenSingleTrackWithSingleTrackFile();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localEpisode.Episodes.Single().EpisodeFile.Value, DeleteMediaFileReason.Upgrade), Times.Once());
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Tracks.Single().TrackFile.Value, DeleteMediaFileReason.Upgrade), Times.Once());
         }
 
         [Test]
         public void should_not_try_to_recyclebin_existing_file_if_file_doesnt_exist()
         {
-            GivenSingleEpisodeWithSingleEpisodeFile();
+            GivenSingleTrackWithSingleTrackFile();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
 
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
-        public void should_return_old_episode_file_in_oldFiles()
+        public void should_return_old_track_file_in_oldFiles()
         {
-            GivenSingleEpisodeWithSingleEpisodeFile();
+            GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode).OldFiles.Count.Should().Be(1);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack).OldFiles.Count.Should().Be(1);
         }
 
         [Test]
-        public void should_return_old_episode_files_in_oldFiles()
+        public void should_return_old_track_files_in_oldFiles()
         {
-            GivenMultipleEpisodesWithMultipleEpisodeFiles();
+            GivenMultipleTracksWithMultipleTrackFiles();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode).OldFiles.Count.Should().Be(2);
+            Subject.UpgradeTrackFile(_trackFile, _localTrack).OldFiles.Count.Should().Be(2);
         }
     }
 }

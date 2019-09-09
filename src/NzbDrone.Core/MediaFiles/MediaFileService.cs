@@ -1,30 +1,38 @@
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
 using NzbDrone.Common;
+using NzbDrone.Core.Music;
+using System;
+using NzbDrone.Core.Music.Events;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileService
     {
-        EpisodeFile Add(EpisodeFile episodeFile);
-        void Update(EpisodeFile episodeFile);
-        void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason);
-        List<EpisodeFile> GetFilesBySeries(int seriesId);
-        List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber);
-        List<EpisodeFile> GetFilesWithoutMediaInfo();
-        List<string> FilterExistingFiles(List<string> files, Series series);
-        EpisodeFile Get(int id);
-        List<EpisodeFile> Get(IEnumerable<int> ids);
-
+        TrackFile Add(TrackFile trackFile);
+        void AddMany(List<TrackFile> trackFiles);
+        void Update(TrackFile trackFile);
+        void Update(List<TrackFile> trackFile);
+        void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
+        void DeleteMany(List<TrackFile> trackFiles, DeleteMediaFileReason reason);
+        List<TrackFile> GetFilesByArtist(int artistId);
+        List<TrackFile> GetFilesByAlbum(int albumId);
+        List<TrackFile> GetFilesByRelease(int releaseId);
+        List<TrackFile> GetUnmappedFiles();
+        List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, Artist artist, FilterFilesType filter);
+        TrackFile Get(int id);
+        List<TrackFile> Get(IEnumerable<int> ids);
+        List<TrackFile> GetFilesWithBasePath(string path);
+        TrackFile GetFileWithPath(string path);
+        void UpdateMediaInfo(List<TrackFile> trackFiles);
     }
 
-    public class MediaFileService : IMediaFileService, IHandleAsync<SeriesDeletedEvent>
+    public class MediaFileService : IMediaFileService, IHandleAsync<AlbumDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
@@ -37,66 +45,147 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public EpisodeFile Add(EpisodeFile episodeFile)
+        public TrackFile Add(TrackFile trackFile)
         {
-            var addedFile = _mediaFileRepository.Insert(episodeFile);
-            _eventAggregator.PublishEvent(new EpisodeFileAddedEvent(addedFile));
+            var addedFile = _mediaFileRepository.Insert(trackFile);
+            _eventAggregator.PublishEvent(new TrackFileAddedEvent(addedFile));
             return addedFile;
         }
 
-        public void Update(EpisodeFile episodeFile)
+        public void AddMany(List<TrackFile> trackFiles)
         {
-            _mediaFileRepository.Update(episodeFile);
+            _mediaFileRepository.InsertMany(trackFiles);
+            foreach (var addedFile in trackFiles)
+            {
+                _eventAggregator.PublishEvent(new TrackFileAddedEvent(addedFile));
+            }
         }
 
-        public void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason)
+        public void Update(TrackFile trackFile)
         {
-            //Little hack so we have the episodes and series attached for the event consumers
-            episodeFile.Episodes.LazyLoad();
-            episodeFile.Path = Path.Combine(episodeFile.Series.Value.Path, episodeFile.RelativePath);
-
-            _mediaFileRepository.Delete(episodeFile);
-            _eventAggregator.PublishEvent(new EpisodeFileDeletedEvent(episodeFile, reason));
+            _mediaFileRepository.Update(trackFile);
         }
 
-        public List<EpisodeFile> GetFilesBySeries(int seriesId)
+        public void Update(List<TrackFile> trackFiles)
         {
-            return _mediaFileRepository.GetFilesBySeries(seriesId);
+            _mediaFileRepository.UpdateMany(trackFiles);
         }
 
-        public List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber)
+
+        public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
-            return _mediaFileRepository.GetFilesBySeason(seriesId, seasonNumber);
+            _mediaFileRepository.Delete(trackFile);
+            // If the trackfile wasn't mapped to a track, don't publish an event
+            if (trackFile.AlbumId > 0)
+            {
+                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+            }
         }
 
-        public List<EpisodeFile> GetFilesWithoutMediaInfo()
+        public void DeleteMany(List<TrackFile> trackFiles, DeleteMediaFileReason reason)
         {
-            return _mediaFileRepository.GetFilesWithoutMediaInfo();
+            _mediaFileRepository.DeleteMany(trackFiles);
+
+            // publish events where trackfile was mapped to a track
+            foreach (var trackFile in trackFiles.Where(x => x.AlbumId > 0))
+            {
+                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+            }
         }
 
-        public List<string> FilterExistingFiles(List<string> files, Series series)
+        public List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, Artist artist, FilterFilesType filter)
         {
-            var seriesFiles = GetFilesBySeries(series.Id).Select(f => Path.Combine(series.Path, f.RelativePath)).ToList();
+            _logger.Debug($"Filtering {files.Count} files for unchanged files");
 
-            if (!seriesFiles.Any()) return files;
+            var knownFiles = GetFilesWithBasePath(artist.Path);
+            _logger.Trace($"Got {knownFiles.Count} existing files");
 
-            return files.Except(seriesFiles, PathEqualityComparer.Instance).ToList();
+            if (!knownFiles.Any()) return files;
+
+            var combined = files
+                .Join(knownFiles,
+                      f => f.FullName,
+                      af => af.Path,
+                      (f, af) => new { DiskFile = f, DbFile = af},
+                      PathEqualityComparer.Instance)
+                .ToList();
+
+            List<IFileInfo> unwanted = null;
+            if (filter == FilterFilesType.Known)
+            {
+                unwanted = combined
+                    .Where(x => x.DiskFile.Length == x.DbFile.Size &&
+                           Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1)
+                    .Select(x => x.DiskFile)
+                    .ToList();
+                _logger.Trace($"{unwanted.Count} unchanged existing files");
+            }
+            else if (filter == FilterFilesType.Matched)
+            {
+                unwanted = combined
+                    .Where(x => x.DiskFile.Length == x.DbFile.Size &&
+                           Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1 &&
+                           (x.DbFile.Tracks == null || (x.DbFile.Tracks.IsLoaded && x.DbFile.Tracks.Value.Any())))
+                    .Select(x => x.DiskFile)
+                    .ToList();
+                _logger.Trace($"{unwanted.Count} unchanged and matched files");
+            }
+            else
+            {
+                throw new ArgumentException("Unrecognised value of FilterFilesType filter");
+            }
+
+            return files.Except(unwanted).ToList();
         }
 
-        public EpisodeFile Get(int id)
+        public TrackFile Get(int id)
         {
             return _mediaFileRepository.Get(id);
         }
 
-        public List<EpisodeFile> Get(IEnumerable<int> ids)
+        public List<TrackFile> Get(IEnumerable<int> ids)
         {
             return _mediaFileRepository.Get(ids).ToList();
         }
 
-        public void HandleAsync(SeriesDeletedEvent message)
+        public List<TrackFile> GetFilesWithBasePath(string path)
         {
-            var files = GetFilesBySeries(message.Series.Id);
-            _mediaFileRepository.DeleteMany(files);
+            return _mediaFileRepository.GetFilesWithBasePath(path);
+        }
+
+        public TrackFile GetFileWithPath(string path)
+        {
+            return _mediaFileRepository.GetFileWithPath(path);
+        }
+
+        public void HandleAsync(AlbumDeletedEvent message)
+        {
+            _mediaFileRepository.DeleteFilesByAlbum(message.Album.Id);
+        }
+
+        public List<TrackFile> GetFilesByArtist(int artistId)
+        {
+            return _mediaFileRepository.GetFilesByArtist(artistId);
+        }
+
+        public List<TrackFile> GetFilesByAlbum(int albumId)
+        {
+            return _mediaFileRepository.GetFilesByAlbum(albumId);
+        }
+
+        public List<TrackFile> GetFilesByRelease(int releaseId)
+        {
+            return _mediaFileRepository.GetFilesByRelease(releaseId);
+        }
+
+        public List<TrackFile> GetUnmappedFiles()
+        {
+            return _mediaFileRepository.GetUnmappedFiles();
+        }
+
+        public void UpdateMediaInfo(List<TrackFile> trackFiles)
+        {
+            _mediaFileRepository.SetFields(trackFiles, t => t.MediaInfo);
         }
     }
 }

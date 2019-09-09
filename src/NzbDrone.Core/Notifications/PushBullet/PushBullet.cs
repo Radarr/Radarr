@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.PushBullet
 {
@@ -16,15 +19,29 @@ namespace NzbDrone.Core.Notifications.PushBullet
         public override string Name => "Pushbullet";
         public override string Link => "https://www.pushbullet.com/";
 
-
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
+            _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            _proxy.SendNotification(EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message, Settings);
+        }
+
+        public override void OnDownloadFailure(DownloadFailedMessage message)
+        {
+            _proxy.SendNotification(DOWNLOAD_FAILURE_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnImportFailure(AlbumDownloadMessage message)
+        {
+            _proxy.SendNotification(IMPORT_FAILURE_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()
@@ -34,6 +51,37 @@ namespace NzbDrone.Core.Notifications.PushBullet
             failures.AddIfNotNull(_proxy.Test(Settings));
 
             return new ValidationResult(failures);
+        }
+
+        public override object RequestAction(string action, IDictionary<string, string> query)
+        {
+            if (action == "getDevices")
+            {
+                // Return early if there is not an API key
+                if (Settings.ApiKey.IsNullOrWhiteSpace())
+                {
+                    return new
+                    {
+                        devices = new List<object>()
+                    };
+                }
+
+                Settings.Validate().Filter("ApiKey").ThrowOnError();
+                var devices = _proxy.GetDevices(Settings);
+
+                return new
+                       {
+                           options = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
+                                            .OrderBy(d => d.Nickname, StringComparer.InvariantCultureIgnoreCase)
+                                            .Select(d => new
+                                                         {
+                                                             id = d.Id,
+                                                             name = d.Nickname
+                                                         })
+                       };
+            }
+
+            return new { };
         }
     }
 }

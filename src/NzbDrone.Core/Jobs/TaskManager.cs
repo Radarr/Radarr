@@ -5,17 +5,16 @@ using NLog;
 using NzbDrone.Core.Backup;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
+using NzbDrone.Core.Music.Commands;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -64,23 +63,27 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 1, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 12*60, TypeName = typeof(RefreshSeriesCommand).FullName},
+                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshArtistCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
-                    new ScheduledTask{ Interval = 7*24*60, TypeName = typeof(BackupCommand).FullName},
+
+                    new ScheduledTask
+                    {
+                        Interval = GetBackupInterval(),
+                        TypeName = typeof(BackupCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = 24 * 60, // TODO: Add a setting?
+                        TypeName = typeof(ImportListSyncCommand).FullName
+                    },
 
                     new ScheduledTask
                     { 
                         Interval = GetRssSyncInterval(),
                         TypeName = typeof(RssSyncCommand).FullName
-                    },
-
-                    new ScheduledTask
-                    { 
-                        Interval = _configService.DownloadedEpisodesScanInterval,
-                        TypeName = typeof(DownloadedEpisodesScanCommand).FullName
-                    },
+                    }
                 };
 
             var currentTasks = _scheduledTaskRepository.All().ToList();
@@ -109,6 +112,13 @@ namespace NzbDrone.Core.Jobs
 
                 _scheduledTaskRepository.Upsert(currentDefinition);
             }
+        }
+
+        private int GetBackupInterval()
+        {
+            var interval = _configService.BackupInterval;
+
+            return interval * 60 * 24;
         }
 
         private int GetRssSyncInterval()
@@ -144,10 +154,7 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
-            downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
-
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes });
+            _scheduledTaskRepository.Update(rss);
         }
     }
 }

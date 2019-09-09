@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -34,13 +34,13 @@ namespace NzbDrone.Core.Notifications.Twitter
         public TwitterSettings()
         {
             DirectMessage = true;
-            AuthorizeNotification = "step1";
+            AuthorizeNotification = "startOAuth";
         }
 
-        [FieldDefinition(0, Label = "Consumer Key", HelpText = "Consumer key from a Twitter application", HelpLink = "https://github.com/Sonarr/Sonarr/wiki/Twitter-Notifications")]
+        [FieldDefinition(0, Label = "Consumer Key", HelpText = "Consumer key from a Twitter application", HelpLink = "https://github.com/Lidarr/Lidarr/wiki/Twitter-Notifications")]
         public string ConsumerKey { get; set; }
 
-        [FieldDefinition(1, Label = "Consumer Secret", HelpText = "Consumer secret from a Twitter application", HelpLink = "https://github.com/Sonarr/Sonarr/wiki/Twitter-Notifications")]
+        [FieldDefinition(1, Label = "Consumer Secret", HelpText = "Consumer secret from a Twitter application", HelpLink = "https://github.com/Lidarr/Lidarr/wiki/Twitter-Notifications")]
         public string ConsumerSecret { get; set; }
 
         [FieldDefinition(2, Label = "Access Token", Advanced = true)]
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Notifications.Twitter
         [FieldDefinition(5, Label = "Direct Message", Type = FieldType.Checkbox, HelpText = "Send a direct message instead of a public message")]
         public bool DirectMessage { get; set; }
 
-        [FieldDefinition(6, Label = "Connect to twitter", Type = FieldType.Action)]
+        [FieldDefinition(6, Label = "Connect to Twitter", Type = FieldType.OAuth)]
         public string AuthorizeNotification { get; set; }
 
         public NzbDroneValidationResult Validate()

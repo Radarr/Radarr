@@ -1,13 +1,14 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.RootFolders
 {
@@ -18,14 +19,14 @@ namespace NzbDrone.Core.RootFolders
         RootFolder Add(RootFolder rootDir);
         void Remove(int id);
         RootFolder Get(int id);
+        string GetBestRootFolderPath(string path);
     }
 
     public class RootFolderService : IRootFolderService
     {
         private readonly IRootFolderRepository _rootFolderRepository;
         private readonly IDiskProvider _diskProvider;
-        private readonly ISeriesRepository _seriesRepository;
-        private readonly IConfigService _configService;
+        private readonly IArtistRepository _artistRepository;
         private readonly Logger _logger;
 
         private static readonly HashSet<string> SpecialFolders = new HashSet<string>
@@ -44,14 +45,12 @@ namespace NzbDrone.Core.RootFolders
 
         public RootFolderService(IRootFolderRepository rootFolderRepository,
                                  IDiskProvider diskProvider,
-                                 ISeriesRepository seriesRepository,
-                                 IConfigService configService,
+                                 IArtistRepository artistRepository,
                                  Logger logger)
         {
             _rootFolderRepository = rootFolderRepository;
             _diskProvider = diskProvider;
-            _seriesRepository = seriesRepository;
-            _configService = configService;
+            _artistRepository = artistRepository;
             _logger = logger;
         }
 
@@ -70,17 +69,15 @@ namespace NzbDrone.Core.RootFolders
             {
                 try
                 {
-                    if (folder.Path.IsPathValid() && _diskProvider.FolderExists(folder.Path))
+                    if (folder.Path.IsPathValid())
                     {
-                        folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
-                        folder.UnmappedFolders = GetUnmappedFolders(folder.Path);
+                        GetDetails(folder);
                     }
                 }
                 //We don't want an exception to prevent the root folders from loading in the UI, so they can still be deleted
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unable to get free space and unmapped folders for root folder {0}", folder.Path);
-                    folder.FreeSpace = 0;
                     folder.UnmappedFolders = new List<UnmappedFolder>();
                 }
             });
@@ -107,11 +104,6 @@ namespace NzbDrone.Core.RootFolders
                 throw new InvalidOperationException("Recent directory already exists.");
             }
 
-            if (_configService.DownloadedEpisodesFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedEpisodesFolder.PathEquals(rootFolder.Path))
-            {
-                throw new InvalidOperationException("Drone Factory folder cannot be used.");
-            }
-
             if (!_diskProvider.FolderWritable(rootFolder.Path))
             {
                 throw new UnauthorizedAccessException(string.Format("Root folder path '{0}' is not writable by user '{1}'", rootFolder.Path, Environment.UserName));
@@ -119,8 +111,8 @@ namespace NzbDrone.Core.RootFolders
 
             _rootFolderRepository.Insert(rootFolder);
 
-            rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
-            rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            GetDetails(rootFolder);
+
             return rootFolder;
         }
 
@@ -139,7 +131,7 @@ namespace NzbDrone.Core.RootFolders
             }
 
             var results = new List<UnmappedFolder>();
-            var series = _seriesRepository.All().ToList();
+            var artist = _artistRepository.All().ToList();
 
             if (!_diskProvider.FolderExists(path))
             {
@@ -147,8 +139,8 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
-            var possibleSeriesFolders = _diskProvider.GetDirectories(path).ToList();
-            var unmappedFolders = possibleSeriesFolders.Except(series.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+            var possibleArtistFolders = _diskProvider.GetDirectories(path).ToList();
+            var unmappedFolders = possibleArtistFolders.Except(artist.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFolder in unmappedFolders)
             {
@@ -166,9 +158,37 @@ namespace NzbDrone.Core.RootFolders
         public RootFolder Get(int id)
         {
             var rootFolder = _rootFolderRepository.Get(id);
-            rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
-            rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            GetDetails(rootFolder);
+
             return rootFolder;
+        }
+
+        public string GetBestRootFolderPath(string path)
+        {
+            var possibleRootFolder = All().Where(r => r.Path.IsParentPath(path))
+                .OrderByDescending(r => r.Path.Length)
+                .FirstOrDefault();
+
+            if (possibleRootFolder == null)
+            {
+                return Path.GetDirectoryName(path);
+            }
+
+            return possibleRootFolder.Path;
+        }
+
+        private void GetDetails(RootFolder rootFolder)
+        {
+            Task.Run(() =>
+            {
+                if (_diskProvider.FolderExists(rootFolder.Path))
+                {
+                    rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
+                    rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
+                    rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+                }
+            })
+                .Wait(5000);
         }
     }
 }

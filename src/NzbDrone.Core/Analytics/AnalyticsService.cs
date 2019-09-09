@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Analytics
@@ -17,6 +17,6 @@ namespace NzbDrone.Core.Analytics
             _configFileProvider = configFileProvider;
         }
 
-        public bool IsEnabled => _configFileProvider.AnalyticsEnabled && RuntimeInfo.IsProduction;
+        public bool IsEnabled => _configFileProvider.AnalyticsEnabled;
     }
 }

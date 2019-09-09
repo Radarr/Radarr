@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using Mono.Unix;
 using Mono.Unix.Native;
@@ -23,7 +24,16 @@ namespace NzbDrone.Mono.Disk
         // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
         private const uint UNCHANGED_ID = uint.MaxValue;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
+        public DiskProvider(IProcMountProvider procMountProvider,
+                            ISymbolicLinkResolver symLinkResolver)
+        : this(new FileSystem(), procMountProvider, symLinkResolver)
+        {
+        }
+        
+        public DiskProvider(IFileSystem fileSystem,
+                            IProcMountProvider procMountProvider,
+                            ISymbolicLinkResolver symLinkResolver)
+        : base(fileSystem)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
@@ -40,24 +50,17 @@ namespace NzbDrone.Mono.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            try
-            {
-                var mount = GetMount(path);
+            Logger.Debug($"path: {path}");
 
-                if (mount == null)
-                {
-                    Logger.Debug("Unable to get free space for '{0}', unable to find suitable drive", path);
-                    return null;
-                }
+            var mount = GetMount(path);
 
-                return mount.AvailableFreeSpace;
-            }
-            catch (InvalidOperationException ex)
+            if (mount == null)
             {
-                Logger.Error(ex, "Couldn't get free space for {0}", path);
+                Logger.Debug("Unable to get free space for '{0}', unable to find suitable drive", path);
+                return null;
             }
 
-            return null;
+            return mount.AvailableFreeSpace;
         }
 
         public override void InheritFolderPermissions(string filename)
@@ -66,9 +69,9 @@ namespace NzbDrone.Mono.Disk
 
             try
             {
-                var fs = File.GetAccessControl(filename);
+                var fs = _fileSystem.File.GetAccessControl(filename);
                 fs.SetAccessRuleProtection(false, false);
-                File.SetAccessControl(filename, fs);
+                _fileSystem.File.SetAccessControl(filename, fs);
             }
             catch (NotImplementedException)
             {
@@ -84,40 +87,130 @@ namespace NzbDrone.Mono.Disk
             SetOwner(path, user, group);
         }
 
-        public override List<IMount> GetMounts()
+        protected override List<IMount> GetAllMounts()
         {
-            return GetDriveInfoMounts().Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
-                                       .Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable)
-                                       .Concat(_procMountProvider.GetMounts())
-                                       .DistinctBy(v => v.RootDirectory)
-                                       .ToList();
+            return _procMountProvider.GetMounts()
+                                     .Concat(GetDriveInfoMounts()
+                                                 .Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
+                                                 .Where(d => d.DriveType == DriveType.Fixed ||
+                                                             d.DriveType == DriveType.Network ||
+                                                             d.DriveType == DriveType.Removable))
+                                     .DistinctBy(v => v.RootDirectory)
+                                     .ToList();
+        }
+
+        protected override bool IsSpecialMount(IMount mount)
+        {
+            var root = mount.RootDirectory;
+
+            if (root.StartsWith("/var/lib/"))
+            {
+                // Could be /var/lib/docker when docker uses zfs. Very unlikely that a useful mount is located in /var/lib.
+                return true;
+            }
+
+            if (root.StartsWith("/snap/"))
+            {
+                // Mount point for snap packages
+                return true;
+            }
+
+            return false;
         }
 
         public override long? GetTotalSize(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            try
+            var mount = GetMount(path);
+
+            return mount?.TotalSize;
+        }
+
+        protected override void CopyFileInternal(string source, string destination, bool overwrite)
+        {
+            var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
+
+            if (sourceInfo.IsSymbolicLink)
             {
-                var mount = GetMount(path);
+                var isSameDir = UnixPath.GetDirectoryName(source) == UnixPath.GetDirectoryName(destination);
+                var symlinkInfo = (UnixSymbolicLinkInfo)sourceInfo;
+                var symlinkPath = symlinkInfo.ContentsPath;
 
-                if (mount == null) return null;
+                var newFile = new UnixSymbolicLinkInfo(destination);
 
-                return mount.TotalSize;
+                if (FileExists(destination) && overwrite)
+                {
+                    DeleteFile(destination);
+                }
+
+                if (isSameDir)
+                {
+                    // We're in the same dir, so we can preserve relative symlinks.
+                    newFile.CreateSymbolicLinkTo(symlinkInfo.ContentsPath);
+                }
+                else
+                {
+                    var fullPath = UnixPath.Combine(UnixPath.GetDirectoryName(source), symlinkPath);
+                    newFile.CreateSymbolicLinkTo(fullPath);
+                }
             }
-            catch (InvalidOperationException e)
+            else
             {
-                Logger.Error(e, "Couldn't get total space for {0}", path);
+                base.CopyFileInternal(source, destination, overwrite);
             }
+        }
 
-            return null;
+        protected override void MoveFileInternal(string source, string destination)
+        {
+            var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
+
+            if (sourceInfo.IsSymbolicLink)
+            {
+                var isSameDir = UnixPath.GetDirectoryName(source) == UnixPath.GetDirectoryName(destination);
+                var symlinkInfo = (UnixSymbolicLinkInfo)sourceInfo;
+                var symlinkPath = symlinkInfo.ContentsPath;
+
+                var newFile = new UnixSymbolicLinkInfo(destination);
+
+                if (isSameDir)
+                {
+                    // We're in the same dir, so we can preserve relative symlinks.
+                    newFile.CreateSymbolicLinkTo(symlinkInfo.ContentsPath);
+                }
+                else
+                {
+                    var fullPath = UnixPath.Combine(UnixPath.GetDirectoryName(source), symlinkPath);
+                    newFile.CreateSymbolicLinkTo(fullPath);
+                }
+
+                try
+                {
+                    // Finally remove the original symlink.
+                    symlinkInfo.Delete();
+                }
+                catch
+                {
+                    // Removing symlink failed, so rollback the new link and throw.
+                    newFile.Delete();
+                    throw;
+                }
+            }
+            else
+            {
+                base.MoveFileInternal(source, destination);
+            }
         }
 
         public override bool TryCreateHardLink(string source, string destination)
         {
             try
             {
-                UnixFileSystemInfo.GetFileSystemEntry(source).CreateLink(destination);
+                var fileInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
+
+                if (fileInfo.IsSymbolicLink) return false;
+
+                fileInfo.CreateLink(destination);
                 return true;
             }
             catch (Exception ex)
@@ -206,8 +299,6 @@ namespace NzbDrone.Mono.Disk
             }
 
             return g.gr_gid;
-
-
         }
     }
 }

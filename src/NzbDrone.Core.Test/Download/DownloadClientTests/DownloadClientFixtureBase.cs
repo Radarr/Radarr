@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -8,7 +8,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.RemotePathMappings;
@@ -30,8 +30,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns(30);
 
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.Map(It.IsAny<ParsedEpisodeInfo>(), It.IsAny<int>(), It.IsAny<int>(), (SearchCriteriaBase)null))
-                .Returns(() => CreateRemoteEpisode());
+                .Setup(s => s.Map(It.IsAny<ParsedAlbumInfo>(), (SearchCriteriaBase)null))
+                .Returns(() => CreateRemoteAlbum());
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
@@ -42,22 +42,21 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns<string, OsPath>((h, r) => r);
         }
 
-        protected virtual RemoteEpisode CreateRemoteEpisode()
+        protected virtual RemoteAlbum CreateRemoteAlbum()
         {
-            var remoteEpisode = new RemoteEpisode();
-            remoteEpisode.Release = new ReleaseInfo();
-            remoteEpisode.Release.Title = _title;
-            remoteEpisode.Release.DownloadUrl = _downloadUrl;
-            remoteEpisode.Release.DownloadProtocol = Subject.Protocol;
+            var remoteAlbum = new RemoteAlbum();
+            remoteAlbum.Release = new ReleaseInfo();
+            remoteAlbum.Release.Title = _title;
+            remoteAlbum.Release.DownloadUrl = _downloadUrl;
+            remoteAlbum.Release.DownloadProtocol = Subject.Protocol;
 
-            remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            remoteEpisode.ParsedEpisodeInfo.FullSeason = false;
+            remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
 
-            remoteEpisode.Episodes = new List<Episode>();
+            remoteAlbum.Albums = new List<Album>();
 
-            remoteEpisode.Series = new Series();
+            remoteAlbum.Artist = new Artist();
 
-            return remoteEpisode;
+            return remoteAlbum;
         }
 
         protected void VerifyIdentifiable(DownloadClientItem downloadClientItem)

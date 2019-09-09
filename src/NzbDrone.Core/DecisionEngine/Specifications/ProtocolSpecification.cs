@@ -18,22 +18,23 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
-            var delayProfile = _delayProfileService.BestForTags(subject.Series.Tags);
+            var delayProfile = _delayProfileService.BestForTags(subject.Artist.Tags);
 
             if (subject.Release.DownloadProtocol == DownloadProtocol.Usenet && !delayProfile.EnableUsenet)
             {
-                _logger.Debug("[{0}] Usenet is not enabled for this series", subject.Release.Title);
-                return Decision.Reject("Usenet is not enabled for this series");
+                _logger.Debug("[{0}] Usenet is not enabled for this artist", subject.Release.Title);
+                return Decision.Reject("Usenet is not enabled for this artist");
             }
 
             if (subject.Release.DownloadProtocol == DownloadProtocol.Torrent && !delayProfile.EnableTorrent)
             {
-                _logger.Debug("[{0}] Torrent is not enabled for this series", subject.Release.Title);
-                return Decision.Reject("Torrent is not enabled for this series");
+                _logger.Debug("[{0}] Torrent is not enabled for this artist", subject.Release.Title);
+                return Decision.Reject("Torrent is not enabled for this artist");
             }
 
             return Decision.Accept();

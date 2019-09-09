@@ -33,6 +33,8 @@ namespace NzbDrone.Core.Configuration
         AuthenticationType AuthenticationMethod { get; }
         bool AnalyticsEnabled { get; }
         string LogLevel { get; }
+        string ConsoleLogLevel { get; }
+        bool FilterSentryEvents { get; }
         string Branch { get; }
         string ApiKey { get; }
         string SslCertHash { get; }
@@ -134,15 +136,29 @@ namespace NzbDrone.Core.Configuration
             }
         }
 
-        public int Port => GetValueInt("Port", 8989);
+        public int Port => GetValueInt("Port", 8686);
 
-        public int SslPort => GetValueInt("SslPort", 9898);
+        public int SslPort => GetValueInt("SslPort", 6868);
 
         public bool EnableSsl => GetValueBoolean("EnableSsl", false);
 
         public bool LaunchBrowser => GetValueBoolean("LaunchBrowser", true);
 
-        public string ApiKey => GetValue("ApiKey", GenerateApiKey());
+        public string ApiKey
+        {
+            get
+            {
+                var apiKey = GetValue("ApiKey", GenerateApiKey());
+
+                if (apiKey.IsNullOrWhiteSpace())
+                {
+                    apiKey = GenerateApiKey();
+                    SetValue("ApiKey", apiKey);
+                }
+
+                return apiKey;
+            }
+        }
 
         public AuthenticationType AuthenticationMethod
         {
@@ -164,7 +180,9 @@ namespace NzbDrone.Core.Configuration
 
         public string Branch => GetValue("Branch", "master").ToLowerInvariant();
 
-        public string LogLevel => GetValue("LogLevel", "Info");
+        public string LogLevel => GetValue("LogLevel", "info");
+        public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
+        public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
 
         public string SslCertHash => GetValue("SslCertHash", "");
 
@@ -304,12 +322,12 @@ namespace NzbDrone.Core.Configuration
 
                         if (contents.IsNullOrWhiteSpace())
                         {
-                            throw new InvalidConfigFileException($"{_configFile} is empty. Please delete the config file and Sonarr will recreate it.");
+                            throw new InvalidConfigFileException($"{_configFile} is empty. Please delete the config file and Lidarr will recreate it.");
                         }
 
                         if (contents.All(char.IsControl))
                         {
-                            throw new InvalidConfigFileException($"{_configFile} is corrupt. Please delete the config file and Sonarr will recreate it.");
+                            throw new InvalidConfigFileException($"{_configFile} is corrupt. Please delete the config file and Lidarr will recreate it.");
                         }
 
                         return XDocument.Parse(_diskProvider.ReadAllText(_configFile));
@@ -324,16 +342,29 @@ namespace NzbDrone.Core.Configuration
 
             catch (XmlException ex)
             {
-                throw new InvalidConfigFileException($"{_configFile} is corrupt is invalid. Please delete the config file and Sonarr will recreate it.", ex);
+                throw new InvalidConfigFileException($"{_configFile} is corrupt is invalid. Please delete the config file and Lidarr will recreate it.", ex);
+            }
+
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new AccessDeniedConfigFileException($"Lidarr does not have access to config file: {_configFile}. Please fix permissions", ex);
             }
         }
 
         private void SaveConfigFile(XDocument xDoc)
         {
-            lock (Mutex)
+            try
             {
-                _diskProvider.WriteAllText(_configFile, xDoc.ToString());
+                lock (Mutex)
+                {
+                    _diskProvider.WriteAllText(_configFile, xDoc.ToString());
+                }
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new AccessDeniedConfigFileException($"Lidarr does not have access to config file: {_configFile}. Please fix permissions", ex);
+            }
+
         }
 
         private string GenerateApiKey()
@@ -345,11 +376,6 @@ namespace NzbDrone.Core.Configuration
         {
             EnsureDefaultConfigFile();
             DeleteOldValues();
-
-            if (!AnalyticsEnabled)
-            {
-                NzbDroneLogger.UnRegisterRemoteLoggers();
-            }
         }
 
         public void Execute(ResetApiKeyCommand message)

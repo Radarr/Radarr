@@ -3,22 +3,38 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
-{
-    public class SearchDefinitionFixture : CoreTest<SingleEpisodeSearchCriteria>
+{ 
+    public class AlbumSearchDefinitionFixture : CoreTest<AlbumSearchCriteria>
     {
-        [TestCase("Betty White's Off Their Rockers", "Betty+Whites+Off+Their+Rockers")]
-        [TestCase("Star Wars: The Clone Wars", "Star+Wars+The+Clone+Wars")]
-        [TestCase("Hawaii Five-0", "Hawaii+Five+0")]
-        [TestCase("Franklin & Bash", "Franklin+and+Bash")]
-        [TestCase("Chicago P.D.", "Chicago+PD")]
-        [TestCase("Kourtney And Khlo\u00E9 Take The Hamptons", "Kourtney+And+Khloe+Take+The+Hamptons")]
-        public void should_replace_some_special_characters(string input, string expected)
+        [TestCase("Mötley Crüe", "Motley+Crue")]
+        [TestCase("방탄소년단", "방탄소년단")]
+        public void should_replace_some_special_characters_artist(string artist, string expected)
         {
-            Subject.SceneTitles = new List<string> { input };
-            Subject.QueryTitles.First().Should().Be(expected);
+            Subject.Artist = new Artist { Name = artist };
+            Subject.ArtistQuery.Should().Be(expected);
+        }
+
+        [TestCase("…and Justice for All", "and+Justice+for+All")]
+        [TestCase("American III: Solitary Man", "American+III+Solitary+Man")]
+        [TestCase("Sad Clowns & Hillbillies", "Sad+Clowns+Hillbillies")]
+        [TestCase("¿Quién sabe?", "Quien+sabe")]
+        [TestCase("Seal the Deal & Let’s Boogie", "Seal+the+Deal+Lets+Boogie")]
+        [TestCase("Section.80", "Section80")]
+        public void should_replace_some_special_characters(string album, string expected)
+        {
+            Subject.AlbumTitle = album;
+            Subject.AlbumQuery.Should().Be(expected);
+        }
+        
+        [TestCase("+", "+")]
+        public void should_not_replace_some_special_characters_if_result_empty_string(string album, string expected)
+        {
+            Subject.AlbumTitle = album;
+            Subject.AlbumQuery.Should().Be(expected);
         }
     }
 }

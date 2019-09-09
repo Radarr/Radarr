@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                                               Host = "127.0.0.1",
                                               Port = 2222,
                                               ApiKey = "1234-ABCD",
-                                              TvCategory = "tv",
+                                              MusicCategory = "Music",
                                               RecentTvPriority = (int)NzbgetPriority.High
                                           };
 
@@ -41,16 +41,16 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                     Id = RandomNumber,
                     DownloadedSize = 1000,
                     TotalDownloadSize = 10,
-                    GroupName = "tv",
-                    UiTitle = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE"
-                };
+                    GroupName = "Music",
+                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN"
+            };
 
             _failed = new NzbVortexQueueItem
                 {
                     DownloadedSize = 1000,
                     TotalDownloadSize = 1000,
-                    GroupName = "tv",
-                    UiTitle = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                    GroupName = "Music",
+                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
                     DestinationPath = "somedirectory",
                     State =  NzbVortexStateType.UncompressFailed,
                 };
@@ -59,9 +59,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                 {
                     DownloadedSize = 1000,
                     TotalDownloadSize = 1000,
-                    GroupName = "tv",
-                    UiTitle = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
-                    DestinationPath = "/remote/mount/tv/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                    GroupName = "Music",
+                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                    DestinationPath = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
                     State = NzbVortexStateType.Done
                 };
         }
@@ -107,6 +107,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -118,6 +121,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyPaused(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -129,6 +135,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyDownloading(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -139,6 +148,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyCompleted(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -149,6 +161,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
             var result = Subject.GetItems().Single();
 
             VerifyFailed(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -189,9 +204,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -201,9 +216,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             GivenFailedDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            Assert.Throws<DownloadClientException>(() => Subject.Download(remoteEpisode));
+            Assert.Throws<DownloadClientException>(() => Subject.Download(remoteAlbum));
         }
 
         [Test]
@@ -223,13 +238,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             Mocker.GetMock<IRemotePathMappingService>()
                   .Setup(v => v.RemapRemoteToLocal("127.0.0.1", It.IsAny<OsPath>()))
-                  .Returns(new OsPath(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic()));
+                  .Returns(new OsPath(@"O:\mymount\Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN".AsOsAgnostic()));
 
             GivenQueue(_completed);
 
             var result = Subject.GetItems().Single();
 
-            result.OutputPath.Should().Be(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic());
+            result.OutputPath.Should().Be(@"O:\mymount\Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN".AsOsAgnostic());
         }
 
         [Test]
@@ -241,14 +256,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
 
             Mocker.GetMock<INzbVortexProxy>()
                   .Setup(s => s.GetFiles(It.IsAny<int>(), It.IsAny<NzbVortexSettings>()))
-                  .Returns(new List<NzbVortexFile> { new NzbVortexFile { FileName = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.mkv" } });
+                  .Returns(new List<NzbVortexFile> { new NzbVortexFile { FileName = "Fall Out Boy - Make America Psyco Again - Track 1.flac" } });
 
             _completed.State = NzbVortexStateType.Done;
             GivenQueue(_completed);
 
             var result = Subject.GetItems().Single();
 
-            result.OutputPath.Should().Be(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.mkv".AsOsAgnostic());
+            result.OutputPath.Should().Be(@"O:\mymount\Fall Out Boy - Make America Psyco Again - Track 1.flac".AsOsAgnostic());
         }
 
         [Test]
@@ -262,8 +277,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                   .Setup(s => s.GetFiles(It.IsAny<int>(), It.IsAny<NzbVortexSettings>()))
                   .Returns(new List<NzbVortexFile>
                            {
-                               new NzbVortexFile { FileName = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.mkv" },
-                               new NzbVortexFile { FileName = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.nfo" }
+                               new NzbVortexFile { FileName = "Fall Out Boy - Make America Psyco Again - Track 1.flac" },
+                               new NzbVortexFile { FileName = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN.nfo" }
                            });
 
             _completed.State = NzbVortexStateType.Done;
@@ -283,7 +298,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             Mocker.GetMock<INzbVortexProxy>()
                 .Setup(v => v.GetGroups(It.IsAny<NzbVortexSettings>()))
-                .Returns(new List<NzbVortexGroup> { new NzbVortexGroup { GroupName = ((NzbVortexSettings)Subject.Definition.Settings).TvCategory } });
+                .Returns(new List<NzbVortexGroup> { new NzbVortexGroup { GroupName = ((NzbVortexSettings)Subject.Definition.Settings).MusicCategory } });
 
             Mocker.GetMock<INzbVortexProxy>()
                 .Setup(v => v.GetApiVersion(It.IsAny<NzbVortexSettings>()))

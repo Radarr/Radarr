@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -111,12 +111,6 @@ namespace NzbDrone.Mono.Disk
                 return null;
             }
 
-            if (mount.StartsWith("/var/lib/"))
-            {
-                // Could be /var/lib/docker when docker uses zfs. Very unlikely that a useful mount is located in /var/lib.
-                return null;
-            }
-
             var driveType = FindDriveType.Find(type);
 
             if (name.StartsWith("/dev/") || GetFileSystems().GetValueOrDefault(type, false))
@@ -130,7 +124,7 @@ namespace NzbDrone.Mono.Disk
                 driveType = DriveType.Network;
             }
 
-            return new ProcMount(driveType, name, mount, type, options);
+            return new ProcMount(driveType, name, mount, type, new MountOptions(options));
         }
 
         private Dictionary<string, string> ParseOptions(string options)

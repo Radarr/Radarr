@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -11,9 +12,7 @@ namespace NzbDrone.Core.Configuration
         bool IsDefined(string key);
 
         //Download Client
-        string DownloadedEpisodesFolder { get; set; }
         string DownloadClientWorkingFolders { get; set; }
-        int DownloadedEpisodesScanInterval { get; set; }
         int DownloadClientHistoryLimit { get; set; }
 
         //Completed/Failed Download Handling (Download client)
@@ -24,15 +23,19 @@ namespace NzbDrone.Core.Configuration
         bool RemoveFailedDownloads { get; set; }
 
         //Media Management
-        bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
+        bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         string RecycleBin { get; set; }
-        bool AutoDownloadPropers { get; set; }
-        bool CreateEmptySeriesFolders { get; set; }
+        int RecycleBinCleanupDays { get; set; }
+        ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
+        bool CreateEmptyArtistFolders { get; set; }
+        bool DeleteEmptyFolders { get; set; }
         FileDateType FileDate { get; set; }
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
-        bool EnableMediaInfo { get; set; }
+        bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
+        RescanAfterRefreshType RescanAfterRefresh { get; set; }
+        AllowFingerprinting AllowFingerprinting { get; set; }
 
         //Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }
@@ -44,6 +47,7 @@ namespace NzbDrone.Core.Configuration
         //Indexers
         int Retention { get; set; }
         int RssSyncInterval { get; set; }
+        int MaximumSize { get; set; }
         int MinimumAge { get; set; }
 
         //UI
@@ -55,10 +59,22 @@ namespace NzbDrone.Core.Configuration
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
         bool EnableColorImpairedMode { get; set; }
+        
+        bool ExpandAlbumByDefault { get; set; }
+        bool ExpandSingleByDefault { get; set; }
+        bool ExpandEPByDefault { get; set; }
+        bool ExpandBroadcastByDefault { get; set; }
+        bool ExpandOtherByDefault { get; set; }
 
         //Internal
         bool CleanupMetadataImages { get; set; }
 
+        string PlexClientIdentifier { get; }
+
+        //Metadata
+        string MetadataSource { get; set; }
+        WriteAudioTagsType WriteAudioTags { get; set; }
+        bool ScrubAudioTags { get; set; }
 
         //Forms Auth
         string RijndaelPassphrase { get; }
@@ -75,5 +91,11 @@ namespace NzbDrone.Core.Configuration
         string ProxyPassword { get; }
         string ProxyBypassFilter { get; }
         bool ProxyBypassLocalAddresses { get; }
+
+        // Backups
+        string BackupFolder { get; }
+        int BackupInterval { get; }
+        int BackupRetention { get; }
+
     }
 }

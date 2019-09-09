@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using NLog;
@@ -21,7 +21,6 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
     public class HadoukenProxy : IHadoukenProxy
     {
-        private static int _callId;
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
@@ -71,13 +70,29 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         private T ProcessRequest<T>(HadoukenSettings settings, string method, params object[] parameters)
         {
             var baseUrl = HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, "api");
-            var requestBuilder = new JsonRpcRequestBuilder(baseUrl, method, parameters);
-            requestBuilder.LogResponseContent = true;
-            requestBuilder.NetworkCredential = new NetworkCredential(settings.Username, settings.Password);
+            var requestBuilder = new JsonRpcRequestBuilder(baseUrl, method, parameters)
+            {
+                LogResponseContent = true,
+                NetworkCredential = new NetworkCredential(settings.Username, settings.Password)
+            };
             requestBuilder.Headers.Add("Accept-Encoding", "gzip,deflate");
 
             var httpRequest = requestBuilder.Build();
-            var response = _httpClient.Execute(httpRequest);
+            HttpResponse response;
+
+            try
+            {
+                response = _httpClient.Execute(httpRequest);
+            }
+            catch (HttpException ex)
+            {
+                throw new DownloadClientException("Unable to connect to Hadouken, please check your settings", ex);
+            }
+            catch (WebException ex)
+            {
+                throw new DownloadClientUnavailableException("Unable to connect to Hadouken, please check your settings", ex);
+            }
+
             var result = Json.Deserialize<JsonRpcResponse<T>>(response.Content);
 
             if (result.Error != null)
@@ -124,6 +139,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     TotalSize = Convert.ToInt64(item[3]),
                     Progress = Convert.ToDouble(item[4]),
                     DownloadedBytes = Convert.ToInt64(item[5]),
+                    UploadedBytes = Convert.ToInt64(item[6]),
                     DownloadRate = Convert.ToInt64(item[9]),
                     Label = Convert.ToString(item[11]),
                     Error = Convert.ToString(item[21]),
@@ -132,7 +148,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             }
             catch(Exception ex)
             {
-                _logger.ErrorException("Failed to map Hadouken torrent data.", ex);
+                _logger.Error(ex, "Failed to map Hadouken torrent data.");
             }
 
             return torrent;

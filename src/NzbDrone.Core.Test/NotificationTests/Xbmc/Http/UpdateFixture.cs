@@ -1,9 +1,9 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
 {
@@ -11,8 +11,8 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
     public class UpdateFixture : CoreTest<HttpApiProvider>
     {
         private XbmcSettings _settings;
-        private string _seriesQueryUrl = "http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryVideoDatabase(select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = 79488 and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath)";
-        private Series _fakeSeries;
+        private string _artistQueryUrl = "http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryMusicDatabase(select path.strPath from path, artist, artistlinkpath where artist.c12 = 9f4e41c3-2648-428e-b8c7-dc10465b49ac and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath)";
+        private Artist _fakeArtist;
 
         [SetUp]
         public void Setup()
@@ -28,47 +28,47 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                 UpdateLibrary = true
             };
 
-            _fakeSeries = Builder<Series>.CreateNew()
-                                         .With(s => s.TvdbId = 79488)
-                                         .With(s => s.Title = "30 Rock")
+            _fakeArtist = Builder<Artist>.CreateNew()
+                                         .With(s => s.ForeignArtistId = "9f4e41c3-2648-428e-b8c7-dc10465b49ac")
+                                         .With(s => s.Name = "Shawn Desman")
                                          .Build();
         }
 
-        private void WithSeriesPath()
+        private void WithArtistPath()
         {
             Mocker.GetMock<IHttpProvider>()
-                  .Setup(s => s.DownloadString(_seriesQueryUrl, _settings.Username, _settings.Password))
-                  .Returns("<xml><record><field>smb://xbmc:xbmc@HOMESERVER/TV/30 Rock/</field></record></xml>");
+                  .Setup(s => s.DownloadString(_artistQueryUrl, _settings.Username, _settings.Password))
+                  .Returns("<xml><record><field>smb://xbmc:xbmc@HOMESERVER/Music/Shawn Desman/</field></record></xml>");
         }
 
-        private void WithoutSeriesPath()
+        private void WithoutArtistPath()
         {
             Mocker.GetMock<IHttpProvider>()
-                  .Setup(s => s.DownloadString(_seriesQueryUrl, _settings.Username, _settings.Password))
+                  .Setup(s => s.DownloadString(_artistQueryUrl, _settings.Username, _settings.Password))
                   .Returns("<xml></xml>");
         }
 
         [Test]
-        public void should_update_using_series_path()
+        public void should_update_using_artist_path()
         {
-            WithSeriesPath();
-            const string url = "http://localhost:8080/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary(video,smb://xbmc:xbmc@HOMESERVER/TV/30 Rock/))";
+            WithArtistPath();
+            const string url = "http://localhost:8080/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary(music,smb://xbmc:xbmc@HOMESERVER/Music/Shawn Desman/))";
 
             Mocker.GetMock<IHttpProvider>().Setup(s => s.DownloadString(url, _settings.Username, _settings.Password));
 
-            Subject.Update(_settings, _fakeSeries);
+            Subject.Update(_settings, _fakeArtist);
             Mocker.VerifyAllMocks();
         }
 
         [Test]
-        public void should_update_all_paths_when_series_path_not_found()
+        public void should_update_all_paths_when_artist_path_not_found()
         {
-            WithoutSeriesPath();
-            const string url = "http://localhost:8080/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary(video))";
+            WithoutArtistPath();
+            const string url = "http://localhost:8080/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary(music))";
 
             Mocker.GetMock<IHttpProvider>().Setup(s => s.DownloadString(url, _settings.Username, _settings.Password));
 
-            Subject.Update(_settings, _fakeSeries);
+            Subject.Update(_settings, _fakeArtist);
             Mocker.VerifyAllMocks();
         }
     }

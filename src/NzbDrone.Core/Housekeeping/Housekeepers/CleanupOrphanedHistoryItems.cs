@@ -13,32 +13,32 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            CleanupOrphanedBySeries();
-            CleanupOrphanedByEpisode();
+            CleanupOrphanedByArtist();
+            CleanupOrphanedByAlbum();
         }
 
-        private void CleanupOrphanedBySeries()
+        private void CleanupOrphanedByArtist()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM History
                                      WHERE Id IN (
                                      SELECT History.Id FROM History
-                                     LEFT OUTER JOIN Series
-                                     ON History.SeriesId = Series.Id
-                                     WHERE Series.Id IS NULL)");
+                                     LEFT OUTER JOIN Artists
+                                     ON History.ArtistId = Artists.Id
+                                     WHERE Artists.Id IS NULL)");
         }
 
-        private void CleanupOrphanedByEpisode()
+        private void CleanupOrphanedByAlbum()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM History
                                      WHERE Id IN (
                                      SELECT History.Id FROM History
-                                     LEFT OUTER JOIN Episodes
-                                     ON History.EpisodeId = Episodes.Id
-                                     WHERE Episodes.Id IS NULL)");
+                                     LEFT OUTER JOIN Albums
+                                     ON History.AlbumId = Albums.Id
+                                     WHERE Albums.Id IS NULL)");
         }
     }
 }

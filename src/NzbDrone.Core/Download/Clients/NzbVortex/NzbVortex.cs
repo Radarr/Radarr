@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,15 +23,16 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                        IConfigService configService,
                        IDiskProvider diskProvider,
                        IRemotePathMappingService remotePathMappingService,
+                       IValidateNzbs nzbValidationService,
                        Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
         {
-            var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
+            var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
             var response = _proxy.DownloadNzb(fileContent, filename, priority, Settings);
 
@@ -47,17 +48,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<NzbVortexQueueItem> vortexQueue;
-
-            try
-            {
-                vortexQueue = _proxy.GetQueue(30, Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Warn("Couldn't get download queue. {0}", ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var vortexQueue = _proxy.GetQueue(30, Settings);
 
             var queueItems = new List<DownloadClientItem>();
 
@@ -72,7 +63,10 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 queueItem.TotalSize = vortexQueueItem.TotalDownloadSize;
                 queueItem.RemainingSize = vortexQueueItem.TotalDownloadSize - vortexQueueItem.DownloadedSize;
                 queueItem.RemainingTime = null;
-                
+
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
+
                 if (vortexQueueItem.IsPaused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
@@ -132,7 +126,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 {
                     _proxy.Remove(queueItem.Id, deleteData, Settings);
                 }
-            }            
+            }
         }
 
         protected List<NzbVortexGroup> GetGroups()
@@ -140,9 +134,9 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             return _proxy.GetGroups(Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -166,7 +160,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 
@@ -187,7 +181,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 
@@ -210,13 +204,13 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
         private ValidationFailure TestCategory()
         {
-            var group = GetGroups().FirstOrDefault(c => c.GroupName == Settings.TvCategory);
+            var group = GetGroups().FirstOrDefault(c => c.GroupName == Settings.MusicCategory);
 
             if (group == null)
             {
-                if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Group does not exist")
+                    return new NzbDroneValidationFailure("MusicCategory", "Group does not exist")
                     {
                         DetailedDescription = "The Group you entered doesn't exist in NzbVortex. Go to NzbVortex to create it."
                     };

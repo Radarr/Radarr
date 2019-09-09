@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -48,9 +48,25 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         public string GetVersion(DelugeSettings settings)
         {
-            var response = ProcessRequest<string>(settings, "daemon.info");
+            try
+            {
+                var response = ProcessRequest<string>(settings, "daemon.info");
 
-            return response;
+                return response;
+            }
+            catch (DownloadClientException ex)
+            {
+                if (ex.Message.Contains("Unknown method"))
+                {
+                    // Deluge v2 beta replaced 'daemon.info' with 'daemon.get_version'.
+                    // It may return or become official, for now we just retry with the get_version api.
+                    var response = ProcessRequest<string>(settings, "daemon.get_version");
+
+                    return response;
+                }
+
+                throw;
+            }
         }
 
         public Dictionary<string, object> GetConfig(DelugeSettings settings)
@@ -84,21 +100,32 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         public string AddTorrentFromMagnet(string magnetLink, DelugeSettings settings)
         {
-            var response = ProcessRequest<string>(settings, "core.add_torrent_magnet", magnetLink, new JObject());
+            var options = new
+                          {
+                                add_paused = settings.AddPaused,
+                                remove_at_ratio = false
+                          };
+
+            var response = ProcessRequest<string>(settings, "core.add_torrent_magnet", magnetLink, options);
 
             return response;
         }
 
         public string AddTorrentFromFile(string filename, byte[] fileContent, DelugeSettings settings)
         {
-            var response = ProcessRequest<string>(settings, "core.add_torrent_file", filename, fileContent, new JObject());
+            var options = new
+                          {
+                                add_paused = settings.AddPaused,
+                                remove_at_ratio = false
+                          };
 
+            var response = ProcessRequest<string>(settings, "core.add_torrent_file", filename, fileContent, options);
             return response;
         }
 
-        public bool RemoveTorrent(string hashString, bool removeData, DelugeSettings settings)
+        public bool RemoveTorrent(string hash, bool removeData, DelugeSettings settings)
         {
-            var response = ProcessRequest<bool>(settings, "core.remove_torrent", hashString, removeData);
+            var response = ProcessRequest<bool>(settings, "core.remove_torrent", hash, removeData);
 
             return response;
         }
@@ -139,13 +166,20 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, DelugeSettings settings)
         {
+            if (seedConfiguration == null)
+            {
+                return;
+            }
+
+            var ratioArguments = new Dictionary<string, object>();
+
             if (seedConfiguration.Ratio != null)
             {
-                var ratioArguments = new Dictionary<string, object>();
                 ratioArguments.Add("stop_ratio", seedConfiguration.Ratio.Value);
-
-                ProcessRequest<object>(settings, "core.set_torrent_options", new string[] { hash }, ratioArguments);
+                ratioArguments.Add("stop_at_ratio", 1);
             }
+
+            ProcessRequest<object>(settings, "core.set_torrent_options", new[] { hash }, ratioArguments);
         }
 
         public void AddLabel(string label, DelugeSettings settings)
@@ -164,7 +198,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var requestBuilder = new JsonRpcRequestBuilder(url);
             requestBuilder.LogResponseContent = true;
-            
+
             requestBuilder.Resource("json");
             requestBuilder.PostProcess += r => r.RequestTimeout = TimeSpan.FromSeconds(15);
 
@@ -231,7 +265,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Unable to connect to Deluge, please check your settings", ex);
+                throw new DownloadClientUnavailableException("Unable to connect to Deluge, please check your settings", ex);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -11,18 +11,20 @@ namespace NzbDrone.Common.Extensions
     public static class PathExtensions
     {
         private const string APP_CONFIG_FILE = "config.xml";
-        private const string NZBDRONE_DB = "nzbdrone.db";
-        private const string NZBDRONE_LOG_DB = "logs.db";
+        private const string DB = "lidarr.db";
+        private const string DB_RESTORE = "lidarr.restore";
+        private const string LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
-        private const string UPDATE_CLIENT_EXE = "NzbDrone.Update.exe";
-        private const string BACKUP_FOLDER = "Backups";
+        private const string UPDATE_CLIENT_EXE = "Lidarr.Update.exe";
 
-        private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "nzbdrone_update" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "NzbDrone" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_BACKUP_FOLDER_NAME = "nzbdrone_backup" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_BACKUP_APPDATA_FOLDER_NAME = "nzbdrone_appdata_backup" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_CLIENT_FOLDER_NAME = "NzbDrone.Update" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "lidarr_update" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "Lidarr" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_BACKUP_FOLDER_NAME = "lidarr_backup" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_BACKUP_APPDATA_FOLDER_NAME = "lidarr_appdata_backup" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_CLIENT_FOLDER_NAME = "Lidarr.Update" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_LOG_FOLDER_NAME = "UpdateLogs" + Path.DirectorySeparatorChar;
+
+        private static readonly Regex PARENT_PATH_END_SLASH_REGEX = new Regex(@"(?<!:)\\$", RegexOptions.Compiled);
 
         public static string CleanFilePath(this string path)
         {
@@ -34,6 +36,11 @@ namespace NzbDrone.Common.Extensions
             if (OsInfo.IsWindows && info.FullName.StartsWith(@"\\")) //UNC
             {
                 return info.FullName.TrimEnd('/', '\\', ' ');
+            }
+
+            if (OsInfo.IsNotWindows && info.FullName.TrimEnd('/').Length == 0)
+            {
+                return "/";
             }
 
             return info.FullName.TrimEnd('/').Trim('\\', ' ');
@@ -59,7 +66,7 @@ namespace NzbDrone.Common.Extensions
         {
             if (!parentPath.IsParentPath(childPath))
             {
-                throw new Exceptions.NotParentException("{0} is not a child of {1}", childPath, parentPath);
+                throw new NotParentException("{0} is not a child of {1}", childPath, parentPath);
             }
 
             return childPath.Substring(parentPath.Length).Trim(Path.DirectorySeparatorChar);
@@ -67,24 +74,25 @@ namespace NzbDrone.Common.Extensions
 
         public static string GetParentPath(this string childPath)
         {
-            var parentPath = childPath.TrimEnd('\\', '/');
+            var cleanPath = OsInfo.IsWindows
+                ? PARENT_PATH_END_SLASH_REGEX.Replace(childPath, "")
+                : childPath.TrimEnd(Path.DirectorySeparatorChar);
 
-            var index = parentPath.LastIndexOfAny(new[] { '\\', '/' });
-
-            if (index != -1)
+            if (cleanPath.IsNullOrWhiteSpace())
             {
-                return parentPath.Substring(0, index);
+                return null;
             }
-            return null;
+
+            return Directory.GetParent(cleanPath)?.FullName;
         }
 
         public static bool IsParentPath(this string parentPath, string childPath)
         {
-            if (parentPath != "/")
+            if (parentPath != "/" && !parentPath.EndsWith(":\\"))
             {
                 parentPath = parentPath.TrimEnd(Path.DirectorySeparatorChar);
             }
-            if (childPath != "/")
+            if (childPath != "/" && !parentPath.EndsWith(":\\"))
             {
                 childPath = childPath.TrimEnd(Path.DirectorySeparatorChar);
             }
@@ -191,6 +199,24 @@ namespace NzbDrone.Common.Extensions
             return directories;
         }
 
+        public static string GetAncestorPath(this string path, string ancestorName)
+        {
+            var parent = Path.GetDirectoryName(path);
+
+            while (parent != null)
+            {
+                var currentPath = parent;
+                parent = Path.GetDirectoryName(parent);
+
+                if (Path.GetFileName(currentPath) == ancestorName)
+                {
+                    return currentPath;
+                }
+            }
+
+            return null;
+        }
+
         public static string GetAppDataPath(this IAppFolderInfo appFolderInfo)
         {
             return appFolderInfo.AppDataFolder;
@@ -238,7 +264,7 @@ namespace NzbDrone.Common.Extensions
 
         public static string GetUpdateBackupDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), NZBDRONE_DB);
+            return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), DB);
         }
 
         public static string GetUpdatePackageFolder(this IAppFolderInfo appFolderInfo)
@@ -256,19 +282,19 @@ namespace NzbDrone.Common.Extensions
             return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE);
         }
 
-        public static string GetBackupFolder(this IAppFolderInfo appFolderInfo)
+        public static string GetDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), BACKUP_FOLDER);
+            return Path.Combine(GetAppDataPath(appFolderInfo), DB);
         }
 
-        public static string GetNzbDroneDatabase(this IAppFolderInfo appFolderInfo)
+        public static string GetDatabaseRestore(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), NZBDRONE_DB);
+            return Path.Combine(GetAppDataPath(appFolderInfo), DB_RESTORE);
         }
 
         public static string GetLogDatabase(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetAppDataPath(appFolderInfo), NZBDRONE_LOG_DB);
+            return Path.Combine(GetAppDataPath(appFolderInfo), LOG_DB);
         }
 
         public static string GetNlogConfigPath(this IAppFolderInfo appFolderInfo)

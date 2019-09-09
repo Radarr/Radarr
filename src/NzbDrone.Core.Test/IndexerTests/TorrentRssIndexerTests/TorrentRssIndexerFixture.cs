@@ -1,13 +1,15 @@
-﻿using System;
+using System;
 using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Indexers.TorrentRss;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
 {
@@ -48,7 +50,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
 
             releases.Should().HaveCount(50);
             releases.First().Should().BeOfType<TorrentInfo>();
-            
+
             var torrentInfo = (TorrentInfo)releases.First();
 
             torrentInfo.Title.Should().Be("Conan.2015.02.05.Jeff.Bridges.720p.HDTV.X264-CROOKS");
@@ -239,7 +241,64 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
 
             torrentInfo.Title.Should().Be("DAYS - 05 (1280x720 HEVC2 AAC).mkv");
             torrentInfo.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
-            torrentInfo.DownloadUrl.Should().Be("http://storage.animetosho.org/torrents/4b58360143d59a55cbd922397a3eaa378165f3ff/DAYS%20-%2005%20%281280x720%20HEVC2%20AAC%29.torrent");            
+            torrentInfo.DownloadUrl.Should().Be("http://storage.animetosho.org/torrents/4b58360143d59a55cbd922397a3eaa378165f3ff/DAYS%20-%2005%20%281280x720%20HEVC2%20AAC%29.torrent");
+        }
+
+        [Test]
+        public void should_parse_recent_feed_from_AlphaRatio()
+        {
+            GivenRecentFeedResponse("TorrentRss/AlphaRatio.xml");
+
+            var releases = Subject.FetchRecent();
+
+            releases.Should().HaveCount(2);
+            releases.Last().Should().BeOfType<TorrentInfo>();
+
+            var torrentInfo = releases.Last() as TorrentInfo;
+
+            torrentInfo.Title.Should().Be("TvHD 465860 465831 WWE.RAW.2016.11.28.720p.HDTV.x264-KYR");
+            torrentInfo.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
+            torrentInfo.DownloadUrl.Should().Be("https://alpharatio.cc/torrents.php?action=download&authkey=private_auth_key&torrent_pass=private_torrent_pass&id=465831");
+        }
+
+        [Test]
+        public void should_parse_recent_feed_from_EveolutionWorld_without_size()
+        {
+            Subject.Definition.Settings.As<TorrentRssIndexerSettings>().AllowZeroSize = true;
+            GivenRecentFeedResponse("TorrentRss/EvolutionWorld.xml");
+
+            var releases = Subject.FetchRecent();
+
+            releases.Should().HaveCount(2);
+            releases.First().Should().BeOfType<TorrentInfo>();
+
+            var torrentInfo = releases.First() as TorrentInfo;
+
+            torrentInfo.Title.Should().Be("[TVShow --> TVShow Bluray 720p] Fargo S01 Complete Season 1 720p BRRip DD5.1 x264-PSYPHER [SEEDERS (3)/LEECHERS (0)]");
+            torrentInfo.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
+            torrentInfo.DownloadUrl.Should().Be("http://ew.pw/download.php?id=dea071a7a62a0d662538d46402fb112f30b8c9fa&f=Fargo%20S01%20Complete%20Season%201%20720p%20BRRip%20DD5.1%20x264-PSYPHER.torrent&auth=secret");
+            torrentInfo.InfoUrl.Should().BeNullOrEmpty();
+            torrentInfo.CommentUrl.Should().BeNullOrEmpty();
+            torrentInfo.Indexer.Should().Be(Subject.Definition.Name);
+            torrentInfo.PublishDate.Should().Be(DateTime.Parse("2017-08-13T22:21:43Z").ToUniversalTime());
+            torrentInfo.Size.Should().Be(0);
+            torrentInfo.InfoHash.Should().BeNull();
+            torrentInfo.MagnetUrl.Should().BeNull();
+            torrentInfo.Peers.Should().NotHaveValue();
+            torrentInfo.Seeders.Should().NotHaveValue();
+        }
+
+    [Test]
+        public void should_record_indexer_failure_if_unsupported_feed()
+        {
+            GivenRecentFeedResponse("TorrentRss/invalid/TorrentDay_NoPubDate.xml");
+
+            Subject.FetchRecent().Should().BeEmpty();
+
+            Mocker.GetMock<IIndexerStatusService>()
+                  .Verify(v => v.RecordFailure(It.IsAny<int>(), TimeSpan.Zero), Times.Once());
+
+            ExceptionVerification.ExpectedErrors(1);
         }
     }
 }

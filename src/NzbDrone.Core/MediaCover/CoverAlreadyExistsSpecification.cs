@@ -1,34 +1,44 @@
-﻿using NzbDrone.Common.Disk;
-using NzbDrone.Common.Http;
+using System;
+using NzbDrone.Common.Disk;
 
 namespace NzbDrone.Core.MediaCover
 {
     public interface ICoverExistsSpecification
     {
-        bool AlreadyExists(string url, string path);
+        bool AlreadyExists(DateTime? serverModifiedDate, long? serverContentLength, string localPath);
     }
 
     public class CoverAlreadyExistsSpecification : ICoverExistsSpecification
     {
         private readonly IDiskProvider _diskProvider;
-        private readonly IHttpClient _httpClient;
 
-        public CoverAlreadyExistsSpecification(IDiskProvider diskProvider, IHttpClient httpClient)
+        public CoverAlreadyExistsSpecification(IDiskProvider diskProvider)
         {
             _diskProvider = diskProvider;
-            _httpClient = httpClient;
         }
 
-        public bool AlreadyExists(string url, string path)
+        public bool AlreadyExists(DateTime? serverModifiedDate, long? serverContentLength, string localPath)
         {
-            if (!_diskProvider.FileExists(path))
+            if (!_diskProvider.FileExists(localPath))
             {
                 return false;
             }
 
-            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
-            var fileSize = _diskProvider.GetFileSize(path);
-            return fileSize == headers.ContentLength;
+            if (serverContentLength.HasValue && serverContentLength.Value > 0)
+            {
+                var fileSize = _diskProvider.GetFileSize(localPath);
+
+                return fileSize == serverContentLength;
+            }
+
+            if (serverModifiedDate.HasValue)
+            {
+                DateTime? lastModifiedLocal = _diskProvider.FileGetLastWrite(localPath);
+
+                return lastModifiedLocal.Value.ToUniversalTime() == serverModifiedDate.Value.ToUniversalTime();
+            }
+
+            return false;
         }
     }
 }

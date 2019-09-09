@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/">
+<channel>
+    <title>Headphones Indexer</title>
+    <description>powered by pynab</description>
+    <link>https://indexer.codeshy.com</link>
+    <newznab:response offset="0" total="16"/>
+        
+        <item>
+            <title>Lady Gaga Born This Way 2CD FLAC 2011 WRE</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/123456</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=123456&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 14:39:52 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way 2CD FLAC 2011 WRE</description>
+            <posted>Sun, 02 Jun 2013 08:58:54 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=123456&amp;apikey=123456789" length="917347414" type="application/x-nzb"></enclosure>
+            <grabs>146</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="123456"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Sun, 02 Jun 2013 08:58:54 -0000"/>
+            <newznab:attr name="grabs" value="146"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="917347414"/>
+	    <size>917347414</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way PROMO CDR2 FLAC 2011 WRE</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/178728</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=178728&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 15:37:26 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way PROMO CDR2 FLAC 2011 WRE</description>
+            <posted>Wed, 19 Sep 2012 18:17:13 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=178728&amp;apikey=123456789" length="523005229" type="application/x-nzb"></enclosure>
+            <grabs>4</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="178728"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Wed, 19 Sep 2012 18:17:13 -0000"/>
+            <newznab:attr name="grabs" value="4"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="523005229"/>
+	    <size>523005229</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way PROMO CDR FLAC 2011 WRE</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/178732</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=178732&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 15:37:27 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way PROMO CDR FLAC 2011 WRE</description>
+            <posted>Wed, 19 Sep 2012 18:12:24 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=178732&amp;apikey=123456789" length="297599650" type="application/x-nzb"></enclosure>
+            <grabs>2</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="178732"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Wed, 19 Sep 2012 18:12:24 -0000"/>
+            <newznab:attr name="grabs" value="2"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="297599650"/>
+	    <size>297599650</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga   Born This Way (The Remix) (2011) FLAC</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/97557</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=97557&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 09:28:03 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga   Born This Way (The Remix) (2011) FLAC</description>
+            <posted>Thu, 17 Nov 2011 15:38:07 -0000</posted>
+            <group>alt.binaries.sounds.lossless</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=97557&amp;apikey=123456789" length="542418884" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="97557"/>
+            <newznab:attr name="poster" value="nocrap@honestposting.com (NoCrap)"/>
+            <newznab:attr name="usenetdate" value="Thu, 17 Nov 2011 15:38:07 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.lossless"/>
+            <newznab:attr name="size" value="542418884"/>
+	    <size>542418884</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/97580</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=97580&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 09:28:05 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</description>
+            <posted>Thu, 17 Nov 2011 09:21:00 -0000</posted>
+            <group>alt.binaries.sounds.lossless</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=97580&amp;apikey=123456789" length="44608274" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="97580"/>
+            <newznab:attr name="poster" value="quack@dream-of-usenet.org (Quack)"/>
+            <newznab:attr name="usenetdate" value="Thu, 17 Nov 2011 09:21:00 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.lossless"/>
+            <newznab:attr name="size" value="44608274"/>
+	    <size>44608274</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/204233</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=204233&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:05:21 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</description>
+            <posted>Thu, 17 Nov 2011 07:39:41 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=204233&amp;apikey=123456789" length="42548396" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="204233"/>
+            <newznab:attr name="poster" value="autoSEK9 &lt;auto@SEK9.edu&gt;"/>
+            <newznab:attr name="usenetdate" value="Thu, 17 Nov 2011 07:39:41 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="42548396"/>
+	    <size>42548396</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/204234</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=204234&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:05:22 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</description>
+            <posted>Thu, 17 Nov 2011 07:38:23 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=204234&amp;apikey=123456789" length="514617494" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="204234"/>
+            <newznab:attr name="poster" value="autoSEK9 &lt;auto@SEK9.edu&gt;"/>
+            <newznab:attr name="usenetdate" value="Thu, 17 Nov 2011 07:38:23 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="514617494"/>
+	    <size>514617494</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/204235</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=204235&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:05:22 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way The Remix CD FLAC 2011 EMG</description>
+            <posted>Thu, 17 Nov 2011 07:37:20 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=204235&amp;apikey=123456789" length="541983521" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="204235"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Thu, 17 Nov 2011 07:37:20 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="541983521"/>
+	    <size>541983521</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way (The Remix) 2011 pLAN9</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/101273</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=101273&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 10:45:43 -0000</pubDate>
+            <category>Audio &gt; MP3</category>
+            <description>Lady Gaga Born This Way (The Remix) 2011 pLAN9</description>
+            <posted>Wed, 16 Nov 2011 23:19:32 -0000</posted>
+            <group>alt.binaries.sounds.mp3</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=101273&amp;apikey=123456789" length="12390648" type="application/x-nzb"></enclosure>
+            <grabs>5</grabs>
+
+            <newznab:attr name="category" value="3010"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="101273"/>
+            <newznab:attr name="poster" value="quack@dream-of-usenet.org (Quack)"/>
+            <newznab:attr name="usenetdate" value="Wed, 16 Nov 2011 23:19:32 -0000"/>
+            <newznab:attr name="grabs" value="5"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.mp3"/>
+            <newznab:attr name="size" value="12390648"/>
+	    <size>12390648</size>
+        </item>
+        
+        <item>
+            <title>Lady GaGa Born This Way (Special Edition) 2CD FLAC 2011 PERFECT</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/214301</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=214301&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:38:58 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady GaGa Born This Way (Special Edition) 2CD FLAC 2011 PERFECT</description>
+            <posted>Mon, 17 Oct 2011 16:43:14 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=214301&amp;apikey=123456789" length="823716079" type="application/x-nzb"></enclosure>
+            <grabs>5</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="214301"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Mon, 17 Oct 2011 16:43:14 -0000"/>
+            <newznab:attr name="grabs" value="5"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="823716079"/>
+	    <size>823716079</size>
+        </item>
+        
+        <item>
+            <title>Lady GaGa Born This Way Bonus Track CD FLAC 2011 PERFECT</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/214424</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=214424&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:39:21 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady GaGa Born This Way Bonus Track CD FLAC 2011 PERFECT</description>
+            <posted>Mon, 17 Oct 2011 03:37:35 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=214424&amp;apikey=123456789" length="38894529" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="214424"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Mon, 17 Oct 2011 03:37:35 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="38894529"/>
+	    <size>38894529</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga Born This Way CDM FLAC 2011 WRE</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/214428</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=214428&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:39:22 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady Gaga Born This Way CDM FLAC 2011 WRE</description>
+            <posted>Mon, 17 Oct 2011 03:36:31 -0000</posted>
+            <group>alt.binaries.sounds.flac</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=214428&amp;apikey=123456789" length="174562763" type="application/x-nzb"></enclosure>
+            <grabs>1</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="214428"/>
+            <newznab:attr name="poster" value="flac@4u.tv (flac)"/>
+            <newznab:attr name="usenetdate" value="Mon, 17 Oct 2011 03:36:31 -0000"/>
+            <newznab:attr name="grabs" value="1"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.flac"/>
+            <newznab:attr name="size" value="174562763"/>
+	    <size>174562763</size>
+        </item>
+        
+        <item>
+            <title>Lady GaGa Born This Way Special Edition FLAC</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/205419</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=205419&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:07:40 -0000</pubDate>
+            <category>Audio &gt; Lossless</category>
+            <description>Lady GaGa Born This Way Special Edition FLAC</description>
+            <posted>Tue, 14 Jun 2011 22:06:05 -0000</posted>
+            <group>alt.binaries.music</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=205419&amp;apikey=123456789" length="8045237" type="application/x-nzb"></enclosure>
+            <grabs>0</grabs>
+
+            <newznab:attr name="category" value="3040"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="205419"/>
+            <newznab:attr name="poster" value="CPP-user@domain.com (CPP-User)"/>
+            <newznab:attr name="usenetdate" value="Tue, 14 Jun 2011 22:06:05 -0000"/>
+            <newznab:attr name="grabs" value="0"/>
+            <newznab:attr name="group" value="alt.binaries.music"/>
+            <newznab:attr name="size" value="8045237"/>
+	    <size>8045237</size>
+        </item>
+        
+        <item>
+            <title>Lutheria   Lady Gaga   Born This Way CD1</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/205457</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=205457&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 17:07:49 -0000</pubDate>
+            <category>Audio &gt; MP3</category>
+            <description>Lutheria   Lady Gaga   Born This Way CD1</description>
+            <posted>Tue, 31 May 2011 02:04:02 -0000</posted>
+            <group>alt.binaries.music</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=205457&amp;apikey=123456789" length="4198420" type="application/x-nzb"></enclosure>
+            <grabs>4</grabs>
+
+            <newznab:attr name="category" value="3010"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="205457"/>
+            <newznab:attr name="poster" value="blabla@hotmail.com (Lynn1994)"/>
+            <newznab:attr name="usenetdate" value="Tue, 31 May 2011 02:04:02 -0000"/>
+            <newznab:attr name="grabs" value="4"/>
+            <newznab:attr name="group" value="alt.binaries.music"/>
+            <newznab:attr name="size" value="4198420"/>
+	    <size>4198420</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga   Born This Way (New Single) Feb 2011  Mp3ViLLe</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/24756</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=24756&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 01:29:53 -0000</pubDate>
+            <category>Audio &gt; MP3</category>
+            <description>Lady Gaga   Born This Way (New Single) Feb 2011  Mp3ViLLe</description>
+            <posted>Fri, 11 Mar 2011 11:08:08 -0000</posted>
+            <group>alt.binaries.sounds.mp3.complete_cd</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=24756&amp;apikey=123456789" length="10301727" type="application/x-nzb"></enclosure>
+            <grabs>43</grabs>
+
+            <newznab:attr name="category" value="3010"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="24756"/>
+            <newznab:attr name="poster" value="ripman &lt;ripman@frefr.us&gt;"/>
+            <newznab:attr name="usenetdate" value="Fri, 11 Mar 2011 11:08:08 -0000"/>
+            <newznab:attr name="grabs" value="43"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.mp3.complete_cd"/>
+            <newznab:attr name="size" value="10301727"/>
+	    <size>10301727</size>
+        </item>
+        
+        <item>
+            <title>Lady Gaga   Born This Way (New Single) Feb 2011  Mp3ViLLe</title>
+            <guid isPermaLink="true">https://indexer.codeshy.com/details/109954</guid>
+            <link>https://indexer.codeshy.com/api?t=g&amp;guid=109954&amp;apikey=123456789</link>
+            <pubDate>Tue, 13 Sep 2016 11:30:12 -0000</pubDate>
+            <category>Audio &gt; MP3</category>
+            <description>Lady Gaga   Born This Way (New Single) Feb 2011  Mp3ViLLe</description>
+            <posted>Fri, 11 Mar 2011 11:04:06 -0000</posted>
+            <group>alt.binaries.sounds.mp3</group>
+            <enclosure url="https://indexer.codeshy.com/api?t=g&amp;guid=109954&amp;apikey=123456789" length="10301727" type="application/x-nzb"></enclosure>
+            <grabs>1</grabs>
+
+            <newznab:attr name="category" value="3010"/>
+            <newznab:attr name="category" value="3000"/>
+            <newznab:attr name="guid" value="109954"/>
+            <newznab:attr name="poster" value="ripman &lt;ripman@frefr.us&gt;"/>
+            <newznab:attr name="usenetdate" value="Fri, 11 Mar 2011 11:04:06 -0000"/>
+            <newznab:attr name="grabs" value="1"/>
+            <newznab:attr name="group" value="alt.binaries.sounds.mp3"/>
+            <newznab:attr name="size" value="10301727"/>
+	    <size>10301727</size>
+        </item>
+    </channel>
+</rss>

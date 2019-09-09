@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
@@ -31,21 +31,26 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy = proxy;
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            if (actualHash.IsNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+                throw new DownloadClientException("Deluge failed to add magnet " + magnetLink);
             }
 
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
+            {
+                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
+            }
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            _proxy.SetTorrentSeedingConfiguration(actualHash, remoteAlbum.SeedConfiguration, Settings);
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)DelugePriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
@@ -53,21 +58,26 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             return actualHash.ToUpper();
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             var actualHash = _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            if (actualHash.IsNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+                throw new DownloadClientException("Deluge failed to add torrent " + filename);
             }
 
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+            _proxy.SetTorrentSeedingConfiguration(actualHash, remoteAlbum.SeedConfiguration, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
+            {
+                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
+            }
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)DelugePriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
@@ -81,38 +91,42 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             IEnumerable<DelugeTorrent> torrents;
 
-            try
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
             {
-                if (!Settings.TvCategory.IsNullOrWhiteSpace())
-                {
-                    torrents = _proxy.GetTorrentsByLabel(Settings.TvCategory, Settings);
-                }
-                else
-                {
-                    torrents = _proxy.GetTorrents(Settings);
-                }
+                torrents = _proxy.GetTorrentsByLabel(Settings.MusicCategory, Settings);
             }
-            catch (DownloadClientException ex)
+            else
             {
-                _logger.Error(ex, "Couldn't get list of torrents");
-                return Enumerable.Empty<DownloadClientItem>();
+                torrents = _proxy.GetTorrents(Settings);
             }
 
             var items = new List<DownloadClientItem>();
 
             foreach (var torrent in torrents)
             {
+                if (torrent.Hash == null) continue;
+
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.Hash.ToUpper();
                 item.Title = torrent.Name;
-                item.Category = Settings.TvCategory;
+                item.Category = Settings.MusicCategory;
 
                 item.DownloadClient = Definition.Name;
 
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.DownloadPath));
                 item.OutputPath = outputPath + torrent.Name;
                 item.RemainingSize = torrent.Size - torrent.BytesDownloaded;
-                item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                item.SeedRatio = torrent.Ratio;
+                try
+                {
+                    item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                }
+                catch (OverflowException ex)
+                {
+                    _logger.Debug(ex, "ETA for {0} is too long: {1}", torrent.Name, torrent.Eta);
+                    item.RemainingTime = TimeSpan.MaxValue;
+                }
+
                 item.TotalSize = torrent.Size;
 
                 if (torrent.State == DelugeTorrentStatus.Error)
@@ -137,15 +151,13 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                // Here we detect if Deluge is managing the torrent and whether the seed criteria has been met. This allows drone to delete the torrent as appropriate.
-                if (torrent.IsAutoManaged && torrent.StopAtRatio && torrent.Ratio >= torrent.StopRatio && torrent.State == DelugeTorrentStatus.Paused)
-                {
-                    item.IsReadOnly = false;
-                }
-                else
-                {
-                    item.IsReadOnly = true;
-                }
+                // Here we detect if Deluge is managing the torrent and whether the seed criteria has been met.
+                // This allows drone to delete the torrent as appropriate.
+                item.CanMoveFiles = item.CanBeRemoved =
+                    torrent.IsAutoManaged &&
+                    torrent.StopAtRatio &&
+                    torrent.Ratio >= torrent.StopRatio &&
+                    torrent.State == DelugeTorrentStatus.Paused;
 
                 items.Add(item);
             }
@@ -158,7 +170,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy.RemoveTorrent(downloadId.ToLower(), deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
@@ -169,7 +181,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 destDir = new OsPath(config.GetValueOrDefault("move_completed_path") as string);
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -198,12 +210,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Password", "Authentication failed");
             }
             catch (WebException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to test connection");
                 switch (ex.Status)
                 {
                     case WebExceptionStatus.ConnectFailure:
@@ -227,7 +239,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Failed to test connection");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -236,7 +248,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         private ValidationFailure TestCategory()
         {
-            if (Settings.TvCategory.IsNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNullOrWhiteSpace())
             {
                 return null;
             }
@@ -245,7 +257,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             if (!enabledPlugins.Contains("Label"))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Label plugin not activated")
+                return new NzbDroneValidationFailure("MusicCategory", "Label plugin not activated")
                 {
                     DetailedDescription = "You must have the Label plugin enabled in Deluge to use categories."
                 };
@@ -253,16 +265,16 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var labels = _proxy.GetAvailableLabels(Settings);
 
-            if (!labels.Contains(Settings.TvCategory))
+            if (!labels.Contains(Settings.MusicCategory))
             {
-                _proxy.AddLabel(Settings.TvCategory, Settings);
+                _proxy.AddLabel(Settings.MusicCategory, Settings);
                 labels = _proxy.GetAvailableLabels(Settings);
 
-                if (!labels.Contains(Settings.TvCategory))
+                if (!labels.Contains(Settings.MusicCategory))
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Configuration of label failed")
+                    return new NzbDroneValidationFailure("MusicCategory", "Configuration of label failed")
                     {
-                        DetailedDescription = "Sonarr as unable to add the label to Deluge."
+                        DetailedDescription = "Lidarr as unable to add the label to Deluge."
                     };
                 }
             }
@@ -278,7 +290,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

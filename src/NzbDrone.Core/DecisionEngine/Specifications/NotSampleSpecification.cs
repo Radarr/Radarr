@@ -1,4 +1,5 @@
-﻿using NLog;
+using System;
+using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -8,6 +9,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     {
         private readonly Logger _logger;
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public NotSampleSpecification(Logger logger)
@@ -15,15 +17,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
-            if (subject.Release.Title.ToLower().Contains("sample") && subject.Release.Size < 70.Megabytes())
-            {
-                _logger.Debug("Sample release, rejecting.");
-                return Decision.Reject("Sample");
-            }
+                if (subject.Release.Title.ToLower().Contains("sample") && subject.Release.Size < 20.Megabytes())
+                {
+                    _logger.Debug("Sample release, rejecting.");
+                    return Decision.Reject("Sample");
+                }
 
-            return Decision.Accept();
+                return Decision.Accept();
         }
+
     }
 }

@@ -5,30 +5,39 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class DelaySpecification : IDecisionEngineSpecification
     {
         private readonly IPendingReleaseService _pendingReleaseService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly IDelayProfileService _delayProfileService;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly IPreferredWordService _preferredWordServiceCalculator;
         private readonly Logger _logger;
 
         public DelaySpecification(IPendingReleaseService pendingReleaseService,
-                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                  IUpgradableSpecification qualityUpgradableSpecification,
                                   IDelayProfileService delayProfileService,
+                                  IMediaFileService mediaFileService,
+                                  IPreferredWordService preferredWordServiceCalculator,
                                   Logger logger)
         {
             _pendingReleaseService = pendingReleaseService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = qualityUpgradableSpecification;
             _delayProfileService = delayProfileService;
+            _mediaFileService = mediaFileService;
+            _preferredWordServiceCalculator = preferredWordServiceCalculator;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null && searchCriteria.UserInvokedSearch)
             {
@@ -36,8 +45,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var profile = subject.Series.Profile.Value;
-            var delayProfile = _delayProfileService.BestForTags(subject.Series.Tags);
+            var qualityProfile = subject.Artist.QualityProfile.Value;
+            var delayProfile = _delayProfileService.BestForTags(subject.Artist.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
@@ -47,19 +56,24 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var comparer = new QualityModelComparer(profile);
+            var qualityComparer = new QualityModelComparer(qualityProfile);
 
             if (isPreferredProtocol)
             {
-                foreach (var file in subject.Episodes.Where(c => c.EpisodeFileId != 0).Select(c => c.EpisodeFile.Value))
+                foreach (var album in subject.Albums)
                 {
-                    var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, file.Quality, subject.ParsedEpisodeInfo.Quality);
+                    var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
-                    if (upgradable)
+                    if (trackFiles.Any())
                     {
-                        var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedEpisodeInfo.Quality);
+                        var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
 
-                        if (revisionUpgrade)
+                        var upgradable = _upgradableSpecification.IsUpgradable(qualityProfile,
+                                                                               currentQualities,
+                                                                               _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
+                                                                               subject.ParsedAlbumInfo.Quality,
+                                                                               subject.PreferredWordScore);
+                        if (upgradable)
                         {
                             _logger.Debug("New quality is a better revision for existing quality, skipping delay");
                             return Decision.Accept();
@@ -69,8 +83,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
-            var bestQualityInProfile = new QualityModel(profile.LastAllowedQuality());
-            var isBestInProfile = comparer.Compare(subject.ParsedEpisodeInfo.Quality, bestQualityInProfile) >= 0;
+            var bestQualityInProfile = qualityProfile.LastAllowedQuality();
+            var isBestInProfile = qualityComparer.Compare(subject.ParsedAlbumInfo.Quality.Quality, bestQualityInProfile) >= 0;
 
             if (isBestInProfile && isPreferredProtocol)
             {
@@ -78,9 +92,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var episodeIds = subject.Episodes.Select(e => e.Id);
+            var albumIds = subject.Albums.Select(e => e.Id);
 
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Series.Id, episodeIds);
+            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, albumIds.ToArray());
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {

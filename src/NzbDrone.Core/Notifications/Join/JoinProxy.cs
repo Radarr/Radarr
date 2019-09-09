@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Extensions;
 using RestSharp;
 using NzbDrone.Core.Rest;
 using NzbDrone.Common.Serializer;
@@ -41,7 +42,7 @@ namespace NzbDrone.Core.Notifications.Join
         public ValidationFailure Test(JoinSettings settings)
         {
             const string title = "Test Notification";
-            const string body = "This is a test message from Sonarr.";
+            const string body = "This is a test message from Lidarr.";
 
             try
             {
@@ -75,7 +76,11 @@ namespace NzbDrone.Core.Notifications.Join
 
             var client = RestClientFactory.BuildClient(URL);
 
-            if (!string.IsNullOrEmpty(settings.DeviceIds))
+            if (settings.DeviceNames.IsNotNullOrWhiteSpace())
+            {
+                request.AddParameter("deviceNames", settings.DeviceNames);
+            }
+            else if (settings.DeviceIds.IsNotNullOrWhiteSpace())
             {
                 request.AddParameter("deviceIds", settings.DeviceIds);
             }
@@ -83,11 +88,13 @@ namespace NzbDrone.Core.Notifications.Join
             {
                 request.AddParameter("deviceId", "group.all");
             }
-                
+
             request.AddParameter("apikey", settings.ApiKey);
             request.AddParameter("title", title);
             request.AddParameter("text", message);
-            request.AddParameter("icon", "https://cdn.rawgit.com/Sonarr/Sonarr/develop/Logo/256.png"); // Use the Sonarr logo.
+            request.AddParameter("icon", "https://cdn.rawgit.com/Lidarr/Lidarr/develop/Logo/256.png"); // Use the Lidarr logo.
+            request.AddParameter("smallicon", "https://cdn.rawgit.com/Lidarr/Lidarr/develop/Logo/96-Outline-White.png"); // 96x96px with outline at 88x88px on a transparent background.
+            request.AddParameter("priority", settings.Priority);
 
             var response = client.ExecuteAndValidate(request);
             var res = Json.Deserialize<JoinResponseModel>(response.Content);
@@ -108,7 +115,7 @@ namespace NzbDrone.Core.Notifications.Join
                     throw new JoinInvalidDeviceException(res.errorMessage);
                 }
                 // Oddly enough, rather than give us an "Invalid API key", the Join API seems to assume the key is valid,
-                // but fails when doing a device lookup associated with that key.  
+                // but fails when doing a device lookup associated with that key.
                 // In our case we are using "deviceIds" rather than "deviceId" so when the singular form error shows up
                 // we know the API key was the fault.
                 else if (res.errorMessage.Equals("No device to send message to"))

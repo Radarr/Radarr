@@ -5,7 +5,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Newznab
@@ -25,12 +24,12 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private static bool ShouldHaveApiKey(NewznabSettings settings)
         {
-            if (settings.Url == null)
+            if (settings.BaseUrl == null)
             {
                 return false;
             }
 
-            return ApiKeyWhiteList.Any(c => settings.Url.ToLowerInvariant().Contains(c));
+            return ApiKeyWhiteList.Any(c => settings.BaseUrl.ToLowerInvariant().Contains(c));
         }
 
         private static readonly Regex AdditionalParametersRegex = new Regex(@"(&.+?\=.+?)+", RegexOptions.Compiled);
@@ -39,45 +38,52 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             Custom(newznab =>
             {
-                if (newznab.Categories.Empty() && newznab.AnimeCategories.Empty())
+                if (newznab.Categories.Empty())
                 {
-                    return new ValidationFailure("", "Either 'Categories' or 'Anime Categories' must be provided");
+                    return new ValidationFailure("", "'Categories' must be provided");
                 }
 
                 return null;
             });
 
-            RuleFor(c => c.Url).ValidRootUrl();
+            RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.ApiPath).ValidUrlBase("/api");
             RuleFor(c => c.ApiKey).NotEmpty().When(ShouldHaveApiKey);
             RuleFor(c => c.AdditionalParameters).Matches(AdditionalParametersRegex)
                                                 .When(c => !c.AdditionalParameters.IsNullOrWhiteSpace());
         }
     }
 
-    public class NewznabSettings : IProviderConfig
+    public class NewznabSettings : IIndexerSettings
     {
         private static readonly NewznabSettingsValidator Validator = new NewznabSettingsValidator();
 
         public NewznabSettings()
         {
-            Categories = new[] { 5030, 5040 };
-            AnimeCategories = Enumerable.Empty<int>();
+            ApiPath = "/api";
+            Categories = new[] { 3000, 3010, 3020, 3030, 3040 };
         }
 
         [FieldDefinition(0, Label = "URL")]
-        public string Url { get; set; }
+        public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "API Key")]
+        [FieldDefinition(1, Label = "API Path", HelpText = "Path to the api, usually /api", Advanced = true)]
+        public string ApiPath { get; set; }
+
+        [FieldDefinition(2, Label = "API Key")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
+        [FieldDefinition(3, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
 
-        [FieldDefinition(3, Label = "Anime Categories", HelpText = "Comma Separated list, leave blank to disable anime", Advanced = true)]
-        public IEnumerable<int> AnimeCategories { get; set; }
+        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Unit = "days", Advanced = true)]
+        public int? EarlyReleaseLimit { get; set; }
 
-        [FieldDefinition(4, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]
+        [FieldDefinition(5, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]
         public string AdditionalParameters { get; set; }
+
+        // Field 6 is used by TorznabSettings MinimumSeeders
+        // If you need to add another field here, update TorznabSettings as well and this comment
 
         public virtual NzbDroneValidationResult Validate()
         {

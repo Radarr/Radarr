@@ -1,5 +1,6 @@
-﻿using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -22,7 +23,6 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType());
         }
-
-        public override bool CheckOnConfigChange => false;
+        
     }
 }

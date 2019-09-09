@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
@@ -6,85 +6,68 @@ using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
 using NzbDrone.Core.Test.Qualities;
-using FluentAssertions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {
     public class HistoryServiceFixture : CoreTest<HistoryService>
     {
-        private Profile _profile;
-        private Profile _profileCustom;
+        private QualityProfile _profile;
+        private QualityProfile _profileCustom;
 
         [SetUp]
         public void Setup()
         {
-            _profile = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities() };
-            _profileCustom = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
-        }
+            _profile = new QualityProfile
+            {
+                Cutoff = Quality.MP3_320.Id,
+                Items = QualityFixture.GetDefaultQualities(),
+            };
 
-        [Test]
-        public void should_return_null_if_no_history()
-        {
-            Mocker.GetMock<IHistoryRepository>()
-                .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel>());
+            _profileCustom = new QualityProfile
 
-            var quality = Subject.GetBestQualityInHistory(_profile, 2);
+            {
+                Cutoff = Quality.MP3_320.Id,
+                Items = QualityFixture.GetDefaultQualities(Quality.MP3_256),
 
-            quality.Should().BeNull();
-        }
-
-        [Test]
-        public void should_return_best_quality()
-        {
-            Mocker.GetMock<IHistoryRepository>()
-                .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.DVD), new QualityModel(Quality.Bluray1080p) });
-
-            var quality = Subject.GetBestQualityInHistory(_profile, 2);
-
-            quality.Should().Be(new QualityModel(Quality.Bluray1080p));
-        }
-
-        [Test]
-        public void should_return_best_quality_with_custom_order()
-        {
-            Mocker.GetMock<IHistoryRepository>()
-                .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.DVD), new QualityModel(Quality.Bluray1080p) });
-
-            var quality = Subject.GetBestQualityInHistory(_profileCustom, 2);
-
-            quality.Should().Be(new QualityModel(Quality.DVD));
+            };
         }
 
         [Test]
         public void should_use_file_name_for_source_title_if_scene_name_is_null()
         {
-            var series = Builder<Series>.CreateNew().Build();
-            var episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
-                                                  .With(f => f.SceneName = null)
-                                                  .Build();
+            var artist = Builder<Artist>.CreateNew().Build();
+            var tracks = Builder<Track>.CreateListOfSize(1).Build().ToList();
+            var trackFile = Builder<TrackFile>.CreateNew()
+                .With(f => f.SceneName = null)
+                .With(f => f.Artist = artist)
+                .Build();
 
-            var localEpisode = new LocalEpisode
-                               {
-                                   Series = series,
-                                   Episodes = episodes,
-                                   Path = @"C:\Test\Unsorted\Series.s01e01.mkv"
-                               };
+            var localTrack = new LocalTrack
+            {
+                Artist = artist,
+                Album = new Album(),
+                Tracks = tracks,
+                Path = @"C:\Test\Unsorted\Artist.01.Hymn.mp3"
+            };
 
-            Subject.Handle(new EpisodeImportedEvent(localEpisode, episodeFile, true, "sab", "abcd", true));
+            var downloadClientItem = new DownloadClientItem
+                                     {
+                                        DownloadClient = "sab",
+                                        DownloadId = "abcd"
+                                     };
+            
+            Subject.Handle(new TrackImportedEvent(localTrack, trackFile, new List<TrackFile>(), true, downloadClientItem));
 
             Mocker.GetMock<IHistoryRepository>()
-                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localEpisode.Path))));
+                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localTrack.Path))));
         }
     }
 }

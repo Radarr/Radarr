@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -7,14 +7,14 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Notifications.Xbmc.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
     public interface IXbmcService
     {
         void Notify(XbmcSettings settings, string title, string message);
-        void Update(XbmcSettings settings, Series series);
+        void Update(XbmcSettings settings, Artist artist);
         void Clean(XbmcSettings settings);
         ValidationFailure Test(XbmcSettings settings, string message);
     }
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Notifications.Xbmc
             provider.Notify(settings, title, message);
         }
 
-        public void Update(XbmcSettings settings, Series series)
+        public void Update(XbmcSettings settings, Artist artist)
         {
             var provider = GetApiProvider(settings);
-            provider.Update(settings, series);
+            provider.Update(settings, artist);
         }
 
         public void Clean(XbmcSettings settings)

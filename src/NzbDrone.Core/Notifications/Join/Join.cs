@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 
@@ -17,14 +17,19 @@ namespace NzbDrone.Core.Notifications.Join
 
         public override string Link => "https://joaoapps.com/join/";
 
-        public override void OnGrab(GrabMessage grabMessage)
+        public override void OnGrab(GrabMessage message)
         {
-            _proxy.SendNotification(EPISODE_GRABBED_TITLE_BRANDED, Message.Message, Settings);
+            _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, message.Message, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            _proxy.SendNotification(EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()

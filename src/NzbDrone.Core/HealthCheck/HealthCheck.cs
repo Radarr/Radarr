@@ -39,14 +39,15 @@ namespace NzbDrone.Core.HealthCheck
 
         private static HttpUri MakeWikiUrl(string fragment)
         {
-            return new HttpUri("https://github.com/Sonarr/Sonarr/wiki/Health-checks") + new HttpUri(fragment);
+            return new HttpUri("https://github.com/Lidarr/Lidarr/wiki/Health-checks") + new HttpUri(fragment);
         }
     }
 
     public enum HealthCheckResult
     {
         Ok = 0,
-        Warning = 1,
-        Error = 2
+        Notice = 1,
+        Warning = 2,
+        Error = 3
     }
 }

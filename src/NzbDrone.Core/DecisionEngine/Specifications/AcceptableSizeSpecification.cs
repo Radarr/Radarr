@@ -4,7 +4,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
@@ -12,29 +11,22 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public class AcceptableSizeSpecification : IDecisionEngineSpecification
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
-        private readonly IEpisodeService _episodeService;
         private readonly Logger _logger;
 
-        public AcceptableSizeSpecification(IQualityDefinitionService qualityDefinitionService, IEpisodeService episodeService, Logger logger)
+        public AcceptableSizeSpecification(IQualityDefinitionService qualityDefinitionService, Logger logger)
         {
             _qualityDefinitionService = qualityDefinitionService;
-            _episodeService = episodeService;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
-
-        public Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        
+        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Beginning size check for: {0}", subject);
 
-            var quality = subject.ParsedEpisodeInfo.Quality.Quality;
-
-            if (subject.ParsedEpisodeInfo.Special)
-            {
-                _logger.Debug("Special release found, skipping size check.");
-                return Decision.Accept();
-            }
+            var quality = subject.ParsedAlbumInfo.Quality.Quality;
 
             if (subject.Release.Size == 0)
             {
@@ -43,20 +35,22 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             var qualityDefinition = _qualityDefinitionService.Get(quality);
+
             if (qualityDefinition.MinSize.HasValue)
             {
-                var minSize = qualityDefinition.MinSize.Value.Megabytes();
+                var minSize = qualityDefinition.MinSize.Value.Kilobits();
+                var minReleaseDuration = subject.Albums.Select(a => a.AlbumReleases.Value.Where(r => r.Monitored || a.AnyReleaseOk).Select(r => r.Duration).Min()).Sum() / 1000;
 
-                //Multiply maxSize by Series.Runtime
-                minSize = minSize * subject.Series.Runtime * subject.Episodes.Count;
+                //Multiply minSize by smallest release duration
+                minSize = minSize * minReleaseDuration;
 
                 //If the parsed size is smaller than minSize we don't want it
                 if (subject.Release.Size < minSize)
                 {
-                    var runtimeMessage = subject.Episodes.Count == 1 ? $"{subject.Series.Runtime}min" : $"{subject.Episodes.Count}x {subject.Series.Runtime}min";
+                    var runtimeMessage = $"{minReleaseDuration}sec";
 
                     _logger.Debug("Item: {0}, Size: {1} is smaller than minimum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, minSize, runtimeMessage);
-                    return Decision.Reject("{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage);
+                    return Decision.Reject("{0} is smaller than minimum allowed {1}", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix());
                 }
             }
             if (!qualityDefinition.MaxSize.HasValue || qualityDefinition.MaxSize.Value == 0)
@@ -65,42 +59,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
             else
             {
-                var maxSize = qualityDefinition.MaxSize.Value.Megabytes();
-
-                //Multiply maxSize by Series.Runtime
-                maxSize = maxSize * subject.Series.Runtime * subject.Episodes.Count;
-
-                if (subject.Episodes.Count == 1)
-                {
-                    Episode episode = subject.Episodes.First();
-                    List<Episode> seasonEpisodes;
-
-                    var seasonSearchCriteria = searchCriteria as SeasonSearchCriteria;
-                    if (seasonSearchCriteria != null && !seasonSearchCriteria.Series.UseSceneNumbering && seasonSearchCriteria.Episodes.Any(v => v.Id == episode.Id))
-                    {
-                        seasonEpisodes = (searchCriteria as SeasonSearchCriteria).Episodes;
-                    }
-                    else
-                    {
-                        seasonEpisodes = _episodeService.GetEpisodesBySeason(episode.SeriesId, episode.SeasonNumber);
-                    }
-
-                    //Ensure that this is either the first episode
-                    //or is the last episode in a season that has 10 or more episodes
-                    if (seasonEpisodes.First().Id == episode.Id || (seasonEpisodes.Count() >= 10 && seasonEpisodes.Last().Id == episode.Id))
-                    {
-                        _logger.Debug("Possible double episode, doubling allowed size.");
-                        maxSize = maxSize * 2;
-                    }
-                }
+                var maxSize = qualityDefinition.MaxSize.Value.Kilobits();
+                var maxReleaseDuration = subject.Albums.Select(a => a.AlbumReleases.Value.Where(r => r.Monitored || a.AnyReleaseOk).Select(r => r.Duration).Max()).Sum() / 1000;
+                
+                //Multiply maxSize by Album.Duration
+                maxSize = maxSize * maxReleaseDuration;
 
                 //If the parsed size is greater than maxSize we don't want it
                 if (subject.Release.Size > maxSize)
                 {
-                    var runtimeMessage = subject.Episodes.Count == 1 ? $"{subject.Series.Runtime}min" : $"{subject.Episodes.Count}x {subject.Series.Runtime}min";
+                    var runtimeMessage = $"{maxReleaseDuration}sec";
 
-                    _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} for {3}), rejecting.", subject, subject.Release.Size, maxSize, runtimeMessage);
-                    return Decision.Reject("{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), runtimeMessage);
+                    _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, maxSize, runtimeMessage);
+                    return Decision.Reject("{0} is larger than maximum allowed {1}", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix());
                 }
             }
 

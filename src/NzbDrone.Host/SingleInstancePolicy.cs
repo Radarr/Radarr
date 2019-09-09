@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -10,6 +10,7 @@ namespace NzbDrone.Host
     {
         void PreventStartIfAlreadyRunning();
         void KillAllOtherInstance();
+        void WarnIfAlreadyRunning();
     }
 
     public class SingleInstancePolicy : ISingleInstancePolicy
@@ -31,7 +32,7 @@ namespace NzbDrone.Host
         {
             if (IsAlreadyRunning())
             {
-                _logger.Warn("Another instance of Sonarr is already running.");
+                _logger.Warn("Another instance of Lidarr is already running.");
                 _browserService.LaunchWebUI();
                 throw new TerminateApplicationException("Another instance is already running");
             }
@@ -42,6 +43,14 @@ namespace NzbDrone.Host
             foreach (var processId in GetOtherNzbDroneProcessIds())
             {
                 _processProvider.Kill(processId);
+            }
+        }
+
+        public void WarnIfAlreadyRunning()
+        {
+            if (IsAlreadyRunning())
+            {
+                _logger.Debug("Another instance of Lidarr is already running.");
             }
         }
 
@@ -56,22 +65,22 @@ namespace NzbDrone.Host
             {
                 var currentId = _processProvider.GetCurrentProcess().Id;
 
-                var otherProcesses = _processProvider.FindProcessByName(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME)
-                                                     .Union(_processProvider.FindProcessByName(ProcessProvider.NZB_DRONE_PROCESS_NAME))
+                var otherProcesses = _processProvider.FindProcessByName(ProcessProvider.LIDARR_CONSOLE_PROCESS_NAME)
+                                                     .Union(_processProvider.FindProcessByName(ProcessProvider.LIDARR_PROCESS_NAME))
                                                      .Select(c => c.Id)
                                                      .Except(new[] { currentId })
                                                      .ToList();
 
                 if (otherProcesses.Any())
                 {
-                    _logger.Info("{0} instance(s) of Sonarr are running", otherProcesses.Count);
+                    _logger.Info("{0} instance(s) of Lidarr are running", otherProcesses.Count);
                 }
 
                 return otherProcesses;
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, "Failed to check for multiple instances of Sonarr.");
+                _logger.Warn(ex, "Failed to check for multiple instances of Lidarr.");
                 return new List<int>();
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -13,7 +13,7 @@ using NzbDrone.Core.ThingiProvider;
 namespace NzbDrone.Core.Indexers
 {
     public abstract class IndexerBase<TSettings> : IIndexer
-        where TSettings : IProviderConfig, new()
+        where TSettings : IIndexerSettings, new()
     {
         protected readonly IIndexerStatusService _indexerStatusService;
         protected readonly IConfigService _configService;
@@ -48,7 +48,8 @@ namespace NzbDrone.Core.Indexers
                 {
                     Name = GetType().Name,
                     EnableRss = config.Validate().IsValid && SupportsRss,
-                    EnableSearch = config.Validate().IsValid && SupportsSearch,
+                    EnableAutomaticSearch = config.Validate().IsValid && SupportsSearch,
+                    EnableInteractiveSearch = config.Validate().IsValid && SupportsSearch,
                     Implementation = GetType().Name,
                     Settings = config
                 };
@@ -62,11 +63,9 @@ namespace NzbDrone.Core.Indexers
         protected TSettings Settings => (TSettings)Definition.Settings;
 
         public abstract IList<ReleaseInfo> FetchRecent();
-        public abstract IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria);
-        public abstract IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria);
-        public abstract IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria);
-        public abstract IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria);
-        public abstract IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria);
+
+        public abstract IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
+        public abstract IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria);
 
         protected virtual IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
         {
@@ -74,6 +73,7 @@ namespace NzbDrone.Core.Indexers
 
             result.ForEach(c =>
             {
+                c.Guid = string.Concat(Definition.Id, "_", c.Guid);
                 c.IndexerId = Definition.Id;
                 c.Indexer = Definition.Name;
                 c.DownloadProtocol = Protocol;
@@ -94,11 +94,6 @@ namespace NzbDrone.Core.Indexers
             {
                 _logger.Error(ex, "Test aborted due to exception");
                 failures.Add(new ValidationFailure(string.Empty, "Test was aborted due to an error: " + ex.Message));
-            }
-
-            if (Definition.Id != 0)
-            {
-                _indexerStatusService.RecordSuccess(Definition.Id);
             }
 
             return new ValidationResult(failures);

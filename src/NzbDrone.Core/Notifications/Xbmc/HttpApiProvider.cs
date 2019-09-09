@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Xbmc.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -28,33 +28,33 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public void Notify(XbmcSettings settings, string title, string message)
         {
-            var notification = string.Format("Notification({0},{1},{2},{3})", title, message, settings.DisplayTime * 1000, "https://raw.github.com/Sonarr/Sonarr/develop/Logo/64.png");
+            var notification = string.Format("Notification({0},{1},{2},{3})", title, message, settings.DisplayTime * 1000, "https://raw.github.com/Lidarr/Lidarr/develop/Logo/64.png");
             var command = BuildExecBuiltInCommand(notification);
 
             SendCommand(settings, command);
         }
 
-        public void Update(XbmcSettings settings, Series series)
+        public void Update(XbmcSettings settings, Artist artist)
         {
             if (!settings.AlwaysUpdate)
             {
                 _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
                 var activePlayers = GetActivePlayers(settings);
 
-                if (activePlayers.Any(a => a.Type.Equals("video")))
+                if (activePlayers.Any(a => a.Type.Equals("audio")))
                 {
-                    _logger.Debug("Video is currently playing, skipping library update");
+                    _logger.Debug("Audio is currently playing, skipping library update");
                     return;
                 }
             }
 
-            UpdateLibrary(settings, series);
+            UpdateLibrary(settings, artist);
         }
 
         public void Clean(XbmcSettings settings)
         {
-            const string cleanVideoLibrary = "CleanLibrary(video)";
-            var command = BuildExecBuiltInCommand(cleanVideoLibrary);
+            const string cleanMusicLibrary = "CleanLibrary(music)";
+            var command = BuildExecBuiltInCommand(cleanMusicLibrary);
 
             SendCommand(settings, command);
         }
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 var response = SendCommand(settings, "getcurrentlyplaying");
 
                 if (response.Contains("<li>Filename:[Nothing Playing]")) return new List<ActivePlayer>();
-                if (response.Contains("<li>Type:Video")) result.Add(new ActivePlayer(1, "video"));
+                if (response.Contains("<li>Type:Audio")) result.Add(new ActivePlayer(1, "audio"));
 
                 return result;
             }
@@ -80,13 +80,13 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return new List<ActivePlayer>();
         }
         
-        internal string GetSeriesPath(XbmcSettings settings, Series series)
+        internal string GetArtistPath(XbmcSettings settings, Artist artist)
         {
             var query =
                 string.Format(
-                    "select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = {0} and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath",
-                    series.TvdbId);
-            var command = string.Format("QueryVideoDatabase({0})", query);
+                    "select path.strPath from path, artist, artistlinkpath where artist.c12 = {0} and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath",
+                    artist.Metadata.Value.ForeignArtistId);
+            var command = string.Format("QueryMusicDatabase({0})", query);
 
             const string setResponseCommand =
                 "SetResponseFormat(webheader;false;webfooter;false;header;<xml>;footer;</xml>;opentag;<tag>;closetag;</tag>;closefinaltag;false)";
@@ -137,26 +137,26 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return false;
         }
 
-        private void UpdateLibrary(XbmcSettings settings, Series series)
+        private void UpdateLibrary(XbmcSettings settings, Artist artist)
         {
             try
             {
                 _logger.Debug("Sending Update DB Request to XBMC Host: {0}", settings.Address);
-                var xbmcSeriesPath = GetSeriesPath(settings, series);
+                var xbmcArtistPath = GetArtistPath(settings, artist);
 
                 //If the path is found update it, else update the whole library
-                if (!string.IsNullOrEmpty(xbmcSeriesPath))
+                if (!string.IsNullOrEmpty(xbmcArtistPath))
                 {
-                    _logger.Debug("Updating series [{0}] on XBMC host: {1}", series, settings.Address);
-                    var command = BuildExecBuiltInCommand(string.Format("UpdateLibrary(video,{0})", xbmcSeriesPath));
+                    _logger.Debug("Updating artist [{0}] on XBMC host: {1}", artist, settings.Address);
+                    var command = BuildExecBuiltInCommand(string.Format("UpdateLibrary(music,{0})", xbmcArtistPath));
                     SendCommand(settings, command);
                 }
 
                 else
                 {
                     //Update the entire library
-                    _logger.Debug("Series [{0}] doesn't exist on XBMC host: {1}, Updating Entire Library", series, settings.Address);
-                    var command = BuildExecBuiltInCommand("UpdateLibrary(video)");
+                    _logger.Debug("Artist [{0}] doesn't exist on XBMC host: {1}, Updating Entire Library", artist, settings.Address);
+                    var command = BuildExecBuiltInCommand("UpdateLibrary(music)");
                     SendCommand(settings, command);
                 }
             }

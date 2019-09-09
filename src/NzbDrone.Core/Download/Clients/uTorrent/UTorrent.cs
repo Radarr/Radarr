@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
@@ -36,34 +36,40 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _torrentCache = cacheManager.GetCache<UTorrentTorrentCache>(GetType(), "differentialTorrents");
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }
+
+            _proxy.SetState(hash, (UTorrentState)Settings.IntialState, Settings);
 
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }
+
+            _proxy.SetState(hash, (UTorrentState)Settings.IntialState, Settings);
 
             return hash;
         }
@@ -72,48 +78,13 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<UTorrentTorrent> torrents;
-
-            try
-            {
-                var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.TvCategory);
-                var cache = _torrentCache.Find(cacheKey);
-
-                var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
-
-                if (cache != null && response.Torrents == null)
-                {
-                    var removedAndUpdated = new HashSet<string>(response.TorrentsChanged.Select(v => v.Hash).Concat(response.TorrentsRemoved));
-
-                    torrents = cache.Torrents
-                        .Where(v => !removedAndUpdated.Contains(v.Hash))
-                        .Concat(response.TorrentsChanged)
-                        .ToList();
-                }
-                else
-                {
-                    torrents = response.Torrents;
-                }
-
-                cache = new UTorrentTorrentCache
-                {
-                    CacheID = response.CacheNumber,
-                    Torrents = torrents
-                };
-
-                _torrentCache.Set(cacheKey, cache, TimeSpan.FromMinutes(15));
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = GetTorrents();
 
             var queueItems = new List<DownloadClientItem>();
 
             foreach (var torrent in torrents)
             {
-                if (torrent.Label != Settings.TvCategory)
+                if (torrent.Label != Settings.MusicCategory)
                 {
                     continue;
                 }
@@ -125,6 +96,8 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 item.Category = torrent.Label;
                 item.DownloadClient = Definition.Name;
                 item.RemainingSize = torrent.Remaining;
+                item.SeedRatio = torrent.Ratio;
+
                 if (torrent.Eta != -1)
                 {
                     item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
@@ -132,7 +105,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.RootDownloadPath));
 
-                if (outputPath == null || outputPath.FileName == torrent.Name)
+                if (outputPath.FileName == torrent.Name)
                 {
                     item.OutputPath = outputPath;
                 }
@@ -165,7 +138,9 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
 
                 // 'Started' without 'Queued' is when the torrent is 'forced seeding'
-                item.IsReadOnly = torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) || torrent.Status.HasFlag(UTorrentTorrentStatus.Started);
+                item.CanMoveFiles = item.CanBeRemoved =
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) &&
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Started);
 
                 queueItems.Add(item);
             }
@@ -173,12 +148,46 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return queueItems;
         }
 
+        private List<UTorrentTorrent> GetTorrents()
+        {
+            List<UTorrentTorrent> torrents;
+
+            var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.MusicCategory);
+            var cache = _torrentCache.Find(cacheKey);
+
+            var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
+
+            if (cache != null && response.Torrents == null)
+            {
+                var removedAndUpdated = new HashSet<string>(response.TorrentsChanged.Select(v => v.Hash).Concat(response.TorrentsRemoved));
+
+                torrents = cache.Torrents
+                    .Where(v => !removedAndUpdated.Contains(v.Hash))
+                    .Concat(response.TorrentsChanged)
+                    .ToList();
+            }
+            else
+            {
+                torrents = response.Torrents;
+            }
+
+            cache = new UTorrentTorrentCache
+            {
+                CacheID = response.CacheNumber,
+                Torrents = torrents
+            };
+
+            _torrentCache.Set(cacheKey, cache, TimeSpan.FromMinutes(15));
+
+            return torrents;
+        }
+
         public override void RemoveItem(string downloadId, bool deleteData)
         {
             _proxy.RemoveTorrent(downloadId, deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
@@ -195,11 +204,11 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 if (config.GetValueOrDefault("dir_add_label") == "true")
                 {
-                    destDir = destDir + Settings.TvCategory;
+                    destDir = destDir + Settings.MusicCategory;
                 }
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -232,7 +241,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
                     DetailedDescription = "Please verify your username and password."
@@ -240,7 +249,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (WebException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to uTorrent");
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
                     return new NzbDroneValidationFailure("Host", "Unable to connect")
@@ -252,7 +261,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Failed to test uTorrent");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
 
@@ -267,7 +276,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

@@ -1,30 +1,31 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
     public class DeleteBadMediaCovers : IHousekeepingTask
     {
         private readonly IMetadataFileService _metaFileService;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public DeleteBadMediaCovers(IMetadataFileService metaFileService,
-                                    ISeriesService seriesService,
+                                    IArtistService artistService,
                                     IDiskProvider diskProvider,
                                     IConfigService configService,
                                     Logger logger)
         {
             _metaFileService = metaFileService;
-            _seriesService = seriesService;
+            _artistService = artistService;
             _diskProvider = diskProvider;
             _configService = configService;
             _logger = logger;
@@ -34,18 +35,19 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             if (!_configService.CleanupMetadataImages) return;
 
-            var series = _seriesService.GetAllSeries();
+            var artists = _artistService.GetAllArtists();
+            var imageExtensions = new List<string> { ".jpg", ".png", ".gif" };
 
-            foreach (var show in series)
+            foreach (var artist in artists)
             {
-                var images = _metaFileService.GetFilesBySeries(show.Id)
-                    .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && c.RelativePath.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase));
+                var images = _metaFileService.GetFilesByArtist(artist.Id)
+                    .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && imageExtensions.Any(x => c.RelativePath.EndsWith(x, StringComparison.InvariantCultureIgnoreCase)));
 
                 foreach (var image in images)
                 {
                     try
                     {
-                        var path = Path.Combine(show.Path, image.RelativePath);
+                        var path = Path.Combine(artist.Path, image.RelativePath);
                         if (!IsValid(path))
                         {
                             _logger.Debug("Deleting invalid image file " + path);

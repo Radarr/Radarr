@@ -19,10 +19,10 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             _blacklist = new Blacklist
                      {
-                         SeriesId = 12345,
-                         EpisodeIds = new List<int> { 1 },
-                         Quality = new QualityModel(Quality.Bluray720p),
-                         SourceTitle = "series.title.s01e01",
+                         ArtistId = 12345,
+                         AlbumIds = new List<int> { 1 },
+                         Quality = new QualityModel(Quality.FLAC),
+                         SourceTitle = "artist.name.album.title",
                          Date = DateTime.UtcNow
                      };
         }
@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Test.Blacklisting
         }
 
         [Test]
-        public void should_should_have_episode_ids()
+        public void should_should_have_album_ids()
         {
             Subject.Insert(_blacklist);
 
-            Subject.All().First().EpisodeIds.Should().Contain(_blacklist.EpisodeIds);
+            Subject.All().First().AlbumIds.Should().Contain(_blacklist.AlbumIds);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             Subject.Insert(_blacklist);
 
-            Subject.BlacklistedByTitle(_blacklist.SeriesId, _blacklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
+            Subject.BlacklistedByTitle(_blacklist.ArtistId, _blacklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
         }
     }
 }

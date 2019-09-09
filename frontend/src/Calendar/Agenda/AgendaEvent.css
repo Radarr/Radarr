@@ -1,0 +1,113 @@
+.event {
+  display: flex;
+  overflow-x: hidden;
+  padding: 5px;
+  border-bottom: 1px solid $borderColor;
+  font-size: $defaultFontSize;
+
+  &:hover {
+    background-color: $tableRowHoverBackgroundColor;
+  }
+}
+
+.eventWrapper {
+  display: flex;
+  flex: 1 0 1px;
+  overflow-x: hidden;
+  padding-left: 6px;
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+.date {
+  flex: 0 0 250px;
+  font-weight: bold;
+}
+
+.time {
+  flex: 0 0 120px;
+  margin-right: 10px;
+  border: none !important;
+}
+
+.artistName,
+.albumTitle {
+  @add-mixin truncate;
+
+  flex: 0 1 300px;
+  margin-right: 10px;
+}
+
+.albumTitle {
+  flex: 1 1 1px;
+}
+
+.seasonEpisodeNumber {
+  flex: 0 0 100px;
+}
+
+.albumSeparator {
+  display: none;
+}
+
+.absoluteEpisodeNumber {
+  margin-left: 3px;
+}
+
+/*
+ * Status
+ */
+
+.downloaded {
+  composes: downloaded from '~Calendar/Events/CalendarEvent.css';
+}
+
+.partial {
+  composes: partial from '~Calendar/Events/CalendarEvent.css';
+}
+
+.downloading {
+  composes: downloading from '~Calendar/Events/CalendarEvent.css';
+}
+
+.unmonitored {
+  composes: unmonitored from '~Calendar/Events/CalendarEvent.css';
+}
+
+.missing {
+  composes: missing from '~Calendar/Events/CalendarEvent.css';
+}
+
+.unreleased {
+  composes: unreleased from '~Calendar/Events/CalendarEvent.css';
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .event {
+    flex-direction: column;
+  }
+
+  .eventWrapper {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  .date {
+    margin-left: 10px;
+  }
+
+  .date,
+  .time,
+  .artistName {
+    flex: 0 0 100%;
+  }
+
+  .seasonEpisodeNumber {
+    flex: 0 0 auto;
+  }
+
+  .albumSeparator {
+    display: inline-block;
+    margin: 0 5px;
+  }
+}

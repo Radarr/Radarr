@@ -1,0 +1,45 @@
+.selectInput {
+  composes: input from '~Components/Form/CheckInput.css';
+}
+
+.folder {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 1 0 200px;
+  line-height: 36px;
+}
+
+.monitor {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 0 1 200px;
+  min-width: 185px;
+}
+
+.qualityProfile,
+.metadataProfile {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 0 1 250px;
+  min-width: 170px;
+}
+
+.albumFolder {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 0 1 150px;
+  min-width: 120px;
+}
+
+.artist {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 0 1 400px;
+  min-width: 300px;
+}
+
+.hideMetadataProfile {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: none;
+}

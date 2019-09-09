@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Configuration
 {
     public enum ConfigKey
     {
-        DownloadedEpisodesFolder
+        DownloadedAlbumsFolder
     }
 
     public class ConfigService : IConfigService
@@ -74,17 +74,10 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedEpisodesFolder
+        public bool AutoUnmonitorPreviouslyDownloadedTracks
         {
-            get { return GetValue(ConfigKey.DownloadedEpisodesFolder.ToString()); }
-
-            set { SetValue(ConfigKey.DownloadedEpisodesFolder.ToString(), value); }
-        }
-
-        public bool AutoUnmonitorPreviouslyDownloadedEpisodes
-        {
-            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedEpisodes"); }
-            set { SetValue("AutoUnmonitorPreviouslyDownloadedEpisodes", value); }
+            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedTracks"); }
+            set { SetValue("AutoUnmonitorPreviouslyDownloadedTracks", value); }
         }
 
         public int Retention
@@ -99,11 +92,24 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RecycleBin", value); }
         }
 
+        public int RecycleBinCleanupDays
+        {
+            get { return GetValueInt("RecycleBinCleanupDays", 7); }
+            set { SetValue("RecycleBinCleanupDays", value); }
+        }
+
         public int RssSyncInterval
         {
             get { return GetValueInt("RssSyncInterval", 15); }
 
             set { SetValue("RssSyncInterval", value); }
+        }
+
+        public int MaximumSize
+        {
+            get { return GetValueInt("MaximumSize", 0);}
+
+            set { SetValue("MaximumSize", value);}
         }
 
         public int MinimumAge
@@ -113,11 +119,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("MinimumAge", value); }
         }
 
-        public bool AutoDownloadPropers
+        public ProperDownloadTypes DownloadPropersAndRepacks
         {
-            get { return GetValueBoolean("AutoDownloadPropers", true); }
+            get { return GetValueEnum("DownloadPropersAndRepacks", ProperDownloadTypes.PreferAndUpgrade); }
 
-            set { SetValue("AutoDownloadPropers", value); }
+            set { SetValue("DownloadPropersAndRepacks", value); }
         }
 
         public bool EnableCompletedDownloadHandling
@@ -148,11 +154,18 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RemoveFailedDownloads", value); }
         }
 
-        public bool CreateEmptySeriesFolders
+        public bool CreateEmptyArtistFolders
         {
-            get { return GetValueBoolean("CreateEmptySeriesFolders", false); }
+            get { return GetValueBoolean("CreateEmptyArtistFolders", false); }
 
-            set { SetValue("CreateEmptySeriesFolders", value); }
+            set { SetValue("CreateEmptyArtistFolders", value); }
+        }
+
+        public bool DeleteEmptyFolders
+        {
+            get { return GetValueBoolean("DeleteEmptyFolders", false); }
+
+            set { SetValue("DeleteEmptyFolders", value); }
         }
 
         public FileDateType FileDate
@@ -166,13 +179,6 @@ namespace NzbDrone.Core.Configuration
         {
             get { return GetValue("DownloadClientWorkingFolders", "_UNPACK_|_FAILED_"); }
             set { SetValue("DownloadClientWorkingFolders", value); }
-        }
-
-        public int DownloadedEpisodesScanInterval
-        {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 1); }
-
-            set { SetValue("DownloadedEpisodesScanInterval", value); }
         }
 
         public int DownloadClientHistoryLimit
@@ -196,18 +202,32 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CopyUsingHardlinks", value); }
         }
 
-        public bool EnableMediaInfo
+        public bool ImportExtraFiles
         {
-            get { return GetValueBoolean("EnableMediaInfo", true); }
+            get { return GetValueBoolean("ImportExtraFiles", false); }
 
-            set { SetValue("EnableMediaInfo", value); }
+            set { SetValue("ImportExtraFiles", value); }
         }
 
         public string ExtraFileExtensions
         {
-            get { return GetValue("ExtraFileExtensions", ""); }
+            get { return GetValue("ExtraFileExtensions", "srt"); }
 
             set { SetValue("ExtraFileExtensions", value); }
+        }
+
+        public RescanAfterRefreshType RescanAfterRefresh
+        {
+            get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }
+
+            set { SetValue("RescanAfterRefresh", value); }
+        }
+
+        public AllowFingerprinting AllowFingerprinting
+        {
+            get { return GetValueEnum("AllowFingerprinting", AllowFingerprinting.NewFiles); }
+
+            set { SetValue("AllowFingerprinting", value); }
         }
 
         public bool SetPermissionsLinux
@@ -243,6 +263,27 @@ namespace NzbDrone.Core.Configuration
             get { return GetValue("ChownGroup", ""); }
 
             set { SetValue("ChownGroup", value); }
+        }
+
+        public string MetadataSource
+        {
+            get { return GetValue("MetadataSource", ""); }
+
+            set { SetValue("MetadataSource", value); }
+        }
+
+        public WriteAudioTagsType WriteAudioTags
+        {
+            get { return GetValueEnum("WriteAudioTags", WriteAudioTagsType.No); }
+
+            set { SetValue("WriteAudioTags", value); }
+        }
+
+        public bool ScrubAudioTags
+        {
+            get { return GetValueBoolean("ScrubAudioTags", false); }
+
+            set { SetValue("ScrubAudioTags", value); }
         }
 
         public int FirstDayOfWeek
@@ -294,12 +335,49 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableColorImpairedMode", value); }
         }
 
+        public bool ExpandAlbumByDefault
+        {
+            get { return GetValueBoolean("ExpandAlbumByDefault", false); }
+
+            set { SetValue("ExpandAlbumByDefault", value); }
+        }
+
+        public bool ExpandEPByDefault
+        {
+            get { return GetValueBoolean("ExpandEPByDefault", false); }
+
+            set { SetValue("ExpandEPByDefault", value); }
+        }
+
+        public bool ExpandSingleByDefault
+        {
+            get { return GetValueBoolean("ExpandSingleByDefault", false); }
+
+            set { SetValue("ExpandSingleByDefault", value); }
+        }
+
+        public bool ExpandBroadcastByDefault
+        {
+            get { return GetValueBoolean("ExpandBroadcastByDefault", false); }
+
+            set { SetValue("ExpandBroadcastByDefault", value); }
+        }
+
+        public bool ExpandOtherByDefault
+        {
+            get { return GetValueBoolean("ExpandOtherByDefault", false); }
+
+            set { SetValue("ExpandOtherByDefault", value); }
+        }
+
         public bool CleanupMetadataImages
         {
             get { return GetValueBoolean("CleanupMetadataImages", true); }
 
             set { SetValue("CleanupMetadataImages", value); }
         }
+
+        public string PlexClientIdentifier => GetValue("PlexClientIdentifier", Guid.NewGuid().ToString(), true);
 
         public string RijndaelPassphrase => GetValue("RijndaelPassphrase", Guid.NewGuid().ToString(), true);
 
@@ -324,6 +402,12 @@ namespace NzbDrone.Core.Configuration
         public string ProxyBypassFilter => GetValue("ProxyBypassFilter", string.Empty);
 
         public bool ProxyBypassLocalAddresses => GetValueBoolean("ProxyBypassLocalAddresses", true);
+
+        public string BackupFolder => GetValue("BackupFolder", "Backups");
+
+        public int BackupInterval => GetValueInt("BackupInterval", 7);
+
+        public int BackupRetention => GetValueInt("BackupRetention", 28);
 
         private string GetValue(string key)
         {

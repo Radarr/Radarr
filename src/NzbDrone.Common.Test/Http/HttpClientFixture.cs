@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -21,7 +21,6 @@ namespace NzbDrone.Common.Test.Http
 {
     [IntegrationTest]
     [TestFixture(typeof(ManagedHttpDispatcher))]
-    [TestFixture(typeof(CurlHttpDispatcher))]
     public class HttpClientFixture<TDispatcher> : TestBase<HttpClient> where TDispatcher : IHttpDispatcher
     {
         private static string[] _httpBinHosts = new[] { "eu.httpbin.org", "httpbin.org" };
@@ -55,13 +54,13 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_execute_simple_get()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
 
             var response = Subject.Execute(request);
 
             response.Content.Should().NotBeNullOrWhiteSpace();
         }
-        
+
         [Test]
         public void should_execute_https_get()
         {
@@ -75,11 +74,12 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_execute_typed_get()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get?test=1");
 
             var response = Subject.Get<HttpBinResource>(request);
 
-            response.Resource.Url.Should().Be(request.Url.FullUri);
+            response.Resource.Url.EndsWith("/get?test=1");
+            response.Resource.Args.Should().Contain("test", "1");
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NzbDrone.Common.Test.Http
         {
             var message = "{ my: 1 }";
 
-            var request = new HttpRequest($"http://{_httpBinHost}/post");
+            var request = new HttpRequest($"https://{_httpBinHost}/post");
             request.SetContent(message);
 
             var response = Subject.Post<HttpBinResource>(request);
@@ -98,7 +98,7 @@ namespace NzbDrone.Common.Test.Http
         [TestCase("gzip")]
         public void should_execute_get_using_gzip(string compression)
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/{compression}");
+            var request = new HttpRequest($"https://{_httpBinHost}/{compression}");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -114,7 +114,7 @@ namespace NzbDrone.Common.Test.Http
         [TestCase(HttpStatusCode.BadGateway)]
         public void should_throw_on_unsuccessful_status_codes(int statusCode)
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/status/{statusCode}");
+            var request = new HttpRequest($"https://{_httpBinHost}/status/{statusCode}");
 
             var exception = Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
 
@@ -126,7 +126,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_not_follow_redirects_when_not_in_production()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/redirect/1");
+            var request = new HttpRequest($"https://{_httpBinHost}/redirect/1");
 
             Subject.Get(request);
 
@@ -136,10 +136,57 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_follow_redirects()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/redirect/1");
+            var request = new HttpRequest($"https://{_httpBinHost}/redirect/1");
             request.AllowAutoRedirect = true;
 
-            Subject.Get(request);
+            var response = Subject.Get(request);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            ExceptionVerification.ExpectedErrors(0);
+        }
+
+        [Test]
+        public void should_not_follow_redirects()
+        {
+            var request = new HttpRequest($"https://{_httpBinHost}/redirect/1");
+            request.AllowAutoRedirect = false;
+
+            var response = Subject.Get(request);
+
+            response.StatusCode.Should().Be(HttpStatusCode.Found);
+
+            ExceptionVerification.ExpectedErrors(1);
+        }
+
+        [Test]
+        public void should_follow_redirects_to_https()
+        {
+            if (typeof(TDispatcher) == typeof(ManagedHttpDispatcher) && PlatformInfo.IsMono)
+            {
+                Assert.Ignore("Will fail on tls1.2 via managed dispatcher, ignore.");
+            }
+
+            var request = new HttpRequestBuilder($"https://{_httpBinHost}/redirect-to")
+                .AddQueryParam("url", $"https://lidarr.audio/")
+                .Build();
+            request.AllowAutoRedirect = true;
+
+            var response = Subject.Get(request);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Should().Contain("Lidarr");
+
+            ExceptionVerification.ExpectedErrors(0);
+        }
+
+        [Test]
+        public void should_throw_on_too_many_redirects()
+        {
+            var request = new HttpRequest($"https://{_httpBinHost}/redirect/4");
+            request.AllowAutoRedirect = true;
+
+            Assert.Throws<WebException>(() => Subject.Get(request));
 
             ExceptionVerification.ExpectedErrors(0);
         }
@@ -147,7 +194,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_send_user_agent()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -155,13 +202,13 @@ namespace NzbDrone.Common.Test.Http
 
             var userAgent = response.Resource.Headers["User-Agent"].ToString();
 
-            userAgent.Should().Contain("Sonarr");
+            userAgent.Should().Contain("Lidarr");
         }
 
         [TestCase("Accept", "text/xml, text/rss+xml, application/rss+xml")]
         public void should_send_headers(string header, string value)
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
             request.Headers.Add(header, value);
 
             var response = Subject.Get<HttpBinResource>(request);
@@ -174,7 +221,7 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.lidarr.audio/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 
@@ -184,7 +231,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_send_cookie()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
             request.Cookies["my"] = "cookie";
 
             var response = Subject.Get<HttpBinResource>(request);
@@ -198,7 +245,7 @@ namespace NzbDrone.Common.Test.Http
 
         public void GivenOldCookie()
         {
-            var oldRequest = new HttpRequest("http://eu.httpbin.org/get");
+            var oldRequest = new HttpRequest("https://eu.httpbin.org/get");
             oldRequest.Cookies["my"] = "cookie";
 
             var oldClient = new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<ICacheManager>(), Mocker.Resolve<IRateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.GetMock<IUserAgentBuilder>().Object, Mocker.Resolve<Logger>());
@@ -215,7 +262,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("http://eu.httpbin.org/get");
+            var request = new HttpRequest("https://eu.httpbin.org/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -231,7 +278,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("http://httpbin.org/get");
+            var request = new HttpRequest("https://httpbin.org/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -239,18 +286,95 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        public void should_not_store_request_cookie()
+        {
+            var requestGet = new HttpRequest($"https://{_httpBinHost}/get");
+            requestGet.Cookies.Add("my", "cookie");
+            requestGet.AllowAutoRedirect = false;
+            requestGet.StoreRequestCookie = false;
+            requestGet.StoreResponseCookie = false;
+            var responseGet = Subject.Get<HttpBinResource>(requestGet);
+
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.AllowAutoRedirect = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().BeEmpty();
+
+            ExceptionVerification.IgnoreErrors();
+        }
+
+        [Test]
+        public void should_store_request_cookie()
+        {
+            var requestGet = new HttpRequest($"https://{_httpBinHost}/get");
+            requestGet.Cookies.Add("my", "cookie");
+            requestGet.AllowAutoRedirect = false;
+            requestGet.StoreRequestCookie.Should().BeTrue();
+            requestGet.StoreResponseCookie = false;
+            var responseGet = Subject.Get<HttpBinResource>(requestGet);
+
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.AllowAutoRedirect = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            ExceptionVerification.IgnoreErrors();
+        }
+
+        [Test]
+        public void should_delete_request_cookie()
+        {
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
+            requestDelete.Cookies.Add("my", "cookie");
+            requestDelete.AllowAutoRedirect = true;
+            requestDelete.StoreRequestCookie = false;
+            requestDelete.StoreResponseCookie = false;
+
+            // Delete and redirect since that's the only way to check the internal temporary cookie container
+            var responseCookies = Subject.Get<HttpCookieResource>(requestDelete);
+
+            responseCookies.Resource.Cookies.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_clear_request_cookie()
+        {
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestSet.Cookies.Add("my", "cookie");
+            requestSet.AllowAutoRedirect = false;
+            requestSet.StoreRequestCookie = true;
+            requestSet.StoreResponseCookie = false;
+
+            var responseSet = Subject.Get<HttpCookieResource>(requestSet);
+
+            var requestClear = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestClear.Cookies.Add("my", null);
+            requestClear.AllowAutoRedirect = false;
+            requestClear.StoreRequestCookie = true;
+            requestClear.StoreResponseCookie = false;
+
+            var responseClear = Subject.Get<HttpCookieResource>(requestClear);
+
+            responseClear.Resource.Cookies.Should().BeEmpty();
+        }
+
+        [Test]
         public void should_not_store_response_cookie()
         {
-            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies/set?my=cookie");
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
             requestSet.AllowAutoRedirect = false;
+            requestSet.StoreRequestCookie = false;
+            requestSet.StoreResponseCookie.Should().BeFalse();
 
             var responseSet = Subject.Get(requestSet);
 
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
 
-            var response = Subject.Get<HttpBinResource>(request);
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
 
-            response.Resource.Headers.Should().NotContainKey("Cookie");
+            responseCookies.Resource.Cookies.Should().BeEmpty();
 
             ExceptionVerification.IgnoreErrors();
         }
@@ -258,21 +382,33 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_store_response_cookie()
         {
-            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies/set?my=cookie");
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
             requestSet.AllowAutoRedirect = false;
+            requestSet.StoreRequestCookie = false;
             requestSet.StoreResponseCookie = true;
 
             var responseSet = Subject.Get(requestSet);
 
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
 
-            var response = Subject.Get<HttpBinResource>(request);
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
 
-            response.Resource.Headers.Should().ContainKey("Cookie");
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
 
-            var cookie = response.Resource.Headers["Cookie"].ToString();
+            ExceptionVerification.IgnoreErrors();
+        }
 
-            cookie.Should().Contain("my=cookie");
+        [Test]
+        public void should_temp_store_response_cookie()
+        {
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
+            requestSet.AllowAutoRedirect = true;
+            requestSet.StoreRequestCookie = false;
+            requestSet.StoreResponseCookie.Should().BeFalse();
+            var responseSet = Subject.Get<HttpCookieResource>(requestSet);
+
+            // Set and redirect since that's the only way to check the internal temporary cookie container
+            responseSet.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
 
             ExceptionVerification.IgnoreErrors();
         }
@@ -280,22 +416,130 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_overwrite_response_cookie()
         {
-            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies/set?my=cookie");
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
+            requestSet.Cookies.Add("my", "oldcookie");
             requestSet.AllowAutoRedirect = false;
+            requestSet.StoreRequestCookie = false;
             requestSet.StoreResponseCookie = true;
-            requestSet.Cookies["my"] = "oldcookie";
 
             var responseSet = Subject.Get(requestSet);
 
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
 
-            var response = Subject.Get<HttpBinResource>(request);
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
 
-            response.Resource.Headers.Should().ContainKey("Cookie");
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
 
-            var cookie = response.Resource.Headers["Cookie"].ToString();
+            ExceptionVerification.IgnoreErrors();
+        }
 
-            cookie.Should().Contain("my=cookie");
+        [Test]
+        public void should_overwrite_temp_response_cookie()
+        {
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
+            requestSet.Cookies.Add("my", "oldcookie");
+            requestSet.AllowAutoRedirect = true;
+            requestSet.StoreRequestCookie = true;
+            requestSet.StoreResponseCookie = false;
+
+            var responseSet = Subject.Get<HttpCookieResource>(requestSet);
+
+            responseSet.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "oldcookie");
+
+            ExceptionVerification.IgnoreErrors();
+        }
+
+        [Test]
+        public void should_not_delete_response_cookie()
+        {
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.Cookies.Add("my", "cookie");
+            requestCookies.AllowAutoRedirect = false;
+            requestCookies.StoreRequestCookie = true;
+            requestCookies.StoreResponseCookie = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
+            requestDelete.AllowAutoRedirect = false;
+            requestDelete.StoreRequestCookie = false;
+            requestDelete.StoreResponseCookie = false;
+
+            var responseDelete = Subject.Get(requestDelete);
+
+            requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.StoreRequestCookie = false;
+            requestCookies.StoreResponseCookie = false;
+
+            responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            ExceptionVerification.IgnoreErrors();
+        }
+
+        [Test]
+        public void should_delete_response_cookie()
+        {
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.Cookies.Add("my", "cookie");
+            requestCookies.AllowAutoRedirect = false;
+            requestCookies.StoreRequestCookie = true;
+            requestCookies.StoreResponseCookie = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
+            requestDelete.AllowAutoRedirect = false;
+            requestDelete.StoreRequestCookie = false;
+            requestDelete.StoreResponseCookie = true;
+
+            var responseDelete = Subject.Get(requestDelete);
+
+            requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.StoreRequestCookie = false;
+            requestCookies.StoreResponseCookie = false;
+
+            responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().BeEmpty();
+
+            ExceptionVerification.IgnoreErrors();
+        }
+
+        [Test]
+        public void should_delete_temp_response_cookie()
+        {
+            var requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.Cookies.Add("my", "cookie");
+            requestCookies.AllowAutoRedirect = false;
+            requestCookies.StoreRequestCookie = true;
+            requestCookies.StoreResponseCookie = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
+
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
+            requestDelete.AllowAutoRedirect = true;
+            requestDelete.StoreRequestCookie = false;
+            requestDelete.StoreResponseCookie = false;
+            var responseDelete = Subject.Get<HttpCookieResource>(requestDelete);
+
+            responseDelete.Resource.Cookies.Should().BeEmpty();
+
+            requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
+            requestCookies.StoreRequestCookie = false;
+            requestCookies.StoreResponseCookie = false;
+
+            responseCookies.Resource.Cookies.Should().HaveCount(1).And.Contain("my", "cookie");
 
             ExceptionVerification.IgnoreErrors();
         }
@@ -303,7 +547,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_throw_on_http429_too_many_requests()
         {
-            var request = new HttpRequest($"http://{_httpBinHost}/status/429");
+            var request = new HttpRequest($"https://{_httpBinHost}/status/429");
 
             Assert.Throws<TooManyRequestsException>(() => Subject.Get(request));
 
@@ -323,7 +567,7 @@ namespace NzbDrone.Common.Test.Http
                 .Setup(v => v.PostResponse(It.IsAny<HttpResponse>()))
                 .Returns<HttpResponse>(r => r);
 
-            var request = new HttpRequest($"http://{_httpBinHost}/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
 
             Subject.Get(request);
 
@@ -345,7 +589,7 @@ namespace NzbDrone.Common.Test.Http
             {
                 // the date is bad in the below - should be 13-Jul-2026
                 string malformedCookie = @"__cfduid=d29e686a9d65800021c66faca0a29b4261436890790; expires=Mon, 13-Jul-26 16:19:50 GMT; path=/; HttpOnly";
-                var requestSet = new HttpRequestBuilder($"http://{_httpBinHost}/response-headers")
+                var requestSet = new HttpRequestBuilder($"https://{_httpBinHost}/response-headers")
                     .AddQueryParam("Set-Cookie", malformedCookie)
                     .Build();
 
@@ -354,7 +598,7 @@ namespace NzbDrone.Common.Test.Http
 
                 var responseSet = Subject.Get(requestSet);
 
-                var request = new HttpRequest($"http://{_httpBinHost}/get");
+                var request = new HttpRequest($"https://{_httpBinHost}/get");
 
                 var response = Subject.Get<HttpBinResource>(request);
 
@@ -378,7 +622,7 @@ namespace NzbDrone.Common.Test.Http
         {
             try
             {
-                string url = $"http://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeUriString(malformedCookie)}";
+                string url = $"https://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeUriString(malformedCookie)}";
 
                 var requestSet = new HttpRequest(url);
                 requestSet.AllowAutoRedirect = false;
@@ -386,7 +630,7 @@ namespace NzbDrone.Common.Test.Http
 
                 var responseSet = Subject.Get(requestSet);
 
-                var request = new HttpRequest($"http://{_httpBinHost}/get");
+                var request = new HttpRequest($"https://{_httpBinHost}/get");
 
                 var response = Subject.Get<HttpBinResource>(request);
 
@@ -402,9 +646,15 @@ namespace NzbDrone.Common.Test.Http
 
     public class HttpBinResource
     {
+        public Dictionary<string, object> Args { get; set; }
         public Dictionary<string, object> Headers { get; set; }
         public string Origin { get; set; }
         public string Url { get; set; }
         public string Data { get; set; }
+    }
+
+    public class HttpCookieResource
+    {
+        public Dictionary<string, string> Cookies { get; set; }
     }
 }

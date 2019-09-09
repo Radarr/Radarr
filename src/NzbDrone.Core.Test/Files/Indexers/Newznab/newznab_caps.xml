@@ -9,15 +9,11 @@
     <audio-search available="yes"/>
   </searching>
   <categories>
-    <category id="5000" name="TV">
-      <subcat id="5070" name="Anime"/>
-      <subcat id="5080" name="Documentary"/>
-      <subcat id="5020" name="Foreign"/>
-      <subcat id="5040" name="HD"/>
-      <subcat id="5050" name="Other"/>
-      <subcat id="5030" name="SD"/>
-      <subcat id="5060" name="Sport"/>
-      <subcat id="5010" name="WEB-DL"/>
+    <category id="3000" name="Audio">
+      <subcat id="3010" name="MP3" description="Audio"/>
+      <subcat id="3020" name="Video" description="Audio"/>
+      <subcat id="3030" name="Audiobook" description="Audio"/>
+      <subcat id="3040" name="Lossless" description="Audio"/>
     </category>
     <category id="7000" name="Other">
       <subcat id="7010" name="Misc"/>

@@ -1,15 +1,15 @@
-﻿using NLog;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Organizer;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Download.Clients.Blackhole
 {
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         private IEnumerable<WatchFolderItem> GetDownloadItems(string watchFolder, Dictionary<string, WatchFolderItem> lastWatchItems, TimeSpan waitPeriod)
         {
-            foreach (var folder in _diskProvider.GetDirectories(watchFolder))
+            foreach (var folder in _diskScanService.FilterFiles(watchFolder, _diskProvider.GetDirectories(watchFolder)))
             {
                 var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder));
 
@@ -86,16 +86,16 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
                 yield return newWatchItem;
             }
 
-            foreach (var videoFile in _diskScanService.GetVideoFiles(watchFolder, false))
+            foreach (var audioFile in _diskScanService.FilterFiles(watchFolder, _diskScanService.GetAudioFiles(watchFolder, false)))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(videoFile));
+                var title = FileNameBuilder.CleanFileName(audioFile.Name);
 
                 var newWatchItem = new WatchFolderItem
                 {
-                    DownloadId = Path.GetFileName(videoFile) + "_" + _diskProvider.FileGetLastWrite(videoFile).Ticks,
+                    DownloadId = audioFile.Name + "_" + audioFile.LastWriteTimeUtc.Ticks,
                     Title = title,
 
-                    OutputPath = new OsPath(videoFile),
+                    OutputPath = new OsPath(audioFile.FullName),
 
                     Status = DownloadItemStatus.Completed,
                     RemainingTime = TimeSpan.Zero
@@ -105,10 +105,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                 if (PreCheckWatchItemExpiry(newWatchItem, oldWatchItem))
                 {
-                    newWatchItem.TotalSize = _diskProvider.GetFileSize(videoFile);
-                    newWatchItem.Hash = GetHash(videoFile);
+                    newWatchItem.TotalSize = audioFile.Length;
+                    newWatchItem.Hash = GetHash(audioFile.FullName);
 
-                    if (_diskProvider.IsFileLocked(videoFile))
+                    if (_diskProvider.IsFileLocked(audioFile.FullName))
                     {
                         newWatchItem.Status = DownloadItemStatus.Downloading;
                     }

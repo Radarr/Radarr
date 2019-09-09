@@ -1,22 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
-using NzbDrone.Test.Common;
-using System.Threading;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Download.Clients.Blackhole;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 {
     [TestFixture]
     public class ScanWatchFolderFixture : CoreTest<ScanWatchFolder>
     {
-        protected readonly string _title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE";
+        protected readonly string _title = "Radiohead - Scotch Mist [2008-FLAC-Lossless]";
         protected string _completedDownloadFolder = @"c:\blackhole\completed".AsOsAgnostic();
         
         protected void GivenCompletedItem()
@@ -28,11 +31,17 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.GetFiles(targetDir, SearchOption.AllDirectories))
-                .Returns(new[] { Path.Combine(targetDir, "somefile.mkv") });
+                .Returns(new[] { Path.Combine(targetDir, "somefile.flac") });
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.GetFileSize(It.IsAny<string>()))
                 .Returns(1000000);
+
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
+                .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
+            
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<IFileInfo>>()))
+                .Returns<string, IEnumerable<IFileInfo>>((b, s) => s.ToList());
         }
 
         protected void GivenChangedItem()

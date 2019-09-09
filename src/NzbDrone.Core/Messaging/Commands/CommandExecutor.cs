@@ -48,8 +48,12 @@ namespace NzbDrone.Core.Messaging.Commands
             }
             catch (ThreadAbortException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Thread aborted");
                 Thread.ResetAbort();
+            }
+            catch (OperationCanceledException)
+            {
+               _logger.Trace("Stopped one command execution pipeline");
             }
             catch (Exception ex)
             {
@@ -76,7 +80,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
                 handler.Execute(command);
 
-                _commandQueueManager.Complete(commandModel, command.CompletionMessage);
+                _commandQueueManager.Complete(commandModel, command.CompletionMessage ?? commandModel.Message);
             }
             catch (CommandFailedException ex)
             {

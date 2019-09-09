@@ -16,11 +16,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
-        {          
-            if (_blacklistService.Blacklisted(subject.Series.Id, subject.Release))
+        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        {
+            if (_blacklistService.Blacklisted(subject.Artist.Id, subject.Release))
             {
                 _logger.Debug("{0} is blacklisted, rejecting.", subject.Release.Title);
                 return Decision.Reject("Release is blacklisted");

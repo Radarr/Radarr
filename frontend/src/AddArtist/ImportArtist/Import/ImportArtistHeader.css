@@ -1,0 +1,38 @@
+.folder {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 1 0 200px;
+}
+
+.monitor {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 1 200px;
+  min-width: 185px;
+}
+
+.qualityProfile,
+.metadataProfile {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 1 250px;
+  min-width: 170px;
+}
+
+.albumFolder {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 1 150px;
+  min-width: 120px;
+}
+
+.artist {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 1 400px;
+  min-width: 300px;
+}
+
+.detailsIcon {
+  margin-left: 8px;
+}

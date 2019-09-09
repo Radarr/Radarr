@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
@@ -32,14 +32,14 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        public override string Download(RemoteEpisode remoteEpisode)
+        public override string Download(RemoteAlbum remoteAlbum)
         {
-            var url = remoteEpisode.Release.DownloadUrl;
-            var title = remoteEpisode.Release.Title;
+            var url = remoteAlbum.Release.DownloadUrl;
+            var title = remoteAlbum.Release.Title;
 
-            if (remoteEpisode.ParsedEpisodeInfo.FullSeason)
+            if (remoteAlbum.ParsedAlbumInfo.Discography)
             {
-                throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
+                throw new NotSupportedException("Discography releases are not supported with Pneumatic.");
             }
 
             title = FileNameBuilder.CleanFileName(title);
@@ -77,6 +77,9 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
                     DownloadId = GetDownloadClientId(file),
                     Title = title,
 
+                    CanBeRemoved = true,
+                    CanMoveFiles = true,
+
                     TotalSize = _diskProvider.GetFileSize(file),
 
                     OutputPath = new OsPath(file)
@@ -100,9 +103,9 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
             throw new NotSupportedException();
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = true
             };
@@ -118,25 +121,14 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         private string WriteStrmFile(string title, string nzbFile)
         {
-            string folder;
 
             if (Settings.StrmFolder.IsNullOrWhiteSpace())
             {
-                folder = _configService.DownloadedEpisodesFolder;
-
-                if (folder.IsNullOrWhiteSpace())
-                {
-                    throw new DownloadClientException("Strm Folder needs to be set for Pneumatic Downloader");
-                }
-            }
-
-            else
-            {
-                folder = Settings.StrmFolder;
+                throw new DownloadClientException("Strm Folder needs to be set for Pneumatic Downloader");
             }
 
             var contents = string.Format("plugin://plugin.program.pneumatic/?mode=strm&type=add_file&nzb={0}&nzbname={1}", nzbFile, title);
-            var filename = Path.Combine(folder, title + ".strm");
+            var filename = Path.Combine(Settings.StrmFolder, title + ".strm");
 
             _diskProvider.WriteAllText(filename, contents);
 

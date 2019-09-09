@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Core.Validation;
 
@@ -17,12 +18,12 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         private static bool ShouldHaveApiKey(TorznabSettings settings)
         {
-            if (settings.Url == null)
+            if (settings.BaseUrl == null)
             {
                 return false;
             }
 
-            return ApiKeyWhiteList.Any(c => settings.Url.ToLowerInvariant().Contains(c));
+            return ApiKeyWhiteList.Any(c => settings.BaseUrl.ToLowerInvariant().Contains(c));
         }
 
         private static readonly Regex AdditionalParametersRegex = new Regex(@"(&.+?\=.+?)+", RegexOptions.Compiled);
@@ -31,24 +32,38 @@ namespace NzbDrone.Core.Indexers.Torznab
         {
             Custom(newznab =>
             {
-                if (newznab.Categories.Empty() && newznab.AnimeCategories.Empty())
+                if (newznab.Categories.Empty())
                 {
-                    return new ValidationFailure("", "Either 'Categories' or 'Anime Categories' must be provided");
+                    return new ValidationFailure("", "'Categories' must be provided");
                 }
 
                 return null;
             });
 
-            RuleFor(c => c.Url).ValidRootUrl();
+            RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.ApiPath).ValidUrlBase("/api");
             RuleFor(c => c.ApiKey).NotEmpty().When(ShouldHaveApiKey);
             RuleFor(c => c.AdditionalParameters).Matches(AdditionalParametersRegex)
                                                 .When(c => !c.AdditionalParameters.IsNullOrWhiteSpace());
+
+            RuleFor(c => c.SeedCriteria).SetValidator(_ => new SeedCriteriaSettingsValidator());
         }
     }
 
-    public class TorznabSettings : NewznabSettings
+    public class TorznabSettings : NewznabSettings, ITorrentIndexerSettings
     {
         private static readonly TorznabSettingsValidator Validator = new TorznabSettingsValidator();
+
+        public TorznabSettings()
+        {
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
+        }
+
+        [FieldDefinition(6, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
+
+        [FieldDefinition(7)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
 
         public override NzbDroneValidationResult Validate()
         {

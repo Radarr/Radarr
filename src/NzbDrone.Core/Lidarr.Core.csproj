@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentMigrator.Runner" Version="1.6.2" />
+    <PackageReference Include="FluentValidation" Version="6.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="NLog" Version="4.5.4" />
+    <PackageReference Include="OAuth" Version="1.0.3" />
+    <PackageReference Include="Prowlin" Version="0.9.4456.26422" />
+    <PackageReference Include="RestSharp" Version="105.2.3" />
+    <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
+    <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
+    <PackageReference Include="xmlrpcnet" Version="2.5.0" />
+    <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0006" />
+    <PackageReference Include="Equ" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
+    <ProjectReference Include="..\MonoTorrent\MonoTorrent.csproj" />
+    <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Growl.Connector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=980c2339411be384, processorArchitecture=MSIL">
+      <HintPath>..\Libraries\Growl.Connector.dll</HintPath>
+    </Reference>
+    <Reference Include="Growl.CoreLibrary, Version=2.0.0.0, Culture=neutral, PublicKeyToken=13e59d82e007b064, processorArchitecture=MSIL">
+      <HintPath>..\Libraries\Growl.CoreLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Logo\64.png">
+      <Link>Resources\Logo\64.png</Link>
+    </EmbeddedResource>
+    <None Include="..\Libraries\Sqlite\sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Libraries\Sqlite\libsqlite3.0.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

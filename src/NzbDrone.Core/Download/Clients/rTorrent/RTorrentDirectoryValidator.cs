@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.Clients.RTorrent;
@@ -15,13 +15,11 @@ namespace NzbDrone.Core.Download.Clients.rTorrent
     {
         public RTorrentDirectoryValidator(RootFolderValidator rootFolderValidator,
                                           PathExistsValidator pathExistsValidator,
-                                          DroneFactoryValidator droneFactoryValidator,
                                           MappedNetworkDriveValidator mappedNetworkDriveValidator)
         {
             RuleFor(c => c.TvDirectory).Cascade(CascadeMode.StopOnFirstFailure)
                                        .IsValidPath()
                                        .SetValidator(rootFolderValidator)
-                                       .SetValidator(droneFactoryValidator)
                                        .SetValidator(mappedNetworkDriveValidator)
                                        .SetValidator(pathExistsValidator)
                                        .When(c => c.TvDirectory.IsNotNullOrWhiteSpace())

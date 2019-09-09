@@ -1,11 +1,12 @@
-﻿using System.Linq;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using System;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -15,47 +16,49 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void one_to_one()
         {
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
-                           .With(c => c.Quality = new QualityModel())
-                           .BuildNew();
-
-            Db.Insert(episodeFile);
-
-            var episode = Builder<Episode>.CreateNew()
-                .With(c => c.EpisodeFileId = episodeFile.Id)
+            var album = Builder<Album>.CreateNew()
+                .With(c => c.Id = 0)
+                .With(x => x.ReleaseDate = DateTime.UtcNow)
+                .With(x => x.LastInfoSync = DateTime.UtcNow)
+                .With(x => x.Added = DateTime.UtcNow)
                 .BuildNew();
+            Db.Insert(album);
 
-            Db.Insert(episode);
+            var albumRelease = Builder<AlbumRelease>.CreateNew()
+                .With(c => c.Id = 0)
+                .With(c => c.AlbumId = album.Id)
+                .BuildNew();
+            Db.Insert(albumRelease);
 
-            var loadedEpisodeFile = Db.Single<Episode>().EpisodeFile.Value;
+            var loadedAlbum = Db.Single<AlbumRelease>().Album.Value;
 
-            loadedEpisodeFile.Should().NotBeNull();
-            loadedEpisodeFile.ShouldBeEquivalentTo(episodeFile,
-                options => options
-                    .IncludingAllRuntimeProperties()
-                    .Excluding(c => c.DateAdded)
-                    .Excluding(c => c.Path)
-                    .Excluding(c => c.Series)
-                    .Excluding(c => c.Episodes));
+            loadedAlbum.Should().NotBeNull();
+            loadedAlbum.ShouldBeEquivalentTo(album,
+                                             options => options
+                                             .IncludingAllRuntimeProperties()
+                                             .Excluding(c => c.Artist)
+                                             .Excluding(c => c.ArtistId)
+                                             .Excluding(c => c.ArtistMetadata)
+                                             .Excluding(c => c.AlbumReleases));
         }
 
         [Test]
         public void one_to_one_should_not_query_db_if_foreign_key_is_zero()
         {
-            var episode = Builder<Episode>.CreateNew()
-                .With(c => c.EpisodeFileId = 0)
+            var track = Builder<Track>.CreateNew()
+                .With(c => c.TrackFileId = 0)
                 .BuildNew();
 
-            Db.Insert(episode);
+            Db.Insert(track);
 
-            Db.Single<Episode>().EpisodeFile.Value.Should().BeNull();
+            Db.Single<Track>().TrackFile.Value.Should().BeNull();
         }
 
 
         [Test]
         public void embedded_document_as_json()
         {
-            var quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2 )};
+            var quality = new QualityModel { Quality = Quality.MP3_320, Revision = new Revision(version: 2 )};
 
             var history = Builder<History.History>.CreateNew()
                             .With(c => c.Id = 0)
@@ -75,15 +78,15 @@ namespace NzbDrone.Core.Test.Datastore
                             .All().With(c => c.Id = 0)
                             .Build().ToList();
 
-            history[0].Quality = new QualityModel(Quality.HDTV1080p, new Revision(version: 2));
-            history[1].Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 2));
+            history[0].Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            history[1].Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
 
 
             Db.InsertMany(history);
 
             var returnedHistory = Db.All<History.History>();
 
-            returnedHistory[0].Quality.Quality.Should().Be(Quality.HDTV1080p);
+            returnedHistory[0].Quality.Quality.Should().Be(Quality.MP3_320);
         }
     }
 }

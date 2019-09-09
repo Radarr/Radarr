@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
@@ -31,7 +31,7 @@ namespace NzbDrone.Common.Instrumentation
             if (exception is NullReferenceException &&
                 exception.ToString().Contains("Microsoft.AspNet.SignalR.Transports.TransportHeartbeat.ProcessServerCommand"))
             {
-                Logger.Warn("SignalR Heartbeat interupted");
+                Logger.Warn("SignalR Heartbeat interrupted");
                 return;
             }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using MonoTorrent;
 using NzbDrone.Common.Disk;
@@ -38,23 +38,23 @@ namespace NzbDrone.Core.Download
 
         public virtual bool PreferTorrentFile => false;
 
-        protected abstract string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink);
-        protected abstract string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent);
+        protected abstract string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink);
+        protected abstract string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent);
 
-        public override string Download(RemoteEpisode remoteEpisode)
+        public override string Download(RemoteAlbum remoteAlbum)
         {
-            var torrentInfo = remoteEpisode.Release as TorrentInfo;
+            var torrentInfo = remoteAlbum.Release as TorrentInfo;
 
             string magnetUrl = null;
             string torrentUrl = null;
 
-            if (remoteEpisode.Release.DownloadUrl.IsNotNullOrWhiteSpace() && remoteEpisode.Release.DownloadUrl.StartsWith("magnet:"))
+            if (remoteAlbum.Release.DownloadUrl.IsNotNullOrWhiteSpace() && remoteAlbum.Release.DownloadUrl.StartsWith("magnet:"))
             {
-                magnetUrl = remoteEpisode.Release.DownloadUrl;
+                magnetUrl = remoteAlbum.Release.DownloadUrl;
             }
             else
             {
-                torrentUrl = remoteEpisode.Release.DownloadUrl;
+                torrentUrl = remoteAlbum.Release.DownloadUrl;
             }
 
             if (torrentInfo != null && !torrentInfo.MagnetUrl.IsNullOrWhiteSpace())
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromWebUrl(remoteEpisode, torrentUrl);
+                        return DownloadFromWebUrl(remoteAlbum, torrentUrl);
                     }
                     catch (Exception ex)
                     {
@@ -85,11 +85,11 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteEpisode, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteAlbum, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
-                        throw new ReleaseDownloadException(remoteEpisode.Release, "Magnet not supported by download client. ({0})", ex.Message);
+                        throw new ReleaseDownloadException(remoteAlbum.Release, "Magnet not supported by download client. ({0})", ex.Message);
                     }
                 }
             }
@@ -99,13 +99,13 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteEpisode, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteAlbum, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
                         if (torrentUrl.IsNullOrWhiteSpace())
                         {
-                            throw new ReleaseDownloadException(remoteEpisode.Release, "Magnet not supported by download client. ({0})", ex.Message);
+                            throw new ReleaseDownloadException(remoteAlbum.Release, "Magnet not supported by download client. ({0})", ex.Message);
                         }
 
                         _logger.Debug("Magnet not supported by download client, trying torrent. ({0})", ex.Message);
@@ -114,14 +114,14 @@ namespace NzbDrone.Core.Download
 
                 if (torrentUrl.IsNotNullOrWhiteSpace())
                 {
-                    return DownloadFromWebUrl(remoteEpisode, torrentUrl);
+                    return DownloadFromWebUrl(remoteAlbum, torrentUrl);
                 }
             }
 
             return null;
         }
 
-        private string DownloadFromWebUrl(RemoteEpisode remoteEpisode, string torrentUrl)
+        private string DownloadFromWebUrl(RemoteAlbum remoteAlbum, string torrentUrl)
         {
             byte[] torrentFile = null;
 
@@ -133,7 +133,9 @@ namespace NzbDrone.Core.Download
 
                 var response = _httpClient.Get(request);
 
-                if (response.StatusCode == HttpStatusCode.SeeOther || response.StatusCode == HttpStatusCode.Found)
+                if (response.StatusCode == HttpStatusCode.MovedPermanently ||
+                    response.StatusCode == HttpStatusCode.Found ||
+                    response.StatusCode == HttpStatusCode.SeeOther)
                 {
                     var locationHeader = response.Headers.GetSingleValue("Location");
 
@@ -143,10 +145,10 @@ namespace NzbDrone.Core.Download
                     {
                         if (locationHeader.StartsWith("magnet:"))
                         {
-                            return DownloadFromMagnetUrl(remoteEpisode, locationHeader);
+                            return DownloadFromMagnetUrl(remoteAlbum, locationHeader);
                         }
 
-                        return DownloadFromWebUrl(remoteEpisode, locationHeader);
+                        return DownloadFromWebUrl(remoteAlbum, locationHeader);
                     }
 
                     throw new WebException("Remote website tried to redirect without providing a location.");
@@ -154,43 +156,49 @@ namespace NzbDrone.Core.Download
 
                 torrentFile = response.ResponseData;
 
-                _logger.Debug("Downloading torrent for episode '{0}' finished ({1} bytes from {2})", remoteEpisode.Release.Title, torrentFile.Length, torrentUrl);
+                _logger.Debug("Downloading torrent for release '{0}' finished ({1} bytes from {2})", remoteAlbum.Release.Title, torrentFile.Length, torrentUrl);
             }
             catch (HttpException ex)
             {
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    _logger.Error(ex, "Downloading torrent file for album '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, torrentUrl);
+                    throw new ReleaseUnavailableException(remoteAlbum.Release, "Downloading torrent failed", ex);
+                }
+
                 if ((int)ex.Response.StatusCode == 429)
                 {
                     _logger.Error("API Grab Limit reached for {0}", torrentUrl);
                 }
                 else
                 {
-                    _logger.Error(ex, "Downloading torrent file for episode '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
+                    _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteAlbum.Release.Title, torrentUrl);
                 }
 
-                throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed", ex);
+                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading torrent failed", ex);
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Downloading torrent file for episode '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
+                _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteAlbum.Release.Title, torrentUrl);
 
-                throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed", ex);
+                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading torrent failed", ex);
             }
 
-            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteEpisode.Release.Title));
+            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteAlbum.Release.Title));
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
-            var actualHash = AddFromTorrentFile(remoteEpisode, hash, filename, torrentFile);
+            var actualHash = AddFromTorrentFile(remoteAlbum, hash, filename, torrentFile);
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
                 _logger.Debug(
-                    "{0} did not return the expected InfoHash for '{1}', Sonarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteEpisode.Release.DownloadUrl);
+                    "{0} did not return the expected InfoHash for '{1}', Lidarr could potentially lose track of the download in progress.",
+                    Definition.Implementation, remoteAlbum.Release.DownloadUrl);
             }
 
             return actualHash;
         }
 
-        private string DownloadFromMagnetUrl(RemoteEpisode remoteEpisode, string magnetUrl)
+        private string DownloadFromMagnetUrl(RemoteAlbum remoteAlbum, string magnetUrl)
         {
             string hash = null;
             string actualHash = null;
@@ -201,21 +209,21 @@ namespace NzbDrone.Core.Download
             }
             catch (FormatException ex)
             {
-                _logger.Error(ex, "Failed to parse magnetlink for episode '{0}': '{1}'", remoteEpisode.Release.Title, magnetUrl);
+                _logger.Error(ex, "Failed to parse magnetlink for release '{0}': '{1}'", remoteAlbum.Release.Title, magnetUrl);
 
                 return null;
             }
 
             if (hash != null)
             {
-                actualHash = AddFromMagnetLink(remoteEpisode, hash, magnetUrl);
+                actualHash = AddFromMagnetLink(remoteAlbum, hash, magnetUrl);
             }
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
                 _logger.Debug(
-                    "{0} did not return the expected InfoHash for '{1}', Sonarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteEpisode.Release.DownloadUrl);
+                    "{0} did not return the expected InfoHash for '{1}', Lidarr could potentially lose track of the download in progress.",
+                    Definition.Implementation, remoteAlbum.Release.DownloadUrl);
             }
 
             return actualHash;

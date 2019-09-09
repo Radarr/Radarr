@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -15,7 +16,7 @@ namespace NzbDrone.Common.Test.DiskTests
         private const string RECYCLING_BIN = "$Recycle.Bin";
         private const string SYSTEM_VOLUME_INFORMATION = "System Volume Information";
         private const string WINDOWS = "Windows";
-        private List<DirectoryInfo> _folders;
+        private List<IDirectoryInfo> _folders;
 
         private void SetupFolders(string root)
         {
@@ -36,7 +37,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 WINDOWS
             };
 
-            _folders = folders.Select(f => new DirectoryInfo(Path.Combine(root, f))).ToList();
+            _folders = folders.Select(f => (DirectoryInfoBase)new DirectoryInfo(Path.Combine(root, f))).ToList<IDirectoryInfo>();
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false).Directories.Should().NotContain(Path.Combine(root, RECYCLING_BIN));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, RECYCLING_BIN));
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            Subject.LookupContents(root, false).Directories.Should().NotContain(Path.Combine(root, SYSTEM_VOLUME_INFORMATION));
+            Subject.LookupContents(root, false, false).Directories.Should().NotContain(Path.Combine(root, SYSTEM_VOLUME_INFORMATION));
         }
 
         [Test]
@@ -75,8 +76,8 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Setup(s => s.GetDirectoryInfos(It.IsAny<string>()))
                 .Returns(_folders);
 
-            var result = Subject.LookupContents(root, false);
-            
+            var result = Subject.LookupContents(root, false, false);
+
             result.Directories.Should().HaveCount(_folders.Count - 3);
 
             result.Directories.Should().NotContain(f => f.Name == RECYCLING_BIN);

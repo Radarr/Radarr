@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -27,7 +27,7 @@ namespace NzbDrone.Common.Processes
         bool Exists(string processName);
         ProcessPriorityClass GetCurrentProcessPriority();
         Process Start(string path, string args = null, StringDictionary environmentVariables = null, Action<string> onOutputDataReceived = null, Action<string> onErrorDataReceived = null);
-        Process SpawnNewProcess(string path, string args = null, StringDictionary environmentVariables = null);
+        Process SpawnNewProcess(string path, string args = null, StringDictionary environmentVariables = null, bool noWindow = false);
         ProcessOutput StartAndCapture(string path, string args = null, StringDictionary environmentVariables = null);
     }
 
@@ -35,8 +35,8 @@ namespace NzbDrone.Common.Processes
     {
         private readonly Logger _logger;
 
-        public const string NZB_DRONE_PROCESS_NAME = "NzbDrone";
-        public const string NZB_DRONE_CONSOLE_PROCESS_NAME = "NzbDrone.Console";
+        public const string LIDARR_PROCESS_NAME = "Lidarr";
+        public const string LIDARR_CONSOLE_PROCESS_NAME = "Lidarr.Console";
 
         public ProcessProvider(Logger logger)
         {
@@ -108,11 +108,7 @@ namespace NzbDrone.Common.Processes
 
         public Process Start(string path, string args = null, StringDictionary environmentVariables = null, Action<string> onOutputDataReceived = null, Action<string> onErrorDataReceived = null)
         {
-            if (PlatformInfo.IsMono && path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase))
-            {
-                args = GetMonoArgs(path, args);
-                path = "mono";
-            }
+            (path, args) = GetPathAndArgs(path, args);
 
             var logger = LogManager.GetLogger(new FileInfo(path).Name);
 
@@ -129,7 +125,25 @@ namespace NzbDrone.Common.Processes
             {
                 foreach (DictionaryEntry environmentVariable in environmentVariables)
                 {
-                    startInfo.EnvironmentVariables.Add(environmentVariable.Key.ToString(), environmentVariable.Value.ToString());
+                    try
+                    {
+                        _logger.Trace("Setting environment variable '{0}' to '{1}'", environmentVariable.Key, environmentVariable.Value);
+                        startInfo.EnvironmentVariables.Add(environmentVariable.Key.ToString(), environmentVariable.Value.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        if (environmentVariable.Value == null)
+                        {
+                            _logger.Error(e, "Unable to set environment variable '{0}', value is null", environmentVariable.Key);
+                        }
+
+                        else
+                        {
+                            _logger.Error(e, "Unable to set environment variable '{0}'", environmentVariable.Key);
+                        }
+
+                        throw;
+                    }
                 }
             }
 
@@ -172,17 +186,16 @@ namespace NzbDrone.Common.Processes
             return process;
         }
 
-        public Process SpawnNewProcess(string path, string args = null, StringDictionary environmentVariables = null)
+        public Process SpawnNewProcess(string path, string args = null, StringDictionary environmentVariables = null, bool noWindow = false)
         {
-            if (PlatformInfo.IsMono && path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase))
-            {
-                args = GetMonoArgs(path, args);
-                path = "mono";
-            }
+            (path, args) = GetPathAndArgs(path, args);
 
             _logger.Debug("Starting {0} {1}", path, args);
 
             var startInfo = new ProcessStartInfo(path, args);
+            startInfo.CreateNoWindow = noWindow;
+            startInfo.UseShellExecute = !noWindow;
+
             var process = new Process
             {
                 StartInfo = startInfo
@@ -315,6 +328,8 @@ namespace NzbDrone.Common.Processes
 
             var monoProcesses = Process.GetProcessesByName("mono")
                                        .Union(Process.GetProcessesByName("mono-sgen"))
+                                       .Union(Process.GetProcessesByName("mono-sgen32"))
+                                       .Union(Process.GetProcessesByName("mono-sgen64"))
                                        .Where(process =>
                                               process.Modules.Cast<ProcessModule>()
                                                      .Any(module =>
@@ -340,9 +355,19 @@ namespace NzbDrone.Common.Processes
             return processes;
         }
 
-        private string GetMonoArgs(string path, string args)
+        private (string Path, string Args) GetPathAndArgs(string path, string args)
         {
-            return string.Format("--debug {0} {1}", path, args);
+            if (PlatformInfo.IsMono && path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return ("mono", $"--debug {path} {args}");
+            }
+
+            if (OsInfo.IsWindows && path.EndsWith(".bat", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return ("cmd.exe", $"/c {path} {args}");
+            }
+
+            return (path, args);
         }
     }
 }

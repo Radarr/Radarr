@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.Indexers;
+using Lidarr.Api.V1.Indexers;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

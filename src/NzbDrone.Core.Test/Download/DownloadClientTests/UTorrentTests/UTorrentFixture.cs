@@ -30,8 +30,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "tv"
-                                          };
+                                              MusicCategory = "lidarr"
+            };
 
             _queued = new UTorrentTorrent
                     {
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 1000,
                         Progress = 0,
-                        Label = "tv",
+                        Label = "lidarr",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 100,
                         Progress = 0.9,
-                        Label = "tv",
+                        Label = "lidarr",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 100,
                         Progress = 0.9,
-                        Label = "tv",
+                        Label = "lidarr",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 0,
                         Progress = 1.0,
-                        Label = "tv",
+                        Label = "lidarr",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         protected void GivenRedirectToTorrent()
         {
             var httpHeader = new HttpHeader();
-            httpHeader["Location"] = "http://test.sonarr.tv/not-a-real-torrent.torrent";
+            httpHeader["Location"] = "http://test.lidarr.audio/not-a-real-torrent.torrent";
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.Is<HttpRequest>(h => h.Url.ToString() == _downloadUrl)))
@@ -222,6 +222,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             PrepareClientToReturnCompletedItem();
             var item = Subject.GetItems().Single();
             VerifyCompleted(item);
+
+            item.CanBeRemoved.Should().BeTrue();
+            item.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -229,9 +232,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -253,10 +256,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
-            remoteEpisode.Release.DownloadUrl = magnetUrl;
+            var remoteAlbum = CreateRemoteAlbum();
+            remoteAlbum.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().Be(expectedHash);
         }
@@ -292,12 +295,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             item.Status.Should().Be(expectedItemStatus);
         }
 
-        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checking, DownloadItemStatus.Queued, false)]
-        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked, DownloadItemStatus.Completed, false)]
-        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Queued, DownloadItemStatus.Completed, true)]
-        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Started, DownloadItemStatus.Completed, true)]
-        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Queued | UTorrentTorrentStatus.Paused, DownloadItemStatus.Completed, true)]
-        public void GetItems_should_return_completed_item_as_downloadItemStatus(UTorrentTorrentStatus apiStatus, DownloadItemStatus expectedItemStatus, bool expectedReadOnly)
+        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checking, DownloadItemStatus.Queued, true)]
+        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked, DownloadItemStatus.Completed, true)]
+        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Queued, DownloadItemStatus.Completed, false)]
+        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Started, DownloadItemStatus.Completed, false)]
+        [TestCase(UTorrentTorrentStatus.Loaded | UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Queued | UTorrentTorrentStatus.Paused, DownloadItemStatus.Completed, false)]
+        public void GetItems_should_return_completed_item_as_downloadItemStatus(UTorrentTorrentStatus apiStatus, DownloadItemStatus expectedItemStatus, bool expectedValue)
         {
             _completed.Status = apiStatus;
 
@@ -306,7 +309,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             var item = Subject.GetItems().Single();
 
             item.Status.Should().Be(expectedItemStatus);
-            item.IsReadOnly.Should().Be(expectedReadOnly);
+            item.CanBeRemoved.Should().Be(expectedValue);
+            item.CanMoveFiles.Should().Be(expectedValue);
         }
 
         [Test]
@@ -328,7 +332,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
 
             result.IsLocalhost.Should().BeTrue();
             result.OutputRootFolders.Should().NotBeNull();
-            result.OutputRootFolders.First().Should().Be(@"C:\Downloads\Finished\utorrent\tv".AsOsAgnostic());
+            result.OutputRootFolders.First().Should().Be(@"C:\Downloads\Finished\utorrent\lidarr".AsOsAgnostic());
         }
 
         [Test]
@@ -351,9 +355,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -364,9 +368,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteAlbum = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteAlbum);
 
             id.Should().NotBeNullOrEmpty();
         }

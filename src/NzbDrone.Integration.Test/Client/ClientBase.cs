@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using FluentAssertions;
 using NLog;
-using NzbDrone.Api;
-using NzbDrone.Api.REST;
+using Lidarr.Api.V1;
+using Lidarr.Http.REST;
 using NzbDrone.Common.Serializer;
 using RestSharp;
 using System.Linq;
+using Lidarr.Http;
 
 namespace NzbDrone.Integration.Test.Client
 {
@@ -39,7 +40,7 @@ namespace NzbDrone.Integration.Test.Client
             return request;
         }
 
-        public T Execute<T>(IRestRequest request, HttpStatusCode statusCode) where T : class, new()
+        public string Execute(IRestRequest request, HttpStatusCode statusCode)
         {
             _logger.Info("{0}: {1}", request.Method, _restClient.BuildUri(request));
 
@@ -57,12 +58,19 @@ namespace NzbDrone.Integration.Test.Client
 
             response.StatusCode.Should().Be(statusCode);
 
-            return Json.Deserialize<T>(response.Content);
+            return response.Content;
+        }
+
+        public T Execute<T>(IRestRequest request, HttpStatusCode statusCode) where T : class, new()
+        {
+            var content = Execute(request, statusCode);
+
+            return Json.Deserialize<T>(content);
         }
 
         private static void AssertDisableCache(IList<Parameter> headers)
         {
-            headers.Single(c => c.Name == "Cache-Control").Value.Should().Be("no-cache, no-store, must-revalidate");
+            headers.Single(c => c.Name == "Cache-Control").Value.Should().Be("no-cache, no-store, must-revalidate, max-age=0");
             headers.Single(c => c.Name == "Pragma").Value.Should().Be("no-cache");
             headers.Single(c => c.Name == "Expires").Value.Should().Be("0");
         }

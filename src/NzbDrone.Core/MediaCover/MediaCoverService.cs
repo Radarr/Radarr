@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -9,23 +10,25 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.MediaCover
 {
     public interface IMapCoversToLocal
     {
-        void ConvertToLocalUrls(int seriesId, IEnumerable<MediaCover> covers);
-        string GetCoverPath(int seriesId, MediaCoverTypes mediaCoverTypes, int? height = null);
+        void ConvertToLocalUrls(int entityId, MediaCoverEntity coverEntity, IEnumerable<MediaCover> covers);
+        string GetCoverPath(int entityId, MediaCoverEntity coverEntity, MediaCoverTypes mediaCoverTypes, string extension, int? height = null);
+        void EnsureAlbumCovers(Album album);
     }
 
     public class MediaCoverService :
-        IHandleAsync<SeriesUpdatedEvent>,
-        IHandleAsync<SeriesDeletedEvent>,
+        IHandleAsync<ArtistRefreshCompleteEvent>,
+        IHandleAsync<ArtistDeletedEvent>,
         IMapCoversToLocal
     {
         private readonly IImageResizer _resizer;
+        private readonly IAlbumService _albumService;
         private readonly IHttpClient _httpClient;
         private readonly IDiskProvider _diskProvider;
         private readonly ICoverExistsSpecification _coverExistsSpecification;
@@ -36,6 +39,7 @@ namespace NzbDrone.Core.MediaCover
         private readonly string _coverRootFolder;
 
         public MediaCoverService(IImageResizer resizer,
+                                 IAlbumService albumService,     
                                  IHttpClient httpClient,
                                  IDiskProvider diskProvider,
                                  IAppFolderInfo appFolderInfo,
@@ -45,6 +49,7 @@ namespace NzbDrone.Core.MediaCover
                                  Logger logger)
         {
             _resizer = resizer;
+            _albumService = albumService;
             _httpClient = httpClient;
             _diskProvider = diskProvider;
             _coverExistsSpecification = coverExistsSpecification;
@@ -55,20 +60,34 @@ namespace NzbDrone.Core.MediaCover
             _coverRootFolder = appFolderInfo.GetMediaCoverPath();
         }
 
-        public string GetCoverPath(int seriesId, MediaCoverTypes coverTypes, int? height = null)
+        public string GetCoverPath(int entityId, MediaCoverEntity coverEntity, MediaCoverTypes coverTypes, string extension, int? height = null)
         {
             var heightSuffix = height.HasValue ? "-" + height.ToString() : "";
 
-            return Path.Combine(GetSeriesCoverPath(seriesId), coverTypes.ToString().ToLower() + heightSuffix + ".jpg");
+            if (coverEntity == MediaCoverEntity.Album)
+            {
+                return Path.Combine(GetAlbumCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
+            }
+            else
+            {
+                return Path.Combine(GetArtistCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
+            }
         }
 
-        public void ConvertToLocalUrls(int seriesId, IEnumerable<MediaCover> covers)
+        public void ConvertToLocalUrls(int entityId, MediaCoverEntity coverEntity, IEnumerable<MediaCover> covers)
         {
             foreach (var mediaCover in covers)
             {
-                var filePath = GetCoverPath(seriesId, mediaCover.CoverType);
+                var filePath = GetCoverPath(entityId, coverEntity, mediaCover.CoverType, mediaCover.Extension, null);
 
-                mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + seriesId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
+                if (coverEntity == MediaCoverEntity.Album)
+                {
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/Albums/" + entityId + "/" + mediaCover.CoverType.ToString().ToLower() + mediaCover.Extension;
+                }
+                else
+                {
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + entityId + "/" + mediaCover.CoverType.ToString().ToLower() + mediaCover.Extension;
+                }
 
                 if (_diskProvider.FileExists(filePath))
                 {
@@ -78,78 +97,121 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private string GetSeriesCoverPath(int seriesId)
+        private string GetArtistCoverPath(int artistId)
         {
-            return Path.Combine(_coverRootFolder, seriesId.ToString());
+            return Path.Combine(_coverRootFolder, artistId.ToString());
         }
 
-        private void EnsureCovers(Series series)
+        private string GetAlbumCoverPath(int albumId)
         {
-            foreach (var cover in series.Images)
+            return Path.Combine(_coverRootFolder, "Albums", albumId.ToString());
+        }
+
+        private void EnsureArtistCovers(Artist artist)
+        {
+            foreach (var cover in artist.Metadata.Value.Images)
             {
-                var fileName = GetCoverPath(series.Id, cover.CoverType);
+                var fileName = GetCoverPath(artist.Id, MediaCoverEntity.Artist, cover.CoverType, cover.Extension);
                 var alreadyExists = false;
+                
                 try
                 {
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(cover.Url, fileName);
+                    var serverFileHeaders = _httpClient.Head(new HttpRequest(cover.Url) { AllowAutoRedirect = true }).Headers;
+
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, serverFileHeaders.ContentLength, fileName);
+
                     if (!alreadyExists)
                     {
-                        DownloadCover(series, cover);
+                        DownloadCover(artist, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
                 {
-                    _logger.Warn("Couldn't download media cover for {0}. {1}", series, e.Message);
+                    _logger.Warn("Couldn't download media cover for {0}. {1}", artist, e.Message);
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Couldn't download media cover for {0}", series);
+                    _logger.Error(e, "Couldn't download media cover for {0}", artist);
                 }
 
-                EnsureResizedCovers(series, cover, !alreadyExists);
+                EnsureResizedCovers(artist, cover, !alreadyExists);
             }
         }
 
-        private void DownloadCover(Series series, MediaCover cover)
+        public void EnsureAlbumCovers(Album album)
         {
-            var fileName = GetCoverPath(series.Id, cover.CoverType);
-
-            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, series, cover.Url);
-            _httpClient.DownloadFile(cover.Url, fileName);
-        }
-
-        private void EnsureResizedCovers(Series series, MediaCover cover, bool forceResize)
-        {
-            int[] heights;
-
-            switch (cover.CoverType)
+            foreach (var cover in album.Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
             {
-                default:
-                    return;
+                var fileName = GetCoverPath(album.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, null);
+                var alreadyExists = false;
+                try
+                {
+                    var serverFileHeaders = _httpClient.Head(new HttpRequest(cover.Url) { AllowAutoRedirect = true }).Headers;
 
-                case MediaCoverTypes.Poster:
-                case MediaCoverTypes.Headshot:
-                    heights = new[] { 500, 250 };
-                    break;
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, serverFileHeaders.ContentLength, fileName);
 
-                case MediaCoverTypes.Banner:
-                    heights = new[] { 70, 35 };
-                    break;
-
-                case MediaCoverTypes.Fanart:
-                case MediaCoverTypes.Screenshot:
-                    heights = new[] { 360, 180 };
-                    break;
+                    if (!alreadyExists)
+                    {
+                        DownloadAlbumCover(album, cover, serverFileHeaders.LastModified ?? DateTime.Now);
+                    }
+                }
+                catch (WebException e)
+                {
+                    _logger.Warn("Couldn't download media cover for {0}. {1}", album, e.Message);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't download media cover for {0}", album);
+                }
             }
+        }
+
+        private void DownloadCover(Artist artist, MediaCover cover, DateTime lastModified)
+        {
+            var fileName = GetCoverPath(artist.Id, MediaCoverEntity.Artist, cover.CoverType, cover.Extension);
+
+            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, artist, cover.Url);
+            _httpClient.DownloadFile(cover.Url, fileName);
+
+            try
+            {
+                _diskProvider.FileSetLastWriteTime(fileName, lastModified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Unable to set modified date for {0} image for artist {1}", cover.CoverType, artist);
+            }
+        }
+
+        private void DownloadAlbumCover(Album album, MediaCover cover, DateTime lastModified)
+        {
+            var fileName = GetCoverPath(album.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, null);
+
+            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, album, cover.Url);
+            _httpClient.DownloadFile(cover.Url, fileName);
+
+            try
+            {
+                _diskProvider.FileSetLastWriteTime(fileName, lastModified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Unable to set modified date for {0} image for album {1}", cover.CoverType, album);
+            }
+        }
+
+        private void EnsureResizedCovers(Artist artist, MediaCover cover, bool forceResize, Album album = null)
+        {
+            int[] heights = GetDefaultHeights(cover.CoverType);
 
             foreach (var height in heights)
             {
-                var mainFileName = GetCoverPath(series.Id, cover.CoverType);
-                var resizeFileName = GetCoverPath(series.Id, cover.CoverType, height);
+                var mainFileName = GetCoverPath(artist.Id, MediaCoverEntity.Artist, cover.CoverType, cover.Extension);
+                var resizeFileName = GetCoverPath(artist.Id, MediaCoverEntity.Artist, cover.CoverType, cover.Extension, height);
 
                 if (forceResize || !_diskProvider.FileExists(resizeFileName) || _diskProvider.GetFileSize(resizeFileName) == 0)
                 {
-                    _logger.Debug("Resizing {0}-{1} for {2}", cover.CoverType, height, series);
+                    _logger.Debug("Resizing {0}-{1} for {2}", cover.CoverType, height, artist);
 
                     try
                     {
@@ -157,25 +219,56 @@ namespace NzbDrone.Core.MediaCover
                     }
                     catch
                     {
-                        _logger.Debug("Couldn't resize media cover {0}-{1} for {2}, using full size image instead.", cover.CoverType, height, series);
+                        _logger.Debug("Couldn't resize media cover {0}-{1} for artist {2}, using full size image instead.", cover.CoverType, height, artist);
                     }
                 }
             }
         }
 
-        public void HandleAsync(SeriesUpdatedEvent message)
+        private int[] GetDefaultHeights(MediaCoverTypes coverType)
         {
-            EnsureCovers(message.Series);
-            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Series));
+            switch (coverType)
+            {
+                default:
+                    return new int[] { };
+
+                case MediaCoverTypes.Poster:
+                case MediaCoverTypes.Disc:
+                case MediaCoverTypes.Cover:
+                case MediaCoverTypes.Logo:
+                case MediaCoverTypes.Headshot:
+                    return new[] { 500, 250 };
+
+                case MediaCoverTypes.Banner:
+                    return new[] { 70, 35 };
+
+                case MediaCoverTypes.Fanart:
+                case MediaCoverTypes.Screenshot:
+                    return new[] { 360, 180 };
+            }
         }
 
-        public void HandleAsync(SeriesDeletedEvent message)
+        public void HandleAsync(ArtistRefreshCompleteEvent message)
         {
-            var path = GetSeriesCoverPath(message.Series.Id);
+            EnsureArtistCovers(message.Artist);
+
+            var albums = _albumService.GetAlbumsByArtist(message.Artist.Id);
+            foreach (Album album in albums)
+            {
+                EnsureAlbumCovers(album);
+            }
+
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Artist));
+        }
+
+        public void HandleAsync(ArtistDeletedEvent message)
+        {
+            var path = GetArtistCoverPath(message.Artist.Id);
             if (_diskProvider.FolderExists(path))
             {
                 _diskProvider.DeleteFolder(path, true);
             }
         }
+
     }
 }

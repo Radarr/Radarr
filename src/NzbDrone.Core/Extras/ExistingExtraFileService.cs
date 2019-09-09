@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -10,7 +10,7 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Extras
 {
-    public class ExistingExtraFileService : IHandle<SeriesScannedEvent>
+    public class ExistingExtraFileService : IHandle<ArtistScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
@@ -28,29 +28,29 @@ namespace NzbDrone.Core.Extras
             _logger = logger;
         }
 
-        public void Handle(SeriesScannedEvent message)
+        public void Handle(ArtistScannedEvent message)
         {
-            var series = message.Series;
+            var artist = message.Artist;
             var extraFiles = new List<ExtraFile>();
 
-            if (!_diskProvider.FolderExists(series.Path))
+            if (!_diskProvider.FolderExists(artist.Path))
             {
                 return;
             }
 
-            _logger.Debug("Looking for existing extra files in {0}", series.Path);
+            _logger.Debug("Looking for existing extra files in {0}", artist.Path);
 
-            var filesOnDisk = _diskScanService.GetNonVideoFiles(series.Path);
-            var possibleExtraFiles = _diskScanService.FilterFiles(series, filesOnDisk);
+            var filesOnDisk = _diskScanService.GetNonAudioFiles(artist.Path);
+            var possibleExtraFiles = _diskScanService.FilterFiles(artist.Path, filesOnDisk);
 
             var filteredFiles = possibleExtraFiles;
             var importedFiles = new List<string>();
 
             foreach (var existingExtraFileImporter in _existingExtraFileImporters)
             {
-                var imported = existingExtraFileImporter.ProcessFiles(series, filteredFiles, importedFiles);
+                var imported = existingExtraFileImporter.ProcessFiles(artist, filteredFiles, importedFiles);
 
-                importedFiles.AddRange(imported.Select(f => Path.Combine(series.Path, f.RelativePath)));
+                importedFiles.AddRange(imported.Select(f => Path.Combine(artist.Path, f.RelativePath)));
             }
 
             _logger.Info("Found {0} extra files", extraFiles.Count);

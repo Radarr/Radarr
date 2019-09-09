@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 {
     public interface INzbgetProxy
     {
+        string GetBaseUrl(NzbgetSettings settings, string relativePath = null);
         string DownloadNzb(byte[] nzbData, string title, string category, int priority, bool addpaused, NzbgetSettings settings);
         NzbgetGlobalStatus GetGlobalStatus(NzbgetSettings settings);
         List<NzbgetQueueItem> GetQueue(NzbgetSettings settings);
@@ -36,9 +37,17 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _versionCache = cacheManager.GetCache<string>(GetType(), "versions");
         }
 
+        public string GetBaseUrl(NzbgetSettings settings, string relativePath = null)
+        {
+            var baseUrl = HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase);
+            baseUrl = HttpUri.CombinePath(baseUrl, relativePath);
+
+            return baseUrl;
+        }
+
         private bool HasVersion(int minimumVersion, NzbgetSettings settings)
         {
-            var versionString = _versionCache.Find(settings.Host + ":" + settings.Port) ?? GetVersion(settings);
+            var versionString = _versionCache.Find(GetBaseUrl(settings)) ?? GetVersion(settings);
 
             var version = int.Parse(versionString.Split(new[] { '.', '-' })[0]);
 
@@ -139,7 +148,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var response = ProcessRequest<string>(settings, "version");
 
-            _versionCache.Set(settings.Host + ":" + settings.Port, response, TimeSpan.FromDays(1));
+            _versionCache.Set(GetBaseUrl(settings), response, TimeSpan.FromDays(1));
 
             return response;
         }
@@ -161,7 +170,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
             if (id.Length < 10 && int.TryParse(id, out nzbId))
             {
-                // Download wasn't grabbed by Sonarr, so the id is the NzbId reported by nzbget.
+                // Download wasn't grabbed by Lidarr, so the id is the NzbId reported by nzbget.
                 queueItem = queue.SingleOrDefault(h => h.NzbId == nzbId);
                 historyItem = history.SingleOrDefault(h => h.Id == nzbId);
             }
@@ -170,7 +179,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 queueItem = queue.SingleOrDefault(h => h.Parameters.Any(p => p.Name == "drone" && id == (p.Value as string)));
                 historyItem = history.SingleOrDefault(h => h.Parameters.Any(p => p.Name == "drone" && id == (p.Value as string)));
             }
-           
+
             if (queueItem != null)
             {
                 if (!EditQueue("GroupFinalDelete", 0, "", queueItem.NzbId, settings))
@@ -218,7 +227,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         private T ProcessRequest<T>(NzbgetSettings settings, string method, params object[] parameters)
         {
-            var baseUrl = HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, "jsonrpc");
+            var baseUrl = GetBaseUrl(settings, "jsonrpc");
 
             var requestBuilder = new JsonRpcRequestBuilder(baseUrl, method, parameters);
             requestBuilder.LogResponseContent = true;
@@ -235,14 +244,14 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    throw new DownloadClientException("Authentication failed for NzbGet, please check your settings", ex);
+                    throw new DownloadClientAuthenticationException("Authentication failed for NzbGet, please check your settings", ex);
                 }
 
                 throw new DownloadClientException("Unable to connect to NzbGet. " + ex.Message, ex);
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Unable to connect to NzbGet. " + ex.Message, ex);
+                throw new DownloadClientUnavailableException("Unable to connect to NzbGet. " + ex.Message, ex);
             }
 
             var result = Json.Deserialize<JsonRpcResponse<T>>(response.Content);

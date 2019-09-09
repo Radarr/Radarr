@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 using Marr.Data.Mapping.Strategies;
@@ -65,8 +66,21 @@ namespace Marr.Data.Mapping
         public RelationshipBuilder<TEntity> LazyLoad<TChild>(Func<IDataMapper, TEntity, TChild> query, Func<TEntity, bool> condition = null)
         {
             AssertCurrentPropertyIsSet();
+            var relationship = Relationships[_currentPropertyName];
 
-            Relationships[_currentPropertyName].LazyLoaded = new LazyLoaded<TEntity, TChild>(query, condition);
+            relationship.LazyLoaded = new LazyLoaded<TEntity, TChild>(query, condition);
+
+            // work out if it's one to many or not
+            if (typeof(ICollection).IsAssignableFrom(typeof(TChild)))
+            {
+                relationship.RelationshipInfo.RelationType = RelationshipTypes.Many;
+                relationship.RelationshipInfo.EntityType = typeof(TChild).GetGenericArguments()[0];
+            }
+            else
+            {
+                relationship.RelationshipInfo.EntityType = typeof(TChild);
+            }
+            
             return this;
         }
 

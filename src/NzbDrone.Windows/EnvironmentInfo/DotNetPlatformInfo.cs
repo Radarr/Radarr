@@ -13,7 +13,6 @@ namespace NzbDrone.Windows.EnvironmentInfo
         {
             _logger = logger;
             var version = GetFrameworkVersion();
-            Environment.SetEnvironmentVariable("RUNTIME_VERSION", version.ToString());
             Version = version;
         }
 
@@ -33,6 +32,22 @@ namespace NzbDrone.Windows.EnvironmentInfo
 
                     var releaseKey = (int)ndpKey.GetValue("Release");
 
+                    if (releaseKey >= 528040)
+                    {
+                        return new Version(4, 8, 0);
+                    }
+                    if (releaseKey >= 461808)
+                    {
+                        return new Version(4, 7, 2);
+                    }
+                    if (releaseKey >= 461308)
+                    {
+                        return new Version(4, 7, 1);
+                    }
+                    if (releaseKey >= 460798)
+                    {
+                        return new Version(4, 7);
+                    }
                     if (releaseKey >= 394802)
                     {
                         return new Version(4, 6, 2);

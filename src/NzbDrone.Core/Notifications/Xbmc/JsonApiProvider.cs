@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Notifications.Xbmc.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -28,21 +28,21 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _proxy.Notify(settings, title, message);
         }
 
-        public void Update(XbmcSettings settings, Series series)
+        public void Update(XbmcSettings settings, Artist artist)
         {
             if (!settings.AlwaysUpdate)
             {
                 _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
                 var activePlayers = _proxy.GetActivePlayers(settings);
 
-                if (activePlayers.Any(a => a.Type.Equals("video")))
+                if (activePlayers.Any(a => a.Type.Equals("audio")))
                 {
-                    _logger.Debug("Video is currently playing, skipping library update");
+                    _logger.Debug("Audio is currently playing, skipping library update");
                     return;
                 }
             }
 
-            UpdateLibrary(settings, series);
+            UpdateLibrary(settings, artist);
         }
         
         public void Clean(XbmcSettings settings)
@@ -55,47 +55,44 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return _proxy.GetActivePlayers(settings); 
         }
 
-        public string GetSeriesPath(XbmcSettings settings, Series series)
+        public string GetArtistPath(XbmcSettings settings, Artist artist)
         {
-            var allSeries = _proxy.GetSeries(settings);
+            var allArtists = _proxy.GetArtist(settings);
 
-            if (!allSeries.Any())
+            if (!allArtists.Any())
             {
-                _logger.Debug("No TV shows returned from XBMC");
+                _logger.Debug("No Artists returned from XBMC");
                 return null;
             }
 
-            var matchingSeries = allSeries.FirstOrDefault(s =>
+            var matchingArtist = allArtists.FirstOrDefault(s =>
             {
-                var tvdbId = 0;
-                int.TryParse(s.ImdbNumber, out tvdbId);
+                var musicBrainzId = s.MusicbrainzArtistId.FirstOrDefault();
 
-                return tvdbId == series.TvdbId || s.Label == series.Title;
+                return musicBrainzId == artist.Metadata.Value.ForeignArtistId || s.Label == artist.Name;
             });
 
-            if (matchingSeries != null) return matchingSeries.File;
-
-            return null;
+            return matchingArtist?.File;
         }
 
-        private void UpdateLibrary(XbmcSettings settings, Series series)
+        private void UpdateLibrary(XbmcSettings settings, Artist artist)
         {
             try
             {
-                var seriesPath = GetSeriesPath(settings, series);
+                var artistPath = GetArtistPath(settings, artist);
 
-                if (seriesPath != null)
+                if (artistPath != null)
                 {
-                    _logger.Debug("Updating series {0} (Path: {1}) on XBMC host: {2}", series, seriesPath, settings.Address);
+                    _logger.Debug("Updating artist {0} (Path: {1}) on XBMC host: {2}", artist, artistPath, settings.Address);
                 }
 
                 else
                 {
-                    _logger.Debug("Series {0} doesn't exist on XBMC host: {1}, Updating Entire Library", series,
+                    _logger.Debug("Artist {0} doesn't exist on XBMC host: {1}, Updating Entire Library", artist,
                                  settings.Address);
                 }
 
-                var response = _proxy.UpdateLibrary(settings, seriesPath);
+                var response = _proxy.UpdateLibrary(settings, artistPath);
 
                 if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
                 {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
@@ -22,31 +22,46 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message);
+                _mediaBrowserService.Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
             }
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message);
+                _mediaBrowserService.Notify(Settings, ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message);
             }
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, message.Series);
+                _mediaBrowserService.Update(Settings, message.Artist);
             }
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, series);
+                _mediaBrowserService.Update(Settings, artist);
             }
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);
+            }
+        }
+
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, TRACK_RETAGGED_TITLE_BRANDED, message.Message);
+            }
+        }
 
         public override ValidationResult Test()
         {

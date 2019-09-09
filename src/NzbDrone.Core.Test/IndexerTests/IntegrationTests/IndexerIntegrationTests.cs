@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -16,61 +16,17 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
     [IntegrationTest]
     public class IndexerIntegrationTests : CoreTest
     {
-        private SingleEpisodeSearchCriteria _singleSearchCriteria;
-        private AnimeEpisodeSearchCriteria _animeSearchCriteria;
+        private AlbumSearchCriteria _albumSearchCriteria;
 
         [SetUp]
         public void SetUp()
         {
             UseRealHttp();
 
-            _singleSearchCriteria = new SingleEpisodeSearchCriteria()
+            _albumSearchCriteria = new AlbumSearchCriteria()
                 {
-                    SceneTitles = new List<string> { "Person of Interest" },
-                    SeasonNumber = 1,
-                    EpisodeNumber = 1
                 };
-
-            _animeSearchCriteria = new AnimeEpisodeSearchCriteria()
-            {
-                SceneTitles = new List<string> { "Steins;Gate" },
-                AbsoluteEpisodeNumber = 1
-            };
         }
-
-        [Test]
-        public void nyaa_fetch_recent()
-        {
-            var indexer = Mocker.Resolve<Nyaa>();
-
-            indexer.Definition = new IndexerDefinition
-            {
-                Name = "MyIndexer",
-                Settings = new NyaaSettings()
-            };
-
-            var result = indexer.FetchRecent();
-
-            ValidateTorrentResult(result, hasSize: true);
-        }
-
-        [Test]
-        public void nyaa_search_single()
-        {
-            var indexer = Mocker.Resolve<Nyaa>();
-
-            indexer.Definition = new IndexerDefinition
-            {
-                Name = "MyIndexer",
-                Settings = new NyaaSettings()
-            };
-
-            var result = indexer.Fetch(_animeSearchCriteria);
-
-            ValidateTorrentResult(result, hasSize: true);
-        }
-
-
 
         private void ValidateTorrentResult(IList<ReleaseInfo> reports, bool hasSize = false, bool hasInfoUrl = false, bool hasMagnet = false)
         {

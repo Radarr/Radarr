@@ -1,0 +1,6 @@
+.albumTypes {
+  margin-top: 10px;
+  /* TODO: This should consider the number of types in the list */
+  min-height: 200px;
+  user-select: none;
+}

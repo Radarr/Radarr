@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common.AutoMoq.Unity;
 
@@ -45,6 +46,15 @@ namespace NzbDrone.Test.Common.AutoMoq
         {
             ResolveType = typeof(T);
             var result = _container.Resolve<T>();
+            SetConstant(result);
+            ResolveType = null;
+            return result;
+        }
+
+        public virtual T Resolve<T>(string name, params ResolverOverride[] resolverOverrides)
+        {
+            ResolveType = typeof(T);
+            var result = _container.Resolve<T>(name, resolverOverrides);
             SetConstant(result);
             ResolveType = null;
             return result;
@@ -135,9 +145,9 @@ namespace NzbDrone.Test.Common.AutoMoq
             _container = container;
             container.RegisterInstance(this);
 
-            RegisterPlatformLibrary(container);
-
             _registeredMocks = new Dictionary<Type, object>();
+            
+            RegisterPlatformLibrary(container);
             AddTheAutoMockingContainerExtensionToTheContainer(container);
         }
 
@@ -171,19 +181,22 @@ namespace NzbDrone.Test.Common.AutoMoq
 
         private void RegisterPlatformLibrary(IUnityContainer container)
         {
-            var assemblyName = "NzbDrone.Windows";
+            var assemblyName = "Lidarr.Windows";
 
             if (OsInfo.IsNotWindows)
             {
-                assemblyName = "NzbDrone.Mono";
+                assemblyName = "Lidarr.Mono";
             }
 
-            if (!File.Exists(assemblyName + ".dll"))
-            {
-                return;
-            }
+            var assembly = Assembly.Load(assemblyName);
 
-            Assembly.Load(assemblyName);
+            // This allows us to resolve the platform specific disk provider in FileSystemTest
+            var diskProvider = assembly.GetTypes().Where(x => x.Name == "DiskProvider").SingleOrDefault();
+            container.RegisterType(typeof(IDiskProvider), diskProvider, "ActualDiskProvider");
+
+            // This tells the mocker to resolve IFileSystem using an actual filesystem (and not a mock)
+            // if not specified, giving the old behaviour before we switched to System.IO.Abstractions.
+            SetConstant<IFileSystem>(new FileSystem());
         }
 
         #endregion

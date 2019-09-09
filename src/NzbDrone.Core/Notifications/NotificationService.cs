@@ -1,21 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.HealthCheck;
+using System.IO;
 
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
-        : IHandle<EpisodeGrabbedEvent>,
-          IHandle<EpisodeDownloadedEvent>,
-          IHandle<SeriesRenamedEvent>
+        : IHandle<AlbumGrabbedEvent>,
+          IHandle<AlbumImportedEvent>,
+          IHandle<ArtistRenamedEvent>,
+          IHandle<HealthCheckFailedEvent>,
+          IHandle<DownloadFailedEvent>,
+          IHandle<AlbumImportIncompleteEvent>,
+          IHandle<TrackFileRetaggedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -26,83 +33,102 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Series series, List<Episode> episodes, QualityModel quality)
+        private string GetMessage(Artist artist, List<Album> albums, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
 
             if (quality.Revision.Version > 1)
             {
-                if (series.SeriesType == SeriesTypes.Anime)
-                {
-                    qualityString += " v" + quality.Revision.Version;
-                }
-
-                else
-                {
-                    qualityString += " Proper";
-                }
+                qualityString += " Proper";
             }
 
-            if (series.SeriesType == SeriesTypes.Daily)
-            {
-                var episode = episodes.First();
 
-                return string.Format("{0} - {1} - {2} [{3}]",
-                                         series.Title,
-                                         episode.AirDate,
-                                         episode.Title,
-                                         qualityString);
-            }
+            var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
 
-            var episodeNumbers = string.Concat(episodes.Select(e => e.EpisodeNumber)
-                                                       .Select(i => string.Format("x{0:00}", i)));
-
-            var episodeTitles = string.Join(" + ", episodes.Select(e => e.Title));
-
-            return string.Format("{0} - {1}{2} - {3} [{4}]",
-                                    series.Title,
-                                    episodes.First().SeasonNumber,
-                                    episodeNumbers,
-                                    episodeTitles,
+            return string.Format("{0} - {1} - [{2}]",
+                                    artist.Name,
+                                    albumTitles,
                                     qualityString);
         }
 
-        private bool ShouldHandleSeries(ProviderDefinition definition, Series series)
+        private string GetAlbumDownloadMessage(Artist artist, Album album, List<TrackFile> tracks)
         {
-            var notificationDefinition = (NotificationDefinition)definition;
+            return string.Format("{0} - {1} ({2} Tracks Imported)",
+                artist.Name,
+                album.Title,
+                tracks.Count);
+        }
 
-            if (notificationDefinition.Tags.Empty())
+        private string GetAlbumIncompleteImportMessage(string source)
+        {
+            return string.Format("Lidarr failed to Import all tracks for {0}",
+                source);
+        }
+
+        private string FormatMissing(object value)
+        {
+            var text = value?.ToString();
+            return text.IsNullOrWhiteSpace() ? "<missing>" : text;
+        }
+
+        private string GetTrackRetagMessage(Artist artist, TrackFile trackFile, Dictionary<string, Tuple<string, string>> diff)
+        {
+            return string.Format("{0}:\n{1}",
+                                 trackFile.Path,
+                                 string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
+        }
+
+        private bool ShouldHandleArtist(ProviderDefinition definition, Artist artist)
+        {
+            if (definition.Tags.Empty())
             {
                 _logger.Debug("No tags set for this notification.");
                 return true;
             }
 
-            if (notificationDefinition.Tags.Intersect(series.Tags).Any())
+            if (definition.Tags.Intersect(artist.Tags).Any())
             {
-                _logger.Debug("Notification and series have one or more matching tags.");
+                _logger.Debug("Notification and artist have one or more intersecting tags.");
                 return true;
             }
 
             //TODO: this message could be more clear
-            _logger.Debug("{0} does not have any tags that match {1}'s tags", notificationDefinition.Name, series.Title);
+            _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent.", definition.Name, artist.Name);
             return false;
         }
 
-        public void Handle(EpisodeGrabbedEvent message)
+        private bool ShouldHandleHealthFailure(HealthCheck.HealthCheck healthCheck, bool includeWarnings)
+        {
+            if (healthCheck.Type == HealthCheckResult.Error)
+            {
+                return true;
+            }
+
+            if (healthCheck.Type == HealthCheckResult.Warning && includeWarnings)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Handle(AlbumGrabbedEvent message)
         {
             var grabMessage = new GrabMessage
             {
-                Message = GetMessage(message.Episode.Series, message.Episode.Episodes, message.Episode.ParsedEpisodeInfo.Quality),
-                Series = message.Episode.Series,
-                Quality = message.Episode.ParsedEpisodeInfo.Quality,
-                Episode = message.Episode
+                Message = GetMessage(message.Album.Artist, message.Album.Albums, message.Album.ParsedAlbumInfo.Quality),
+                Artist = message.Album.Artist,
+                Quality = message.Album.ParsedAlbumInfo.Quality,
+                Album = message.Album,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             foreach (var notification in _notificationFactory.OnGrabEnabled())
             {
                 try
                 {
-                    if (!ShouldHandleSeries(notification.Definition, message.Episode.Series)) continue;
+                    if (!ShouldHandleArtist(notification.Definition, message.Album.Artist)) continue;
                     notification.OnGrab(grabMessage);
                 }
 
@@ -113,50 +139,139 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(EpisodeDownloadedEvent message)
+        public void Handle(AlbumImportedEvent message)
         {
-            var downloadMessage = new DownloadMessage();
-            downloadMessage.Message = GetMessage(message.Episode.Series, message.Episode.Episodes, message.Episode.Quality);
-            downloadMessage.Series = message.Episode.Series;
-            downloadMessage.EpisodeFile = message.EpisodeFile;
-            downloadMessage.OldFiles = message.OldFiles;
-            downloadMessage.SourcePath = message.Episode.Path;
+            if (!message.NewDownload)
+            {
+                return;
+            }
 
-            foreach (var notification in _notificationFactory.OnDownloadEnabled())
+            var downloadMessage = new AlbumDownloadMessage
+
+            {
+                Message = GetAlbumDownloadMessage(message.Artist, message.Album, message.ImportedTracks),
+                Artist = message.Artist,
+                Album = message.Album,
+                Release = message.AlbumRelease,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId,
+                TrackFiles = message.ImportedTracks,
+                OldFiles = message.OldFiles,
+            };
+
+            foreach (var notification in _notificationFactory.OnReleaseImportEnabled())
             {
                 try
                 {
-                    if (ShouldHandleSeries(notification.Definition, message.Episode.Series))
+                    if (ShouldHandleArtist(notification.Definition, message.Artist))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
-                            notification.OnDownload(downloadMessage);
+                            notification.OnReleaseImport(downloadMessage);
                         }
                     }
                 }
 
                 catch (Exception ex)
                 {
-                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                    _logger.Warn(ex, "Unable to send OnReleaseImport notification to: " + notification.Definition.Name);
                 }
             }
         }
 
-        public void Handle(SeriesRenamedEvent message)
+        public void Handle(ArtistRenamedEvent message)
         {
             foreach (var notification in _notificationFactory.OnRenameEnabled())
             {
                 try
                 {
-                    if (ShouldHandleSeries(notification.Definition, message.Series))
+                    if (ShouldHandleArtist(notification.Definition, message.Artist))
                     {
-                        notification.OnRename(message.Series);
+                        notification.OnRename(message.Artist);
                     }
                 }
 
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(HealthCheckFailedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnHealthIssueEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
+                    {
+                        notification.OnHealthIssue(message.HealthCheck);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(DownloadFailedEvent message)
+        {
+            var downloadFailedMessage = new DownloadFailedMessage
+            {
+                DownloadId = message.DownloadId,
+                DownloadClient = message.DownloadClient,
+                Quality = message.Quality,
+                SourceTitle = message.SourceTitle,
+                Message = message.Message
+            };
+
+            foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                {
+                    notification.OnDownloadFailure(downloadFailedMessage);
+                }
+            }
+        }
+
+        public void Handle(AlbumImportIncompleteEvent message)
+        {
+            // TODO: Build out this message so that we can pass on what failed and what was successful
+            var downloadMessage = new AlbumDownloadMessage
+            {
+                Message = GetAlbumIncompleteImportMessage(message.TrackedDownload.DownloadItem.Title),
+            };
+
+            foreach (var notification in _notificationFactory.OnImportFailureEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                {
+                    notification.OnImportFailure(downloadMessage);
+                }
+            }
+        }
+
+        public void Handle(TrackFileRetaggedEvent message)
+        {
+            var retagMessage = new TrackRetagMessage
+            {
+                Message = GetTrackRetagMessage(message.Artist, message.TrackFile, message.Diff),
+                Artist = message.Artist,
+                Album = message.TrackFile.Album,
+                Release = message.TrackFile.Tracks.Value.First().AlbumRelease.Value,
+                TrackFile = message.TrackFile,
+                Diff = message.Diff,
+                Scrubbed = message.Scrubbed
+            };
+
+            foreach (var notification in _notificationFactory.OnTrackRetagEnabled())
+            {
+                if (ShouldHandleArtist(notification.Definition, message.Artist))
+                {
+                    notification.OnTrackRetag(retagMessage);
                 }
             }
         }

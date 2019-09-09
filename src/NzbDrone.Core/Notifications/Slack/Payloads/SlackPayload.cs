@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Notifications.Slack.Payloads
@@ -11,6 +11,11 @@ namespace NzbDrone.Core.Notifications.Slack.Payloads
 
         [JsonProperty("icon_emoji")]
         public string IconEmoji { get; set; }
+
+        [JsonProperty("icon_url")]
+        public string IconUrl { get; set; }
+
+        public string Channel { get; set; }
 
         public List<Attachment> Attachments { get; set; }
     }

@@ -1,13 +1,15 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using System;
 using System.Linq;
 using System.Net;
 using NzbDrone.Common.Cloud;
+using NzbDrone.Core.Configuration.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(ConfigSavedEvent))]
     public class ProxyCheck : HealthCheckBase
     {
         private readonly Logger _logger;
@@ -16,7 +18,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
 
-        public ProxyCheck(ISonarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, Logger logger)
+        public ProxyCheck(ILidarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, Logger logger)
         {
             _configService = configService;
             _client = client;
@@ -43,7 +45,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     var response = _client.Execute(request);
 
-                    // We only care about 400 responses, other error codes can be ignored 
+                    // We only care about 400 responses, other error codes can be ignored
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
                         _logger.Error("Proxy Health Check failed: {0}", response.StatusCode);

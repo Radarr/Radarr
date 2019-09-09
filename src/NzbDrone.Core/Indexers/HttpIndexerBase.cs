@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,7 +17,7 @@ using NzbDrone.Core.ThingiProvider;
 namespace NzbDrone.Core.Indexers
 {
     public abstract class HttpIndexerBase<TSettings> : IndexerBase<TSettings>
-        where TSettings : IProviderConfig, new()
+        where TSettings : IIndexerSettings, new()
     {
         protected const int MaxNumResultsPerQuery = 1000;
 
@@ -46,80 +46,42 @@ namespace NzbDrone.Core.Indexers
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetRecentRequests(), true);
+            return FetchReleases(g => g.GetRecentRequests(), true);
         }
 
-        public override IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria)
+        public override IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
             {
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+            return FetchReleases(g => g.GetSearchRequests(searchCriteria));
         }
 
-        public override IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria)
+        public override IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
             {
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+            return FetchReleases(g => g.GetSearchRequests(searchCriteria));
         }
 
-        public override IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        protected virtual IList<ReleaseInfo> FetchReleases(IndexerPageableRequestChain pageableRequestChain, bool isRecent = false)
+        protected virtual IList<ReleaseInfo> FetchReleases(Func<IIndexerRequestGenerator, IndexerPageableRequestChain> pageableRequestChainSelector, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();
             var url = string.Empty;
 
-            var parser = GetParser();
-
             try
             {
+                var generator = GetRequestGenerator();
+                var parser = GetParser();
+
+                var pageableRequestChain = pageableRequestChainSelector(generator);
+
+
                 var fullyUpdated = false;
                 ReleaseInfo lastReleaseInfo = null;
                 if (isRecent)
@@ -175,7 +137,7 @@ namespace NzbDrone.Core.Indexers
                             }
                         }
 
-                        releases.AddRange(pagedReleases);
+                        releases.AddRange(pagedReleases.Where(IsValidRelease));
                     }
 
                     if (releases.Any())
@@ -222,18 +184,22 @@ namespace NzbDrone.Core.Indexers
                     _logger.Warn("{0} {1} {2}", this, url, webException.Message);
                 }
             }
-            catch (HttpException httpException)
+            catch (TooManyRequestsException ex)
             {
-                if ((int)httpException.Response.StatusCode == 429)
+                if (ex.RetryAfter != TimeSpan.Zero)
                 {
-                    _indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
-                    _logger.Warn("API Request Limit reached for {0}", this);
+                    _indexerStatusService.RecordFailure(Definition.Id, ex.RetryAfter);
                 }
                 else
                 {
-                    _indexerStatusService.RecordFailure(Definition.Id);
-                    _logger.Warn("{0} {1}", this, httpException.Message);
+                    _indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
                 }
+                _logger.Warn("API Request Limit reached for {0}", this);
+            }
+            catch (HttpException ex)
+            {
+                _indexerStatusService.RecordFailure(Definition.Id);
+                _logger.Warn("{0} {1}", this, ex.Message);
             }
             catch (RequestLimitReachedException)
             {
@@ -248,6 +214,7 @@ namespace NzbDrone.Core.Indexers
             catch (CloudFlareCaptchaException ex)
             {
                 _indexerStatusService.RecordFailure(Definition.Id);
+                ex.WithData("FeedUrl", url);
                 if (ex.IsExpired)
                 {
                     _logger.Error(ex, "Expired CAPTCHA token for {0}, please refresh in indexer settings.", this);
@@ -262,14 +229,24 @@ namespace NzbDrone.Core.Indexers
                 _indexerStatusService.RecordFailure(Definition.Id);
                 _logger.Warn(ex, "{0}", url);
             }
-            catch (Exception feedEx)
+            catch (Exception ex)
             {
                 _indexerStatusService.RecordFailure(Definition.Id);
-                feedEx.Data.Add("FeedUrl", url);
-                _logger.Error(feedEx, "An error occurred while processing feed. {0}", url);
+                ex.WithData("FeedUrl", url);
+                _logger.Error(ex, "An error occurred while processing feed. {0}", url);
             }
 
             return CleanupReleases(releases);
+        }
+
+        protected virtual bool IsValidRelease(ReleaseInfo release)
+        {
+            if (release.DownloadUrl.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual bool IsFullPage(IList<ReleaseInfo> page)
@@ -281,7 +258,16 @@ namespace NzbDrone.Core.Indexers
         {
             var response = FetchIndexerResponse(request);
 
-            return parser.ParseResponse(response).ToList();
+            try
+            {
+                return parser.ParseResponse(response).ToList();
+            }
+            catch (Exception ex)
+            {
+                ex.WithData(response.HttpResponse, 128 * 1024);
+                _logger.Trace("Unexpected Response content ({0} bytes): {1}", response.HttpResponse.ResponseData.Length, response.HttpResponse.Content);
+                throw;
+            }
         }
 
         protected virtual IndexerResponse FetchIndexerResponse(IndexerRequest request)
@@ -311,7 +297,7 @@ namespace NzbDrone.Core.Indexers
 
                 if (releases.Empty())
                 {
-                    return new ValidationFailure(string.Empty, "No results were returned from your indexer, please check your settings.");
+                    return new ValidationFailure(string.Empty, "Query successful, but no results were returned from your indexer. This may be an issue with the indexer or your indexer category settings.");
                 }
             }
             catch (ApiKeyException)

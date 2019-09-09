@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         public int MaxPageSize { get; set; }
         public string[] SupportedSearchParameters { get; set; }
         public string[] SupportedTvSearchParameters { get; set; }
+        public string[] SupportedAudioSearchParameters { get; set; }
         public bool SupportsAggregateIdSearch { get; set; }
         public List<NewznabCategory> Categories { get; set; }
 
@@ -17,6 +18,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             MaxPageSize = 100;
             SupportedSearchParameters = new[] { "q" };
             SupportedTvSearchParameters = new[] { "q", "rid", "season", "ep" }; // This should remain 'rid' for older newznab installs.
+            SupportedAudioSearchParameters = new[] { "q", "artist", "album" };
             SupportsAggregateIdSearch = false;
             Categories = new List<NewznabCategory>();
         }

@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -13,12 +13,13 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            DeleteDuplicateSeriesMetadata();
-            DeleteDuplicateEpisodeMetadata();
-            DeleteDuplicateEpisodeImages();
+            DeleteDuplicateArtistMetadata();
+            DeleteDuplicateAlbumMetadata();
+            DeleteDuplicateTrackMetadata();
+            DeleteDuplicateTrackImages();
         }
 
-        private void DeleteDuplicateSeriesMetadata()
+        private void DeleteDuplicateArtistMetadata()
         {
             var mapper = _database.GetDataMapper();
 
@@ -26,12 +27,25 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 1
-                                         GROUP BY SeriesId, Consumer
-                                         HAVING COUNT(SeriesId) > 1
+                                         GROUP BY ArtistId, Consumer
+                                         HAVING COUNT(ArtistId) > 1
                                      )");
         }
 
-        private void DeleteDuplicateEpisodeMetadata()
+        private void DeleteDuplicateAlbumMetadata()
+        {
+            var mapper = _database.GetDataMapper();
+
+            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                                     WHERE Id IN (
+                                         SELECT Id FROM MetadataFiles
+                                         WHERE Type = 6
+                                         GROUP BY AlbumId, Consumer
+                                         HAVING COUNT(AlbumId) > 1
+                                     )");
+        }
+
+        private void DeleteDuplicateTrackMetadata()
         {
             var mapper = _database.GetDataMapper();
 
@@ -39,12 +53,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 2
-                                         GROUP BY EpisodeFileId, Consumer
-                                         HAVING COUNT(EpisodeFileId) > 1
+                                         GROUP BY TrackFileId, Consumer
+                                         HAVING COUNT(TrackFileId) > 1
                                      )");
         }
 
-        private void DeleteDuplicateEpisodeImages()
+        private void DeleteDuplicateTrackImages()
         {
             var mapper = _database.GetDataMapper();
 
@@ -52,8 +66,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 5
-                                         GROUP BY EpisodeFileId, Consumer
-                                         HAVING COUNT(EpisodeFileId) > 1
+                                         GROUP BY TrackFileId, Consumer
+                                         HAVING COUNT(TrackFileId) > 1
                                      )");
         }
     }

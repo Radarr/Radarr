@@ -1,10 +1,21 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.Backup
 {
     public class BackupCommand : Command
     {
-        public BackupType Type { get; set; }
+        public BackupType Type
+        {
+            get
+            {
+                if (Trigger == CommandTrigger.Scheduled)
+                {
+                    return BackupType.Scheduled;
+                }
+
+                return BackupType.Manual;
+            }
+        }
 
         public override bool SendUpdatesToClient => true;
 

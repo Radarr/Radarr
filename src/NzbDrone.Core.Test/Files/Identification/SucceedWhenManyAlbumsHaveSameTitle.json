@@ -1,0 +1,537 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "4e2dd34f-53fe-4d54-b564-b14a2871505e"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": false,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/01-weezer-africa-0f640cbf.mp3",
+      "fileTrackInfo": {
+        "title": "Africa",
+        "cleanTitle": "Africa",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:03:58.6850000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/02-weezer-everybody_wants_to_rule_the_world-efc2a5b4.mp3",
+      "fileTrackInfo": {
+        "title": "Everybody Wants To Rule The World",
+        "cleanTitle": "Everybody Wants To Rule The World",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:04:04.8960000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/03-weezer-sweet_dreams_(are_made_of_this)-a8a934a6.mp3",
+      "fileTrackInfo": {
+        "title": "Sweet Dreams (Are Made Of This)",
+        "cleanTitle": "Sweet Dreams (Are Made Of This)",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:03:34.8550000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/04-weezer-take_on_me-5698a04c.mp3",
+      "fileTrackInfo": {
+        "title": "Take On Me",
+        "cleanTitle": "Take On Me",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:03:43.6510000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/05-weezer-happy_together-dd30d8d4.mp3",
+      "fileTrackInfo": {
+        "title": "Happy Together",
+        "cleanTitle": "Happy Together",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:02:25.7160000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/06-weezer-paranoid-d0617671.mp3",
+      "fileTrackInfo": {
+        "title": "Paranoid",
+        "cleanTitle": "Paranoid",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:02:44.9260000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/07-weezer-mr_blue_sky-e3e44f02.mp3",
+      "fileTrackInfo": {
+        "title": "Mr. Blue Sky",
+        "cleanTitle": "Mr. Blue Sky",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:04:46.4210000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/08-weezer-no_scrubs-577fa9fa.mp3",
+      "fileTrackInfo": {
+        "title": "No Scrubs",
+        "cleanTitle": "No Scrubs",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:03:10.3730000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/09-weezer-billie_jean-9c35bbda.mp3",
+      "fileTrackInfo": {
+        "title": "Billie Jean",
+        "cleanTitle": "Billie Jean",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:04:54.1990000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Weezer/Weezer (2019)/10-weezer-stand_by_me-396f336f.mp3",
+      "fileTrackInfo": {
+        "title": "Stand By Me",
+        "cleanTitle": "Stand By Me",
+        "artistTitle": "Weezer",
+        "albumTitle": "Weezer (Teal Album)",
+        "artistTitleInfo": {
+          "title": "Weezer",
+          "year": 2019
+        },
+        "discNumber": 0,
+        "discCount": 0,
+        "year": 2019,
+        "label": "Crush Music / Atlantic   ",
+        "duration": "00:03:00.9770000",
+        "quality": {
+          "quality": {
+            "id": 4,
+            "name": "MP3-320"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3",
+          "audioBitrate": 320,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    }
+  ]
+}

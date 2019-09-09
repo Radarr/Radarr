@@ -1,0 +1,166 @@
+﻿{
+  "status": "success",
+  "response": {
+    "currentPage": 1,
+    "pages": 1,
+    "results": [
+      {
+        "groupId": 106951,
+        "groupName": "Shania Twain",
+        "artist": "Shania Twain",
+        "cover": "https:\\/\\/ptpimg.me\\/460az6.jpg",
+        "tags": [
+          "rock",
+          "country"
+        ],
+        "bookmarked": false,
+        "vanityHouse": false,
+        "groupYear": 1993,
+        "releaseType": "Album",
+        "groupTime": "1512951473",
+        "maxSize": 653734702,
+        "totalSnatched": 33,
+        "totalSeeders": 27,
+        "totalLeechers": 0,
+        "torrents": [
+          {
+            "torrentId": 194008,
+            "editionId": 1,
+            "artists": [
+              {
+                "id": 9504,
+                "name": "Shania Twain",
+                "aliasid": 9506
+              }
+            ],
+            "remastered": false,
+            "remasterYear": 0,
+            "remasterCatalogueNumber": "",
+            "remasterTitle": "",
+            "media": "CD",
+            "encoding": "Lossless",
+            "format": "FLAC",
+            "hasLog": true,
+            "logScore": 100,
+            "hasCue": true,
+            "scene": false,
+            "vanityHouse": false,
+            "fileCount": 14,
+            "time": "2016-12-02 16:02:39",
+            "size": 198741350,
+            "snatches": 19,
+            "seeders": 17,
+            "leechers": 0,
+            "isFreeleech": false,
+            "isNeutralLeech": false,
+            "isPersonalFreeleech": false,
+            "canUseToken": false,
+            "hasSnatched": false
+          },
+          {
+            "torrentId": 230096,
+            "editionId": 1,
+            "artists": [
+              {
+                "id": 9504,
+                "name": "Shania Twain",
+                "aliasid": 9506
+              }
+            ],
+            "remastered": false,
+            "remasterYear": 0,
+            "remasterCatalogueNumber": "",
+            "remasterTitle": "",
+            "media": "CD",
+            "encoding": "320",
+            "format": "MP3",
+            "hasLog": false,
+            "logScore": 0,
+            "hasCue": false,
+            "scene": false,
+            "vanityHouse": false,
+            "fileCount": 13,
+            "time": "2016-12-03 21:46:04",
+            "size": 74275018,
+            "snatches": 3,
+            "seeders": 3,
+            "leechers": 0,
+            "isFreeleech": false,
+            "isNeutralLeech": false,
+            "isPersonalFreeleech": false,
+            "canUseToken": false,
+            "hasSnatched": false
+          },
+          {
+            "torrentId": 230086,
+            "editionId": 1,
+            "artists": [
+              {
+                "id": 9504,
+                "name": "Shania Twain",
+                "aliasid": 9506
+              }
+            ],
+            "remastered": false,
+            "remasterYear": 0,
+            "remasterCatalogueNumber": "",
+            "remasterTitle": "",
+            "media": "CD",
+            "encoding": "V0 (VBR)",
+            "format": "MP3",
+            "hasLog": false,
+            "logScore": 0,
+            "hasCue": false,
+            "scene": false,
+            "vanityHouse": false,
+            "fileCount": 13,
+            "time": "2016-12-03 21:45:41",
+            "size": 61191629,
+            "snatches": 7,
+            "seeders": 5,
+            "leechers": 0,
+            "isFreeleech": false,
+            "isNeutralLeech": false,
+            "isPersonalFreeleech": false,
+            "canUseToken": false,
+            "hasSnatched": false
+          },
+          {
+            "torrentId": 1541452,
+            "editionId": 2,
+            "artists": [
+              {
+                "id": 9504,
+                "name": "Shania Twain",
+                "aliasid": 9506
+              }
+            ],
+            "remastered": true,
+            "remasterYear": 2017,
+            "remasterCatalogueNumber": "",
+            "remasterTitle": "",
+            "media": "WEB",
+            "encoding": "24bit Lossless",
+            "format": "FLAC",
+            "hasLog": false,
+            "logScore": 0,
+            "hasCue": false,
+            "scene": false,
+            "vanityHouse": false,
+            "fileCount": 13,
+            "time": "2017-12-11 00:17:53",
+            "size": 653734702,
+            "snatches": 4,
+            "seeders": 2,
+            "leechers": 0,
+            "isFreeleech": false,
+            "isNeutralLeech": false,
+            "isPersonalFreeleech": false,
+            "canUseToken": false,
+            "hasSnatched": false
+          }
+        ]
+      }
+    ]
+  }
+}

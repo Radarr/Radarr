@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "NzbDrone.develop.2.0.0.0.tar.gz",
-                    Url = "http://download.sonarr.tv/v2/develop/mono/NzbDrone.develop.tar.gz",
-                    Version = new Version("2.0.0.0")
+                    FileName = "Lidarr.develop.0.6.2.883.tar.gz",
+                    Url = "https://github.com/lidarr/Lidarr/releases/download/v0.6.2.883/Lidarr.develop.0.6.2.883.linux.tar.gz",
+                    Version = new Version("0.6.2.883")
                 };
             }
 
@@ -45,21 +45,21 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "NzbDrone.develop.2.0.0.0.zip",
-                    Url = "http://download.sonarr.tv/v2/develop/windows/NzbDrone.develop.zip",
-                    Version = new Version("2.0.0.0")
+                    FileName = "Lidarr.develop.0.6.2.883.zip",
+                    Url = "https://github.com/lidarr/Lidarr/releases/download/v0.6.2.883/Lidarr.develop.0.6.2.883.windows.zip",
+                    Version = new Version("0.6.2.883")
                 };
             }
 
             Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.TempFolder).Returns(TempFolder);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\NzbDrone".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\NzbDrone".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\Lidarr".AsOsAgnostic);
 
             Mocker.GetMock<ICheckUpdateService>().Setup(c => c.AvailableUpdate()).Returns(_updatePackage);
             Mocker.GetMock<IVerifyUpdates>().Setup(c => c.Verify(It.IsAny<UpdatePackage>(), It.IsAny<string>())).Returns(true);
 
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetCurrentProcess()).Returns(new ProcessInfo { Id = 12 });
-            Mocker.GetMock<IRuntimeInfo>().Setup(c => c.ExecutingApplication).Returns(@"C:\Test\NzbDrone.exe");
+            Mocker.GetMock<IRuntimeInfo>().Setup(c => c.ExecutingApplication).Returns(@"C:\Test\Lidarr.exe");
 
             Mocker.GetMock<IConfigFileProvider>()
                   .SetupGet(s => s.UpdateAutomatically)
@@ -85,6 +85,17 @@ namespace NzbDrone.Core.Test.UpdateTests
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(path, StringComparison.Ordinal))
                   .Returns(true);
+        }
+
+        [Test]
+        public void should_not_update_if_inside_docker()
+        {
+            Mocker.GetMock<IOsInfo>().Setup(x => x.IsDocker).Returns(true);
+
+            Subject.Execute(new ApplicationUpdateCommand());
+
+            Mocker.GetMock<IProcessProvider>()
+                .Verify(c => c.Start(It.IsAny<string>(), It.Is<string>(s => s.StartsWith("12")), null, null, null), Times.Never());
         }
 
         [Test]
@@ -173,7 +184,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_run_script_if_configured()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -186,7 +197,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_is_not_set()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript("");
 
@@ -200,7 +211,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_is_null()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(null);
 
@@ -214,7 +225,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_path_does_not_exist()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -245,7 +256,7 @@ namespace NzbDrone.Core.Test.UpdateTests
             updateSubFolder.Refresh();
 
             updateSubFolder.Exists.Should().BeTrue();
-            updateSubFolder.GetDirectories("NzbDrone").Should().HaveCount(1);
+            updateSubFolder.GetDirectories("Lidarr").Should().HaveCount(1);
             updateSubFolder.GetDirectories().Should().HaveCount(1);
             updateSubFolder.GetFiles().Should().NotBeEmpty();
         }
@@ -253,8 +264,8 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Test]
         public void should_log_error_when_app_data_is_child_of_startup_folder()
         {
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\NzbDrone".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\NzbDrone\AppData".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\Lidarr\AppData".AsOsAgnostic);
 
             Assert.Throws<CommandFailedException>(() => Subject.Execute(new ApplicationUpdateCommand()));
             ExceptionVerification.ExpectedErrors(1);

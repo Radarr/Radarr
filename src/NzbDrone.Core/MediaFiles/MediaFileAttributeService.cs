@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (OsInfo.IsWindows)
             {
-                _logger.Debug("Setting last write time on series folder: {0}", path);
+                _logger.Debug("Setting last write time on artist folder: {0}", path);
                 _diskProvider.FolderSetLastWriteTime(path, time);
             }
         }

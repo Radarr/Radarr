@@ -1,0 +1,1430 @@
+{
+  "expectedMusicBrainzReleaseIds": [
+    "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+    "97189482-89ee-4d31-90c7-ba07b412d7f9",
+    "9105a5b3-eb68-3a03-9aa8-f3495e602a4f"
+  ],
+  "libraryArtists": [
+    {
+      "artist": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+      "metadataProfile": {
+        "name": "Standard",
+        "primaryAlbumTypes": [
+          {
+            "primaryAlbumType": {
+              "id": 2,
+              "name": "Single"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 4,
+              "name": "Other"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 1,
+              "name": "EP"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 3,
+              "name": "Broadcast"
+            },
+            "allowed": false
+          },
+          {
+            "primaryAlbumType": {
+              "id": 0,
+              "name": "Album"
+            },
+            "allowed": true
+          }
+        ],
+        "secondaryAlbumTypes": [
+          {
+            "secondaryAlbumType": {
+              "id": 0,
+              "name": "Studio"
+            },
+            "allowed": true
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 3,
+              "name": "Spokenword"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 2,
+              "name": "Soundtrack"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 7,
+              "name": "Remix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 9,
+              "name": "Mixtape/Street"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 6,
+              "name": "Live"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 4,
+              "name": "Interview"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 8,
+              "name": "DJ-mix"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 10,
+              "name": "Demo"
+            },
+            "allowed": false
+          },
+          {
+            "secondaryAlbumType": {
+              "id": 1,
+              "name": "Compilation"
+            },
+            "allowed": false
+          }
+        ],
+        "releaseStatuses": [
+          {
+            "releaseStatus": {
+              "id": 3,
+              "name": "Pseudo"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 1,
+              "name": "Promotion"
+            },
+            "allowed": false
+          },
+          {
+            "releaseStatus": {
+              "id": 0,
+              "name": "Official"
+            },
+            "allowed": true
+          },
+          {
+            "releaseStatus": {
+              "id": 2,
+              "name": "Bootleg"
+            },
+            "allowed": false
+          }
+        ],
+        "id": 1
+      }
+    }
+  ],
+  "newDownload": false,
+  "singleRelease": false,
+  "tracks": [
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 01 - 21 - Rolling in the Deep.flac",
+      "fileTrackInfo": {
+        "title": "Rolling in the Deep",
+        "cleanTitle": "Rolling in the Deep",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "1a13c710-4b7e-4701-8968-cd61f2e58110",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:03:49.2930000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 943,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 02 - 21 - Rumour Has It.flac",
+      "fileTrackInfo": {
+        "title": "Rumour Has It",
+        "cleanTitle": "Rumour Has It",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "797ae656-81d4-4d89-bddb-eca56f77ba72",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:03:43.2670000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 924,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 03 - 21 - Turning Tables.flac",
+      "fileTrackInfo": {
+        "title": "Turning Tables",
+        "cleanTitle": "Turning Tables",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "5ac6c47f-bce8-4718-8bc6-f1de40693d14",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:10.1330000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 786,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 04 - 21 - Don’t You Remember.flac",
+      "fileTrackInfo": {
+        "title": "Don’t You Remember",
+        "cleanTitle": "Don’t You Remember",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "f5057d26-1aac-47fe-b766-18c5a28927b1",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:03.2000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 854,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 05 - 21 - Set Fire to the Rain.flac",
+      "fileTrackInfo": {
+        "title": "Set Fire to the Rain",
+        "cleanTitle": "Set Fire to the Rain",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "d1e0a99e-1894-457b-ba6a-985eeef4d0c4",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:01.6930000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 970,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 06 - 21 - He Won’t Go.flac",
+      "fileTrackInfo": {
+        "title": "He Won’t Go",
+        "cleanTitle": "He Won’t Go",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "4dd209b9-80fd-4e11-8093-3bab2db810fc",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:37.9470000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 892,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 07 - 21 - Take It All.flac",
+      "fileTrackInfo": {
+        "title": "Take It All",
+        "cleanTitle": "Take It All",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "4f515654-052b-4631-8a78-57ea362cd18a",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:03:48.2130000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 701,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 08 - 21 - I’ll Be Waiting.flac",
+      "fileTrackInfo": {
+        "title": "I’ll Be Waiting",
+        "cleanTitle": "I’ll Be Waiting",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "dd2d2073-50c4-438a-91cc-a1fea1c81b12",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:01.6530000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 1002,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 09 - 21 - One and Only.flac",
+      "fileTrackInfo": {
+        "title": "One and Only",
+        "cleanTitle": "One and Only",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "04f96056-91ac-4b64-af89-24c596013f05",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:05:48.1600000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 873,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 10 - 21 - Lovesong.flac",
+      "fileTrackInfo": {
+        "title": "Lovesong",
+        "cleanTitle": "Lovesong",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "7932ba40-a0d3-4a7e-8d85-b351fd33317e",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:05:16.2800000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 788,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 11 - 21 - Someone Like You.flac",
+      "fileTrackInfo": {
+        "title": "Someone Like You",
+        "cleanTitle": "Someone Like You",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "028efe7f-cdfb-4135-846f-848f2fff15b1",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:55.3870000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 722,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 12 - 21 - I Found a Boy.flac",
+      "fileTrackInfo": {
+        "title": "I Found a Boy",
+        "cleanTitle": "I Found a Boy",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "a027bfd5-c002-4a85-906e-f2c613c45022",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:03:36.6000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 636,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 13 - 21 - Turning Tables (live acoustic).flac",
+      "fileTrackInfo": {
+        "title": "Turning Tables (live acoustic)",
+        "cleanTitle": "Turning Tables (live acoustic)",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "b2e47e6d-b69a-420a-aa52-31d3f38978ed",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:22.0800000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 664,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 14 - 21 - Don’t You Remember (live acoustic).flac",
+      "fileTrackInfo": {
+        "title": "Don’t You Remember (live acoustic)",
+        "cleanTitle": "Don’t You Remember (live acoustic)",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "b19a4995-7fbf-406a-8ff1-db5b8896bd28",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:04:19.6670000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 689,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/21 (2011)/Adele - 15 - 21 - Someone Like You (live acoustic).flac",
+      "fileTrackInfo": {
+        "title": "Someone Like You (live acoustic)",
+        "cleanTitle": "Someone Like You (live acoustic)",
+        "artistTitle": "Adele",
+        "albumTitle": "21",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2011
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
+        "recordingMBId": "c365d988-0f2d-4313-9c5f-a557c30f027b",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "JP",
+          "name": "Japan"
+        },
+        "year": 2011,
+        "label": "XL",
+        "catalogNumber": "BGJ-10107",
+        "duration": "00:05:16.4270000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 681,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          15
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 01 - 25 - Hello.flac",
+      "fileTrackInfo": {
+        "title": "Hello",
+        "cleanTitle": "Hello",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "0a8e8d55-4b83-4f8a-9732-fbb5ded9f344",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:55.4930000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 789,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 02 - 25 - Send My Love (to Your New Lover).flac",
+      "fileTrackInfo": {
+        "title": "Send My Love (to Your New Lover)",
+        "cleanTitle": "Send My Love (to Your New Lover)",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "1e74cd4c-cfa7-4bdb-99da-41869f5f1171",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:03:43.0800000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 879,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 03 - 25 - I Miss You.flac",
+      "fileTrackInfo": {
+        "title": "I Miss You",
+        "cleanTitle": "I Miss You",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "20594682-fa10-43e8-80fa-b116c68f1b7f",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:05:48.6270000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 900,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 04 - 25 - When We Were Young.flac",
+      "fileTrackInfo": {
+        "title": "When We Were Young",
+        "cleanTitle": "When We Were Young",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "c5ad2611-071b-4003-bb22-eee8b4f48fe9",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:50.9070000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 776,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 05 - 25 - Remedy.flac",
+      "fileTrackInfo": {
+        "title": "Remedy",
+        "cleanTitle": "Remedy",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "cdc9f701-60b4-4e37-a94f-87d0e396f2bc",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:05.4270000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 748,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 06 - 25 - Water Under the Bridge.flac",
+      "fileTrackInfo": {
+        "title": "Water Under the Bridge",
+        "cleanTitle": "Water Under the Bridge",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "ade2f0f3-39bf-46ad-a44d-7fc4a8069db7",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:00.4270000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 938,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 07 - 25 - River Lea.flac",
+      "fileTrackInfo": {
+        "title": "River Lea",
+        "cleanTitle": "River Lea",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "b7c37d3d-feea-4a73-8346-9e2392a292e6",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:03:45.4270000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 884,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 08 - 25 - Love in the Dark.flac",
+      "fileTrackInfo": {
+        "title": "Love in the Dark",
+        "cleanTitle": "Love in the Dark",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "dedf519d-8eca-4756-9f93-c390308e0c1b",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:45.9470000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 825,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 09 - 25 - Million Years Ago.flac",
+      "fileTrackInfo": {
+        "title": "Million Years Ago",
+        "cleanTitle": "Million Years Ago",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "870c62b6-ba2c-4873-b962-6289128e4a90",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:03:47.0670000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 736,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 10 - 25 - All I Ask.flac",
+      "fileTrackInfo": {
+        "title": "All I Ask",
+        "cleanTitle": "All I Ask",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "bfe7a94e-4161-4802-8916-efe57e611842",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:31.8000000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 752,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/25 (2015)/Adele - 11 - 25 - Sweetest Devotion.flac",
+      "fileTrackInfo": {
+        "title": "Sweetest Devotion",
+        "cleanTitle": "Sweetest Devotion",
+        "artistTitle": "Adele",
+        "albumTitle": "25",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2015
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
+        "recordingMBId": "b2c8aed1-777d-409b-941e-7d4c594697a2",
+        "discNumber": 1,
+        "discCount": 1,
+        "country": {
+          "twoLetterCode": "HK",
+          "name": "Hong Kong"
+        },
+        "year": 2015,
+        "label": "Columbia",
+        "catalogNumber": "88875189832",
+        "duration": "00:04:11.6930000",
+        "quality": {
+          "quality": {
+            "id": 6,
+            "name": "FLAC"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "Flac Audio",
+          "audioBitrate": 887,
+          "audioChannels": 2,
+          "audioBits": 16,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/mnt/data1/LidarrTest/Adele/Incomplete/Adele - 19 - 108 - Right as Rain.mp3",
+      "fileTrackInfo": {
+        "title": "Right as Rain",
+        "cleanTitle": "Right as Rain",
+        "artistTitle": "Adele",
+        "albumTitle": "19",
+        "artistTitleInfo": {
+          "title": "Adele",
+          "year": 2008
+        },
+        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "albumMBId": "9796da06-2d59-3176-8598-2105f31ee54a",
+        "releaseMBId": "9105a5b3-eb68-3a03-9aa8-f3495e602a4f",
+        "recordingMBId": "e5aa0386-15cc-43a8-a059-b14fc39b8301",
+        "trackMBId": "d98b4797-f47e-3acf-b334-54c71c9cb608",
+        "discNumber": 1,
+        "discCount": 2,
+        "country": {
+          "twoLetterCode": "FR",
+          "name": "France"
+        },
+        "year": 2008,
+        "label": "XL Recordings",
+        "catalogNumber": "XLCD313X",
+        "disambiguation": "expanded edition",
+        "duration": "00:03:17.3810000",
+        "quality": {
+          "quality": {
+            "id": 2,
+            "name": "MP3-VBR-V0"
+          },
+          "revision": {
+            "version": 1,
+            "real": 0
+          }
+        },
+        "mediaInfo": {
+          "audioFormat": "MPEG Version 1 Audio, Layer 3 VBR",
+          "audioBitrate": 189,
+          "audioChannels": 2,
+          "audioBits": 0,
+          "audioSampleRate": 44100
+        },
+        "trackNumbers": [
+          8
+        ]
+      }
+    }
+  ]
+}

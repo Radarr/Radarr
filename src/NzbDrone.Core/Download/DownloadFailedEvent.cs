@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Qualities;
@@ -12,8 +12,8 @@ namespace NzbDrone.Core.Download
             Data = new Dictionary<string, string>();
         }
 
-        public int SeriesId { get; set; }
-        public List<int> EpisodeIds { get; set; }
+        public int ArtistId { get; set; }
+        public List<int> AlbumIds { get; set; }
         public QualityModel Quality { get; set; }
         public string SourceTitle { get; set; }
         public string DownloadClient { get; set; }
@@ -21,5 +21,6 @@ namespace NzbDrone.Core.Download
         public string Message { get; set; }
         public Dictionary<string, string> Data { get; set; }
         public TrackedDownload TrackedDownload { get; set; }
+        public bool SkipReDownload { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using FluentAssertions;
 using Marr.Data;
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Instrumentation
         {
             _logger.Info(_uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().Be(_uniqueMessage);
             VerifyLog(StoredModel, LogLevel.Info);
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.Instrumentation
 
             _logger.Info(message);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().HaveLength(message.Length);
             StoredModel.Message.Should().Be(message);
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.Instrumentation
                 _logger.Info(Guid.NewGuid());
             }
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             MapRepository.Instance.EnableTraceLogging = true;
         }
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.Instrumentation
 
             _logger.Error(ex, _uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             VerifyLog(StoredModel, LogLevel.Error);
             StoredModel.Message.Should().Be(_uniqueMessage + ": " + ex.Message);
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.Instrumentation
 
             _logger.Error(ex, _uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().Be(ex.Message);
 
@@ -118,12 +118,12 @@ namespace NzbDrone.Core.Test.Instrumentation
         [Test]
         public void null_string_as_arg_should_not_fail()
         {
-            var epFile = new EpisodeFile();
-            _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.RelativePath);
+            var epFile = new TrackFile();
+            _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.Path);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
-            epFile.RelativePath.Should().BeNull();
+            epFile.Path.Should().BeNull();
         }
 
 

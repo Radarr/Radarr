@@ -2,16 +2,17 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Profiles
 {
     [TestFixture]
 
-    public class ProfileServiceFixture : CoreTest<ProfileService>
+    public class ProfileServiceFixture : CoreTest<QualityProfileService>
     {
         [Test]
         public void init_should_add_default_profiles()
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.Test.Profiles
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Exactly(6));
+                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Exactly(3));
         }
 
         [Test]
@@ -29,43 +30,84 @@ namespace NzbDrone.Core.Test.Profiles
         {
             Mocker.GetMock<IProfileRepository>()
                   .Setup(s => s.All())
-                  .Returns(Builder<Profile>.CreateListOfSize(2).Build().ToList());
+                  .Returns(Builder<QualityProfile>.CreateListOfSize(2).Build().ToList());
 
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Never());
+                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Never());
         }
 
 
         [Test]
-        public void should_not_be_able_to_delete_profile_if_assigned_to_series()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var profile = Builder<QualityProfile>.CreateNew()
+                                          .With(p => p.Id = 2)
+                                          .Build();
+
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .Random(1)
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileId = profile.Id)
                                             .Build().ToList();
 
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .All()
+                .With(c => c.ProfileId = 1)
+                .Build().ToList();
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
-            Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<QualityProfileInUseException>(() => Subject.Delete(profile.Id));
 
             Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
 
         }
 
+        [Test]
+        public void should_not_be_able_to_delete_profile_if_assigned_to_import_list()
+        {
+            var profile = Builder<QualityProfile>.CreateNew()
+                .With(p => p.Id = 2)
+                .Build();
+
+            var artistList = Builder<Artist>.CreateListOfSize(3)
+                .All()
+                .With(c => c.QualityProfileId = 1)
+                .Build().ToList();
+
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .Random(1)
+                .With(c => c.ProfileId = profile.Id)
+                .Build().ToList();
+
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
+
+            Assert.Throws<QualityProfileInUseException>(() => Subject.Delete(profile.Id));
+
+            Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+
+        }
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_series()
+        public void should_delete_profile_if_not_assigned_to_artist_or_import_list()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .All()
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileId = 2)
                                             .Build().ToList();
 
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .All()
+                .With(c => c.ProfileId = 2)
+                .Build().ToList();
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
 
             Subject.Delete(1);
 

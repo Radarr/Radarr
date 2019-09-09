@@ -1,0 +1,15 @@
+.title {
+  padding: 10px 20px;
+  border-bottom: 1px solid $popoverTitleBorderColor;
+  background-color: $popoverTitleBackgroundColor;
+  font-size: 16px;
+}
+
+.body {
+  overflow: auto;
+  padding: 10px;
+}
+
+.tooltipBody {
+  padding: 0;
+}

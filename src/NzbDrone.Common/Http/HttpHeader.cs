@@ -37,7 +37,7 @@ namespace NzbDrone.Common.Http
             }
             if (values.Length > 1)
             {
-                throw new ApplicationException(string.Format("Expected {0} to occur only once.", key));
+                throw new ApplicationException($"Expected {key} to occur only once, but was {values.Join("|")}.");
             }
 
             return values[0];
@@ -117,6 +117,18 @@ namespace NzbDrone.Common.Http
             }
         }
 
+        public DateTime? LastModified
+        {
+            get
+            {
+                return GetSingleValue("Last-Modified", Convert.ToDateTime);
+            }
+            set
+            {
+                SetSingleValue("Last-Modified", value);
+            }
+        }
+
         public new IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             return AllKeys.SelectMany(GetValues, (k, c) => new KeyValuePair<string, string>(k, c)).ToList().GetEnumerator();
@@ -169,7 +181,7 @@ namespace NzbDrone.Common.Http
 
         public static List<KeyValuePair<string, string>> ParseCookies(string cookies)
         {
-            return cookies.Split(';')
+            return cookies.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
                           .Select(v => v.Trim().Split('='))
                           .Select(v => new KeyValuePair<string, string>(v[0], v[1]))
                           .ToList();

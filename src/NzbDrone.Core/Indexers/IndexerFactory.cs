@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Core.Messaging.Events;
@@ -9,26 +10,25 @@ namespace NzbDrone.Core.Indexers
 {
     public interface IIndexerFactory : IProviderFactory<IIndexer, IndexerDefinition>
     {
-        List<IIndexer> RssEnabled();
-        List<IIndexer> SearchEnabled();
+        List<IIndexer> RssEnabled(bool filterBlockedIndexers = true);
+        List<IIndexer> AutomaticSearchEnabled(bool filterBlockedIndexers = true);
+        List<IIndexer> InteractiveSearchEnabled(bool filterBlockedIndexers = true);
     }
 
     public class IndexerFactory : ProviderFactory<IIndexer, IndexerDefinition>, IIndexerFactory
     {
         private readonly IIndexerStatusService _indexerStatusService;
-        private readonly IIndexerRepository _providerRepository;
         private readonly Logger _logger;
 
         public IndexerFactory(IIndexerStatusService indexerStatusService,
                               IIndexerRepository providerRepository,
                               IEnumerable<IIndexer> providers,
-                              IContainer container, 
+                              IContainer container,
                               IEventAggregator eventAggregator,
                               Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)
         {
             _indexerStatusService = indexerStatusService;
-            _providerRepository = providerRepository;
             _logger = logger;
         }
 
@@ -46,27 +46,45 @@ namespace NzbDrone.Core.Indexers
             definition.SupportsSearch = provider.SupportsSearch;
         }
 
-        public List<IIndexer> RssEnabled()
+        public List<IIndexer> RssEnabled(bool filterBlockedIndexers = true)
         {
             var enabledIndexers = GetAvailableProviders().Where(n => ((IndexerDefinition)n.Definition).EnableRss);
 
-            var indexers = FilterBlockedIndexers(enabledIndexers);
+            if (filterBlockedIndexers)
+            {
+                return FilterBlockedIndexers(enabledIndexers).ToList();
+            }
 
-            return indexers.ToList();
+            return enabledIndexers.ToList();
         }
 
-        public List<IIndexer> SearchEnabled()
+        public List<IIndexer> AutomaticSearchEnabled(bool filterBlockedIndexers = true)
         {
-            var enabledIndexers = GetAvailableProviders().Where(n => ((IndexerDefinition)n.Definition).EnableSearch);
+            var enabledIndexers = GetAvailableProviders().Where(n => ((IndexerDefinition)n.Definition).EnableAutomaticSearch);
 
-            var indexers = FilterBlockedIndexers(enabledIndexers);
+            if (filterBlockedIndexers)
+            {
+                return FilterBlockedIndexers(enabledIndexers).ToList();
+            }
 
-            return indexers.ToList();
+            return enabledIndexers.ToList();
+        }
+
+        public List<IIndexer> InteractiveSearchEnabled(bool filterBlockedIndexers = true)
+        {
+            var enabledIndexers = GetAvailableProviders().Where(n => ((IndexerDefinition)n.Definition).EnableInteractiveSearch);
+
+            if (filterBlockedIndexers)
+            {
+                return FilterBlockedIndexers(enabledIndexers).ToList();
+            }
+
+            return enabledIndexers.ToList();
         }
 
         private IEnumerable<IIndexer> FilterBlockedIndexers(IEnumerable<IIndexer> indexers)
         {
-            var blockedIndexers = _indexerStatusService.GetBlockedIndexers().ToDictionary(v => v.IndexerId, v => v);
+            var blockedIndexers = _indexerStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
             foreach (var indexer in indexers)
             {
@@ -79,6 +97,18 @@ namespace NzbDrone.Core.Indexers
 
                 yield return indexer;
             }
+        }
+
+        public override ValidationResult Test(IndexerDefinition definition)
+        {
+            var result = base.Test(definition);
+
+            if ((result == null || result.IsValid) && definition.Id != 0)
+            {
+                _indexerStatusService.RecordSuccess(definition.Id);
+            }
+
+            return result;
         }
     }
 }

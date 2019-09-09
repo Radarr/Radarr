@@ -42,5 +42,21 @@ namespace NzbDrone.Common.Test
         {
             text.ToLower().LevenshteinDistanceClean(other.ToLower()).Should().Be(expected);
         }
+
+        [TestCase("hello", "hello")]
+        [TestCase("hello", "bye")]
+        [TestCase("a longer string", "a different long string")]
+        public void FuzzyMatchSymmetric(string a, string b)
+        {
+            a.FuzzyMatch(b).Should().Be(b.FuzzyMatch(a));
+        }
+
+        [TestCase("", "", 0)]
+        [TestCase("a", "", 0)]
+        [TestCase("", "a", 0)]
+        public void FuzzyMatchEmptyValuesReturnZero(string a, string b, double expected)
+        {
+            a.FuzzyMatch(b).Should().Be(expected);
+        }
     }
 }

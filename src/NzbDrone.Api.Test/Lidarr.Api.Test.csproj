@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NBuilder" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Core\Lidarr.Core.csproj" />
+    <ProjectReference Include="..\NzbDrone.Test.Common\Lidarr.Test.Common.csproj" />
+    <ProjectReference Include="..\Lidarr.Http\Lidarr.Http.csproj" />
+  </ItemGroup>
+</Project>

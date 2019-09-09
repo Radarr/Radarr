@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Core.Test.Framework;
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings()
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 
@@ -32,13 +32,13 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 
             setting.Validate().IsValid.Should().BeFalse();
             setting.Validate().Errors.Should().NotContain(c => c.PropertyName == "ApiKey");
-            setting.Validate().Errors.Should().Contain(c => c.PropertyName == "Url");
+            setting.Validate().Errors.Should().Contain(c => c.PropertyName == "BaseUrl");
 
         }
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings()
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 

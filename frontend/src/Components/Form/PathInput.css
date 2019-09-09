@@ -1,0 +1,18 @@
+.hasFileBrowser {
+  composes: input from '~./AutoSuggestInput.css';
+  composes: hasButton from '~Components/Form/Input.css';
+}
+
+.inputWrapper {
+  display: flex;
+}
+
+.pathMatch {
+  font-weight: bold;
+}
+
+.fileBrowserButton {
+  composes: button from '~./FormInputButton.css';
+
+  height: 35px;
+}

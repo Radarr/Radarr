@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -9,37 +9,40 @@ namespace NzbDrone.Common.Serializer
     public static class Json
     {
         private static readonly JsonSerializer Serializer;
-        private static readonly JsonSerializerSettings SerializerSetting;
+        private static readonly JsonSerializerSettings SerializerSettings;
 
         static Json()
         {
-            SerializerSetting = new JsonSerializerSettings
-                        {
-                            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                            NullValueHandling = NullValueHandling.Ignore,
-                            Formatting = Formatting.Indented,
-                            DefaultValueHandling = DefaultValueHandling.Include,
-                            ContractResolver = new CamelCasePropertyNamesContractResolver()
-                        };
+            SerializerSettings = GetSerializerSettings();
+            Serializer = JsonSerializer.Create(SerializerSettings);
+        }
 
+        public static JsonSerializerSettings GetSerializerSettings()
+        {
+            var serializerSettings = new JsonSerializerSettings
+            {
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+                DefaultValueHandling = DefaultValueHandling.Include,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
 
-            SerializerSetting.Converters.Add(new StringEnumConverter { CamelCaseText = true });
-            //SerializerSetting.Converters.Add(new IntConverter());
-            SerializerSetting.Converters.Add(new VersionConverter());
-            SerializerSetting.Converters.Add(new HttpUriConverter());
+            serializerSettings.Converters.Add(new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() });
+            serializerSettings.Converters.Add(new VersionConverter());
+            serializerSettings.Converters.Add(new HttpUriConverter());
 
-            Serializer = JsonSerializer.Create(SerializerSetting);
-
+            return serializerSettings;
         }
 
         public static T Deserialize<T>(string json) where T : new()
         {
-            return JsonConvert.DeserializeObject<T>(json, SerializerSetting);
+            return JsonConvert.DeserializeObject<T>(json, SerializerSettings);
         }
 
         public static object Deserialize(string json, Type type)
         {
-            return JsonConvert.DeserializeObject(json, type, SerializerSetting);
+            return JsonConvert.DeserializeObject(json, type, SerializerSettings);
         }
 
         public static bool TryDeserialize<T>(string json, out T result) where T : new()
@@ -63,7 +66,7 @@ namespace NzbDrone.Common.Serializer
 
         public static string ToJson(this object obj)
         {
-            return JsonConvert.SerializeObject(obj, SerializerSetting);
+            return JsonConvert.SerializeObject(obj, SerializerSettings);
         }
 
         public static void Serialize<TModel>(TModel model, TextWriter outputStream)

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Synology
 {
@@ -19,34 +20,41 @@ namespace NzbDrone.Core.Notifications.Synology
         public override string Link => "https://www.synology.com";
         public override string Name => "Synology Indexer";
 
-
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             if (Settings.UpdateLibrary)
             {
                 foreach (var oldFile in message.OldFiles)
                 {
-                    var fullPath = Path.Combine(message.Series.Path, oldFile.RelativePath);
+                    var fullPath = oldFile.Path;
 
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
+                foreach (var newFile in message.TrackFiles)
                 {
-                    var fullPath = Path.Combine(message.Series.Path, message.EpisodeFile.RelativePath);
+                    var fullPath = newFile.Path;
 
                     _indexerProxy.AddFile(fullPath);
                 }
             }
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
             if (Settings.UpdateLibrary)
             {
-                _indexerProxy.UpdateFolder(series.Path);
+                _indexerProxy.UpdateFolder(artist.Path);
             }
         }
 
+        public override void OnTrackRetag(TrackRetagMessage message)
+        {
+            if (Settings.UpdateLibrary)
+            {
+                _indexerProxy.UpdateFolder(message.Artist.Path);
+            }
+        }
 
         public override ValidationResult Test()
         {

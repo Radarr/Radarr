@@ -1,16 +1,17 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Rest;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
     public interface IMediaBrowserService
     {
         void Notify(MediaBrowserSettings settings, string title, string message);
-        void Update(MediaBrowserSettings settings, Series series);
+        void Update(MediaBrowserSettings settings, Artist artist);
         ValidationFailure Test(MediaBrowserSettings settings);
     }
 
@@ -30,9 +31,13 @@ namespace NzbDrone.Core.Notifications.Emby
             _proxy.Notify(settings, title, message);
         }
 
-        public void Update(MediaBrowserSettings settings, Series series)
+        public void Update(MediaBrowserSettings settings, Artist artist)
         {
-            _proxy.Update(settings, series.TvdbId);
+            var folders = _proxy.GetArtist(settings);
+
+            var musicPaths = folders.Select(e => e.CollectionType = "music").ToList();
+
+            _proxy.Update(settings, musicPaths);
         }
 
         public ValidationFailure Test(MediaBrowserSettings settings)
@@ -41,7 +46,7 @@ namespace NzbDrone.Core.Notifications.Emby
             {
                 _logger.Debug("Testing connection to MediaBrowser: {0}", settings.Address);
 
-                Notify(settings, "Test from Sonarr", "Success! MediaBrowser has been successfully configured!");
+                Notify(settings, "Test from Lidarr", "Success! MediaBrowser has been successfully configured!");
             }
             catch (RestException ex)
             {

@@ -45,6 +45,10 @@ _dotCover*
 # DevExpress CodeRush
 src/.cr/
 
+# Emacs
+*~
+\#*\#
+
 # NCrunch
 *.ncrunch*
 .*crunch*.local.xml
@@ -101,7 +105,7 @@ App_Data/*.ldf
 _NCrunch_*
 _TeamCity*
 
-# Sonarr
+# Lidarr
 config.xml
 nzbdrone.log*txt
 UpdateLogs/
@@ -113,14 +117,15 @@ src/UI/.idea/*
 *log.txt
 node_modules/
 _output*
+_artifacts
 _rawPackage/
 _dotTrace*
 _tests/
 *.Result.xml
+coverage*.xml
+coverage*.json
 setup/Output/
 *.~is
-
-UI.Phantom/
 
 #VS outout folders
 bin
@@ -130,8 +135,11 @@ output/*
 
 #OS X metadata files
 ._*
+.DS_Store
 
 _start
 _temp_*/**/*
 
-src/.idea/
+## Merge any idea folder
+*/**/.idea
+*.iml

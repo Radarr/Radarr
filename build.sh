@@ -1,17 +1,25 @@
 #! /bin/bash
-msBuild='/c/Program Files (x86)/MSBuild/14.0/Bin'
+msBuildVersion='15.0'
 outputFolder='./_output'
-outputFolderMono='./_output_mono'
-outputFolderOsx='./_output_osx'
-outputFolderOsxApp='./_output_osx_app'
+outputFolderLinux='./_output_linux'
+outputFolderMacOS='./_output_macos'
+outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
-testSearchPattern='*.Test/bin/x86/Release'
 sourceFolder='./src'
-slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/NzbDrone.Update
-updateFolderMono=$outputFolderMono/NzbDrone.Update
+slnFile=$sourceFolder/Lidarr.sln
+updateFolder=$outputFolder/Lidarr.Update
+updateFolderMono=$outputFolderLinux/Lidarr.Update
+
+#Artifact variables
+artifactsFolder="./_artifacts";
+artifactsFolderWindows=$artifactsFolder/windows
+artifactsFolderLinux=$artifactsFolder/linux
+artifactsFolderMacOS=$artifactsFolder/macos
+artifactsFolderMacOSApp=$artifactsFolder/macos-app
 
 nuget='tools/nuget/nuget.exe';
+vswhere='tools/vswhere/vswhere.exe';
+
 CheckExitCode()
 {
     "$@"
@@ -23,11 +31,30 @@ CheckExitCode()
     return $status
 }
 
+ProgressStart()
+{
+    echo "Start '$1'"
+}
+
+ProgressEnd()
+{
+    echo "Finish '$1'"
+}
+
+UpdateVersionNumber()
+{
+    if [ "$LIDARRVERSION" != "" ]; then
+        echo "Updating Version Info"
+        sed -i "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" ./src/Directory.Build.props
+        sed -i "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" ./src/Directory.Build.props
+        sed -i "s/<string>10.0.0.0<\/string>/<string>$LIDARRVERSION<\/string>/g" ./macOS/Lidarr.app/Contents/Info.plist
+    fi
+}
+
 CleanFolder()
 {
     local path=$1
     local keepConfigFiles=$2
-
 
     find $path -name "*.transform" -exec rm "{}" \;
 
@@ -39,9 +66,6 @@ CleanFolder()
     find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
     find $path -name "App.config" -exec rm "{}" \;
 
-    echo "Removing .less files"
-    find $path -name "*.less" -exec rm "{}" \;
-
     echo "Removing vshost files"
     find $path -name "*.vshost.exe" -exec rm "{}" \;
 
@@ -52,19 +76,18 @@ CleanFolder()
     find $path -depth -empty -type d -exec rm -r "{}" \;
 }
 
-
-
-AddJsonNet()
-{
-    rm $outputFolder/Newtonsoft.Json.*
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $outputFolder
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $outputFolder/NzbDrone.Update
-}
-
 BuildWithMSBuild()
 {
+    installationPath=`$vswhere -latest -products \* -requires Microsoft.Component.MSBuild -property installationPath`
+    installationPath=${installationPath/C:\\/\/c\/}
+    installationPath=${installationPath//\\/\/}
+    msBuild="$installationPath/MSBuild/$msBuildVersion/Bin"
+    echo $msBuild
+
     export PATH=$msBuild:$PATH
-    CheckExitCode MSBuild.exe $slnFile //t:Clean //m
+    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Debug //p:Platform=x86 //t:Clean //m
+    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Clean //m
+    $nuget locals all -clear
     $nuget restore $slnFile
     CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Build //m //p:AllowedReferenceRelatedFileExtensions=.pdb
 }
@@ -72,16 +95,34 @@ BuildWithMSBuild()
 BuildWithXbuild()
 {
     export MONO_IOMAP=case
-    CheckExitCode xbuild /t:Clean $slnFile
+    CheckExitCode msbuild /p:Configuration=Debug /t:Clean $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /t:Clean $slnFile
+    mono $nuget locals all -clear
     mono $nuget restore $slnFile
-    CheckExitCode xbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
+}
+
+LintUI()
+{
+    ProgressStart 'ESLint'
+    CheckExitCode yarn lint
+    ProgressEnd 'ESLint'
+
+    ProgressStart 'Stylelint'
+    if [ $runtime = "dotnet" ] ; then
+        CheckExitCode yarn stylelint-windows
+    else
+        CheckExitCode yarn stylelint-linux
+    fi
+    ProgressEnd 'Stylelint'
 }
 
 Build()
 {
-    echo "##teamcity[progressStart 'Build']"
+    ProgressStart 'Build'
 
     rm -rf $outputFolder
+    rm -rf $testPackageFolder
 
     if [ $runtime = "dotnet" ] ; then
         BuildWithMSBuild
@@ -91,157 +132,165 @@ Build()
 
     CleanFolder $outputFolder false
 
-    AddJsonNet
-
     echo "Removing Mono.Posix.dll"
     rm $outputFolder/Mono.Posix.dll
 
-    echo "##teamcity[progressFinish 'Build']"
+    echo "Adding LICENSE.md"
+    cp LICENSE.md $outputFolder
+
+    ProgressEnd 'Build'
 }
 
 RunGulp()
 {
-    echo "##teamcity[progressStart 'npm install']"
-    npm-cache install npm || CheckExitCode npm install
-    echo "##teamcity[progressFinish 'npm install']"
+    ProgressStart 'yarn install'
+    yarn install
+    #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
+    ProgressEnd 'yarn install'
 
-    echo "##teamcity[progressStart 'Running gulp']"
-    CheckExitCode npm run build
-    echo "##teamcity[progressFinish 'Running gulp']"
-}
+    LintUI
 
-CreateMdbs()
-{
-    local path=$1
-    if [ $runtime = "dotnet" ] ; then
-        local pdbFiles=( $(find $path -name "*.pdb") )
-        for filename in "${pdbFiles[@]}"
-        do
-          if [ -e ${filename%.pdb}.dll ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.dll
-          fi
-          if [ -e ${filename%.pdb}.exe ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.exe
-          fi
-        done
-    fi
+    ProgressStart 'Running gulp'
+    CheckExitCode yarn run build --production
+    ProgressEnd 'Running gulp'
 }
 
 PackageMono()
 {
-    echo "##teamcity[progressStart 'Creating Mono Package']"
-    rm -rf $outputFolderMono
-    cp -r $outputFolder $outputFolderMono
+    ProgressStart 'Creating Mono Package'
 
-    echo "Creating MDBs"
-    CreateMdbs $outputFolderMono
+    rm -rf $outputFolderLinux
 
-    echo "Removing PDBs"
-    find $outputFolderMono -name "*.pdb" -exec rm "{}" \;
+    echo "Copying Binaries"
+    cp -r $outputFolder $outputFolderLinux
 
     echo "Removing Service helpers"
-    rm -f $outputFolderMono/ServiceUninstall.*
-    rm -f $outputFolderMono/ServiceInstall.*
+    rm -f $outputFolderLinux/ServiceUninstall.*
+    rm -f $outputFolderLinux/ServiceInstall.*
 
-    echo "Removing native windows binaries Sqlite, MediaInfo"
-    rm -f $outputFolderMono/sqlite3.*
-    rm -f $outputFolderMono/MediaInfo.*
+    echo "Removing native windows binaries Sqlite, fpcalc"
+    rm -f $outputFolderLinux/sqlite3.*
+    rm -f $outputFolderLinux/fpcalc*
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderMono
-
-    echo "Adding CurlSharp.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
-
-    echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
-    rm $outputFolderMono/NzbDrone.exe*
-    for file in $outputFolderMono/NzbDrone.Console.exe*; do
+    echo "Renaming Lidarr.Console.exe to Lidarr.exe"
+    rm $outputFolderLinux/Lidarr.exe*
+    for file in $outputFolderLinux/Lidarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
-    echo "Removing NzbDrone.Windows"
-    rm $outputFolderMono/NzbDrone.Windows.*
+    echo "Removing Lidarr.Windows"
+    rm $outputFolderLinux/Lidarr.Windows.*
 
-    echo "Adding NzbDrone.Mono to UpdatePackage"
-    cp $outputFolderMono/NzbDrone.Mono.* $updateFolderMono
+    echo "Adding Lidarr.Mono to UpdatePackage"
+    cp $outputFolderLinux/Lidarr.Mono.* $updateFolderMono
 
-    echo "##teamcity[progressFinish 'Creating Mono Package']"
+    ProgressEnd 'Creating Mono Package'
 }
 
-PackageOsx()
+PackageMacOS()
 {
-    echo "##teamcity[progressStart 'Creating OS X Package']"
-    rm -rf $outputFolderOsx
-    cp -r $outputFolderMono $outputFolderOsx
+    ProgressStart 'Creating MacOS Package'
 
-    echo "Adding sqlite dylibs"
-    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderOsx
-
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderOsx
+    rm -rf $outputFolderMacOS
+    mkdir $outputFolderMacOS
 
     echo "Adding Startup script"
-    cp  ./osx/Sonarr $outputFolderOsx
+    cp ./macOS/Lidarr $outputFolderMacOS
+    dos2unix $outputFolderMacOS/Lidarr
 
-    echo "##teamcity[progressFinish 'Creating OS X Package']"
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOS
+    cp $outputFolder/fpcalc $outputFolderMacOS
+
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOS
+
+    ProgressEnd 'Creating MacOS Package'
 }
 
-PackageOsxApp()
+PackageMacOSApp()
 {
-    echo "##teamcity[progressStart 'Creating OS X App Package']"
-    rm -rf $outputFolderOsxApp
-    mkdir $outputFolderOsxApp
+    ProgressStart 'Creating macOS App Package'
 
-    cp -r ./osx/Sonarr.app $outputFolderOsxApp
-    cp -r $outputFolderOsx $outputFolderOsxApp/Sonarr.app/Contents/MacOS
+    rm -rf $outputFolderMacOSApp
+    mkdir $outputFolderMacOSApp
+    cp -r ./macOS/Lidarr.app $outputFolderMacOSApp
+    mkdir -p $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
 
-    echo "##teamcity[progressFinish 'Creating OS X App Package']"
+    echo "Adding Startup script"
+    cp ./macOS/Lidarr $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+    dos2unix $outputFolderMacOSApp/Lidarr.app/Contents/MacOS/Lidarr
+
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+    cp $outputFolder/fpcalc $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOSApp/Lidarr.app/Contents/MacOS
+
+    echo "Removing Update Folder"
+    rm -r $outputFolderMacOSApp/Lidarr.app/Contents/MacOS/Lidarr.Update
+
+    ProgressEnd 'Creating macOS App Package'
 }
 
 PackageTests()
 {
-    echo "Packaging Tests"
-    echo "##teamcity[progressStart 'Creating Test Package']"
-    rm -rf $testPackageFolder
-    mkdir $testPackageFolder
-
-    find $sourceFolder -path $testSearchPattern -exec cp -r -u -T "{}" $testPackageFolder \;
+    ProgressStart 'Creating Test Package'
 
     if [ $runtime = "dotnet" ] ; then
-        $nuget install NUnit.ConsoleRunner -Version 3.2.0 -Output $testPackageFolder
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.2.0 -Output $testPackageFolder
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     fi
 
-    cp $outputFolder/*.dll $testPackageFolder
-    cp ./*.sh $testPackageFolder
-
-    echo "Creating MDBs for tests"
-    CreateMdbs $testPackageFolder
+    cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config
 
     CleanFolder $testPackageFolder true
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
 
-    echo "Adding CurlSharp.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
-
-    echo "Copying CurlSharp libraries"
-    cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
-
-    echo "##teamcity[progressFinish 'Creating Test Package']"
+    ProgressEnd 'Creating Test Package'
 }
 
 CleanupWindowsPackage()
 {
-    echo "Removing NzbDrone.Mono"
-    rm -f $outputFolder/NzbDrone.Mono.*
+    ProgressStart 'Cleaning Windows Package'
 
-    echo "Adding NzbDrone.Windows to UpdatePackage"
-    cp $outputFolder/NzbDrone.Windows.* $updateFolder
+    echo "Removing Lidarr.Mono"
+    rm -f $outputFolder/Lidarr.Mono.*
+
+    echo "Adding Lidarr.Windows to UpdatePackage"
+    cp $outputFolder/Lidarr.Windows.* $updateFolder
+
+    echo "Removing MacOS fpcalc"
+    rm $outputFolder/fpcalc
+
+    ProgressEnd 'Cleaning Windows Package'
+}
+
+PackageArtifacts()
+{
+    echo "Creating Artifact Directories"
+    
+    rm -rf $artifactsFolder
+    mkdir $artifactsFolder
+    
+    mkdir $artifactsFolderWindows
+    mkdir $artifactsFolderMacOS
+    mkdir $artifactsFolderLinux
+    mkdir $artifactsFolderWindows/Lidarr
+    mkdir $artifactsFolderMacOS/Lidarr
+    mkdir $artifactsFolderLinux/Lidarr
+    mkdir $artifactsFolderMacOSApp
+    
+    cp -r $outputFolder/* $artifactsFolderWindows/Lidarr
+    cp -r $outputFolderMacOSApp/* $artifactsFolderMacOSApp
+    cp -r $outputFolderMacOS/* $artifactsFolderMacOS/Lidarr
+    cp -r $outputFolderLinux/* $artifactsFolderLinux/Lidarr
 }
 
 # Use mono or .net depending on OS
@@ -256,10 +305,53 @@ case "$(uname -s)" in
         ;;
 esac
 
-Build
-RunGulp
-PackageMono
-PackageOsx
-PackageOsxApp
-PackageTests
-CleanupWindowsPackage
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    --only-backend)
+        ONLY_BACKEND=YES
+        shift # past argument
+        ;;
+    --only-frontend)
+        ONLY_FRONTEND=YES
+        shift # past argument
+        ;;
+    --only-packages)
+        ONLY_PACKAGES=YES
+        shift # past argument
+        ;;
+    *)    # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+# Only build backend if we haven't set only-frontend or only-packages
+if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
+    UpdateVersionNumber
+    Build
+    PackageTests
+fi
+
+# Only build frontend if we haven't set only-backend or only-packages
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
+   RunGulp
+fi
+
+# Only package if we haven't set only-backend or only-frontend
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
+then
+    UpdateVersionNumber
+    PackageMono
+    PackageMacOS
+    PackageMacOSApp
+    CleanupWindowsPackage
+    PackageArtifacts
+fi

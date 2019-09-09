@@ -1,24 +1,25 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Series;
+using Lidarr.Api.V1.Artist;
+using Lidarr.Api.V1.Blacklist;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
     [TestFixture]
     public class BlacklistFixture : IntegrationTest
     {
-        private SeriesResource _series;
+        private ArtistResource _artist;
 
         [Test]
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _series = EnsureSeries(266189, "The Blacklist");
-
-            Blacklist.Post(new Api.Blacklist.BlacklistResource
+            _artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            
+            Blacklist.Post(new BlacklistResource
             {
-                SeriesId = _series.Id,
-                SourceTitle = "Blacklist.S01E01.Brought.To.You.By-BoomBoxHD"
+                ArtistId = _artist.Id,
+                SourceTitle = "Blacklist - Album 1 [2015 FLAC]"
             });
         }
 

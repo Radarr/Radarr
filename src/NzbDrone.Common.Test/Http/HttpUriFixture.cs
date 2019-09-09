@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Test.Common;
@@ -7,6 +7,13 @@ namespace NzbDrone.Common.Test.Http
 {
     public class HttpUriFixture : TestBase
     {
+        [TestCase("abc://my_host.com:8080/root/api/")]
+        public void should_parse(string uri)
+        {
+            var newUri = new HttpUri(uri);
+            newUri.FullUri.Should().Be(uri);
+        }
+
         [TestCase("", "", "")]
         [TestCase("/", "", "/")]
         [TestCase("base", "", "base")]

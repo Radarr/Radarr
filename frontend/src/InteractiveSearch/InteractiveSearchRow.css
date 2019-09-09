@@ -1,0 +1,51 @@
+.protocol {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 80px;
+}
+
+.title {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  word-break: break-all;
+}
+
+.indexer {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 85px;
+}
+
+.quality {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  text-align: center;
+}
+
+.preferredWordScore {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 55px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.rejected,
+.download {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 50px;
+}
+
+.age,
+.size {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  white-space: nowrap;
+}
+
+.peers {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 75px;
+}

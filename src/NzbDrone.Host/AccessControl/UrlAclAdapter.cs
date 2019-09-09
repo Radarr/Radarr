@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 
@@ -32,7 +33,7 @@ namespace NzbDrone.Host.AccessControl
         }
 
         private List<UrlAcl> InternalUrls { get; }
-        private List<UrlAcl> RegisteredUrls { get; } 
+        private List<UrlAcl> RegisteredUrls { get; set; } 
 
         private static readonly Regex UrlAclRegex = new Regex(@"(?<scheme>https?)\:\/\/(?<address>.+?)\:(?<port>\d+)/(?<urlbase>.+)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -49,18 +50,32 @@ namespace NzbDrone.Host.AccessControl
             _logger = logger;
 
             InternalUrls = new List<UrlAcl>();
-            RegisteredUrls = GetRegisteredUrls();
+            RegisteredUrls = new List<UrlAcl>();
         }
 
         public void ConfigureUrls()
         {
-            var localHostHttpUrls = BuildUrlAcls("http", "localhost", _configFileProvider.Port);
-            var interfaceHttpUrls = BuildUrlAcls("http", _configFileProvider.BindAddress, _configFileProvider.Port);
+            var enableSsl = _configFileProvider.EnableSsl;
+            var port = _configFileProvider.Port;
+            var sslPort = _configFileProvider.SslPort;
 
-            var localHostHttpsUrls = BuildUrlAcls("https", "localhost", _configFileProvider.SslPort);
-            var interfaceHttpsUrls = BuildUrlAcls("https", _configFileProvider.BindAddress, _configFileProvider.SslPort);
+            if (enableSsl && sslPort == port)
+            {
+                throw new LidarrStartupException("Cannot use the same port for HTTP and HTTPS. Port {0}", port);
+            }
 
-            if (!_configFileProvider.EnableSsl)
+            if (RegisteredUrls.Empty())
+            {
+                GetRegisteredUrls();
+            }
+
+            var localHostHttpUrls = BuildUrlAcls("http", "localhost", port);
+            var interfaceHttpUrls = BuildUrlAcls("http", _configFileProvider.BindAddress, port);
+
+            var localHostHttpsUrls = BuildUrlAcls("https", "localhost", sslPort);
+            var interfaceHttpsUrls = BuildUrlAcls("https", _configFileProvider.BindAddress, sslPort);
+
+            if (!enableSsl)
             {
                 localHostHttpsUrls.Clear();
                 interfaceHttpsUrls.Clear();
@@ -128,19 +143,24 @@ namespace NzbDrone.Host.AccessControl
                                       c.UrlBase == urlAcl.UrlBase);
         }
 
-        private List<UrlAcl> GetRegisteredUrls()
+        private void GetRegisteredUrls()
         {
             if (OsInfo.IsNotWindows)
             {
-                return new List<UrlAcl>();
+                return;
+            }
+
+            if (RegisteredUrls.Any())
+            {
+                return;
             }
 
             var arguments = string.Format("http show urlacl");
             var output = _netshProvider.Run(arguments);
 
-            if (output == null || !output.Standard.Any()) return new List<UrlAcl>();
+            if (output == null || !output.Standard.Any()) return;
 
-            return output.Standard.Select(line =>
+            RegisteredUrls = output.Standard.Select(line =>
             {
                 var match = UrlAclRegex.Match(line.Content);
 

@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Core.Parser;
@@ -34,9 +34,9 @@ namespace NzbDrone.Core.Validation
             return ruleBuilder.SetValidator(new RegularExpressionValidator("^https?://[-_a-z0-9.]+", RegexOptions.IgnoreCase)).WithMessage("must be valid URL that starts with http(s)://");
         }
 
-        public static IRuleBuilderOptions<T, string> ValidUrlBase<T>(this IRuleBuilder<T, string> ruleBuilder)
+        public static IRuleBuilderOptions<T, string> ValidUrlBase<T>(this IRuleBuilder<T, string> ruleBuilder, string example = "/lidarr")
         {
-            return ruleBuilder.SetValidator(new RegularExpressionValidator(@"^(?!\/?https?://[-_a-z0-9.]+)", RegexOptions.IgnoreCase)).WithMessage("Must be a valid URL path (ie: '/sonarr')");
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(@"^(?!\/?https?://[-_a-z0-9.]+)", RegexOptions.IgnoreCase)).WithMessage($"Must be a valid URL path (ie: '{example}')");
         }
 
         public static IRuleBuilderOptions<T, int> ValidPort<T>(this IRuleBuilder<T, int> ruleBuilder)
@@ -56,11 +56,6 @@ namespace NzbDrone.Core.Validation
 
                                   return true;
                               });
-        }
-
-        public static IRuleBuilderOptions<T, Language> ValidLanguage<T>(this IRuleBuilder<T, Language> ruleBuilder)
-        {
-            return ruleBuilder.SetValidator(new LanguageValidator());
         }
 
         public static IRuleBuilderOptions<T, TProp> AsWarning<T, TProp>(this IRuleBuilderOptions<T, TProp> ruleBuilder)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,56 +12,60 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
-        void ImportExtraFiles(LocalEpisode localEpisode, EpisodeFile episodeFile, bool isReadOnly);
+        void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
-                                IHandle<EpisodeFolderCreatedEvent>,
-                                IHandle<SeriesRenamedEvent>
+                                IHandle<TrackFolderCreatedEvent>,
+                                IHandle<ArtistRenamedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IEpisodeService _episodeService;
+        private readonly IAlbumService _albumService;
+        private readonly ITrackService _trackService;
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly List<IManageExtraFiles> _extraFileManagers;
         private readonly Logger _logger;
 
         public ExtraService(IMediaFileService mediaFileService,
-                            IEpisodeService episodeService,
+                            IAlbumService albumService,
+                            ITrackService trackService,
                             IDiskProvider diskProvider,
                             IConfigService configService,
                             List<IManageExtraFiles> extraFileManagers,
                             Logger logger)
         {
             _mediaFileService = mediaFileService;
-            _episodeService = episodeService;
+            _albumService = albumService;
+            _trackService = trackService;
             _diskProvider = diskProvider;
             _configService = configService;
             _extraFileManagers = extraFileManagers.OrderBy(e => e.Order).ToList();
             _logger = logger;
         }
 
-        public void ImportExtraFiles(LocalEpisode localEpisode, EpisodeFile episodeFile, bool isReadOnly)
+        public void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
         {
-            var series = localEpisode.Series;
+            ImportExtraFiles(localTrack, trackFile, isReadOnly);
 
-            foreach (var extraFileManager in _extraFileManagers)
+            CreateAfterImport(localTrack.Artist, trackFile);
+        }
+
+        public void ImportExtraFiles(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
+        {
+            if (!_configService.ImportExtraFiles)
             {
-                extraFileManager.CreateAfterEpisodeImport(series, episodeFile);
+                return;
             }
 
-            // TODO: Remove
-            // Not importing files yet, testing that parsing is working properly first
-            return;
-
-            var sourcePath = localEpisode.Path;
+            var sourcePath = localTrack.Path;
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
             var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
@@ -70,7 +74,7 @@ namespace NzbDrone.Core.Extras
                                                                      .Select(e => e.Trim(' ', '.'))
                                                                      .ToList();
 
-            var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName));
+            var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName, StringComparison.InvariantCultureIgnoreCase));
 
             foreach (var matchingFilename in matchingFilenames)
             {
@@ -85,7 +89,8 @@ namespace NzbDrone.Core.Extras
                 {
                     foreach (var extraFileManager in _extraFileManagers)
                     {
-                        var extraFile = extraFileManager.Import(series, episodeFile, matchingFilename, matchingExtension, isReadOnly);
+                        var extension = Path.GetExtension(matchingFilename);
+                        var extraFile = extraFileManager.Import(localTrack.Artist, trackFile, matchingFilename, extension, isReadOnly);
 
                         if (extraFile != null)
                         {
@@ -100,50 +105,60 @@ namespace NzbDrone.Core.Extras
             }
         }
 
+        private void CreateAfterImport(Artist artist, TrackFile trackFile)
+        {
+            foreach (var extraFileManager in _extraFileManagers)
+            {
+                extraFileManager.CreateAfterTrackImport(artist, trackFile);
+            }
+        }
+
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            var series = message.Series;
-            var episodeFiles = GetEpisodeFiles(series.Id);
+            var artist = message.Artist;
+
+            var trackFiles = GetTrackFiles(artist.Id);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterSeriesScan(series, episodeFiles);
+                extraFileManager.CreateAfterArtistScan(artist, trackFiles);
             }
         }
 
-        public void Handle(EpisodeFolderCreatedEvent message)
+        public void Handle(TrackFolderCreatedEvent message)
         {
-            var series = message.Series;
+            var artist = message.Artist;
+            var album = _albumService.GetAlbum(message.TrackFile.AlbumId);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterEpisodeImport(series, message.SeriesFolder, message.SeasonFolder);
+                extraFileManager.CreateAfterTrackImport(artist, album, message.ArtistFolder, message.AlbumFolder);
             }
         }
 
-        public void Handle(SeriesRenamedEvent message)
+        public void Handle(ArtistRenamedEvent message)
         {
-            var series = message.Series;
-            var episodeFiles = GetEpisodeFiles(series.Id);
+            var artist = message.Artist;
+            var trackFiles = GetTrackFiles(artist.Id);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.MoveFilesAfterRename(series, episodeFiles);
+                extraFileManager.MoveFilesAfterRename(artist, trackFiles);
             }
         }
 
-        private List<EpisodeFile> GetEpisodeFiles(int seriesId)
+        private List<TrackFile> GetTrackFiles(int artistId)
         {
-            var episodeFiles = _mediaFileService.GetFilesBySeries(seriesId);
-            var episodes = _episodeService.GetEpisodeBySeries(seriesId);
+            var trackFiles = _mediaFileService.GetFilesByArtist(artistId);
+            var tracks = _trackService.GetTracksByArtist(artistId);
 
-            foreach (var episodeFile in episodeFiles)
+            foreach (var trackFile in trackFiles)
             {
-                var localEpisodeFile = episodeFile;
-                episodeFile.Episodes = new LazyList<Episode>(episodes.Where(e => e.EpisodeFileId == localEpisodeFile.Id));
+                var localTrackFile = trackFile;
+                trackFile.Tracks = new LazyList<Track>(tracks.Where(e => e.TrackFileId == localTrackFile.Id));
             }
 
-            return episodeFiles;
+            return trackFiles;
         }
     }
 }

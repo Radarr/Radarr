@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Notifications.Email
 {
@@ -23,16 +22,30 @@ namespace NzbDrone.Core.Notifications.Email
         {
             var body = $"{grabMessage.Message} sent to queue.";
 
-            _emailService.SendEmail(Settings, EPISODE_GRABBED_TITLE_BRANDED, body);
+            _emailService.SendEmail(Settings, ALBUM_GRABBED_TITLE_BRANDED, body);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             var body = $"{message.Message} Downloaded and sorted.";
 
-            _emailService.SendEmail(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, body);
+            _emailService.SendEmail(Settings, ALBUM_DOWNLOADED_TITLE_BRANDED, body);
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _emailService.SendEmail(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);
+        }
+
+        public override void OnDownloadFailure(DownloadFailedMessage message)
+        {
+            _emailService.SendEmail(Settings, DOWNLOAD_FAILURE_TITLE_BRANDED, message.Message);
+        }
+
+        public override void OnImportFailure(AlbumDownloadMessage message)
+        {
+            _emailService.SendEmail(Settings, IMPORT_FAILURE_TITLE_BRANDED, message.Message);
+        }
 
         public override ValidationResult Test()
         {

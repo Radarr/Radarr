@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         string UpdateLibrary(XbmcSettings settings, string path);
         void CleanLibrary(XbmcSettings settings);
         List<ActivePlayer> GetActivePlayers(XbmcSettings settings);
-        List<TvShow> GetSeries(XbmcSettings settings);
+        List<KodiArtist> GetArtist(XbmcSettings settings);
     }
 
     public class XbmcJsonApiProxy : IXbmcJsonApiProxy
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             var parameters = new Dictionary<string, object>();
             parameters.Add("title", title);
             parameters.Add("message", message);
-            parameters.Add("image", "https://raw.github.com/Sonarr/Sonarr/develop/Logo/64.png");
+            parameters.Add("image", "https://raw.github.com/Lidarr/Lidarr/develop/Logo/64.png");
             parameters.Add("displaytime", settings.DisplayTime * 1000);
 
             ProcessRequest(request, settings, "GUI.ShowNotification", parameters);
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 parameters = null;
             }
 
-            var response = ProcessRequest(request, settings, "VideoLibrary.Scan", parameters);
+            var response = ProcessRequest(request, settings, "AudioLibrary.Scan", parameters);
 
             return Json.Deserialize<XbmcJsonResult<string>>(response).Result;
         }
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         {
             var request = new RestRequest();
 
-            ProcessRequest(request, settings, "VideoLibrary.Clean");
+            ProcessRequest(request, settings, "AudioLibrary.Clean");
         }
 
         public List<ActivePlayer> GetActivePlayers(XbmcSettings settings)
@@ -79,15 +79,15 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return Json.Deserialize<ActivePlayersEdenResult>(response).Result;
         }
 
-        public List<TvShow> GetSeries(XbmcSettings settings)
+        public List<KodiArtist> GetArtist(XbmcSettings settings)
         {
             var request = new RestRequest();
             var parameters = new Dictionary<string, object>();
-            parameters.Add("properties", new[] { "file", "imdbnumber" });
+            parameters.Add("properties", new[] { "musicbrainzartistid" }); //TODO: Figure out why AudioLibrary doesnt list file location like videoLibray
 
-            var response = ProcessRequest(request, settings, "VideoLibrary.GetTvShows", parameters);
+            var response = ProcessRequest(request, settings, "AudioLibrary.GetArtists", parameters);
 
-            return Json.Deserialize<TvShowResponse>(response).Result.TvShows;
+            return Json.Deserialize<ArtistResponse>(response).Result.Artists;
         }
 
         private string ProcessRequest(IRestRequest request, XbmcSettings settings, string method, Dictionary<string, object> parameters = null)
@@ -122,12 +122,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         private void CheckForError(IRestResponse response)
         {
-            _logger.Debug("Looking for error in response: {0}", response);
-
             if (string.IsNullOrWhiteSpace(response.Content))
             {
                 throw new XbmcJsonException("Invalid response from XBMC, the response is not valid JSON");
             }
+
+            _logger.Trace("Looking for error in response, {0}", response.Content);
 
             if (response.Content.StartsWith("{\"error\""))
             {

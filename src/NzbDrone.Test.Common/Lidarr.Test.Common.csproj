@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="4.19.0" />
+    <PackageReference Include="FluentValidation" Version="6.2.1" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="NLog" Version="4.5.4" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="RestSharp" Version="105.2.3" />
+    <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
+    <PackageReference Include="Unity" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
+    <ProjectReference Include="..\NzbDrone.Core\Lidarr.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,67 +1,71 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Download
 {
     public class RedownloadFailedDownloadService : IHandleAsync<DownloadFailedEvent>
     {
         private readonly IConfigService _configService;
-        private readonly IEpisodeService _episodeService;
+        private readonly IAlbumService _albumService;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
         public RedownloadFailedDownloadService(IConfigService configService,
-                                               IEpisodeService episodeService,
+                                               IAlbumService albumService,
                                                IManageCommandQueue commandQueueManager,
                                                Logger logger)
         {
             _configService = configService;
-            _episodeService = episodeService;
+            _albumService = albumService;
             _commandQueueManager = commandQueueManager;
             _logger = logger;
         }
 
         public void HandleAsync(DownloadFailedEvent message)
         {
+            if (message.SkipReDownload)
+            {
+                _logger.Debug("Skip redownloading requested by user");
+                return;
+            }
+
             if (!_configService.AutoRedownloadFailed)
             {
-                _logger.Debug("Auto redownloading failed episodes is disabled");
+                _logger.Debug("Auto redownloading failed albums is disabled");
                 return;
             }
 
-            if (message.EpisodeIds.Count == 1)
+            if (message.AlbumIds.Count == 1)
             {
-                _logger.Debug("Failed download only contains one episode, searching again");
+                _logger.Debug("Failed download only contains one album, searching again");
 
-                _commandQueueManager.Push(new EpisodeSearchCommand(message.EpisodeIds));
+                _commandQueueManager.Push(new AlbumSearchCommand(message.AlbumIds));
 
                 return;
             }
 
-            var seasonNumber = _episodeService.GetEpisode(message.EpisodeIds.First()).SeasonNumber;
-            var episodesInSeason = _episodeService.GetEpisodesBySeason(message.SeriesId, seasonNumber);
+            var albumsInArtist = _albumService.GetAlbumsByArtist(message.ArtistId);
 
-            if (message.EpisodeIds.Count == episodesInSeason.Count)
+            if (message.AlbumIds.Count == albumsInArtist.Count)
             {
-                _logger.Debug("Failed download was entire season, searching again");
+                _logger.Debug("Failed download was entire artist, searching again");
 
-                _commandQueueManager.Push(new SeasonSearchCommand
+                _commandQueueManager.Push(new ArtistSearchCommand
                 {
-                    SeriesId = message.SeriesId,
-                    SeasonNumber = seasonNumber
+                    ArtistId = message.ArtistId
                 });
 
                 return;
             }
 
-            _logger.Debug("Failed download contains multiple episodes, probably a double episode, searching again");
+            _logger.Debug("Failed download contains multiple albums, searching again");
 
-            _commandQueueManager.Push(new EpisodeSearchCommand(message.EpisodeIds));
+            _commandQueueManager.Push(new AlbumSearchCommand(message.AlbumIds));
         }
     }
 }
