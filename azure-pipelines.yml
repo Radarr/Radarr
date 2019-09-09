@@ -7,7 +7,7 @@ variables:
   outputFolder: './_output'
   artifactsFolder: './_artifacts'
   testsFolder: './_tests'
-  majorVersion: '0.6.2'
+  majorVersion: '0.7.0'
   minorVersion: $[counter('minorVersion', 1076)]
   lidarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(lidarrVersion)'
@@ -22,6 +22,7 @@ trigger:
   branches:
     include:
     - develop
+    - master
 
 pr:
 - develop
@@ -202,9 +203,18 @@ stages:
           sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${RELEASENAME}"
           sentry-cli releases -p lidarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
+          if [[ ${BUILD_SOURCEBRANCHNAME} == "refs/heads/develop" ]]; then
           sentry-cli releases deploys "${RELEASENAME}" new -e nightly
+          else
+          sentry-cli releases deploys "${RELEASENAME}" new -e production
+          fi
         displayName: Publish Sentry Source Maps
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+        condition: |
+          or
+          (
+            and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')),
+            and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+          )
         env:
           SENTRY_AUTH_TOKEN: $(sentryAuthToken)
           SENTRY_ORG: $(sentryOrg)
