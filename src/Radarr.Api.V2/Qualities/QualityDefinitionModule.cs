@@ -1,35 +1,24 @@
-using System;
 using System.Collections.Generic;
-using Radarr.Http.REST;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
+using System.Linq;
+using Nancy;
 using NzbDrone.Core.Qualities;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V2.Qualities
 {
     public class QualityDefinitionModule : RadarrRestModule<QualityDefinitionResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
-        private readonly IParsingService _parsingService;
 
-        public QualityDefinitionModule(IQualityDefinitionService qualityDefinitionService, IParsingService parsingService)
+        public QualityDefinitionModule(IQualityDefinitionService qualityDefinitionService)
         {
             _qualityDefinitionService = qualityDefinitionService;
-            _parsingService = parsingService;
 
             GetResourceAll = GetAll;
-
             GetResourceById = GetById;
-
             UpdateResource = Update;
-
-            CreateResource = Create;
-        }
-
-        private int Create(QualityDefinitionResource qualityDefinitionResource)
-        {
-            throw new BadRequestException("Not allowed!");
+            Put("/update", d => UpdateMany());
         }
 
         private void Update(QualityDefinitionResource resource)
@@ -46,6 +35,20 @@ namespace Radarr.Api.V2.Qualities
         private List<QualityDefinitionResource> GetAll()
         {
             return _qualityDefinitionService.All().ToResource();
+        }
+
+        private object UpdateMany()
+        {
+            //Read from request
+            var qualityDefinitions = Request.Body.FromJson<List<QualityDefinitionResource>>()
+                                                 .ToModel()
+                                                 .ToList();
+
+            _qualityDefinitionService.UpdateMany(qualityDefinitions);
+
+            return ResponseWithCode(_qualityDefinitionService.All()
+                                            .ToResource()
+                                            , HttpStatusCode.Accepted);
         }
     }
 }

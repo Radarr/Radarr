@@ -61,5 +61,10 @@ namespace Radarr.Api.V2.Qualities
         {
             return models.Select(ToResource).ToList();
         }
+
+        public static List<QualityDefinition> ToModel(this IEnumerable<QualityDefinitionResource> resources)
+        {
+            return resources.Select(ToModel).ToList();
+        }
     }
 }
