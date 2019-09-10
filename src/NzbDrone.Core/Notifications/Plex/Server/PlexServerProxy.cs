@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             {
                 return Json.Deserialize<PlexMediaContainerLegacy>(response)
                     .Sections
-                    .Where(d => d.Type == "show")
+                    .Where(d => d.Type == "movie")
                     .Select(s => new PlexSection
                                  {
                                      Id = s.Id,
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             return Json.Deserialize<PlexResponse<PlexSectionsContainer>>(response)
                        .MediaContainer
                        .Sections
-                       .Where(d => d.Type == "show")
+                       .Where(d => d.Type == "movie")
                        .ToList();
         }
 
