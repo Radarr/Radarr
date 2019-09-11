@@ -224,5 +224,18 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 
             Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
+
+        [Test]
+        public void should_return_true_if_track_file_is_null()
+        {
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(2)
+                                                     .All()
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(null))
+                                                     .Build()
+                                                     .ToList();
+
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
+        }
     }
 }

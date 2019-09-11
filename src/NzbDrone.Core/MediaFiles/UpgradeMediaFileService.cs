@@ -43,6 +43,7 @@ namespace NzbDrone.Core.MediaFiles
             var existingFiles = localTrack.Tracks
                                             .Where(e => e.TrackFileId > 0)
                                             .Select(e => e.TrackFile.Value)
+                                            .Where(e => e != null)
                                             .GroupBy(e => e.Id)
                                             .ToList();
 

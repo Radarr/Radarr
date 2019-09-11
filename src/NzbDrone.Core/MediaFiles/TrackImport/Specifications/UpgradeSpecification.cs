@@ -27,6 +27,13 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             foreach (var track in localTrack.Tracks.Where(e => e.TrackFileId > 0))
             {
                 var trackFile = track.TrackFile.Value;
+
+                if (trackFile == null)
+                {
+                    _logger.Trace("Unable to get track file details from the DB. TrackId: {0} TrackFileId: {1}", track.Id, track.TrackFileId);
+                    continue;
+                }
+
                 var qualityCompare = qualityComparer.Compare(localTrack.Quality.Quality, trackFile.Quality.Quality);
 
                 if (qualityCompare < 0)

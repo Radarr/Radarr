@@ -181,5 +181,20 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.UpgradeTrackFile(_trackFile, _localTrack).OldFiles.Count.Should().Be(2);
         }
+
+        [Test]
+        public void should_import_if_existing_file_doesnt_exist_in_db()
+        {
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
+                                                     .All()
+                                                     .With(e => e.TrackFileId = 1)
+                                                     .With(e => e.TrackFile = new LazyLoaded<TrackFile>(null))
+                                                     .Build()
+                                                     .ToList();
+
+            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Tracks.Single().TrackFile.Value, It.IsAny<DeleteMediaFileReason>()), Times.Never());
+        }
     }
 }
