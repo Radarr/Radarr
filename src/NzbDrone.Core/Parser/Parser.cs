@@ -159,6 +159,8 @@ namespace NzbDrone.Core.Parser
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex PercentRegex = new Regex(@"(?<=\b\d+)%", RegexOptions.Compiled);
+
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -478,6 +480,8 @@ namespace NzbDrone.Core.Parser
             //If Title only contains numbers return it as is.
             if (long.TryParse(name, out number))
                 return name;
+
+            name = PercentRegex.Replace(name, "percent");
 
             return NormalizeRegex.Replace(name).ToLower().RemoveAccent();
         }
