@@ -155,30 +155,35 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             };
 
-        private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^)(a(?!$)|an|the|and|or|of)(?:\b|_))|\W|_",
+        private static readonly RegexReplace NormalizeRegex = new RegexReplace(@"((?:\b|_)(?<!^)(a(?!$)|an|the|and|or|of)(?:\b|_))|\W|_",
+                                                                string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         //TODO Rework this Regex for Music
-        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
+        private static readonly RegexReplace SimpleTitleRegex = new RegexReplace(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
+                                                                string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net)[ -]*",
-                                                                   RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net)[ -]*",
+                                                                string.Empty,   
+                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AirDateRegex = new Regex(@"^(.*?)(?<!\d)((?<airyear>\d{4})[_.-](?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])|(?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])[_.-](?<airyear>\d{4}))(?!\d)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex SixDigitAirDateRegex = new Regex(@"(?<=[_.-])(?<airdate>(?<!\d)(?<airyear>[1-9]\d{1})(?<airmonth>[0-1][0-9])(?<airday>[0-3][0-9]))(?=[_.-])",
-                                                                        RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ])|(-(RP|1|NZBGeek|Obfuscated|Scrambled|sample|Pre|postbot|xpost))+$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex CleanTorrentSuffixRegex = new Regex(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
-                                                                   RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly RegexReplace CleanReleaseGroupRegex = new RegexReplace(@"^(.*?[-._ ])|(-(RP|1|NZBGeek|Obfuscated|Scrambled|sample|Pre|postbot|xpost))+$",
+                                                                string.Empty,
+                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly RegexReplace CleanTorrentSuffixRegex = new RegexReplace(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
+                                                                string.Empty,
+                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex ReleaseGroupRegex = new Regex(@"-(?<releasegroup>[a-z0-9]+)(?<!MP3|ALAC|FLAC|WEB)(?:\b|[-._ ])",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -240,12 +245,12 @@ namespace NzbDrone.Core.Parser
 
                 var releaseTitle = RemoveFileExtension(title);
 
-                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
                 // TODO: Quick fix stripping [url] - prefixes.
-                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle);
 
-                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
                 var airDateMatch = AirDateRegex.Match(simpleTitle);
                 if (airDateMatch.Success)
@@ -316,11 +321,11 @@ namespace NzbDrone.Core.Parser
 
                 var releaseTitle = RemoveFileExtension(title);
 
-                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
-                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle);
 
-                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
                 var escapedArtist = Regex.Escape(artist.Name.RemoveAccent()).Replace(@"\ ", @"[\W_]");
                 var escapedAlbums = string.Join("|", album.Select(s => Regex.Escape(s.Title.RemoveAccent())).ToList()).Replace(@"\ ", @"[\W_]");
@@ -385,12 +390,12 @@ namespace NzbDrone.Core.Parser
 
                 var releaseTitle = RemoveFileExtension(title);
 
-                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
                 // TODO: Quick fix stripping [url] - prefixes.
-                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle);
 
-                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
                 var airDateMatch = AirDateRegex.Match(simpleTitle);
                 if (airDateMatch.Success)
@@ -474,7 +479,7 @@ namespace NzbDrone.Core.Parser
             if (long.TryParse(name, out number))
                 return name;
 
-            return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
+            return NormalizeRegex.Replace(name).ToLower().RemoveAccent();
         }
 
         public static string NormalizeTrackTitle(this string title)
@@ -500,7 +505,7 @@ namespace NzbDrone.Core.Parser
         {
             title = title.Trim();
             title = RemoveFileExtension(title);
-            title = WebsitePrefixRegex.Replace(title, "");
+            title = WebsitePrefixRegex.Replace(title);
 
             var animeMatch = AnimeReleaseGroupRegex.Match(title);
 
@@ -509,7 +514,7 @@ namespace NzbDrone.Core.Parser
                 return animeMatch.Groups["subgroup"].Value;
             }
 
-            title = CleanReleaseGroupRegex.Replace(title, "");
+            title = CleanReleaseGroupRegex.Replace(title);
 
             var matches = ReleaseGroupRegex.Matches(title);
 
