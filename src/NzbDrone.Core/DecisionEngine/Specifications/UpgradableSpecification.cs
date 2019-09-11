@@ -64,6 +64,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         private bool IsPreferredWordUpgradable(int currentScore, int newScore)
         {
+            _logger.Debug("Comparing preferred word score. Current: {0} New: {1}", currentScore, newScore);
+
             return newScore > currentScore;
         }
 
@@ -74,6 +76,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (qualityUpgrade == ProfileComparisonResult.Upgrade)
             {
+                _logger.Debug("New item has a better quality");
                 return true;
             }
 
@@ -89,6 +92,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return false;
             }
 
+            _logger.Debug("New item has a better preferred word score");
             return true;
         }
 
