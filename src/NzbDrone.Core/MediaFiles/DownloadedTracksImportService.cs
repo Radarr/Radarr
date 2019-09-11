@@ -5,6 +5,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.Events;
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IRuntimeInfo _runtimeInfo;
         private readonly Logger _logger;
 
         public DownloadedTracksImportService(IDiskProvider diskProvider,
@@ -41,6 +43,7 @@ namespace NzbDrone.Core.MediaFiles
                                              IMakeImportDecision importDecisionMaker,
                                              IImportApprovedTracks importApprovedTracks,
                                              IEventAggregator eventAggregator,
+                                             IRuntimeInfo runtimeInfo,
                                              Logger logger)
         {
             _diskProvider = diskProvider;
@@ -50,6 +53,7 @@ namespace NzbDrone.Core.MediaFiles
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
             _eventAggregator = eventAggregator;
+            _runtimeInfo = runtimeInfo;
             _logger = logger;
         }
 
@@ -98,7 +102,7 @@ namespace NzbDrone.Core.MediaFiles
                 return ProcessFile(fileInfo, importMode, artist, downloadClientItem);
             }
 
-            _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}", path);
+            LogInaccessiblePathError(path);
             _eventAggregator.PublishEvent(new TrackImportFailedEvent(null, null, true, downloadClientItem));
             
             return new List<ImportResult>();
@@ -279,6 +283,32 @@ namespace NzbDrone.Core.MediaFiles
             var localTrack = audioFile == null ? null : new LocalTrack { Path = audioFile };
 
             return new ImportResult(new ImportDecision<LocalTrack>(localTrack, new Rejection("Unknown Artist")), message);
+        }
+
+        private void LogInaccessiblePathError(string path)
+        {
+            if (_runtimeInfo.IsWindowsService)
+            {
+                var mounts = _diskProvider.GetMounts();
+                var mount = mounts.FirstOrDefault(m => m.RootDirectory == Path.GetPathRoot(path));
+
+                if (mount.DriveType == DriveType.Network)
+                {
+                    _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}. It's recommended to avoid mapped network drives when running as a Windows service. See the FAQ for more info", path);
+                    return;
+                }
+            }
+
+            if (OsInfo.IsWindows)
+            {
+                if (path.StartsWith(@"\\"))
+                {
+                    _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}. Ensure the user running Lidarr has access to the network share", path);
+                    return;
+                }
+            }
+
+            _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}. Ensure the path exists and the user running Lidarr has the correct permissions to access this file/folder", path);
         }
     }
 }
