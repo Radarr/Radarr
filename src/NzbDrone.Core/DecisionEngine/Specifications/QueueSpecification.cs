@@ -33,10 +33,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             var queue = _queueService.GetQueue();
-            var matchingAlbum = queue.Where(q => q.RemoteAlbum != null &&
-                                       q.RemoteAlbum.Artist != null &&
-                                       q.RemoteAlbum.Artist.Id == subject.Artist.Id &&
-                                       q.RemoteAlbum.Albums.Select(e => e.Id).Intersect(subject.Albums.Select(e => e.Id)).Any())
+            var matchingAlbum = queue.Where(q => q.RemoteAlbum?.Artist != null &&
+                                                 q.RemoteAlbum.Artist.Id == subject.Artist.Id &&
+                                                 q.RemoteAlbum.Albums.Select(e => e.Id).Intersect(subject.Albums.Select(e => e.Id)).Any())
                            .ToList();
 
 

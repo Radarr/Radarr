@@ -54,6 +54,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
                     var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
+
+                    if (!recent && cdhEnabled)
+                    {
+                        continue;
+                    }
+
                     // The artist will be the same as the one in history since it's the same album.
                     // Instead of fetching the artist from the DB reuse the known artist.
                     var preferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Artist, mostRecent.SourceTitle);
@@ -71,11 +77,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                         preferredWordScore,
                         subject.ParsedAlbumInfo.Quality,
                         subject.PreferredWordScore);
-
-                    if (!recent && cdhEnabled)
-                    {
-                        continue;
-                    }
 
                     if (!cutoffUnmet)
                     {
