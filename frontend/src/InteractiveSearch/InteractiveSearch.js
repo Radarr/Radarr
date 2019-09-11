@@ -119,33 +119,35 @@ function InteractiveSearch(props) {
       </div>
 
       {
-        isFetching &&
-          <LoadingIndicator />
+        isFetching ? <LoadingIndicator /> : null
       }
 
       {
-        !isFetching && !!error &&
+        !isFetching && error ?
           <div>
             Unable to load results for this album search. Try again later
-          </div>
+          </div> :
+          null
       }
 
       {
-        !isFetching && isPopulated && !totalReleasesCount &&
+        !isFetching && isPopulated && !totalReleasesCount ?
           <div>
             No results found
-          </div>
+          </div> :
+          null
       }
 
       {
-        !!totalReleasesCount && isPopulated && !items.length &&
+        !!totalReleasesCount && isPopulated && !items.length ?
           <div>
             All results are hidden by the applied filter
-          </div>
+          </div> :
+          null
       }
 
       {
-        isPopulated && !!items.length &&
+        isPopulated && !!items.length ?
           <Table
             columns={columns}
             sortKey={sortKey}
@@ -168,14 +170,16 @@ function InteractiveSearch(props) {
                 })
               }
             </TableBody>
-          </Table>
+          </Table> :
+          null
       }
 
       {
-        totalReleasesCount !== items.length && !!items.length &&
+        totalReleasesCount !== items.length && !!items.length ?
           <div className={styles.filteredMessage}>
                 Some results are hidden by the applied filter
-          </div>
+          </div> :
+          null
       }
     </div>
   );
