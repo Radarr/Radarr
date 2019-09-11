@@ -70,6 +70,7 @@ namespace Lidarr.Api.V1.History
 
             var eventTypeFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "eventType");
             var albumIdFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "albumId");
+            var downloadIdFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "downloadId");
 
             if (eventTypeFilter != null)
             {
@@ -81,6 +82,12 @@ namespace Lidarr.Api.V1.History
             {
                 var albumId = Convert.ToInt32(albumIdFilter.Value);
                 pagingSpec.FilterExpressions.Add(h => h.AlbumId == albumId);
+            }
+
+            if (downloadIdFilter != null)
+            {
+                var downloadId = downloadIdFilter.Value;
+                pagingSpec.FilterExpressions.Add(h => h.DownloadId == downloadId);
             }
 
 
