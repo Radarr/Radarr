@@ -6,12 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.Practices.Unity;
+using Unity;
 using Moq;
 using Moq.Language.Flow;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common.AutoMoq.Unity;
+using Unity.Resolution;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 
@@ -188,11 +189,17 @@ namespace NzbDrone.Test.Common.AutoMoq
                 assemblyName = "Lidarr.Mono";
             }
 
-            var assembly = Assembly.Load(assemblyName);
+            var types = Assembly.Load(assemblyName).GetTypes();
 
             // This allows us to resolve the platform specific disk provider in FileSystemTest
-            var diskProvider = assembly.GetTypes().Where(x => x.Name == "DiskProvider").SingleOrDefault();
+            var diskProvider = types.Where(x => x.Name == "DiskProvider").SingleOrDefault();
             container.RegisterType(typeof(IDiskProvider), diskProvider, "ActualDiskProvider");
+
+            // This seems to be required now so that Unity can resolve the extra arguments to the
+            // Mono DiskProvider.  I don't understand why we need this now but didn't before.
+            // It's auto registering everything in the assembly with Ixxx -> xxx.
+            types.Except(new [] { diskProvider }).Where(t => t.GetInterfaces().Any(i => i.Name == "I" + t.Name)).ToList()
+                .ForEach(t => container.RegisterType(t.GetInterface("I" + t.Name, false), t));
 
             // This tells the mocker to resolve IFileSystem using an actual filesystem (and not a mock)
             // if not specified, giving the old behaviour before we switched to System.IO.Abstractions.
