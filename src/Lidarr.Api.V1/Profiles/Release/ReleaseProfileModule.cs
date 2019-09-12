@@ -15,11 +15,11 @@ namespace Lidarr.Api.V1.Profiles.Release
         {
             _releaseProfileService = releaseProfileService;
 
-            GetResourceById = Get;
+            GetResourceById = GetById;
             GetResourceAll = GetAll;
             CreateResource = Create;
             UpdateResource = Update;
-            DeleteResource = Delete;
+            DeleteResource = DeleteById;
 
             SharedValidator.RuleFor(r => r).Custom((restriction, context) =>
             {
@@ -30,7 +30,7 @@ namespace Lidarr.Api.V1.Profiles.Release
             });
         }
 
-        private ReleaseProfileResource Get(int id)
+        private ReleaseProfileResource GetById(int id)
         {
             return _releaseProfileService.Get(id).ToResource();
         }
@@ -50,7 +50,7 @@ namespace Lidarr.Api.V1.Profiles.Release
             _releaseProfileService.Update(resource.ToModel());
         }
 
-        private void Delete(int id)
+        private void DeleteById(int id)
         {
             _releaseProfileService.Delete(id);
         }
