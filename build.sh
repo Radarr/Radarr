@@ -196,7 +196,6 @@ PackageMacOS()
 
     echo "Adding Startup script"
     cp ./macOS/Lidarr $outputFolderMacOS
-    dos2unix $outputFolderMacOS/Lidarr
 
     echo "Copying Binaries"
     cp -r $outputFolderLinux/* $outputFolderMacOS
