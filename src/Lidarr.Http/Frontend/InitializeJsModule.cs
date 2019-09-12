@@ -28,7 +28,7 @@ namespace Lidarr.Http.Frontend
             _apiKey = configFileProvider.ApiKey;
             _urlBase = configFileProvider.UrlBase;
 
-            Get["/initialize.js"] = x => Index();
+            Get("/initialize.js", x => Index());
         }
 
         private Response Index()

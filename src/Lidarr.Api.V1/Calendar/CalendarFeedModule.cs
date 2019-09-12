@@ -29,10 +29,10 @@ namespace Lidarr.Api.V1.Calendar
             _artistService = artistService;
             _tagService = tagService;
 
-            Get["/Lidarr.ics"] = options => GetCalendarFeed();
+            Get("/Lidarr.ics",  options => GetCalendarFeed());
         }
 
-        private Response GetCalendarFeed()
+        private object GetCalendarFeed()
         {
             var pastDays = 7;
             var futureDays = 28;            

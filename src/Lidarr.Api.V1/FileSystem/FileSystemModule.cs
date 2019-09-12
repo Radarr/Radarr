@@ -24,49 +24,49 @@ namespace Lidarr.Api.V1.FileSystem
             _fileSystemLookupService = fileSystemLookupService;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
-            Get["/"] = x => GetContents();
-            Get["/type"] = x => GetEntityType();
-            Get["/mediafiles"] = x => GetMediaFiles();
+            Get("/",  x => GetContents());
+            Get("/type",  x => GetEntityType());
+            Get("/mediafiles",  x => GetMediaFiles());
         }
 
-        private Response GetContents()
+        private object GetContents()
         {
             var pathQuery = Request.Query.path;
             var includeFiles = Request.GetBooleanQueryParameter("includeFiles");
             var allowFoldersWithoutTrailingSlashes = Request.GetBooleanQueryParameter("allowFoldersWithoutTrailingSlashes");
 
-            return _fileSystemLookupService.LookupContents((string)pathQuery.Value, includeFiles, allowFoldersWithoutTrailingSlashes).AsResponse();
+            return _fileSystemLookupService.LookupContents((string)pathQuery.Value, includeFiles, allowFoldersWithoutTrailingSlashes);
         }
 
-        private Response GetEntityType()
+        private object GetEntityType()
         {
             var pathQuery = Request.Query.path;
             var path = (string)pathQuery.Value;
 
             if (_diskProvider.FileExists(path))
             {
-                return new { type = "file" }.AsResponse();
+                return new { type = "file" };
             }
 
             //Return folder even if it doesn't exist on disk to avoid leaking anything from the UI about the underlying system
-            return new { type = "folder" }.AsResponse();
+            return new { type = "folder" };
         }
 
-        private Response GetMediaFiles()
+        private object GetMediaFiles()
         {
             var pathQuery = Request.Query.path;
             var path = (string)pathQuery.Value;
 
             if (!_diskProvider.FolderExists(path))
             {
-                return new string[0].AsResponse();
+                return new string[0];
             }
 
             return _diskScanService.GetAudioFiles(path).Select(f => new {
                 Path = f.FullName,
                 RelativePath = path.GetRelativePath(f.FullName),
                 Name = f.Name
-            }).AsResponse();
+            });
         }
     }
 }

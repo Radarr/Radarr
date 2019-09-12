@@ -31,7 +31,7 @@ namespace Lidarr.Api.V1.Indexers
             _indexerFactory = indexerFactory;
             _logger = logger;
 
-            Post["/push"] = x => ProcessRelease(ReadResourceFromRequest());
+            Post("/push",  x => ProcessRelease(ReadResourceFromRequest()));
 
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.DownloadUrl).NotEmpty();
@@ -39,7 +39,7 @@ namespace Lidarr.Api.V1.Indexers
             PostValidator.RuleFor(s => s.PublishDate).NotEmpty();
         }
 
-        private Response ProcessRelease(ReleaseResource release)
+        private object ProcessRelease(ReleaseResource release)
         {
             _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl);
 
@@ -59,7 +59,7 @@ namespace Lidarr.Api.V1.Indexers
                 throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new[] { firstDecision }).First().AsResponse();
+            return MapDecisions(new[] { firstDecision }).First();
         }
 
         private void ResolveIndexer(ReleaseInfo release)

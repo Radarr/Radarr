@@ -36,7 +36,7 @@ namespace Lidarr.Api.V1.Albums
             _releaseService = releaseService;
             GetResourceAll = GetAlbums;
             UpdateResource = UpdateAlbum;
-            Put["/monitor"] = x => SetAlbumsMonitored();
+            Put("/monitor",  x => SetAlbumsMonitored());
         }
 
         private List<AlbumResource> GetAlbums()
@@ -95,13 +95,13 @@ namespace Lidarr.Api.V1.Albums
             BroadcastResourceChange(ModelAction.Updated, model.Id);
         }
 
-        private Response SetAlbumsMonitored()
+        private object SetAlbumsMonitored()
         {
             var resource = Request.Body.FromJson<AlbumsMonitoredResource>();
 
             _albumService.SetMonitored(resource.AlbumIds, resource.Monitored);
 
-            return MapToResource(_albumService.GetAlbums(resource.AlbumIds), false).AsResponse(HttpStatusCode.Accepted);
+            return ResponseWithCode(MapToResource(_albumService.GetAlbums(resource.AlbumIds), false), HttpStatusCode.Accepted);
         }
 
         public void Handle(AlbumGrabbedEvent message)

@@ -33,11 +33,11 @@ namespace Lidarr.Api.V1.ManualImport
 
             GetResourceAll = GetMediaFiles;
             
-            Put["/"] = options =>
+            Put("/", options =>
                 {
                     var resource = Request.Body.FromJson<List<ManualImportResource>>();
-                    return UpdateImportItems(resource).AsResponse(HttpStatusCode.Accepted);
-                };
+                    return ResponseWithCode(UpdateImportItems(resource), HttpStatusCode.Accepted);
+                });
         }
 
         private List<ManualImportResource> GetMediaFiles()

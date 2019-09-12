@@ -15,10 +15,10 @@ namespace Lidarr.Api.V1.AlbumStudio
         {
             _artistService = artistService;
             _albumMonitoredService = albumMonitoredService;
-            Post["/"] = artist => UpdateAll();
+            Post("/",  artist => UpdateAll());
         }
 
-        private Response UpdateAll()
+        private object UpdateAll()
         {
             //Read from request
             var request = Request.Body.FromJson<AlbumStudioResource>();
@@ -41,7 +41,7 @@ namespace Lidarr.Api.V1.AlbumStudio
                 _albumMonitoredService.SetAlbumMonitoredStatus(artist, request.MonitoringOptions);
             }
 
-            return "ok".AsResponse(HttpStatusCode.Accepted);
+            return ResponseWithCode("ok", HttpStatusCode.Accepted);
         }
     }
 }

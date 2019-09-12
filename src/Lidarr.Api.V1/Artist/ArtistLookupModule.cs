@@ -16,13 +16,13 @@ namespace Lidarr.Api.V1.Artist
             : base("/artist/lookup")
         {
             _searchProxy = searchProxy;
-            Get["/"] = x => Search();
+            Get("/",  x => Search());
         }
 
-        private Response Search()
+        private object Search()
         {
             var searchResults = _searchProxy.SearchForNewArtist((string)Request.Query.term);
-            return MapToResource(searchResults).ToList().AsResponse();
+            return MapToResource(searchResults).ToList();
         }
 
         private static IEnumerable<ArtistResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Artist> artist)

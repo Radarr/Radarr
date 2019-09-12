@@ -23,11 +23,11 @@ namespace Lidarr.Api.V1.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get[MEDIA_COVER_ARTIST_ROUTE] = options => GetArtistMediaCover(options.artistId, options.filename);
-            Get[MEDIA_COVER_ALBUM_ROUTE] = options => GetAlbumMediaCover(options.artistId, options.filename);
+            Get(MEDIA_COVER_ARTIST_ROUTE,  options => GetArtistMediaCover(options.artistId, options.filename));
+            Get(MEDIA_COVER_ALBUM_ROUTE,  options => GetAlbumMediaCover(options.artistId, options.filename));
         }
 
-        private Response GetArtistMediaCover(int artistId, string filename)
+        private object GetArtistMediaCover(int artistId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", artistId.ToString(), filename);
 
@@ -46,7 +46,7 @@ namespace Lidarr.Api.V1.MediaCovers
             return new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
         }
 
-        private Response GetAlbumMediaCover(int albumId, string filename)
+        private object GetAlbumMediaCover(int albumId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Albums", albumId.ToString(), filename);
 

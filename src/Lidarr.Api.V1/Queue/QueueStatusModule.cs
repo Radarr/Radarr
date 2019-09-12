@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Nancy.Responses;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
@@ -8,7 +7,6 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
 using Lidarr.Http;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.Queue
 {
@@ -29,12 +27,12 @@ namespace Lidarr.Api.V1.Queue
             _broadcastDebounce = new Debouncer(BroadcastChange, TimeSpan.FromSeconds(5));
 
 
-            Get["/"] = x => GetQueueStatusResponse();
+            Get("/",  x => GetQueueStatusResponse());
         }
 
-        private JsonResponse<QueueStatusResource> GetQueueStatusResponse()
+        private object GetQueueStatusResponse()
         {
-            return GetQueueStatus().AsResponse();
+            return GetQueueStatus();
         }
 
         private QueueStatusResource GetQueueStatus()

@@ -17,13 +17,13 @@ namespace Lidarr.Api.V1.Albums
             : base("/album/lookup")
         {
             _searchProxy = searchProxy;
-            Get["/"] = x => Search();
+            Get("/",  x => Search());
         }
 
-        private Response Search()
+        private object Search()
         {
             var searchResults = _searchProxy.SearchForNewAlbum((string)Request.Query.term, null);
-            return MapToResource(searchResults).ToList().AsResponse();
+            return MapToResource(searchResults).ToList();
         }
 
         private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Album> albums)

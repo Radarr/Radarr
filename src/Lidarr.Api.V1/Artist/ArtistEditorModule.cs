@@ -19,11 +19,11 @@ namespace Lidarr.Api.V1.Artist
         {
             _artistService = artistService;
             _commandQueueManager = commandQueueManager;
-            Put["/"] = artist => SaveAll();
-            Delete["/"] = artist => DeleteArtist();
+            Put("/",  artist => SaveAll());
+            Delete("/",  artist => DeleteArtist());
         }
 
-        private Response SaveAll()
+        private object SaveAll()
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
             var artistToUpdate = _artistService.GetArtists(resource.ArtistIds);
@@ -91,12 +91,12 @@ namespace Lidarr.Api.V1.Artist
                 });
             }
 
-            return _artistService.UpdateArtists(artistToUpdate, !resource.MoveFiles)
+            return ResponseWithCode(_artistService.UpdateArtists(artistToUpdate, !resource.MoveFiles)
                                  .ToResource()
-                                 .AsResponse(HttpStatusCode.Accepted);
+                                 , HttpStatusCode.Accepted);
         }
 
-        private Response DeleteArtist()
+        private object DeleteArtist()
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
 
@@ -105,7 +105,7 @@ namespace Lidarr.Api.V1.Artist
                 _artistService.DeleteArtist(artistId, false);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
     }
 }

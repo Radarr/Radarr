@@ -14,16 +14,16 @@ namespace Lidarr.Api.V1.Artist
             : base("/artist/import")
         {
             _addArtistService = addArtistService;
-            Post["/"] = x => Import();
+            Post("/",  x => Import());
         }
 
 
-        private Response Import()
+        private object Import()
         {
             var resource = Request.Body.FromJson<List<ArtistResource>>();
             var newArtists = resource.ToModel();
 
-            return _addArtistService.AddArtists(newArtists).ToResource().AsResponse();
+            return _addArtistService.AddArtists(newArtists).ToResource();
         }
     }
 }

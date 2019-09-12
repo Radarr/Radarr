@@ -33,7 +33,7 @@ namespace Lidarr.Api.V1.Config
             GetResourceById = GetNamingConfig;
             UpdateResource = UpdateNamingConfig;
 
-            Get["/examples"] = x => GetExamples(this.Bind<NamingConfigResource>());
+            Get("/examples",  x => GetExamples(this.Bind<NamingConfigResource>()));
 
 
             SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidTrackFormat();
@@ -75,7 +75,7 @@ namespace Lidarr.Api.V1.Config
             return GetNamingConfig();
         }
 
-        private JsonResponse<NamingExampleResource> GetExamples(NamingConfigResource config)
+        private object GetExamples(NamingConfigResource config)
         {
             if (config.Id == 0)
             {
@@ -104,7 +104,7 @@ namespace Lidarr.Api.V1.Config
                 ? null
                 : _filenameSampleService.GetAlbumFolderSample(nameSpec);
 
-            return sampleResource.AsResponse();
+            return sampleResource;
         }
 
         private void ValidateFormatResult(NamingConfig nameSpec)

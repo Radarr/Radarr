@@ -34,14 +34,14 @@ namespace Lidarr.Api.V1.Queue
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
 
-            Post[@"/grab/(?<id>[\d]{1,10})"] = x => Grab((int)x.Id);
-            Post["/grab/bulk"] = x => Grab();
+            Post(@"/grab/(?<id>[\d]{1,10})",  x => Grab((int)x.Id));
+            Post("/grab/bulk",  x => Grab());
 
-            Delete[@"/(?<id>[\d]{1,10})"] = x => Remove((int)x.Id);
-            Delete["/bulk"] = x => Remove();
+            Delete(@"/(?<id>[\d]{1,10})",  x => Remove((int)x.Id));
+            Delete("/bulk",  x => Remove());
         }
 
-        private Response Grab(int id)
+        private object Grab(int id)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -52,10 +52,10 @@ namespace Lidarr.Api.V1.Queue
 
             _downloadService.DownloadReport(pendingRelease.RemoteAlbum);
 
-            return new object().AsResponse();
+            return new object();
         }
 
-        private Response Grab()
+        private object Grab()
         {
             var resource = Request.Body.FromJson<QueueBulkResource>();
 
@@ -71,10 +71,10 @@ namespace Lidarr.Api.V1.Queue
                 _downloadService.DownloadReport(pendingRelease.RemoteAlbum);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
 
-        private Response Remove(int id)
+        private object Remove(int id)
         {
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
             var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
@@ -86,10 +86,10 @@ namespace Lidarr.Api.V1.Queue
                 _trackedDownloadService.StopTracking(trackedDownload.DownloadItem.DownloadId);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
 
-        private Response Remove()
+        private object Remove()
         {
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
             var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
@@ -109,7 +109,7 @@ namespace Lidarr.Api.V1.Queue
 
             _trackedDownloadService.StopTracking(trackedDownloadIds);
 
-            return new object().AsResponse();
+            return new object();
         }
 
         private TrackedDownload Remove(int id, bool blacklist, bool skipReDownload)

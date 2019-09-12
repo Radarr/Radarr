@@ -77,7 +77,7 @@ namespace Lidarr.Http.Authentication
             FormsAuthentication.FormsAuthenticationCookieName = "LidarrAuth";
 
             var cryptographyConfiguration = new CryptographyConfiguration(
-                    new RijndaelEncryptionProvider(new PassphraseKeyGenerator(_configService.RijndaelPassphrase, Encoding.ASCII.GetBytes(_configService.RijndaelSalt))),
+                    new AesEncryptionProvider(new PassphraseKeyGenerator(_configService.RijndaelPassphrase, Encoding.ASCII.GetBytes(_configService.RijndaelSalt))),
                     new DefaultHmacProvider(new PassphraseKeyGenerator(_configService.HmacPassphrase, Encoding.ASCII.GetBytes(_configService.HmacSalt)))
                 );
 
@@ -100,7 +100,7 @@ namespace Lidarr.Http.Authentication
                      context.Response.Headers["Location"].StartsWith($"{_configFileProvider.UrlBase}/login", StringComparison.InvariantCultureIgnoreCase)) ||
                     context.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    context.Response = new { Error = "Unauthorized" }.AsResponse(HttpStatusCode.Unauthorized);
+                    context.Response = new { Error = "Unauthorized" }.AsResponse(context, HttpStatusCode.Unauthorized);
                 }
             }
         }

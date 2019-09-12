@@ -43,7 +43,7 @@ namespace Lidarr.Api.V1.Indexers
             _logger = logger;
 
             GetResourceAll = GetReleases;
-            Post["/"] = x => DownloadRelease(ReadResourceFromRequest());
+            Post("/",  x => DownloadRelease(ReadResourceFromRequest()));
 
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
@@ -51,7 +51,7 @@ namespace Lidarr.Api.V1.Indexers
             _remoteAlbumCache = cacheManager.GetCache<RemoteAlbum>(GetType(), "remoteAlbums");
         }
 
-        private Response DownloadRelease(ReleaseResource release)
+        private object DownloadRelease(ReleaseResource release)
         {
             var remoteAlbum = _remoteAlbumCache.Find(GetCacheKey(release));
 
@@ -72,7 +72,7 @@ namespace Lidarr.Api.V1.Indexers
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 
-            return release.AsResponse();
+            return release;
         }
 
         private List<ReleaseResource> GetReleases()

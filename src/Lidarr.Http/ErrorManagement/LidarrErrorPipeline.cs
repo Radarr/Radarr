@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Data.SQLite;
 using FluentValidation;
 using Nancy;
 using NLog;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Exceptions;
 using Lidarr.Http.Exceptions;
 using Lidarr.Http.Extensions;
@@ -28,7 +29,7 @@ namespace Lidarr.Http.ErrorManagement
             if (apiException != null)
             {
                 _logger.Warn(apiException, "API Error");
-                return apiException.ToErrorResponse();
+                return apiException.ToErrorResponse(context);
             }
 
             var validationException = exception as ValidationException;
@@ -37,7 +38,7 @@ namespace Lidarr.Http.ErrorManagement
             {
                 _logger.Warn("Invalid request {0}", validationException.Message);
 
-                return validationException.Errors.AsResponse(HttpStatusCode.BadRequest);
+                return validationException.Errors.AsResponse(context, HttpStatusCode.BadRequest);
             }
 
             var clientException = exception as NzbDroneClientException;
@@ -48,7 +49,7 @@ namespace Lidarr.Http.ErrorManagement
                 {
                     Message = exception.Message,
                     Description = exception.ToString()
-                }.AsResponse((HttpStatusCode)clientException.StatusCode);
+                }.AsResponse(context, (HttpStatusCode)clientException.StatusCode);
             }
 
             var sqLiteException = exception as SQLiteException;
@@ -61,7 +62,7 @@ namespace Lidarr.Http.ErrorManagement
                         return new ErrorModel
                         {
                             Message = exception.Message,
-                        }.AsResponse(HttpStatusCode.Conflict);
+                        }.AsResponse(context, HttpStatusCode.Conflict);
                 }
 
                 _logger.Error(sqLiteException, "[{0} {1}]", context.Request.Method, context.Request.Path);
@@ -73,7 +74,7 @@ namespace Lidarr.Http.ErrorManagement
             {
                 Message = exception.Message,
                 Description = exception.ToString()
-            }.AsResponse(HttpStatusCode.InternalServerError);
+            }.AsResponse(context, HttpStatusCode.InternalServerError);
         }
     }
 }

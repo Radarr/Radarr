@@ -48,8 +48,8 @@ namespace Lidarr.Api.V1.TrackFiles
             UpdateResource = SetQuality;
             DeleteResource = DeleteTrackFile;
 
-            Put["/editor"] = trackFiles => SetQuality();
-            Delete["/bulk"] = trackFiles => DeleteTrackFiles();
+            Put("/editor",  trackFiles => SetQuality());
+            Delete("/bulk",  trackFiles => DeleteTrackFiles());
         }
 
         private TrackFileResource MapToResource(TrackFile trackFile)
@@ -137,7 +137,7 @@ namespace Lidarr.Api.V1.TrackFiles
             _mediaFileService.Update(trackFile);
         }
 
-        private Response SetQuality()
+        private object SetQuality()
         {
             var resource = Request.Body.FromJson<TrackFileListResource>();
             var trackFiles = _mediaFileService.Get(resource.TrackFileIds);
@@ -152,8 +152,8 @@ namespace Lidarr.Api.V1.TrackFiles
 
             _mediaFileService.Update(trackFiles);
 
-            return trackFiles.ConvertAll(f => f.ToResource(trackFiles.First().Artist.Value, _upgradableSpecification))
-                               .AsResponse(Nancy.HttpStatusCode.Accepted);
+            return ResponseWithCode(trackFiles.ConvertAll(f => f.ToResource(trackFiles.First().Artist.Value, _upgradableSpecification))
+                               , Nancy.HttpStatusCode.Accepted);
         }
 
         private void DeleteTrackFile(int id)
@@ -175,7 +175,7 @@ namespace Lidarr.Api.V1.TrackFiles
             }
         }
 
-        private Response DeleteTrackFiles()
+        private object DeleteTrackFiles()
         {
             var resource = Request.Body.FromJson<TrackFileListResource>();
             var trackFiles = _mediaFileService.Get(resource.TrackFileIds);
@@ -186,7 +186,7 @@ namespace Lidarr.Api.V1.TrackFiles
                 _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
             }
 
-            return new object().AsResponse();
+            return new object();
         }
 
         public void Handle(TrackFileAddedEvent message)
