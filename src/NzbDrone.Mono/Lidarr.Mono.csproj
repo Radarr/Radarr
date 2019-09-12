@@ -4,7 +4,7 @@
     <Platforms>x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.4" />
+    <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
   </ItemGroup>
   <ItemGroup>
