@@ -165,6 +165,9 @@ PackageMono()
     echo "Copying Binaries"
     cp -r $outputFolder $outputFolderLinux
 
+    echo "Replacing System.Numerics.Vectors.dll"
+    cp $sourceFolder/Libraries/Mono/System.Numerics.Vectors.dll $outputFolderLinux
+
     echo "Removing Service helpers"
     rm -f $outputFolderLinux/ServiceUninstall.*
     rm -f $outputFolderLinux/ServiceInstall.*
