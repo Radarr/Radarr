@@ -141,15 +141,16 @@ Build()
     ProgressEnd 'Build'
 }
 
-RunGulp()
+YarnInstall()
 {
     ProgressStart 'yarn install'
     yarn install
     #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
     ProgressEnd 'yarn install'
+}
 
-    LintUI
-
+RunGulp()
+{
     ProgressStart 'Running gulp'
     CheckExitCode yarn run build --production
     ProgressEnd 'Running gulp'
@@ -305,21 +306,41 @@ case "$(uname -s)" in
 esac
 
 POSITIONAL=()
+
+if [ $# -eq 0 ]; then
+    echo "No arguments provided, building everything"
+    BACKEND=YES
+    FRONTEND=YES
+    PACKAGES=YES
+    LINT=YES
+fi
+
 while [[ $# -gt 0 ]]
 do
 key="$1"
 
 case $key in
-    --only-backend)
-        ONLY_BACKEND=YES
+    --backend)
+        BACKEND=YES
         shift # past argument
         ;;
-    --only-frontend)
-        ONLY_FRONTEND=YES
+    --frontend)
+        FRONTEND=YES
         shift # past argument
         ;;
-    --only-packages)
-        ONLY_PACKAGES=YES
+    --packages)
+        PACKAGES=YES
+        shift # past argument
+        ;;
+    --lint)
+        LINT=YES
+        shift # past argument
+        ;;
+    --all)
+        BACKEND=YES
+        FRONTEND=YES
+        PACKAGES=YES
+        LINT=YES
         shift # past argument
         ;;
     *)    # unknown option
@@ -330,22 +351,30 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-# Only build backend if we haven't set only-frontend or only-packages
-if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
+if [ "$BACKEND" == "YES" ];
 then
     UpdateVersionNumber
     Build
     PackageTests
 fi
 
-# Only build frontend if we haven't set only-backend or only-packages
-if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_PACKAGES" ];
+if [ "$FRONTEND" == "YES" ];
 then
-   RunGulp
+    YarnInstall
+    RunGulp
 fi
 
-# Only package if we haven't set only-backend or only-frontend
-if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
+if [ "$LINT" == "YES" ];
+then
+    if [ -z "$FRONTEND" ];
+    then
+        YarnInstall
+    fi
+    
+    LintUI
+fi
+
+if [ "$PACKAGES" == "YES" ];
 then
     UpdateVersionNumber
     PackageMono

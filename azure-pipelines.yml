@@ -54,7 +54,7 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
-      - bash: ./build.sh --only-backend
+      - bash: ./build.sh --backend
         displayName: Build Lidarr Backend
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
@@ -66,11 +66,11 @@ stages:
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
 
   - stage: Build_Frontend
-    displayName: Build Frontend
+    displayName: Frontend
     dependsOn: []
     
     jobs:
-    - job: Frontend
+    - job: Build
       strategy:
         matrix:
           Linux:
@@ -92,7 +92,7 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
-      - bash: ./build.sh --only-frontend
+      - bash: ./build.sh --frontend
         displayName: Build Lidarr Frontend
         env:
           FORCE_COLOR: 0
@@ -101,7 +101,7 @@ stages:
         displayName: Publish Frontend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
         
-  - stage: Package
+  - stage: Installer
     dependsOn:
     - Build_Backend
     - Build_Frontend
@@ -125,7 +125,7 @@ stages:
           artifactName: WindowsFrontend
           targetPath: _output
         displayName: Fetch Frontend
-      - bash: ./build.sh --only-packages
+      - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
           ./setup/inno/ISCC.exe "./setup/lidarr.iss"
@@ -134,7 +134,12 @@ stages:
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
         displayName: Publish Installer
-      
+
+  - stage: Packages
+    dependsOn:
+    - Build_Backend
+    - Build_Frontend
+    jobs:
     - job: Other_Packages
       displayName: Create Standard Packages
       pool:
@@ -154,7 +159,7 @@ stages:
           artifactName: WindowsFrontend
           targetPath: _output
         displayName: Fetch Frontend
-      - bash: ./build.sh --only-packages
+      - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
           chmod a+x $(artifactsFolder)/macos/Lidarr/fpcalc
@@ -514,6 +519,31 @@ stages:
     condition: eq(variables['system.pullrequest.isfork'], false)
       
     jobs:
+    - job: Lint_Frontend
+      displayName: Lint Frontend
+      strategy:
+        matrix:
+          Linux:
+            osName: 'Linux'
+            imageName: 'ubuntu-16.04'
+          Windows:
+            osName: 'Windows'
+            imageName: 'vs2017-win2016'
+      pool:
+        vmImage: $(imageName)
+      steps:
+      - task: NodeTool@0
+        displayName: Set Node.js version
+        inputs:
+          versionSpec: '10.x'
+      - checkout: self
+        submodules: true
+        fetchDepth: 1
+      - bash: ./build.sh --lint
+        displayName: Lint Lidarr Frontend
+        env:
+          FORCE_COLOR: 0
+
     - job: Analyze_Frontend
       displayName: Frontend
       pool:
@@ -554,7 +584,7 @@ stages:
             sonar.coverage.exclusions=**/Lidarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
-      - bash: ./build.sh --only-backend
+      - bash: ./build.sh --backend
         displayName: Build Lidarr Backend
       - task: Bash@3
         displayName: Coverage Unit Tests
