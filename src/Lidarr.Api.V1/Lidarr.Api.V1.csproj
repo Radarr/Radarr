@@ -11,7 +11,7 @@
     <ProjectReference Include="..\NzbDrone.SignalR\Lidarr.SignalR.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="6.2.1" />
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Ical.Net" Version="2.2.32" />
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Nancy.Authentication.Basic" Version="2.0.0" />

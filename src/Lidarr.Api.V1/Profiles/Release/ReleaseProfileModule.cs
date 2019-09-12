@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentValidation.Results;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Profiles.Releases;
 using Lidarr.Http;
@@ -21,14 +21,12 @@ namespace Lidarr.Api.V1.Profiles.Release
             UpdateResource = Update;
             DeleteResource = Delete;
 
-            SharedValidator.Custom(restriction =>
+            SharedValidator.RuleFor(r => r).Custom((restriction, context) =>
             {
                 if (restriction.Ignored.IsNullOrWhiteSpace() && restriction.Required.IsNullOrWhiteSpace() && restriction.Preferred.Empty())
                 {
-                    return new ValidationFailure("", "'Must contain', 'Must not contain' or 'Preferred' is required");
+                    context.AddFailure("Either 'Must contain' or 'Must not contain' is required");
                 }
-
-                return null;
             });
         }
 
