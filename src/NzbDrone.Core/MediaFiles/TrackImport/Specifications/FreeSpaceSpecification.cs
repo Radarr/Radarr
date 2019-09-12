@@ -46,7 +46,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                     return Decision.Accept();
                 }
 
-                if (freeSpace < localTrack.Size + 100.Megabytes())
+                if (freeSpace < localTrack.Size + _configService.MinimumFreeSpaceWhenImporting.Megabytes())
                 {
                     _logger.Warn("Not enough free space ({0}) to import: {1} ({2})", freeSpace, localTrack, localTrack.Size);
                     return Decision.Reject("Not enough free space");

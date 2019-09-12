@@ -66,8 +66,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         }
 
         [Test]
-        public void should_reject_when_there_isnt_enough_space_for_file_plus_100mb_padding()
+        public void should_reject_when_there_isnt_enough_space_for_file_plus_min_free_space()
         {
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.MinimumFreeSpaceWhenImporting)
+                .Returns(100);
+
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(150.Megabytes());
 
