@@ -4,7 +4,7 @@
     <Platforms>x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NBuilder" Version="6.0.0" />
+    <PackageReference Include="NBuilder" Version="6.0.1" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="4.0.11" />
     <PackageReference Include="AutoFixture" Version="4.11.0" />
   </ItemGroup>
