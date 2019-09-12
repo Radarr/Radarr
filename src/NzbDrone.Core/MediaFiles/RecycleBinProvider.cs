@@ -167,18 +167,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _logger.Info("Removing items older than {0} days from the recycling bin", cleanupDays);
 
-            foreach (var folder in _diskProvider.GetDirectories(_configService.RecycleBin))
-            {
-                if (_diskProvider.FolderGetLastWrite(folder).AddDays(7) > DateTime.UtcNow)
-                {
-                    _logger.Debug("Folder hasn't expired yet, skipping: {0}", folder);
-                    continue;
-                }
-
-                _diskProvider.DeleteFolder(folder, true);
-            }
-
-            foreach (var file in _diskProvider.GetFiles(_configService.RecycleBin, SearchOption.TopDirectoryOnly))
+            foreach (var file in _diskProvider.GetFiles(_configService.RecycleBin, SearchOption.AllDirectories))
             {
                 if (_diskProvider.FileGetLastWrite(file).AddDays(cleanupDays) > DateTime.UtcNow)
                 {
@@ -188,6 +177,8 @@ namespace NzbDrone.Core.MediaFiles
 
                 _diskProvider.DeleteFile(file);
             }
+
+            _diskProvider.RemoveEmptySubfolders(_configService.RecycleBin);
 
             _logger.Debug("Recycling Bin has been cleaned up.");
         }
