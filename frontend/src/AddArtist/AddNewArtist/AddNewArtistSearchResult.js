@@ -59,6 +59,10 @@ class AddNewArtistSearchResult extends Component {
     this.setState({ isNewAddArtistModalOpen: false });
   }
 
+  onMBLinkPress = (event) => {
+    event.stopPropagation();
+  }
+
   //
   // Render
 
@@ -104,7 +108,7 @@ class AddNewArtistSearchResult extends Component {
               />
           }
 
-          <div>
+          <div className={styles.content}>
             <div className={styles.name}>
               {artistName}
 
@@ -131,6 +135,18 @@ class AddNewArtistSearchResult extends Component {
                   /> :
                   null
               }
+
+              <Link
+                className={styles.mbLink}
+                to={`https://musicbrainz.org/artist/${foreignArtistId}`}
+                onPress={this.onMBLinkPress}
+              >
+                <Icon
+                  className={styles.mbLinkIcon}
+                  name={icons.EXTERNAL_LINK}
+                  size={28}
+                />
+              </Link>
             </div>
 
             <div>

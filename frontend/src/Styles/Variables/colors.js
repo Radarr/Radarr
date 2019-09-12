@@ -1,6 +1,7 @@
 const lidarrGreen = '#00A65B';
 
 module.exports = {
+  textColor: '#515253',
   defaultColor: '#333',
   disabledColor: '#999',
   dimColor: '#555',
