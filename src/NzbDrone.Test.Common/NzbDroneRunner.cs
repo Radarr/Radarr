@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -6,6 +7,7 @@ using System.Xml.Linq;
 using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Configuration;
 using RestSharp;
@@ -17,6 +19,7 @@ namespace NzbDrone.Test.Common
         private readonly IProcessProvider _processProvider;
         private readonly IRestClient _restClient;
         private Process _nzbDroneProcess;
+        private List<string> _startupLog;
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
@@ -48,6 +51,7 @@ namespace NzbDrone.Test.Common
                 readarrConsoleExe = "Readarr";
             }
 
+            _startupLog = new List<string>();
             if (BuildInfo.IsDebug)
             {
                 var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.1" : "net462";
@@ -66,7 +70,8 @@ namespace NzbDrone.Test.Common
                 {
                     TestContext.Progress.WriteLine("Readarr has exited unexpectedly");
                     Thread.Sleep(2000);
-                    Assert.Fail("Process has exited: ExitCode={0}", _nzbDroneProcess.ExitCode);
+                    var output = _startupLog.Join(Environment.NewLine);
+                    Assert.Fail("Process has exited: ExitCode={0} Output={1}", _nzbDroneProcess.ExitCode, output);
                 }
 
                 var request = new RestRequest("system/status");
@@ -77,6 +82,7 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
+                    _startupLog = null;
                     TestContext.Progress.WriteLine("Readarr is started. Running Tests");
                     return;
                 }
@@ -118,6 +124,11 @@ namespace NzbDrone.Test.Common
         private void OnOutputDataReceived(string data)
         {
             TestContext.Progress.WriteLine(" > " + data);
+
+            if (_startupLog != null)
+            {
+                _startupLog.Add(data);
+            }
 
             if (data.Contains("Press enter to exit"))
             {
