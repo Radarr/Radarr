@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -8,6 +9,7 @@ using System.Xml.XPath;
 using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Configuration;
 using RestSharp;
@@ -19,6 +21,7 @@ namespace NzbDrone.Test.Common
         private readonly IProcessProvider _processProvider;
         private readonly IRestClient _restClient;
         private Process _nzbDroneProcess;
+        private List<string> _startupLog;
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
@@ -38,6 +41,7 @@ namespace NzbDrone.Test.Common
             
             var lidarrConsoleExe = OsInfo.IsWindows ? "Lidarr.Console.exe" : "Lidarr.exe";
 
+            _startupLog = new List<string>();
             if (BuildInfo.IsDebug)
             {
                 Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "_output", "Lidarr.Console.exe"));
@@ -53,7 +57,10 @@ namespace NzbDrone.Test.Common
 
                 if (_nzbDroneProcess.HasExited)
                 {
-                    Assert.Fail("Process has exited");
+                    Console.WriteLine("Lidarr has exited unexpectedly");
+                    Thread.Sleep(2000);
+                    var output = _startupLog.Join(Environment.NewLine);
+                    Assert.Fail("Process has exited: ExitCode={0} Output={1}", _nzbDroneProcess.ExitCode, output);
                 }
 
                 var request = new RestRequest("system/status");
@@ -64,6 +71,7 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
+                    _startupLog = null;
                     Console.WriteLine("Lidarr is started. Running Tests");
                     return;
                 }
@@ -96,6 +104,8 @@ namespace NzbDrone.Test.Common
 
         private void Start(string outputNzbdroneConsoleExe)
         {
+            Console.WriteLine("Starting instance from {0}", outputNzbdroneConsoleExe);
+
             var args = "-nobrowser -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
 
@@ -104,6 +114,11 @@ namespace NzbDrone.Test.Common
         private void OnOutputDataReceived(string data)
         {
             Console.WriteLine(data);
+
+            if (_startupLog != null)
+            {
+                _startupLog.Add(data);
+            }
 
             if (data.Contains("Press enter to exit"))
             {
