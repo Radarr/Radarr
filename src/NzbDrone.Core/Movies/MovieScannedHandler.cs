@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.MediaFiles.Events;
@@ -28,13 +28,11 @@ namespace NzbDrone.Core.Movies
         {
             if (movie.AddOptions == null)
             {
-                //_episodeAddedService.SearchForRecentlyAdded(movie.Id);
                 return;
             }
 
             _logger.Info("[{0}] was recently added, performing post-add actions", movie.Title);
 
-            //_episodeMonitoredService.SetEpisodeMonitoredStatus(movie, movie.AddOptions);
             if (movie.AddOptions.SearchForMovie)
             {
                 _commandQueueManager.Push(new MoviesSearchCommand { MovieIds = new List<int> { movie.Id } });
