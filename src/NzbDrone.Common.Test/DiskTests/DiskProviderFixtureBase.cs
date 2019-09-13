@@ -123,6 +123,21 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        public void should_be_able_to_delete_nested_empty_subdirs()
+        {
+            var artistDir = Path.Combine(GetTempFilePath(), "Artist");
+            var albumDir = Path.Combine(artistDir, "Album");
+
+            Directory.CreateDirectory(Path.Combine(albumDir));
+            Directory.CreateDirectory(Path.Combine(albumDir, "Album"));
+            Directory.CreateDirectory(Path.Combine(albumDir, "Album", "CD1"));
+            Directory.CreateDirectory(Path.Combine(albumDir, "Album", "CD2"));
+
+            Subject.RemoveEmptySubfolders(artistDir);
+            Directory.Exists(albumDir).Should().BeFalse();
+        }
+
+        [Test]
         public void empty_folder_should_return_folder_modified_date()
         {
             var tempfolder = new DirectoryInfo(TempFolder);
