@@ -207,7 +207,7 @@ stages:
           sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${RELEASENAME}"
           sentry-cli releases -p lidarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
-          if [[ ${BUILD_SOURCEBRANCHNAME} == "refs/heads/develop" ]]; then
+          if [[ ${BUILD_SOURCEBRANCH} == "refs/heads/develop" ]]; then
           sentry-cli releases deploys "${RELEASENAME}" new -e nightly
           else
           sentry-cli releases deploys "${RELEASENAME}" new -e production
