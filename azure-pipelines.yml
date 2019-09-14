@@ -229,6 +229,7 @@ stages:
     condition: succeeded()
     jobs:
     - job: Unit
+      displayName: Unit Native
       strategy:
         matrix:
           Linux:
@@ -285,6 +286,65 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Unit Tests'
           failTaskOnFailedTests: true
+
+    - job: Unit_Docker
+      displayName: Unit Docker
+      strategy:
+        matrix:
+          mono500:
+            testName: 'Mono 5.0'
+            containerImage: mono:5.0
+          mono504:
+            testName: 'Mono 5.4'
+            containerImage: mono:5.4
+          mono508:
+            testName: 'Mono 5.8'
+            containerImage: mono:5.8
+          mono510:
+            testName: 'Mono 5.10'
+            containerImage: mono:5.10
+          mono516:
+            testName: 'Mono 5.16'
+            containerImage: mono:5.16
+          mono518:
+            testName: 'Mono 5.18'
+            containerImage: mono:5.18
+          mono520:
+            testName: 'Mono 5.20'
+            containerImage: mono:5.20
+
+      pool:
+        vmImage: 'ubuntu-16.04'
+      
+      # May need to setup own containers to include fpcalc and sqlite for all versions
+      container: $[ variables['containerImage'] ]
+
+      timeoutInMinutes: 5
+        
+      steps:
+      - bash: mono --version
+        displayName: Check Mono version
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: WindowsTests
+          targetPath: $(testsFolder)
+      - task: Bash@3
+        displayName: Run Tests
+        env:
+          TEST_DIR: $(Build.SourcesDirectory)/_tests
+        inputs:
+          targetType: 'filePath'
+          filePath: '$(testsFolder)/test.sh'
+          arguments: 'Linux Unit Test'
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: '$(testName) Unit Tests'
 
   - stage: Integration
     displayName: Integration
@@ -366,6 +426,12 @@ stages:
       displayName: Integration Docker
       strategy:
         matrix:
+          mono500:
+            testName: 'Mono 5.0'
+            containerImage: mono:5.0
+          mono504:
+            testName: 'Mono 5.4'
+            containerImage: mono:5.4
           mono508:
             testName: 'Mono 5.8'
             containerImage: mono:5.8
@@ -390,7 +456,7 @@ stages:
 
       container: $[ variables['containerImage'] ]
 
-      timeoutInMinutes: 6
+      timeoutInMinutes: 15
         
       steps:
       - bash: mono --version
