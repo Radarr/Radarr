@@ -1,6 +1,7 @@
 # Lidarr
 
 [![Build Status](https://dev.azure.com/Lidarr/Lidarr/_apis/build/status/lidarr.Lidarr?branchName=develop)](https://dev.azure.com/Lidarr/Lidarr/_build/latest?definitionId=1&branchName=develop)
+[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=Z1I4SVZOMitOdENIMHpkMlN3djJiRVJkTzBpdUJ5Q2ZtWVhnYTFvYS9qcz0tLTM5THJZRkVCZlk0blp5cXFBK1BDYWc9PQ==--67f41b00af03ab78148d3d711f22ca42ab348a52)](https://automate.browserstack.com/public-build/Z1I4SVZOMitOdENIMHpkMlN3djJiRVJkTzBpdUJ5Q2ZtWVhnYTFvYS9qcz0tLTM5THJZRkVCZlk0blp5cXFBK1BDYWc9PQ==--67f41b00af03ab78148d3d711f22ca42ab348a52)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/lidarr.svg)](https://github.com/lidarr/Lidarr/wiki/Docker)
 ![Github Downloads](https://img.shields.io/github/downloads/lidarr/lidarr/total.svg)
 [![Backers on Open Collective](https://opencollective.com/lidarr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/lidarr/sponsors/badge.svg)](#sponsors)
