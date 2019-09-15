@@ -16,7 +16,6 @@ namespace NzbDrone.Common.Test
     // We don't want one tests setup killing processes used in another
     [NonParallelizable]
     [TestFixture]
-    [Platform(Exclude = "MacOsX")]
     public class ProcessProviderFixture : TestBase<ProcessProvider>
     {
 
@@ -68,22 +67,25 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        [Retry(3)]
         public void should_be_able_to_start_process()
         {
             var process = StartDummyProcess();
 
-            Thread.Sleep(500);
+            var check = Subject.GetProcessById(process.Id);
+            check.Should().NotBeNull();
 
-            Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should()
-                   .BeTrue("one running dummy process");
+            process.Refresh();
+            process.HasExited.Should().BeFalse();
 
             process.Kill();
             process.WaitForExit();
-
-            Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should().BeFalse();
+            process.HasExited.Should().BeTrue();
         }
 
         [Test]
+        [Platform(Exclude="MacOsX")]
+        [Retry(3)]
         public void exists_should_find_running_process()
         {
             var process = StartDummyProcess();
@@ -99,12 +101,12 @@ namespace NzbDrone.Common.Test
 
 
         [Test]
+        [Platform(Exclude="MacOsX")]
+        [Retry(3)]
         public void kill_all_should_kill_all_process_with_name()
         {
             var dummy1 = StartDummyProcess();
             var dummy2 = StartDummyProcess();
-
-            Thread.Sleep(500);
 
             Subject.KillAll(DummyApp.DUMMY_PROCCESS_NAME);
 
@@ -114,11 +116,26 @@ namespace NzbDrone.Common.Test
 
         private Process StartDummyProcess()
         {
+            var processStarted = new ManualResetEventSlim();
+
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe");
-            return Subject.Start(path);
+            var process = Subject.Start(path, onOutputDataReceived: (string data) => {
+                    if (data.StartsWith("Dummy process. ID:"))
+                    {
+                        processStarted.Set();
+                    }
+                });
+
+            if (!processStarted.Wait(2000))
+            {
+                Assert.Fail("Failed to start process within 2 sec");
+            }
+
+            return process;
         }
 
         [Test]
+        [Retry(3)]
         public void ToString_on_new_processInfo()
         {
             Console.WriteLine(new ProcessInfo().ToString());
