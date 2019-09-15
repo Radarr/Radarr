@@ -254,23 +254,22 @@ stages:
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - bash: |
+          SYMLINK=5_18_1
+          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+          echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
+          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
           chmod a+x _tests/fpcalc
-          export DYLD_FALLBACK_LIBRARY_PATH=${BUILD_SOURCESDIRECTORY}/_tests
-        displayName: Make fpcalc Executable
+        displayName: Set Mono Version and make fpcalc Executable
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - task: Bash@3
         displayName: Run Tests
         env:
-          DYLD_FALLBACK_LIBRARY_PATH: $(Build.SourcesDirectory)/_tests
           TEST_DIR: $(Build.SourcesDirectory)/_tests
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
           arguments: '$(osName) Unit Test'
-      - publish: TestResult.xml
-        artifact: 'TestResult'
-        displayName: Publish Test Result
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
@@ -316,7 +315,7 @@ stages:
       
       container: $[ variables['containerImage'] ]
 
-      timeoutInMinutes: 5
+      timeoutInMinutes: 10
         
       steps:
       - bash: mono --version
@@ -330,8 +329,6 @@ stages:
           targetPath: $(testsFolder)
       - task: Bash@3
         displayName: Run Tests
-        env:
-          TEST_DIR: $(Build.SourcesDirectory)/_tests
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
@@ -369,7 +366,7 @@ stages:
       - bash: |
           SYMLINK=5_18_1
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-          echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;].:$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+          echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
           echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
         displayName: Set Mono Version

@@ -29,10 +29,9 @@ NUNIT_PARAMS="--workers=1"
 
 if [ "$PLATFORM" = "Mac" ]; then
 
-  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:/usr/local/lib:/lib:/usr/lib"
-  echo $LD_LIBRARY_PATH
-  echo $DYLD_LIBRARY_PATH
+  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:$MONOPREFIX/lib:/usr/local/lib:/lib:/usr/lib"
   echo $DYLD_FALLBACK_LIBRARY_PATH
+  mono --version
 
   # To debug which libraries are being loaded:
   # export DYLD_PRINT_LIBRARIES=YES
