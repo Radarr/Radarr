@@ -232,9 +232,6 @@ stages:
       displayName: Unit Native
       strategy:
         matrix:
-          Linux:
-            osName: 'Linux'
-            imageName: 'ubuntu-16.04'
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.13'
@@ -253,11 +250,6 @@ stages:
           buildType: 'current'
           artifactName: WindowsTests
           targetPath: $(testsFolder)
-      - bash: |
-          wget https://github.com/acoustid/chromaprint/releases/download/v1.4.3/chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz
-          sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
-        displayName: Install fpcalc
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -291,32 +283,37 @@ stages:
       displayName: Unit Docker
       strategy:
         matrix:
-          mono500:
-            testName: 'Mono 5.0'
-            containerImage: mono:5.0
-          mono504:
-            testName: 'Mono 5.4'
-            containerImage: mono:5.4
           mono508:
             testName: 'Mono 5.8'
-            containerImage: mono:5.8
+            containerImage: lidarr/testimages:mono-5.8
           mono510:
             testName: 'Mono 5.10'
-            containerImage: mono:5.10
+            containerImage: lidarr/testimages:mono-5.10
+          mono512:
+            testName: 'Mono 5.12'
+            containerImage: lidarr/testimages:mono-5.12
+          mono514:
+            testName: 'Mono 5.14'
+            containerImage: lidarr/testimages:mono-5.14
           mono516:
             testName: 'Mono 5.16'
-            containerImage: mono:5.16
+            containerImage: lidarr/testimages:mono-5.16
           mono518:
             testName: 'Mono 5.18'
-            containerImage: mono:5.18
+            containerImage: lidarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
-            containerImage: mono:5.20
+            containerImage: lidarr/testimages:mono-5.20
+          mono600:
+            testName: 'Mono 6.0'
+            containerImage: lidarr/testimages:mono-6.0
+          mono604:
+            testName: 'Mono 6.4'
+            containerImage: lidarr/testimages:mono-6.4
 
       pool:
         vmImage: 'ubuntu-16.04'
       
-      # May need to setup own containers to include fpcalc and sqlite for all versions
       container: $[ variables['containerImage'] ]
 
       timeoutInMinutes: 5
@@ -345,6 +342,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
+          failTaskOnFailedTests: true
 
   - stage: Integration
     displayName: Integration
@@ -355,10 +353,6 @@ stages:
       displayName: Integration Native
       strategy:
         matrix:
-          Linux:
-            osName: 'Linux'
-            imageName: 'ubuntu-16.04'
-            pattern: 'Lidarr.**.linux.tar.gz'
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.13'
@@ -372,11 +366,6 @@ stages:
         vmImage: $(imageName)
         
       steps:
-      - script: |
-          wget https://github.com/acoustid/chromaprint/releases/download/v1.4.3/chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz
-          sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
-        displayName: Install fpcalc
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - bash: |
           SYMLINK=5_18_1
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
@@ -426,28 +415,34 @@ stages:
       displayName: Integration Docker
       strategy:
         matrix:
-          mono500:
-            testName: 'Mono 5.0'
-            containerImage: mono:5.0
-          mono504:
-            testName: 'Mono 5.4'
-            containerImage: mono:5.4
           mono508:
             testName: 'Mono 5.8'
-            containerImage: mono:5.8
+            containerImage: lidarr/testimages:mono-5.8
           mono510:
             testName: 'Mono 5.10'
-            containerImage: mono:5.10
+            containerImage: lidarr/testimages:mono-5.10
+          mono512:
+            testName: 'Mono 5.12'
+            containerImage: lidarr/testimages:mono-5.12
+          mono514:
+            testName: 'Mono 5.14'
+            containerImage: lidarr/testimages:mono-5.14
           mono516:
             testName: 'Mono 5.16'
-            containerImage: mono:5.16
+            containerImage: lidarr/testimages:mono-5.16
           mono518:
             testName: 'Mono 5.18'
-            containerImage: mono:5.18
+            containerImage: lidarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
-            containerImage: mono:5.20
-            
+            containerImage: lidarr/testimages:mono-5.20
+          mono600:
+            testName: 'Mono 6.0'
+            containerImage: lidarr/testimages:mono-6.0
+          mono604:
+            testName: 'Mono 6.4'
+            containerImage: lidarr/testimages:mono-6.4
+
       variables:
         pattern: 'Lidarr.**.linux.tar.gz'
 
