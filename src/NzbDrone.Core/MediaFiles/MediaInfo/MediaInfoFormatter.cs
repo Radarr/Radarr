@@ -411,7 +411,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         .Split(new string[] {" / "}, StringSplitOptions.RemoveEmptyEntries)
                         .FirstOrDefault()
                         ?.Split('/')
-                        .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
+                        .Sum(s => decimal.Parse(s.Replace("0.2.1", "2.1"), CultureInfo.InvariantCulture));
                 }
             }
             catch (Exception e)
