@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Qualities
         //TODO: Go back to fully parsing the quality from the start!
         public static Quality FindByInfo(Source source, Resolution resolution, Modifier modifier)
         {
-            return All.SingleOrDefault(q =>
+            return All.FirstOrDefault(q =>
                        q.Source == source && ((q.Resolution == resolution) ||
                                               (q.Resolution == Resolution.Unknown)) && (q.Modifier == modifier)) ??
                    All.FirstOrDefault(q => q.Source == source && ((q.Resolution == resolution) ||
