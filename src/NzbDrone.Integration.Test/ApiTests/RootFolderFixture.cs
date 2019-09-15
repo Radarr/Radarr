@@ -44,6 +44,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void invalid_path_should_return_bad_request()
         {
+            IgnoreOnMonoVersions("5.12", "5.14");
+
             var rootFolder = new RootFolderResource
             {
                 Path = "invalid_path"

@@ -32,6 +32,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_profileid_should_return_badrequest()
         {
+            IgnoreOnMonoVersions("5.12", "5.14");
+
             EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
 
             var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
@@ -44,6 +46,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_path_should_return_badrequest()
         {
+            IgnoreOnMonoVersions("5.12", "5.14");
+
             EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
 
             var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
@@ -100,6 +104,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void get_artist_by_unknown_id_should_return_404()
         {
+            IgnoreOnMonoVersions("5.12", "5.14");
+
             var result = Artist.InvalidGet(1000000);
         }
 

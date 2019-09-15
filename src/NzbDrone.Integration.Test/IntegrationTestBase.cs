@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,21 +11,17 @@ using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
 using Lidarr.Api.V1.Blacklist;
-using Lidarr.Api.V1.Commands;
 using Lidarr.Api.V1.Config;
 using Lidarr.Api.V1.DownloadClient;
-using Lidarr.Api.V1.TrackFiles;
 using Lidarr.Api.V1.History;
 using Lidarr.Api.V1.Profiles.Quality;
 using Lidarr.Api.V1.RootFolders;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Albums;
-using Lidarr.Api.V1.Tracks;
 using Lidarr.Api.V1.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music.Commands;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
@@ -168,6 +163,22 @@ namespace NzbDrone.Integration.Test
                 catch
                 {
                 }
+            }
+        }
+
+        protected void IgnoreOnMonoVersions(params string[] version_strings)
+        {
+            if (!PlatformInfo.IsMono)
+            {
+                return;
+            }
+
+            var current = PlatformInfo.GetVersion();
+            var versions = version_strings.Select(x => new Version(x)).ToList();
+
+            if (versions.Any(x => x.Major == current.Major && x.Minor == current.Minor))
+            {
+                throw new IgnoreException($"Ignored on mono {PlatformInfo.GetVersion()}");
             }
         }
 
