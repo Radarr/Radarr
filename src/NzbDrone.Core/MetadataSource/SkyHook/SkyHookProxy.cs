@@ -322,8 +322,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
                 .SelectMany(format => format.FormatTags)
                 .Where(tag => TagType.Language.Equals(tag.TagType))
-                .Select(tag => (String) tag.Value)
-                .Select(value => (Language) Enum.Parse(typeof(Language), value, false))
+                .Select(tag => (Language) tag.Value)
                 .Select(language => IsoLanguages.Get(language)?.TwoLetterCode ?? "en")
                 .Distinct()
                 .ToList();
