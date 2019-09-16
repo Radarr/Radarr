@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             TestLogger.Debug($"Found releases:\n{result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease?.ForeignReleaseId).ToJson()}");
 
             result.Should().HaveCount(testcase.ExpectedMusicBrainzReleaseIds.Count);
-            result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease.ForeignReleaseId).ShouldBeEquivalentTo(testcase.ExpectedMusicBrainzReleaseIds);
+            result.Where(x => x.AlbumRelease != null).Select(x => x.AlbumRelease.ForeignReleaseId).Should().BeEquivalentTo(testcase.ExpectedMusicBrainzReleaseIds);
         }
     }
 }

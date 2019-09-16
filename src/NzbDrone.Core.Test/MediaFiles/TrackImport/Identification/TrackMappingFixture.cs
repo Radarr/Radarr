@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             
             result.Mapping
                 .ToDictionary(x => x.Key, y => y.Value.Item1)
-                .ShouldBeEquivalentTo(new Dictionary<LocalTrack, Track> {
+                .Should().BeEquivalentTo(new Dictionary<LocalTrack, Track> {
                         {localTracks[0], tracks[0]},
                         {localTracks[1], tracks[2]},
                         {localTracks[2], tracks[1]},
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             result.Mapping
                 .ToDictionary(x => x.Key, y => y.Value.Item1)
-                .ShouldBeEquivalentTo(new Dictionary<LocalTrack, Track> {
+                .Should().BeEquivalentTo(new Dictionary<LocalTrack, Track> {
                         {localTracks[0], tracks[0]},
                         {localTracks[1], tracks[1]},
                         {localTracks[2], tracks[2]},
@@ -156,12 +156,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             
             result.Mapping
                 .ToDictionary(x => x.Key, y => y.Value.Item1)
-                .ShouldBeEquivalentTo(new Dictionary<LocalTrack, Track> {
+                .Should().BeEquivalentTo(new Dictionary<LocalTrack, Track> {
                         {localTracks[0], tracks[0]},
                         {localTracks[1], tracks[2]}
                     });
             result.LocalExtra.Should().BeEmpty();
-            result.MBExtra.ShouldBeEquivalentTo(new List<Track> { tracks[1] });
+            result.MBExtra.Should().BeEquivalentTo(new List<Track> { tracks[1] });
         }
 
         [Test]
@@ -176,11 +176,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             
             result.Mapping
                 .ToDictionary(x => x.Key, y => y.Value.Item1)
-                .ShouldBeEquivalentTo(new Dictionary<LocalTrack, Track> {
+                .Should().BeEquivalentTo(new Dictionary<LocalTrack, Track> {
                         {localTracks[0], tracks[0]},
                         {localTracks[2], tracks[1]}
                     });
-            result.LocalExtra.ShouldBeEquivalentTo(new List<LocalTrack> { localTracks[1] });
+            result.LocalExtra.Should().BeEquivalentTo(new List<LocalTrack> { localTracks[1] });
             result.MBExtra.Should().BeEmpty();
         }
     }

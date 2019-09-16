@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var artists = db.Query("SELECT Artists.* from Artists");
 
-            artists.Select(x => x["Id"]).ShouldBeEquivalentTo(ids);
+            artists.Select(x => x["Id"]).Should().BeEquivalentTo(ids);
 
             var duplicates = artists.GroupBy(x => x["ArtistMetadataId"])
                 .Where(x => x.Count() > 1);

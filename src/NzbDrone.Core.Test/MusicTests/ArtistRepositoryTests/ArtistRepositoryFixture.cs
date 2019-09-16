@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             _artistRepo.Insert(artist1);
 
             Action insertDupe = () => _artistRepo.Insert(artist2);
-            insertDupe.ShouldThrow<SQLiteException>();
+            insertDupe.Should().Throw<SQLiteException>();
         }
     }
 }

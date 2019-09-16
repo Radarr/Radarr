@@ -301,7 +301,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                         
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(100);
-            output.Select(x => x.LocalTracks.Count).Distinct().ShouldBeEquivalentTo(new List<int> { 10 });
+            output.Select(x => x.LocalTracks.Count).Distinct().Should().BeEquivalentTo(new List<int> { 10 });
         }
 
         [Test]

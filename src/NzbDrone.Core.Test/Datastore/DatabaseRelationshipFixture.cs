@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Datastore
             var loadedAlbum = Db.Single<AlbumRelease>().Album.Value;
 
             loadedAlbum.Should().NotBeNull();
-            loadedAlbum.ShouldBeEquivalentTo(album,
+            loadedAlbum.Should().BeEquivalentTo(album,
                                              options => options
                                              .IncludingAllRuntimeProperties()
                                              .Excluding(c => c.Artist)
