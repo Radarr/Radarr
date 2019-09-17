@@ -9,7 +9,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="OAuth" Version="1.0.3" />
-    <PackageReference Include="Prowlin" Version="0.9.4456.26422" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
     <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
@@ -24,12 +23,6 @@
     <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Growl.Connector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=980c2339411be384, processorArchitecture=MSIL">
-      <HintPath>..\Libraries\Growl.Connector.dll</HintPath>
-    </Reference>
-    <Reference Include="Growl.CoreLibrary, Version=2.0.0.0, Culture=neutral, PublicKeyToken=13e59d82e007b064, processorArchitecture=MSIL">
-      <HintPath>..\Libraries\Growl.CoreLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
