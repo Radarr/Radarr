@@ -8,7 +8,6 @@
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="NLog" Version="4.6.7" />
-    <PackageReference Include="OAuth" Version="1.0.3" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
     <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
