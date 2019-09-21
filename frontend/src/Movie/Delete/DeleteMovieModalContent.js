@@ -42,8 +42,7 @@ class DeleteMovieModalContent extends Component {
     const deleteFiles = this.state.deleteFiles;
     const addNetImportExclusion = this.state.addNetImportExclusion;
 
-    this.setState({ deleteFiles: false });
-    this.setState({ addNetImportExclusion: false });
+    this.setState({ deleteFiles: false, addNetImportExclusion: false });
     this.props.onDeletePress(deleteFiles, addNetImportExclusion);
   }
 

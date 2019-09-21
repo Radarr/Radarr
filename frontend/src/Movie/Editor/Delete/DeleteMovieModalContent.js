@@ -20,7 +20,8 @@ class DeleteMovieModalContent extends Component {
     super(props, context);
 
     this.state = {
-      deleteFiles: false
+      deleteFiles: false,
+      addNetImportExclusion: false
     };
   }
 
@@ -31,11 +32,16 @@ class DeleteMovieModalContent extends Component {
     this.setState({ deleteFiles: value });
   }
 
+  onAddNetImportExclusionChange = ({ value }) => {
+    this.setState({ addNetImportExclusion: value });
+  }
+
   onDeleteMovieConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
+    const addNetImportExclusion = this.state.addNetImportExclusion;
 
-    this.setState({ deleteFiles: false });
-    this.props.onDeleteSelectedPress(deleteFiles);
+    this.setState({ deleteFiles: false, addNetImportExclusion: false });
+    this.props.onDeleteSelectedPress(deleteFiles, addNetImportExclusion);
   }
 
   //
@@ -46,7 +52,9 @@ class DeleteMovieModalContent extends Component {
       movies,
       onModalClose
     } = this.props;
+
     const deleteFiles = this.state.deleteFiles;
+    const addNetImportExclusion = this.state.addNetImportExclusion;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -66,6 +74,19 @@ class DeleteMovieModalContent extends Component {
                 helpText={`Delete Movie Folder${movies.length > 1 ? 's' : ''} and all contents`}
                 kind={kinds.DANGER}
                 onChange={this.onDeleteFilesChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Add List Exclusion</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="addNetImportExclusion"
+                value={addNetImportExclusion}
+                helpText="Prevent movie from being added to Radarr by lists"
+                kind={kinds.DANGER}
+                onChange={this.onAddNetImportExclusionChange}
               />
             </FormGroup>
           </div>

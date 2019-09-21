@@ -116,15 +116,8 @@ namespace Radarr.Api.V2.Movies
 
         private void DeleteMovie(int id)
         {
-            var addExclusion = false;
-            var addExclusionQuery = Request.Query.addNetImportExclusion;
-
+            var addExclusion = Request.GetBooleanQueryParameter("addNetImportExclusion");
             var deleteFiles = Request.GetBooleanQueryParameter("deleteFiles");
-
-            if (addExclusionQuery.HasValue)
-            {
-                addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
-            }
 
             _moviesService.DeleteMovie(id, deleteFiles, addExclusion);
         }

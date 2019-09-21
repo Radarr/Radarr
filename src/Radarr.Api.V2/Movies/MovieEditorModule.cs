@@ -89,9 +89,12 @@ namespace Radarr.Api.V2.Movies
         {
             var resource = Request.Body.FromJson<MovieEditorResource>();
 
+            var addExclusion = Request.GetBooleanQueryParameter("addNetImportExclusion");
+            var deleteFiles = Request.GetBooleanQueryParameter("deleteFiles");
+
             foreach (var id in resource.MovieIds)
             {
-                _movieService.DeleteMovie(id, false, false);
+                _movieService.DeleteMovie(id, deleteFiles, addExclusion);
             }
 
             return new object();

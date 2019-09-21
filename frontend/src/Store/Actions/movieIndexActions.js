@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
@@ -355,13 +356,18 @@ export const actionHandlers = handleThunks({
   },
 
   [BULK_DELETE_MOVIE]: function(getState, payload, dispatch) {
+    const {
+      id,
+      ...queryParams
+    } = payload;
+
     dispatch(set({
       section,
       isDeleting: true
     }));
 
     const promise = createAjaxRequest({
-      url: '/movie/editor',
+      url: `/movie/editor?${$.param(queryParams, true)}`,
       method: 'DELETE',
       data: JSON.stringify(payload),
       dataType: 'json'
