@@ -90,7 +90,7 @@ namespace NzbDrone.Core.IndexerSearch
 
             List<Movie> movies = _movieCutoffService.MoviesWhereCutoffUnmet(pagingSpec).Records.ToList();
 
-            var queue = _queueService.GetQueue().Select(q => q.Movie.Id);
+            var queue = _queueService.GetQueue().Where(q => q.Movie != null).Select(q => q.Movie.Id);
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingMovies(missing, message.Trigger == CommandTrigger.Manual);
