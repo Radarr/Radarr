@@ -255,7 +255,7 @@ namespace NzbDrone.Core.Indexers
             {
                 _indexerStatusService.RecordFailure(Definition.Id);
                 ex.WithData("FeedUrl", url);
-                _logger.Error(ex, "An error occurred while processing feed. {0}", url);
+                _logger.Error(ex, "An error occurred while processing indexer feed. {0}", url);
             }
 
             return CleanupReleases(releases);

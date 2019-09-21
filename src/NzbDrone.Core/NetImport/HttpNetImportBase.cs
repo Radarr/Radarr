@@ -102,7 +102,7 @@ namespace NzbDrone.Core.NetImport
             {
                 anyFailure = true;
                 feedEx.Data.Add("FeedUrl", url);
-                _logger.Error(feedEx, "An error occurred while processing feed. " + url);
+                _logger.Error(feedEx, "An error occurred while processing list feed {0}",  url);
             }
 
             return new NetImportFetchResult {Movies = movies, AnyFailure = anyFailure};
