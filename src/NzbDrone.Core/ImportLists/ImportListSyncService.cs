@@ -14,7 +14,6 @@ namespace NzbDrone.Core.ImportLists
 {
     public class ImportListSyncService : IExecute<ImportListSyncCommand>
     {
-        private readonly IImportListStatusService _importListStatusService;
         private readonly IImportListFactory _importListFactory;
         private readonly IImportListExclusionService _importListExclusionService;
         private readonly IFetchAndParseImportList _listFetcherAndParser;
@@ -25,8 +24,7 @@ namespace NzbDrone.Core.ImportLists
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public ImportListSyncService(IImportListStatusService importListStatusService,
-                              IImportListFactory importListFactory,
+        public ImportListSyncService(IImportListFactory importListFactory,
                               IImportListExclusionService importListExclusionService,
                               IFetchAndParseImportList listFetcherAndParser,
                               ISearchForNewAlbum albumSearchService,
@@ -36,7 +34,6 @@ namespace NzbDrone.Core.ImportLists
                               IEventAggregator eventAggregator,
                               Logger logger)
         {
-            _importListStatusService = importListStatusService;
             _importListFactory = importListFactory;
             _importListExclusionService = importListExclusionService;
             _listFetcherAndParser = listFetcherAndParser;
@@ -118,22 +115,33 @@ namespace NzbDrone.Core.ImportLists
 
                 // Check to see if artist in DB
                 var existingArtist = _artistService.FindById(report.ArtistMusicBrainzId);
-                
+
+                // TODO: Rework this for albums when we can add albums seperate from Artists 
+                // (If list contains albums we should not break for an existing artist, we should add new albums that are not in DB)
+                if (existingArtist != null)
+                {
+                    _logger.Debug("{0} [{1}] Rejected, Artist Exists in DB", report.ArtistMusicBrainzId, report.Artist);
+                    continue;
+                }
+
                 // Check to see if artist excluded
                 var excludedArtist = listExclusions.Where(s => s.ForeignId == report.ArtistMusicBrainzId).SingleOrDefault();
 
                 if (excludedArtist != null)
                 {
                     _logger.Debug("{0} [{1}] Rejected due to list exlcusion", report.ArtistMusicBrainzId, report.Artist);
+                    continue;
                 }
 
                 // Append Artist if not already in DB or already on add list
-                if (existingArtist == null && excludedArtist == null && artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
+                if (artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
                 {
                     var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
+
                     artistsToAdd.Add(new Artist
                     {
-                        Metadata = new ArtistMetadata {
+                        Metadata = new ArtistMetadata
+                        {
                             ForeignArtistId = report.ArtistMusicBrainzId,
                             Name = report.Artist
                         },
@@ -143,7 +151,8 @@ namespace NzbDrone.Core.ImportLists
                         MetadataProfileId = importList.MetadataProfileId,
                         Tags = importList.Tags,
                         AlbumFolder = true,
-                        AddOptions = new AddArtistOptions {
+                        AddOptions = new AddArtistOptions
+                        {
                             SearchForMissingAlbums = monitored,
                             Monitored = monitored,
                             Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
@@ -160,7 +169,7 @@ namespace NzbDrone.Core.ImportLists
 
             _addArtistService.AddArtists(artistsToAdd);
 
-            var message = string.Format("Import List Sync Completed. Reports found: {0}, Reports grabbed: {1}", reports.Count, processed.Count);
+            var message = string.Format("Import List Sync Completed. Items found: {0}, Artists added: {1}", reports.Count, artistsToAdd.Count);
 
             _logger.ProgressInfo(message);
 
