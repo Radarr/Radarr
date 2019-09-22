@@ -44,6 +44,8 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"method: ""getTorrents"", ""params"": [ ""mySecret"",")]
         [TestCase(@"getTorrents(""mySecret"", [asdfasdf], 100, 0)")]
         [TestCase(@"""DownloadURL"":""https:\/\/broadcasthe.net\/torrents.php?action=download&id=123&authkey=mySecret&torrent_pass=mySecret""")]
+        // Spotify Refresh
+        [TestCase(@"https://spotify.lidarr.audio/renew?refresh_token=mySecret")]
         public void should_clean_message(string message)
         {
             var cleansedMessage = CleanseLogMessage.Cleanse(message);
