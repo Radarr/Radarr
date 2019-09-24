@@ -20,7 +20,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
             where TSettings : SpotifySettingsBase<TSettings>, new();
         Paging<T> GetNextPage<T, TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, Paging<T> item)
             where TSettings : SpotifySettingsBase<TSettings>, new();
-        CursorPaging<T> GetNextPage<T, TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, CursorPaging<T> item)
+        FollowedArtists GetNextPage<TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, FollowedArtists item)
             where TSettings : SpotifySettingsBase<TSettings>, new();
     }
 
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
         public FollowedArtists GetFollowedArtists<TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api)
             where TSettings : SpotifySettingsBase<TSettings>, new()
         {
-            return Execute(list, api, x => x.GetFollowedArtists(FollowType.Artist));
+            return Execute(list, api, x => x.GetFollowedArtists(FollowType.Artist, 50));
         }
 
         public Paging<SavedAlbum> GetSavedAlbums<TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api)
@@ -69,10 +69,10 @@ namespace NzbDrone.Core.ImportLists.Spotify
             return Execute(list, api, (x) => x.GetNextPage(item));
         }
 
-        public CursorPaging<T> GetNextPage<T, TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, CursorPaging<T> item)
+        public FollowedArtists GetNextPage<TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, FollowedArtists item)
             where TSettings : SpotifySettingsBase<TSettings>, new()
         {
-            return Execute(list, api, (x) => x.GetNextPage(item));
+            return Execute(list, api, (x) => x.GetNextPage<FollowedArtists, FullArtist>(item.Artists));
         }
 
         public T Execute<T, TSettings>(SpotifyImportListBase<TSettings> list, SpotifyWebAPI api, Func<SpotifyWebAPI, T> method, bool allowReauth = true)

@@ -132,8 +132,8 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.GetMock<ISpotifyProxy>()
                 .Setup(x => x.GetNextPage(It.IsAny<SpotifyFollowedArtists>(),
                                           It.IsAny<SpotifyWebAPI>(),
-                                          It.IsAny<CursorPaging<FullArtist>>()))
-                .Returns(default(CursorPaging<FullArtist>));
+                                          It.IsAny<FollowedArtists>()))
+                .Returns(default(FollowedArtists));
 
             var result = Subject.Fetch(api);
 
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.GetMock<ISpotifyProxy>()
                 .Verify(v => v.GetNextPage(It.IsAny<SpotifyFollowedArtists>(),
                                            It.IsAny<SpotifyWebAPI>(),
-                                           It.IsAny<CursorPaging<FullArtist>>()),
+                                           It.IsAny<FollowedArtists>()),
                         Times.Once());
         }
 

@@ -54,7 +54,8 @@ namespace NzbDrone.Core.ImportLists.Spotify
                     break;
                 }
 
-                artists = _spotifyProxy.GetNextPage(this, api, artists);
+                followedArtists = _spotifyProxy.GetNextPage(this, api, followedArtists);
+                artists = followedArtists?.Artists;
             }
 
             return result;
