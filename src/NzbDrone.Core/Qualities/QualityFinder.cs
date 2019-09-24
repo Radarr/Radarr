@@ -9,9 +9,9 @@ namespace NzbDrone.Core.Qualities
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityFinder));
 
-        public static Quality FindBySourceAndResolution(Source source, Resolution resolution)
+        public static Quality FindBySourceAndResolution(Source source, Resolution resolution, Modifier modifer)
         {
-            var matchingQuality = Quality.All.SingleOrDefault(q => q.Source == source && q.Resolution == resolution);
+            var matchingQuality = Quality.All.SingleOrDefault(q => q.Source == source && q.Resolution == resolution && q.Modifier == modifer);
 
             if (matchingQuality != null)
             {

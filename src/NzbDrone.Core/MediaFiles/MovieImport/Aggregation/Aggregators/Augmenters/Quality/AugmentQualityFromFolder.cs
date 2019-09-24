@@ -17,6 +17,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                                             Confidence.Tag,
                                             quality.Quality.Resolution,
                                             Confidence.Tag,
+                                            quality.Quality.Modifier,
+                                            Confidence.Tag,
                                             quality.Revision);
         }
     }
