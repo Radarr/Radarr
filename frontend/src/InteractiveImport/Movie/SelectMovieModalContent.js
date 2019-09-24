@@ -71,6 +71,7 @@ class SelectMovieModalContent extends Component {
                       key={item.id}
                       id={item.id}
                       title={item.title}
+                      year={item.year}
                       onMovieSelect={onMovieSelect}
                     />
                   ) :

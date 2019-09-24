@@ -22,7 +22,7 @@ class SelectMovieRow extends Component {
         component="div"
         onPress={this.onPress}
       >
-        {this.props.title}
+        {this.props.title} ({this.props.year})
       </Link>
     );
   }
@@ -31,6 +31,7 @@ class SelectMovieRow extends Component {
 SelectMovieRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   onMovieSelect: PropTypes.func.isRequired
 };
 
