@@ -173,5 +173,21 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
 
             MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(5.1m);
         }
+
+        [Test]
+        public void should_warn_unknown_AudioChannelPostions()
+        {
+            var mediaInfoModel = new MediaInfoModel
+            {
+                AudioChannels = 2,
+                AudioChannelPositions = "3/2/0.2.1",
+                AudioChannelPositionsText = null,
+                SchemaRevision = 3
+            };
+
+            MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(2m);
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
     }
 }

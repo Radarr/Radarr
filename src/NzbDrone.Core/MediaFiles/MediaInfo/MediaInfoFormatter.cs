@@ -461,9 +461,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Logger.Warn(e, "Unable to format audio channels using 'AudioChannelPositions', with a value of: '{0}'", audioChannelPositions);
+                Logger.Warn()
+                      .Message("Unable to format audio channels using 'AudioChannelPositions', with a value of: '{0}'", audioChannelPositions)
+                      .WriteSentryWarn("UnknownAudioChannelFormat", mediaInfo.AudioChannels.ToString(), mediaInfo.AudioFormat, audioChannelPositions, mediaInfo.AudioChannelPositionsText)
+                      .Write();
             }
 
             return null;
