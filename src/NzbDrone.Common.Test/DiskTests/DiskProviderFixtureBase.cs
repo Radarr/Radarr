@@ -33,7 +33,6 @@ namespace NzbDrone.Common.Test.DiskTests
         protected abstract void SetWritePermissions(string path, bool writable);
 
         [Test]
-        [Retry(5)]
         public void FolderWritable_should_return_true_for_writable_directory()
         {
             var tempFolder = GetTempFilePath();
@@ -45,6 +44,7 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        [Retry(5)]
         public void FolderWritable_should_return_false_for_unwritable_directory()
         {
             var tempFolder = GetTempFilePath();

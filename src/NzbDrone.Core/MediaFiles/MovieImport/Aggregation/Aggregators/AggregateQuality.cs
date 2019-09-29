@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 }
             }
 
-            _logger.Trace("Finding quality. Source: {0}. Resolution: {1}", source, resolution);
+            _logger.Trace("Finding quality. Source: {0}. Resolution: {1}. Modifier {2}", source, resolution, modifier);
 
             var quality = new QualityModel(QualityFinder.FindBySourceAndResolution(source, resolution, modifier), revison);
 

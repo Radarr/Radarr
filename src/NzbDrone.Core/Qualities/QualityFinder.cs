@@ -18,7 +18,9 @@ namespace NzbDrone.Core.Qualities
                 return matchingQuality;
             }
 
-            var matchingResolution = Quality.All.Where(q => q.Resolution == resolution)
+            var matchingModifier = Quality.All.Where(q => q.Modifier == modifer);
+
+            var matchingResolution = matchingModifier.Where(q => q.Resolution == resolution)
                                             .OrderBy(q => q.Source)
                                             .ToList();
 
@@ -33,7 +35,7 @@ namespace NzbDrone.Core.Qualities
                 }
             }
 
-            Logger.Warn("Unable to find exact quality for {0} and {1}. Using {2} as fallback", source, resolution, nearestQuality);
+            Logger.Warn("Unable to find exact quality for {0},  {1}, and {2}. Using {3} as fallback", source, resolution, modifer, nearestQuality);
 
             return nearestQuality;
         }

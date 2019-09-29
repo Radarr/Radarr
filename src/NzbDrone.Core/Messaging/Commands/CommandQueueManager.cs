@@ -1,6 +1,5 @@
 using NLog;
 using NzbDrone.Common;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;

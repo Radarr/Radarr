@@ -108,7 +108,7 @@ namespace NzbDrone.Core.Qualities
         public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 0, Modifier.BRDISK); // new
 
         // Others
-        public static Quality RAWHD => new Quality(10, "Raw-HD", Source.TV, 0, Modifier.RAWHD);
+        public static Quality RAWHD => new Quality(10, "Raw-HD", Source.TV, 1080, Modifier.RAWHD);
 
         static Quality()
         {
