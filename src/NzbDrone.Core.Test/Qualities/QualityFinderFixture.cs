@@ -8,8 +8,34 @@ namespace NzbDrone.Core.Test.Qualities
     [TestFixture]
     public class QualityFinderFixture
     {
+        [TestCase(Source.CAM, 480, Modifier.NONE)]
+        [TestCase(Source.CAM, 1080, Modifier.NONE)]
+        [TestCase(Source.CAM, 0, Modifier.NONE)]
+        public void should_return_CAM(Source source, Resolution resolution, Modifier modifier)
+        {
+            QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.CAM);
+        }
+
+        [TestCase(Source.CAM, 1080, Modifier.SCREENER)]
+        [TestCase(Source.CAM, 0, Modifier.SCREENER)]
+        public void should_return_Unknown(Source source, Resolution resolution, Modifier modifier)
+        {
+            QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.Unknown);
+        }
+
+        [TestCase(Source.DVD, 480, Modifier.REMUX)]
+        public void should_return_DVD_Remux(Source source, Resolution resolution, Modifier modifier)
+        {
+            QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.DVDR);
+        }
+
+        [TestCase(Source.DVD, 480, Modifier.NONE)]
+        public void should_return_DVD(Source source, Resolution resolution, Modifier modifier)
+        {
+            QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.DVD);
+        }
+
         [TestCase(Source.TV, 480, Modifier.NONE)]
-        [TestCase(Source.UNKNOWN, 480, Modifier.NONE)]
         public void should_return_SDTV(Source source, Resolution resolution, Modifier modifier)
         {
             QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.SDTV);
@@ -30,7 +56,6 @@ namespace NzbDrone.Core.Test.Qualities
         }
 
         [TestCase(Source.BLURAY, 720, Modifier.NONE)]
-        [TestCase(Source.DVD, 720, Modifier.NONE)]
         public void should_return_Bluray720p(Source source, Resolution resolution, Modifier modifier)
         {
             QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.Bluray720p);
