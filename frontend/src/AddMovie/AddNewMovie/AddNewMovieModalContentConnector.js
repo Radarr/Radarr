@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { setAddMovieDefault, addMovie } from 'Store/Actions/addMovieActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import selectSettings from 'Store/Selectors/selectSettings';
 import AddNewMovieModalContent from './AddNewMovieModalContent';
 
@@ -11,7 +12,8 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.addMovie,
     createDimensionsSelector(),
-    (addMovieState, dimensions) => {
+    createSystemStatusSelector(),
+    (addMovieState, dimensions, systemStatus) => {
       const {
         isAdding,
         addError,
@@ -30,6 +32,7 @@ function createMapStateToProps() {
         isSmallScreen: dimensions.isSmallScreen,
         validationErrors,
         validationWarnings,
+        isWindows: systemStatus.isWindows,
         ...settings
       };
     }

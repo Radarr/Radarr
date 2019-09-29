@@ -58,6 +58,7 @@ namespace Radarr.Api.V2.Movies
         public int TmdbId { get; set; }
         public string TitleSlug { get; set; }
         public string RootFolderPath { get; set; }
+        public string Folder { get; set; }
         public string Certification { get; set; }
         public List<string> Genres { get; set; }
         public HashSet<int> Tags { get; set; }
@@ -178,19 +179,9 @@ namespace Radarr.Api.V2.Movies
 
         public static Movie ToModel(this MovieResource resource, Movie movie)
         {
-            movie.ImdbId = resource.ImdbId;
-            movie.TmdbId = resource.TmdbId;
+            var updatedmovie = resource.ToModel();
 
-            movie.Path = resource.Path;
-            movie.ProfileId = resource.QualityProfileId;
-            movie.PathState = resource.PathState;
-
-            movie.Monitored = resource.Monitored;
-	        movie.MinimumAvailability = resource.MinimumAvailability;
-	   
-            movie.RootFolderPath = resource.RootFolderPath;
-            movie.Tags = resource.Tags;
-            movie.AddOptions = resource.AddOptions;
+            movie.ApplyChanges(updatedmovie);
 
             return movie;
         }

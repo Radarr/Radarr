@@ -227,19 +227,9 @@ namespace NzbDrone.Api.Movies
 
         public static Core.Movies.Movie ToModel(this MovieResource resource, Core.Movies.Movie movie)
         {
-            movie.ImdbId = resource.ImdbId;
-            movie.TmdbId = resource.TmdbId;
+            var updatedmovie = resource.ToModel();
 
-            movie.Path = resource.Path;
-            movie.ProfileId = resource.ProfileId;
-            movie.PathState = resource.PathState;
-
-            movie.Monitored = resource.Monitored;
-	        movie.MinimumAvailability = resource.MinimumAvailability;
-	   
-            movie.RootFolderPath = resource.RootFolderPath;
-            movie.Tags = resource.Tags;
-            movie.AddOptions = resource.AddOptions;
+            movie.ApplyChanges(updatedmovie);
 
             return movie;
         }

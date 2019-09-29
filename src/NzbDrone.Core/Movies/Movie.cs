@@ -142,6 +142,22 @@ namespace NzbDrone.Core.Movies
         {
             return string.Format("[{1} ({2})][{0}, {3}]", ImdbId, Title.NullSafe(), Year.NullSafe(), TmdbId);
         }
+
+        public void ApplyChanges(Movie otherMovie)
+        {
+            TmdbId = otherMovie.TmdbId;
+
+            Path = otherMovie.Path;
+            ProfileId = otherMovie.ProfileId;
+            PathState = otherMovie.PathState;
+
+            Monitored = otherMovie.Monitored;
+            MinimumAvailability = otherMovie.MinimumAvailability;
+
+            RootFolderPath = otherMovie.RootFolderPath;
+            Tags = otherMovie.Tags;
+            AddOptions = otherMovie.AddOptions;
+        }
     }
 
     public enum MoviePathState

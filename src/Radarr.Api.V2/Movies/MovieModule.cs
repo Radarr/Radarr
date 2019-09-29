@@ -38,7 +38,8 @@ namespace Radarr.Api.V2.Movies
                             MoviePathValidator moviesPathValidator,
                             MovieExistsValidator moviesExistsValidator,
                             MovieAncestorValidator moviesAncestorValidator,
-                            ProfileExistsValidator profileExistsValidator
+                            ProfileExistsValidator profileExistsValidator,
+                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator
             )
             : base(signalRBroadcaster)
         {
@@ -65,7 +66,10 @@ namespace Radarr.Api.V2.Movies
             SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
+            PostValidator.RuleFor(s => s.RootFolderPath)
+                         .IsValidPath()
+                         .SetValidator(movieFolderAsRootFolderValidator)
+                         .When(s => s.Path.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.TmdbId).NotNull().NotEmpty().SetValidator(moviesExistsValidator);
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using Radarr.Http;
 using Radarr.Http.REST;
+using NzbDrone.Core.Organizer;
 
 namespace Radarr.Api.V2.Movies
 {
@@ -15,12 +16,14 @@ namespace Radarr.Api.V2.Movies
     {
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IProvideMovieInfo _movieInfo;
+        private readonly IBuildFileNames _fileNameBuilder;
 
-        public MovieLookupModule(ISearchForNewMovie searchProxy, IProvideMovieInfo movieInfo)
+        public MovieLookupModule(ISearchForNewMovie searchProxy, IProvideMovieInfo movieInfo, IBuildFileNames fileNameBuilder)
             : base("/movie/lookup")
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
+            _fileNameBuilder = fileNameBuilder;
             Get("/",  x => Search());
             Get("/tmdb",  x => SearchByTmdbId());
             Get("/imdb",  x => SearchByImdbId());
@@ -51,16 +54,18 @@ namespace Radarr.Api.V2.Movies
             return MapToResource(imdbResults);
         }
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
+        private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
         {
-            foreach (var currentSeries in movies)
+            foreach (var currentMovie in movies)
             {
-                var resource = currentSeries.ToResource();
-                var poster = currentSeries.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var resource = currentMovie.ToResource();
+                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;
                 }
+
+                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);
 
                 yield return resource;
             }

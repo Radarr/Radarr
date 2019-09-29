@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
-import { icons } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Link from 'Components/Link/Link';
 import Icon from 'Components/Icon';
@@ -79,7 +79,8 @@ class AddNewMovie extends Component {
   render() {
     const {
       error,
-      items
+      items,
+      hasExistingMovies
     } = this.props;
 
     const term = this.state.term;
@@ -160,11 +161,32 @@ class AddNewMovie extends Component {
           }
 
           {
-            !term &&
+            term ?
+              null :
               <div className={styles.message}>
-                <div className={styles.helpText}>It's easy to add a new movie, just start typing the name the movie you want to add.</div>
+                <div className={styles.helpText}>
+                  It's easy to add a new movie, just start typing the name the movie you want to add.
+                </div>
                 <div>You can also search using TMDB ID of a movie. eg. tmdb:71663</div>
               </div>
+          }
+
+          {
+            !term && !hasExistingMovies ?
+              <div className={styles.message}>
+                <div className={styles.noMoviesText}>
+                  You haven't added any movies yet, do you want to import some or all of your movies first?
+                </div>
+                <div>
+                  <Button
+                    to="/add/import"
+                    kind={kinds.PRIMARY}
+                  >
+                    Import Existing Movies
+                  </Button>
+                </div>
+              </div> :
+              null
           }
 
           <div />
@@ -181,6 +203,7 @@ AddNewMovie.propTypes = {
   isAdding: PropTypes.bool.isRequired,
   addError: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasExistingMovies: PropTypes.bool.isRequired,
   onMovieLookupChange: PropTypes.func.isRequired,
   onClearMovieLookup: PropTypes.func.isRequired
 };

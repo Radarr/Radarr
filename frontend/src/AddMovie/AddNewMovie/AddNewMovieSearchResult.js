@@ -52,6 +52,7 @@ class AddNewMovieSearchResult extends Component {
       status,
       overview,
       ratings,
+      folder,
       images,
       isExistingMovie,
       isExclusionMovie,
@@ -148,6 +149,7 @@ class AddNewMovieSearchResult extends Component {
           title={title}
           year={year}
           overview={overview}
+          folder={folder}
           images={images}
           onModalClose={this.onAddMovieModalClose}
         />
@@ -165,6 +167,7 @@ AddNewMovieSearchResult.propTypes = {
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
   ratings: PropTypes.object.isRequired,
+  folder: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingMovie: PropTypes.bool.isRequired,
   isExclusionMovie: PropTypes.bool.isRequired,

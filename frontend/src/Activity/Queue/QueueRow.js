@@ -307,7 +307,7 @@ QueueRow.propTypes = {
   trackedDownloadStatus: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
-  movie: PropTypes.object.isRequired,
+  movie: PropTypes.object,
   quality: PropTypes.object.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   protocol: PropTypes.string.isRequired,

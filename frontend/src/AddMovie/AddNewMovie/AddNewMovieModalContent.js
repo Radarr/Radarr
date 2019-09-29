@@ -55,8 +55,10 @@ class AddNewMovieModalContent extends Component {
       rootFolderPath,
       monitor,
       qualityProfileId,
+      folder,
       tags,
       isSmallScreen,
+      isWindows,
       onModalClose,
       onInputChange
     } = this.props;
@@ -97,6 +99,15 @@ class AddNewMovieModalContent extends Component {
                   <FormInputGroup
                     type={inputTypes.ROOT_FOLDER_SELECT}
                     name="rootFolderPath"
+                    valueOptions={{
+                      movieFolder: folder,
+                      isWindows
+                    }}
+                    selectedValueOptions={{
+                      movieFolder: folder,
+                      isWindows
+                    }}
+                    helpText={`'${folder}' subfolder will be created automatically`}
                     onChange={onInputChange}
                     {...rootFolderPath}
                   />
@@ -180,8 +191,10 @@ AddNewMovieModalContent.propTypes = {
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
+  folder: PropTypes.string.isRequired,
   tags: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  isWindows: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onAddMoviePress: PropTypes.func.isRequired
