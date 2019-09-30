@@ -8,10 +8,10 @@ using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 
-namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
+namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
     [TestFixture]
-    public class UpdateFixture : CoreTest<JsonApiProvider>
+    public class UpdateFixture : CoreTest<XbmcService>
     {
         private const string MB_ID = "9f4e41c3-2648-428e-b8c7-dc10465b49ac";
         private XbmcSettings _settings;

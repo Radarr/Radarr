@@ -2,10 +2,10 @@
 
 namespace NzbDrone.Core.Notifications.Xbmc.Model
 {
-    public class VersionResult
+    public class ActivePlayersResult
     {
         public string Id { get; set; }
         public string JsonRpc { get; set; }
-        public Dictionary<string, int> Result { get; set; }
+        public List<ActivePlayer> Result { get; set; }
     }
 }
