@@ -1,6 +1,8 @@
 <Project>
   <!-- Common to all Lidarr Projects -->
   <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
     <LidarrRootDir>$(MSBuildThisFileDirectory)..\</LidarrRootDir>
 
     <!-- Specifies the type of output -->
@@ -63,6 +65,7 @@
     
     <Deterministic Condition="$(AssemblyVersion.EndsWith('*'))">False</Deterministic>
   </PropertyGroup>
+
   <!-- Set the AssemblyConfiguration attribute for projects -->
   <ItemGroup Condition="'$(LidarrProject)'=='true'">
     <AssemblyAttribute Include="System.Reflection.AssemblyConfigurationAttribute">
