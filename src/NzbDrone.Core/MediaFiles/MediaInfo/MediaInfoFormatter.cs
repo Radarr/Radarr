@@ -464,8 +464,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             catch (Exception)
             {
                 Logger.Warn()
-                      .Message("Unable to format audio channels using 'AudioChannelPositions', with a value of: '{0}'", audioChannelPositions)
-                      .WriteSentryWarn("UnknownAudioChannelFormat", mediaInfo.AudioChannels.ToString(), mediaInfo.AudioFormat, audioChannelPositions, mediaInfo.AudioChannelPositionsText)
+                      .Message("Unable to format audio channels using 'AudioChannelPositions', with a value of: '{0}' and '{1}'", audioChannelPositions, mediaInfo.AudioChannelPositionsText)
+                      .WriteSentryWarn("UnknownAudioChannelFormat", audioChannelPositions, mediaInfo.AudioChannelPositionsText)
                       .Write();
             }
 
