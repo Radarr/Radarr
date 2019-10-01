@@ -1,9 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Marr.Data;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 
@@ -80,8 +79,10 @@ namespace NzbDrone.Core.MediaFiles
         
         public List<TrackFile> GetFilesWithBasePath(string path)
         {
+            // ensure path ends with a single trailing path separator to avoid matching partial paths
+            var safePath = path.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             return Query
-                .Where(x => x.Path.StartsWith(path))
+                .Where(x => x.Path.StartsWith(safePath))
                 .ToList();
         }
         

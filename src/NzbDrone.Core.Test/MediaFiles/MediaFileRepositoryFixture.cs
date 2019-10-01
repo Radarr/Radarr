@@ -7,6 +7,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -55,9 +56,9 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .TheFirst(5)
                 .With(c => c.AlbumId = album.Id)
                 .TheFirst(1)
-                .With(c => c.Path = "/Test/Path/Artist/somefile1.flac")
+                .With(c => c.Path = @"C:\Test\Path\Artist\somefile1.flac".AsOsAgnostic())
                 .TheNext(1)
-                .With(c => c.Path = "/Test/Path/Artist/somefile2.flac")
+                .With(c => c.Path = @"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic())
                 .BuildListOfNew();
             Db.InsertMany(files);
             
@@ -116,13 +117,35 @@ namespace NzbDrone.Core.Test.MediaFiles
             secondReleaseFiles.Should().HaveCount(1);
         }
 
-        [Test]
-        public void get_files_by_base_path()
+        [TestCase("C:\\Test\\Path")]
+        [TestCase("C:\\Test\\Path\\")]
+        public void get_files_by_base_path_should_cope_with_trailing_slash(string dir)
         {
             VerifyData();
-            var firstReleaseFiles = Subject.GetFilesWithBasePath("/Test/Path");
+            var firstReleaseFiles = Subject.GetFilesWithBasePath(dir.AsOsAgnostic());
             VerifyEagerLoaded(firstReleaseFiles);
 
+            firstReleaseFiles.Should().HaveCount(2);
+        }
+
+        [TestCase("C:\\Test\\Path")]
+        [TestCase("C:\\Test\\Path\\")]
+        public void get_files_by_base_path_should_not_get_files_for_partial_path(string dir)
+        {
+            VerifyData();
+
+            var files = Builder<TrackFile>.CreateListOfSize(2)
+                .All()
+                .With(c => c.Id = 0)
+                .With(c => c.Quality =new QualityModel(Quality.MP3_192))
+                .TheFirst(1)
+                .With(c => c.Path = @"C:\Test\Path2\Artist\somefile1.flac".AsOsAgnostic())
+                .TheNext(1)
+                .With(c => c.Path = @"C:\Test\Path2\Artist\somefile2.flac".AsOsAgnostic())
+                .BuildListOfNew();
+            Db.InsertMany(files);
+
+            var firstReleaseFiles = Subject.GetFilesWithBasePath(dir.AsOsAgnostic());
             firstReleaseFiles.Should().HaveCount(2);
         }
 
@@ -130,7 +153,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void get_file_by_path()
         {
             VerifyData();
-            var file = Subject.GetFileWithPath("/Test/Path/Artist/somefile2.flac");
+            var file = Subject.GetFileWithPath(@"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic());
 
             file.Should().NotBeNull();
             file.Tracks.IsLoaded.Should().BeTrue();
