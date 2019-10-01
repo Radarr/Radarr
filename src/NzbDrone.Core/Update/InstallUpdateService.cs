@@ -214,7 +214,8 @@ namespace NzbDrone.Core.Update
 
             if (_osInfo.IsDocker)
             {
-                throw new CommandFailedException("Updating is disabled inside a docker container.  Please update the container image.");
+                _logger.ProgressDebug("Updating is disabled inside a docker container.  Please update the container image.");
+                return;
             }
 
             if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && message.Trigger != CommandTrigger.Manual)
