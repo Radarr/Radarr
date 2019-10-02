@@ -25,12 +25,32 @@ function MovieStatusCell(props) {
         title={monitored ? 'Movie is monitored' : 'Movie is unmonitored'}
       />
 
-      <Icon
-        className={styles.statusIcon}
-        name={status === 'released' ? icons.SERIES_ENDED : icons.MOVIE_CONTINUING}
-        title={status === 'ended' ? 'Ended' : 'Continuing'}
+      {
+        status === 'announced' ?
+          <Icon
+            className={styles.statusIcon}
+            name={icons.ANNOUNCED}
+            title={'Movie is announced'}
+          /> : null
+      }
 
-      />
+      {
+        status === 'inCinemas' ?
+          <Icon
+            className={styles.statusIcon}
+            name={icons.IN_CINEMAS}
+            title={'Movie is in Cinemas'}
+          /> : null
+      }
+
+      {
+        status === 'released' ?
+          <Icon
+            className={styles.statusIcon}
+            name={icons.MOVIE_FILE}
+            title={'Movie is released'}
+          /> : null
+      }
     </Component>
   );
 }

@@ -30,6 +30,7 @@ import {
   faBookmark as fasBookmark,
   faBookReader as fasBookReader,
   faBug as fasBug,
+  faBullhorn as fasBullhorn,
   faBroadcastTower as fasBroadcastTower,
   faCalendarAlt as fasCalendarAlt,
   faCaretDown as fasCaretDown,
@@ -91,6 +92,7 @@ import {
   faTable as fasTable,
   faTh as fasTh,
   faThList as fasThList,
+  faTicketAlt as fasTicketAlt,
   faTrashAlt as fasTrashAlt,
   faTimes as fasTimes,
   faTimesCircle as fasTimesCircle,
@@ -108,6 +110,7 @@ export const ACTIVITY = farClock;
 export const ADD = fasPlus;
 export const ALTERNATE_TITLES = farClone;
 export const ADVANCED_SETTINGS = fasCog;
+export const ANNOUNCED = fasBullhorn;
 export const ARROW_LEFT = fasArrowCircleLeft;
 export const ARROW_RIGHT = fasArrowCircleRight;
 export const BACKUP = farFileArchive;
@@ -148,6 +151,7 @@ export const HEALTH = fasMedkit;
 export const HEART = fasHeart;
 export const HISTORY = fasHistory;
 export const HOUSEKEEPING = fasHome;
+export const IN_CINEMAS = fasTicketAlt;
 export const INFO = fasInfoCircle;
 export const INTERACTIVE = fasUser;
 export const KEYBOARD = farKeyboard;

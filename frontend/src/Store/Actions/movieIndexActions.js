@@ -58,14 +58,15 @@ export const defaultState = {
   columns: [
     {
       name: 'select',
-      columnLabel: 'select',
+      columnLabel: 'Select',
       isSortable: false,
       isVisible: true,
-      isModifiable: false
+      isModifiable: false,
+      isHidden: true
     },
     {
       name: 'status',
-      columnLabel: 'Status',
+      columnLabel: 'Release Status',
       isSortable: true,
       isVisible: true,
       isModifiable: false
