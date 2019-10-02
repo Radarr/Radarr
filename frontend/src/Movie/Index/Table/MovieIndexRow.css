@@ -31,6 +31,7 @@
   flex: 0 0 180px;
 }
 
+.movieStatus,
 .certification {
   composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
 

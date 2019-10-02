@@ -121,6 +121,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'movieStatus',
+      label: 'Status',
+      isSortable: true,
+      isVisible: true
+    },
+    {
       name: 'ratings',
       label: 'Rating',
       isSortable: true,

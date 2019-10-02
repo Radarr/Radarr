@@ -15,6 +15,7 @@ import MovieTitleLink from 'Movie/MovieTitleLink';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieStatusCell from './MovieStatusCell';
+import MovieStatusConnector from 'Movie/MovieStatusConnector';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import styles from './MovieIndexRow.css';
 
@@ -222,6 +223,19 @@ class MovieIndexRow extends Component {
                   <span title={joinedGenres}>
                     {joinedGenres}
                   </span>
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'movieStatus') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <MovieStatusConnector
+                    movieId={id}
+                  />
                 </VirtualTableRowCell>
               );
             }
