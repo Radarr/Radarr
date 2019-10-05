@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -16,6 +18,7 @@ namespace NzbDrone.Core.Test.MovieTests
     {
         private Movie _movie;
         private MoveMovieCommand _command;
+        private BulkMoveMovieCommand _bulkCommand;
 
         [SetUp]
         public void Setup()
@@ -25,15 +28,32 @@ namespace NzbDrone.Core.Test.MovieTests
                 .Build();
 
             _command = new MoveMovieCommand
-                       {
-                           MovieId = 1,
-                           SourcePath = @"C:\Test\Movies\Movie".AsOsAgnostic(),
-                           DestinationPath = @"C:\Test\Movies2\Movie".AsOsAgnostic()
-                       };
+            {
+                MovieId = 1,
+                SourcePath = @"C:\Test\Movies\Movie".AsOsAgnostic(),
+                DestinationPath = @"C:\Test\Movies2\Movie".AsOsAgnostic()
+            };
+
+            _bulkCommand = new BulkMoveMovieCommand
+            {
+                Movies = new List<BulkMoveMovie>
+                                    {
+                                        new BulkMoveMovie
+                                        {
+                                            MovieId = 1,
+                                            SourcePath = @"C:\Test\Movies\Movie".AsOsAgnostic()
+                                        }
+                                    },
+                DestinationRootFolder = @"C:\Test\Movies2".AsOsAgnostic()
+            };
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
                   .Returns(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(It.IsAny<string>()))
+                  .Returns(true);
         }
 
         private void GivenFailedMove()
@@ -48,49 +68,64 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             GivenFailedMove();
 
-            Assert.Throws<IOException>(() => Subject.Execute(_command));
+            Subject.Execute(_command);
 
             ExceptionVerification.ExpectedErrors(1);
         }
 
         [Test]
-        public void should_no_update_movie_path_on_error()
+        public void should_revert_movie_path_on_error()
         {
             GivenFailedMove();
 
-            Assert.Throws<IOException>(() => Subject.Execute(_command));
+            Subject.Execute(_command);
 
             ExceptionVerification.ExpectedErrors(1);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Never());
+                  .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Once());
+        }
+
+        [Test]
+        public void should_use_destination_path()
+        {
+            Subject.Execute(_command);
+
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move, It.IsAny<bool>()), Times.Once());
+
+            Mocker.GetMock<IBuildFileNames>()
+                  .Verify(v => v.GetMovieFolder(It.IsAny<Movie>(), null), Times.Never());
         }
 
         [Test]
         public void should_build_new_path_when_root_folder_is_provided()
         {
-            _command.DestinationPath = null;
-            _command.DestinationRootFolder = @"C:\Test\Movie3".AsOsAgnostic();
-
-            var expectedPath = @"C:\Test\Movie3\Movie".AsOsAgnostic();
+            var movieFolder = "Movie";
+            var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, movieFolder);
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))
-                  .Returns("Movie");
+                    .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))
+                    .Returns(movieFolder);
 
-            Subject.Execute(_command);
+            Subject.Execute(_bulkCommand);
 
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Path == expectedPath)), Times.Once());
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(_bulkCommand.Movies.First().SourcePath, expectedPath, TransferMode.Move, It.IsAny<bool>()), Times.Once());
         }
 
         [Test]
-        public void should_use_destination_path_if_destination_root_folder_is_blank()
+        public void should_skip_movie_folder_if_it_does_not_exist()
         {
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(It.IsAny<string>()))
+                  .Returns(false);
+
+
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Path == _command.DestinationPath)), Times.Once());
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move, It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IBuildFileNames>()
                   .Verify(v => v.GetMovieFolder(It.IsAny<Movie>(), null), Times.Never());

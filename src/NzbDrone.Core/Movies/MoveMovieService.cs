@@ -1,7 +1,6 @@
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -11,61 +10,94 @@ using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Movies
 {
-    public class MoveMovieService : IExecute<MoveMovieCommand>
+    public class MoveMovieService : IExecute<MoveMovieCommand>, IExecute<BulkMoveMovieCommand>
     {
         private readonly IMovieService _movieService;
         private readonly IBuildFileNames _filenameBuilder;
+        private readonly IDiskProvider _diskProvider;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public MoveMovieService(IMovieService movieService,
                                  IBuildFileNames filenameBuilder,
+                                 IDiskProvider diskProvider,
                                  IDiskTransferService diskTransferService,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
             _movieService = movieService;
             _filenameBuilder = filenameBuilder;
+            _diskProvider = diskProvider;
             _diskTransferService = diskTransferService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
-        public void Execute(MoveMovieCommand message)
+        private void MoveSingleMovie(Movie movie, string sourcePath, string destinationPath, int? index = null, int? total = null)
         {
-            var movie = _movieService.GetMovie(message.MovieId);
-            var source = message.SourcePath;
-            var destination = message.DestinationPath;
-
-            if (!message.DestinationRootFolder.IsNullOrWhiteSpace())
+            if (!_diskProvider.FolderExists(sourcePath))
             {
-                _logger.Debug("Buiding destination path using root folder: {0} and the movie title", message.DestinationRootFolder);
-                destination = Path.Combine(message.DestinationRootFolder, _filenameBuilder.GetMovieFolder(movie));
+                _logger.Debug("Folder '{0}' for '{1}' does not exist, not moving.", sourcePath, movie.Title);
+                return;
             }
 
-            _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", movie.Title, source, destination);
+            if (index != null && total != null)
+            {
+                _logger.ProgressInfo("Moving {0} from '{1}' to '{2}' ({3}/{4})", movie.Title, sourcePath, destinationPath, index + 1, total);
+            }
+            else
+            {
+                _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", movie.Title, sourcePath, destinationPath);
+            }
 
-            //TODO: Move to transactional disk operations
             try
             {
-                _diskTransferService.TransferFolder(source, destination, TransferMode.Move);
+                _diskTransferService.TransferFolder(sourcePath, destinationPath, TransferMode.Move);
+
+                _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, movie.Path);
+
+                _eventAggregator.PublishEvent(new MovieMovedEvent(movie, sourcePath, destinationPath));
             }
             catch (IOException ex)
             {
-                var errorMessage = string.Format("Unable to move movie from '{0}' to '{1}'", source, destination);
+                _logger.Error(ex, "Unable to move movie from '{0}' to '{1}'. Try moving files manually", sourcePath, destinationPath);
 
-                _logger.Error(ex, errorMessage);
-                throw;
+                RevertPath(movie.Id, sourcePath);
+            }
+        }
+
+        private void RevertPath(int movieId, string path)
+        {
+            var movie = _movieService.GetMovie(movieId);
+
+            movie.Path = path;
+            _movieService.UpdateMovie(movie);
+        }
+
+        public void Execute(MoveMovieCommand message)
+        {
+            var movie = _movieService.GetMovie(message.MovieId);
+            MoveSingleMovie(movie, message.SourcePath, message.DestinationPath);
+        }
+
+        public void Execute(BulkMoveMovieCommand message)
+        {
+            var moviesToMove = message.Movies;
+            var destinationRootFolder = message.DestinationRootFolder;
+
+            _logger.ProgressInfo("Moving {0} movies to '{1}'", moviesToMove.Count, destinationRootFolder);
+
+            for (var index = 0; index < moviesToMove.Count; index++)
+            {
+                var s = moviesToMove[index];
+                var movie = _movieService.GetMovie(s.MovieId);
+                var destinationPath = Path.Combine(destinationRootFolder, _filenameBuilder.GetMovieFolder(movie));
+
+                MoveSingleMovie(movie, s.SourcePath, destinationPath, index, moviesToMove.Count);
             }
 
-            _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, movie.Path);
-
-            //Update the movie path to the new path
-            movie.Path = destination;
-            movie = _movieService.UpdateMovie(movie);
-
-            _eventAggregator.PublishEvent(new MovieMovedEvent(movie, source, destination));
+            _logger.ProgressInfo("Finished moving {0} movies to '{1}'", moviesToMove.Count, destinationRootFolder);
         }
     }
 }
