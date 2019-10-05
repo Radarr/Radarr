@@ -99,6 +99,20 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         flags |= IndexerFlags.AHD_Internal;
                     }
 
+                    switch (torrent.EncodeStatus)
+                    {
+                        case "AHDGolddxva":
+                            flags |= IndexerFlags.AHD_Gold;
+                            flags |= IndexerFlags.G_DXVA;
+                            break;
+                        case "AHDGold":
+                            flags |= IndexerFlags.AHD_Gold;
+                            break;
+                        case "Standarddxva":
+                            flags |= IndexerFlags.G_DXVA;
+                            break;
+                    }
+
                     var imdbId = 0;
                     if (torrent.ImdbId.Length > 2)
                     {

@@ -61,6 +61,14 @@ module.exports = Backgrid.Cell.extend({
                     addon = "⇩";
                     title = "25% Freeleech";
                     break;
+                case "AHD_Gold":
+                    addon = "🌟";
+                    title = "AHD Gold";
+                    break;
+                case "G_DXVA":
+                    addon = "✨";
+                    title = "DXVA Compliant";
+                    break;
             }
             if (addon !== "") {
               html += "<a href='https://github.com/Radarr/Radarr/wiki/Indexer-Flags#supported-flags' target='_blank' style='color: inherit; text-decoration: none;'><span title='{0}'>{1}</span></a>".format(title, addon);
