@@ -10,7 +10,7 @@ using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(023)]
+    [Migration(23)]
     public class add_release_groups_etc : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()

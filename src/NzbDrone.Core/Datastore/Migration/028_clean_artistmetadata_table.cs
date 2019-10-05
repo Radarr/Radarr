@@ -3,7 +3,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(028)]
+    [Migration(28)]
     public class clean_artist_metadata_table : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()

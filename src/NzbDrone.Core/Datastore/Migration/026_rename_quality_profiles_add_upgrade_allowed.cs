@@ -3,7 +3,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(026)]
+    [Migration(26)]
     public class rename_quality_profiles_add_upgrade_allowed : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()

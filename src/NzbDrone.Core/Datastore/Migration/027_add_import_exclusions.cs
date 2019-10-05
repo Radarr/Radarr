@@ -3,7 +3,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(027)]
+    [Migration(27)]
     public class add_import_exclusions : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()

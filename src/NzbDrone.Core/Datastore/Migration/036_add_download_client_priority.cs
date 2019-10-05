@@ -5,7 +5,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(036)]
+    [Migration(36)]
     public class add_download_client_priority : NzbDroneMigrationBase
     {
         // Need snapshot in time without having to instantiate.
