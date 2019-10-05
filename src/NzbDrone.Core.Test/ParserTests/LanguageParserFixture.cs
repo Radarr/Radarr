@@ -52,6 +52,7 @@
 //        //[TestCase("Nocturnal Animals (2016) MULTi VFQ English [1080p] BluRay x264-PopHD", Language.English, Language.French)]
 //        //[TestCase("Wonder.Woman.2017.720p.BluRay.DD5.1.x264-TayTO.CZ-FTU", Language.Czech)]
 //        //[TestCase("Fantastic.Beasts.The.Crimes.Of.Grindelwald.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK", Language.English)]
+//        //[TestCase("Vert.Emeraude.2016.VFi.1080P.mHD.X264.AC3-ROMKENT")]
 //        public void should_parse_language(string postTitle, params Language[] languages)
 //        {
 //            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
