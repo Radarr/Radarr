@@ -38,7 +38,7 @@ const links = [
       },
       {
         title: 'Lists',
-        to: '/add/lists'
+        to: '/add/list'
       }
     ]
   },

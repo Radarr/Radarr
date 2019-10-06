@@ -58,6 +58,7 @@ class AddNewMovieSearchResult extends Component {
       isExclusionMovie,
       isSmallScreen
     } = this.props;
+
     const {
       isNewAddMovieModalOpen
     } = this.state;

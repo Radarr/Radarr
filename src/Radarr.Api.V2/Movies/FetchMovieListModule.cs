@@ -30,7 +30,7 @@ namespace Radarr.Api.V2.Movies
 
             List<Movie> realResults = new List<Movie>();
 
-            /*foreach (var movie in results)
+            foreach (var movie in results)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
@@ -38,9 +38,9 @@ namespace Radarr.Api.V2.Movies
                 {
                     realResults.Add(mapped);
                 }
-            }*/
+            }
 
-            return MapToResource(results);
+            return MapToResource(realResults);
         }
 
 

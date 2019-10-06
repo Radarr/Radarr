@@ -68,8 +68,6 @@ export default function createSentryMiddleware() {
     isProduction
   } = window.Radarr;
 
-  console.log(window.Radarr);
-
   if (!analytics) {
     return;
   }

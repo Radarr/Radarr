@@ -1,14 +1,12 @@
 using System.Collections.Generic;
-using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
-using System;
 using Radarr.Http;
 using NzbDrone.Core.NetImport;
 using Radarr.Api.V2.NetImport;
+using NzbDrone.Core.Organizer;
 
 namespace Radarr.Api.V2.Movies
 {
@@ -16,12 +14,14 @@ namespace Radarr.Api.V2.Movies
     {
         private readonly IDiscoverNewMovies _searchProxy;
         private readonly INetImportFactory _netImportFactory;
+        private readonly IBuildFileNames _fileNameBuilder;
 
-        public MovieDiscoverModule(IDiscoverNewMovies searchProxy, INetImportFactory netImportFactory)
+        public MovieDiscoverModule(IDiscoverNewMovies searchProxy, INetImportFactory netImportFactory, IBuildFileNames fileNameBuilder)
             : base("/movies/discover")
         {
             _searchProxy = searchProxy;
             _netImportFactory = netImportFactory;
+            _fileNameBuilder = fileNameBuilder;
             Get("/lists",  x => GetLists());
             Get("/{action?recommendations}",  x => Search(x.action));
         }
@@ -46,16 +46,18 @@ namespace Radarr.Api.V2.Movies
             });
         }
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
+        private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
         {
-            foreach (var currentSeries in movies)
+            foreach (var currentMovie in movies)
             {
-                var resource = currentSeries.ToResource();
-                var poster = currentSeries.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var resource = currentMovie.ToResource();
+                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;
                 }
+
+                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);
 
                 yield return resource;
             }
