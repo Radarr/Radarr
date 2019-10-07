@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "Not parsable";
 
-            var results = Subject.GetRssDecision(_reports).ToList();
+            Subject.GetRssDecision(_reports).ToList();
 
             Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
 
@@ -160,11 +160,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
             _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
 
-            results.Should().BeEmpty();
         }
 
         [Test]
-        public void should_not_attempt_to_map_album_artist_title_is_blank()
+        public void should_not_attempt_to_map_album_if_artist_title_is_blank()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "2013 - Night Visions";
@@ -178,6 +177,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
 
             results.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_return_rejected_result_for_unparsable_search()
+        {
+            GivenSpecifications(_pass1, _pass2, _pass3);
+            _reports[0].Title = "1937 - Snow White and the Seven Dwarves";
+
+            var artist = new Artist { Name = "Some Artist" };
+            var albums = new List<Album> { new Album { Title = "Some Album" } };
+
+            Subject.GetSearchDecision(_reports, new AlbumSearchCriteria { Artist = artist, Albums = albums }).ToList();
+
+            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
+
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
         }
 
         [Test]

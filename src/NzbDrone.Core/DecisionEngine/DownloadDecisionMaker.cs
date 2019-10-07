@@ -153,6 +153,28 @@ namespace NzbDrone.Core.DecisionEngine
                             decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse release"));
                         }
                     }
+
+                    if (searchCriteria != null)
+                    {
+                        if (parsedAlbumInfo == null)
+                        {
+                            parsedAlbumInfo = new ParsedAlbumInfo
+                            {
+                                Quality = QualityParser.ParseQuality(report.Title, null, 0)
+                            };
+                        }
+
+                        if (parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
+                        {
+                            var remoteAlbum = new RemoteAlbum
+                            {
+                                Release = report,
+                                ParsedAlbumInfo = parsedAlbumInfo
+                            };
+
+                            decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse release"));
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
