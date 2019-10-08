@@ -1,20 +1,20 @@
-using System.IO;
-using NLog;
-using NzbDrone.Core.Parser.Model;
-using System.Diagnostics;
-using System.Linq;
-using NzbDrone.Common.Http;
-using NzbDrone.Common.Extensions;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Text;
-using NzbDrone.Common.Serializer;
 using System;
-using NzbDrone.Common.EnvironmentInfo;
-using System.Threading;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Newtonsoft.Json;
+using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Parser
 {
@@ -347,6 +347,13 @@ namespace NzbDrone.Core.Parser
                 return;
             }
 
+            var request = GenerateRequest(toLookup);
+            var response = GetResponse(request);
+            ParseResponse(response, toLookup, threshold);
+        }
+
+        public HttpRequest GenerateRequest(List<Tuple<LocalTrack, AcoustId>> toLookup)
+        {
             var httpRequest = _customerRequestBuilder.Create()
                 .WithRateLimit(0.334)
                 .Build();
@@ -364,42 +371,64 @@ namespace NzbDrone.Core.Parser
             httpRequest.SuppressHttpError = true;
             httpRequest.RequestTimeout = TimeSpan.FromSeconds(5);
 
+            return httpRequest;
+        }
+
+        public LookupResponse GetResponse(HttpRequest request, int retry = 3)
+        {
             HttpResponse<LookupResponse> httpResponse;
 
             try
             {
-                httpResponse = _httpClient.Post<LookupResponse>(httpRequest);
+                httpResponse = _httpClient.Post<LookupResponse>(request);
             }
             catch (UnexpectedHtmlContentException e)
             {
                 _logger.Warn(e, "AcoustId API gave invalid response");
-                return;
+                return retry > 0 ? GetResponse(request, retry - 1) : null;
             }
             catch (Exception e)
             {
                 _logger.Warn(e, "AcoustId API lookup failed");
-                return;
+                return null;
             }
 
             var response = httpResponse.Resource;
 
-            // The API will give errors if fingerprint isn't found or is invalid.
-            // We don't want to stop the entire import because the fingerprinting failed
-            // so just log and return.
             if (httpResponse.HasHttpError || (response != null && response.Status != "ok"))
             {
-                if (response != null && response.Error != null)
+                if (response?.Error != null)
                 {
+                    if (response.Error.Code == AcoustIdErrorCode.TooManyRequests && retry > 0)
+                    {
+                        _logger.Trace($"Too many requests, retrying in 1s");
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        return GetResponse(request, retry - 1);
+                    }
+
                     _logger.Debug($"Webservice error {response.Error.Code}: {response.Error.Message}");
                 }
                 else
                 {
                     _logger.Warn("HTTP Error - {0}", httpResponse);
                 }
-                
+
+                return null;
+            }
+
+            return response;
+        }
+
+        private void ParseResponse(LookupResponse response, List<Tuple<LocalTrack, AcoustId>> toLookup, double threshold)
+        {
+            if (response == null)
+            {
                 return;
             }
 
+            // The API will give errors if fingerprint isn't found or is invalid.
+            // We don't want to stop the entire import because the fingerprinting failed
+            // so just log and return.
             foreach (var fileResponse in response.Fingerprints)
             {
                 if (fileResponse.Results.Count == 0)
@@ -434,10 +463,33 @@ namespace NzbDrone.Core.Parser
             public List<LookupResultListItem> Fingerprints { get; set; }
         }
 
+        public enum AcoustIdErrorCode
+        {
+            // https://github.com/acoustid/acoustid-server/blob/f671339ad9ab049c4d4361d3eadb6660a8fe4dda/acoustid/api/errors.py#L10
+            UnknownFormat = 1,
+            MissingParameter = 2,
+            InvalidFingerprint = 3,
+            InvalidApikey = 4,
+            Internal = 5,
+            InvalidUserApikey = 6,
+            InvalidUuid = 7,
+            InvalidDuration = 8,
+            InvalidBitrate = 9,
+            InvalidForeignid = 10,
+            InvalidMaxDurationDiff = 11,
+            NotAllowed = 12,
+            ServiceUnavailable = 13,
+            TooManyRequests = 14,
+            InvalidMusicbrainzAccessToken = 15,
+            InsecureRequest = 16,
+            UnknownApplication = 17,
+            FingerprintNotFound = 18
+        }
+
         public class LookupError
         {
             public string Message { get; set; }
-            public int Code { get; set; }
+            public AcoustIdErrorCode Code { get; set; }
         }
 
         public class LookupResultListItem

@@ -216,7 +216,7 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().BeNull();
 
-            ExceptionVerification.ExpectedWarns(1);
+            ExceptionVerification.ExpectedWarns(4);
         }
 
         [Test]
@@ -231,6 +231,44 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             localTrack.AcoustIdResults.Should().BeNull();
 
             ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void should_retry_if_too_many_requests()
+        {
+            var error = "{\"error\": {\"code\": 14, \"message\": \"rate limit (3 requests per second) exceeded, try again later\"}, \"status\": \"error\"}";
+            var response = "{\"fingerprints\": [{\"index\": \"0\", \"results\": [{\"id\": \"a9b004fe-e161-417c-9f9e-443e4525334d\", \"recordings\": [{\"id\": \"209a4536-97ac-4e8a-aff1-1d39d029044b\"}, {\"id\": \"30f3f33e-8d0c-4e69-8539-cbd701d18f28\"}], \"score\": 0.940997}, {\"id\": \"fe0a9bec-2633-4c37-89be-b5d295b68a00\", \"score\": 0.763876}, {\"id\": \"18eab869-51dc-4948-83f7-4d8d441d5a1b\", \"score\": 0.490447}]}], \"status\": \"ok\"}";
+            Mocker.GetMock<IHttpClient>()
+                .SetupSequence(o => o.Post<LookupResponse>(It.IsAny<HttpRequest>()))
+                .Returns(new HttpResponse<LookupResponse>(new HttpResponse(new HttpRequest("dummy"), new HttpHeader(), error, HttpStatusCode.ServiceUnavailable)))
+                .Returns(new HttpResponse<LookupResponse>(new HttpResponse(new HttpRequest("dummy"), new HttpHeader(), response, HttpStatusCode.OK)));
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
+            var localTrack = new LocalTrack { Path = path };
+            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            localTrack.AcoustIdResults.Should().NotBeNull();
+            localTrack.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
+
+            Mocker.GetMock<IHttpClient>()
+                .Verify(x => x.Post<LookupResponse>(It.IsAny<HttpRequest>()), Times.Exactly(2));
+        }
+
+        [Test]
+        public void should_not_retry_indefinitely_if_too_many_requests()
+        {
+            var error = "{\"error\": {\"code\": 14, \"message\": \"rate limit (3 requests per second) exceeded, try again later\"}, \"status\": \"error\"}";
+            Mocker.GetMock<IHttpClient>()
+                .Setup(o => o.Post<LookupResponse>(It.IsAny<HttpRequest>()))
+                .Returns(new HttpResponse<LookupResponse>(new HttpResponse(new HttpRequest("dummy"), new HttpHeader(), error, HttpStatusCode.ServiceUnavailable)));
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
+            var localTrack = new LocalTrack { Path = path };
+
+            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            localTrack.AcoustIdResults.Should().BeNull();
+
+            Mocker.GetMock<IHttpClient>()
+                .Verify(x => x.Post<LookupResponse>(It.IsAny<HttpRequest>()), Times.Exactly(4));
         }
     }
 }
