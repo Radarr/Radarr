@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, sizes } from 'Helpers/Props';
+import { inputTypes } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -12,7 +12,6 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import styles from './EditCustomFormatModalContent.css';
 
 class EditCustomFormatModalContent extends Component {
 
@@ -62,35 +61,31 @@ class EditCustomFormatModalContent extends Component {
                 <Form
                   {...otherProps}
                 >
-                  <div className={styles.formGroupsContainer}>
-                    <div className={styles.formGroupWrapper}>
-                      <FormGroup size={sizes.EXTRA_SMALL}>
-                        <FormLabel size={sizes.SMALL}>
-                          Name
-                        </FormLabel>
+                  <FormGroup>
+                    <FormLabel>
+                      Name
+                    </FormLabel>
 
-                        <FormInputGroup
-                          type={inputTypes.TEXT}
-                          name="name"
-                          {...name}
-                          onChange={onInputChange}
-                        />
-                      </FormGroup>
+                    <FormInputGroup
+                      type={inputTypes.TEXT}
+                      name="name"
+                      {...name}
+                      onChange={onInputChange}
+                    />
+                  </FormGroup>
 
-                      <FormGroup size={sizes.EXTRA_SMALL}>
-                        <FormLabel size={sizes.SMALL}>
-                          Format Tags
-                        </FormLabel>
+                  <FormGroup>
+                    <FormLabel>
+                      Format Tags
+                    </FormLabel>
 
-                        <FormInputGroup
-                          type={inputTypes.TEXT_TAG}
-                          name="formatTags"
-                          {...formatTags}
-                          onChange={onInputChange}
-                        />
-                      </FormGroup>
-                    </div>
-                  </div>
+                    <FormInputGroup
+                      type={inputTypes.TEXT_TAG}
+                      name="formatTags"
+                      {...formatTags}
+                      onChange={onInputChange}
+                    />
+                  </FormGroup>
                 </Form>
 
             }
