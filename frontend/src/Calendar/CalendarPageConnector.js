@@ -25,7 +25,7 @@ function createMissingMovieIdsSelector() {
           moment(inCinemas).isAfter(start) &&
           moment(inCinemas).isBefore(end) &&
           isBefore(movie.inCinemas) &&
-          !queueDetails.some((details) => !!details.movie && details.movie.id === movie.id)
+          !queueDetails.some((details) => details.movieId === movie.id)
         ) {
           acc.push(movie.id);
         }

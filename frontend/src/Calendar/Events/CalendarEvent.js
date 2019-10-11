@@ -7,7 +7,6 @@ import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
-import MovieTitleLink from 'Movie/MovieTitleLink';
 import styles from './CalendarEvent.css';
 
 class CalendarEvent extends Component {
@@ -19,23 +18,8 @@ class CalendarEvent extends Component {
     super(props, context);
 
     this.state = {
-      isDetailsModalOpen: false
+      // isDetailsModalOpen: false
     };
-  }
-
-  //
-  // Listeners
-
-  onPress = () => {
-    this.setState({ isDetailsModalOpen: true }, () => {
-      this.props.onEventModalOpenToggle(true);
-    });
-  }
-
-  onDetailsModalClose = () => {
-    this.setState({ isDetailsModalOpen: false }, () => {
-      this.props.onEventModalOpenToggle(false);
-    });
   }
 
   //
@@ -47,10 +31,12 @@ class CalendarEvent extends Component {
       inCinemas,
       title,
       titleSlug,
+      genres,
       monitored,
       hasFile,
       grabbed,
       queueItem,
+      showMovieInformation,
       showCutoffUnmetIcon,
       colorImpairedMode
     } = this.props;
@@ -59,24 +45,24 @@ class CalendarEvent extends Component {
     const isDownloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
     const statusStyle = getStatusStyle(hasFile, isDownloading, startTime, isMonitored);
+    const joinedGenres = genres.slice(0, 2).join(', ');
+    const link = `/movie/${titleSlug}`;
 
     return (
       <div>
         <Link
           className={classNames(
             styles.event,
+            styles.link,
             styles[statusStyle],
             colorImpairedMode && 'colorImpaired'
           )}
-          component="div"
-          onPress={this.onPress}
+          // component="div"
+          to={link}
         >
           <div className={styles.info}>
-            <div className={styles.seriesTitle}>
-              <MovieTitleLink
-                titleSlug={titleSlug}
-                title={title}
-              />
+            <div className={styles.movieTitle}>
+              {title}
             </div>
 
             {
@@ -109,6 +95,15 @@ class CalendarEvent extends Component {
                 />
             }
           </div>
+
+          {
+            showMovieInformation &&
+              <div className={styles.movieInfo}>
+                <div className={styles.genres}>
+                  {joinedGenres}
+                </div>
+              </div>
+          }
         </Link>
 
       </div>
@@ -118,6 +113,7 @@ class CalendarEvent extends Component {
 
 CalendarEvent.propTypes = {
   id: PropTypes.number.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   movieFile: PropTypes.object,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
@@ -126,10 +122,15 @@ CalendarEvent.propTypes = {
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
+  showMovieInformation: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired,
-  onEventModalOpenToggle: PropTypes.func.isRequired
+  colorImpairedMode: PropTypes.bool.isRequired
+  // onEventModalOpenToggle: PropTypes.func.isRequired
+};
+
+CalendarEvent.defaultProps = {
+  genres: []
 };
 
 export default CalendarEvent;

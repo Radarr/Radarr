@@ -92,9 +92,7 @@ class CalendarOptionsModalContent extends Component {
   render() {
     const {
       collapseMultipleEpisodes,
-      showEpisodeInformation,
-      showFinaleIcon,
-      showSpecialIcon,
+      showMovieInformation,
       showCutoffUnmetIcon,
       onModalClose
     } = this.props;
@@ -128,37 +126,13 @@ class CalendarOptionsModalContent extends Component {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Show Episode Information</FormLabel>
+                <FormLabel>Show Movie Information</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="showEpisodeInformation"
-                  value={showEpisodeInformation}
-                  helpText="Show episode title and number"
-                  onChange={this.onOptionInputChange}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>Icon for Finales</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="showFinaleIcon"
-                  value={showFinaleIcon}
-                  helpText="Show icon for series/season finales based on available episode information"
-                  onChange={this.onOptionInputChange}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>Icon for Specials</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="showSpecialIcon"
-                  value={showSpecialIcon}
-                  helpText="Show icon for special episodes (season 0)"
+                  name="showMovieInformation"
+                  value={showMovieInformation}
+                  helpText="Show movie genres and certification"
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
@@ -242,7 +216,7 @@ class CalendarOptionsModalContent extends Component {
 
 CalendarOptionsModalContent.propTypes = {
   collapseMultipleEpisodes: PropTypes.bool.isRequired,
-  showEpisodeInformation: PropTypes.bool.isRequired,
+  showMovieInformation: PropTypes.bool.isRequired,
   showFinaleIcon: PropTypes.bool.isRequired,
   showSpecialIcon: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,

@@ -39,9 +39,7 @@ export const defaultState = {
 
   options: {
     collapseMultipleEpisodes: false,
-    showEpisodeInformation: true,
-    showFinaleIcon: false,
-    showSpecialIcon: false,
+    showMovieInformation: true,
     showCutoffUnmetIcon: false
   },
 
@@ -346,11 +344,11 @@ export const actionHandlers = handleThunks({
   },
 
   [SEARCH_MISSING]: function(getState, payload, dispatch) {
-    const { episodeIds } = payload;
+    const { movieIds } = payload;
 
     const commandPayload = {
       name: commandNames.MOVIE_SEARCH,
-      episodeIds
+      movieIds
     };
 
     executeCommandHelper(commandPayload, dispatch).then((data) => {

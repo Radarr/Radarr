@@ -11,23 +11,35 @@
   }
 }
 
+.link {
+  composes: link from '~Components/Link/Link.css';
+
+  display: block;
+  color: $defaultColor;
+
+  &:hover {
+    color: $defaultColor;
+    text-decoration: none;
+  }
+}
+
 .info,
-.episodeInfo {
+.movieInfo {
   display: flex;
 }
 
-.episodeInfo {
+.movieInfo {
   color: $calendarTextDim;
 }
 
-.seriesTitle,
-.episodeTitle {
+.movieTitle,
+.genres {
   @add-mixin truncate;
   flex: 1 0 1px;
   margin-right: 10px;
 }
 
-.seriesTitle {
+.movieTitle {
   color: #3a3f51;
   font-size: $defaultFontSize;
 }
