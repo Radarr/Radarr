@@ -69,6 +69,7 @@ class EditMovieModalContent extends Component {
     const {
       monitored,
       qualityProfileId,
+      minimumAvailability,
       // Id,
       path,
       tags
@@ -92,6 +93,17 @@ class EditMovieModalContent extends Component {
                 name="monitored"
                 helpText="Download movie if available"
                 {...monitored}
+                onChange={onInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Minimum Availability</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.AVAILABILITY_SELECT}
+                name="minimumAvailability"
+                {...minimumAvailability}
                 onChange={onInputChange}
               />
             </FormGroup>

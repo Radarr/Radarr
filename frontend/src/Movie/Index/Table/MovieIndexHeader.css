@@ -10,6 +10,12 @@
   flex: 4 0 110px;
 }
 
+.minimumAvailability {
+  composes: headerCell  from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 140px;
+}
+
 .studio {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

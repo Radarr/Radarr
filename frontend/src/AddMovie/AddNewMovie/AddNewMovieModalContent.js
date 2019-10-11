@@ -55,6 +55,7 @@ class AddNewMovieModalContent extends Component {
       rootFolderPath,
       monitor,
       qualityProfileId,
+      minimumAvailability,
       folder,
       tags,
       isSmallScreen,
@@ -127,6 +128,17 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
+                  <FormLabel>Minimum Availability</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.AVAILABILITY_SELECT}
+                    name="minimumAvailability"
+                    onChange={onInputChange}
+                    {...minimumAvailability}
+                  />
+                </FormGroup>
+
+                <FormGroup>
                   <FormLabel>Quality Profile</FormLabel>
 
                   <FormInputGroup
@@ -191,6 +203,7 @@ AddNewMovieModalContent.propTypes = {
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
+  minimumAvailability: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,
   tags: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,

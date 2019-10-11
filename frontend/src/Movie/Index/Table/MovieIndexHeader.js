@@ -62,15 +62,19 @@ class MovieIndexHeader extends Component {
               return null;
             }
 
-            if (isMovieEditorActive && name === 'select') {
-              return (
-                <VirtualTableSelectAllHeaderCell
-                  key={name}
-                  allSelected={allSelected}
-                  allUnselected={allUnselected}
-                  onSelectAllChange={onSelectAllChange}
-                />
-              );
+            if (name === 'select') {
+              if (isMovieEditorActive) {
+                return (
+                  <VirtualTableSelectAllHeaderCell
+                    key={name}
+                    allSelected={allSelected}
+                    allUnselected={allUnselected}
+                    onSelectAllChange={onSelectAllChange}
+                  />
+                );
+              }
+
+              return null;
             }
 
             if (name === 'actions') {

@@ -18,7 +18,8 @@ function createMapStateToProps() {
     (addMovie, importMovie, selectedIds) => {
       const {
         monitor: defaultMonitor,
-        qualityProfileId: defaultQualityProfileId
+        qualityProfileId: defaultQualityProfileId,
+        minimumAvailability: defaultMinimumAvailability
       } = addMovie.defaults;
 
       const {
@@ -29,6 +30,7 @@ function createMapStateToProps() {
 
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
+      const isMinimumAvailabilityMixed = isMixed(items, selectedIds, defaultMinimumAvailability, 'minimumAvailability');
 
       return {
         selectedCount: selectedIds.length,
@@ -36,8 +38,10 @@ function createMapStateToProps() {
         isImporting,
         defaultMonitor,
         defaultQualityProfileId,
+        defaultMinimumAvailability,
         isMonitorMixed,
-        isQualityProfileIdMixed
+        isQualityProfileIdMixed,
+        isMinimumAvailabilityMixed
       };
     }
   );

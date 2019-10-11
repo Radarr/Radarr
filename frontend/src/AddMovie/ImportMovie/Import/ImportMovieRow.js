@@ -14,6 +14,7 @@ function ImportMovieRow(props) {
     id,
     monitor,
     qualityProfileId,
+    minimumAvailability,
     selectedMovie,
     isExistingMovie,
     isSelected,
@@ -44,6 +45,15 @@ function ImportMovieRow(props) {
         />
       </VirtualTableRowCell>
 
+      <VirtualTableRowCell className={styles.minimumAvailability}>
+        <FormInputGroup
+          type={inputTypes.AVAILABILITY_SELECT}
+          name="minimumAvailability"
+          value={minimumAvailability}
+          onChange={onInputChange}
+        />
+      </VirtualTableRowCell>
+
       <VirtualTableRowCell className={styles.qualityProfile}>
         <FormInputGroup
           type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -68,6 +78,7 @@ ImportMovieRow.propTypes = {
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
+  minimumAvailability: PropTypes.string.isRequired,
   selectedMovie: PropTypes.object,
   isExistingMovie: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,

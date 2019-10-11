@@ -35,6 +35,13 @@ function ImportMovieHeader(props) {
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
+        className={styles.minimumAvailability}
+        name="minimumAvailability"
+      >
+        Min Availability
+      </VirtualTableHeaderCell>
+
+      <VirtualTableHeaderCell
         className={styles.qualityProfile}
         name="qualityProfileId"
       >

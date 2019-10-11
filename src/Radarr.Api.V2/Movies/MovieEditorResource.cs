@@ -9,6 +9,7 @@ namespace Radarr.Api.V2.Movies
         public List<int> MovieIds { get; set; }
         public bool? Monitored { get; set; }
         public int? QualityProfileId { get; set; }
+        public MovieStatusType? MinimumAvailability { get; set; }
         public string RootFolderPath { get; set; }
         public List<int> Tags { get; set; }
         public ApplyTags ApplyTags { get; set; }

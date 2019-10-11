@@ -4,6 +4,7 @@ function getNewMovie(movie, payload) {
     rootFolderPath,
     monitor,
     qualityProfileId,
+    minimumAvailability,
     tags,
     searchForMovie = false
   } = payload;
@@ -15,6 +16,7 @@ function getNewMovie(movie, payload) {
   movie.addOptions = addOptions;
   movie.monitored = monitor === 'true';
   movie.qualityProfileId = qualityProfileId;
+  movie.minimumAvailability = minimumAvailability;
   movie.rootFolderPath = rootFolderPath;
   movie.tags = tags;
 

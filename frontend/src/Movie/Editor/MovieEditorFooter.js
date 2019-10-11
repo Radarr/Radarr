@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { kinds } from 'Helpers/Props';
 import SelectInput from 'Components/Form/SelectInput';
+import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -25,6 +26,7 @@ class MovieEditorFooter extends Component {
     this.state = {
       monitored: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
+      minimumAvailability: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
       savingTags: false,
       isDeleteMovieModalOpen: false,
@@ -44,6 +46,7 @@ class MovieEditorFooter extends Component {
       this.setState({
         monitored: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
+        minimumAvailability: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
         savingTags: false
       });
@@ -140,6 +143,7 @@ class MovieEditorFooter extends Component {
     const {
       monitored,
       qualityProfileId,
+      minimumAvailability,
       rootFolderPath,
       savingTags,
       isTagsModalOpen,
@@ -180,6 +184,21 @@ class MovieEditorFooter extends Component {
           <QualityProfileSelectInputConnector
             name="qualityProfileId"
             value={qualityProfileId}
+            includeNoChange={true}
+            isDisabled={!selectedCount}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <MovieEditorFooterLabel
+            label="Minimum Availability"
+            isSaving={isSaving && minimumAvailability !== NO_CHANGE}
+          />
+
+          <AvailabilitySelectInput
+            name="minimumAvailability"
+            value={minimumAvailability}
             includeNoChange={true}
             isDisabled={!selectedCount}
             onChange={this.onInputChange}

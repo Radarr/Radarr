@@ -39,6 +39,7 @@ function createMapStateToProps() {
       const movieSettings = _.pick(movie, [
         'monitored',
         'qualityProfileId',
+        'minimumAvailability',
         'path',
         'tags'
       ]);

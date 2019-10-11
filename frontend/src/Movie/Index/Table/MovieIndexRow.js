@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 // import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
+import titleCase from 'Utilities/String/titleCase';
 import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
@@ -73,6 +74,7 @@ class MovieIndexRow extends Component {
       added,
       inCinemas,
       physicalRelease,
+      minimumAvailability,
       path,
       genres,
       ratings,
@@ -198,6 +200,17 @@ class MovieIndexRow extends Component {
                   date={physicalRelease}
                   component={VirtualTableRowCell}
                 />
+              );
+            }
+
+            if (name === 'minimumAvailability') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {titleCase(minimumAvailability)}
+                </VirtualTableRowCell>
               );
             }
 
@@ -343,6 +356,7 @@ MovieIndexRow.propTypes = {
   added: PropTypes.string,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
+  minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,

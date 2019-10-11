@@ -16,6 +16,7 @@
   min-width: 185px;
 }
 
+.minimumAvailability,
 .qualityProfile {
   composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
 

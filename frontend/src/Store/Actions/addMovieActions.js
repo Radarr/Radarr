@@ -45,6 +45,7 @@ export const defaultState = {
     rootFolderPath: '',
     monitor: 'true',
     qualityProfileId: 0,
+    minimumAvailability: 'announced',
     tags: []
   },
 

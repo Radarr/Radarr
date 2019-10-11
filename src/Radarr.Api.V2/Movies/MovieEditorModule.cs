@@ -41,6 +41,11 @@ namespace Radarr.Api.V2.Movies
                     movie.ProfileId = resource.QualityProfileId.Value;
                 }
 
+                if (resource.MinimumAvailability.HasValue)
+                {
+                    movie.MinimumAvailability = resource.MinimumAvailability.Value;
+                }
+
                 if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
                 {
                     movie.RootFolderPath = resource.RootFolderPath;

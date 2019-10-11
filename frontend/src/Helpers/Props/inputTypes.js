@@ -1,4 +1,5 @@
 export const AUTO_COMPLETE = 'autoComplete';
+export const AVAILABILITY_SELECT = 'availabilitySelect';
 export const CAPTCHA = 'captcha';
 export const CHECK = 'check';
 export const DEVICE = 'device';
@@ -16,6 +17,7 @@ export const TEXT_TAG = 'textTag';
 
 export const all = [
   AUTO_COMPLETE,
+  AVAILABILITY_SELECT,
   CAPTCHA,
   CHECK,
   DEVICE,

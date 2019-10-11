@@ -22,12 +22,14 @@ class ImportMovieFooter extends Component {
 
     const {
       defaultMonitor,
-      defaultQualityProfileId
+      defaultQualityProfileId,
+      defaultMinimumAvailability
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
-      qualityProfileId: defaultQualityProfileId
+      qualityProfileId: defaultQualityProfileId,
+      minimumAvailability: defaultMinimumAvailability
     };
   }
 
@@ -35,13 +37,16 @@ class ImportMovieFooter extends Component {
     const {
       defaultMonitor,
       defaultQualityProfileId,
+      defaultMinimumAvailability,
       isMonitorMixed,
-      isQualityProfileIdMixed
+      isQualityProfileIdMixed,
+      isMinimumAvailabilityMixed
     } = this.props;
 
     const {
       monitor,
-      qualityProfileId
+      qualityProfileId,
+      minimumAvailability
     } = this.state;
 
     const newState = {};
@@ -56,6 +61,12 @@ class ImportMovieFooter extends Component {
       newState.qualityProfileId = MIXED;
     } else if (!isQualityProfileIdMixed && qualityProfileId !== defaultQualityProfileId) {
       newState.qualityProfileId = defaultQualityProfileId;
+    }
+
+    if (isMinimumAvailabilityMixed && minimumAvailability !== MIXED) {
+      newState.minimumAvailability = MIXED;
+    } else if (!isMinimumAvailabilityMixed && minimumAvailability !== defaultMinimumAvailability) {
+      newState.minimumAvailability = defaultMinimumAvailability;
     }
 
     if (!_.isEmpty(newState)) {
@@ -81,13 +92,15 @@ class ImportMovieFooter extends Component {
       isLookingUpMovie,
       isMonitorMixed,
       isQualityProfileIdMixed,
+      isMinimumAvailabilityMixed,
       onImportPress,
       onCancelLookupPress
     } = this.props;
 
     const {
       monitor,
-      qualityProfileId
+      qualityProfileId,
+      minimumAvailability
     } = this.state;
 
     return (
@@ -103,6 +116,21 @@ class ImportMovieFooter extends Component {
             value={monitor}
             isDisabled={!selectedCount}
             includeMixed={isMonitorMixed}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <div className={styles.label}>
+            Minimum Availability
+          </div>
+
+          <FormInputGroup
+            type={inputTypes.AVAILABILITY_SELECT}
+            name="minimumAvailability"
+            value={minimumAvailability}
+            isDisabled={!selectedCount}
+            includeMixed={isMinimumAvailabilityMixed}
             onChange={this.onInputChange}
           />
         </div>
@@ -174,8 +202,10 @@ ImportMovieFooter.propTypes = {
   isLookingUpMovie: PropTypes.bool.isRequired,
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
+  defaultMinimumAvailability: PropTypes.string,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
+  isMinimumAvailabilityMixed: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired,
   onCancelLookupPress: PropTypes.func.isRequired

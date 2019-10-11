@@ -59,6 +59,7 @@ class AddNewMovieModalContentConnector extends Component {
       rootFolderPath,
       monitor,
       qualityProfileId,
+      minimumAvailability,
       tags
     } = this.props;
 
@@ -67,6 +68,7 @@ class AddNewMovieModalContentConnector extends Component {
       rootFolderPath: rootFolderPath.value,
       monitor: monitor.value,
       qualityProfileId: qualityProfileId.value,
+      minimumAvailability: minimumAvailability.value,
       tags: tags.value,
       searchForMovie
     });
@@ -91,6 +93,7 @@ AddNewMovieModalContentConnector.propTypes = {
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
+  minimumAvailability: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddMovieDefault: PropTypes.func.isRequired,

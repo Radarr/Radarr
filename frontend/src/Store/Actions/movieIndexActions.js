@@ -109,6 +109,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'minimumAvailability',
+      label: 'Min Availability',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'path',
       label: 'Path',
       isSortable: true,

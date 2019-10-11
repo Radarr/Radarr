@@ -3,6 +3,7 @@ import React from 'react';
 import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
 import AutoCompleteInput from './AutoCompleteInput';
+import AvailabilitySelectInput from './AvailabilitySelectInput';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
@@ -25,6 +26,9 @@ function getComponent(type) {
   switch (type) {
     case inputTypes.AUTO_COMPLETE:
       return AutoCompleteInput;
+
+    case inputTypes.AVAILABILITY_SELECT:
+      return AvailabilitySelectInput;
 
     case inputTypes.CAPTCHA:
       return CaptchaInputConnector;
