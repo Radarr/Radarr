@@ -6,12 +6,17 @@ function createProfileInUseSelector(profileProp) {
   return createSelector(
     (state, { id }) => id,
     createAllMoviesSelector(),
-    (id, movies) => {
+    (state) => state.settings.netImports.items,
+    (id, movies, lists) => {
       if (!id) {
         return false;
       }
 
-      return _.some(movies, { [profileProp]: id });
+      if (_.some(movies, { [profileProp]: id }) || _.some(lists, { [profileProp]: id })) {
+        return true;
+      }
+
+      return false;
     }
   );
 }
