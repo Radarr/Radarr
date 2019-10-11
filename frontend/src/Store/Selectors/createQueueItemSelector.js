@@ -2,19 +2,15 @@ import { createSelector } from 'reselect';
 
 function createQueueItemSelector() {
   return createSelector(
-    (state, { episodeId }) => episodeId,
+    (state, { movieId }) => movieId,
     (state) => state.queue.details.items,
-    (episodeId, details) => {
-      if (!episodeId) {
+    (movieId, details) => {
+      if (!movieId) {
         return null;
       }
 
       return details.find((item) => {
-        if (item.episode) {
-          return item.episode.id === episodeId;
-        }
-
-        return false;
+        return item.movieId === movieId;
       });
     }
   );
