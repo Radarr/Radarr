@@ -62,7 +62,7 @@ namespace NzbDrone.Integration.Test.Client
         public void WaitAll()
         {
             var resources = All();
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < 120; i++)
             {
                 if (!resources.Any(v => v.Status == CommandStatus.Queued || v.Status == CommandStatus.Started))
                 {
