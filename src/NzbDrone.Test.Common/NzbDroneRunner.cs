@@ -40,7 +40,7 @@ namespace NzbDrone.Test.Common
 
             if (BuildInfo.IsDebug)
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\_output\\Radarr.Console.exe"));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", "net462", "Radarr.Console.exe"));
             }
             else
             {
