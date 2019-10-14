@@ -3,11 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ical.Net;
+using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
-using Ical.Net.General;
-using Ical.Net.Interfaces.Serialization;
 using Ical.Net.Serialization;
-using Ical.Net.Serialization.iCalendar.Factory;
 using NzbDrone.Core.Movies;
 using Nancy.Responses;
 using NzbDrone.Core.Tags;
@@ -117,7 +115,7 @@ namespace NzbDrone.Api.Calendar
                 return;
             }
             
-            var occurrence = calendar.Create<Event>();
+            var occurrence = calendar.Create<CalendarEvent>();
             occurrence.Uid = "NzbDrone_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
             occurrence.Status = movie.Status == MovieStatusType.Announced ? EventStatus.Tentative : EventStatus.Confirmed;
             
