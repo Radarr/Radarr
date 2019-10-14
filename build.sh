@@ -153,7 +153,6 @@ PackageMacOS()
 
     echo "Adding Startup script"
     cp ./macOS/Radarr $folder
-    dos2unix $folder/Radarr
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
