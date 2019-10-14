@@ -19,14 +19,16 @@ namespace NzbDrone.Core.NetImport.RSSImport
     public class RSSImportParser : IParseNetImportResponse
     {
         private readonly RSSImportSettings _settings;
-        private NetImportResponse _importResponse;
         private readonly Logger _logger;
+        private NetImportResponse _importResponse;
 
         private static readonly Regex ReplaceEntities = new Regex("&[a-z]+;", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public RSSImportParser(RSSImportSettings settings)
+        public RSSImportParser(RSSImportSettings settings,
+                               Logger logger)
         {
             _settings = settings;
+            _logger = logger;
         }
 
         public virtual IList<Movie> ParseResponse(NetImportResponse importResponse)

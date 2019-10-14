@@ -215,7 +215,7 @@ namespace NzbDrone.Integration.Test
                     connected = true;
                     break;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (retryCount > 25)
                     {

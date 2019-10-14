@@ -41,8 +41,6 @@ namespace NzbDrone.Api.Movies
         {
             if (model == null) return null;
 
-            AlternativeTitleResource resource = null;
-
             return new AlternativeTitleResource
             {
                 Id = model.Id,

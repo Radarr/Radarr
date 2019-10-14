@@ -13,8 +13,6 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class DatabaseTarget : TargetWithLayout, IHandle<ApplicationShutdownRequested>
     {
-        private readonly SQLiteConnection _connection;
-
         private readonly IConnectionStringFactory _connectionStringFactory;
 
         const string INSERT_COMMAND = "INSERT INTO [Logs]([Message],[Time],[Logger],[Exception],[ExceptionType],[Level]) " +

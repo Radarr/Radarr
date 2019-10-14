@@ -11,7 +11,6 @@ namespace NzbDrone.Core.NetImport.StevenLu
     {
         private readonly StevenLuSettings _settings;
         private NetImportResponse _importResponse;
-        private readonly Logger _logger;
 
         public StevenLuParser(StevenLuSettings settings)
         {

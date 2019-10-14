@@ -3,8 +3,6 @@ using NzbDrone.Core.NetImport.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using NLog;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
@@ -13,7 +11,6 @@ namespace NzbDrone.Core.NetImport.CouchPotato
     {
         private readonly CouchPotatoSettings _settings;
         private NetImportResponse _importResponse;
-        private readonly Logger _logger;
 
         public CouchPotatoParser(CouchPotatoSettings settings)
         {

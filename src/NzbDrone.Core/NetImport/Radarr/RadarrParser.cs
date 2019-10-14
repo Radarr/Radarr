@@ -1,9 +1,5 @@
 ﻿﻿using Newtonsoft.Json;
-using NzbDrone.Core.NetImport.Exceptions;
-using System;
 using System.Collections.Generic;
-using System.Net;
-using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
@@ -17,7 +13,6 @@ namespace NzbDrone.Core.NetImport.Radarr
         private readonly RadarrSettings _settings;
         private NetImportResponse _importResponse;
         private readonly ISearchForNewMovie _skyhookProxy;
-        private readonly Logger _logger;
 
         public RadarrParser(RadarrSettings settings, ISearchForNewMovie skyhookProxy)
         {

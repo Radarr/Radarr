@@ -11,14 +11,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        private readonly IHttpClient _httpClient;
-        public IConfigService _configService;
-
         public TraktImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {
-            _configService = configService;
-            _httpClient = httpClient;
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()

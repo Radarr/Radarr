@@ -10,8 +10,9 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
     public abstract class AugmentMovieInfoFixture<TAugmenter> : CoreTest<TAugmenter> where TAugmenter : class, IAugmentParsedMovieInfo
     {
         protected ParsedMovieInfo MovieInfo;
+
         [SetUp]
-        public void Setup()
+        public virtual void Setup()
         {
             MovieInfo = new ParsedMovieInfo
             {

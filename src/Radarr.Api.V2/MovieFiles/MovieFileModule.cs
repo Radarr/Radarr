@@ -29,13 +29,15 @@ namespace Radarr.Api.V2.MovieFiles
         private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
-                             IMediaFileService mediaFileService,
-                             IMovieService movieService,
-                             IUpgradableSpecification qualityUpgradableSpecification,
-                             Logger logger)
+                               IMediaFileService mediaFileService,
+                               IRecycleBinProvider recycleBinProvider,
+                               IMovieService movieService,
+                               IUpgradableSpecification qualityUpgradableSpecification,
+                               Logger logger)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
+            _recycleBinProvider = recycleBinProvider;
             _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;

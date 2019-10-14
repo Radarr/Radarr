@@ -40,7 +40,7 @@ namespace NzbDrone.Integration.Test.Client
         public SimpleCommandResource PostAndWait<T>(T command) where T : Command, new()
         {
             var request = BuildRequest();
-            request.AddBody(command);
+            request.AddJsonBody(command);
             var result = Post<SimpleCommandResource>(request);
             result.Id.Should().NotBe(0);
 

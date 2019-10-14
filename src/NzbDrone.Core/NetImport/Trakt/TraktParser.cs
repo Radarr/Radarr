@@ -11,7 +11,6 @@ namespace NzbDrone.Core.NetImport.Trakt
     {
         private readonly TraktSettings _settings;
         private NetImportResponse _importResponse;
-        private readonly Logger _logger;
 
         public TraktParser(TraktSettings settings)
         {

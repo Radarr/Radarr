@@ -6,7 +6,6 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Composition;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles;
@@ -29,10 +28,7 @@ namespace NzbDrone.Core.CustomFormats
     {
         private readonly ICustomFormatRepository _formatRepository;
         private IProfileService _profileService;
-        private readonly IMediaFileService _mediaFileService;
-        private readonly IBlacklistService _blacklistService;
         private readonly IHistoryService _historyService;
-        private readonly IPendingReleaseService _pendingReleaseService;
 
         public IProfileService ProfileService
         {
@@ -54,17 +50,12 @@ namespace NzbDrone.Core.CustomFormats
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
         public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
-            IContainer container, IHistoryService historyService,/*IMediaFileService mediaFileService, IBlacklistService blacklistService,
-            IHistoryService historyService, IPendingReleaseService pendingReleaseService,*/
+            IContainer container, IHistoryService historyService,
             Logger logger)
         {
             _formatRepository = formatRepository;
             _container = container;
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
-            /*_mediaFileService = mediaFileService;
-            _blacklistService = blacklistService;
-            _historyService = historyService;
-            _pendingReleaseService = pendingReleaseService;*/
             _historyService = historyService;
             _logger = logger;
         }
