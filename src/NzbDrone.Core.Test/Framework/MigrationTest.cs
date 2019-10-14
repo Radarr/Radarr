@@ -1,5 +1,6 @@
 using System;
 using FluentMigrator;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using NzbDrone.Test.Common.AutoMoq;
@@ -36,13 +37,15 @@ namespace NzbDrone.Core.Test.Framework
             return db.GetDirectDataMapper();
         }
 
+        protected override void SetupLogging()
+        {
+            Mocker.SetConstant<ILoggerProvider>(Mocker.Resolve<MigrationLoggerProvider>());
+        }
+
         [SetUp]
         public override void SetupDb()
         {
             SetupContainer();
         }
-
-        [Obsolete("Don't use Mocker/Repositories in MigrationTests, query the DB.", true)]
-        public new AutoMoqer Mocker => base.Mocker;
     }
 }

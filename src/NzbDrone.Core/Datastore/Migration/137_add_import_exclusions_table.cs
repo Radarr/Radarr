@@ -1,9 +1,6 @@
 ﻿using System.Data;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Text;
-using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Globalization;
@@ -19,9 +16,9 @@ namespace NzbDrone.Core.Datastore.Migration
             if (!this.Schema.Schema("dbo").Table("ImportExclusions").Exists())
             {
                 Create.TableForModel("ImportExclusions")
-                      .WithColumn("TmdbId").AsInt64().NotNullable().Unique().PrimaryKey()
-                      .WithColumn("MovieTitle").AsString().Nullable()
-                      .WithColumn("MovieYear").AsInt64().Nullable().WithDefault(0);
+                    .WithColumn("TmdbId").AsInt64().NotNullable().Unique().PrimaryKey()
+                    .WithColumn("MovieTitle").AsString().Nullable()
+                    .WithColumn("MovieYear").AsInt64().Nullable().WithDefaultValue(0);
             }
             Execute.WithConnection(AddExisting);
         }
