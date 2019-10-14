@@ -8,10 +8,10 @@ using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 
-namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
+namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
     [TestFixture]
-    public class GetMoviePathFixture : CoreTest<JsonApiProvider>
+    public class GetMoviePathFixture : CoreTest<XbmcService>
     {
         private const string IMDB_ID = "tt67890";
         private XbmcSettings _settings;
