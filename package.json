@@ -9,7 +9,8 @@
     "clean": "git clean -fXd",
     "lint": "esprint check",
     "lint-fix": "eslint start --fix",
-    "stylelint": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
+    "stylelint-linux": "stylelint $(find frontend -name '*.css') --config frontend/.stylelintrc",
+    "stylelint-windows": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
   },
   "repository": "https://github.com/Radarr/Radarr",
   "author": "Team Radarr",

@@ -1,24 +1,11 @@
 #! /bin/bash
-outputFolder='./_output'
-testPackageFolder='./_tests/'
-sourceFolder='./src'
-slnFile=$sourceFolder/Radarr.sln
+set -e
 
-#Artifact variables
-artifactsFolder="./_artifacts";
+outputFolder='_output'
+testPackageFolder='_tests'
+artifactsFolder="_artifacts";
 
 nuget='tools/nuget/nuget.exe';
-
-CheckExitCode()
-{
-    "$@"
-    local status=$?
-    if [ $status -ne 0 ]; then
-        echo "error with $1" >&2
-        exit 1
-    fi
-    return $status
-}
 
 ProgressStart()
 {
@@ -34,8 +21,9 @@ UpdateVersionNumber()
 {
     if [ "$RADARRVERSION" != "" ]; then
         echo "Updating Version Info"
-        sed -i "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$RADARRVERSION<\/AssemblyVersion>/g" ./src/Directory.Build.props
-        sed -i "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" ./src/Directory.Build.props
+        sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$RADARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
+        sed -i'' -e "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" src/Directory.Build.props
+        sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$RADARRVERSION<\/string>/g" macOS/Radarr.app/Contents/Info.plist
     fi
 }
 
@@ -59,11 +47,15 @@ CleanFolder()
 LintUI()
 {
     ProgressStart 'ESLint'
-    CheckExitCode yarn lint
+    yarn lint
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'
-    CheckExitCode yarn stylelint
+    if [ "$os" = "windows" ]; then
+        yarn stylelint-windows
+    else
+        yarn stylelint-linux
+    fi
     ProgressEnd 'Stylelint'
 }
 
@@ -74,23 +66,30 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
-    CheckExitCode dotnet clean $slnFile -c Debug
-    CheckExitCode dotnet clean $slnFile -c Release
-    CheckExitCode dotnet msbuild -restore src/Radarr.sln -p:Configuration=Release -t:PublishAllRids
+    if [ $os = "windows" ]; then
+        slnFile=src/Radarr.Windows.sln
+    else
+        slnFile=src/Radarr.Posix.sln
+    fi
+
+    dotnet clean $slnFile -c Debug
+    dotnet clean $slnFile -c Release
+    dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
 
     ProgressEnd 'Build'
 }
 
-RunGulp()
+YarnInstall()
 {
     ProgressStart 'yarn install'
     yarn install --frozen-lockfile
     ProgressEnd 'yarn install'
+}
 
-    LintUI
-
+RunGulp()
+{
     ProgressStart 'Running gulp'
-    CheckExitCode yarn run build --production
+    yarn run build --production
     ProgressEnd 'Running gulp'
 }
 
@@ -115,22 +114,17 @@ PackageFiles()
 PackageLinux()
 {
     local framework="$1"
+    local runtime="$2"
 
-    ProgressStart "Creating Linux Package for $framework"
+    ProgressStart "Creating $runtime Package for $framework"
 
-    local folder=$artifactsFolder/linux/$framework/Radarr
+    local folder=$artifactsFolder/$runtime/$framework/Radarr
 
-    PackageFiles "$folder" $framework $runtime "linux-x64"
+    PackageFiles "$folder" "$framework" "$runtime"
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
     rm -f $folder/ServiceInstall.*
-
-    echo "Renaming Radarr.Console.exe to Radarr.exe"
-    rm $folder/Radarr.exe*
-    for file in $folder/Radarr.Console.exe*; do
-        mv "$file" "${file//.Console/}"
-    done
 
     echo "Removing Radarr.Windows"
     rm $folder/Radarr.Windows.*
@@ -138,7 +132,7 @@ PackageLinux()
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
 
-    ProgressEnd "Creating Linux Package for $framework"
+    ProgressEnd "Creating $runtime Package for $framework"
 }
 
 PackageMacOS()
@@ -151,18 +145,14 @@ PackageMacOS()
 
     PackageFiles "$folder" "$framework" "osx-x64"
 
-    echo "Adding Startup script"
-    cp ./macOS/Radarr $folder
+    if [ "$framework" = "net462" ]; then
+        echo "Adding Startup script"
+        cp macOS/Radarr $folder
+    fi
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
     rm -f $folder/ServiceInstall.*
-
-    echo "Renaming Radarr.Console.exe to Radarr.exe"
-    rm $folder/Radarr.exe*
-    for file in $folder/Radarr.Console.exe*; do
-        mv "$file" "${file//.Console/}"
-    done
 
     echo "Removing Radarr.Windows"
     rm $folder/Radarr.Windows.*
@@ -183,7 +173,7 @@ PackageMacOSApp()
 
     rm -rf $folder
     mkdir -p $folder
-    cp -r ./macOS/Radarr.app $folder
+    cp -r macOS/Radarr.app $folder
     mkdir -p $folder/Radarr.app/Contents/MacOS
 
     echo "Copying Binaries"
@@ -199,9 +189,9 @@ PackageTests()
 {
     ProgressStart 'Creating Test Package'
 
-    cp ./test.sh $testPackageFolder/net462/win-x64/publish
-    cp ./test.sh $testPackageFolder/net462/linux-x64/publish
-    cp ./test.sh $testPackageFolder/net462/osx-x64/publish
+    cp test.sh $testPackageFolder/net462/win-x64/publish
+    cp test.sh $testPackageFolder/net462/linux-x64/publish
+    cp test.sh $testPackageFolder/net462/osx-x64/publish
 
     if [ $os = "windows" ] ; then
         $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
@@ -233,7 +223,7 @@ PackageWindows()
 
     local folder=$artifactsFolder/windows/$framework/Radarr
     
-    PackageFiles "$folder" "net462" "win-x64"
+    PackageFiles "$folder" "$framework" "win-x64"
 
     echo "Removing Radarr.Mono"
     rm -f $folder/Radarr.Mono.*
@@ -257,21 +247,41 @@ case "$(uname -s)" in
 esac
 
 POSITIONAL=()
+
+if [ $# -eq 0 ]; then
+    echo "No arguments provided, building everything"
+    BACKEND=YES
+    FRONTEND=YES
+    PACKAGES=YES
+    LINT=YES
+fi
+
 while [[ $# -gt 0 ]]
 do
 key="$1"
 
 case $key in
-    --only-backend)
-        ONLY_BACKEND=YES
+    --backend)
+        BACKEND=YES
         shift # past argument
         ;;
-    --only-frontend)
-        ONLY_FRONTEND=YES
+    --frontend)
+        FRONTEND=YES
         shift # past argument
         ;;
-    --only-packages)
-        ONLY_PACKAGES=YES
+    --packages)
+        PACKAGES=YES
+        shift # past argument
+        ;;
+    --lint)
+        LINT=YES
+        shift # past argument
+        ;;
+    --all)
+        BACKEND=YES
+        FRONTEND=YES
+        PACKAGES=YES
+        LINT=YES
         shift # past argument
         ;;
     *)    # unknown option
@@ -282,25 +292,34 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-# Only build backend if we haven't set only-frontend or only-packages
-if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
+if [ "$BACKEND" = "YES" ];
 then
     UpdateVersionNumber
     Build
     PackageTests
 fi
 
-# Only build frontend if we haven't set only-backend or only-packages
-if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_PACKAGES" ];
+if [ "$FRONTEND" = "YES" ];
 then
-   RunGulp
+    YarnInstall
+    RunGulp
 fi
 
-# Only package if we haven't set only-backend or only-frontend
-if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
+if [ "$LINT" = "YES" ];
 then
+    if [ -z "$FRONTEND" ];
+    then
+        YarnInstall
+    fi
+    
+    LintUI
+fi
+
+if [ "$PACKAGES" = "YES" ];
+then
+    UpdateVersionNumber
     PackageWindows "net462"
-    PackageLinux "net462"
+    PackageLinux "net462" "linux-x64"
     PackageMacOS "net462"
     PackageMacOSApp "net462"
 fi

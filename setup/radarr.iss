@@ -26,7 +26,7 @@ DefaultDirName={commonappdata}\Radarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Radarr.{#BranchName}.{#BuildVersion}.windows
+OutputBaseFilename=Radarr.{#BranchName}.{#BuildVersion}.windows.{#Framework}
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
@@ -36,6 +36,7 @@ CompressionThreads=2
 Compression=lzma2/normal
 AppContact={#ForumsURL}
 VersionInfoVersion={#BaseVersion}.{#BuildNumber}
+SetupLogging=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -47,8 +48,8 @@ Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts
 Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 
 [Files]
-Source: "..\_artifacts\windows\net462\Radarr\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\_artifacts\windows\net462\Radarr\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\_artifacts\windows\{#Framework}\Radarr\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\_artifacts\windows\{#Framework}\Radarr\*"; Excludes: "Radarr.Update"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
