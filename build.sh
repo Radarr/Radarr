@@ -5,8 +5,6 @@ outputFolder='_output'
 testPackageFolder='_tests'
 artifactsFolder="_artifacts";
 
-nuget='tools/nuget/nuget.exe';
-
 ProgressStart()
 {
     echo "Start '$1'"
@@ -131,6 +129,10 @@ PackageLinux()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
+    if [ "$framework" = "netcoreapp3.0" ]; then
+        cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
+    fi
 
     ProgressEnd "Creating $runtime Package for $framework"
 }
@@ -159,6 +161,10 @@ PackageMacOS()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
+    if [ "$framework" = "netcoreapp3.0" ]; then
+        cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
+    fi
 
     ProgressEnd 'Creating MacOS Package'
 }
@@ -189,26 +195,17 @@ PackageTests()
 {
     ProgressStart 'Creating Test Package'
 
-    cp test.sh $testPackageFolder/net462/win-x64/publish
     cp test.sh $testPackageFolder/net462/linux-x64/publish
-    cp test.sh $testPackageFolder/net462/osx-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.0/win-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.0/linux-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.0/osx-x64/publish
 
-    if [ $os = "windows" ] ; then
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
-    else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
-    fi
-    
     rm -f $testPackageFolder/*.log.config
 
     # geckodriver.exe isn't copied by dotnet publish
     curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
     unzip -o gecko.zip
-    cp geckodriver.exe $testPackageFolder/net462/win-x64/publish
+    cp geckodriver.exe $testPackageFolder/netcoreapp3.0/win-x64/publish
 
     CleanFolder $testPackageFolder
 
@@ -227,6 +224,8 @@ PackageWindows()
 
     echo "Removing Radarr.Mono"
     rm -f $folder/Radarr.Mono.*
+    rm -f $folder/Mono.Posix.NETStandard.*
+    rm -f $folder/libMonoPosixHelper.*
 
     echo "Adding Radarr.Windows to UpdatePackage"
     cp $folder/Radarr.Windows.* $folder/Radarr.Update
@@ -318,8 +317,11 @@ fi
 if [ "$PACKAGES" = "YES" ];
 then
     UpdateVersionNumber
-    PackageWindows "net462"
+    PackageWindows "netcoreapp3.0"
     PackageLinux "net462" "linux-x64"
-    PackageMacOS "net462"
-    PackageMacOSApp "net462"
+    PackageLinux "netcoreapp3.0" "linux-x64"
+    PackageLinux "netcoreapp3.0" "linux-arm64"
+    PackageLinux "netcoreapp3.0" "linux-arm"
+    PackageMacOS "netcoreapp3.0"
+    PackageMacOSApp "netcoreapp3.0"
 fi

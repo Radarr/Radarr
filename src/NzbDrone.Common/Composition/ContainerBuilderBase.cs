@@ -6,6 +6,12 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
 using TinyIoC;
 
+#if NETCOREAPP3_0
+using System.IO;
+using System.Runtime.Loader;
+using System.Runtime.InteropServices;
+#endif
+
 namespace NzbDrone.Common.Composition
 {
     public abstract class ContainerBuilderBase
@@ -21,15 +27,82 @@ namespace NzbDrone.Common.Composition
             assemblies.Add(OsInfo.IsWindows ? "Radarr.Windows" : "Radarr.Mono");
             assemblies.Add("Radarr.Common");
 
+#if !NETCOREAPP3_0
             foreach (var assembly in assemblies)
             {
                 _loadedTypes.AddRange(Assembly.Load(assembly).GetTypes());
             }
+#else
+            var _startupPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            foreach (var assemblyName in assemblies)
+            {
+                _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(_startupPath, $"{assemblyName}.dll")).GetTypes());
+            }
+
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ContainerResolveEventHandler);
+            RegisterNativeResolver(new [] {"System.Data.SQLite.dll", "Radarr.Core.dll"});
+#endif
 
             Container = new Container(new TinyIoCContainer(), _loadedTypes);
             AutoRegisterInterfaces();
             Container.Register(args);
-       }
+        }
+
+#if  NETCOREAPP3_0
+        private static Assembly ContainerResolveEventHandler(object sender, ResolveEventArgs args)
+        {
+            var _resolver = new AssemblyDependencyResolver(args.RequestingAssembly.Location);
+            var assemblyPath = _resolver.ResolveAssemblyToPath(new AssemblyName(args.Name));
+
+            if (assemblyPath == null)
+            {
+                return null;
+            }
+
+            return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
+        }
+
+        public static void RegisterNativeResolver(IEnumerable<string> assemblyNames)
+        {
+            // This ensures we look for sqlite3 using libsqlite3.so.0 on Linux and not libsqlite3.so which
+            // is less likely to exist.
+            foreach (var name in assemblyNames)
+            {
+                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, name)
+                    );
+
+                try
+                {
+                    NativeLibrary.SetDllImportResolver(assembly, LoadNativeLib);
+                }
+                catch (InvalidOperationException)
+                {
+                    // This can only be set once per assembly
+                    // Catch required for NzbDrone.Host tests
+                }
+            }
+        }
+
+        private static IntPtr LoadNativeLib(string libraryName, Assembly assembly, DllImportSearchPath? dllImportSearchPath)
+        {
+            var mappedName = libraryName;
+            if (OsInfo.IsLinux)
+            {
+                if (libraryName == "sqlite3")
+                {
+                    mappedName = "libsqlite3.so.0";
+                }
+                else if (libraryName == "mediainfo")
+                {
+                    mappedName = "libmediainfo.so.0";
+                }
+            }
+
+            return NativeLibrary.Load(mappedName, assembly, dllImportSearchPath);
+        }
+#endif
 
         private void AutoRegisterInterfaces()
         {

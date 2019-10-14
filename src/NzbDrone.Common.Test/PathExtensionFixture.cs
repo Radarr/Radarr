@@ -223,7 +223,7 @@ namespace NzbDrone.Common.Test
         public void get_actual_casing_should_return_actual_casing_for_local_dir_in_windows()
         {
             WindowsOnly();
-            var path = Directory.GetCurrentDirectory().Replace("c:\\","C:\\").Replace("system32", "System32");
+            var path = Directory.GetCurrentDirectory().Replace("c:\\","C:\\").Replace("d:\\","D:\\").Replace("system32", "System32");
 
             path.ToUpper().GetActualCasing().Should().Be(path);
             path.ToLower().GetActualCasing().Should().Be(path);
@@ -280,7 +280,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void GetUpdateClientExePath()
         {
-            GetIAppDirectoryInfo().GetUpdateClientExePath().Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr.Update.exe".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientExePath(PlatformType.DotNet).Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr.Update.exe".AsOsAgnostic());
         }
 
         [Test]

@@ -36,15 +36,28 @@ namespace NzbDrone.Test.Common
 
             GenerateConfigFile();
 
-            var radarrConsoleExe = OsInfo.IsWindows ? "Radarr.Console.exe" : "Radarr.exe";
-
-            if (BuildInfo.IsDebug)
+            string consoleExe;
+            if (OsInfo.IsWindows)
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", "net462", "Radarr.Console.exe"));
+                consoleExe = "Radarr.Console.exe";
+            }
+            else if (PlatformInfo.IsMono)
+            {
+                consoleExe = "Radarr.exe";
             }
             else
             {
-                Start(Path.Combine("bin", radarrConsoleExe));
+                consoleExe = "Radarr";
+            }
+
+            if (BuildInfo.IsDebug)
+            {
+                var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.0" : "net462";
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", frameworkFolder, consoleExe));
+            }
+            else
+            {
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", consoleExe));
             }
 
             while (true)

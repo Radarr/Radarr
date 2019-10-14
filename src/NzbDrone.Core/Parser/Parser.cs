@@ -368,8 +368,7 @@ namespace NzbDrone.Core.Parser
             value = value.ToLowerInvariant();
 
             //Remove all accents
-            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
+            value = value.RemoveAccent();
 
             //Replace spaces
             value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);

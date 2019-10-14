@@ -158,7 +158,7 @@ namespace NzbDrone.Common.Test.Http
             var response = Subject.Get<HttpBinResource>(request);
 
             response.Resource.Headers["Accept-Encoding"].ToString().Should().Be(compression);
-            response.Headers.ContentLength.Should().BeLessOrEqualTo(response.Content.Length);
+            response.Resource.Gzipped.Should().BeTrue();
         }
 
         [TestCase(HttpStatusCode.Unauthorized)]
@@ -711,6 +711,7 @@ namespace NzbDrone.Common.Test.Http
         public string Origin { get; set; }
         public string Url { get; set; }
         public string Data { get; set; }
+        public bool Gzipped { get; set; }
     }
 
     public class HttpCookieResource

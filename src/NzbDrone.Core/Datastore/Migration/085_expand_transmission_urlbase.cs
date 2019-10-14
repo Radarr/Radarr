@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using FluentMigrator;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
+    // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+    using NzbDrone.Common.Extensions;
+
     [Migration(85)]
     public class expand_transmission_urlbase : NzbDroneMigrationBase
     {

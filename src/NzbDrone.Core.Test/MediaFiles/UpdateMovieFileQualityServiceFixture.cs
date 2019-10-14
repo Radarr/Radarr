@@ -81,8 +81,12 @@ namespace NzbDrone.Core.Test.MediaFiles
             var imported = Builder<History.History>.CreateNew()
                 .With(h => h.EventType = HistoryEventType.DownloadFolderImported)
                 .With(h => h.SourceTitle = "My Movie 2018.mkv").Build();
+
             Mocker.GetMock<IHistoryService>().Setup(s => s.GetByMovieId(It.IsAny<int>(), null))
                 .Returns(new List<History.History> {imported});
+
+            Mocker.GetMock<IParsingService>().Setup(s => s.ParseMovieInfo("My Movie 2018.mkv", It.IsAny<List<object>>()))
+                .Returns(_newInfo);
 
             ExecuteCommand();
 

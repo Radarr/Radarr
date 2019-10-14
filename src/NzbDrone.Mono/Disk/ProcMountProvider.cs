@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Mono.Disk
 {
+    // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+    using NzbDrone.Common.Extensions;
+
     public interface IProcMountProvider
     {
         List<IMount> GetMounts();

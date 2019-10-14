@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Microsoft.Practices.ObjectBuilder2;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Jobs;
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Subject.Clean();
 
-			AllStoredModels.ForEach(t => t.LastExecution.Should().NotBeAfter(DateTime.UtcNow));
+			AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().NotBeAfter(DateTime.UtcNow));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Subject.Clean();
 
-            AllStoredModels.ForEach(t => t.LastExecution.Should().Be(expectedTime));
+            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().Be(expectedTime));
         }
     }
 }
