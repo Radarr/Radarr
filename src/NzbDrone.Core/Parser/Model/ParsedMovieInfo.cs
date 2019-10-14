@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Parser.Model
         /// It is expanded by the augmenters.
         /// </summary>
         [JsonIgnore]
-        public IDictionary<string, object> ExtraInfo = new Dictionary<string, object>();
+        public Dictionary<string, object> ExtraInfo = new Dictionary<string, object>();
         public List<Language> Languages = new List<Language>();
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
