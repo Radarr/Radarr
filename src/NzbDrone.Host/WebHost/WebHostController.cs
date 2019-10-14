@@ -92,15 +92,23 @@ namespace Radarr.Host
                 {
                     services
                     .AddSignalR()
-                    .AddJsonProtocol(options =>
+#if !NETCOREAPP3_0
+                    .AddJsonProtocol(
+#else
+                    .AddNewtonsoftJsonProtocol(
+#endif
+                        options =>
                         {
                             options.PayloadSerializerSettings = Json.GetSerializerSettings();
                         });
                 })
                 .Configure(app =>
                 {
-                    app.UsePathBase(_configFileProvider.UrlBase);
+#if NETCOREAPP3_0
+                    app.UseRouting();
+#endif
                     app.Properties["host.AppName"] = BuildInfo.AppName;
+                    app.UsePathBase(_configFileProvider.UrlBase);
 
                     foreach (var middleWare in _middlewares.OrderBy(c => c.Order))
                     {

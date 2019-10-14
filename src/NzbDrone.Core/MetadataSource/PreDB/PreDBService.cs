@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Extensions;
@@ -16,7 +15,6 @@ using NzbDrone.Core.Movies;
 using System;
 using System.IO;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.MetadataSource.PreDB

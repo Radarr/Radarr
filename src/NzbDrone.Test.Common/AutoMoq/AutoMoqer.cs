@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using Unity;
 using Moq;
 using Moq.Language.Flow;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common.AutoMoq.Unity;
 using Unity.Resolution;
@@ -140,6 +141,10 @@ namespace NzbDrone.Test.Common.AutoMoq
 
             _registeredMocks = new Dictionary<Type, object>();
             AddTheAutoMockingContainerExtensionToTheContainer(container);
+
+#if NETCOREAPP3_0
+            ContainerBuilderBase.RegisterNativeResolver(new [] {"System.Data.SQLite.dll", "Radarr.Core.dll"});
+#endif
         }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)

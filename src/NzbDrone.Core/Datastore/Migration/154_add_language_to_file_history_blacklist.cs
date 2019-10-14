@@ -5,11 +5,13 @@ using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Languages;
 using System;
 using System.Collections.Generic;
-using NzbDrone.Common.Extensions;
 using System.Linq;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
+    // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+    using NzbDrone.Common.Extensions;
+
     [Migration(154)]
     public class add_language_to_files_history_blacklist : NzbDroneMigrationBase
     {

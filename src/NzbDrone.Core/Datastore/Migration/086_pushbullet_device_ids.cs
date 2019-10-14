@@ -2,12 +2,14 @@
 using System.Data;
 using FluentMigrator;
 using Newtonsoft.Json.Linq;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
+    // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+    using NzbDrone.Common.Extensions;
+
     [Migration(86)]
     public class pushbullet_device_ids : NzbDroneMigrationBase
     {

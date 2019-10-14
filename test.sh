@@ -2,7 +2,7 @@
 PLATFORM=$1
 TYPE=$2
 COVERAGE=$3
-WHERE="cat != ManualTest"
+WHERE="Category!=ManualTest"
 TEST_PATTERN="*Test.dll"
 ASSEMBLIES=""
 TEST_LOG_FILE="TestLog.txt"
@@ -23,9 +23,9 @@ rm -f "$TEST_LOG_FILE"
 # Uncomment to log test output to a file instead of the console
 export RADARR_TESTS_LOG_OUTPUT="File"
 
-NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe"
+NUNIT="dotnet vstest"
 NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--workers=1"
+NUNIT_PARAMS="--Platform:x64 --logger:nunit;LogFilePath=TestResult.xml"
 
 if [ "$PLATFORM" = "Mac" ]; then
 
@@ -39,22 +39,21 @@ fi
 
 if [ "$PLATFORM" = "Windows" ]; then
   mkdir -p "$ProgramData/Radarr"
-  WHERE="$WHERE && cat != LINUX"
+  WHERE="$WHERE&Category!=LINUX"
 elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
   mkdir -p ~/.config/Radarr
-  WHERE="$WHERE && cat != WINDOWS"
-  NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
+  WHERE="$WHERE&Category!=WINDOWS"
 else
   echo "Platform must be provided as first arguement: Windows, Linux or Mac"
   exit 1
 fi
 
 if [ "$TYPE" = "Unit" ]; then
-  WHERE="$WHERE && cat != IntegrationTest && cat != AutomationTest"
+  WHERE="$WHERE&Category!=IntegrationTest&Category!=AutomationTest"
 elif [ "$TYPE" = "Integration" ] || [ "$TYPE" = "int" ] ; then
-  WHERE="$WHERE && cat == IntegrationTest"
+  WHERE="$WHERE&Category=IntegrationTest"
 elif [ "$TYPE" = "Automation" ] ; then
-  WHERE="$WHERE && cat == AutomationTest"
+  WHERE="$WHERE&Category=AutomationTest"
 else
   echo "Type must be provided as second argument: Unit, Integration or Automation"
   exit 2
@@ -76,7 +75,8 @@ if [ "$COVERAGE" = "Coverage" ]; then
     exit 3
   fi
 elif [ "$COVERAGE" = "Test" ] ; then
-  $NUNIT_COMMAND --where "$WHERE" $NUNIT_PARAMS $ASSEMBLIES;
+  echo "$NUNIT_COMMAND $ASSEMBLIES --TestCaseFilter:$WHERE $NUNIT_PARAMS"
+  $NUNIT_COMMAND $ASSEMBLIES --TestCaseFilter:"$WHERE" $NUNIT_PARAMS
   EXIT_CODE=$?
 else
   echo "Run Type must be provided as third argument: Coverage or Test"

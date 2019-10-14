@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.6.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
@@ -20,33 +21,22 @@
     <ProjectReference Include="..\MonoTorrent\MonoTorrent.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
   </ItemGroup>
-  <ItemGroup> 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*"/>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
       <Link>Resources\Logo\64.png</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="CopyWindowsRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='win-x64'">
-    <Copy SourceFiles="..\Libraries\MediaInfo\MediaInfo.dll" DestinationFolder="$(OutDir)" />
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" >
+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyWindowsRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='win-x64'">
-    <Copy SourceFiles="..\Libraries\MediaInfo\MediaInfo.dll" DestinationFolder="$(PublishDir)" />
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" >
+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
-  <Target Name="CopyMacOSRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
-    <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyMacOSRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
-    <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(PublishDir)" />
-    <Copy SourceFiles="Radarr.Core.dll.config" DestinationFolder="$(PublishDir)" />
-  </Target>
-  <Target Name="CopyLinuxRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='linux-x64'">
-    <Copy SourceFiles="Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyLinuxRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='linux-x64'">
-    <Copy SourceFiles="Radarr.Core.dll.config" DestinationFolder="$(PublishDir)" />
-  </Target>
-</Project> 
+</Project>

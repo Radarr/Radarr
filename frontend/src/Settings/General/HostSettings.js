@@ -88,7 +88,7 @@ function HostSettings(props) {
       </FormGroup>
 
       {
-        enableSsl.value &&
+        enableSsl.value ?
           <FormGroup
             advancedSettings={advancedSettings}
             isAdvanced={true}
@@ -104,11 +104,12 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslPort}
             />
-          </FormGroup>
+          </FormGroup> :
+          null
       }
 
       {
-        enableSsl.value &&
+        enableSsl.value ?
           <FormGroup
             advancedSettings={advancedSettings}
             isAdvanced={true}
@@ -123,11 +124,12 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslCertPath}
             />
-          </FormGroup>
+          </FormGroup> :
+          null
       }
 
       {
-        enableSsl.value &&
+        enableSsl.value ?
           <FormGroup
             advancedSettings={advancedSettings}
             isAdvanced={true}
@@ -142,7 +144,8 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslCertPassword}
             />
-          </FormGroup>
+          </FormGroup> :
+          null
       }
 
       {

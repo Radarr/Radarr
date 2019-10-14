@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using Mono.Unix;
 using Mono.Unix.Native;
 using NLog;
@@ -57,9 +58,10 @@ namespace NzbDrone.Mono.Disk
 
             try
             {
-                var fs = File.GetAccessControl(filename);
+                var file = new FileInfo(filename);
+                var fs = file.GetAccessControl();
                 fs.SetAccessRuleProtection(false, false);
-                File.SetAccessControl(filename, fs);
+                file.SetAccessControl(fs);
             }
             catch (NotImplementedException)
             {

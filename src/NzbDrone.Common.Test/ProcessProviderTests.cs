@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Model;
 using NzbDrone.Common.Processes;
 using NzbDrone.Test.Common;
@@ -162,7 +163,17 @@ namespace NzbDrone.Common.Test
         {
             var processStarted = new ManualResetEventSlim();
 
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + ".exe");
+            string suffix;
+            if (OsInfo.IsWindows || PlatformInfo.IsMono)
+            {
+                suffix = ".exe";
+            }
+            else
+            {
+                suffix = "";
+            }
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + suffix);
             var process = Subject.Start(path, onOutputDataReceived: (string data) => {
                     if (data.StartsWith("Dummy process. ID:"))
                     {

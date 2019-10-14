@@ -116,8 +116,8 @@ namespace NzbDrone.Update.UpdateEngine
                     _logger.Info("Copying new files to target folder");
                     _diskTransferService.MirrorFolder(_appFolderInfo.GetUpdatePackageFolder(), installationFolder);
 
-                    // Set executable flag on Sonarr app
-                    if (OsInfo.IsOsx)
+                    // Set executable flag on app
+                    if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
                         _diskProvider.SetPermissions(Path.Combine(installationFolder, "Radarr"), "0755", null, null);
                         var plistPath = Path.Combine(installationFolder, "..", "Info.plist");

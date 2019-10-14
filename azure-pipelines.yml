@@ -69,17 +69,21 @@ stages:
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net462/win-x64/publish'
-        artifact: WindowsTests
-        displayName: Publish Test Package
+      - publish: '$(testsFolder)/netcoreapp3.0/win-x64/publish'
+        artifact: WindowsCoreTests
+        displayName: Publish Windows Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net462/linux-x64/publish'
         artifact: LinuxTests
-        displayName: Publish Test Package
+        displayName: Publish Linux Mono Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net462/osx-x64/publish'
-        artifact: MacTests
-        displayName: Publish Test Package
+      - publish: '$(testsFolder)/netcoreapp3.0/linux-x64/publish'
+        artifact: LinuxCoreTests
+        displayName: Publish Linux Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/netcoreapp3.0/osx-x64/publish'
+        artifact: MacCoreTests
+        displayName: Publish MacOS Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
 
   - stage: Build_Frontend
@@ -145,9 +149,9 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=net462
-          cp setup/output/Radarr.*windows.net462.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-installer.exe
-        displayName: Create .NET 462 Windows installer
+          setup/inno/ISCC.exe setup/radarr.iss //DFramework=netcoreapp3.0
+          cp setup/output/Radarr.*windows.netcoreapp3.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
+        displayName: Create .NET Core Windows installer
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
         displayName: Publish Installer
@@ -183,35 +187,59 @@ stages:
           find . -name "Radarr.Update" -exec chmod a+x {} \;
         displayName: Set executable bits
       - task: ArchiveFiles@2
-        displayName: Create Windows zip
+        displayName: Create Windows Core zip
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/windows/net462
+          rootFolderOrFile: $(artifactsFolder)/windows/netcoreapp3.0
       - task: ArchiveFiles@2
-        displayName: Create MacOS app
+        displayName: Create MacOS Core app
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app/net462
+          rootFolderOrFile: $(artifactsFolder)/macos-app/netcoreapp3.0
       - task: ArchiveFiles@2
-        displayName: Create MacOS tar
+        displayName: Create MacOS Core tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-core-x64.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos/net462
+          rootFolderOrFile: $(artifactsFolder)/macos/netcoreapp3.0
       - task: ArchiveFiles@2
-        displayName: Create Linux tar
+        displayName: Create Linux Mono tar
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-x64/net462
+      - task: ArchiveFiles@2
+        displayName: Create Linux Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-x64.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/netcoreapp3.0
+      - task: ArchiveFiles@2
+        displayName: Create ARM32 Linux Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-arm.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-arm/netcoreapp3.0
+      - task: ArchiveFiles@2
+        displayName: Create ARM64 Linux Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-arm64.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-arm64/netcoreapp3.0
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -238,23 +266,35 @@ stages:
       displayName: Unit Native
       strategy:
         matrix:
-          Mac:
+          MacCore:
             osName: 'Mac'
+            testName: 'MacCore'
             imageName: 'macos-10.13'
-          Windows:
+          WindowsCore:
             osName: 'Windows'
+            testName: 'WindowsCore'
             imageName: 'windows-2019'
+          LinuxCore:
+            osName: 'Linux'
+            testName: 'LinuxCore'
+            imageName: 'ubuntu-16.04'
+            pattern: 'Radarr.**.linux-core-x64.tar.gz'
 
       pool:
         vmImage: $(imageName)
 
       steps:
       - checkout: none
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
+        condition: ne(variables['osName'], 'Windows')
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: '$(osName)Tests'
+          artifactName: '$(testName)Tests'
           targetPath: $(testsFolder)
       - bash: |
           wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-9_all.deb 
@@ -266,6 +306,11 @@ stages:
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - bash: |
+          wget https://github.com/acoustid/chromaprint/releases/download/v1.4.3/chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz
+          sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
+        displayName: Install fpcalc
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - bash: |
           SYMLINK=5_18_1
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
@@ -289,7 +334,7 @@ stages:
         inputs:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
-          testRunTitle: '$(osName) Unit Tests'
+          testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
 
     - job: Unit_Docker
@@ -334,6 +379,11 @@ stages:
       steps:
       - bash: mono --version
         displayName: Check Mono version
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
+        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -364,14 +414,21 @@ stages:
       displayName: Integration Native
       strategy:
         matrix:
-          Mac:
+          MacCore:
             osName: 'Mac'
+            testName: 'MacCore'
             imageName: 'macos-10.13'
-            pattern: 'Radarr.**.osx.tar.gz'
-          Windows:
+            pattern: 'Radarr.**.osx-core-x64.tar.gz'
+          WindowsCore:
             osName: 'Windows'
+            testName: 'WindowsCore'
             imageName: 'windows-2019'
-            pattern: 'Radarr.**.windows.zip'
+            pattern: 'Radarr.**.windows-core-x64.zip'
+          LinuxCore:
+            osName: 'Linux'
+            testName: 'LinuxCore'
+            imageName: 'ubuntu-16.04'
+            pattern: 'Radarr.**.linux-core-x64.tar.gz'
 
       pool:
         vmImage: $(imageName)
@@ -385,12 +442,17 @@ stages:
           echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
         displayName: Set Mono Version
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
+        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: '$(osName)Tests'
+          artifactName: '$(testName)Tests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
@@ -418,7 +480,7 @@ stages:
         inputs:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
-          testRunTitle: '$(osName) Integration Tests'
+          testRunTitle: '$(testName) Integration Tests'
           failTaskOnFailedTests: true
         displayName: Publish Test Results
 
@@ -467,12 +529,17 @@ stages:
       steps:
       - bash: mono --version
         displayName: Check Mono version
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
+        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: 'LinuxTests'
+          artifactName: LinuxTests
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
@@ -516,29 +583,34 @@ stages:
           Linux:
             osName: 'Linux'
             imageName: 'ubuntu-16.04'
-            pattern: 'Radarr.**.linux.tar.gz'
+            pattern: 'Radarr.**.linux-core-x64.tar.gz'
             failBuild: true
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.13' # Fails due to firefox not being installed on image
-            pattern: 'Radarr.**.osx.tar.gz'
+            pattern: 'Radarr.**.osx-core-x64.tar.gz'
             failBuild: false
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
-            pattern: 'Radarr.**.windows.zip'
+            pattern: 'Radarr.**.windows-core-x64.zip'
             failBuild: true
 
       pool:
         vmImage: $(imageName)
         
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
+        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: '$(osName)Tests'
+          artifactName: '$(osName)CoreTests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact

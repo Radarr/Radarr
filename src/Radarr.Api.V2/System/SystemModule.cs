@@ -59,7 +59,7 @@ namespace Radarr.Api.V2.System
                        AppData = _appFolderInfo.GetAppDataPath(),
                        OsName = _osInfo.Name,
                        OsVersion = _osInfo.Version,
-                       IsMonoRuntime = PlatformInfo.IsMono,
+                       IsNetCore = PlatformInfo.IsNetCore,
                        IsMono = PlatformInfo.IsMono,
                        IsLinux = OsInfo.IsLinux,
                        IsOsx = OsInfo.IsOsx,

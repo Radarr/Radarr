@@ -134,6 +134,12 @@ bin
 obj
 output/*
 
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
 # Packages
 Radarr_*/
 Radarr_*.zip

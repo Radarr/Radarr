@@ -4,13 +4,13 @@ using System.ServiceProcess;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Processes;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Common.Test
 {
     [TestFixture]
-    [Timeout(15000)]
     public class ServiceProviderTests : TestBase<ServiceProvider>
     {
         private const string ALWAYS_INSTALLED_SERVICE = "SCardSvr"; //Smart Card
@@ -20,6 +20,9 @@ namespace NzbDrone.Common.Test
         public void Setup()
         {
             WindowsOnly();
+
+            Mocker.SetConstant<IProcessProvider>(Mocker.Resolve<ProcessProvider>());
+
             CleanupService();
         }
 

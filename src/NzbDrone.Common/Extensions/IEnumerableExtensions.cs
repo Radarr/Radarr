@@ -137,5 +137,15 @@ namespace NzbDrone.Common.Extensions
         {
             return list.Contains(source);
         }
+
+        public static string ConcatToString<TSource>(this IEnumerable<TSource> source, string separator = ", ")
+        {
+            return string.Join(separator, source.Select(x => x.ToString()));
+        }
+
+        public static string ConcatToString<TSource>(this IEnumerable<TSource> source, Func<TSource, string> predicate, string separator = ", ")
+        {
+            return string.Join(separator, source.Select(predicate));
+        }
     }
 }
