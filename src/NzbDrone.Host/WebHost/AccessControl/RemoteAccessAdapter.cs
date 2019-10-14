@@ -2,27 +2,16 @@ using NzbDrone.Common.EnvironmentInfo;
 
 namespace Radarr.Host.AccessControl
 {
-    public interface IRemoteAccessAdapter
-    {
-        void MakeAccessible(bool passive);
-    }
-
     public class RemoteAccessAdapter : IRemoteAccessAdapter
     {
         private readonly IRuntimeInfo _runtimeInfo;
-        private readonly IUrlAclAdapter _urlAclAdapter;
         private readonly IFirewallAdapter _firewallAdapter;
-        private readonly ISslAdapter _sslAdapter;
 
         public RemoteAccessAdapter(IRuntimeInfo runtimeInfo,
-                                   IUrlAclAdapter urlAclAdapter,
-                                   IFirewallAdapter firewallAdapter,
-                                   ISslAdapter sslAdapter)
+                                   IFirewallAdapter firewallAdapter)
         {
             _runtimeInfo = runtimeInfo;
-            _urlAclAdapter = urlAclAdapter;
             _firewallAdapter = firewallAdapter;
-            _sslAdapter = sslAdapter;
         }
 
         public void MakeAccessible(bool passive)
@@ -32,15 +21,12 @@ namespace Radarr.Host.AccessControl
                 if (_runtimeInfo.IsAdmin)
                 {
                     _firewallAdapter.MakeAccessible();
-                    _sslAdapter.Register();
                 }
                 else if (!passive)
                 {
                     throw new RemoteAccessException("Failed to register URLs for Radarr. Radarr will not be accessible remotely");
                 }
             }
-
-            _urlAclAdapter.ConfigureUrls();
         }
     }
 }

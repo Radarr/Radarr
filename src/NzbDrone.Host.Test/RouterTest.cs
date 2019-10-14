@@ -57,7 +57,7 @@ namespace NzbDrone.App.Test
 
             Subject.Route(ApplicationModes.Interactive);
 
-            Mocker.GetMock<INzbDroneServiceFactory>().Verify(c => c.Start(), Times.Once());
+            Mocker.GetMock<INzbDroneConsoleFactory>().Verify(c => c.Start(), Times.Once());
         }
 
         [Test]
