@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
-    <Platforms>x86</Platforms>
+    <TargetFrameworks>net462</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NBuilder" Version="6.0.1" />
@@ -22,4 +21,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <Target Name="CopyWindowsRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='win-x64'">
+    <Copy SourceFiles="..\Libraries\MediaInfo\MediaInfo.dll" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyWindowsRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='win-x64'">
+    <Copy SourceFiles="..\Libraries\MediaInfo\MediaInfo.dll" DestinationFolder="$(PublishDir)" />
+  </Target>
+  <Target Name="CopyMacOSRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
+    <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyMacOSRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
+    <Copy SourceFiles="..\Libraries\MediaInfo\libmediainfo.dylib" DestinationFolder="$(PublishDir)" />
+    <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(PublishDir)" />
+  </Target>
+  <Target Name="CopyLinuxRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='linux-x64'">
+    <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyLinuxRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='linux-x64'">
+    <Copy SourceFiles="..\NzbDrone.Core\Radarr.Core.dll.config" DestinationFolder="$(PublishDir)" />
+  </Target>
 </Project>

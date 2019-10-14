@@ -201,9 +201,7 @@ namespace NzbDrone.Core.Configuration
             }
         }
 
-        // public string UiFolder => GetValue("UiFolder", "UI", false);GetValue("UiFolder", "UI", false);
-        public string UiFolder => "UI";
-
+        public string UiFolder => BuildInfo.IsDebug ? Path.Combine("..", "UI") : "UI";
 
         public bool UpdateAutomatically => GetValueBoolean("UpdateAutomatically", false, false);
 

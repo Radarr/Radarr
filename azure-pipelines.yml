@@ -17,6 +17,7 @@ variables:
   macOsTar: 'Radarr.$(buildName).osx.tar.gz'
   linuxTar: 'Radarr.$(buildName).linux.tar.gz'
   sentryOrg: 'radarr'
+  dotnetVersion: '2.2.401'
 
 trigger:
   branches:
@@ -55,14 +56,33 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: DotNetCoreInstaller@0
+        displayName: 'Install .net core 2.2'
+        inputs:
+          version: $(dotnetVersion)
       - bash: ./build.sh --only-backend
         displayName: Build Radarr Backend
+      - bash: |
+          find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
+          find ${OUTPUTFOLDER} -depth -empty -type d -exec rm -r "{}" \;
+          find ${TESTSFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
+          find ${TESTSFOLDER} -depth -empty -type d -exec rm -r "{}" \;
+          ls -lR
+        displayName: Clean up intermediate output
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: $(testsFolder)
-        artifact: '$(osName)Tests'
+      - publish: '$(testsFolder)/net462/win-x64/publish'
+        artifact: WindowsTests
+        displayName: Publish Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/net462/linux-x64/publish'
+        artifact: LinuxTests
+        displayName: Publish Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/net462/osx-x64/publish'
+        artifact: MacTests
         displayName: Publish Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
 
@@ -141,7 +161,7 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - bash: sudo apt install dos2unix
+      - bash: sudo apt-get install dos2unix
       - checkout: self
         fetchDepth: 1
       - task: DownloadPipelineArtifact@2
@@ -161,6 +181,7 @@ stages:
       - bash: |
           chmod a+x $(artifactsFolder)/macos/Radarr/Radarr
           chmod a+x $(artifactsFolder)/macos-app/Radarr.app/Contents/MacOS/Radarr
+          find . -name "Radarr.Console" -exec chmod a+x {} \;
         displayName: Set Mac executable bits
       - task: ArchiveFiles@2
         displayName: Create Windows zip
@@ -168,14 +189,14 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(windowsZip)'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/windows
+          rootFolderOrFile: $(artifactsFolder)/windows/net462
       - task: ArchiveFiles@2
         displayName: Create MacOS app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(macOsApp)'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app
+          rootFolderOrFile: $(artifactsFolder)/macos-app/net462
       - task: ArchiveFiles@2
         displayName: Create MacOS tar
         inputs:
@@ -183,7 +204,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos
+          rootFolderOrFile: $(artifactsFolder)/macos/net462
       - task: ArchiveFiles@2
         displayName: Create Linux tar
         inputs:
@@ -191,7 +212,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux
+          rootFolderOrFile: $(artifactsFolder)/linux/net462
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -235,35 +256,37 @@ stages:
 
       steps:
       - checkout: none
+      - task: DotNetCoreInstaller@0
+        displayName: 'Install .net core 2.2'
+        inputs:
+          version: $(dotnetVersion)
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - bash: |
           wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-9_all.deb 
           sudo dpkg -i repo-mediaarea_1.0-9_all.deb
           sudo apt-get update
           sudo apt-get install -y libmediainfo-dev libmediainfo0v5 mediainfo
-        displayName: Install mediainfo
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
+        displayName: Install mediainfo and fix sqlite
         condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
+        displayName: Make Test Dummy Executable
       - task: Bash@3
         displayName: Run Tests
         env:
-          DYLD_FALLBACK_LIBRARY_PATH: $(Build.SourcesDirectory)/_tests
           TEST_DIR: $(Build.SourcesDirectory)/_tests
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
           arguments: '$(osName) Unit Test'
-      - publish: TestResult.xml
-        artifact: 'TestResult'
-        displayName: Publish Test Result
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
@@ -305,12 +328,20 @@ stages:
           echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
         displayName: Set Mono Version
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - bash: |
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
+        displayName: Fix sqlite
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
+      - task: DotNetCoreInstaller@0
+        displayName: 'Install .net core 2.2'
+        inputs:
+          version: $(dotnetVersion)
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
@@ -327,6 +358,7 @@ stages:
       - bash: |
           mkdir -p ./bin/
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
+          ls -lR
         displayName: Move Package Contents
       - task: Bash@3
         displayName: Run Integration Tests
@@ -365,12 +397,20 @@ stages:
         vmImage: $(imageName)
         
       steps:
+      - bash: |
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
+        displayName: Fix sqlite
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
+      - task: DotNetCoreInstaller@0
+        displayName: 'Install .net core 2.2'
+        inputs:
+          version: $(dotnetVersion)
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact

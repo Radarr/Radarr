@@ -1,24 +1,13 @@
 #! /bin/bash
-msBuildVersion='15.0'
 outputFolder='./_output'
-outputFolderLinux='./_output_linux'
-outputFolderMacOS='./_output_macos'
-outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
 sourceFolder='./src'
 slnFile=$sourceFolder/Radarr.sln
-updateFolder=$outputFolder/Radarr.Update
-updateFolderMono=$outputFolderLinux/Radarr.Update
 
 #Artifact variables
 artifactsFolder="./_artifacts";
-artifactsFolderWindows=$artifactsFolder/windows
-artifactsFolderLinux=$artifactsFolder/linux
-artifactsFolderMacOS=$artifactsFolder/macos
-artifactsFolderMacOSApp=$artifactsFolder/macos-app
 
 nuget='tools/nuget/nuget.exe';
-vswhere='tools/vswhere/vswhere.exe';
 
 CheckExitCode()
 {
@@ -53,13 +42,8 @@ UpdateVersionNumber()
 CleanFolder()
 {
     local path=$1
-    local keepConfigFiles=$2
 
     find $path -name "*.transform" -exec rm "{}" \;
-
-    if [ $keepConfigFiles != true ] ; then
-        find $path -name "*.dll.config" -exec rm "{}" \;
-    fi
 
     echo "Removing FluentValidation.Resources files"
     find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
@@ -68,37 +52,8 @@ CleanFolder()
     echo "Removing vshost files"
     find $path -name "*.vshost.exe" -exec rm "{}" \;
 
-    echo "Removing dylib files"
-    find $path -name "*.dylib" -exec rm "{}" \;
-
     echo "Removing Empty folders"
     find $path -depth -empty -type d -exec rm -r "{}" \;
-}
-
-BuildWithMSBuild()
-{
-    installationPath=`$vswhere -latest -products \* -requires Microsoft.Component.MSBuild -property installationPath`
-    installationPath=${installationPath/C:\\/\/c\/}
-    installationPath=${installationPath//\\/\/}
-    msBuild="$installationPath/MSBuild/$msBuildVersion/Bin"
-    echo $msBuild
-
-    export PATH=$msBuild:$PATH
-    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Debug //p:Platform=x86 //t:Clean //m
-    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Clean //m
-    $nuget locals all -clear
-    $nuget restore $slnFile
-    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Build //m //p:AllowedReferenceRelatedFileExtensions=.pdb
-}
-
-BuildWithXbuild()
-{
-    export MONO_IOMAP=case
-    CheckExitCode msbuild /p:Configuration=Debug /t:Clean $slnFile
-    CheckExitCode msbuild /p:Configuration=Release /t:Clean $slnFile
-    mono $nuget locals all -clear
-    mono $nuget restore $slnFile
-    CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }
 
 LintUI()
@@ -119,19 +74,9 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
-    if [ $runtime = "dotnet" ] ; then
-        BuildWithMSBuild
-    else
-        BuildWithXbuild
-    fi
-
-    CleanFolder $outputFolder false
-
-    echo "Removing Mono.Posix.dll"
-    rm $outputFolder/Mono.Posix.dll
-
-    echo "Adding LICENSE.md"
-    cp LICENSE.md $outputFolder
+    CheckExitCode dotnet clean $slnFile -c Debug
+    CheckExitCode dotnet clean $slnFile -c Release
+    CheckExitCode dotnet msbuild -restore src/Radarr.sln -p:Configuration=Release -t:PublishAllRids
 
     ProgressEnd 'Build'
 }
@@ -149,89 +94,104 @@ RunGulp()
     ProgressEnd 'Running gulp'
 }
 
-PackageMono()
+PackageFiles()
 {
-    ProgressStart 'Creating Mono Package'
+    local folder="$1"
+    local framework="$2"
+    local runtime="$3"
 
-    rm -rf $outputFolderLinux
+    rm -rf $folder
+    mkdir -p $folder
+    cp -r $outputFolder/$framework/$runtime/publish/* $folder
+    cp -r $outputFolder/Radarr.Update/$framework/$runtime/publish $folder/Radarr.Update
+    cp -r $outputFolder/UI $folder
 
-    echo "Copying Binaries"
-    cp -r $outputFolder $outputFolderLinux
+    CleanFolder $folder
+
+    echo "Adding LICENSE"
+    cp LICENSE $folder
+}
+
+PackageLinux()
+{
+    local framework="$1"
+
+    ProgressStart "Creating Linux Package for $framework"
+
+    local folder=$artifactsFolder/linux/$framework/Radarr
+
+    PackageFiles "$folder" $framework $runtime "linux-x64"
 
     echo "Removing Service helpers"
-    rm -f $outputFolderLinux/ServiceUninstall.*
-    rm -f $outputFolderLinux/ServiceInstall.*
-
-    echo "Removing native windows binaries Sqlite, MediaInfo"
-    rm -f $outputFolderLinux/sqlite3.*
-    rm -f $outputFolderLinux/MediaInfo.*
-
-    echo "Adding Radarr.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/Radarr.Core.dll.config $outputFolderLinux
-
+    rm -f $folder/ServiceUninstall.*
+    rm -f $folder/ServiceInstall.*
 
     echo "Renaming Radarr.Console.exe to Radarr.exe"
-    rm $outputFolderLinux/Radarr.exe*
-    for file in $outputFolderLinux/Radarr.Console.exe*; do
+    rm $folder/Radarr.exe*
+    for file in $folder/Radarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
     echo "Removing Radarr.Windows"
-    rm $outputFolderLinux/Radarr.Windows.*
+    rm $folder/Radarr.Windows.*
 
     echo "Adding Radarr.Mono to UpdatePackage"
-    cp $outputFolderLinux/Radarr.Mono.* $updateFolderMono
+    cp $folder/Radarr.Mono.* $folder/Radarr.Update
 
-    ProgressEnd 'Creating Mono Package'
+    ProgressEnd "Creating Linux Package for $framework"
 }
 
 PackageMacOS()
 {
-    ProgressStart 'Creating MacOS Package'
+    local framework="$1"
+    
+    ProgressStart "Creating MacOS Package for $framework"
 
-    rm -rf $outputFolderMacOS
-    mkdir $outputFolderMacOS
+    local folder=$artifactsFolder/macos/$framework/Radarr
+
+    PackageFiles "$folder" "$framework" "osx-x64"
 
     echo "Adding Startup script"
-    cp ./macOS/Radarr $outputFolderMacOS
-    dos2unix $outputFolderMacOS/Radarr
+    cp ./macOS/Radarr $folder
+    dos2unix $folder/Radarr
 
-    echo "Copying Binaries"
-    cp -r $outputFolderLinux/* $outputFolderMacOS
+    echo "Removing Service helpers"
+    rm -f $folder/ServiceUninstall.*
+    rm -f $folder/ServiceInstall.*
 
-    echo "Adding sqlite dylibs"
-    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOS
+    echo "Renaming Radarr.Console.exe to Radarr.exe"
+    rm $folder/Radarr.exe*
+    for file in $folder/Radarr.Console.exe*; do
+        mv "$file" "${file//.Console/}"
+    done
 
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOS
+    echo "Removing Radarr.Windows"
+    rm $folder/Radarr.Windows.*
+
+    echo "Adding Radarr.Mono to UpdatePackage"
+    cp $folder/Radarr.Mono.* $folder/Radarr.Update
 
     ProgressEnd 'Creating MacOS Package'
 }
 
 PackageMacOSApp()
 {
-    ProgressStart 'Creating macOS App Package'
+    local framework="$1"
+    
+    ProgressStart "Creating macOS App Package for $framework"
 
-    rm -rf $outputFolderMacOSApp
-    mkdir $outputFolderMacOSApp
-    cp -r ./macOS/Radarr.app $outputFolderMacOSApp
-    mkdir -p $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+    local folder=$artifactsFolder/macos-app/$framework
 
-    echo "Adding Startup script"
-    cp ./macOS/Radarr $outputFolderMacOSApp/Radarr.app/Contents/MacOS
-    dos2unix $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr
+    rm -rf $folder
+    mkdir -p $folder
+    cp -r ./macOS/Radarr.app $folder
+    mkdir -p $folder/Radarr.app/Contents/MacOS
 
     echo "Copying Binaries"
-    cp -r $outputFolderLinux/* $outputFolderMacOSApp/Radarr.app/Contents/MacOS
-
-    echo "Adding sqlite dylibs"
-    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOSApp/Radarr.app/Contents/MacOS
-
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+    cp -r $artifactsFolder/macos/$framework/Radarr/* $folder/Radarr.app/Contents/MacOS
 
     echo "Removing Update Folder"
-    rm -r $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr.Update
+    rm -r $folder/Radarr.app/Contents/MacOS/Radarr.Update
 
     ProgressEnd 'Creating macOS App Package'
 }
@@ -240,70 +200,60 @@ PackageTests()
 {
     ProgressStart 'Creating Test Package'
 
-    if [ $runtime = "dotnet" ] ; then
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
+    cp ./test.sh $testPackageFolder/net462/win-x64/publish
+    cp ./test.sh $testPackageFolder/net462/linux-x64/publish
+    cp ./test.sh $testPackageFolder/net462/osx-x64/publish
+
+    if [ $os = "windows" ] ; then
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
     else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
     fi
-
-    cp ./test.sh $testPackageFolder
-
+    
     rm -f $testPackageFolder/*.log.config
 
-    CleanFolder $testPackageFolder true
+    # geckodriver.exe isn't copied by dotnet publish
+    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
+    unzip -o gecko.zip
+    cp geckodriver.exe $testPackageFolder/net462/win-x64/publish
 
-    echo "Adding Radarr.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/Radarr.Core.dll.config $testPackageFolder
-
-    echo "Adding sqlite dylibs"
-    cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
+    CleanFolder $testPackageFolder
 
     ProgressEnd 'Creating Test Package'
 }
 
-CleanupWindowsPackage()
+PackageWindows()
 {
-    ProgressStart 'Cleaning Windows Package'
+    local framework="$1"
+    
+    ProgressStart "Creating Windows Package for $framework"
+
+    local folder=$artifactsFolder/windows/$framework/Radarr
+    
+    PackageFiles "$folder" "net462" "win-x64"
 
     echo "Removing Radarr.Mono"
-    rm -f $outputFolder/Radarr.Mono.*
+    rm -f $folder/Radarr.Mono.*
 
     echo "Adding Radarr.Windows to UpdatePackage"
-    cp $outputFolder/Radarr.Windows.* $updateFolder
+    cp $folder/Radarr.Windows.* $folder/Radarr.Update
 
-    ProgressEnd 'Cleaning Windows Package'
-}
-
-PackageArtifacts()
-{
-    echo "Creating Artifact Directories"
-    
-    rm -rf $artifactsFolder
-    mkdir $artifactsFolder
-    
-    mkdir $artifactsFolderWindows
-    mkdir $artifactsFolderMacOS
-    mkdir $artifactsFolderLinux
-    mkdir $artifactsFolderWindows/Radarr
-    mkdir $artifactsFolderMacOS/Radarr
-    mkdir $artifactsFolderLinux/Radarr
-    mkdir $artifactsFolderMacOSApp
-    
-    cp -r $outputFolder/* $artifactsFolderWindows/Radarr
-    cp -r $outputFolderMacOSApp/* $artifactsFolderMacOSApp
-    cp -r $outputFolderMacOS/* $artifactsFolderMacOS/Radarr
-    cp -r $outputFolderLinux/* $artifactsFolderLinux/Radarr
+    ProgressEnd 'Creating Windows Package'
 }
 
 # Use mono or .net depending on OS
 case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
         # on windows, use dotnet
-        runtime="dotnet"
+        os="windows"
         ;;
     *)
         # otherwise use mono
-        runtime="mono"
+        os="posix"
         ;;
 esac
 
@@ -350,9 +300,8 @@ fi
 # Only package if we haven't set only-backend or only-frontend
 if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
 then
-    PackageMono
-    PackageMacOS
-    PackageMacOSApp
-    CleanupWindowsPackage
-    PackageArtifacts
+    PackageWindows "net462"
+    PackageLinux "net462"
+    PackageMacOS "net462"
+    PackageMacOSApp "net462"
 fi
