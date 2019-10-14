@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             Categories = new int[] { (int)HdBitsCategory.Movie };
             Codecs = new int[0];
             Mediums = new int[0];
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "Username")]

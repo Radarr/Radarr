@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
-using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Newznab
@@ -62,8 +59,8 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             ApiPath = "/api";
             Categories = new[] { 2000, 2010, 2020, 2030, 2035, 2040, 2045, 2050, 2060 };
-            AnimeCategories = Enumerable.Empty<int>();
-            MultiLanguages = Enumerable.Empty<int>();
+            AnimeCategories = new List<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "URL")]

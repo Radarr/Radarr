@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         {
             BaseUrl = "http://127.0.0.1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]

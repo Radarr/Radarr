@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
             BaseUrl = "http://www.nyaa.se";
             AdditionalParameters = "&cats=1_37&filter=1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "Website URL")]

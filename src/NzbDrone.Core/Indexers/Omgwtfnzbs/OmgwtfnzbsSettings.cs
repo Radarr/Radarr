@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         public OmgwtfnzbsSettings()
         {
             Delay = 30;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         // Unused since Omg has a hardcoded url.
