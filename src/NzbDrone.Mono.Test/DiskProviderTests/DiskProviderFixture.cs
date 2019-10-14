@@ -13,12 +13,12 @@ using NzbDrone.Mono.Disk;
 namespace NzbDrone.Mono.Test.DiskProviderTests
 {
     [TestFixture]
-    [Platform("Mono")]
+    [Platform(Exclude="Win")]
     public class DiskProviderFixture : DiskProviderFixtureBase<DiskProvider>
     {
         public DiskProviderFixture()
         {
-            MonoOnly();
+            PosixOnly();
         }
 
         protected override void SetWritePermissions(string path, bool writable)
