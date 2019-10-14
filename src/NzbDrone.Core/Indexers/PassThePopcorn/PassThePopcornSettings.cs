@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             BaseUrl = "https://passthepopcorn.me";
             MinimumSeeders = 0;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]

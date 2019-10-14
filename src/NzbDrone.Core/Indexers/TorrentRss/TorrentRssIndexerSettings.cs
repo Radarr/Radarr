@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             BaseUrl = string.Empty;
             AllowZeroSize = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "Full RSS Feed URL")]

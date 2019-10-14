@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         {
             BaseUrl = "https://awesome-hd.me";
             MinimumSeeders = 0;
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since you Passkey will be sent to that host.")]

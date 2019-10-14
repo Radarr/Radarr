@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             RankedOnly = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
             Categories = new[] { 14, 48, 17, 44, 45, 47, 50, 51, 52, 42, 46 };
-            MultiLanguages = Enumerable.Empty<int>();
+            MultiLanguages = new List<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to Rarbg api, not the website.")]
