@@ -1,23 +1,21 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using NzbDrone.Common.Disk;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Validation;
-using NLog;
-using FluentValidation.Results;
+using System.Linq;
 using System.Net;
-using NzbDrone.Core.RemotePathMappings;
+using FluentValidation.Results;
+using NLog;
+using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.Deluge
 {
-    // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
-    using NzbDrone.Common.Extensions;
-
     public class Deluge : TorrentClientBase<DelugeSettings>
     {
         private readonly IDelugeProxy _proxy;
