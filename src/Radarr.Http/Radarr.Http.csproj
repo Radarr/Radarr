@@ -14,9 +14,4 @@
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
     <ProjectReference Include="..\NzbDrone.SignalR\Radarr.SignalR.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
