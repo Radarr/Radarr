@@ -161,7 +161,6 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - bash: sudo apt-get install dos2unix
       - checkout: self
         fetchDepth: 1
       - task: DownloadPipelineArtifact@2
@@ -300,7 +299,8 @@ stages:
     dependsOn: Package
     jobs:
     
-    - job: Integration
+    - job: Integration_Native
+      displayName: Integration Native
       strategy:
         matrix:
           Linux:
@@ -371,6 +371,88 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Integration Tests'
+          failTaskOnFailedTests: true
+        displayName: Publish Test Results
+
+    - job: Integration_Docker
+      displayName: Integration Docker
+      strategy:
+        matrix:
+          mono504:
+            testName: 'Mono 5.4'
+            containerImage: mono:5.4
+          mono508:
+            testName: 'Mono 5.8'
+            containerImage: mono:5.8
+          mono510:
+            testName: 'Mono 5.10'
+            containerImage: mono:5.10
+          mono512:
+            testName: 'Mono 5.12'
+            containerImage: mono:5.12
+          mono514:
+            testName: 'Mono 5.14'
+            containerImage: mono:5.14
+          mono516:
+            testName: 'Mono 5.16'
+            containerImage: mono:5.16
+          mono518:
+            testName: 'Mono 5.18'
+            containerImage: mono:5.18
+          mono520:
+            testName: 'Mono 5.20'
+            containerImage: mono:5.20
+            
+      variables:
+        pattern: 'Radarr.**.linux.tar.gz'
+
+      pool:
+        vmImage: 'ubuntu-16.04'
+
+      container: $[ variables['containerImage'] ]
+        
+      steps:
+      - bash: mono --version
+        displayName: Check Mono version
+      - task: UseDotNet@2
+        displayName: 'Install .net core 2.2'
+        inputs:
+          version: $(dotnetVersion)
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: 'LinuxTests'
+          targetPath: $(testsFolder)
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Build Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: Packages
+          itemPattern: '**/$(pattern)'
+          targetPath: $(Build.ArtifactStagingDirectory)
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/**/$(pattern)' 
+          destinationFolder: '$(Build.ArtifactStagingDirectory)/bin'
+        displayName: Extract Package
+      - bash: |
+          mkdir -p ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
+          ls -lR
+        displayName: Move Package Contents
+      - task: Bash@3
+        displayName: Run Integration Tests
+        inputs:
+          targetType: 'filePath'
+          filePath: '$(testsFolder)/test.sh'
+          arguments: Linux Integration Test
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: '$(testName) Integration Tests'
           failTaskOnFailedTests: true
         displayName: Publish Test Results
 
