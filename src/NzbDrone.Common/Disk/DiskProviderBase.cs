@@ -122,20 +122,6 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        public bool CanUseGDIPlus()
-        {
-            try
-            {
-                GdiPlusInterop.CheckGdiPlus();
-                return true;
-            }
-            catch (DllNotFoundException ex)
-            {
-                Logger.Trace(ex, "System does not have libgdiplus.");
-                return false;
-            }
-        }
-
         public bool FolderWritable(string path)
         {
             Ensure.That(path, () => path).IsValidPath();

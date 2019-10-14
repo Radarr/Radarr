@@ -1,6 +1,8 @@
-﻿using ImageResizer;
 using System;
 using NzbDrone.Common.Disk;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Memory;
 
 namespace NzbDrone.Core.MediaCover
 {
@@ -16,28 +18,20 @@ namespace NzbDrone.Core.MediaCover
         public ImageResizer(IDiskProvider diskProvider)
         {
             _diskProvider = diskProvider;
+
+            // More conservative memory allocation
+            SixLabors.ImageSharp.Configuration.Default.MemoryAllocator = new SimpleGcMemoryAllocator();
         }
 
         public void Resize(string source, string destination, int height)
         {
             try
             {
-                if (!_diskProvider.CanUseGDIPlus())
+                using (var image = Image.Load(source))
                 {
-                    throw new Exception("Can't resize without libgdiplus.");
-                }
-
-                using (var sourceStream = _diskProvider.OpenReadStream(source))
-                {
-                    using (var outputStream = _diskProvider.OpenWriteStream(destination))
-                    {
-                        var settings = new Instructions();
-                        settings.Height = height;
-
-                        var job = new ImageJob(sourceStream, outputStream, settings);
-
-                        ImageBuilder.Current.Build(job);
-                    }
+                    var width = (int)Math.Floor((double)image.Width * (double)height / (double)image.Height);
+                    image.Mutate(x => x.Resize(width, height));
+                    image.Save(destination);
                 }
             }
             catch
