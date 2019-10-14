@@ -3,6 +3,7 @@
     <TargetFrameworks>net462</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="FluentMigrator.Runner" Version="1.6.2" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="ImageResizer" Version="4.2.5" />

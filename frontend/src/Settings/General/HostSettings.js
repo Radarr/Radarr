@@ -21,7 +21,8 @@ function HostSettings(props) {
     urlBase,
     enableSsl,
     sslPort,
-    sslCertHash,
+    sslCertPath,
+    sslCertPassword,
     launchBrowser
   } = settings;
 
@@ -87,7 +88,7 @@ function HostSettings(props) {
       </FormGroup>
 
       {
-        enableSsl.value ?
+        enableSsl.value &&
           <FormGroup
             advancedSettings={advancedSettings}
             isAdvanced={true}
@@ -103,31 +104,49 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslPort}
             />
-          </FormGroup> :
-          null
+          </FormGroup>
       }
 
       {
-        isWindows && enableSsl.value ?
+        enableSsl.value &&
           <FormGroup
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>SSL Cert Hash</FormLabel>
+            <FormLabel>SSL Cert Path</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT}
-              name="sslCertHash"
+              name="sslCertPath"
+              helpText="Path to pfx file"
               helpTextWarning="Requires restart to take effect"
               onChange={onInputChange}
-              {...sslCertHash}
+              {...sslCertPath}
             />
-          </FormGroup> :
-          null
+          </FormGroup>
       }
 
       {
-        isWindows && mode !== 'service' ?
+        enableSsl.value &&
+          <FormGroup
+            advancedSettings={advancedSettings}
+            isAdvanced={true}
+          >
+            <FormLabel>SSL Cert Password</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.PASSWORD}
+              name="sslCertPassword"
+              helpText="Password for pfx file"
+              helpTextWarning="Requires restart to take effect"
+              onChange={onInputChange}
+              {...sslCertPassword}
+            />
+          </FormGroup>
+      }
+
+      {
+        isWindows && mode !== 'service' &&
           <FormGroup size={sizes.MEDIUM}>
             <FormLabel>Open browser on start</FormLabel>
 
@@ -138,8 +157,7 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...launchBrowser}
             />
-          </FormGroup> :
-          null
+          </FormGroup>
       }
 
     </FieldSet>
