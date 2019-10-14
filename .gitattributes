@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-*text eol=lf
+* text=auto
 
 # Explicitly set bash scripts to have unix endings
 *.sh text eol=lf
