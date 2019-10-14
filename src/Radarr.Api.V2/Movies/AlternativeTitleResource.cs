@@ -36,8 +36,6 @@ namespace Radarr.Api.V2.Movies
         {
             if (model == null) return null;
 
-            AlternativeTitleResource resource = null;
-
             return new AlternativeTitleResource
             {
                 Id = model.Id,

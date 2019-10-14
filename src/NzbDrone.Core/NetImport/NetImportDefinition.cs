@@ -21,6 +21,5 @@ namespace NzbDrone.Core.NetImport
         public LazyLoaded<Profile> Profile { get; set; }
         public string RootFolderPath { get; set; }
         public override bool Enable => Enabled;
-        public HashSet<int> Tags { get; set; }
     }
 }

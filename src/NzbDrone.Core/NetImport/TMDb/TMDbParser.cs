@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using NzbDrone.Core.NetImport.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Net;
-using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
-using TinyIoC;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
@@ -16,7 +13,6 @@ namespace NzbDrone.Core.NetImport.TMDb
         private readonly TMDbSettings _settings;
         private NetImportResponse _importResponse;
         private readonly ISearchForNewMovie _skyhookProxy;
-        private readonly Logger _logger;
 
         public TMDbParser(TMDbSettings settings, ISearchForNewMovie skyhookProxy)
         {

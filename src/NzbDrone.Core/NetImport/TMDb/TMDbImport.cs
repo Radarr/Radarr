@@ -13,16 +13,12 @@ namespace NzbDrone.Core.NetImport.TMDb
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        private readonly IHttpClient _httpClient;
-        private readonly Logger _logger;
         private readonly ISearchForNewMovie _skyhookProxy;
 
         public TMDbImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {
-            _logger = logger;
-            _httpClient = httpClient;
             _skyhookProxy = skyhookProxy;
         }
 

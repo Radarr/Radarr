@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Rarbg;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 
@@ -20,8 +18,9 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         private AugmentWithHistory _customSubject { get; set; }
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
             //Add multi indexer
             GivenIndexerSettings(new RarbgSettings
             {

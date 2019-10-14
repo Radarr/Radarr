@@ -1,7 +1,6 @@
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Backup;
 
 namespace Radarr.Http.Frontend.Mappers
@@ -9,7 +8,6 @@ namespace Radarr.Http.Frontend.Mappers
     public class BackupFileMapper : StaticResourceMapperBase
     {
         private readonly IBackupService _backupService;
-        private readonly IAppFolderInfo _appFolderInfo;
 
         public BackupFileMapper(IBackupService backupService, IDiskProvider diskProvider, Logger logger)
             : base(diskProvider, logger)

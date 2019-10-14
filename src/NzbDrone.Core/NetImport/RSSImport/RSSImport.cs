@@ -53,7 +53,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
         public override IParseNetImportResponse GetParser()
         {
-            return new RSSImportParser(Settings);
+            return new RSSImportParser(Settings, _logger);
         }
     }
 }

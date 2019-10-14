@@ -156,13 +156,13 @@ namespace NzbDrone.Core.MediaFiles
 
 	            _diskProvider.MoveFolder(oldFolder, movie.Path);
 
-				if (false)
-				{
-					var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-					_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-					RenameFiles(movieFiles, movie, oldFolder);
-					_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
-				}
+				// if (false)
+				// {
+				// 	var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+				// 	_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+				// 	RenameFiles(movieFiles, movie, oldFolder);
+				// 	_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+				// }
 
 				_movieService.UpdateMovie(movie);
 

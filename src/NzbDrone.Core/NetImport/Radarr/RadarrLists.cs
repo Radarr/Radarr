@@ -15,8 +15,6 @@ namespace NzbDrone.Core.NetImport.Radarr
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        private readonly IHttpClient _httpClient;
-        private readonly Logger _logger;
         private readonly ISearchForNewMovie _skyhookProxy;
 
         public RadarrLists(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
@@ -24,8 +22,6 @@ namespace NzbDrone.Core.NetImport.Radarr
             : base(httpClient, configService, parsingService, logger)
         {
             _skyhookProxy = skyhookProxy;
-            _logger = logger;
-            _httpClient = httpClient;
         }
 
         public override IEnumerable<ProviderDefinition> DefaultDefinitions

@@ -21,7 +21,6 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
     public class HadoukenProxy : IHadoukenProxy
     {
-        private static int _callId;
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 

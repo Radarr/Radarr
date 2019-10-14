@@ -62,7 +62,7 @@ namespace Radarr.Host
         private readonly IBrowserService _browserService;
         private readonly IContainer _container;
         private readonly Logger _logger;
-        private CancelHandler _cancelHandler;
+        // private CancelHandler _cancelHandler;
 
         public NzbDroneConsoleFactory(IConfigFileProvider configFileProvider,
                                       IHostController hostController,

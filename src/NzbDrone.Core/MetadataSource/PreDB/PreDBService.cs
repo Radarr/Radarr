@@ -63,6 +63,8 @@ namespace NzbDrone.Core.MetadataSource.PreDB
         private List<PreDBResult> GetResults(string category = "", string search = "")
         {
             return new List<PreDBResult>();
+
+            /* PreDB is blocked
             var builder = new HttpRequestBuilder("http://predb.me").AddQueryParam("rss", "1");
             if (category.IsNotNullOrWhiteSpace())
             {
@@ -110,7 +112,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 				_logger.Error(ex, "Error while searching PreDB.");
 			}
 
-			return new List<PreDBResult>();
+			return new List<PreDBResult>(); */
         }
 
         private List<Movie> FindMatchesToResults(List<PreDBResult> results)
