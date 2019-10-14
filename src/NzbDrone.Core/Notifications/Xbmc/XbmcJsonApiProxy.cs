@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
             var response = ProcessRequest(request, settings, "Player.GetActivePlayers");
 
-            return Json.Deserialize<ActivePlayersEdenResult>(response).Result;
+            return Json.Deserialize<ActivePlayersResult>(response).Result;
         }
 
         public List<XbmcMovie> GetMovies(XbmcSettings settings)
