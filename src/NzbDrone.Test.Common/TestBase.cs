@@ -162,6 +162,14 @@ namespace NzbDrone.Test.Common
             }
         }
 
+        protected void PosixOnly()
+        {
+            if (OsInfo.IsWindows)
+            {
+                throw new IgnoreException("non windows specific test");
+            }
+        }
+
         protected void MonoOnly()
         {
             if (!PlatformInfo.IsMono)

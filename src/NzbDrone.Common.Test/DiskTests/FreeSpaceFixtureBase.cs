@@ -31,7 +31,7 @@ namespace NzbDrone.Common.Test.DiskTests
         [Test]
         public void should_be_able_to_check_space_on_ramdrive()
         {
-            MonoOnly();
+            PosixOnly();
             Subject.GetAvailableSpace("/run/").Should().NotBe(0);
         }
 
