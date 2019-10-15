@@ -1,7 +1,5 @@
-﻿using System;
-using NzbDrone.Common.Disk;
+﻿using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
-using System.Drawing;
 using NLog;
 
 namespace NzbDrone.Core.MediaCover

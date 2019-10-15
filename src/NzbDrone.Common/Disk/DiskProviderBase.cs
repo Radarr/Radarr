@@ -9,7 +9,6 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
-using System.Drawing;
 
 namespace NzbDrone.Common.Disk
 {
