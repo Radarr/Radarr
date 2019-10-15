@@ -52,6 +52,7 @@
   <PropertyGroup Condition="'$(RadarrOutputType)'=='Test'">
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <SelfContained>false</SelfContained>
   </PropertyGroup>
 
   <!-- Set the Product and Version info for our own projects -->
