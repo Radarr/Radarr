@@ -40,8 +40,10 @@ namespace NzbDrone.Common.Composition
                 _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(_startupPath, $"{assemblyName}.dll")).GetTypes());
             }
 
+            var toRegisterResolver = new List<string> { "System.Data.SQLite" };
+            toRegisterResolver.AddRange(assemblies.Intersect(new [] { "Radarr.Core" }));
+            RegisterNativeResolver(toRegisterResolver);
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ContainerResolveEventHandler);
-            RegisterNativeResolver(new [] {"System.Data.SQLite.dll", "Radarr.Core.dll"});
 #endif
 
             Container = new Container(new TinyIoCContainer(), _loadedTypes);
@@ -70,7 +72,7 @@ namespace NzbDrone.Common.Composition
             foreach (var name in assemblyNames)
             {
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, name)
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{name}.dll")
                     );
 
                 try
