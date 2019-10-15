@@ -66,9 +66,12 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        [Retry(3)]
         public void should_be_able_to_start_process()
         {
             var process = StartDummyProcess();
+
+            Thread.Sleep(500);
 
             var check = Subject.GetProcessById(process.Id);
             check.Should().NotBeNull();
@@ -87,6 +90,8 @@ namespace NzbDrone.Common.Test
         public void exists_should_find_running_process()
         {
             var process = StartDummyProcess();
+
+            Thread.Sleep(500);
 
             Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should()
                    .BeTrue("expected one dummy process to be already running");
@@ -147,11 +152,14 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
+        [Retry(3)]
         [Platform(Exclude="MacOsX")]
         public void kill_all_should_kill_all_process_with_name()
         {
             var dummy1 = StartDummyProcess();
             var dummy2 = StartDummyProcess();
+
+            Thread.Sleep(500);
 
             Subject.KillAll(DummyApp.DUMMY_PROCCESS_NAME);
 
@@ -181,7 +189,7 @@ namespace NzbDrone.Common.Test
                     }
                 });
 
-            if (!processStarted.Wait(2000))
+            if (!processStarted.Wait(5000))
             {
                 Assert.Fail("Failed to start process within 2 sec");
             }
