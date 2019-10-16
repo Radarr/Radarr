@@ -103,9 +103,7 @@ namespace NzbDrone.Common.Test
             Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should().BeFalse();
         }
 
-
         [Test]
-        [Retry(3)]
         [Platform(Exclude="MacOsX")]
         [Retry(3)]
         public void kill_all_should_kill_all_process_with_name()
