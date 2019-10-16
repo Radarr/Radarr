@@ -5,8 +5,8 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
@@ -16,30 +16,31 @@ namespace NzbDrone.Core.ImportLists.Spotify
     public class SpotifyPlaylist : SpotifyImportListBase<SpotifyPlaylistSettings>
     {
         public SpotifyPlaylist(ISpotifyProxy spotifyProxy,
+                               IMetadataRequestBuilder requestBuilder,
                                IImportListStatusService importListStatusService,
                                IImportListRepository importListRepository,
                                IConfigService configService,
                                IParsingService parsingService,
                                IHttpClient httpClient,
                                Logger logger)
-        : base(spotifyProxy, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
+        : base(spotifyProxy, requestBuilder, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
         {
         }
 
         public override string Name => "Spotify Playlists";
 
-        public override IList<ImportListItemInfo> Fetch(SpotifyWebAPI api)
+        public override IList<SpotifyImportListItemInfo> Fetch(SpotifyWebAPI api)
         {
             return Settings.PlaylistIds.SelectMany(x => Fetch(api, x)).ToList();
         }
 
-        public IList<ImportListItemInfo> Fetch(SpotifyWebAPI api, string playlistId)
+        public IList<SpotifyImportListItemInfo> Fetch(SpotifyWebAPI api, string playlistId)
         {
-            var result = new List<ImportListItemInfo>();
+            var result = new List<SpotifyImportListItemInfo>();
 
             _logger.Trace($"Processing playlist {playlistId}");
 
-            var playlistTracks = _spotifyProxy.GetPlaylistTracks(this, api, playlistId, "next, items(track(name, album(name,artists)))");
+            var playlistTracks = _spotifyProxy.GetPlaylistTracks(this, api, playlistId, "next, items(track(name, artists(id, name), album(id, name, release_date, release_date_precision, artists(id, name))))");
 
             while (true)
             {
@@ -64,20 +65,23 @@ namespace NzbDrone.Core.ImportLists.Spotify
             return result;
         }
 
-        private ImportListItemInfo ParsePlaylistTrack(PlaylistTrack playlistTrack)
+        private SpotifyImportListItemInfo ParsePlaylistTrack(PlaylistTrack playlistTrack)
         {
             // From spotify docs: "Note, a track object may be null. This can happen if a track is no longer available."
             if (playlistTrack?.Track?.Album != null)
             {
                 var album = playlistTrack.Track.Album;
+
                 var albumName = album.Name;
                 var artistName = album.Artists?.FirstOrDefault()?.Name ?? playlistTrack.Track?.Artists?.FirstOrDefault()?.Name;
 
                 if (albumName.IsNotNullOrWhiteSpace() && artistName.IsNotNullOrWhiteSpace())
                 {
-                    return new ImportListItemInfo {
+                    return new SpotifyImportListItemInfo
+                    {
                         Artist = artistName,
-                        Album = albumName,
+                        Album = album.Name,
+                        AlbumSpotifyId = album.Id,
                         ReleaseDate = ParseSpotifyDate(album.ReleaseDate, album.ReleaseDatePrecision)
                     };
                 }

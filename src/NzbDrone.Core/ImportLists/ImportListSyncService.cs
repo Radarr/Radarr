@@ -104,6 +104,18 @@ namespace NzbDrone.Core.ImportLists
 
                 }
 
+                // Map artist ID if we only have album ID
+                if  (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && report.ArtistMusicBrainzId.IsNullOrWhiteSpace())
+                {
+                    var mappedAlbum = _albumSearchService.SearchForNewAlbum($"lidarr:{report.AlbumMusicBrainzId}", null)
+                        .FirstOrDefault();
+
+                    if (mappedAlbum == null) continue;
+
+                    report.Artist = mappedAlbum.ArtistMetadata?.Value?.Name;
+                    report.ArtistMusicBrainzId = mappedAlbum?.ArtistMetadata?.Value?.ForeignArtistId;
+                }
+
                 // Map MBid if we only have a artist name
                 if (report.ArtistMusicBrainzId.IsNullOrWhiteSpace() && report.Artist.IsNotNullOrWhiteSpace())
                 {

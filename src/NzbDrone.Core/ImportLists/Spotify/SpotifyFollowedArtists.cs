@@ -3,6 +3,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using SpotifyAPI.Web;
@@ -18,21 +19,22 @@ namespace NzbDrone.Core.ImportLists.Spotify
     public class SpotifyFollowedArtists : SpotifyImportListBase<SpotifyFollowedArtistsSettings>
     {
         public SpotifyFollowedArtists(ISpotifyProxy spotifyProxy,
+                                      IMetadataRequestBuilder requestBuilder,
                                       IImportListStatusService importListStatusService,
                                       IImportListRepository importListRepository,
                                       IConfigService configService,
                                       IParsingService parsingService,
                                       IHttpClient httpClient,
                                       Logger logger)
-        : base(spotifyProxy, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
+        : base(spotifyProxy, requestBuilder, importListStatusService, importListRepository, configService, parsingService, httpClient, logger)
         {
         }
 
         public override string Name => "Spotify Followed Artists";
 
-        public override IList<ImportListItemInfo> Fetch(SpotifyWebAPI api)
+        public override IList<SpotifyImportListItemInfo> Fetch(SpotifyWebAPI api)
         {
-            var result = new List<ImportListItemInfo>();
+            var result = new List<SpotifyImportListItemInfo>();
 
             var followedArtists = _spotifyProxy.GetFollowedArtists(this, api);
             var artists = followedArtists?.Artists;
@@ -61,12 +63,14 @@ namespace NzbDrone.Core.ImportLists.Spotify
             return result;
         }
 
-        private ImportListItemInfo ParseFullArtist(FullArtist artist)
+        private SpotifyImportListItemInfo ParseFullArtist(FullArtist artist)
         {
             if (artist?.Name.IsNotNullOrWhiteSpace() ?? false)
             {
-                return new ImportListItemInfo {
+                return new SpotifyImportListItemInfo
+                {
                     Artist = artist.Name,
+                    ArtistSpotifyId = artist.Id
                 };
             }
 

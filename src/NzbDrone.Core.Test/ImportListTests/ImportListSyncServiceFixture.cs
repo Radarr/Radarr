@@ -120,9 +120,19 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_search_if_album_title_and_album_id()
+        public void should_search_with_lidarr_id_if_album_id_and_no_artist_id()
         {
-            WithAlbum();
+            WithAlbumId();
+            Subject.Execute(new ImportListSyncCommand());
+
+            Mocker.GetMock<ISearchForNewAlbum>()
+                .Verify(v => v.SearchForNewAlbum($"lidarr:{_importListReports.First().AlbumMusicBrainzId}", null), Times.Once());
+        }
+
+        [Test]
+        public void should_not_search_if_album_id_and_artist_id()
+        {
+            WithArtistId();
             WithAlbumId();
             Subject.Execute(new ImportListSyncCommand());
 
