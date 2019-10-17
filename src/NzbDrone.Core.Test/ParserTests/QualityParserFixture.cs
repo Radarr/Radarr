@@ -181,6 +181,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Simpsons.S25E21.Pay.Pal.1080p.WEB-DL.DD5.1.H.264-NTb", false)]
         [TestCase("The.Simpsons.2017.1080p.WEB-DL.DD5.1.H.264.Remux.-NTb", false)]
         [TestCase("Series.Title.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
+        [TestCase("Fast.and.Furious.Presents.Hobbs.and.Shaw.2019.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTG", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080P);
@@ -255,6 +256,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Contract.to.Kill.2016.REMUX.2160p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.2160p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        [TestCase("The.Shining.1980.2160p.UHD.BluRay.Remux.HDR.HEVC.DTS-HD.MA.5.1-PmP.mkv")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160P, Modifier.REMUX);

@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?Remux)\b",
+        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?[-_. ]?Remux)\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480(i|p)|640x480|848x480)|(?<R576p>576(i|p))|(?<R720p>720(i|p)|1280x720)|(?<R1080p>1080(i|p)|1920x1080)|(?<R2160p>2160(i|p)|UHD))\b",
+        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480(i|p)|640x480|848x480)|(?<R576p>576(i|p))|(?<R720p>720(i|p)|1280x720)|(?<R1080p>1080p|1920x1080|1440p|FHD|1080i)|(?<R2160p>2160p|4k[-_. ](?:UHD|HEVC|BD)|(?:UHD|HEVC|BD)[-_. ]4k))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>X-?vid)|(?<divx>divx))\b",
