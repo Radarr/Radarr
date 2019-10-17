@@ -11,11 +11,6 @@
     <PackageReference Include="NLog" Version="4.6.7" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Core\Lidarr.Core.csproj" />
     <ProjectReference Include="..\NzbDrone.SignalR\Lidarr.SignalR.csproj" />
   </ItemGroup>

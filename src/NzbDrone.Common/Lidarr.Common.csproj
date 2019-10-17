@@ -10,12 +10,10 @@
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
     <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
