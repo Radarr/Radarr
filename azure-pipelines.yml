@@ -17,6 +17,7 @@ variables:
   macOsTar: 'Lidarr.$(buildName).osx.tar.gz'
   linuxTar: 'Lidarr.$(buildName).linux.tar.gz'
   sentryOrg: 'lidarr'
+  dotnetVersion: '3.0.100'
 
 trigger:
   branches:
@@ -54,15 +55,34 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
       - bash: ./build.sh --backend
         displayName: Build Lidarr Backend
+      - bash: |
+          find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
+          find ${OUTPUTFOLDER} -depth -empty -type d -exec rm -r "{}" \;
+          find ${TESTSFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
+          find ${TESTSFOLDER} -depth -empty -type d -exec rm -r "{}" \;
+          ls -lR
+        displayName: Clean up intermediate output
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: $(testsFolder)
-        artifact: '$(osName)Tests'
-        displayName: Publish Test Package
+      - publish: '$(testsFolder)/net462/win-x64/publish'
+        artifact: WindowsTests
+        displayName: Publish Windows Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/net462/linux-x64/publish'
+        artifact: LinuxTests
+        displayName: Publish Linux Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/net462/osx-x64/publish'
+        artifact: MacTests
+        displayName: Publish MacOS Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
 
   - stage: Build_Frontend
@@ -162,10 +182,8 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          chmod a+x $(artifactsFolder)/macos/Lidarr/fpcalc
-          chmod a+x $(artifactsFolder)/macos/Lidarr/Lidarr
-          chmod a+x $(artifactsFolder)/macos-app/Lidarr.app/Contents/MacOS/fpcalc
-          chmod a+x $(artifactsFolder)/macos-app/Lidarr.app/Contents/MacOS/Lidarr
+          find . -name "fpcalc" -exec chmod a+x {} \;
+          find . -name "Lidarr" -exec chmod a+x {} \;
         displayName: Set Mac executable bits
       - task: ArchiveFiles@2
         displayName: Create Windows zip
@@ -173,14 +191,14 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(windowsZip)'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/windows
+          rootFolderOrFile: $(artifactsFolder)/windows/net462
       - task: ArchiveFiles@2
         displayName: Create MacOS app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(macOsApp)'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app
+          rootFolderOrFile: $(artifactsFolder)/macos-app/net462
       - task: ArchiveFiles@2
         displayName: Create MacOS tar
         inputs:
@@ -188,7 +206,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos
+          rootFolderOrFile: $(artifactsFolder)/macos/net462
       - task: ArchiveFiles@2
         displayName: Create Linux tar
         inputs:
@@ -196,7 +214,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux
+          rootFolderOrFile: $(artifactsFolder)/linux/net462
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -244,11 +262,15 @@ stages:
 
       steps:
       - checkout: none
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
@@ -262,6 +284,8 @@ stages:
           chmod a+x _tests/fpcalc
         displayName: Set Mono Version and make fpcalc Executable
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - bash: find ${TESTSFOLDER} -name "Lidarr.Test.Dummy" -exec chmod a+x {} \;
+        displayName: Make Test Dummy Executable
       - task: Bash@3
         displayName: Run Tests
         env:
@@ -371,12 +395,16 @@ stages:
           echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
         displayName: Set Mono Version
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
@@ -519,12 +547,16 @@ stages:
         vmImage: $(imageName)
         
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .net core 3.0'
+        inputs:
+          version: $(dotnetVersion)
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: WindowsTests
+          artifactName: '$(osName)Tests'
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
@@ -642,8 +674,11 @@ stages:
             sonar.coverage.exclusions=**/Lidarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
-      - bash: ./build.sh --backend
-        displayName: Build Lidarr Backend
+      - task: DotNetCoreCLI@2
+        displayName: Build backend
+        inputs:
+          command: 'build'
+          projects: 'src/Lidarr.Windows.sln'
       - task: Bash@3
         displayName: Coverage Unit Tests
         inputs:

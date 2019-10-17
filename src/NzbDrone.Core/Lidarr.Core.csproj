@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
-    <Platforms>x86</Platforms>
+    <TargetFrameworks>net462</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="FluentMigrator.Runner" Version="1.6.2" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -13,7 +13,7 @@
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
     <PackageReference Include="Equ" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
@@ -35,14 +35,17 @@
     <None Include="..\Libraries\Sqlite\sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Libraries\Sqlite\libsqlite3.0.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
+  <Target Name="CopyWindowsRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='win-x64'">
+    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyWindowsRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='win-x64'">
+    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe" DestinationFolder="$(PublishDir)" />
+  </Target>
+  <Target Name="CopyMacOSRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
+    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyMacOSRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
+    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc" DestinationFolder="$(PublishDir)" />
+  </Target>
 </Project>

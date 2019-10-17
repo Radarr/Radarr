@@ -51,10 +51,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         private void Send(MailMessage email, string server, int port, bool ssl, NetworkCredential credentials)
         {
-            //TODO: This is marked obsolete in mono, will not be necessary once we build with net core instead
-#pragma warning disable CS0618
             var smtp = new SmtpClient(server, port);
-#pragma warning restore CS0618
             smtp.EnableSsl = ssl;
             smtp.Credentials = credentials;
 
