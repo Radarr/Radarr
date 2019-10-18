@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
             AdditionalParameters = "&cats=1_37&filter=1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
             MultiLanguages = new List<int>();
+            RequiredFlags = new List<int>();
         }
 
         [FieldDefinition(0, Label = "Website URL")]
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         [FieldDefinition(3, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(4, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        // [FieldDefinition(4, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(5)]

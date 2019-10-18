@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             Codecs = new int[0];
             Mediums = new int[0];
             MultiLanguages = new List<int>();
+            RequiredFlags = new List<int>();
         }
 
         [FieldDefinition(0, Label = "Username")]
@@ -61,7 +62,7 @@ namespace NzbDrone.Core.Indexers.HDBits
         [FieldDefinition(7, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        // [FieldDefinition(8, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(9)]
