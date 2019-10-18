@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Revenant 2015 2160p UHD BluRay DTS x264-Whatevs", 19)]
         [TestCase("The Revenant 2015 2160p UHD BluRay FLAC 7 1 x264-Whatevs", 19)]
         [TestCase("The Martian 2015 2160p Ultra HD BluRay DTS-HD MA 7 1 x264-Whatevs", 19)]
-        [TestCase("Movie.Name.2017.Version.UHD.BluRay.HDR.x265.Atmos.Eng.De-RLSGRP", 19)]
         [TestCase("Into the Inferno 2016 2160p Netflix WEBRip DD5 1 x264-Whatevs", 18)]
         public void should_parse_ultrahd_from_title(string title, int version)
         {
