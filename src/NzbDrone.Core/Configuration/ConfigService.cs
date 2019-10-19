@@ -302,6 +302,12 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CopyUsingHardlinks", value); }
         }
 
+        public bool AlwaysMoveFilesWhenImporting
+        {
+            get { return GetValueBoolean("AlwaysMoveFilesWhenImporting", false); }
+
+            set { SetValue("AlwaysMoveFilesWhenImporting", value); }
+        }
         public bool EnableMediaInfo
         {
             get { return GetValueBoolean("EnableMediaInfo", true); }

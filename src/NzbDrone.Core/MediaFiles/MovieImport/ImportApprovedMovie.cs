@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
@@ -35,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                       IExtraService extraService,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
+                                      IConfigService configService,
                                       Logger logger)
         {
             _movieFileUpgrader = movieFileUpgrader;
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _extraService = extraService;
             _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -92,7 +96,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         default:
                         case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
+                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles && !_configService.AlwaysMoveFilesWhenImporting;
                             break;
                         case ImportMode.Move:
                             copyOnly = false;
