@@ -61,6 +61,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'customFormat',
+    label: 'Formats',
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'rejections',
     label: React.createElement(Icon, { name: icons.DANGER }),
     isSortable: true,

@@ -15,6 +15,7 @@ import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
@@ -170,6 +171,12 @@ class InteractiveSearchRow extends Component {
         <TableRowCell className={styles.quality}>
           <MovieQuality
             quality={quality}
+          />
+        </TableRowCell>
+
+        <TableRowCell className={styles.customFormat}>
+          <MovieFormats
+            formats={quality.customFormats}
           />
         </TableRowCell>
 
