@@ -2,18 +2,21 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import formatBytes from 'Utilities/Number/formatBytes';
 import IconButton from 'Components/Link/IconButton';
-import { icons, kinds } from 'Helpers/Props';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieLanguage from 'Movie/MovieLanguage';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
 import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
 import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
 import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
+import MediaInfoPopover from './MediaInfoPopover';
 import styles from './MovieFileEditorRow.css';
 
 class MovieFileEditorRow extends Component {
@@ -70,6 +73,7 @@ class MovieFileEditorRow extends Component {
   render() {
     const {
       id,
+      mediaInfo,
       relativePath,
       size,
       quality,
@@ -101,6 +105,9 @@ class MovieFileEditorRow extends Component {
             movieFileId={id}
             type={mediaInfoTypes.VIDEO}
           />
+        </TableRowCell>
+
+        <TableRowCell>
           <MediaInfoConnector
             movieFileId={id}
             type={mediaInfoTypes.AUDIO}
@@ -154,6 +161,17 @@ class MovieFileEditorRow extends Component {
         </TableRowCellButton>
 
         <TableRowCell className={styles.actions}>
+          <Popover
+            anchor={
+              <Icon
+                name={icons.MEDIA_INFO}
+              />
+            }
+            title="Media Info"
+            body={<MediaInfoPopover {...mediaInfo} />}
+            position={tooltipPositions.LEFT}
+          />
+
           <IconButton
             title="Delete file"
             name={icons.REMOVE}
