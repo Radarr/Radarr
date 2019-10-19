@@ -33,9 +33,8 @@ function PageMenuButton(props) {
             )}
           >
             <Icon
-              className={styles.indicatorBackground}
               name={icons.CIRCLE}
-              size={10}
+              size={9}
             />
           </span>
       }
