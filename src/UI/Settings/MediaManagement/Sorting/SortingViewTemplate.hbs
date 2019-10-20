@@ -74,30 +74,30 @@
 <fieldset>
     <legend>Importing</legend>
 
-    {{#if_mono}}
+{{#if_mono}}
     <div class="form-group advanced-setting">
         <label class="col-sm-3 control-label">Skip Free Space Check</label>
 
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="skipFreeSpaceCheckWhenImporting" />
+                    <input type="checkbox" name="skipFreeSpaceCheckWhenImporting"/>
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button" />
+                    <div class="btn btn-primary slide-button"/>
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-radarr-form-info" title="Use when drone is unable to detect free space from your movies root folder" />
+                    <i class="icon-radarr-form-info" title="Use when drone is unable to detect free space from your movies root folder"/>
                 </span>
             </div>
         </div>
     </div>
-    {{/if_mono}}
+{{/if_mono}}
 
     <div class="form-group advanced-setting">
         <label class="col-sm-3 control-label">Use Hardlinks instead of Copy</label>
@@ -105,19 +105,19 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="copyUsingHardlinks" />
+                    <input type="checkbox" name="copyUsingHardlinks"/>
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button" />
+                    <div class="btn btn-primary slide-button"/>
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-radarr-form-info" title="Use Hardlinks when trying to copy files from torrents that are still being seeded" />
-                    <i class="icon-radarr-form-warning" title="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Radarr's rename function as a work around." />
+                    <i class="icon-radarr-form-info" title="Use Hardlinks when trying to copy files from torrents that are still being seeded"/>
+                    <i class="icon-radarr-form-warning" title="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Radarr's rename function as a work around."/>
                 </span>
             </div>
         </div>
@@ -129,19 +129,19 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="alwaysMoveFilesWhenImporting" />
+                    <input type="checkbox" name="alwaysMoveFilesWhenImporting"/>
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button" />
+                    <div class="btn btn-primary slide-button"/>
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-radarr-form-info" title="As the title implies, always move file on import." />
-                    <i class="icon-radarr-form-warning" title="This option should only be used with downloaders that copy the files to a remote storage from which Radarr will import" />
+                    <i class="icon-radarr-form-info" title="As the title implies, always move file on import."/>
+                    <i class="icon-radarr-form-warning" title="This option should only be used with downloaders that copy the files to a remote storage from which Radarr will import"/>
                 </span>
             </div>
         </div>
@@ -153,18 +153,18 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="importExtraFiles" class="x-import-extra-files" />
+                    <input type="checkbox" name="importExtraFiles" class="x-import-extra-files"/>
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button" />
+                    <div class="btn btn-primary slide-button"/>
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-radarr-form-info" title="Import matching extra files (subtitles, nfo, etc) after importing a movie file" />
+                    <i class="icon-radarr-form-info" title="Import matching extra files (subtitles, nfo, etc) after importing a movie file"/>
                 </span>
             </div>
         </div>
@@ -174,11 +174,11 @@
         <label class="col-sm-3 control-label">Extra File Extensions</label>
 
         <div class="col-sm-1 col-sm-push-5 help-inline">
-            <i class="icon-radarr-form-info" title="Comma separated list of extra files to import, ie sub,nfo (.nfo will be imported as .nfo-orig)" />
+            <i class="icon-radarr-form-info" title="Comma separated list of extra files to import, ie sub,nfo (.nfo will be imported as .nfo-orig)"/>
         </div>
 
         <div class="col-sm-5 col-sm-pull-1">
-            <input type="text" name="extraFileExtensions" class="form-control" />
+            <input type="text" name="extraFileExtensions" class="form-control"/>
         </div>
     </div>
 </fieldset>
