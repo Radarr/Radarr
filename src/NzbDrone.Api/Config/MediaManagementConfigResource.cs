@@ -49,7 +49,6 @@ namespace NzbDrone.Api.Config
                 ChownGroup = model.ChownGroup,
 
                 SkipFreeSpaceCheckWhenImporting = model.SkipFreeSpaceCheckWhenImporting,
-
                 CopyUsingHardlinks = model.CopyUsingHardlinks,
                 AlwaysMoveFilesWhenImporting = model.AlwaysMoveFilesWhenImporting,
                 ImportExtraFiles = model.ImportExtraFiles,
