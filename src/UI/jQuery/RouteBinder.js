@@ -45,17 +45,17 @@ var routeBinder = {
         }
 
         if (!href.startsWith('http')) {
+
+            var openedInNewTab = event.ctrlKey || event.shiftKey || event.metaKey;
+
+            if (openedInNewTab) {
+                return;
+            }
+
+            var relativeHref = href.replace(StatusModel.get('urlBase'), '');
+            Backbone.history.navigate(relativeHref, { trigger : true });
             event.preventDefault();
 
-            if (event.ctrlKey) {
-                window.open(href, '_blank');
-            }
-
-            else {
-                var relativeHref = href.replace(StatusModel.get('urlBase'), '');
-
-                Backbone.history.navigate(relativeHref, { trigger : true });
-            }
         }
     }
 };
