@@ -120,13 +120,6 @@ namespace NzbDrone.Update.UpdateEngine
                     if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
                         _diskProvider.SetPermissions(Path.Combine(installationFolder, "Radarr"), "0755", null, null);
-                        var plistPath = Path.Combine(installationFolder, "..", "Info.plist");
-                        var plistContents = File.ReadAllText(plistPath);
-                        if (plistContents.Contains("Sonarr"))
-                        {
-                            plistContents.Replace("Sonarr", "Radarr");
-                            File.WriteAllText(plistPath, plistContents);
-                        }
                     }
                 }
                 catch (Exception e)
