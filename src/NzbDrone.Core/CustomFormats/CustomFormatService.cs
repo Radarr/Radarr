@@ -130,27 +130,14 @@ namespace NzbDrone.Core.CustomFormats
         private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository, Func<TModel, List<CustomFormat>> queryFunc,
             Func<TModel, List<CustomFormat>, TModel> updateFunc, int customFormatId) where TModel : ModelBase, new()
         {
-            var pagingSpec = new PagingSpec<TModel>
+            var allItems = repository.All();
+            
+            var toUpdate = allItems.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
             {
-                Page = 0,
-                PageSize = 2000
-            };
-            while (true)
-            {
-                var allItems = repository.GetPaged(pagingSpec);
-                var toUpdate = allItems.Records.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
-                {
-                    return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
-                });
-                repository.UpdateMany(toUpdate.ToList());
-
-                if (pagingSpec.Page * pagingSpec.PageSize >= allItems.TotalRecords)
-                {
-                    break;
-                }
-
-                pagingSpec.Page += 1;
-            }
+                return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
+            });
+            
+            repository.UpdateMany(toUpdate.ToList());
         }
 
         private Dictionary<int, CustomFormat> AllDictionary()

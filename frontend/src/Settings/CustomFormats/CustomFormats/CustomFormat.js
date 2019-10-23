@@ -118,7 +118,16 @@ class CustomFormat extends Component {
           isOpen={this.state.isDeleteCustomFormatModalOpen}
           kind={kinds.DANGER}
           title="Delete Custom Format"
-          message={`Are you sure you want to delete the custom format '${name}'?`}
+          message={
+            <div>
+              <div>
+                Are you sure you want to delete custom format '{name}'?
+              </div>
+              <div>
+                This will remove all associations to this format in the DB. This may result in existing files being updated.
+              </div>
+            </div>
+          }
           confirmLabel="Delete"
           isSpinning={isDeleting}
           onConfirm={this.onConfirmDeleteCustomFormat}

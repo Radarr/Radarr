@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes } from 'Helpers/Props';
+import { inputTypes, kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -12,6 +12,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import styles from './EditCustomFormatModalContent.css';
 
 class EditCustomFormatModalContent extends Component {
 
@@ -28,6 +29,7 @@ class EditCustomFormatModalContent extends Component {
       onInputChange,
       onSavePress,
       onModalClose,
+      onDeleteCustomFormatPress,
       ...otherProps
     } = this.props;
 
@@ -92,6 +94,17 @@ class EditCustomFormatModalContent extends Component {
           </div>
         </ModalBody>
         <ModalFooter>
+          {
+            id &&
+              <Button
+                className={styles.deleteButton}
+                kind={kinds.DANGER}
+                onPress={onDeleteCustomFormatPress}
+              >
+                Delete
+              </Button>
+          }
+
           <Button
             onPress={onModalClose}
           >
@@ -120,7 +133,8 @@ EditCustomFormatModalContent.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onContentHeightChange: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  onDeleteCustomFormatPress: PropTypes.func
 };
 
 export default EditCustomFormatModalContent;
