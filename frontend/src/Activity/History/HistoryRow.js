@@ -6,6 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
@@ -120,6 +121,16 @@ class HistoryRow extends Component {
                   <MovieQuality
                     quality={quality}
                     isCutoffMet={qualityCutoffNotMet}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'quality.customFormats') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieFormats
+                    formats={quality.customFormats}
                   />
                 </TableRowCell>
               );
