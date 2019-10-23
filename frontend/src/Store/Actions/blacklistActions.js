@@ -51,6 +51,12 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'quality.customFormats',
+      label: 'Custom Formats',
+      isSortable: true,
+      isVisible: true
+    },
+    {
       name: 'date',
       label: 'Date',
       isSortable: true,
