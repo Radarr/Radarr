@@ -10,6 +10,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieTitleLink from 'Movie/MovieTitleLink';
@@ -162,6 +163,16 @@ class QueueRow extends Component {
                 <TableRowCell key={name}>
                   <MovieQuality
                     quality={quality}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'quality.customFormats') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieFormats
+                    formats={quality.customFormats}
                   />
                 </TableRowCell>
               );
