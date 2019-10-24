@@ -38,6 +38,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         private static readonly HashSet<string> FilteredExceptionTypeNames = new HashSet<string> {
             // UnauthorizedAccessExceptions will just be user configuration issues
             "UnauthorizedAccessException",
+            // Out Of Memory isn't very informative
+            "OutOfMemoryException",
             // Filter out people stuck in boot loops
             "CorruptDatabaseException",
             // This also filters some people in boot loops
