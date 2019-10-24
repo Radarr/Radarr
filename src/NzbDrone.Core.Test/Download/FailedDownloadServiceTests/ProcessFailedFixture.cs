@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -13,10 +13,10 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.Download
+namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
 {
     [TestFixture]
-    public class FailedDownloadServiceFixture : CoreTest<FailedDownloadService>
+    public class ProcessFailedFixture : CoreTest<FailedDownloadService>
     {
         private TrackedDownload _trackedDownload;
         private List<History.History> _grabHistory;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.Download
             var completed = Builder<DownloadClientItem>.CreateNew()
                                                     .With(h => h.Status = DownloadItemStatus.Completed)
                                                     .With(h => h.OutputPath = new OsPath(@"C:\DropFolder\MyDownload".AsOsAgnostic()))
-                                                    .With(h => h.Title = "Drone.DroneTheAlbum.FLAC")
+                                                    .With(h => h.Title = "Drone.S01E01.HDTV")
                                                     .Build();
 
             _grabHistory = Builder<History.History>.CreateListOfSize(2).BuildList();
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.Download
             };
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
-                    .With(c => c.State = TrackedDownloadStage.Downloading)
+                    .With(c => c.State = TrackedDownloadState.DownloadFailedPending)
                     .With(c => c.DownloadItem = completed)
                     .With(c => c.RemoteAlbum = remoteAlbum)
                     .Build();
@@ -49,51 +49,12 @@ namespace NzbDrone.Core.Test.Download
                   .Returns(_grabHistory);
         }
 
-        private void GivenNoGrabbedHistory()
-        {
-            Mocker.GetMock<IHistoryService>()
-                .Setup(s => s.Find(_trackedDownload.DownloadItem.DownloadId, HistoryEventType.Grabbed))
-                .Returns(new List<History.History>());
-        }
-
-        [Test]
-        public void should_not_fail_if_matching_history_is_not_found()
-        {
-            GivenNoGrabbedHistory();
-
-            Subject.Process(_trackedDownload);
-
-            AssertDownloadNotFailed();
-        }
-
-        [Test]
-        public void should_warn_if_matching_history_is_not_found()
-        {
-            _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
-            GivenNoGrabbedHistory();
-
-            Subject.Process(_trackedDownload);
-
-            _trackedDownload.StatusMessages.Should().NotBeEmpty();
-        }
-
-        [Test]
-        public void should_not_warn_if_matching_history_is_not_found_and_not_failed()
-        {
-            _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
-            GivenNoGrabbedHistory();
-
-            Subject.Process(_trackedDownload);
-
-            _trackedDownload.StatusMessages.Should().NotBeEmpty();
-        }
-
         [Test]
         public void should_mark_failed_if_encrypted()
         {
             _trackedDownload.DownloadItem.IsEncrypted = true;
 
-            Subject.Process(_trackedDownload);
+            Subject.ProcessFailed(_trackedDownload);
 
             AssertDownloadFailed();
         }
@@ -103,7 +64,7 @@ namespace NzbDrone.Core.Test.Download
         {
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
 
-            Subject.Process(_trackedDownload);
+            Subject.ProcessFailed(_trackedDownload);
 
             AssertDownloadFailed();
         }
@@ -113,7 +74,7 @@ namespace NzbDrone.Core.Test.Download
         {
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
 
-            Subject.Process(_trackedDownload);
+            Subject.ProcessFailed(_trackedDownload);
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.Is<DownloadFailedEvent>(c => c.TrackedDownload != null)), Times.Once());
@@ -126,7 +87,7 @@ namespace NzbDrone.Core.Test.Download
             Mocker.GetMock<IEventAggregator>()
                .Verify(v => v.PublishEvent(It.IsAny<DownloadFailedEvent>()), Times.Never());
 
-            _trackedDownload.State.Should().NotBe(TrackedDownloadStage.DownloadFailed);
+            _trackedDownload.State.Should().NotBe(TrackedDownloadState.DownloadFailed);
         }
 
         private void AssertDownloadFailed()
@@ -134,7 +95,7 @@ namespace NzbDrone.Core.Test.Download
             Mocker.GetMock<IEventAggregator>()
             .Verify(v => v.PublishEvent(It.IsAny<DownloadFailedEvent>()), Times.Once());
 
-            _trackedDownload.State.Should().Be(TrackedDownloadStage.DownloadFailed);
+            _trackedDownload.State.Should().Be(TrackedDownloadState.DownloadFailed);
         }
     }
 }

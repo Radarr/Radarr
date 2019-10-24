@@ -1,10 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
@@ -12,43 +10,37 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download
 {
     public interface ICompletedDownloadService
     {
-        void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false);
+        void Check(TrackedDownload trackedDownload);
+        void Import(TrackedDownload trackedDownload);
     }
 
     public class CompletedDownloadService : ICompletedDownloadService
     {
-        private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IHistoryService _historyService;
         private readonly IDownloadedTracksImportService _downloadedTracksImportService;
-        private readonly IParsingService _parsingService;
-        private readonly Logger _logger;
         private readonly IArtistService _artistService;
+        private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
 
-        public CompletedDownloadService(IConfigService configService,
-                                        IEventAggregator eventAggregator,
+        public CompletedDownloadService(IEventAggregator eventAggregator,
                                         IHistoryService historyService,
                                         IDownloadedTracksImportService downloadedTracksImportService,
-                                        IParsingService parsingService,
                                         IArtistService artistService,
-                                        Logger logger)
+                                        ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported)
         {
-            _configService = configService;
             _eventAggregator = eventAggregator;
             _historyService = historyService;
             _downloadedTracksImportService = downloadedTracksImportService;
-            _parsingService = parsingService;
-            _logger = logger;
             _artistService = artistService;
+            _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
         }
 
-        public void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false)
+        public void Check(TrackedDownload trackedDownload)
         {
             if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed ||
                 trackedDownload.RemoteAlbum == null)
@@ -56,75 +48,113 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            if (!ignoreWarnings)
+            // Only process tracked downloads that are still downloading
+            if (trackedDownload.State != TrackedDownloadState.Downloading)
             {
-                var historyItem = _historyService.MostRecentForDownloadId(trackedDownload.DownloadItem.DownloadId);
+                return;
+            }
 
-                if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
+            var historyItem = _historyService.MostRecentForDownloadId(trackedDownload.DownloadItem.DownloadId);
+
+            if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
+            {
+                trackedDownload.Warn("Download wasn't grabbed by Lidarr and not in a category, Skipping.");
+                return;
+            }
+
+            var downloadItemOutputPath = trackedDownload.DownloadItem.OutputPath;
+
+            if (downloadItemOutputPath.IsEmpty)
+            {
+                trackedDownload.Warn("Download doesn't contain intermediate path, Skipping.");
+                return;
+            }
+
+            if ((OsInfo.IsWindows && !downloadItemOutputPath.IsWindowsPath) ||
+                (OsInfo.IsNotWindows && !downloadItemOutputPath.IsUnixPath))
+            {
+                trackedDownload.Warn("[{0}] is not a valid local path. You may need a Remote Path Mapping.", downloadItemOutputPath);
+                return;
+            }
+
+            var artist = trackedDownload.RemoteAlbum.Artist;
+
+            if (artist == null)
+            {
+                if (historyItem != null)
                 {
-                    trackedDownload.Warn("Download wasn't grabbed by Lidarr and not in a category, Skipping.");
-                    return;
+                    artist = _artistService.GetArtist(historyItem.ArtistId);
                 }
-
-                var downloadItemOutputPath = trackedDownload.DownloadItem.OutputPath;
-
-                if (downloadItemOutputPath.IsEmpty)
-                {
-                    trackedDownload.Warn("Download doesn't contain intermediate path, Skipping.");
-                    return;
-                }
-
-                if ((OsInfo.IsWindows && !downloadItemOutputPath.IsWindowsPath) ||
-                    (OsInfo.IsNotWindows && !downloadItemOutputPath.IsUnixPath))
-                {
-                    trackedDownload.Warn("[{0}] is not a valid local path. You may need a Remote Path Mapping.", downloadItemOutputPath);
-                    return;
-                }
-
-                var artist = trackedDownload.RemoteAlbum.Artist;
 
                 if (artist == null)
                 {
-                    if (historyItem != null)
-                    {
-                        artist = _artistService.GetArtist(historyItem.ArtistId);
-                    }
-
-                    if (artist == null)
-                    {
-                        trackedDownload.Warn("Artist name mismatch, automatic import is not possible.");
-                        return;
-                    }
+                    trackedDownload.Warn("Artist name mismatch, automatic import is not possible.");
+                    return;
                 }
             }
 
-            Import(trackedDownload);
+            trackedDownload.State = TrackedDownloadState.ImportPending;
         }
 
-        private void Import(TrackedDownload trackedDownload)
+        public void Import(TrackedDownload trackedDownload)
         {
+            trackedDownload.State = TrackedDownloadState.Importing;
+
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
             var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteAlbum.Artist, trackedDownload.DownloadItem);
 
             if (importResults.Empty())
             {
-                trackedDownload.State = TrackedDownloadStage.ImportFailed;
+                trackedDownload.State = TrackedDownloadState.ImportFailed;
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
                 _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
                 return;
             }
 
-            if (importResults.All(c => c.Result == ImportResultType.Imported)
-                || importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount))))
+            var allTracksImported = importResults.All(c => c.Result == ImportResultType.Imported) ||
+                importResults.Count(c => c.Result == ImportResultType.Imported) >=
+                Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount)));
+
+            Console.WriteLine($"allimported: {allTracksImported}");
+            Console.WriteLine($"count: {importResults.Count(c => c.Result == ImportResultType.Imported)}");
+            Console.WriteLine($"max: {Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount)))}");
+
+            if (allTracksImported)
             {
-                trackedDownload.State = TrackedDownloadStage.Imported;
+                trackedDownload.State = TrackedDownloadState.Imported;
                 _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
                 return;
             }
 
+            // Double check if all albums were imported by checking the history if at least one
+            // file was imported. This will allow the decision engine to reject already imported
+            // albums and still mark the download complete when all files are imported.
+            if (importResults.Any(c => c.Result == ImportResultType.Imported))
+            {
+                var historyItems = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId)
+                    .OrderByDescending(h => h.Date)
+                    .ToList();
+
+                var allTracksImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
+
+                if (allTracksImportedInHistory)
+                {
+                    trackedDownload.State = TrackedDownloadState.Imported;
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                    return;
+                }
+            }
+
+            trackedDownload.State = TrackedDownloadState.ImportPending;
+
+            if (importResults.Empty())
+            {
+                trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+            }
+
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
-                trackedDownload.State = TrackedDownloadStage.ImportFailed;
+                trackedDownload.State = TrackedDownloadState.ImportFailed;
                 var statusMessages = importResults
                     .Where(v => v.Result != ImportResultType.Imported)
                     .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.Item.Path), v.Errors))
@@ -132,6 +162,7 @@ namespace NzbDrone.Core.Download
 
                 trackedDownload.Warn(statusMessages);
                 _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
+                return;
             }
         }
     }

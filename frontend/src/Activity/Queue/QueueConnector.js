@@ -18,13 +18,13 @@ function createMapStateToProps() {
     (state) => state.albums,
     (state) => state.queue.options,
     (state) => state.queue.paged,
-    createCommandExecutingSelector(commandNames.CHECK_FOR_FINISHED_DOWNLOAD),
-    (albums, options, queue, isCheckForFinishedDownloadExecuting) => {
+    createCommandExecutingSelector(commandNames.REFRESH_MONITORED_DOWNLOADS),
+    (albums, options, queue, isRefreshMonitoredDownloadsExecuting) => {
       return {
         isAlbumsFetching: albums.isFetching,
         isAlbumsPopulated: albums.isPopulated,
         albumsError: albums.error,
-        isCheckForFinishedDownloadExecuting,
+        isRefreshMonitoredDownloadsExecuting,
         ...options,
         ...queue
       };
@@ -129,7 +129,7 @@ class QueueConnector extends Component {
 
   onRefreshPress = () => {
     this.props.executeCommand({
-      name: commandNames.CHECK_FOR_FINISHED_DOWNLOAD
+      name: commandNames.REFRESH_MONITORED_DOWNLOADS
     });
   }
 

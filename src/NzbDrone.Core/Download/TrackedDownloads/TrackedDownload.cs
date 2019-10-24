@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     {
         public int DownloadClient { get; set; }
         public DownloadClientItem DownloadItem { get; set; }
-        public TrackedDownloadStage State { get; set; }
+        public TrackedDownloadState State { get; set; }
         public TrackedDownloadStatus Status { get; private set; }
         public RemoteAlbum RemoteAlbum { get; set; }
         public TrackedDownloadStatusMessage[] StatusMessages { get; private set; }
@@ -33,10 +33,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         }
     }
 
-    public enum TrackedDownloadStage
+    public enum TrackedDownloadState
     {
         Downloading,
         DownloadFailed,
+        DownloadFailedPending,
+        ImportPending,
         Importing,
         ImportFailed,
         Imported
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     public enum TrackedDownloadStatus
     {
         Ok,
-        Warning
+        Warning,
+        Error
     }
 }

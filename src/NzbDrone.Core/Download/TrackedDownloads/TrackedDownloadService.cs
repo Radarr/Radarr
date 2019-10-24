@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private readonly IParsingService _parsingService;
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
         private readonly Logger _logger;
         private readonly ICached<TrackedDownload> _cache;
 
@@ -35,11 +36,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                                       ICacheManager cacheManager,
                                       IHistoryService historyService,
                                       IEventAggregator eventAggregator,
+                                      ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
                                       Logger logger)
         {
             _parsingService = parsingService;
             _historyService = historyService;
             _eventAggregator = eventAggregator;
+            _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
             _cache = cacheManager.GetCache<TrackedDownload>(GetType());
             _logger = logger;
         }
@@ -93,7 +96,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         {
             var existingItem = Find(downloadItem.DownloadId);
 
-            if (existingItem != null && existingItem.State != TrackedDownloadStage.Downloading)
+            if (existingItem != null && existingItem.State != TrackedDownloadState.Downloading)
             {
                 LogItemChange(existingItem, existingItem.DownloadItem, downloadItem);
 
@@ -114,7 +117,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             try
             {
                 var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(trackedDownload.DownloadItem.Title);
-                var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
+                var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId)
+                    .OrderByDescending(h => h.Date)
+                    .ToList();
 
                 if (parsedAlbumInfo != null)
                 {
@@ -123,8 +128,22 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
                 if (historyItems.Any())
                 {
-                    var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).First();
-                    trackedDownload.State = GetStateFromHistory(firstHistoryItem);
+                    var firstHistoryItem = historyItems.First();
+                    var state = GetStateFromHistory(firstHistoryItem);
+
+                    // One potential issue here is if the latest is imported, but other episodes are ignored or never imported.
+                    // It's unlikely that will happen, but could happen if additional episodes are added to season after it's already imported.
+                    if (state == TrackedDownloadState.Imported)
+                    {
+                        var allImported = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
+
+                        trackedDownload.State = allImported ? TrackedDownloadState.Imported : TrackedDownloadState.Downloading;
+                    }
+                    else
+                    {
+                        trackedDownload.State = state;
+                    }
+
                     if (firstHistoryItem.EventType == HistoryEventType.AlbumImportIncomplete)
                     {
                         var messages = Json.Deserialize<List<TrackedDownloadStatusMessage>>(firstHistoryItem?.Data["statusMessages"]).ToArray();
@@ -223,25 +242,25 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
         }
 
-        private static TrackedDownloadStage GetStateFromHistory(NzbDrone.Core.History.History history)
+        private static TrackedDownloadState GetStateFromHistory(NzbDrone.Core.History.History history)
         {
             switch (history.EventType)
             {
                 case HistoryEventType.AlbumImportIncomplete:
-                    return TrackedDownloadStage.ImportFailed;
+                    return TrackedDownloadState.ImportFailed;
                 case HistoryEventType.DownloadImported:
-                    return TrackedDownloadStage.Imported;
+                    return TrackedDownloadState.Imported;
                 case HistoryEventType.DownloadFailed:
-                    return TrackedDownloadStage.DownloadFailed;
+                    return TrackedDownloadState.DownloadFailed;
             }
 
             // Since DownloadComplete is a new event type, we can't assume it exists for old downloads
             if (history.EventType == HistoryEventType.TrackFileImported)
             {
-                return DateTime.UtcNow.Subtract(history.Date).TotalSeconds < 60 ? TrackedDownloadStage.Importing : TrackedDownloadStage.Imported;
+                return DateTime.UtcNow.Subtract(history.Date).TotalSeconds < 60 ? TrackedDownloadState.Importing : TrackedDownloadState.Imported;
             }
 
-            return TrackedDownloadStage.Downloading;
+            return TrackedDownloadState.Downloading;
         }
 
         public void Handle(AlbumDeletedEvent message)

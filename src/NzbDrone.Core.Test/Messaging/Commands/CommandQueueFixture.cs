@@ -17,8 +17,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         {
             var commandModel = Builder<CommandModel>
                 .CreateNew()
-                .With(c => c.Name = "CheckForFinishedDownload")
-                .With(c => c.Body = new CheckForFinishedDownloadCommand())
+                .With(c => c.Name = "ProcessMonitoredDownloads")
+                .With(c => c.Body = new ProcessMonitoredDownloadsCommand())
                 .With(c => c.Status = CommandStatus.Started)
                 .Build();
 
@@ -56,8 +56,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
 
             var newCommandModel = Builder<CommandModel>
                 .CreateNew()
-                .With(c => c.Name = "CheckForFinishedDownload")
-                .With(c => c.Body = new CheckForFinishedDownloadCommand())
+                .With(c => c.Name = "ProcessMonitoredDownloads")
+                .With(c => c.Body = new ProcessMonitoredDownloadsCommand())
                 .Build();
 
             Subject.Add(newCommandModel);

@@ -375,7 +375,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
                 if (groupedTrackedDownload.Select(c => c.ImportResult).Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Count))
                 {
-                    trackedDownload.State = TrackedDownloadStage.Imported;
+                    trackedDownload.State = TrackedDownloadState.Imported;
                     _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
                 }
             }

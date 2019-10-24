@@ -132,7 +132,7 @@ class Queue extends Component {
       totalRecords,
       isGrabbing,
       isRemoving,
-      isCheckForFinishedDownloadExecuting,
+      isRefreshMonitoredDownloadsExecuting,
       onRefreshPress,
       ...otherProps
     } = this.props;
@@ -145,7 +145,7 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isAlbumsFetching || isCheckForFinishedDownloadExecuting;
+    const isRefreshing = isFetching || isAlbumsFetching || isRefreshMonitoredDownloadsExecuting;
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length || items.every((e) => !e.albumId));
     const hasError = error || albumsError;
     const selectedCount = this.getSelectedIds().length;
@@ -279,7 +279,7 @@ Queue.propTypes = {
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,
   isRemoving: PropTypes.bool.isRequired,
-  isCheckForFinishedDownloadExecuting: PropTypes.bool.isRequired,
+  isRefreshMonitoredDownloadsExecuting: PropTypes.bool.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onGrabSelectedPress: PropTypes.func.isRequired,
   onRemoveSelectedPress: PropTypes.func.isRequired

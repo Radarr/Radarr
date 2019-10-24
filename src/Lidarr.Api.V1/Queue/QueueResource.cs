@@ -4,6 +4,7 @@ using System.Linq;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http.REST;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Qualities;
@@ -23,7 +24,8 @@ namespace Lidarr.Api.V1.Queue
         public TimeSpan? Timeleft { get; set; }
         public DateTime? EstimatedCompletionTime { get; set; }
         public string Status { get; set; }
-        public string TrackedDownloadStatus { get; set; }
+        public TrackedDownloadStatus? TrackedDownloadStatus { get; set; }
+        public TrackedDownloadState? TrackedDownloadState { get; set; }
         public List<TrackedDownloadStatusMessage> StatusMessages { get; set; }
         public string ErrorMessage { get; set; }
         public string DownloadId { get; set; }
@@ -56,8 +58,9 @@ namespace Lidarr.Api.V1.Queue
                 Sizeleft = model.Sizeleft,
                 Timeleft = model.Timeleft,
                 EstimatedCompletionTime = model.EstimatedCompletionTime,
-                Status = model.Status,
+                Status = model.Status.FirstCharToLower(),
                 TrackedDownloadStatus = model.TrackedDownloadStatus,
+                TrackedDownloadState = model.TrackedDownloadState,
                 StatusMessages = model.StatusMessages,
                 ErrorMessage = model.ErrorMessage,
                 DownloadId = model.DownloadId,
