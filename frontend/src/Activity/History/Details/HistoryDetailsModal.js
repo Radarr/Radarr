@@ -29,6 +29,8 @@ function getHeaderTitle(eventType) {
       return 'Album Import Incomplete';
     case 'downloadImported':
       return 'Download Completed';
+    case 'downloadIgnored':
+      return 'Download Ignored';
     default:
       return 'Unknown';
   }

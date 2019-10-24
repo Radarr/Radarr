@@ -335,6 +335,7 @@ class QueueRow extends Component {
         <RemoveQueueItemModal
           isOpen={isRemoveQueueItemModalOpen}
           sourceTitle={title}
+          canIgnore={!!(artist && album)}
           onRemovePress={this.onRemoveQueueItemModalConfirmed}
           onModalClose={this.onRemoveQueueItemModalClose}
         />

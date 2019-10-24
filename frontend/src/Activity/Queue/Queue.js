@@ -107,8 +107,8 @@ class Queue extends Component {
     this.setState({ isConfirmRemoveModalOpen: true });
   }
 
-  onRemoveSelectedConfirmed = (blacklist, skipredownload) => {
-    this.props.onRemoveSelectedPress(this.getSelectedIds(), blacklist, skipredownload);
+  onRemoveSelectedConfirmed = (payload) => {
+    this.props.onRemoveSelectedPress({ ids: this.getSelectedIds(), ...payload });
     this.setState({ isConfirmRemoveModalOpen: false });
   }
 
@@ -148,7 +148,8 @@ class Queue extends Component {
     const isRefreshing = isFetching || isAlbumsFetching || isRefreshMonitoredDownloadsExecuting;
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length || items.every((e) => !e.albumId));
     const hasError = error || albumsError;
-    const selectedCount = this.getSelectedIds().length;
+    const selectedIds = this.getSelectedIds();
+    const selectedCount = selectedIds.length;
     const disableSelectedActions = selectedCount === 0;
 
     return (
@@ -259,6 +260,13 @@ class Queue extends Component {
         <RemoveQueueItemsModal
           isOpen={isConfirmRemoveModalOpen}
           selectedCount={selectedCount}
+          canIgnore={isConfirmRemoveModalOpen && (
+            selectedIds.every((id) => {
+              const item = items.find((i) => i.id === id);
+
+              return !!(item && item.artistId && item.albumId);
+            })
+          )}
           onRemovePress={this.onRemoveSelectedConfirmed}
           onModalClose={this.onConfirmRemoveModalClose}
         />

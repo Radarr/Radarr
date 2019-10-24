@@ -137,8 +137,8 @@ class QueueConnector extends Component {
     this.props.grabQueueItems({ ids });
   }
 
-  onRemoveSelectedPress = (ids, blacklist, skipredownload) => {
-    this.props.removeQueueItems({ ids, blacklist, skipredownload });
+  onRemoveSelectedPress = (payload) => {
+    this.props.removeQueueItems(payload);
   }
 
   //

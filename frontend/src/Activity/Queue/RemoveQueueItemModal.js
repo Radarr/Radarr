@@ -10,7 +10,6 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import styles from './RemoveQueueItemModal.css';
 
 class RemoveQueueItemModal extends Component {
 
@@ -21,13 +20,29 @@ class RemoveQueueItemModal extends Component {
     super(props, context);
 
     this.state = {
+      remove: true,
       blacklist: false,
       skipredownload: false
     };
   }
 
   //
+  // Control
+
+  resetState = function() {
+    this.setState({
+      remove: true,
+      blacklist: false,
+      skipredownload: false
+    });
+  }
+
+  //
   // Listeners
+
+  onRemoveChange = ({ value }) => {
+    this.setState({ remove: value });
+  }
 
   onBlacklistChange = ({ value }) => {
     this.setState({ blacklist: value });
@@ -37,22 +52,15 @@ class RemoveQueueItemModal extends Component {
     this.setState({ skipredownload: value });
   }
 
-  onRemoveQueueItemConfirmed = () => {
-    const blacklist = this.state.blacklist;
-    const skipredownload = this.state.skipredownload;
+  onRemoveConfirmed = () => {
+    const state = this.state;
 
-    this.setState({
-      blacklist: false,
-      skipredownload: false
-    });
-    this.props.onRemovePress(blacklist, skipredownload);
+    this.resetState();
+    this.props.onRemovePress(state);
   }
 
   onModalClose = () => {
-    this.setState({
-      blacklist: false,
-      skipredownload: false
-    });
+    this.resetState();
     this.props.onModalClose();
   }
 
@@ -62,11 +70,11 @@ class RemoveQueueItemModal extends Component {
   render() {
     const {
       isOpen,
-      sourceTitle
+      sourceTitle,
+      canIgnore
     } = this.props;
 
-    const blacklist = this.state.blacklist;
-    const skipredownload = this.state.skipredownload;
+    const { remove, blacklist, skipredownload } = this.state;
 
     return (
       <Modal
@@ -86,12 +94,22 @@ class RemoveQueueItemModal extends Component {
               Are you sure you want to remove '{sourceTitle}' from the queue?
             </div>
 
-            <div className={styles.messageRemove}>
-              Removing will remove the download and the file(s) from the download client.
-            </div>
+            <FormGroup>
+              <FormLabel>Remove From Download Client</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="remove"
+                value={remove}
+                helpTextWarning="Removing will remove the download and the file(s) from the download client."
+                isDisabled={!canIgnore}
+                onChange={this.onRemoveChange}
+              />
+            </FormGroup>
 
             <FormGroup>
               <FormLabel>Blacklist Release</FormLabel>
+
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="blacklist"
@@ -124,7 +142,7 @@ class RemoveQueueItemModal extends Component {
 
             <Button
               kind={kinds.DANGER}
-              onPress={this.onRemoveQueueItemConfirmed}
+              onPress={this.onRemoveConfirmed}
             >
               Remove
             </Button>
@@ -138,6 +156,7 @@ class RemoveQueueItemModal extends Component {
 RemoveQueueItemModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   sourceTitle: PropTypes.string.isRequired,
+  canIgnore: PropTypes.bool.isRequired,
   onRemovePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

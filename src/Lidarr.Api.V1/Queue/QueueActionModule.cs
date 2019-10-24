@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
 using Lidarr.Http.REST;
@@ -15,6 +16,7 @@ namespace Lidarr.Api.V1.Queue
         private readonly IQueueService _queueService;
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IFailedDownloadService _failedDownloadService;
+        private readonly IIgnoredDownloadService _ignoredDownloadService;
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly IPendingReleaseService _pendingReleaseService;
         private readonly IDownloadService _downloadService;
@@ -22,6 +24,7 @@ namespace Lidarr.Api.V1.Queue
         public QueueActionModule(IQueueService queueService,
                                  ITrackedDownloadService trackedDownloadService,
                                  IFailedDownloadService failedDownloadService,
+                                 IIgnoredDownloadService ignoredDownloadService,
                                  IProvideDownloadClient downloadClientProvider,
                                  IPendingReleaseService pendingReleaseService,
                                  IDownloadService downloadService)
@@ -29,6 +32,7 @@ namespace Lidarr.Api.V1.Queue
             _queueService = queueService;
             _trackedDownloadService = trackedDownloadService;
             _failedDownloadService = failedDownloadService;
+            _ignoredDownloadService = ignoredDownloadService;
             _downloadClientProvider = downloadClientProvider;
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
@@ -75,10 +79,11 @@ namespace Lidarr.Api.V1.Queue
 
         private object Remove(int id)
         {
+            var removeFromClient = Request.GetBooleanQueryParameter("removeFromClient", true);
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
             var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
 
-            var trackedDownload = Remove(id, blacklist, skipReDownload);
+            var trackedDownload = Remove(id, removeFromClient, blacklist, skipReDownload);
 
             if (trackedDownload != null)
             {
@@ -90,6 +95,7 @@ namespace Lidarr.Api.V1.Queue
 
         private object Remove()
         {
+            var removeFromClient = Request.GetBooleanQueryParameter("removeFromClient", true);
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
             var skipReDownload = Request.GetBooleanQueryParameter("skipredownload");
 
@@ -98,7 +104,7 @@ namespace Lidarr.Api.V1.Queue
 
             foreach (var id in resource.Ids)
             {
-                var trackedDownload = Remove(id, blacklist, skipReDownload);
+                var trackedDownload = Remove(id, removeFromClient, blacklist, skipReDownload);
 
                 if (trackedDownload != null)
                 {
@@ -111,7 +117,7 @@ namespace Lidarr.Api.V1.Queue
             return new object();
         }
 
-        private TrackedDownload Remove(int id, bool blacklist, bool skipReDownload)
+        private TrackedDownload Remove(int id, bool removeFromClient, bool blacklist, bool skipReDownload)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -129,18 +135,29 @@ namespace Lidarr.Api.V1.Queue
                 throw new NotFoundException();
             }
 
-            var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
-
-            if (downloadClient == null)
+            if (removeFromClient)
             {
-                throw new BadRequestException();
-            }
+                var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
 
-            downloadClient.RemoveItem(trackedDownload.DownloadItem.DownloadId, true);
+                if (downloadClient == null)
+                {
+                    throw new BadRequestException();
+                }
+
+                downloadClient.RemoveItem(trackedDownload.DownloadItem.DownloadId, true);
+            }
 
             if (blacklist)
             {
                 _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId, skipReDownload);
+            }
+
+            if (!removeFromClient && !blacklist)
+            {
+                if (!_ignoredDownloadService.IgnoreDownload(trackedDownload))
+                {
+                    return null;
+                }
             }
 
             return trackedDownload;

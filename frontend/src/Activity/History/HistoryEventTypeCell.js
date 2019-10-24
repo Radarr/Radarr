@@ -25,6 +25,8 @@ function getIconName(eventType) {
       return icons.DOWNLOADED;
     case 'downloadImported':
       return icons.DOWNLOADED;
+    case 'downloadIgnored':
+      return icons.IGNORE;
     default:
       return icons.UNKNOWN;
   }
@@ -61,6 +63,8 @@ function getTooltip(eventType, data) {
       return 'Files downloaded but not all could be imported';
     case 'downloadImported':
       return 'Download completed and successfully imported';
+    case 'downloadIgnored':
+      return 'Album Download Ignored';
     default:
       return 'Unknown event';
   }

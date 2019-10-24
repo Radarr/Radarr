@@ -252,6 +252,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     return TrackedDownloadState.Imported;
                 case HistoryEventType.DownloadFailed:
                     return TrackedDownloadState.DownloadFailed;
+                case HistoryEventType.DownloadIgnored:
+                    return TrackedDownloadState.Ignored;
             }
 
             // Since DownloadComplete is a new event type, we can't assume it exists for old downloads
