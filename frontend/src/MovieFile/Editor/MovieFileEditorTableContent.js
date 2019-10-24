@@ -12,13 +12,13 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'audioInfo',
-    label: 'Audio Info',
+    name: 'videoCodec',
+    label: 'Video Codec',
     isVisible: true
   },
   {
-    name: 'videoCodec',
-    label: 'Video Codec',
+    name: 'audioInfo',
+    label: 'Audio Info',
     isVisible: true
   },
   {
