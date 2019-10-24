@@ -11,7 +11,7 @@ module.exports = ProviderSettingsModelBase.extend({
 
         var params = {};
 
-        params.url = this.collection.url + '/test?title='+this.testCollection.title;
+        params.url = this.collection.url + '/test?title=' + encodeURIComponent(this.testCollection.title);
         params.contentType = 'application/json';
         params.data = JSON.stringify(this.toJSON());
         params.type = 'POST';
