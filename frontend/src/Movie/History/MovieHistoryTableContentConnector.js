@@ -35,6 +35,20 @@ class MovieHistoryTableContentConnector extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      movieId
+    } = this.props;
+
+    // If the id has changed we need to clear the history
+    if (prevProps.movieId !== movieId) {
+      this.props.clearMovieHistory();
+      this.props.fetchMovieHistory({
+        movieId
+      });
+    }
+  }
+
   componentWillUnmount() {
     this.props.clearMovieHistory();
   }
