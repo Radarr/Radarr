@@ -371,12 +371,12 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = QualityParser.ParseQuality(title);
             if (resolution != Resolution.Unknown)
             {
-                result.Resolution.Should().Be(resolution);
+                result.Quality.Resolution.Should().Be(resolution);
             }
-            result.Source.Should().Be(source);
+            result.Quality.Source.Should().Be(source);
             if (modifier != Modifier.NONE)
             {
-                result.Modifier.Should().Be(modifier);
+                result.Quality.Modifier.Should().Be(modifier);
             }
 
             var version = proper ? 2 : 1;

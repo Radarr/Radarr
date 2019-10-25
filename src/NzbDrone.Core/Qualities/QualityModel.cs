@@ -12,14 +12,6 @@ namespace NzbDrone.Core.Qualities
 
         public List<CustomFormat> CustomFormats { get; set; }
 
-        [JsonIgnore]
-        public Resolution Resolution { get; set; }
-        [JsonIgnore]
-        public Source Source { get; set; }
-        [JsonIgnore]
-        public Modifier Modifier { get; set; }
-
-
         public Revision Revision { get; set; }
 
         public string HardcodedSubs { get; set; }

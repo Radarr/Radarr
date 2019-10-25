@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -74,11 +75,11 @@ namespace NzbDrone.Core.CustomFormats
                 case TagType.Language:
                     return movieInfo.Languages.Contains((Language)Value);
                 case TagType.Resolution:
-                    return movieInfo.Quality.Resolution == (Resolution) Value;
+                    return movieInfo.Quality.Quality.Resolution == (Resolution) Value;
                 case TagType.Modifier:
-                    return movieInfo.Quality.Modifier == (Modifier) Value;
+                    return movieInfo.Quality.Quality.Modifier == (Modifier) Value;
                 case TagType.Source:
-                    return movieInfo.Quality.Source == (Source) Value;
+                    return movieInfo.Quality.Quality.Source == (Source) Value;
                 case TagType.Size:
                     var size = (movieInfo.ExtraInfo.GetValueOrDefault("Size", 0.0) as long?) ?? 0;
                     var tuple = Value as (long, long)? ?? (0, 0);
@@ -246,16 +247,6 @@ namespace NzbDrone.Core.CustomFormats
         Regex = 1,
         Not = 2, // Do not match
         AbsolutelyRequired = 4
-    }
-
-    public enum Resolution
-    {
-        Unknown = 0,
-        R480P = 480,
-        R576P = 576,
-        R720P = 720,
-        R1080P = 1080,
-        R2160P = 2160
     }
 
     public enum Source

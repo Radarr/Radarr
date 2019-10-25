@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 
 
@@ -9,115 +10,82 @@ namespace NzbDrone.Core.MediaFiles
 {
     public static class MediaFileExtensions
     {
-        private static Dictionary<string, Source> _fileExtensions;
-        private static Dictionary<string, Resolution> _resolutionExt;
+        private static Dictionary<string, Quality> _fileExtensions;
 
         static MediaFileExtensions()
         {
-            _fileExtensions = new Dictionary<string, Source>
+            _fileExtensions = new Dictionary<string, Quality>
             {
                 //Unknown
-                { ".webm", Source.UNKNOWN },
+                { ".webm", Quality.Unknown },
 
                 //SDTV
-                { ".m4v", Source.TV },
-                { ".3gp", Source.TV },
-                { ".nsv", Source.TV },
-                { ".ty", Source.TV },
-                { ".strm", Source.TV },
-                { ".rm", Source.TV },
-                { ".rmvb", Source.TV },
-                { ".m3u", Source.TV },
-                { ".ifo", Source.TV },
-                { ".mov", Source.TV },
-                { ".qt", Source.TV },
-                { ".divx", Source.TV },
-                { ".xvid", Source.TV },
-                { ".bivx", Source.TV },
-                { ".nrg", Source.TV },
-                { ".pva", Source.TV },
-                { ".wmv", Source.TV },
-                { ".asf", Source.TV },
-                { ".asx", Source.TV },
-                { ".ogm", Source.TV },
-                { ".ogv", Source.TV },
-                { ".m2v", Source.TV },
-                { ".avi", Source.TV },
-                { ".bin", Source.TV },
-                { ".dat", Source.TV },
-                { ".dvr-ms", Source.TV },
-                { ".mpg", Source.TV },
-                { ".mpeg", Source.TV },
-                { ".mp4", Source.TV },
-                { ".avc", Source.TV },
-                { ".vp3", Source.TV },
-                { ".svq3", Source.TV },
-                { ".nuv", Source.TV },
-                { ".viv", Source.TV },
-                { ".dv", Source.TV },
-                { ".fli", Source.TV },
-                { ".flv", Source.TV },
-                { ".wpl", Source.TV },
+                { ".m4v", Quality.SDTV },
+                { ".3gp", Quality.SDTV },
+                { ".nsv", Quality.SDTV },
+                { ".ty", Quality.SDTV },
+                { ".strm", Quality.SDTV },
+                { ".rm", Quality.SDTV },
+                { ".rmvb", Quality.SDTV },
+                { ".m3u", Quality.SDTV },
+                { ".ifo", Quality.SDTV },
+                { ".mov", Quality.SDTV },
+                { ".qt", Quality.SDTV },
+                { ".divx", Quality.SDTV },
+                { ".xvid", Quality.SDTV },
+                { ".bivx", Quality.SDTV },
+                { ".nrg", Quality.SDTV },
+                { ".pva", Quality.SDTV },
+                { ".wmv", Quality.SDTV },
+                { ".asf", Quality.SDTV },
+                { ".asx", Quality.SDTV },
+                { ".ogm", Quality.SDTV },
+                { ".ogv", Quality.SDTV },
+                { ".m2v", Quality.SDTV },
+                { ".avi", Quality.SDTV },
+                { ".bin", Quality.SDTV },
+                { ".dat", Quality.SDTV },
+                { ".dvr-ms", Quality.SDTV },
+                { ".mpg", Quality.SDTV },
+                { ".mpeg", Quality.SDTV },
+                { ".mp4", Quality.SDTV },
+                { ".avc", Quality.SDTV },
+                { ".vp3", Quality.SDTV },
+                { ".svq3", Quality.SDTV },
+                { ".nuv", Quality.SDTV },
+                { ".viv", Quality.SDTV },
+                { ".dv", Quality.SDTV },
+                { ".fli", Quality.SDTV },
+                { ".flv", Quality.SDTV },
+                { ".wpl", Quality.SDTV },
 
                 //DVD
-                { ".img", Source.DVD },
-                { ".iso", Source.DVD },
-                { ".vob", Source.DVD },
+                { ".img", Quality.DVD },
+                { ".iso", Quality.DVD },
+                { ".vob", Quality.DVD },
 
                 //HD
-                { ".mkv", Source.WEBDL },
-                { ".mk3d", Source.WEBDL},
-                { ".ts", Source.TV },
-                { ".wtv", Source.TV },
+                { ".mkv", Quality.WEBDL720p },
+                { ".mk3d", Quality.WEBDL720p},
+                { ".ts", Quality.SDTV },
+                { ".wtv", Quality.SDTV },
 
                 //Bluray
-                { ".m2ts", Source.BLURAY }
-            };
-
-            _resolutionExt = new Dictionary<string, Resolution>
-            {
-                //HD
-                { ".mkv", Resolution.R720P },
-                { ".mk3d", Resolution.R720P },
-                { ".ts", Resolution.R720P },
-                { ".wtv", Resolution.R720P },
-
-                //Bluray
-                { ".m2ts", Resolution.R720P }
+                { ".m2ts", Quality.Bluray720p}
             };
         }
 
         public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys, StringComparer.OrdinalIgnoreCase);
 
-        public static Source GetSourceForExtension(string extension)
+        public static Quality GetQualityForExtension(string extension)
         {
             if (_fileExtensions.ContainsKey(extension))
             {
                 return _fileExtensions[extension];
             }
 
-            return Source.UNKNOWN;
+            return Quality.Unknown;
         }
 
-        public static Resolution GetResolutionForExtension(string extension)
-        {
-            if (_resolutionExt.ContainsKey(extension))
-            {
-                return _resolutionExt[extension];
-            }
-
-            var source = Source.UNKNOWN;
-            if (_fileExtensions.ContainsKey(extension))
-            {
-                source = _fileExtensions[extension];
-            }
-
-            if (source == Source.DVD || source == Source.TV)
-            {
-                return Resolution.R480P;
-            }
-
-            return Resolution.Unknown;
-        }
     }
 }

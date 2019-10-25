@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_ultrahd_from_title(string title, int version)
         {
             var parsed = QualityParser.ParseQuality(title);
-            parsed.Resolution.Should().Be(Resolution.R2160P);
+            parsed.Quality.Resolution.Should().Be(Resolution.R2160P);
         }
     }
 }

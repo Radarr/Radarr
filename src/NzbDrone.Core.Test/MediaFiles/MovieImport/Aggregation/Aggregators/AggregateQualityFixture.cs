@@ -6,6 +6,7 @@ using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;

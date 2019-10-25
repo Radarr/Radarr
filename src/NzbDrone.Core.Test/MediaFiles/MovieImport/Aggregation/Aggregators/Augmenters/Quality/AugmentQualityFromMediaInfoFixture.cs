@@ -5,7 +5,7 @@ using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Qu
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality
 {

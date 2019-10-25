@@ -97,8 +97,8 @@ namespace NzbDrone.Core.Parser
             minimalInfo.Languages =
                 LanguageParser.EnhanceLanguages(minimalInfo.SimpleReleaseTitle, minimalInfo.Languages);
 
-            minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Source, minimalInfo.Quality.Resolution,
-                minimalInfo.Quality.Modifier);
+            minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Quality.Source, minimalInfo.Quality.Quality.Resolution,
+                minimalInfo.Quality.Quality.Modifier);
 
             minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
 
