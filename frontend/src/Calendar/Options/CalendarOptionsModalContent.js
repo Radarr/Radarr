@@ -91,7 +91,6 @@ class CalendarOptionsModalContent extends Component {
 
   render() {
     const {
-      collapseMultipleEpisodes,
       showMovieInformation,
       showCutoffUnmetIcon,
       onModalClose
@@ -113,18 +112,6 @@ class CalendarOptionsModalContent extends Component {
         <ModalBody>
           <FieldSet legend="Local">
             <Form>
-              <FormGroup>
-                <FormLabel>Collapse Multiple Episodes</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="collapseMultipleEpisodes"
-                  value={collapseMultipleEpisodes}
-                  helpText="Collapse multiple episodes airing on the same day"
-                  onChange={this.onOptionInputChange}
-                />
-              </FormGroup>
-
               <FormGroup>
                 <FormLabel>Show Movie Information</FormLabel>
 
@@ -215,7 +202,6 @@ class CalendarOptionsModalContent extends Component {
 }
 
 CalendarOptionsModalContent.propTypes = {
-  collapseMultipleEpisodes: PropTypes.bool.isRequired,
   showMovieInformation: PropTypes.bool.isRequired,
   showFinaleIcon: PropTypes.bool.isRequired,
   showSpecialIcon: PropTypes.bool.isRequired,

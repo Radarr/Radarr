@@ -38,7 +38,6 @@ export const defaultState = {
   searchMissingCommandId: null,
 
   options: {
-    collapseMultipleEpisodes: false,
     showMovieInformation: true,
     showCutoffUnmetIcon: false
   },
