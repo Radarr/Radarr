@@ -51,7 +51,9 @@ function createMapDispatchToProps(dispatch, props) {
     },
 
     onDeletePress(movieFileId) {
-      dispatch(deleteMovieFile(movieFileId));
+      dispatch(deleteMovieFile({
+        id: movieFileId
+      }));
     }
   };
 }
