@@ -29,7 +29,7 @@ function MovieDetailsLinks(props) {
 
       <Link
         className={styles.link}
-        to={`https://trakt.tv/search/tvdb/${tmdbId}?id_type=show`}
+        to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
       >
         <Label
           className={styles.linkLabel}
