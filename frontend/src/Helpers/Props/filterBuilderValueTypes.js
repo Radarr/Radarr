@@ -6,5 +6,5 @@ export const INDEXER = 'indexer';
 export const PROTOCOL = 'protocol';
 export const QUALITY = 'quality';
 export const QUALITY_PROFILE = 'qualityProfile';
-export const SERIES_STATUS = 'seriesStatus';
+export const MOVIE_STATUS = 'movieStatus';
 export const TAG = 'tag';

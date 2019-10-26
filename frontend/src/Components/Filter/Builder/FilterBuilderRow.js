@@ -10,7 +10,7 @@ import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValu
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValueConnector from './QualityProfileFilterBuilderRowValueConnector';
-import SeriesStatusFilterBuilderRowValue from './SeriesStatusFilterBuilderRowValue';
+import MovieStatusFilterBuilderRowValue from './MovieStatusFilterBuilderRowValue';
 import TagFilterBuilderRowValueConnector from './TagFilterBuilderRowValueConnector';
 import styles from './FilterBuilderRow.css';
 
@@ -68,8 +68,8 @@ function getRowValueConnector(selectedFilterBuilderProp) {
     case filterBuilderValueTypes.QUALITY_PROFILE:
       return QualityProfileFilterBuilderRowValueConnector;
 
-    case filterBuilderValueTypes.SERIES_STATUS:
-      return SeriesStatusFilterBuilderRowValue;
+    case filterBuilderValueTypes.MOVIE_STATUS:
+      return MovieStatusFilterBuilderRowValue;
 
     case filterBuilderValueTypes.TAG:
       return TagFilterBuilderRowValueConnector;

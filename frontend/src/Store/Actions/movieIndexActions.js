@@ -196,7 +196,7 @@ export const defaultState = {
       name: 'status',
       label: 'Status',
       type: filterBuilderTypes.EXACT,
-      valueType: filterBuilderValueTypes.SERIES_STATUS
+      valueType: filterBuilderValueTypes.MOVIE_STATUS
     },
     {
       name: 'studio',
