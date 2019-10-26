@@ -285,7 +285,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (mount.DriveType == DriveType.Network)
                 {
-                    _logger.Error("Import failed, path does not exist or is not accessible by Sonarr: {0}. It's recommended to avoid mapped network drives when running as a Windows service. See the FAQ for more info", path);
+                    _logger.Error("Import failed, path does not exist or is not accessible by Radarr: {0}. It's recommended to avoid mapped network drives when running as a Windows service. See the FAQ for more info", path);
                     return;
                 }
             }
@@ -294,12 +294,12 @@ namespace NzbDrone.Core.MediaFiles
             {
                 if (path.StartsWith(@"\\"))
                 {
-                    _logger.Error("Import failed, path does not exist or is not accessible by Sonarr: {0}. Ensure the user running Sonarr has access to the network share", path);
+                    _logger.Error("Import failed, path does not exist or is not accessible by Radarr: {0}. Ensure the user running Radarr has access to the network share", path);
                     return;
                 }
             }
 
-            _logger.Error("Import failed, path does not exist or is not accessible by Sonarr: {0}. Ensure the path exists and the user running Sonarr has the correct permissions to access this file/folder", path);
+            _logger.Error("Import failed, path does not exist or is not accessible by Radarr: {0}. Ensure the path exists and the user running Radarr has the correct permissions to access this file/folder", path);
         }
     }
 }
