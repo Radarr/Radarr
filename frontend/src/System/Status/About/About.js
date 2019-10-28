@@ -15,7 +15,8 @@ class About extends Component {
   render() {
     const {
       version,
-      isMonoRuntime,
+      isNetCore,
+      isMono,
       isDocker,
       runtimeVersion,
       migrationVersion,
@@ -36,7 +37,7 @@ class About extends Component {
           />
 
           {
-            isMonoRuntime &&
+            isMono &&
               <DescriptionListItem
                 title="Mono Version"
                 data={runtimeVersion}
@@ -44,10 +45,18 @@ class About extends Component {
           }
 
           {
+            isNetCore &&
+              <DescriptionListItem
+                title=".NET Core"
+                data={'Yes'}
+              />
+          }
+
+          {
             isDocker &&
               <DescriptionListItem
                 title="Docker"
-                data={'True'}
+                data={'Yes'}
               />
           }
 
@@ -90,7 +99,8 @@ class About extends Component {
 
 About.propTypes = {
   version: PropTypes.string.isRequired,
-  isMonoRuntime: PropTypes.bool.isRequired,
+  isNetCore: PropTypes.bool.isRequired,
+  isMono: PropTypes.bool.isRequired,
   runtimeVersion: PropTypes.string.isRequired,
   isDocker: PropTypes.bool.isRequired,
   migrationVersion: PropTypes.number.isRequired,

@@ -74,21 +74,26 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             try
             {
-                var configHome = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                if (configHome == "/.config" ||
+                // It seems that DoNotVerify is the mono behaviour even though .net docs specify a blank string
+                // should be returned if the data doesn't exist.  For compatibility with .net core, explicitly
+                // set DoNotVerify (which makes sense given we're explicitly checking that the folder exists)
+                var configHome = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+                if (configHome.IsNullOrWhiteSpace() ||
+                    configHome == "/.config" ||
                     configHome.EndsWith("/.config") && !_diskProvider.FolderExists(configHome.GetParentPath()) ||
                     !_diskProvider.FolderExists(configHome))
                 {
-                    // Tell mono to use appData/.config as ApplicationData folder.
+                    // Tell mono/netcore to use appData/.config as ApplicationData folder.
                     Environment.SetEnvironmentVariable("XDG_CONFIG_HOME", Path.Combine(_appFolderInfo.AppDataFolder, ".config"));
                 }
 
-                var dataHome = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (dataHome == "/.local/share" ||
+                var dataHome = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+                if (dataHome.IsNullOrWhiteSpace() ||
+                    dataHome == "/.local/share" ||
                     dataHome.EndsWith("/.local/share") && !_diskProvider.FolderExists(dataHome.GetParentPath().GetParentPath()) ||
                     !_diskProvider.FolderExists(dataHome))
                 {
-                    // Tell mono to use appData/.config/share as LocalApplicationData folder.
+                    // Tell mono/netcore to use appData/.config/share as LocalApplicationData folder.
                     Environment.SetEnvironmentVariable("XDG_DATA_HOME", Path.Combine(_appFolderInfo.AppDataFolder, ".config/share"));
                 }
             }

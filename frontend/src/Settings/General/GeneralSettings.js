@@ -97,7 +97,6 @@ class GeneralSettings extends Component {
       settings,
       hasSettings,
       isResettingApiKey,
-      isMono,
       isWindows,
       isWindowsService,
       isDocker,
@@ -163,7 +162,7 @@ class GeneralSettings extends Component {
                 <UpdateSettings
                   advancedSettings={advancedSettings}
                   settings={settings}
-                  isMono={isMono}
+                  isWindows={isWindows}
                   isDocker={isDocker}
                   onInputChange={onInputChange}
                 />
@@ -205,7 +204,6 @@ GeneralSettings.propTypes = {
   settings: PropTypes.object.isRequired,
   isResettingApiKey: PropTypes.bool.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  isMono: PropTypes.bool.isRequired,
   isWindows: PropTypes.bool.isRequired,
   isWindowsService: PropTypes.bool.isRequired,
   isDocker: PropTypes.bool.isRequired,

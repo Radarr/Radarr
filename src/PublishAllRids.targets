@@ -10,21 +10,22 @@
 
   <Target Name="PublishAllRids">
     <ItemGroup>
-      <!-- Transform RuntimeIdentifiers property to item -->
-      <Runtimes Include="$(RuntimeIdentifiers)" />
       <Frameworks Include="$(TargetFrameworks)" />
 
-      <Combined1 Include="@(Runtimes)">
-        <Runtime>%(Runtimes.Identity)</Runtime>
-      </Combined1>
-
-      <Combined2 Include="@(Combined1)">
+      <Combined Include="$(RuntimeIdentifiers)">
         <Framework>%(Frameworks.Identity)</Framework>
-      </Combined2>
+      </Combined>
+
+      <Renamed Include="@(Combined->'%(Identity):%(Framework)')">
+        <Runtime>%(Identity)</Runtime>
+        <Framework>%(Framework)</Framework>
+      </Renamed>
+
+      <Renamed Remove="$(ExcludedRuntimeFrameworkPairs)" />
 
       <!-- Transform RuntimeIdentifierForPublish items to project items to pass to MSBuild task -->
-      <ProjectToPublish Include="@(Combined2->'$(MSBuildProjectFullPath)')">
-        <AdditionalProperties>RuntimeIdentifier=%(Combined2.Runtime);TargetFramework=%(Combined2.Framework)</AdditionalProperties>
+      <ProjectToPublish Include="@(Renamed->'$(MSBuildProjectFullPath)')">
+        <AdditionalProperties>RuntimeIdentifier=%(Renamed.Runtime);TargetFramework=%(Renamed.Framework)</AdditionalProperties>
       </ProjectToPublish>
     </ItemGroup>
 

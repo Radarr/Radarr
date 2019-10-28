@@ -1,23 +1,11 @@
 #! /bin/bash
-outputFolder='./_output'
-testPackageFolder='./_tests/'
-sourceFolder='./src'
+set -e
+
+outputFolder='_output'
+testPackageFolder='_tests'
 
 #Artifact variables
-artifactsFolder="./_artifacts";
-
-nuget='tools/nuget/nuget.exe';
-
-CheckExitCode()
-{
-    "$@"
-    local status=$?
-    if [ $status -ne 0 ]; then
-        echo "error with $1" >&2
-        exit 1
-    fi
-    return $status
-}
+artifactsFolder="_artifacts";
 
 ProgressStart()
 {
@@ -33,9 +21,9 @@ UpdateVersionNumber()
 {
     if [ "$LIDARRVERSION" != "" ]; then
         echo "Updating Version Info"
-        sed -i "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" ./src/Directory.Build.props
-        sed -i "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" ./src/Directory.Build.props
-        sed -i "s/<string>10.0.0.0<\/string>/<string>$LIDARRVERSION<\/string>/g" ./macOS/Lidarr.app/Contents/Info.plist
+        sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
+        sed -i'' -e "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" src/Directory.Build.props
+        sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$LIDARRVERSION<\/string>/g" macOS/Lidarr.app/Contents/Info.plist
     fi
 }
 
@@ -59,14 +47,14 @@ CleanFolder()
 LintUI()
 {
     ProgressStart 'ESLint'
-    CheckExitCode yarn lint
+    yarn lint
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'
     if [ "$os" = "windows" ]; then
-        CheckExitCode yarn stylelint-windows
+        yarn stylelint-windows
     else
-        CheckExitCode yarn stylelint-linux
+        yarn stylelint-linux
     fi
     ProgressEnd 'Stylelint'
 }
@@ -79,14 +67,20 @@ Build()
     rm -rf $testPackageFolder
 
     if [ $os = "windows" ]; then
-        slnFile=$sourceFolder/Lidarr.Windows.sln
+        slnFile=src/Lidarr.Windows.sln
     else
-        slnFile=$sourceFolder/Lidarr.Posix.sln
+        slnFile=src/Lidarr.Posix.sln
     fi
 
-    CheckExitCode dotnet clean $slnFile -c Debug
-    CheckExitCode dotnet clean $slnFile -c Release
-    CheckExitCode dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
+    dotnet clean $slnFile -c Debug
+    dotnet clean $slnFile -c Release
+
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
+    else
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:RuntimeIdentifiers=$RID -t:PublishAllRids
+    fi
 
     ProgressEnd 'Build'
 }
@@ -95,14 +89,13 @@ YarnInstall()
 {
     ProgressStart 'yarn install'
     yarn install
-    #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
     ProgressEnd 'yarn install'
 }
 
 RunGulp()
 {
     ProgressStart 'Running gulp'
-    CheckExitCode yarn run build --production
+    yarn run build --production
     ProgressEnd 'Running gulp'
 }
 
@@ -127,12 +120,13 @@ PackageFiles()
 PackageLinux()
 {
     local framework="$1"
+    local runtime="$2"
 
-    ProgressStart "Creating Linux Package for $framework"
+    ProgressStart "Creating $runtime Package for $framework"
 
-    local folder=$artifactsFolder/linux/$framework/Lidarr
+    local folder=$artifactsFolder/$runtime/$framework/Lidarr
 
-    PackageFiles "$folder" $framework $runtime "linux-x64"
+    PackageFiles "$folder" "$framework" "$runtime"
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
@@ -143,8 +137,12 @@ PackageLinux()
 
     echo "Adding Lidarr.Mono to UpdatePackage"
     cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
+    if [ "$framework" = "netcoreapp3.0" ]; then
+        cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
+    fi
 
-    ProgressEnd "Creating Linux Package for $framework"
+    ProgressEnd "Creating $runtime Package for $framework"
 }
 
 PackageMacOS()
@@ -157,8 +155,10 @@ PackageMacOS()
 
     PackageFiles "$folder" "$framework" "osx-x64"
 
-    echo "Adding Startup script"
-    cp ./macOS/Lidarr $folder
+    if [ "$framework" = "net462" ]; then
+        echo "Adding Startup script"
+        cp macOS/Lidarr $folder
+    fi
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
@@ -169,6 +169,10 @@ PackageMacOS()
 
     echo "Adding Lidarr.Mono to UpdatePackage"
     cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
+    if [ "$framework" = "netcoreapp3.0" ]; then
+        cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
+    fi
 
     ProgressEnd 'Creating MacOS Package'
 }
@@ -183,7 +187,7 @@ PackageMacOSApp()
 
     rm -rf $folder
     mkdir -p $folder
-    cp -r ./macOS/Lidarr.app $folder
+    cp -r macOS/Lidarr.app $folder
     mkdir -p $folder/Lidarr.app/Contents/MacOS
 
     echo "Copying Binaries"
@@ -193,36 +197,6 @@ PackageMacOSApp()
     rm -r $folder/Lidarr.app/Contents/MacOS/Lidarr.Update
 
     ProgressEnd 'Creating macOS App Package'
-}
-
-PackageTests()
-{
-    ProgressStart 'Creating Test Package'
-
-    cp ./test.sh $testPackageFolder/net462/win-x64/publish
-    cp ./test.sh $testPackageFolder/net462/linux-x64/publish
-    cp ./test.sh $testPackageFolder/net462/osx-x64/publish
-
-    if [ $os = "windows" ] ; then
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
-        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
-    else
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/win-x64/publish
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/linux-x64/publish
-        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder/net462/osx-x64/publish
-    fi
-    
-    rm -f $testPackageFolder/*.log.config
-
-    # geckodriver.exe isn't copied by dotnet publish
-    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
-    unzip -o gecko.zip
-    cp geckodriver.exe $testPackageFolder/net462/win-x64/publish
-
-    CleanFolder $testPackageFolder
-
-    ProgressEnd 'Creating Test Package'
 }
 
 PackageWindows()
@@ -237,11 +211,57 @@ PackageWindows()
 
     echo "Removing Lidarr.Mono"
     rm -f $folder/Lidarr.Mono.*
+    rm -f $folder/Mono.Posix.NETStandard.*
+    rm -f $folder/libMonoPosixHelper.*
 
     echo "Adding Lidarr.Windows to UpdatePackage"
     cp $folder/Lidarr.Windows.* $folder/Lidarr.Update
 
     ProgressEnd 'Creating Windows Package'
+}
+
+Package()
+{
+    local framework="$1"
+    local runtime="$2"
+    local SPLIT
+
+    IFS='-' read -ra SPLIT <<< "$runtime"
+
+    case "${SPLIT[0]}" in
+        linux)
+            PackageLinux "$framework" "$runtime"
+            ;;
+        win)
+            PackageWindows "$framework"
+            ;;
+        osx)
+            PackageMacOS "$framework"
+            PackageMacOSApp "$framework"
+            ;;
+    esac
+}
+
+PackageTests()
+{
+    local framework="$1"
+    local runtime="$2"
+
+    cp test.sh "$testPackageFolder/$framework/$runtime/publish"
+
+    rm -f $testPackageFolder/$framework/$runtime/*.log.config
+
+    # geckodriver.exe isn't copied by dotnet publish
+    if [ "$runtime" = "win-x64" ];
+    then
+        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
+        unzip -o gecko.zip
+        cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
+    fi
+
+    CleanFolder "$testPackageFolder/$framework/$runtime"
+
+    ProgressEnd 'Creating Test Package'
 }
 
 # Use mono or .net depending on OS
@@ -275,6 +295,16 @@ case $key in
         BACKEND=YES
         shift # past argument
         ;;
+    -r|--runtime)
+        RID="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    -f|--framework)
+        FRAMEWORK="$2"
+        shift # past argument
+        shift # past value
+        ;;
     --frontend)
         FRONTEND=YES
         shift # past argument
@@ -306,7 +336,15 @@ if [ "$BACKEND" = "YES" ];
 then
     UpdateVersionNumber
     Build
-    PackageTests
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        PackageTests "netcoreapp3.0" "win-x64"
+        PackageTests "netcoreapp3.0" "linux-x64"
+        PackageTests "netcoreapp3.0" "osx-x64"
+        PackageTests "net462" "linux-x64"
+    else
+        PackageTests "$FRAMEWORK" "$RID"
+    fi
 fi
 
 if [ "$FRONTEND" = "YES" ];
@@ -328,8 +366,16 @@ fi
 if [ "$PACKAGES" = "YES" ];
 then
     UpdateVersionNumber
-    PackageWindows "net462"
-    PackageLinux "net462"
-    PackageMacOS "net462"
-    PackageMacOSApp "net462"
+
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        Package "netcoreapp3.0" "win-x64"
+        Package "netcoreapp3.0" "linux-x64"
+        Package "netcoreapp3.0" "linux-arm64"
+        Package "netcoreapp3.0" "linux-arm"
+        Package "netcoreapp3.0" "osx-x64"
+        Package "net462" "linux-x64"
+    else
+        Package "$FRAMEWORK" "$RID"
+    fi
 fi

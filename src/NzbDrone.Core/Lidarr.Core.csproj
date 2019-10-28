@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
-    <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
+    <PackageReference Include="System.IO.Abstractions" Version="6.0.38" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
@@ -22,7 +24,7 @@
     <ProjectReference Include="..\MonoTorrent\MonoTorrent.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>

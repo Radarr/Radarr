@@ -15,7 +15,7 @@ namespace NzbDrone.Common.Extensions
         private const string DB_RESTORE = "lidarr.restore";
         private const string LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
-        private const string UPDATE_CLIENT_EXE = "Lidarr.Update.exe";
+        private const string UPDATE_CLIENT_EXE_NAME = "Lidarr.Update";
 
         private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "lidarr_update" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "Lidarr" + Path.DirectorySeparatorChar;
@@ -217,6 +217,21 @@ namespace NzbDrone.Common.Extensions
             return null;
         }
 
+        public static string ProcessNameToExe(this string processName, PlatformType runtime)
+        {
+            if (OsInfo.IsWindows || runtime != PlatformType.NetCore)
+            {
+                processName += ".exe";
+            }
+
+            return processName;
+        }
+
+        public static string ProcessNameToExe(this string processName)
+        {
+            return processName.ProcessNameToExe(PlatformInfo.Platform);
+        }
+
         public static string GetAppDataPath(this IAppFolderInfo appFolderInfo)
         {
             return appFolderInfo.AppDataFolder;
@@ -277,9 +292,9 @@ namespace NzbDrone.Common.Extensions
             return Path.Combine(GetUpdatePackageFolder(appFolderInfo), UPDATE_CLIENT_FOLDER_NAME);
         }
 
-        public static string GetUpdateClientExePath(this IAppFolderInfo appFolderInfo)
+        public static string GetUpdateClientExePath(this IAppFolderInfo appFolderInfo, PlatformType runtime)
         {
-            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE);
+            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE_NAME).ProcessNameToExe(runtime);
         }
 
         public static string GetDatabase(this IAppFolderInfo appFolderInfo)

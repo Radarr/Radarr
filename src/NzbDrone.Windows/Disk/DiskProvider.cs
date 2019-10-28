@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
@@ -50,9 +51,10 @@ namespace NzbDrone.Windows.Disk
         {
             Ensure.That(filename, () => filename).IsValidPath();
 
-            var fs = File.GetAccessControl(filename);
+            var file = _fileSystem.FileInfo.FromFileName(filename);
+            var fs = file.GetAccessControl();
             fs.SetAccessRuleProtection(false, false);
-            File.SetAccessControl(filename, fs);
+            file.SetAccessControl(fs);
         }
 
         public override void SetPermissions(string path, string mask, string user, string group)

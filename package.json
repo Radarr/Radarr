@@ -20,7 +20,6 @@
   "license": "GPL-3.0",
   "readmeFilename": "readme.md",
   "dependencies": {
-    "@aspnet/signalr": "1.1.4",
     "@babel/core": "7.5.5",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/plugin-proposal-decorators": "7.4.4",
@@ -39,6 +38,7 @@
     "@fortawesome/free-regular-svg-icons": "5.10.2",
     "@fortawesome/free-solid-svg-icons": "5.10.2",
     "@fortawesome/react-fontawesome": "0.1.4",
+    "@microsoft/signalr": "3.0.0",
     "@sentry/browser": "5.6.3",
     "@sentry/integrations": "5.6.1",
     "ansi-colors": "4.1.1",

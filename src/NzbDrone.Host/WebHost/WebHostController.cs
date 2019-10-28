@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -77,6 +76,10 @@ namespace NzbDrone.Host
                         });
                     }
                 })
+                .ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.AllowSynchronousIO = true;
+                    })
                 .ConfigureLogging(logging =>
                 {
                     logging.AddProvider(new NLogLoggerProvider());
@@ -86,15 +89,23 @@ namespace NzbDrone.Host
                 {
                     services
                     .AddSignalR()
-                    .AddJsonProtocol(options =>
+#if !NETCOREAPP3_0
+                    .AddJsonProtocol(
+#else
+                    .AddNewtonsoftJsonProtocol(
+#endif
+                        options =>
                         {
                             options.PayloadSerializerSettings = Json.GetSerializerSettings();
                         });
                 })
                 .Configure(app =>
                 {
-                    app.UsePathBase(_configFileProvider.UrlBase);
+#if NETCOREAPP3_0
+                    app.UseRouting();
+#endif
                     app.Properties["host.AppName"] = BuildInfo.AppName;
+                    app.UsePathBase(_configFileProvider.UrlBase);
 
                     foreach (var middleWare in _middlewares.OrderBy(c => c.Order))
                     {

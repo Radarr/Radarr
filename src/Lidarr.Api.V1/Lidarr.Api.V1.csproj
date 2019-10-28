@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
@@ -17,6 +17,6 @@
     <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="NLog" Version="4.6.7" />
-    <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
+    <PackageReference Include="System.IO.Abstractions" Version="6.0.38" />
   </ItemGroup>
 </Project>

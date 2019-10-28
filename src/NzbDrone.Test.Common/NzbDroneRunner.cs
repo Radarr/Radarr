@@ -33,17 +33,29 @@ namespace NzbDrone.Test.Common
             Directory.CreateDirectory(AppData);
 
             GenerateConfigFile();
-            
-            var lidarrConsoleExe = OsInfo.IsWindows ? "Lidarr.Console.exe" : "Lidarr.exe";
-            var frameworkFolder = "net462";
+
+            string lidarrConsoleExe;
+            if (OsInfo.IsWindows)
+            {
+                lidarrConsoleExe = "Lidarr.Console.exe";
+            }
+            else if (PlatformInfo.IsMono)
+            {
+                lidarrConsoleExe = "Lidarr.exe";
+            }
+            else
+            {
+                lidarrConsoleExe = "Lidarr";
+            }
 
             if (BuildInfo.IsDebug)
             {
+                var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.0" : "net462";
                 Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", frameworkFolder, lidarrConsoleExe));
             }
             else
             {
-                Start(Path.Combine("bin", lidarrConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", lidarrConsoleExe));
             }
 
             while (true)

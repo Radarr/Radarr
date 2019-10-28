@@ -114,7 +114,7 @@ namespace NzbDrone.Update.UpdateEngine
                     _diskTransferService.MirrorFolder(_appFolderInfo.GetUpdatePackageFolder(), installationFolder);
 
                     // Set executable flag on Lidarr app
-                    if (OsInfo.IsOsx)
+                    if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
                         _diskProvider.SetPermissions(Path.Combine(installationFolder, "Lidarr"), "0755", null, null);
                     }

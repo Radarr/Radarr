@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using NLog;
@@ -125,14 +124,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                         
                         if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
                         {
-                            using (var compressedStream = new MemoryStream(data))
-                            using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))
-                            using (var decompressedStream = new MemoryStream())
-                            {
-                                gzip.CopyTo(decompressedStream);
-                                data = decompressedStream.ToArray();
-                            }
-
+                            data = data.Decompress();
                             httpWebResponse.Headers.Remove("Content-Encoding");
                         }
                     }

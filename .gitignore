@@ -127,6 +127,12 @@ coverage*.json
 setup/Output/
 *.~is
 
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
 #VS outout folders
 bin
 obj

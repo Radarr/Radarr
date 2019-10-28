@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="System.Security.Principal.Windows" Version="4.6.0" />
+  </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
+        [Platform(Exclude="NetCore")]
         public void finds_update_when_version_lower()
         {
             UseRealHttp();

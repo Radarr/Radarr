@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using Unity;
 using Moq;
 using Moq.Language.Flow;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common.AutoMoq.Unity;
@@ -150,6 +151,10 @@ namespace NzbDrone.Test.Common.AutoMoq
             
             RegisterPlatformLibrary(container);
             AddTheAutoMockingContainerExtensionToTheContainer(container);
+
+#if NETCOREAPP3_0
+            ContainerBuilderBase.RegisterSQLiteResolver();
+#endif
         }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)

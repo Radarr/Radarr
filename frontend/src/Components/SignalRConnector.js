@@ -1,4 +1,4 @@
-import * as signalR from '@aspnet/signalr/dist/browser/signalr.js';
+import * as signalR from '@microsoft/signalr/dist/browser/signalr.js';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
@@ -54,6 +54,37 @@ const mapDispatchToProps = {
   dispatchFetchTagDetails: fetchTagDetails
 };
 
+function Logger(minimumLogLevel) {
+  this.minimumLogLevel = minimumLogLevel;
+}
+
+Logger.prototype.cleanse = function(message) {
+  const apikey = new RegExp(`access_token=${window.Lidarr.apiKey}`, 'g');
+  return message.replace(apikey, 'access_token=(removed)');
+};
+
+Logger.prototype.log = function(logLevel, message) {
+  // see https://github.com/aspnet/AspNetCore/blob/21c9e2cc954c10719878839cd3f766aca5f57b34/src/SignalR/clients/ts/signalr/src/Utils.ts#L147
+  if (logLevel >= this.minimumLogLevel) {
+    switch (logLevel) {
+      case signalR.LogLevel.Critical:
+      case signalR.LogLevel.Error:
+        console.error(`[signalR] ${signalR.LogLevel[logLevel]}: ${this.cleanse(message)}`);
+        break;
+      case signalR.LogLevel.Warning:
+        console.warn(`[signalR] ${signalR.LogLevel[logLevel]}: ${this.cleanse(message)}`);
+        break;
+      case signalR.LogLevel.Information:
+        console.info(`[signalR] ${signalR.LogLevel[logLevel]}: ${this.cleanse(message)}`);
+        break;
+      default:
+        // console.debug only goes to attached debuggers in Node, so we use console.log for Trace and Debug
+        console.log(`[signalR] ${signalR.LogLevel[logLevel]}: ${this.cleanse(message)}`);
+        break;
+    }
+  }
+};
+
 class SignalRConnector extends Component {
 
   //
@@ -71,6 +102,7 @@ class SignalRConnector extends Component {
     const url = `${window.Lidarr.urlBase}/signalr/messages`;
 
     this.connection = new signalR.HubConnectionBuilder()
+      .configureLogging(new Logger(signalR.LogLevel.Information))
       .withUrl(`${url}?access_token=${window.Lidarr.apiKey}`)
       .withAutomaticReconnect({
         nextRetryDelayInMilliseconds: (retryContext) => {

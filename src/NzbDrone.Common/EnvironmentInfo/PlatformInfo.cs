@@ -9,7 +9,8 @@ namespace NzbDrone.Common.EnvironmentInfo
     public enum PlatformType
     {
         DotNet = 0,
-        Mono = 1
+        Mono = 1,
+        NetCore = 2
     }
 
     public interface IPlatformInfo
@@ -26,6 +27,10 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         static PlatformInfo()
         {
+#if NETCOREAPP3_0
+            _platform = PlatformType.NetCore;
+            _version = new Version("3.0");
+#else
             if (Type.GetType("Mono.Runtime") != null)
             {
                 _platform = PlatformType.Mono;
@@ -36,11 +41,13 @@ namespace NzbDrone.Common.EnvironmentInfo
                 _platform = PlatformType.DotNet;
                 _version = GetDotNetVersion();
             }
+#endif
         }
 
         public static PlatformType Platform => _platform;
         public static bool IsMono => Platform == PlatformType.Mono;
         public static bool IsDotNet => Platform == PlatformType.DotNet;
+        public static bool IsNetCore => Platform == PlatformType.NetCore;
 
         public static string PlatformName
         {
@@ -50,8 +57,14 @@ namespace NzbDrone.Common.EnvironmentInfo
                 {
                     return ".NET";
                 }
-
-                return "Mono";
+                else if (IsMono)
+                {
+                    return "Mono";
+                }
+                else
+                {
+                    return ".NET Core";
+                }
             }
         }
 

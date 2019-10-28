@@ -26,7 +26,7 @@ DefaultDirName={commonappdata}\Lidarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Lidarr.{#BranchName}.{#BuildVersion}.windows
+OutputBaseFilename=Lidarr.{#BranchName}.{#BuildVersion}.windows.{#Framework}
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
@@ -48,8 +48,8 @@ Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts
 Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 
 [Files]
-Source: "..\_artifacts\windows\net462\Lidarr\Lidarr.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\_artifacts\windows\net462\Lidarr\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\_artifacts\windows\{#Framework}\Lidarr\Lidarr.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\_artifacts\windows\{#Framework}\Lidarr\*"; Excludes: "Lidarr.Update"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

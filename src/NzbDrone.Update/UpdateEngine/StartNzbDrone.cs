@@ -3,6 +3,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using IServiceProvider = NzbDrone.Common.IServiceProvider;
 
@@ -62,12 +63,12 @@ namespace NzbDrone.Update.UpdateEngine
 
         private void StartWinform(string installationFolder)
         {
-            Start(installationFolder, "Lidarr.exe");
+            Start(installationFolder, "Lidarr".ProcessNameToExe());
         }
 
         private void StartConsole(string installationFolder)
         {
-            Start(installationFolder, "Lidarr.Console.exe");
+            Start(installationFolder, "Lidarr.Console".ProcessNameToExe());
         }
 
         private void Start(string installationFolder, string fileName)

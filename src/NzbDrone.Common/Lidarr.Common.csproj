@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNet4.SocksProxy" Version="1.4.0.1" />
@@ -8,12 +8,18 @@
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="Sentry" Version="1.2.0" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
+    <PackageReference Include="System.IO.Abstractions" Version="6.0.38" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration.Install" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Configuration;
@@ -12,6 +11,7 @@ using NLog;
 using FluentValidation.Results;
 using System.Net;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Download.Clients.Deluge
 {
