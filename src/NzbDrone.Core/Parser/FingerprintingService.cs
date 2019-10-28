@@ -78,6 +78,20 @@ namespace NzbDrone.Core.Parser
         private string GetFpcalcPath()
         {
             string path = null;
+
+            // Take the fpcalc from the install directory if it exists
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fpcalc");
+            if (OsInfo.IsWindows)
+            {
+                path += ".exe";
+            }
+
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            // Otherwise search path for a candidate and check it works
             if (OsInfo.IsLinux)
             {
                 // must be on users path on Linux
@@ -103,25 +117,15 @@ namespace NzbDrone.Core.Parser
                     _logger.Debug("fpcalc not found");
                     return null;
                 }
+
+                return path;
             }
             else
             {
                 // on OSX / Windows, we have put fpcalc in the application folder
-                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fpcalc");
-                if (OsInfo.IsWindows)
-                {
-                    path += ".exe";
-                }
-
-                if (!File.Exists(path))
-                {
-                    _logger.Warn("fpcalc missing from application directory");
-                    return null;
-                }
+                _logger.Warn("fpcalc missing from application directory");
+                return null;
             }
-            
-            _logger.Debug($"fpcalc path: {path}");
-            return path;
         }
 
         private Version GetFpcalcVersion()

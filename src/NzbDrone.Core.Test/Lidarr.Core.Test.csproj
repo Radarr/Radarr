@@ -20,6 +20,9 @@
     <ProjectReference Include="..\NzbDrone.Core\Lidarr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*"/>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="..\..\Logo\1024.png">
       <Link>Files\1024.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -28,16 +31,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Target Name="CopyWindowsRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='win-x64'">
-    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe" DestinationFolder="$(OutDir)" />
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.0'">
+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyWindowsRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='win-x64'">
-    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-windows-x86_64\fpcalc.exe" DestinationFolder="$(PublishDir)" />
-  </Target>
-  <Target Name="CopyMacOSRuntimesOnBuild" AfterTargets="AfterBuild" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
-    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyMacOSRuntimesOnPublish" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)'=='osx-x64'">
-    <Copy SourceFiles="..\Libraries\Fpcalc\chromaprint-fpcalc-1.4.3-macos-x86_64\fpcalc" DestinationFolder="$(PublishDir)" />
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.0'">
+    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>

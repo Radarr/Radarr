@@ -310,6 +310,7 @@ stages:
       - bash: |
           wget https://github.com/acoustid/chromaprint/releases/download/v1.4.3/chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz
           sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
+          chmod a+x _tests/fpcalc
         displayName: Install fpcalc
         condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - bash: |
