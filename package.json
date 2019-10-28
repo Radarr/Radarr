@@ -20,6 +20,7 @@
   "license": "GPL-3.0",
   "readmeFilename": "readme.md",
   "dependencies": {
+    "@aspnet/signalr": "1.1.4",
     "@babel/core": "7.5.5",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/plugin-proposal-decorators": "7.4.4",
@@ -115,7 +116,6 @@
     "require-nocache": "1.0.0",
     "reselect": "4.0.0",
     "run-sequence": "2.2.1",
-    "signalr": "2.4.1",
     "streamqueue": "1.1.2",
     "style-loader": "0.23.1",
     "stylelint": "10.1.0",

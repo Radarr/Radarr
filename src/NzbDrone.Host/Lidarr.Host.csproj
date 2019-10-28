@@ -3,8 +3,12 @@
     <TargetFrameworks>net462</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.1" />
-    <PackageReference Include="Nancy.Owin" Version="2.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.2.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.5.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lidarr.Api.V1\Lidarr.Api.V1.csproj" />
@@ -14,10 +18,12 @@
     <ProjectReference Include="..\Lidarr.Http\Lidarr.Http.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.ServiceProcess" />
     <Reference Include="Interop.NetFwTypeLib">
       <HintPath>..\Libraries\Interop.NetFwTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 </Project>

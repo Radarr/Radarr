@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Lifecycle;
@@ -37,7 +35,8 @@ namespace NzbDrone.Core.Configuration
         bool FilterSentryEvents { get; }
         string Branch { get; }
         string ApiKey { get; }
-        string SslCertHash { get; }
+        string SslCertPath { get; }
+        string SslCertPassword { get; }
         string UrlBase { get; }
         string UiFolder { get; }
         bool UpdateAutomatically { get; }
@@ -54,7 +53,6 @@ namespace NzbDrone.Core.Configuration
         private readonly ICached<string> _cache;
 
         private readonly string _configFile;
-        private static readonly Regex HiddenCharacterRegex = new Regex("[^a-z0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly object Mutex = new object();
 
@@ -96,12 +94,6 @@ namespace NzbDrone.Core.Configuration
             {
                 if (configValue.Key.Equals("ApiKey", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    continue;
-                }
-
-                if (configValue.Key.Equals("SslCertHash", StringComparison.InvariantCultureIgnoreCase) && configValue.Value.ToString().IsNotNullOrWhiteSpace())
-                {
-                    SetValue(configValue.Key.FirstCharToUpper(), HiddenCharacterRegex.Replace(configValue.Value.ToString(), string.Empty));
                     continue;
                 }
 
@@ -183,8 +175,8 @@ namespace NzbDrone.Core.Configuration
         public string LogLevel => GetValue("LogLevel", "info");
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
         public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
-
-        public string SslCertHash => GetValue("SslCertHash", "");
+        public string SslCertPath => GetValue("SslCertPath", "");
+        public string SslCertPassword => GetValue("SslCertPassword", "");
 
         public string UrlBase
         {

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using FluentAssertions;
-using NLog;
-using Lidarr.Api.V1;
+using Lidarr.Http;
 using Lidarr.Http.REST;
+using NLog;
 using NzbDrone.Common.Serializer;
 using RestSharp;
-using System.Linq;
-using Lidarr.Http;
 
 namespace NzbDrone.Integration.Test.Client
 {
@@ -70,7 +69,9 @@ namespace NzbDrone.Integration.Test.Client
 
         private static void AssertDisableCache(IList<Parameter> headers)
         {
-            headers.Single(c => c.Name == "Cache-Control").Value.Should().Be("no-cache, no-store, must-revalidate, max-age=0");
+            // cache control header gets reordered on net core
+            ((string)headers.Single(c => c.Name == "Cache-Control").Value).Split(',').Select(x => x.Trim())
+                .Should().BeEquivalentTo("no-store, must-revalidate, no-cache, max-age=0".Split(',').Select(x => x.Trim()));
             headers.Single(c => c.Name == "Pragma").Value.Should().Be("no-cache");
             headers.Single(c => c.Name == "Expires").Value.Should().Be("0");
         }

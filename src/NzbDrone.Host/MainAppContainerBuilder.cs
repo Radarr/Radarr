@@ -27,9 +27,18 @@ namespace NzbDrone.Host
         private MainAppContainerBuilder(StartupContext args, List<string> assemblies)
             : base(args, assemblies)
         {
-            AutoRegisterImplementations<NzbDronePersistentConnection>();
+            AutoRegisterImplementations<MessageHub>();
 
             Container.Register<INancyBootstrapper, LidarrBootstrapper>();
+
+            if (OsInfo.IsWindows)
+            {
+                Container.Register<INzbDroneServiceFactory, NzbDroneServiceFactory>();
+            }
+            else
+            {
+                Container.Register<INzbDroneServiceFactory, DummyNzbDroneServiceFactory>();
+            }
         }
     }
 }
