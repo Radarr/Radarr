@@ -181,7 +181,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform("Mono")]
+        [Platform(Exclude="Win")]
         public void should_run_script_if_configured()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform("Mono")]
+        [Platform(Exclude="Win")]
         public void should_throw_if_script_is_not_set()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -208,7 +208,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform("Mono")]
+        [Platform(Exclude="Win")]
         public void should_throw_if_script_is_null()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -222,7 +222,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform("Mono")]
+        [Platform(Exclude="Win")]
         public void should_throw_if_script_path_does_not_exist()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";

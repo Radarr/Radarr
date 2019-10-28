@@ -53,7 +53,7 @@ namespace NzbDrone.Common.Test
         [TestCase(@"//CAPITAL//lower// ", @"/CAPITAL/lower")]
         public void Clean_Path_Linux(string dirty, string clean)
         {
-            MonoOnly();
+            PosixOnly();
 
             var result = dirty.CleanFilePath();
             result.Should().Be(clean);
@@ -153,14 +153,14 @@ namespace NzbDrone.Common.Test
         [TestCase(@"/test", "/")]
         public void path_should_return_parent_mono(string path, string parentPath)
         {
-            MonoOnly();
+            PosixOnly();
             path.GetParentPath().Should().Be(parentPath);
         }
 
         [Test]
         public void path_should_return_parent_for_oversized_path()
         {
-            MonoOnly();
+            PosixOnly();
 
             // This test will fail on Windows if long path support is not enabled: https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/
             // It will also fail if the app isn't configured to use long path (such as resharper): https://blogs.msdn.microsoft.com/jeremykuhne/2016/07/30/net-4-6-2-and-long-paths-on-windows-10/
@@ -233,7 +233,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void get_actual_casing_should_return_original_value_in_linux()
         {
-            MonoOnly();
+            PosixOnly();
             var path = Directory.GetCurrentDirectory();
             path.GetActualCasing().Should().Be(path);
             path.GetActualCasing().Should().Be(path);
@@ -307,7 +307,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void GetAncestorFolders_should_return_all_ancestors_in_path_Linux()
         {
-            MonoOnly();
+            PosixOnly();
             var path = @"/Test/Music/Artist Title";
             var result = path.GetAncestorFolders();
 

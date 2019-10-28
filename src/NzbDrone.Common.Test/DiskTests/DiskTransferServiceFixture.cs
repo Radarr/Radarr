@@ -38,7 +38,7 @@ namespace NzbDrone.Common.Test.DiskTests
         [Test]
         public void should_use_verified_transfer_on_mono()
         {
-            MonoOnly();
+            PosixOnly();
 
             Subject.VerificationMode.Should().Be(DiskTransferVerificationMode.TryTransactional);
         }

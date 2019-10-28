@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -17,9 +18,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        public void should_return_ok_if_windows()
+        public void should_return_ok_if_not_mono()
         {
-            WindowsOnly();
+            if (PlatformInfo.IsMono)
+            {
+                throw new IgnoreException("non mono specific test");
+            }
 
             Subject.Check().ShouldBeOk();
         }

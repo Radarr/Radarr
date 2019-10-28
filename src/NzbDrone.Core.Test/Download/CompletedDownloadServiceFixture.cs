@@ -443,7 +443,7 @@ namespace NzbDrone.Core.Test.Download
         [Test]
         public void should_warn_if_path_is_not_valid_for_linux()
         {
-            MonoOnly();
+            PosixOnly();
 
             _trackedDownload.DownloadItem.OutputPath = new OsPath(@"C:\Invalid\Mono\Path");
 

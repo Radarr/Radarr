@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
         [TestCase(FilterFilesType.Matched)]
         public void filter_should_return_none_existing_files_not_ignoring_case(FilterFilesType filter)
         {
-            MonoOnly();
+            PosixOnly();
 
             var files = GivenFiles(new []
                 {
