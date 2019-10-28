@@ -183,6 +183,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         }
                         break;
 
+                    case "moving": // torrent is being moved from a folder
                     case "downloading": // torrent is being downloaded and data is being transfered
                         item.Status = DownloadItemStatus.Downloading;
                         break;
