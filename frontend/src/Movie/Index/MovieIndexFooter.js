@@ -51,12 +51,12 @@ class MovieIndexFooter extends PureComponent {
 
           <div className={styles.legendItem}>
             <div className={styles.missingMonitored} />
-            <div>Missing, but not Monitored</div>
+            <div>Missing, Monitored and considered Available</div>
           </div>
 
           <div className={styles.legendItem}>
             <div className={styles.missingUnmonitored} />
-            <div>Missing, Monitored and considered Available</div>
+            <div>Missing, not Monitored</div>
           </div>
 
           <div className={styles.legendItem}>
