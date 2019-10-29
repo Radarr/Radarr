@@ -107,11 +107,19 @@ export const sortPredicates = {
     let result = 0;
 
     if (item.monitored) {
+      result += 4;
+    }
+
+    if (item.status === 'announced') {
+      result++;
+    }
+
+    if (item.status === 'inCinemas') {
       result += 2;
     }
 
-    if (item.status === 'continuing') {
-      result++;
+    if (item.status === 'released') {
+      result += 3;
     }
 
     return result;
