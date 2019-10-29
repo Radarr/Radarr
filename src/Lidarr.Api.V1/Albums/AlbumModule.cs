@@ -13,6 +13,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MediaFiles;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -20,7 +21,8 @@ namespace Lidarr.Api.V1.Albums
         IHandle<AlbumGrabbedEvent>,
         IHandle<AlbumEditedEvent>,
         IHandle<AlbumImportedEvent>,
-        IHandle<TrackImportedEvent>
+        IHandle<TrackImportedEvent>,
+        IHandle<TrackFileDeletedEvent>
 
     {
         protected readonly IReleaseService _releaseService;
@@ -128,6 +130,13 @@ namespace Lidarr.Api.V1.Albums
         public void Handle(TrackImportedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, message.TrackInfo.Album.ToResource());
+        }
+
+        public void Handle(TrackFileDeletedEvent message)
+        {
+            if (message.Reason == DeleteMediaFileReason.Upgrade) return;
+
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.TrackFile.Album.Value, true));
         }
     }
 }
