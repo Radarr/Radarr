@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Radarr.Api.V2.Movies;
@@ -16,15 +16,15 @@ namespace Radarr.Api.V2.History
     public class HistoryModule : RadarrRestModule<HistoryResource>
     {
         private readonly IHistoryService _historyService;
-        // private readonly IUpgradableSpecification _upgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly IFailedDownloadService _failedDownloadService;
 
         public HistoryModule(IHistoryService historyService,
-                             // IUpgradableSpecification upgradableSpecification,
+                             IUpgradableSpecification upgradableSpecification,
                              IFailedDownloadService failedDownloadService)
         {
             _historyService = historyService;
-            // _upgradableSpecification = upgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
@@ -44,7 +44,7 @@ namespace Radarr.Api.V2.History
 
             if (model.Movie != null)
             {
-            //    resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Movie.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _upgradableSpecification.CutoffNotMet(model.Movie.Profile.Value, model.Quality);
             }
 
             return resource;
