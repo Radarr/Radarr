@@ -75,24 +75,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public TrackedDownload TrackDownload(DownloadClientDefinition downloadClient, DownloadClientItem downloadItem)
         {
-            if (downloadItem.DownloadId.IsNullOrWhiteSpace())
-            {
-                _logger.Warn("The following download client item ({0}) has no download hash (id), so it cannot be tracked: {1}", 
-                    downloadClient.Name, downloadItem.Title);
-                return null;
-            }
-
-            if (downloadItem.Title.IsNullOrWhiteSpace())
-            {
-                _logger.Warn("The following download client item ({0}) has no title so it cannot be tracked: {1}",
-                    downloadClient.Name, downloadItem.Title);
-                return null;
-            }
-            
             var existingItem = Find(downloadItem.DownloadId);
 
             if (existingItem != null && existingItem.State != TrackedDownloadStage.Downloading)
             {
+                LogItemChange(existingItem, existingItem.DownloadItem, downloadItem);
+
                 existingItem.DownloadItem = downloadItem;
                 existingItem.IsTrackable = true;
 
@@ -141,9 +129,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     }
                 }
 
+                // Track it so it can be displayed in the queue even though we can't determine which movie it is for
                 if (trackedDownload.RemoteMovie == null)
                 {
-                    return null;
+                    _logger.Trace("No Movie found for download '{0}'", trackedDownload.DownloadItem.Title);
                 }
             }
             catch (Exception e)
@@ -151,6 +140,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 _logger.Debug(e, "Failed to find movie for " + downloadItem.Title);
                 return null;
             }
+
+            LogItemChange(trackedDownload, existingItem?.DownloadItem, trackedDownload.DownloadItem);
 
             _cache.Set(trackedDownload.DownloadItem.DownloadId, trackedDownload);
             return trackedDownload;

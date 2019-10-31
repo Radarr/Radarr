@@ -12,13 +12,6 @@ namespace NzbDrone.Core.Qualities
 
         public List<CustomFormat> CustomFormats { get; set; }
 
-        [JsonIgnore]
-        public Resolution Resolution { get; set; }
-        [JsonIgnore]
-        public Source Source { get; set; }
-        [JsonIgnore]
-        public Modifier Modifier { get; set; }
-
 
         public Revision Revision { get; set; }
 
@@ -33,11 +26,11 @@ namespace NzbDrone.Core.Qualities
 
         }
 
-        public QualityModel(Quality quality, Revision revision = null)
+        public QualityModel(Quality quality, Revision revision = null, List<CustomFormat> customFormats = null)
         {
             Quality = quality;
             Revision = revision ?? new Revision();
-            CustomFormats = new List<CustomFormat>();
+            CustomFormats = customFormats ?? new List<CustomFormat>();
         }
 
         public override string ToString()

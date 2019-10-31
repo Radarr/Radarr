@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -74,11 +75,11 @@ namespace NzbDrone.Core.CustomFormats
                 case TagType.Language:
                     return movieInfo.Languages.Contains((Language)Value);
                 case TagType.Resolution:
-                    return movieInfo.Quality.Resolution == (Resolution) Value;
+                    return movieInfo.Quality.Quality.Resolution == (int)(Resolution) Value;
                 case TagType.Modifier:
-                    return movieInfo.Quality.Modifier == (Modifier) Value;
+                    return movieInfo.Quality.Quality.Modifier == (Modifier) Value;
                 case TagType.Source:
-                    return movieInfo.Quality.Source == (Source) Value;
+                    return movieInfo.Quality.Quality.Source == (Source) Value;
                 case TagType.Size:
                     var size = (movieInfo.ExtraInfo.GetValueOrDefault("Size", 0.0) as long?) ?? 0;
                     var tuple = Value as (long, long)? ?? (0, 0);
@@ -108,19 +109,19 @@ namespace NzbDrone.Core.CustomFormats
                     switch (value)
                     {
                         case "2160":
-                            Value = Resolution.R2160P;
+                            Value = Resolution.R2160p;
                             break;
                         case "1080":
-                            Value = Resolution.R1080P;
+                            Value = Resolution.R1080p;
                             break;
                         case "720":
-                            Value = Resolution.R720P;
+                            Value = Resolution.R720p;
                             break;
                         case "576":
-                            Value = Resolution.R576P;
+                            Value = Resolution.R576p;
                             break;
                         case "480":
-                            Value = Resolution.R480P;
+                            Value = Resolution.R480p;
                             break;
                     }
                     break;
@@ -248,16 +249,6 @@ namespace NzbDrone.Core.CustomFormats
         AbsolutelyRequired = 4
     }
 
-    public enum Resolution
-    {
-        Unknown = 0,
-        R480P = 480,
-        R576P = 576,
-        R720P = 720,
-        R1080P = 1080,
-        R2160P = 2160
-    }
-
     public enum Source
     {
         UNKNOWN = 0,
@@ -268,6 +259,7 @@ namespace NzbDrone.Core.CustomFormats
         DVD,
         TV,
         WEBDL,
+        WEBRIP,
         BLURAY
     }
 

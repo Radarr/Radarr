@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -28,11 +29,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
             var source = Source.UNKNOWN;
             var sourceConfidence = Confidence.Default;
-            var resolution = Resolution.Unknown;
+            var resolution = 0;
             var resolutionConfidence = Confidence.Default;
             var modifier = Modifier.NONE;
             var modifierConfidence = Confidence.Default;
             var revison = new Revision();
+            var customFormats = new List<CustomFormat>();
 
             foreach (var augmentedQuality in augmentedQualities)
             {
@@ -61,11 +63,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 {
                     revison = augmentedQuality.Revision;
                 }
+
+                if (augmentedQuality.CustomFormats != null)
+                {
+                    var newFormats = augmentedQuality.CustomFormats.Where(c => !customFormats.Any(p => p.Id == c.Id));
+
+                    customFormats.AddRange(newFormats);
+                }
             }
 
             _logger.Trace("Finding quality. Source: {0}. Resolution: {1}. Modifier {2}", source, resolution, modifier);
 
-            var quality = new QualityModel(QualityFinder.FindBySourceAndResolution(source, resolution, modifier), revison);
+            var quality = new QualityModel(QualityFinder.FindBySourceAndResolution(source, resolution, modifier), revison, customFormats);
 
             if (resolutionConfidence == Confidence.MediaInfo)
             {

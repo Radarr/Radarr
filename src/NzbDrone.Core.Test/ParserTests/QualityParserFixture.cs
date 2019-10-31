@@ -24,27 +24,26 @@ namespace NzbDrone.Core.Test.ParserTests
 
         public static object[] OtherSourceQualityParserCases =
         {
-            new object[] { "SD TV", Source.TV, Resolution.R480P, Modifier.NONE },
-            new object[] { "SD DVD",  Source.DVD, Resolution.R480P, Modifier.NONE },
-            new object[] { "480p WEB-DL", Source.WEBDL, Resolution.R480P, Modifier.NONE },
-            new object[] { "HD TV", Source.TV, Resolution.R720P, Modifier.NONE },
-            new object[] { "1080p HD TV", Source.TV, Resolution.R1080P, Modifier.NONE },
-            new object[] { "2160p HD TV", Source.TV, Resolution.R2160P, Modifier.NONE },
-            new object[] { "720p WEB-DL", Source.WEBDL, Resolution.R720P, Modifier.NONE },
-            new object[] { "1080p WEB-DL", Source.WEBDL, Resolution.R1080P, Modifier.NONE },
-            new object[] { "2160p WEB-DL", Source.WEBDL, Resolution.R2160P, Modifier.NONE },
-            new object[] { "720p BluRay", Source.BLURAY, Resolution.R720P, Modifier.NONE },
-            new object[] { "1080p BluRay", Source.BLURAY, Resolution.R1080P, Modifier.NONE },
-            new object[] { "2160p BluRay", Source.BLURAY, Resolution.R2160P, Modifier.NONE },
-            new object[] { "1080p Remux", Source.BLURAY, Resolution.R1080P, Modifier.REMUX },
-            new object[] { "2160p Remux", Source.BLURAY, Resolution.R2160P, Modifier.REMUX },
+            new object[] { "SD TV", Source.TV, Resolution.R480p, Modifier.NONE },
+            new object[] { "SD DVD",  Source.DVD, Resolution.R480p, Modifier.NONE },
+            new object[] { "480p WEB-DL", Source.WEBDL, Resolution.R480p, Modifier.NONE },
+            new object[] { "HD TV", Source.TV, Resolution.R720p, Modifier.NONE },
+            new object[] { "1080p HD TV", Source.TV, Resolution.R1080p, Modifier.NONE },
+            new object[] { "2160p HD TV", Source.TV, Resolution.R2160p, Modifier.NONE },
+            new object[] { "720p WEB-DL", Source.WEBDL, Resolution.R720p, Modifier.NONE },
+            new object[] { "1080p WEB-DL", Source.WEBDL, Resolution.R1080p, Modifier.NONE },
+            new object[] { "2160p WEB-DL", Source.WEBDL, Resolution.R2160p, Modifier.NONE },
+            new object[] { "720p BluRay", Source.BLURAY, Resolution.R720p, Modifier.NONE },
+            new object[] { "1080p BluRay", Source.BLURAY, Resolution.R1080p, Modifier.NONE },
+            new object[] { "2160p BluRay", Source.BLURAY, Resolution.R2160p, Modifier.NONE },
+            new object[] { "1080p Remux", Source.BLURAY, Resolution.R1080p, Modifier.REMUX },
+            new object[] { "2160p Remux", Source.BLURAY, Resolution.R2160p, Modifier.REMUX },
         };
 
         [TestCase("Despicable.Me.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
-        [TestCase("IT.2017.HDTSRip.x264.AAC-Ozlem[ETRG]", false)]
         public void should_parse_ts(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.TELESYNC, proper, Resolution.R720P);
+            ParseAndVerifyQuality(title, Source.TELESYNC, proper, Resolution.R720p);
         }
 
         [TestCase("S07E23 .avi ", false)]
@@ -65,38 +64,32 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Muppet.Babies.S03.TVRip.XviD-NOGRP", false)]
         public void should_parse_sdtv_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R480P);
+            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R480p);
         }
 
-        [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3-REPACK.-HELLYWOOD.avi", true)]
         [TestCase("The.Shield.S01E13.NTSC.x264-CtrlSD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.X-viD.AC3.-HELLYWOOD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD.avi", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3.-HELLYWOOD.avi", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVDRip.XviD-WiDE", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVD.Rip.XviD-WiDE", false)]
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
         [TestCase("the_x-files.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
-        [TestCase("[FroZen] Miyuki - 23 [DVD][7F6170E6]", false)]
-        [TestCase("[Doki] Clannad - 02 (848x480 XviD BD MP3) [95360783]", false)]
-        [TestCase("The.Shield.S01E13.x264-CtrlSD", false)]
-        [TestCase("[HorribleSubs] Yowamushi Pedal - 32 [480p]", false)]
-        [TestCase("[CR] Sailor Moon - 004 [480p][48CE2D0F]", false)]
-        [TestCase("[Hatsuyuki] Naruto Shippuuden - 363 [848x480][ADE35E38]", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480P);
+            ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p);
         }
 
         [TestCase("Elementary.S01E10.The.Leviathan.480p.WEB-DL.x264-mSD", false)]
         [TestCase("Glee.S04E10.Glee.Actually.480p.WEB-DL.x264-mSD", false)]
         [TestCase("The.Big.Bang.Theory.S06E11.The.Santa.Simulation.480p.WEB-DL.x264-mSD", false)]
         [TestCase("Da.Vincis.Demons.S02E04.480p.WEB.DL.nSD.x264-NhaNc3", false)]
-        [TestCase("Series.Title.1x04.ITA.WEBMux.x264-NovaRip", false)]
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R480P);
+            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R480p);
+        }
+
+        [TestCase("Series.Title.1x04.ITA.WEBMux.x264-NovaRip", false)]
+        public void should_parse_webrip480p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R480p);
         }
 
         [TestCase("Heidi Girl of the Alps (BD)(640x480(RAW) (BATCH 1) (1-13)", false)]
@@ -104,7 +97,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
         public void should_parse_bluray480p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R480P);
+            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R480p);
         }
 
         [TestCase("Dexter - S01E01 - Title [HDTV]", false)]
@@ -119,7 +112,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Survivorman.The.Lost.Pilots.Summer.HR.WS.PDTV.x264-DHD", false)]
         public void should_parse_hdtv720p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R720P);
+            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R720p);
         }
 
 
@@ -129,10 +122,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Dexter - S01E01 - Title [HDTV-1080p]", false)]
         public void should_parse_hdtv1080p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R1080P);
+            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R1080p);
         }
 
-        [TestCase("Arrested.Development.S04E01.720p.WEBRip.AAC2.0.x264-NFRiP", false)]
         [TestCase("Vanguard S01E04 Mexicos Death Train 720p WEB DL", false)]
         [TestCase("Hawaii Five 0 S02E21 720p WEB DL DD5 1 H 264", false)]
         [TestCase("Castle S04E22 720p WEB DL DD5 1 H 264 NFHD", false)]
@@ -146,24 +138,19 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.S06E23.720p.WebHD.h264-euHD", false)]
         [TestCase("The.Nightly.Show.2016.03.14.720p.WEB.x264-spamTV", false)]
         [TestCase("The.Nightly.Show.2016.03.14.720p.WEB.h264-spamTV", false)]
-        [TestCase("Sonny.With.a.Chance.S02E15.720p", false)]
-        [TestCase("S07E23.mkv ", false)]
-        [TestCase("Sonny.With.a.Chance.S02E15.mkv", false)]
-        [TestCase("[Underwater-FFF] No Game No Life - 01 (720p) [27AAA0A0]", false)]
-        [TestCase("[Doki] Mahouka Koukou no Rettousei - 07 (1280x720 Hi10P AAC) [80AF7DDE]", false)]
-        [TestCase("[Doremi].Yes.Pretty.Cure.5.Go.Go!.31.[1280x720].[C65D4B1F].mkv", false)]
-        [TestCase("[HorribleSubs]_Fairy_Tail_-_145_[720p]", false)]
-        [TestCase("[Eveyuu] No Game No Life - 10 [Hi10P 1280x720 H264][10B23BD8]", false)]
-        [TestCase("Movie.Title.ITA.720p.WEBMux.x264-NovaRip", false)]
         [TestCase("BrainDead.S01E01.The.Insanity.Principle.720p.WEB-DL.DD5.1.H.264-BD", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720P);
+            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720p);
         }
 
-        [TestCase("[HorribleSubs] Yowamushi Pedal - 32 [1080p]", false)]
-        [TestCase("Under the Dome S01E10 Let the Games Begin 1080p", false)]
-        [TestCase("Arrested.Development.S04E01.iNTERNAL.1080p.WEBRip.x264-QRUS", false)]
+        [TestCase("Movie.Title.ITA.720p.WEBMux.x264-NovaRip", false)]
+        [TestCase("Arrested.Development.S04E01.720p.WEBRip.AAC2.0.x264-NFRiP", false)]
+        public void should_parse_webrip720p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R720p);
+        }
+
         [TestCase("CSI NY S09E03 1080p WEB DL DD5 1 H264 NFHD", false)]
         [TestCase("Two and a Half Men S10E03 1080p WEB DL DD5 1 H 264 NFHD", false)]
         [TestCase("Criminal.Minds.S08E01.1080p.WEB-DL.DD5.1.H264-NFHD", false)]
@@ -180,23 +167,34 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Series Title S06E08 No One PROPER 1080p WEB H 264-EXCLUSIVE", true)]
         [TestCase("The.Simpsons.S25E21.Pay.Pal.1080p.WEB-DL.DD5.1.H.264-NTb", false)]
         [TestCase("The.Simpsons.2017.1080p.WEB-DL.DD5.1.H.264.Remux.-NTb", false)]
-        [TestCase("Series.Title.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
         [TestCase("Fast.and.Furious.Presents.Hobbs.and.Shaw.2019.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTG", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080P);
+            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080p);
+        }
+
+        [TestCase("Arrested.Development.S04E01.iNTERNAL.1080p.WEBRip.x264-QRUS", false)]
+        [TestCase("Series.Title.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
+        public void should_parse_webrip1080p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R1080p);
+        }
+
+        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.x264-spamTV", false)]
+        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.h264-spamTV", false)]
+        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.PROPER.h264-spamTV", true)]
+        public void should_parse_webdl2160p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R2160p);
         }
 
         [TestCase("CASANOVA S01E01.2160P AMZN WEBRIP DD2.0 HI10P X264-TROLLUHD", false)]
         [TestCase("JUST ADD MAGIC S01E01.2160P AMZN WEBRIP DD2.0 X264-TROLLUHD", false)]
         [TestCase("The.Man.In.The.High.Castle.S01E01.2160p.AMZN.WEBRip.DD2.0.Hi10p.X264-TrollUHD", false)]
         [TestCase("The Man In the High Castle S01E01 2160p AMZN WEBRip DD2.0 Hi10P x264-TrollUHD", false)]
-        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.x264-spamTV", false)]
-        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.h264-spamTV", false)]
-        [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.PROPER.h264-spamTV", true)]
-        public void should_parse_webdl2160p_quality(string title, bool proper)
+        public void should_parse_webrip2160p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R2160P);
+            ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R2160p);
         }
 
         [TestCase("WEEDS.S03E01-06.DUAL.Bluray.AC3.-HELLYWOOD.avi", false)]
@@ -217,7 +215,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.720p.MBluRay.x264-TREBLE.mkv", false)]
         public void should_parse_bluray720p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R720P);
+            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R720p);
         }
 
         [TestCase("Chuck - S01E03 - Come Fly With Me - 1080p BluRay.mkv", false)]
@@ -234,14 +232,14 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.1080p.MBluRay.x264-TREBLE.mkv", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080P);
+            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
         }
 
 		[TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
 		[TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
 		public void should_parse_bluray576p_quality(string title)
 		{
-			ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576P);
+			ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
 		}
 
         [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
@@ -251,7 +249,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Wildling.2018.1080p.BluRay.REMUX.MPEG-2.DTS-HD.MA.5.1-EPSiLON")]
         public void should_parse_remux1080p_quality(string title)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080P, Modifier.REMUX);
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
         }
 
         [TestCase("Contract.to.Kill.2016.REMUX.2160p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
@@ -259,7 +257,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Shining.1980.2160p.UHD.BluRay.Remux.HDR.HEVC.DTS-HD.MA.5.1-PmP.mkv")]
         public void should_parse_remux2160p_quality(string title)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160P, Modifier.REMUX);
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
         }
 
         [TestCase("G.I.Joe.Retaliation.2013.BDISO")]
@@ -270,13 +268,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Daylight.1996.Bluray.ISO")]
         public void should_parse_brdisk_1080p_quality(string title)
         {
-            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080P, Modifier.BRDISK);
-        }
-
-        [TestCase("Stripes (1981) 1080i HDTV DD5.1 MPEG2-TrollHD")]
-        public void should_parse_rawhd_quality(string title)
-        {
-            ParseAndVerifyQuality(title, Source.TV, false, Resolution.Unknown, Modifier.RAWHD);
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.BRDISK);
         }
 
         //[TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
@@ -371,12 +363,12 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = QualityParser.ParseQuality(title);
             if (resolution != Resolution.Unknown)
             {
-                result.Resolution.Should().Be(resolution);
+                result.Quality.Resolution.Should().Be((int)resolution);
             }
-            result.Source.Should().Be(source);
+            result.Quality.Source.Should().Be(source);
             if (modifier != Modifier.NONE)
             {
-                result.Modifier.Should().Be(modifier);
+                result.Quality.Modifier.Should().Be(modifier);
             }
 
             var version = proper ? 2 : 1;
