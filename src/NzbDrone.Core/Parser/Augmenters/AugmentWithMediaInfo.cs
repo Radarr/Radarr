@@ -24,30 +24,30 @@ namespace NzbDrone.Core.Parser.Augmenters
             if (helper is MediaInfoModel mediaInfo)
             {
                 var quality = movieInfo.Quality;
-                if (!(quality.Modifier == Modifier.BRDISK || quality.Modifier == Modifier.REMUX) &&
-                    (quality.Source == Source.BLURAY || quality.Source == Source.TV ||
-                     quality.Source == Source.WEBDL) &&
-                    !(quality.Resolution == Resolution.R480P || quality.Resolution == Resolution.R576P))
+                if (!(quality.Quality.Modifier == Modifier.BRDISK || quality.Quality.Modifier == Modifier.REMUX) &&
+                    (quality.Quality.Source == Source.BLURAY || quality.Quality.Source == Source.TV ||
+                     quality.Quality.Source == Source.WEBDL) &&
+                    !(quality.Quality.Resolution == (int)Resolution.R480p || quality.Quality.Resolution == (int)Resolution.R576p))
                 {
                     var width = mediaInfo.Width;
-                    var existing = quality.Resolution;
+                    var existing = quality.Quality.Resolution;
 
                     if (width > 854)
                     {
-                        quality.Resolution = Resolution.R720P;
+                        quality.Quality.Resolution = (int)Resolution.R720p;
                     }
 
                     if (width > 1280)
                     {
-                        quality.Resolution = Resolution.R1080P;
+                        quality.Quality.Resolution = (int)Resolution.R1080p;
                     }
 
                     if (width > 1920)
                     {
-                        quality.Resolution = Resolution.R2160P;
+                        quality.Quality.Resolution = (int)Resolution.R2160p;
                     }
 
-                    if (existing != quality.Resolution)
+                    if (existing != quality.Quality.Resolution)
                     {
                         //_logger.Debug("Overwriting resolution info {0} with info from media info {1}", existing, quality.Resolution);
                         quality.QualityDetectionSource = QualityDetectionSource.MediaInfo;

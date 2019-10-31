@@ -42,15 +42,15 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports)
         {
-            return GetMovieDecisions(reports).ToList();
+            return GetDecisions(reports).ToList();
         }
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
         {
-            return GetMovieDecisions(reports, searchCriteriaBase).ToList();
+            return GetDecisions(reports, searchCriteriaBase).ToList();
         }
 
-        private IEnumerable<DownloadDecision> GetMovieDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
+        private IEnumerable<DownloadDecision> GetDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
         {
             if (reports.Any())
             {
@@ -98,12 +98,6 @@ namespace NzbDrone.Core.DecisionEngine
                             result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
                             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
                         }
-                        else
-                        {
-                            //Enhance Parsed Movie Info!
-                            result.RemoteMovie.ParsedMovieInfo = Parser.Parser.ParseMinimalMovieTitle(parsedMovieInfo.MovieTitle,
-                                result.RemoteMovie.Movie.Title, parsedMovieInfo.Year);
-                        }
 
                     }
                     else
@@ -148,7 +142,8 @@ namespace NzbDrone.Core.DecisionEngine
                         }
                         else
                         {
-                            remoteMovie.DownloadAllowed = true;
+                            // _aggregationService.Augment(remoteMovie);
+                            remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
 

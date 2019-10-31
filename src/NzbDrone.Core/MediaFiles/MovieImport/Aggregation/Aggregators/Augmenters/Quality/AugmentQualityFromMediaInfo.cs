@@ -1,4 +1,4 @@
-using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality
@@ -16,22 +16,22 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
 
             if (width >= 3200)
             {
-                return AugmentQualityResult.ResolutionOnly(Resolution.R2160P, Confidence.MediaInfo);
+                return AugmentQualityResult.ResolutionOnly((int)Resolution.R2160p, Confidence.MediaInfo);
             }
 
             if (width >= 1800)
             {
-                return AugmentQualityResult.ResolutionOnly(Resolution.R1080P, Confidence.MediaInfo);
+                return AugmentQualityResult.ResolutionOnly((int)Resolution.R1080p, Confidence.MediaInfo);
             }
 
             if (width >= 1200)
             {
-                return AugmentQualityResult.ResolutionOnly(Resolution.R720P, Confidence.MediaInfo);
+                return AugmentQualityResult.ResolutionOnly((int)Resolution.R720p, Confidence.MediaInfo);
             }
 
             if (width > 0)
             {
-                return AugmentQualityResult.ResolutionOnly(Resolution.R480P, Confidence.MediaInfo);
+                return AugmentQualityResult.ResolutionOnly((int)Resolution.R480p, Confidence.MediaInfo);
             }
 
             return null;

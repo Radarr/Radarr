@@ -12,11 +12,11 @@ namespace NzbDrone.Core.Test.CustomFormat
     [TestFixture]
     public class QualityTagFixture : CoreTest
     {
-        [TestCase("R_1080", TagType.Resolution, Resolution.R1080P)]
-        [TestCase("R_720", TagType.Resolution, Resolution.R720P)]
-        [TestCase("R_576", TagType.Resolution, Resolution.R576P)]
-        [TestCase("R_480", TagType.Resolution, Resolution.R480P)]
-        [TestCase("R_2160", TagType.Resolution, Resolution.R2160P)]
+        [TestCase("R_1080", TagType.Resolution, Resolution.R1080p)]
+        [TestCase("R_720", TagType.Resolution, Resolution.R720p)]
+        [TestCase("R_576", TagType.Resolution, Resolution.R576p)]
+        [TestCase("R_480", TagType.Resolution, Resolution.R480p)]
+        [TestCase("R_2160", TagType.Resolution, Resolution.R2160p)]
         [TestCase("S_BLURAY", TagType.Source, Source.BLURAY)]
         [TestCase("s_tv", TagType.Source, Source.TV)]
         [TestCase("s_workPRINT", TagType.Source, Source.WORKPRINT)]
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.CustomFormat
         [TestCase("G_10<>20", TagType.Size, new[] { 10737418240L, 21474836480L})]
         [TestCase("G_15.55<>20", TagType.Size, new[] { 16696685363L, 21474836480L})]
         [TestCase("G_15.55<>25.1908754", TagType.Size, new[] { 16696685363L, 27048496500L})]
-        [TestCase("R__1080", TagType.Resolution, Resolution.R1080P)]
+        [TestCase("R__1080", TagType.Resolution, Resolution.R1080p)]
         public void should_parse_tag_from_string(string raw, TagType type, object value, params TagModifier[] modifiers)
         {
             var parsed = new FormatTag(raw);

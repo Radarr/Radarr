@@ -2,6 +2,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Qualities
 {
@@ -9,7 +10,7 @@ namespace NzbDrone.Core.Qualities
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityFinder));
 
-        public static Quality FindBySourceAndResolution(Source source, Resolution resolution, Modifier modifer)
+        public static Quality FindBySourceAndResolution(Source source, int resolution, Modifier modifer)
         {
             // Check for a perfect 3-way match
             var matchingQuality = Quality.All.SingleOrDefault(q => q.Source == source && q.Resolution == resolution && q.Modifier == modifer);
@@ -20,7 +21,7 @@ namespace NzbDrone.Core.Qualities
             }
 
             // Check for Source and Modifier Match for Qualities with Unknown Resolution
-            var matchingQualitiesUnknownResolution = Quality.All.Where(q => q.Source == source && (q.Resolution == Resolution.Unknown) && q.Modifier == modifer && q != Quality.Unknown);
+            var matchingQualitiesUnknownResolution = Quality.All.Where(q => q.Source == source && (q.Resolution == 0) && q.Modifier == modifer && q != Quality.Unknown);
 
             if (matchingQualitiesUnknownResolution.Any())
             {

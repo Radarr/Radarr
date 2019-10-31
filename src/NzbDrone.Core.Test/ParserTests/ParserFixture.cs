@@ -113,22 +113,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
-        [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE","")]
+        [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            if (parsed.Edition.IsNullOrWhiteSpace())
-            {
-                parsed.Edition = Parser.Parser.ParseEdition(parsed.SimpleReleaseTitle);
-            }
             parsed.Edition.Should().Be(edition);
-        }
-
-        [TestCase("The Lord of the Rings The Fellowship of the Ring (Extended Edition) 1080p BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]
-        [TestCase("The.Lord.of.the.Rings.The.Fellowship.of.the.Ring.(Extended.Edition).1080p.BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]
-        public void should_parse_edition_lenient_mapping(string postTitle, string foundTitle, string edition)
-        {
-            Parser.Parser.ParseMinimalMovieTitle(postTitle, foundTitle, 1290).Edition.Should().Be(edition);
         }
 
         [TestCase("123", "tt0000123")]

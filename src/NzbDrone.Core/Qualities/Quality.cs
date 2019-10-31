@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Qualities
@@ -11,26 +12,20 @@ namespace NzbDrone.Core.Qualities
         public int Id { get; set; }
         public string Name { get; set; }
         public Source Source { get; set; }
-        public Resolution Resolution { get; set; }
+        public int Resolution { get; set; }
         public Modifier Modifier { get; set; }
 
         public Quality()
         {
         }
 
-        private Quality(int id, string name, Source source, Resolution resolution, Modifier modifier = Modifier.NONE)
+        private Quality(int id, string name, Source source, int resolution, Modifier modifier = Modifier.NONE)
         {
             Id = id;
             Name = name;
             Source = source;
             Resolution = resolution;
             Modifier = modifier;
-        }
-
-        private Quality(int id, string name, Source source, int resolution, Modifier modifier = Modifier.NONE)
-            : this(id, name, source, (Resolution) resolution, modifier)
-        {
-
         }
 
         public override string ToString()
@@ -105,10 +100,15 @@ namespace NzbDrone.Core.Qualities
         public static Quality Remux1080p => new Quality(30, "Remux-1080p", Source.BLURAY, 1080, Modifier.REMUX);
         public static Quality Remux2160p => new Quality(31, "Remux-2160p", Source.BLURAY, 2160, Modifier.REMUX);
 
-        public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 0, Modifier.BRDISK); // new
+        public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 1080, Modifier.BRDISK); // new
 
         // Others
         public static Quality RAWHD => new Quality(10, "Raw-HD", Source.TV, 1080, Modifier.RAWHD);
+
+        public static Quality WEBRip480p => new Quality(12, "WEBRip-480p", Source.WEBRIP, 480);
+        public static Quality WEBRip720p => new Quality(14, "WEBRip-720p", Source.WEBRIP, 720);
+        public static Quality WEBRip1080p => new Quality(15, "WEBRip-1080p", Source.WEBRIP, 1080);
+        public static Quality WEBRip2160p => new Quality(17, "WEBRip-2160p", Source.WEBRIP, 2160); 
 
         static Quality()
         {
@@ -131,6 +131,10 @@ namespace NzbDrone.Core.Qualities
                 WEBDL720p,
                 WEBDL1080p,
                 WEBDL2160p,
+                WEBRip480p,
+                WEBRip720p,
+                WEBRip1080p,
+                WEBRip2160p,
                 Bluray480p,
                 Bluray576p,
                 Bluray720p,
@@ -161,21 +165,25 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.DVD)         { Weight = 9,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.DVDR)        { Weight = 10,  MinSize = 0, MaxSize = 100 },
 
-                new QualityDefinition(Quality.WEBDL480p)   { Weight = 11, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL480p)   { Weight = 11, MinSize = 0, MaxSize = 100, GroupName = "WEB 480p" },
+                new QualityDefinition(Quality.WEBRip480p)   { Weight = 11, MinSize = 0, MaxSize = 100, GroupName = "WEB 480p" },
                 new QualityDefinition(Quality.Bluray480p)  { Weight = 12, MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.Bluray576p)  { Weight = 13, MinSize = 0, MaxSize = 100 },
 
                 new QualityDefinition(Quality.HDTV720p)    { Weight = 14, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.WEBDL720p)   { Weight = 15, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL720p)   { Weight = 15, MinSize = 0, MaxSize = 100, GroupName = "WEB 720p" },
+                new QualityDefinition(Quality.WEBRip720p)   { Weight = 15, MinSize = 0, MaxSize = 100, GroupName = "WEB 720p" },
                 new QualityDefinition(Quality.Bluray720p)  { Weight = 16, MinSize = 0, MaxSize = 100 },
 
                 new QualityDefinition(Quality.HDTV1080p)   { Weight = 17, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100, GroupName = "WEB 1080p" },
+                new QualityDefinition(Quality.WEBRip1080p)   { Weight = 18, MinSize = 0, MaxSize = 100, GroupName = "WEB 1080p" },
                 new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null },
 
                 new QualityDefinition(Quality.HDTV2160p)   { Weight = 21, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "WEB 2160p" },
+                new QualityDefinition(Quality.WEBRip2160p)  { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "WEB 2160p" },
                 new QualityDefinition(Quality.Bluray2160p) { Weight = 23, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null },
 

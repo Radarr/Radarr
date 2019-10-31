@@ -36,6 +36,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IQualityDefinitionService _qualitiesService;
         private readonly IConfigService _config;
         private readonly IHistoryService _historyService;
+        private readonly IParsingService _parsingService;
         private readonly ICached<string> _warnedFiles;
         private readonly Logger _logger;
 
@@ -47,6 +48,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IQualityDefinitionService qualitiesService,
                                    IConfigService config,
                                    IHistoryService historyService,
+                                   IParsingService parsingService,
                                    ICacheManager cacheManager,
                                    Logger logger)
         {
@@ -58,6 +60,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _qualitiesService = qualitiesService;
             _config = config;
             _historyService = historyService;
+            _parsingService = parsingService;
             _warnedFiles = cacheManager.GetCache<string>(this.GetType());
             _logger = logger;
         }
@@ -78,6 +81,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             if (downloadClientItem != null)
             {
                 downloadClientItemInfo = Parser.Parser.ParseMovieTitle(downloadClientItem.Title, false);
+                downloadClientItemInfo = _parsingService.EnhanceMovieInfo(downloadClientItemInfo);
             }
 
             var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie, downloadClientItemInfo, folderInfo);
@@ -106,6 +110,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             ImportDecision decision = null;
 
             var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path, false);
+
+            if (fileMovieInfo != null)
+            {
+                fileMovieInfo = _parsingService.EnhanceMovieInfo(fileMovieInfo);
+            }            
 
             localMovie.FileMovieInfo = fileMovieInfo;
             localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);

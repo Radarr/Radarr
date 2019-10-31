@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Parser
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
+        ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo parsedMovieInfo, List<object> helpers = null);
         ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
-        List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
         List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo);
     }
 
@@ -65,40 +65,26 @@ namespace NzbDrone.Core.Parser
         public ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers)
         {
             var result = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
+
             if (result == null)
             {
                 return null;
             }
 
-            result = EnhanceMinimalInfo(result, helpers);
+            result = EnhanceMovieInfo(result, helpers);
 
             return result;
         }
 
-        private ParsedMovieInfo EnhanceMinimalInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
+        public ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers = null)
         {
-            minimalInfo.Languages = LanguageParser.ParseLanguages(minimalInfo.SimpleReleaseTitle);
-            _logger.Debug("Language(s) parsed: {0}", string.Join(", ", minimalInfo.Languages.ToExtendedString()));
-
-            minimalInfo.Quality = QualityParser.ParseQuality(minimalInfo.SimpleReleaseTitle);
-
-            if (minimalInfo.Edition.IsNullOrWhiteSpace())
+            if (helpers != null)
             {
-                minimalInfo.Edition = Parser.ParseEdition(minimalInfo.SimpleReleaseTitle);
+                minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
             }
 
-            minimalInfo.ReleaseGroup = Parser.ParseReleaseGroup(minimalInfo.SimpleReleaseTitle);
-
-            minimalInfo.ImdbId = Parser.ParseImdbId(minimalInfo.SimpleReleaseTitle);
-
-            minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
-
-            // After the augmenters have done their job on languages we can do our static method as well.
-            minimalInfo.Languages =
-                LanguageParser.EnhanceLanguages(minimalInfo.SimpleReleaseTitle, minimalInfo.Languages);
-
-            minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Source, minimalInfo.Quality.Resolution,
-                minimalInfo.Quality.Modifier);
+            // minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Quality.Source, minimalInfo.Quality.Quality.Resolution,
+                // minimalInfo.Quality.Quality.Modifier);
 
             minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
 
@@ -120,7 +106,7 @@ namespace NzbDrone.Core.Parser
             return minimalInfo;
         }
 
-        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
+        private List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
         {
             var matches = MatchFormatTags(movieInfo);
             var goodMatches = matches.Where(m => m.GoodMatch);
