@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findCommand } from 'Utilities/Command';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { toggleAlbumsMonitored } from 'Store/Actions/albumActions';
@@ -65,7 +65,11 @@ function createMapStateToProps() {
 
       const previousAlbum = sortedAlbums[albumIndex - 1] || _.last(sortedAlbums);
       const nextAlbum = sortedAlbums[albumIndex + 1] || _.first(sortedAlbums);
-      const isSearching = !!findCommand(commands, { name: commandNames.ALBUM_SEARCH });
+      const isSearchingCommand = findCommand(commands, { name: commandNames.ALBUM_SEARCH });
+      const isSearching = (
+        isCommandExecuting(isSearchingCommand) &&
+        isSearchingCommand.body.albumIds.indexOf(album.id) > -1
+      );
 
       const isFetching = tracks.isFetching || isTrackFilesFetching;
       const isPopulated = tracks.isPopulated && isTrackFilesPopulated;
