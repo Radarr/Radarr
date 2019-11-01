@@ -6,6 +6,7 @@ using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Queue
 {
@@ -57,9 +58,8 @@ namespace NzbDrone.Core.Queue
         {
             var queue = new Queue
             {
-                Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId)),
                 Languages = trackedDownload.RemoteMovie?.ParsedMovieInfo.Languages ?? new List<Language> { Language.Unknown },                
-                Quality = trackedDownload.RemoteMovie.ParsedMovieInfo.Quality,
+                Quality = trackedDownload.RemoteMovie?.ParsedMovieInfo.Quality ?? new QualityModel(Quality.Unknown),
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
                 Sizeleft = trackedDownload.DownloadItem.RemainingSize,
