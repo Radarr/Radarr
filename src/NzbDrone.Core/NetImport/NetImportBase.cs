@@ -49,11 +49,9 @@ namespace NzbDrone.Core.NetImport
 
                 yield return new NetImportDefinition
                 {
-                    Name = Name,
+                    Name = GetType().Name,
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
-                    ProfileId = 1,
-                    MinimumAvailability = MovieStatusType.Announced,
                     Implementation = GetType().Name,
                     Settings = config
                 };

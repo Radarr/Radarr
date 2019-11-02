@@ -3,13 +3,10 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -25,18 +22,12 @@ namespace NzbDrone.Core.NetImport
         private readonly INetImportFactory _netImportFactory;
         private readonly IMovieService _movieService;
         private readonly ISearchForNewMovie _movieSearch;
-        private readonly IRootFolderService _rootFolder;
         private readonly IConfigService _configService;
-        private readonly ISearchForNzb _nzbSearchService;
-        private readonly IProcessDownloadDecisions _processDownloadDecisions;
         private readonly IImportExclusionsService _exclusionService;
 
         public NetImportSearchService(INetImportFactory netImportFactory,
                                       IMovieService movieService,
                                       ISearchForNewMovie movieSearch,
-                                      IRootFolderService rootFolder,
-                                      ISearchForNzb nzbSearchService,
-                                      IProcessDownloadDecisions processDownloadDecisions,
                                       IConfigService configService,
                                       IImportExclusionsService exclusionService,
                                       Logger logger)
@@ -44,9 +35,6 @@ namespace NzbDrone.Core.NetImport
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _movieSearch = movieSearch;
-            _nzbSearchService = nzbSearchService;
-            _processDownloadDecisions = processDownloadDecisions;
-            _rootFolder = rootFolder;
             _exclusionService = exclusionService;
             _logger = logger;
             _configService = configService;
