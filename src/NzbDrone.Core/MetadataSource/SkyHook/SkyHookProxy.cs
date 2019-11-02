@@ -14,6 +14,8 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Movies;
 using System.Threading;
+using NLog.Fluent;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
@@ -55,7 +57,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
-            _logger.Info("HI from RUBEN");
+            _logger.ProgressInfo("Getting movie info Ruben!!!!!!");
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
             var wantedTitleLanguages = GetWantedTitleLanguages(langCode, profile);
 
@@ -317,7 +319,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (profile == null)
             {
-                _logger.Info("[RUBEN] Profile is null!");
+                _logger.ProgressInfo("[RUBEN] Profile is null!");
                 return new List<string>{langCode};
             }
 
