@@ -84,6 +84,7 @@ namespace NzbDrone.Common.Test.CacheTests
         }
 
         [Test]
+        [Platform(Exclude = "MacOsX")]
         public void should_honor_ttl()
         {
             int hitCount = 0;
@@ -92,10 +93,10 @@ namespace NzbDrone.Common.Test.CacheTests
             for (int i = 0; i < 10; i++)
             {
                 _cachedString.Get("key", () =>
-                    {
-                        hitCount++;
-                        return null;
-                    }, TimeSpan.FromMilliseconds(300));
+                {
+                    hitCount++;
+                    return null;
+                }, TimeSpan.FromMilliseconds(300));
 
                 Thread.Sleep(100);
             }
