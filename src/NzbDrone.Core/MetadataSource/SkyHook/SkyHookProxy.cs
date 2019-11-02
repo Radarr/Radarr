@@ -55,6 +55,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
+            _logger.Info("HI from RUBEN");
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
             var wantedTitleLanguages = GetWantedTitleLanguages(langCode, profile);
 
