@@ -319,11 +319,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (profile == null)
             {
-                _logger.ProgressInfo("[RUBEN] Profile is null!");
+                _logger.Info("Profile is null! Defaulting to {}", langCode);
                 return new List<string>{langCode};
             }
 
-            _logger.Info("[RUBEN] Profile formatItems {}", profile.FormatItems.ToArray());
+            _logger.Info("Profile formatItems {}", profile.FormatItems.ToArray());
 
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
                 .SelectMany(format => format.FormatTags)
@@ -338,7 +338,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 wantedTitleLanguages.Add(langCode);
             }
 
-            _logger.Info("[RUBEN] wantedTitleLanguages {}", wantedTitleLanguages.ToArray());
+            _logger.Info("WantedTitleLanguages {}", wantedTitleLanguages.ToArray());
 
             return wantedTitleLanguages;
 
