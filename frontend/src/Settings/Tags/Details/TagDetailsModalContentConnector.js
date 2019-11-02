@@ -41,18 +41,28 @@ function createMatchingRestrictionsSelector() {
   );
 }
 
+function createMatchingNetImportsSelector() {
+  return createSelector(
+    (state, { netImportIds }) => netImportIds,
+    (state) => state.settings.netImports.items,
+    findMatchingItems
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createMatchingMovieSelector(),
     createMatchingDelayProfilesSelector(),
     createMatchingNotificationsSelector(),
     createMatchingRestrictionsSelector(),
-    (movies, delayProfiles, notifications, restrictions) => {
+    createMatchingNetImportsSelector(),
+    (movies, delayProfiles, notifications, restrictions, netImports) => {
       return {
         movies,
         delayProfiles,
         notifications,
-        restrictions
+        restrictions,
+        netImports
       };
     }
   );

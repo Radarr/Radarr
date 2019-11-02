@@ -20,6 +20,7 @@ function TagDetailsModalContent(props) {
     delayProfiles,
     notifications,
     restrictions,
+    netImports,
     onModalClose,
     onDeleteTagPress
   } = props;
@@ -140,6 +141,21 @@ function TagDetailsModalContent(props) {
               }
             </FieldSet>
         }
+
+        {
+          !!netImports.length &&
+            <FieldSet legend="Lists">
+              {
+                netImports.map((item) => {
+                  return (
+                    <div key={item.id}>
+                      {item.name}
+                    </div>
+                  );
+                })
+              }
+            </FieldSet>
+        }
       </ModalBody>
 
       <ModalFooter>
@@ -172,6 +188,7 @@ TagDetailsModalContent.propTypes = {
   delayProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   restrictions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  netImports: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteTagPress: PropTypes.func.isRequired
 };

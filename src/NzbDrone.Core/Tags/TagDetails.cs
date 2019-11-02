@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Tags
         public List<int> MovieIds { get; set; }
         public List<int> NotificationIds { get; set; }
         public List<int> RestrictionIds { get; set; }
+        public List<int> NetImportIds { get; set; }
         public List<int> DelayProfileIds { get; set; }
 
         public bool InUse

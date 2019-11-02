@@ -55,6 +55,7 @@ class Tag extends Component {
       delayProfileIds,
       notificationIds,
       restrictionIds,
+      netImportIds,
       movieIds
     } = this.props;
 
@@ -67,6 +68,7 @@ class Tag extends Component {
       delayProfileIds.length ||
       notificationIds.length ||
       restrictionIds.length ||
+      netImportIds.length ||
       movieIds.length
     );
 
@@ -110,6 +112,13 @@ class Tag extends Component {
                     {restrictionIds.length} restriction{restrictionIds.length > 1 && 's'}
                   </div>
               }
+
+              {
+                !!netImportIds.length &&
+                  <div>
+                    {netImportIds.length} list{netImportIds.length > 1 && 's'}
+                  </div>
+              }
             </div>
         }
 
@@ -127,6 +136,7 @@ class Tag extends Component {
           delayProfileIds={delayProfileIds}
           notificationIds={notificationIds}
           restrictionIds={restrictionIds}
+          netImportIds={netImportIds}
           isOpen={isDetailsModalOpen}
           onModalClose={this.onDetailsModalClose}
           onDeleteTagPress={this.onDeleteTagPress}
@@ -152,6 +162,7 @@ Tag.propTypes = {
   delayProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   notificationIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   restrictionIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  netImportIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onConfirmDeleteTag: PropTypes.func.isRequired
 };
@@ -160,6 +171,7 @@ Tag.defaultProps = {
   delayProfileIds: [],
   notificationIds: [],
   restrictionIds: [],
+  netImportIds: [],
   movieIds: []
 };
 

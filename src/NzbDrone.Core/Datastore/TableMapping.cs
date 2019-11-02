@@ -67,7 +67,6 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<NetImportDefinition>().RegisterDefinition("NetImport")
                 .Ignore(i => i.Enable)
-                .Ignore(d => d.Tags)
                 .Relationship()
                 .HasOne(n => n.Profile, n => n.ProfileId);
 

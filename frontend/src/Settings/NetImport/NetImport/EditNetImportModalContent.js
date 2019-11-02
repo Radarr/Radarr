@@ -42,6 +42,7 @@ function EditNetImportModalContent(props) {
     shouldMonitor,
     qualityProfileId,
     rootFolderPath,
+    tags,
     fields
   } = item;
 
@@ -132,6 +133,18 @@ function EditNetImportModalContent(props) {
                   type={inputTypes.ROOT_FOLDER_SELECT}
                   name="rootFolderPath"
                   {...rootFolderPath}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Radarr Tags</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.TAG}
+                  name="tags"
+                  helpText="Add movie from this list with these tags"
+                  {...tags}
                   onChange={onInputChange}
                 />
               </FormGroup>
