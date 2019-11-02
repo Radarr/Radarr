@@ -323,7 +323,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 return new List<string>{langCode};
             }
 
-            _logger.Info("Profile formatItems {}", profile.FormatItems.ToArray());
+            _logger.Info("Profile formatItems: {}", profile.FormatItems.ToArray());
 
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
                 .SelectMany(format => format.FormatTags)
