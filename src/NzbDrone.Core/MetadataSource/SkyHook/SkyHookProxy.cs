@@ -319,7 +319,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (profile == null)
             {
-                _logger.Info("Profile is null! Defaulting to {}", langCode);
+                _logger.Info("Profile is null! Defaulting to language code {}", langCode);
                 return new List<string>{langCode};
             }
 
