@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import MenuButton from 'Components/Menu/MenuButton';
 import styles from './PageMenuButton.css';
@@ -9,8 +7,8 @@ import styles from './PageMenuButton.css';
 function PageMenuButton(props) {
   const {
     iconName,
-    text,
     indicator,
+    text,
     ...otherProps
   } = props;
 
@@ -23,21 +21,6 @@ function PageMenuButton(props) {
         name={iconName}
         size={18}
       />
-
-      {
-        indicator &&
-          <span
-            className={classNames(
-              styles.indicatorContainer,
-              'fa-layers fa-fw'
-            )}
-          >
-            <Icon
-              name={icons.CIRCLE}
-              size={9}
-            />
-          </span>
-      }
 
       <div className={styles.label}>
         {text}

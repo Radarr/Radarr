@@ -33,7 +33,8 @@ import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieTitlesTable from 'Movie/Titles/MovieTitlesTable';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
-import InteractiveSearchTable from '../../InteractiveSearch/InteractiveSearchTable';
+import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
+import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -74,6 +75,7 @@ class MovieDetails extends Component {
       allExpanded: false,
       allCollapsed: false,
       expandedState: {},
+      selectedTabIndex: 0,
       overviewHeight: 0
     };
   }
@@ -192,7 +194,8 @@ class MovieDetails extends Component {
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
-      overviewHeight
+      overviewHeight,
+      selectedTabIndex
     } = this.state;
 
     return (
@@ -447,7 +450,7 @@ class MovieDetails extends Component {
                 <div>Loading movie files failed</div>
             }
 
-            <Tabs>
+            <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
               <TabList
                 className={styles.tabList}
               >
@@ -478,6 +481,14 @@ class MovieDetails extends Component {
                 >
                   Titles
                 </Tab>
+
+                {
+                  selectedTabIndex === 1 &&
+                    <div className={styles.filterIcon}>
+                      <InteractiveSearchFilterMenuConnector />
+                    </div>
+                }
+
               </TabList>
 
               <TabPanel>

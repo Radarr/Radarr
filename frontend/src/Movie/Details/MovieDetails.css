@@ -83,6 +83,10 @@
   margin-left: 20px;
 }
 
+.filterIcon {
+  float: right;
+}
+
 .movieNavigationButtons {
   white-space: nowrap;
 }
