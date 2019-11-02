@@ -75,6 +75,19 @@ function IndexerOptions(props) {
               />
             </FormGroup>
 
+            <FormGroup>
+              <FormLabel>Availability Delay</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.NUMBER}
+                name="availabilityDelay"
+                unit="Days"
+                helpText="Amount of time before or after available date to search for Movie"
+                onChange={onInputChange}
+                {...settings.availabilityDelay}
+              />
+            </FormGroup>
+
             <FormGroup
               advancedSettings={advancedSettings}
               isAdvanced={true}
