@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -16,11 +17,16 @@ function createMapStateToProps() {
         schema
       } = netImports;
 
+      const listGroups = _.chain(schema)
+        .sortBy((o) => o.listOrder)
+        .groupBy('listType')
+        .value();
+
       return {
         isSchemaFetching,
         isSchemaPopulated,
         schemaError,
-        netImports: schema
+        listGroups
       };
     }
   );

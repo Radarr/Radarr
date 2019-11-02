@@ -72,6 +72,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<NetImportDefinition>("NetImport").RegisterModel()
                   .Ignore(x => x.ImplementationName)
+                  .Ignore(i => i.ListType)
                   .Ignore(i => i.Enable);
 
             Mapper.Entity<NotificationDefinition>("Notifications").RegisterModel()

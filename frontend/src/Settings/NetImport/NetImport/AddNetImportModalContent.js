@@ -10,6 +10,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import AddNetImportItem from './AddNetImportItem';
+import titleCase from 'Utilities/String/titleCase';
 import styles from './AddNetImportModalContent.css';
 
 class AddNetImportModalContent extends Component {
@@ -22,7 +23,7 @@ class AddNetImportModalContent extends Component {
       isSchemaFetching,
       isSchemaPopulated,
       schemaError,
-      netImports,
+      listGroups,
       onNetImportSelect,
       onModalClose
     } = this.props;
@@ -53,22 +54,28 @@ class AddNetImportModalContent extends Component {
                   <div>For more information on the individual netImports, clink on the info buttons.</div>
                 </Alert>
 
-                <FieldSet>
-                  <div className={styles.netImports}>
-                    {
-                      netImports.map((netImport) => {
-                        return (
-                          <AddNetImportItem
-                            key={netImport.implementation}
-                            implementation={netImport.implementation}
-                            {...netImport}
-                            onNetImportSelect={onNetImportSelect}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                </FieldSet>
+                {
+                  Object.keys(listGroups).map((key) => {
+                    return (
+                      <FieldSet legend={`${titleCase(key)} List`} key={key}>
+                        <div className={styles.netImports}>
+                          {
+                            listGroups[key].map((netImport) => {
+                              return (
+                                <AddNetImportItem
+                                  key={netImport.implementation}
+                                  implementation={netImport.implementation}
+                                  {...netImport}
+                                  onNetImportSelect={onNetImportSelect}
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                      </FieldSet>
+                    );
+                  })
+                }
               </div>
           }
         </ModalBody>
@@ -88,7 +95,7 @@ AddNetImportModalContent.propTypes = {
   isSchemaFetching: PropTypes.bool.isRequired,
   isSchemaPopulated: PropTypes.bool.isRequired,
   schemaError: PropTypes.object,
-  netImports: PropTypes.arrayOf(PropTypes.object).isRequired,
+  listGroups: PropTypes.object.isRequired,
   onNetImportSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

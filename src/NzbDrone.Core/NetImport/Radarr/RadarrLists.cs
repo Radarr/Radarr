@@ -11,6 +11,8 @@ namespace NzbDrone.Core.NetImport.Radarr
     public class RadarrLists : HttpNetImportBase<RadarrSettings>
     {
         public override string Name => "Radarr Lists";
+
+        public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

@@ -8,6 +8,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
     public class CouchPotatoImport : HttpNetImportBase<CouchPotatoSettings>
     {
         public override string Name => "CouchPotato";
+
+        public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

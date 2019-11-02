@@ -11,6 +11,8 @@ namespace Radarr.Api.V3.NetImport
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
+        public NetImportType ListType { get; set; }
+        public int ListOrder { get; set; }
     }
 
     public class NetImportResourceMapper : ProviderResourceMapper<NetImportResource, NetImportDefinition>
@@ -30,6 +32,8 @@ namespace Radarr.Api.V3.NetImport
             resource.RootFolderPath = definition.RootFolderPath;
             resource.QualityProfileId = definition.ProfileId;
             resource.MinimumAvailability = definition.MinimumAvailability;
+            resource.ListType = definition.ListType;
+            resource.ListOrder = (int)definition.ListType;
 
             return resource;
         }
@@ -49,6 +53,7 @@ namespace Radarr.Api.V3.NetImport
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ProfileId = resource.QualityProfileId;
             definition.MinimumAvailability = resource.MinimumAvailability;
+            definition.ListType = resource.ListType;
 
             return definition;
         }

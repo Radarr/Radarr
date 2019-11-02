@@ -9,6 +9,8 @@ namespace NzbDrone.Core.NetImport.TMDb
     public class TMDbImport : HttpNetImportBase<TMDbSettings>
     {
         public override string Name => "TMDb Lists";
+
+        public override NetImportType ListType => NetImportType.TMDB;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
