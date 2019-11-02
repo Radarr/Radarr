@@ -57,7 +57,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
-            _logger.ProgressInfo("Getting movie info Ruben!!!!!!");
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
             var wantedTitleLanguages = GetWantedTitleLanguages(langCode, profile);
 
@@ -319,11 +318,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (profile == null)
             {
-                _logger.Info("Profile is null! Defaulting to language code {}", langCode);
+                _logger.Trace("Profile is null! Defaulting to language code {}", langCode);
                 return new List<string>{langCode};
             }
 
-            _logger.Info("Profile formatItems: {}", profile.FormatItems.ToArray());
+            _logger.Trace("Profile formatItems: {}", profile.FormatItems.ToArray());
 
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
                 .SelectMany(format => format.FormatTags)
@@ -338,7 +337,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 wantedTitleLanguages.Add(langCode);
             }
 
-            _logger.Info("WantedTitleLanguages {}", wantedTitleLanguages.ToArray());
+            _logger.Debug("WantedTitleLanguages {}", wantedTitleLanguages.ToArray());
 
             return wantedTitleLanguages;
 
