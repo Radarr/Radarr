@@ -29,7 +29,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
-        
+
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
         private readonly IMovieService _movieService;
@@ -316,8 +316,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (profile == null)
             {
+                _logger.Info("[RUBEN] Profile is null!");
                 return new List<string>{langCode};
             }
+
+            _logger.Info("[RUBEN] Profile formatItems {}", profile.FormatItems.ToArray());
 
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
                 .SelectMany(format => format.FormatTags)
