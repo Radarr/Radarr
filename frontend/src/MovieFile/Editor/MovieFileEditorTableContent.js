@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { icons } from 'Helpers/Props';
+import Icon from 'Components/Icon';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import MovieFileEditorRow from './MovieFileEditorRow';
@@ -37,8 +39,13 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'quality.customFormats',
+    label: 'Formats',
+    isVisible: true
+  },
+  {
     name: 'action',
-    label: 'Action',
+    label: React.createElement(Icon, { name: icons.ADVANCED_SETTINGS }),
     isVisible: true
   }
 ];

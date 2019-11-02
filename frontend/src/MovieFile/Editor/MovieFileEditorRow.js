@@ -7,6 +7,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Icon from 'Components/Icon';
@@ -159,6 +160,14 @@ class MovieFileEditorRow extends Component {
               />
           }
         </TableRowCellButton>
+
+        <TableRowCell
+          className={styles.formats}
+        >
+          <MovieFormats
+            formats={quality.customFormats}
+          />
+        </TableRowCell>
 
         <TableRowCell className={styles.actions}>
           <Popover

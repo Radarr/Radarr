@@ -5,6 +5,7 @@
 }
 
 .quality,
+.formats,
 .language {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 }
