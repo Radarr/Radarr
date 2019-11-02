@@ -7,6 +7,7 @@ using NzbDrone.Common.TPL;
 namespace NzbDrone.Common.Test.TPLTests
 {
     [TestFixture]
+    [Platform(Exclude="MacOsX")]
     public class DebouncerFixture
     {
         public class Counter
