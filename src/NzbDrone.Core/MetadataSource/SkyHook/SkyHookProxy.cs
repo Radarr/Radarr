@@ -335,6 +335,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 wantedTitleLanguages.Add(langCode);
             }
 
+            _logger.Info("[RUBEN] wantedTitleLanguages {}", wantedTitleLanguages.ToArray());
+
             return wantedTitleLanguages;
 
         }
