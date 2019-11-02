@@ -25,7 +25,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
         public override IParseNetImportResponse GetParser()
         {
-            return new StevenLuParser(Settings);
+            return new StevenLuParser();
         }
     }
 }

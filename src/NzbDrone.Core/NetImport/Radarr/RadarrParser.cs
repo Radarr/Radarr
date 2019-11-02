@@ -42,11 +42,11 @@ namespace NzbDrone.Core.NetImport.Radarr
             return jsonResponse.SelectList(_skyhookProxy.MapMovie);
         }
 
-        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
             try
             {
-                var error = JsonConvert.DeserializeObject<RadarrError>(indexerResponse.HttpResponse.Content);
+                var error = JsonConvert.DeserializeObject<RadarrError>(netImportResponse.HttpResponse.Content);
 
                 if (error != null && error.Errors != null && error.Errors.Count != 0)
                 {
@@ -58,9 +58,9 @@ namespace NzbDrone.Core.NetImport.Radarr
                 //No error!
             }
 
-            if (indexerResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
+            if (netImportResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new HttpException(indexerResponse.HttpRequest, indexerResponse.HttpResponse);
+                throw new HttpException(netImportResponse.HttpRequest, netImportResponse.HttpResponse);
             }
 
             return true;

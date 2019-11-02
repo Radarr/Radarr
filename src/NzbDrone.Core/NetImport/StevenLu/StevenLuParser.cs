@@ -8,12 +8,10 @@ namespace NzbDrone.Core.NetImport.StevenLu
 {
     public class StevenLuParser : IParseNetImportResponse
     {
-        private readonly StevenLuSettings _settings;
         private NetImportResponse _importResponse;
 
-        public StevenLuParser(StevenLuSettings settings)
+        public StevenLuParser()
         {
-            _settings = settings;
         }
 
         public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
@@ -47,17 +45,17 @@ namespace NzbDrone.Core.NetImport.StevenLu
             return movies;
         }
 
-        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
-            if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
+            if (netImportResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new NetImportException(indexerResponse, "Indexer API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+                throw new NetImportException(netImportResponse, "StevenLu API call resulted in an unexpected StatusCode [{0}]", netImportResponse.HttpResponse.StatusCode);
             }
 
-            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
-                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
+            if (netImportResponse.HttpResponse.Headers.ContentType != null && netImportResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
+                netImportResponse.HttpRequest.Headers.Accept != null && !netImportResponse.HttpRequest.Headers.Accept.Contains("text/json"))
             {
-                throw new NetImportException(indexerResponse, "Indexer responded with html content. Site is likely blocked or unavailable.");
+                throw new NetImportException(netImportResponse, "StevenLu responded with html content. Site is likely blocked or unavailable.");
             }
 
             return true;
