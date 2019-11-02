@@ -7,6 +7,7 @@ namespace NzbDrone.Core.NetImport
         bool Enabled { get; }
         bool EnableAuto { get; }
 
+        NetImportType ListType { get; }
         NetImportFetchResult Fetch();
     }
 }

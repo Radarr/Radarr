@@ -8,6 +8,8 @@ namespace NzbDrone.Core.NetImport.StevenLu
     public class StevenLuImport : HttpNetImportBase<StevenLuSettings>
     {
         public override string Name => "StevenLu";
+
+        public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

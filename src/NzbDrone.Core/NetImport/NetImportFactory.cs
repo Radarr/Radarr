@@ -39,6 +39,8 @@ namespace NzbDrone.Core.NetImport
         public override void SetProviderCharacteristics(INetImport provider, NetImportDefinition definition)
         {
             base.SetProviderCharacteristics(provider, definition);
+
+            definition.ListType = provider.ListType;
         }
 
         public List<INetImport> Enabled()

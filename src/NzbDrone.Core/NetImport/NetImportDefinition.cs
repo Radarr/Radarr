@@ -18,5 +18,7 @@ namespace NzbDrone.Core.NetImport
         public int ProfileId { get; set; }
         public string RootFolderPath { get; set; }
         public override bool Enable => Enabled;
+
+        public NetImportType ListType { get; set; }
     }
 }

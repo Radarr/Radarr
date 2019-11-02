@@ -23,6 +23,8 @@ namespace NzbDrone.Core.NetImport
         protected readonly Logger _logger;
 
         public abstract string Name { get; }
+
+        public abstract NetImportType ListType { get; }
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
 
