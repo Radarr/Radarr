@@ -16,6 +16,7 @@ using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
@@ -76,7 +77,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new HashSet<int>(response.Resource.results.Select(c => c.id));
         }
 
-        public Movie GetMovieInfo(int tmdbId, Profile profile = null, bool hasPreDBEntry = false)
+        public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId, Profile profile, bool hasPreDBEntry)
         {
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
 
@@ -84,7 +85,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                .SetSegment("route", "movie")
                .SetSegment("id", tmdbId.ToString())
                .SetSegment("secondaryRoute", "")
-               .AddQueryParam("append_to_response", "alternative_titles,release_dates,videos")
+               .AddQueryParam("append_to_response", "alternative_titles,release_dates,videos,credits")
                .AddQueryParam("language", langCode.ToUpper())
 
                // .AddQueryParam("country", "US")
@@ -309,7 +310,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             movie.AlternativeTitles.AddRange(altTitles);
 
-            return movie;
+            var people = new List<Credit>();
+
+            people.AddRange(resource.credits.Cast.Select(MapCast).ToList());
+            people.AddRange(resource.credits.Crew.Select(MapCrew).ToList());
+
+            if (resource.belongs_to_collection != null)
+            {
+                movie.Collection = MapCollection(resource.belongs_to_collection);
+
+                movie.Collection.Images.Add(_configService.GetCoverForURL(resource.belongs_to_collection.poster_path, MediaCoverTypes.Poster));
+                movie.Collection.Images.Add(_configService.GetCoverForURL(resource.belongs_to_collection.backdrop_path, MediaCoverTypes.Fanart));
+            }
+
+            return new Tuple<Movie, List<Credit>>(movie, people);
         }
 
         public Movie GetMovieInfo(string imdbId)
@@ -477,7 +491,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Movie> { GetMovieInfo(tmdbid) };
+                        return new List<Movie> { GetMovieInfo(tmdbid, null, false).Item1 };
                     }
                     catch (MovieNotFoundException)
                     {
@@ -628,61 +642,61 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return null;
         }
 
-        private static Actor MapActors(ActorResource arg)
+        private static Credit MapCast(CastResource arg)
         {
-            var newActor = new Actor
+            var newActor = new Credit
             {
                 Name = arg.Name,
-                Character = arg.Character
+                Character = arg.Character,
+                Order = arg.Order,
+                CreditTmdbId = arg.Credit_Id,
+                PersonTmdbId = arg.Id,
+                Type = CreditType.Cast
             };
 
-            if (arg.Image != null)
+            if (arg.Profile_Path != null)
             {
                 newActor.Images = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover(MediaCoverTypes.Headshot, arg.Image)
+                    new MediaCover.MediaCover(MediaCoverTypes.Headshot, "https://image.tmdb.org/t/p/original" + arg.Profile_Path)
                 };
             }
 
             return newActor;
         }
 
-        private static Ratings MapRatings(RatingResource rating)
+        private static Credit MapCrew(CrewResource arg)
         {
-            if (rating == null)
+            var newActor = new Credit
             {
-                return new Ratings();
+                Name = arg.Name,
+                Department = arg.Department,
+                Job = arg.Job,
+                CreditTmdbId = arg.Credit_Id,
+                PersonTmdbId = arg.Id,
+                Type = CreditType.Crew
+            };
+
+            if (arg.Profile_Path != null)
+            {
+                newActor.Images = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover(MediaCoverTypes.Headshot, "https://image.tmdb.org/t/p/original" + arg.Profile_Path)
+                };
             }
 
-            return new Ratings
-            {
-                Votes = rating.Count,
-                Value = rating.Value
-            };
+            return newActor;
         }
 
-        private static MediaCover.MediaCover MapImage(ImageResource arg)
+        private static MovieCollection MapCollection(CollectionResource arg)
         {
-            return new MediaCover.MediaCover
+            var newCollection = new MovieCollection
             {
-                Url = arg.Url,
-                CoverType = MapCoverType(arg.CoverType)
+                Name = arg.name,
+                TmdbId = arg.id,
             };
-        }
 
-        private static MediaCoverTypes MapCoverType(string coverType)
-        {
-            switch (coverType.ToLower())
-            {
-                case "poster":
-                    return MediaCoverTypes.Poster;
-                case "banner":
-                    return MediaCoverTypes.Banner;
-                case "fanart":
-                    return MediaCoverTypes.Fanart;
-                default:
-                    return MediaCoverTypes.Unknown;
-            }
+            return newCollection;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)
@@ -692,7 +706,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 Movie newMovie = movie;
                 if (movie.TmdbId > 0)
                 {
-                    newMovie = GetMovieInfo(movie.TmdbId);
+                    newMovie = GetMovieInfo(movie.TmdbId, null, false).Item1;
                 }
                 else if (movie.ImdbId.IsNotNullOrWhiteSpace())
                 {

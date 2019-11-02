@@ -41,7 +41,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
     {
         public bool adult { get; set; }
         public string backdrop_path { get; set; }
-        public Belongs_To_Collection belongs_to_collection { get; set; }
+        public CollectionResource belongs_to_collection { get; set; }
         public int? status_code { get; set; }
         public string status_message { get; set; }
         public int budget { get; set; }
@@ -69,11 +69,19 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public AlternativeTitles alternative_titles { get; set; }
         public ReleaseDatesResource release_dates { get; set; }
         public VideosResource videos { get; set; }
+
+        public CreditsResource credits { get; set; }
     }
 
     public class ReleaseDatesResource
     {
         public List<ReleaseDates> results { get; set; }
+    }
+
+    public class CreditsResource
+    {
+        public List<CastResource> Cast { get; set; }
+        public List<CrewResource> Crew { get; set; }
     }
 
     public class ReleaseDate
@@ -91,7 +99,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<ReleaseDate> release_dates { get; set; }
     }
 
-    public class Belongs_To_Collection
+    public class CollectionResource
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -137,6 +145,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
     public class VideosResource
     {
         public List<Video> results { get; set; }
+    }
+
+    public class CrewResource
+    {
+        public string Name { get; set; }
+        public string Department { get; set; }
+        public string Job { get; set; }
+        public string Credit_Id { get; set; }
+        public int Id { get; set; }
+        public string Profile_Path { get; set; }
+    }
+
+    public class CastResource
+    {
+        public string Name { get; set; }
+        public string Character { get; set; }
+        public string Credit_Id { get; set; }
+        public int Id { get; set; }
+        public int Order { get; set; }
+        public string Profile_Path { get; set; }
     }
 
     public class Video
