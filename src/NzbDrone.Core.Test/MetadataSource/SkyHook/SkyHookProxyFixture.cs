@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase(70981, "Prometheus")]
         public void should_be_able_to_get_movie_detail(int tmdbId, string title)
         {
-            var details = Subject.GetMovieInfo(tmdbId);
+            var details = Subject.GetMovieInfo(tmdbId, null, false).Item1;
 
             ValidateMovie(details);
 

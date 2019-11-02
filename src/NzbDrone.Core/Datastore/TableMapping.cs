@@ -22,6 +22,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Notifications;
@@ -96,10 +97,11 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(f => f.Path);
 
             Mapper.Entity<Movie>("Movies").RegisterModel()
-                  .Ignore(s => s.RootFolderPath)
-                  .Ignore(m => m.Actors);
+                  .Ignore(s => s.RootFolderPath);
 
             Mapper.Entity<AlternativeTitle>("AlternativeTitles").RegisterModel();
+
+            Mapper.Entity<Credit>("Credits").RegisterModel();
 
             Mapper.Entity<ImportExclusion>("ImportExclusions").RegisterModel();
 

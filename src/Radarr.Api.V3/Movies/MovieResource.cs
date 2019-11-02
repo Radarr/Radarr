@@ -67,6 +67,7 @@ namespace Radarr.Api.V3.Movies
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
+        public MovieCollection Collection { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -127,7 +128,8 @@ namespace Radarr.Api.V3.Movies
                 Ratings = model.Ratings,
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio
+                Studio = model.Studio,
+                Collection = model.Collection
             };
         }
 
