@@ -162,6 +162,7 @@ class MovieDetails extends Component {
       tmdbId,
       imdbId,
       title,
+      year,
       runtime,
       ratings,
       path,
@@ -292,6 +293,10 @@ class MovieDetails extends Component {
 
                     <div className={styles.title}>
                       {title}
+                    </div>
+
+                    <div className={styles.year}>
+                      ({year})
                     </div>
 
                     {
@@ -557,6 +562,7 @@ MovieDetails.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
   title: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired,
   runtime: PropTypes.number.isRequired,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
