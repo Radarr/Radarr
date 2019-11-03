@@ -296,7 +296,7 @@ class MovieDetails extends Component {
                     </div>
 
                     <div className={styles.year}>
-                      ({year})
+                      {year}
                     </div>
 
                     {
@@ -416,6 +416,15 @@ class MovieDetails extends Component {
                   }
                 </div>
 
+                <Measure onMeasure={this.onMeasure}>
+                  <div className={styles.overview}>
+                    <TextTruncate
+                      line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
+                      text={overview}
+                    />
+                  </div>
+                </Measure>
+
                 <InfoLabel
                   className={styles.detailsInfoLabel}
                   title="Path"
@@ -425,15 +434,6 @@ class MovieDetails extends Component {
                     {path}
                   </span>
                 </InfoLabel>
-
-                <Measure onMeasure={this.onMeasure}>
-                  <div className={styles.overview}>
-                    <TextTruncate
-                      line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
-                      text={overview}
-                    />
-                  </div>
-                </Measure>
 
                 <InfoLabel
                   className={styles.detailsInfoLabel}
