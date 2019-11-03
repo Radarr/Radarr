@@ -20,11 +20,6 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             var updater = new ProfileUpdater159(conn, tran);
 
-            // updater.SplitQualityAppend(8, 12);  // APE after Flac
-            // updater.SplitQualityAppend(5, 14);  // APE after Flac
-            // updater.SplitQualityAppend(3, 15);  // APE after Flacupdater.SplitQualityAppend(8, 12);  // APE after Flac
-            // updater.SplitQualityAppend(18, 17);  // APE after Flac
-
             updater.CreateGroupAt(8, "WEB 480p", new int[]{12}); // Group WEBRip480p with WEBDL480p
             updater.CreateGroupAt(5, "WEB 720p", new int[]{14}); // Group WEBRip720p with WEBDL720p
             updater.CreateGroupAt(3, "WEB 1080p", new int[]{15}); // Group WEBRip1080p with WEBDL1080p
@@ -158,7 +153,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                     foreach (var newQuality in newQualities)
                     {
-                        profile.Items[findIndex].Items.Insert(findIndex, new ProfileItem159
+                        profile.Items[findIndex].Items.Insert(0, new ProfileItem159
                         {
                             Quality = newQuality,
                             Allowed = findQuality.Allowed
@@ -196,7 +191,12 @@ namespace NzbDrone.Core.Datastore.Migration
                     });
                 }
 
-                foreach (var quality in newQualities)
+                var cleanQualities = new List<int>();
+
+                cleanQualities.AddRange(newQualities);
+                cleanQualities.Add(find);
+
+                foreach (var quality in cleanQualities)
                 {
                     var index = profile.Items.FindIndex(v => v.Quality == quality);
 
