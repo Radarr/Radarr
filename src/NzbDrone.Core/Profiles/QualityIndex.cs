@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Profiles
                 return GroupIndex.CompareTo(right.GroupIndex);
             }
 
-            return indexCompare; ;
+            return indexCompare;
         }
     }
 }
