@@ -416,6 +416,16 @@ class MovieDetails extends Component {
                   }
                 </div>
 
+                <InfoLabel
+                  className={styles.detailsInfoLabel}
+                  title="Path"
+                  size={sizes.LARGE}
+                >
+                  <span className={styles.path}>
+                    {path}
+                  </span>
+                </InfoLabel>
+
                 <Measure onMeasure={this.onMeasure}>
                   <div className={styles.overview}>
                     <TextTruncate
