@@ -5,6 +5,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import styles from './MovieTitlesTableContent.css';
 import MovieTitlesRow from './MovieTitlesRow';
+
 const columns = [
   {
     name: 'altTitle',
