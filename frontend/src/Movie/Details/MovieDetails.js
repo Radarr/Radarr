@@ -30,7 +30,9 @@ import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
-import MovieTitlesTable from 'Movie/Titles/MovieTitlesTable';
+import MovieTitlesTable from './Titles/MovieTitlesTable';
+import MovieCastPostersConnector from './Cast/MovieCastPostersConnector';
+import MovieCrewPostersConnector from './Crew/MovieCrewPostersConnector';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
@@ -177,7 +179,9 @@ class MovieDetails extends Component {
       isSearching,
       isFetching,
       isPopulated,
+      isSmallScreen,
       movieFilesError,
+      moviePeopleError,
       hasMovieFiles,
       previousMovie,
       nextMovie,
@@ -460,12 +464,12 @@ class MovieDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !movieFilesError &&
+              !isPopulated && !movieFilesError && !moviePeopleError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && movieFilesError &&
+              !isFetching && movieFilesError && !moviePeopleError &&
                 <div>Loading movie files failed</div>
             }
 
@@ -501,6 +505,20 @@ class MovieDetails extends Component {
                   Titles
                 </Tab>
 
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Cast
+                </Tab>
+
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Crew
+                </Tab>
+
                 {
                   selectedTabIndex === 1 &&
                     <div className={styles.filterIcon}>
@@ -531,6 +549,18 @@ class MovieDetails extends Component {
               <TabPanel>
                 <MovieTitlesTable
                   movieId={id}
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <MovieCastPostersConnector
+                  isSmallScreen={isSmallScreen}
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <MovieCrewPostersConnector
+                  isSmallScreen={isSmallScreen}
                 />
               </TabPanel>
             </Tabs>
@@ -597,7 +627,9 @@ MovieDetails.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
   movieFilesError: PropTypes.object,
+  moviePeopleError: PropTypes.object,
   hasMovieFiles: PropTypes.bool.isRequired,
   previousMovie: PropTypes.object.isRequired,
   nextMovie: PropTypes.object.isRequired,
