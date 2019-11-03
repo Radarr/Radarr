@@ -4,6 +4,7 @@
   flex: 0 0 60px;
 }
 
+.collection,
 .sortTitle {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

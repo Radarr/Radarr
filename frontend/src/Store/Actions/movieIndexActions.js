@@ -79,6 +79,12 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'collection',
+      label: 'Collection',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'studio',
       label: 'Studio',
       isSortable: true,
@@ -173,6 +179,12 @@ export const defaultState = {
       return studio ? studio.toLowerCase() : '';
     },
 
+    collection: function(item) {
+      const { collection ={} } = item;
+
+      return collection.name;
+    },
+
     ratings: function(item) {
       const { ratings = {} } = item;
 
@@ -216,6 +228,25 @@ export const defaultState = {
       }
     },
     {
+      name: 'collection',
+      label: 'Collection',
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const collectionList = items.reduce((acc, movie) => {
+          if (movie.collection) {
+            acc.push({
+              id: movie.collection.name,
+              name: movie.collection.name
+            });
+          }
+
+          return acc;
+        }, []);
+
+        return collectionList.sort(sortByName);
+      }
+    },
+    {
       name: 'qualityProfileId',
       label: 'Quality Profile',
       type: filterBuilderTypes.EXACT,
@@ -255,7 +286,7 @@ export const defaultState = {
       label: 'Genres',
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
-        const tagList = items.reduce((acc, movie) => {
+        const genreList = items.reduce((acc, movie) => {
           movie.genres.forEach((genre) => {
             acc.push({
               id: genre,
@@ -266,7 +297,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return tagList.sort(sortByName);
+        return genreList.sort(sortByName);
       }
     },
     {

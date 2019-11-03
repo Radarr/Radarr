@@ -11,6 +11,7 @@
   flex: 0 0 60px;
 }
 
+.collection,
 .sortTitle {
   composes: cell;
 
