@@ -110,6 +110,13 @@ export const filterPredicates = {
     return dateFilterPredicate(item.added, filterValue, type);
   },
 
+  collection: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const { collection } = item;
+
+    return predicate(collection ? collection.name : '', filterValue);
+  },
+
   inCinemas: function(item, filterValue, type) {
     return dateFilterPredicate(item.inCinemas, filterValue, type);
   },

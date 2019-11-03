@@ -165,6 +165,7 @@ class MovieDetails extends Component {
       qualityProfileId,
       monitored,
       studio,
+      collection,
       overview,
       youTubeTrailerId,
       inCinemas,
@@ -324,29 +325,31 @@ class MovieDetails extends Component {
                   </div>
                 </div>
 
+                <div className={styles.details}>
+                  <div>
+                    {
+                      !!runtime &&
+                        <span className={styles.runtime}>
+                          {runtime} Minutes
+                        </span>
+                    }
+
+                    <HeartRating
+                      rating={ratings.value}
+                      iconSize={20}
+                    />
+                  </div>
+                </div>
+
                 <div className={styles.detailsLabels}>
-
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Runtime"
+                    title="Path"
                     size={sizes.LARGE}
                   >
-                    <span className={styles.runtime}>
-                      {runtime} Minutes
+                    <span className={styles.path}>
+                      {path}
                     </span>
-                  </InfoLabel>
-
-                  <InfoLabel
-                    className={styles.detailsInfoLabel}
-                    title="Rating"
-                    size={sizes.LARGE}
-                  >
-                    <div>
-                      <HeartRating
-                        rating={ratings.value}
-                        iconSize={16}
-                      />
-                    </div>
                   </InfoLabel>
 
                   <InfoLabel
@@ -389,6 +392,19 @@ class MovieDetails extends Component {
                       }
                     </span>
                   </InfoLabel>
+
+                  {
+                    !!collection &&
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        title="Collection"
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.collection}>
+                          {collection.name}
+                        </span>
+                      </InfoLabel>
+                  }
 
                   {
                     !!studio &&
@@ -569,6 +585,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
   inCinemas: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
