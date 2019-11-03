@@ -572,7 +572,7 @@ MovieDetails.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
   title: PropTypes.string.isRequired,
-  year: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   runtime: PropTypes.number.isRequired,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
