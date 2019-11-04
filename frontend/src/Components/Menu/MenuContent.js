@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getUniqueElementId from 'Utilities/getUniqueElementId';
 import Scroller from 'Components/Scroller/Scroller';
 import styles from './MenuContent.css';
 
@@ -40,14 +41,15 @@ class MenuContent extends Component {
 MenuContent.propTypes = {
   forwardedRef: PropTypes.func,
   className: PropTypes.string,
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   style: PropTypes.object,
   isOpen: PropTypes.bool
 };
 
 MenuContent.defaultProps = {
-  className: styles.menuContent
+  className: styles.menuContent,
+  id: getUniqueElementId()
 };
 
 export default MenuContent;
