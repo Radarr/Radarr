@@ -78,6 +78,7 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
+                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(CleanUpRecycleBinCommand).FullName},
 
                     new ScheduledTask
                     {
