@@ -4,6 +4,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
@@ -15,7 +16,8 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<MovieRenamedEvent>, 
           IHandle<MovieGrabbedEvent>,
-          IHandle<MovieDownloadedEvent>
+          IHandle<MovieDownloadedEvent>,
+          IHandle<HealthCheckFailedEvent>
 
     {
         private readonly INotificationFactory _notificationFactory;
@@ -60,6 +62,21 @@ namespace NzbDrone.Core.Notifications
 
             //TODO: this message could be more clear
             _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent", definition.Name, movie.Title);
+            return false;
+        }
+
+        private bool ShouldHandleHealthFailure(HealthCheck.HealthCheck healthCheck, bool includeWarnings)
+        {
+            if (healthCheck.Type == HealthCheckResult.Error)
+            {
+                return true;
+            }
+
+            if (healthCheck.Type == HealthCheckResult.Warning && includeWarnings)
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -135,6 +152,25 @@ namespace NzbDrone.Core.Notifications
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(HealthCheckFailedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnHealthIssueEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
+                    {
+                        notification.OnHealthIssue(message.HealthCheck);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);
                 }
             }
         }

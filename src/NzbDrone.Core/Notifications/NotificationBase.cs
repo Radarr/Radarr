@@ -10,9 +10,11 @@ namespace NzbDrone.Core.Notifications
     {
         protected const string MOVIE_GRABBED_TITLE = "Movie Grabbed";
         protected const string MOVIE_DOWNLOADED_TITLE = "Movie Downloaded";
+        protected const string HEALTH_ISSUE_TITLE = "Health Check Failure";
 
         protected const string MOVIE_GRABBED_TITLE_BRANDED = "Radarr - " + MOVIE_GRABBED_TITLE;
         protected const string MOVIE_DOWNLOADED_TITLE_BRANDED = "Radarr - " + MOVIE_DOWNLOADED_TITLE;
+        protected const string HEALTH_ISSUE_TITLE_BRANDED = "Radarr - " + HEALTH_ISSUE_TITLE;
 
         public abstract string Name { get; }
 
@@ -42,10 +44,16 @@ namespace NzbDrone.Core.Notifications
 
         }
 
+        public virtual void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+
+        }
+
         public bool SupportsOnGrab => HasConcreteImplementation("OnGrab");
         public bool SupportsOnRename => HasConcreteImplementation("OnMovieRename");
         public bool SupportsOnDownload => HasConcreteImplementation("OnDownload");
         public bool SupportsOnUpgrade => SupportsOnDownload;
+        public bool SupportsOnHealthIssue => HasConcreteImplementation("OnHealthIssue");
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 

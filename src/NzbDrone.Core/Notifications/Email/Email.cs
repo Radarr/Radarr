@@ -32,6 +32,10 @@ namespace NzbDrone.Core.Notifications.Email
             _emailService.SendEmail(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, body);
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _emailService.SendEmail(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);
+        }
 
         public override ValidationResult Test()
         {
