@@ -10,9 +10,11 @@ namespace NzbDrone.Core.Notifications
         void OnGrab(GrabMessage grabMessage);
         void OnDownload(DownloadMessage message);
         void OnMovieRename(Movie movie);
+        void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
         bool SupportsOnGrab { get; }
         bool SupportsOnDownload { get; }
         bool SupportsOnUpgrade { get; }
         bool SupportsOnRename { get; }
+        bool SupportsOnHealthIssue { get; }
     }
 }

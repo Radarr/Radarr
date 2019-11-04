@@ -41,7 +41,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateAndCleanMovie(movie);
         }
 
-        public override string Name => "Kodi (XBMC)";
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);
+        }
+
+        public override string Name => "Kodi";
 
         public override ValidationResult Test()
         {

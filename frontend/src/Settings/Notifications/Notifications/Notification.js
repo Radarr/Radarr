@@ -58,10 +58,12 @@ class Notification extends Component {
       onDownload,
       onUpgrade,
       onRename,
+      onHealthIssue,
       supportsOnGrab,
       supportsOnDownload,
       supportsOnUpgrade,
-      supportsOnRename
+      supportsOnRename,
+      supportsOnHealthIssue
     } = this.props;
 
     return (
@@ -103,6 +105,13 @@ class Notification extends Component {
         }
 
         {
+          supportsOnHealthIssue && onHealthIssue &&
+          <Label kind={kinds.SUCCESS}>
+            On Health Issue
+          </Label>
+        }
+
+        {
           !onGrab && !onDownload && !onRename &&
             <Label
               kind={kinds.DISABLED}
@@ -140,10 +149,12 @@ Notification.propTypes = {
   onDownload: PropTypes.bool.isRequired,
   onUpgrade: PropTypes.bool.isRequired,
   onRename: PropTypes.bool.isRequired,
+  onHealthIssue: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
   supportsOnDownload: PropTypes.bool.isRequired,
   supportsOnUpgrade: PropTypes.bool.isRequired,
   supportsOnRename: PropTypes.bool.isRequired,
+  supportsOnHealthIssue: PropTypes.bool.isRequired,
   onConfirmDeleteNotification: PropTypes.func.isRequired
 };
 

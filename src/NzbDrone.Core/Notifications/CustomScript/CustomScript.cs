@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
@@ -112,6 +113,18 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "HealthIssue");
+            environmentVariables.Add("Radarr_Health_Issue_Level", nameof(healthCheck.Type));
+            environmentVariables.Add("Radarr_Health_Issue_Message", healthCheck.Message);
+            environmentVariables.Add("Radarr_Health_Issue_Type", healthCheck.Source.Name);
+            environmentVariables.Add("Radarr_Health_Issue_Wiki", healthCheck.WikiUrl.ToString() ?? string.Empty);
+
+            ExecuteScript(environmentVariables);
+        }
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
