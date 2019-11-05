@@ -72,8 +72,7 @@ namespace Radarr.Host
                     {
                         options.ConfigureHttpsDefaults(configureOptions =>
                         {
-                            var certificate = new X509Certificate2();
-                            certificate.Import(_configFileProvider.SslCertPath, _configFileProvider.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
+                            var certificate = new X509Certificate2(_configFileProvider.SslCertPath, _configFileProvider.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
 
                             configureOptions.ServerCertificate = certificate;
                         });
