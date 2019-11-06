@@ -23,7 +23,7 @@ jobs:
                     - ".git"
             - run:
                 name: Patching Assembly Info
-                command: sed -i "s/AssemblyVersion(\".*\")/AssemblyVersion(\"$BUILD_VERSION.$CIRCLE_BUILD_NUM\")/gi" src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs && cat src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs
+                command: sed -i "s/AssemblyVersion(\".*\")/AssemblyVersion(\"$BUILD_VERSION.1358\")/gi" src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs && cat src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs
             - run:
                 name: Clean Build
                 command: ./build.sh Clean
