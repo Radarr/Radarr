@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +25,7 @@ namespace NzbDrone.Core.Movies
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
+        Movie FindByTmdbId(int tmdbid);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title, int? year);
@@ -57,7 +57,6 @@ namespace NzbDrone.Core.Movies
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IImportExclusionsService _exclusionService;
         private readonly Logger _logger;
-
 
         public MovieService(IMovieRepository movieRepository,
                              IEventAggregator eventAggregator,
@@ -167,7 +166,7 @@ namespace NzbDrone.Core.Movies
                 newMovie.PathState = defaultState == MoviePathState.Dynamic ? MoviePathState.StaticOnce : MoviePathState.Static;
             }
 
-                _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
+            _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
 
             newMovie.CleanTitle = newMovie.Title.CleanSeriesTitle();
             newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.TmdbId);
@@ -232,12 +231,16 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.FindByImdbId(imdbid);
         }
 
+        public Movie FindByTmdbId(int tmdbid)
+        {
+            return _movieRepository.FindByTmdbId(tmdbid);
+        }
+
         private List<Movie> FindByTitleInexactAll(string title)
         {
             // find any movie clean title within the provided release title
             string cleanTitle = title.CleanSeriesTitle();
-            var list = _movieRepository.All().Where(s => cleanTitle.Contains(s.CleanTitle))
-                .Union(_movieRepository.All().Where(s => s.CleanTitle.Contains(cleanTitle))).ToList();
+            var list = _movieRepository.FindByTitleInexact(cleanTitle);
             if (!list.Any())
             {
                 // no movie matched
@@ -257,8 +260,6 @@ namespace NzbDrone.Core.Movies
                     .ThenByDescending(s => s.length)
                     .Select(s => s.movie)
                     .ToList();
-
-
 
             return query;
         }

@@ -9,7 +9,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
-using CoreParser = NzbDrone.Core.Parser.Parser;
 
 namespace NzbDrone.Core.Movies
 {
@@ -18,6 +17,7 @@ namespace NzbDrone.Core.Movies
         bool MoviePathExists(string path);
         Movie FindByTitle(string cleanTitle);
         Movie FindByTitle(string cleanTitle, int year);
+        List<Movie> FindByTitleInexact(string cleanTitle);
         Movie FindByImdbId(string imdbid);
         Movie FindByTmdbId(int tmdbid);
         Movie FindByTitleSlug(string slug);
@@ -169,7 +169,6 @@ namespace NzbDrone.Core.Movies
             string cleanTitleWithRomanNumbers = cleanTitle;
             string cleanTitleWithArabicNumbers = cleanTitle;
 
-
             foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
             {
                 string arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
@@ -182,21 +181,25 @@ namespace NzbDrone.Core.Movies
             
             if (result == null)
             {
-                result =
-                    Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year) ??
-                    Query.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+                result = Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers || movie.CleanTitle == cleanTitleWithRomanNumbers)
+                    .FirstWithYear(year);
 
                 if (result == null)
                 {
-
-                    result = Query.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m.AlternativeTitles, (m, t) => m.Id == t.MovieId)
-                                  .Where(t => t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers || t.CleanTitle == cleanTitleWithRomanNumbers)
+                    result = Query.Where<AlternativeTitle>(t => t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers || t.CleanTitle == cleanTitleWithRomanNumbers)
                                   .FirstWithYear(year);
-
                 }
             }
 
             return result;
+        }
+
+        public List<Movie> FindByTitleInexact(string cleanTitle)
+        {
+            var mapper = _database.GetDataMapper();
+            mapper.AddParameter("queryTitle", cleanTitle);
+
+            return AddJoinQueries(mapper.Query<Movie>()).Where($"instr(@queryTitle, [t0].[CleanTitle])");
         }
 
         public Movie FindByTmdbId(int tmdbid)
