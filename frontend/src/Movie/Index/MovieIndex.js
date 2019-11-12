@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -87,10 +87,9 @@ class MovieIndex extends Component {
       deleteError
     } = this.props;
 
-    if (
-      hasDifferentItems(prevProps.items, items) ||
-      sortKey !== prevProps.sortKey ||
-      sortDirection !== prevProps.sortDirection
+    if (sortKey !== prevProps.sortKey ||
+        sortDirection !== prevProps.sortDirection ||
+        hasDifferentItemsOrOrder(prevProps.items, items)
     ) {
       this.setJumpBarItems();
       this.setSelectedState();
