@@ -116,6 +116,9 @@ class MovieIndex extends Component {
   }
 
   getSelectedIds = () => {
+    if (this.state.allUnselected) {
+      return [];
+    }
     return getSelectedIds(this.state.selectedState);
   }
 
