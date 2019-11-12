@@ -206,7 +206,7 @@ namespace NzbDrone.Core.Movies
                 }
                 catch (MovieNotFoundException)
                 {
-                    _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from TheTVDB.", movie.Title, movie.ImdbId);
+                    _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
                 }
                 catch (Exception e)
                 {
@@ -229,7 +229,7 @@ namespace NzbDrone.Core.Movies
                         }
                         catch (MovieNotFoundException)
                         {
-                            _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from TheTVDB.", movie.Title, movie.ImdbId);
+                            _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
                             continue;
                         }
                         catch (Exception e)
