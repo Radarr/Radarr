@@ -42,6 +42,7 @@ export default function createHandleActions(handlers, defaultState, section) {
 
         if (_.isArray(payload.data)) {
           newState.items = payload.data;
+          newState.itemMap = _.zipObject(_.map(payload.data, 'id'), _.range(payload.data.length));
         } else {
           newState.item = payload.data;
         }
@@ -75,6 +76,7 @@ export default function createHandleActions(handlers, defaultState, section) {
           newState.items.splice(index, 1, { ...item, ...otherProps });
         } else if (!updateOnly) {
           newState.items.push({ ...otherProps });
+          newState.itemMap = _.zipObject(_.map(newState.items, 'id'), _.range(newState.items.length));
         }
 
         return updateSectionState(state, payloadSection, newState);
@@ -110,6 +112,8 @@ export default function createHandleActions(handlers, defaultState, section) {
 
         newState.items = [...newState.items];
         _.remove(newState.items, { id: payload.id });
+
+        newState.itemMap = _.zipObject(_.map(newState.items, 'id'), _.range(newState.items.length));
 
         return updateSectionState(state, payloadSection, newState);
       }

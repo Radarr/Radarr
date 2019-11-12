@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
-import createAllMoviesSelector from './createAllMoviesSelector';
 
 function createMovieSelector() {
   return createSelector(
     (state, { movieId }) => movieId,
-    createAllMoviesSelector(),
-    (movieId, allMovies) => {
-      return allMovies.find((movie) => movie.id === movieId);
+    (state) => state.movies.itemMap,
+    (state) => state.movies.items,
+    (movieId, itemMap, allMovies) => {
+      return allMovies[itemMap[movieId]];
     }
   );
 }
