@@ -8,6 +8,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import NetImportsConnector from './NetImport/NetImportsConnector';
 import NetImportOptionsConnector from './Options/NetImportOptionsConnector';
+import TraktAuthenticationConnector from './TraktAuthentication/TraktAuthenticationConnector';
 import NetImportExclusionsConnector from './NetImportExclusions/NetImportExclusionsConnector';
 
 class NetImportSettings extends Component {
@@ -19,6 +20,12 @@ class NetImportSettings extends Component {
     super(props, context);
 
     this._saveCallback = null;
+    this._saveCallback2 = null;
+
+    this.state2 = {
+      isSaving: false,
+      hasPendingChanges: false
+    };
 
     this.state = {
       isSaving: false,
@@ -28,6 +35,10 @@ class NetImportSettings extends Component {
 
   //
   // Listeners
+
+  onChildMounted2 = (saveCallback) => {
+    this._saveCallback2 = saveCallback;
+  }
 
   onChildMounted = (saveCallback) => {
     this._saveCallback = saveCallback;
@@ -40,6 +51,9 @@ class NetImportSettings extends Component {
   onSavePress = () => {
     if (this._saveCallback) {
       this._saveCallback();
+    }
+    if (this._saveCallback2) {
+      this._saveCallback2();
     }
   }
 
@@ -82,6 +96,11 @@ class NetImportSettings extends Component {
 
           <NetImportOptionsConnector
             onChildMounted={this.onChildMounted}
+            onChildStateChange={this.onChildStateChange}
+          />
+
+          <TraktAuthenticationConnector
+            onChildMounted={this.onChildMounted2}
             onChildStateChange={this.onChildStateChange}
           />
 

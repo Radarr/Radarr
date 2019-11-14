@@ -122,6 +122,7 @@
     "stylelint": "10.1.0",
     "stylelint-order": "3.0.1",
     "url-loader": "2.0.1",
+    "url-search-params": "1.1.0",
     "webpack": "4.35.3",
     "webpack-stream": "5.2.1",
     "worker-loader": "2.0.0"

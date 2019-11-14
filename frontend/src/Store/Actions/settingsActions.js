@@ -11,6 +11,7 @@ import indexers from './Settings/indexers';
 import languages from './Settings/languages';
 import netImportExclusions from './Settings/netImportExclusions';
 import netImportOptions from './Settings/netImportOptions';
+import traktAuthentication from './Settings/traktAuthentication';
 import netImports from './Settings/netImports';
 import mediaManagement from './Settings/mediaManagement';
 import metadata from './Settings/metadata';
@@ -33,6 +34,7 @@ export * from './Settings/indexers';
 export * from './Settings/languages';
 export * from './Settings/netImportExclusions';
 export * from './Settings/netImportOptions';
+export * from './Settings/traktAuthentication';
 export * from './Settings/netImports';
 export * from './Settings/mediaManagement';
 export * from './Settings/metadata';
@@ -66,6 +68,7 @@ export const defaultState = {
   languages: languages.defaultState,
   netImportExclusions: netImportExclusions.defaultState,
   netImportOptions: netImportOptions.defaultState,
+  traktAuthentication: traktAuthentication.defaultState,
   netImports: netImports.defaultState,
   mediaManagement: mediaManagement.defaultState,
   metadata: metadata.defaultState,
@@ -107,6 +110,7 @@ export const actionHandlers = handleThunks({
   ...languages.actionHandlers,
   ...netImportExclusions.actionHandlers,
   ...netImportOptions.actionHandlers,
+  ...traktAuthentication.actionHandlers,
   ...netImports.actionHandlers,
   ...mediaManagement.actionHandlers,
   ...metadata.actionHandlers,
@@ -139,6 +143,7 @@ export const reducers = createHandleActions({
   ...languages.reducers,
   ...netImportExclusions.reducers,
   ...netImportOptions.reducers,
+  ...traktAuthentication.reducers,
   ...netImports.reducers,
   ...mediaManagement.reducers,
   ...metadata.reducers,
