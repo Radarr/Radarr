@@ -125,6 +125,12 @@ namespace NzbDrone.Core.NetImport
                 CleanLibrary(listedMovies);
             }
 
+            listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
+            if (listedMovies.Any())
+            {
+                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
+            }
+
             var importExclusions = new List<string>();
             var moviesToAdd = new List<Movie>();
 
