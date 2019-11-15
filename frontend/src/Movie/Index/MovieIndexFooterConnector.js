@@ -14,7 +14,7 @@ function createUnoptimizedSelector() {
           status,
           statistics,
           sizeOnDisk,
-		  hasFile
+          hasFile
         } = s;
 
         return {
@@ -22,7 +22,7 @@ function createUnoptimizedSelector() {
           status,
           statistics,
           sizeOnDisk,
-		  hasFile
+          hasFile
         };
       });
     }

@@ -95,16 +95,16 @@ function MovieStatus(props) {
   else if (hasMovieFile && !monitored) {
     const quality = movieFile.quality;
 
-	return (
-	  <div className={styles.center}>
-	    <Label
-		  kind={kinds.DISABLED}
-		  title={getTooltip('Movie Downloaded', quality, movieFile.size)}
-		>
-		  {quality.quality.name}
-		</Label>
+    return (
+      <div className={styles.center}>
+        <Label
+          kind={kinds.DISABLED}
+          title={getTooltip('Movie Downloaded', quality, movieFile.size)}
+        >
+          {quality.quality.name}
+        </Label>
       </div>
-	);
+    );
   }
 
   if (!inCinemas) {
