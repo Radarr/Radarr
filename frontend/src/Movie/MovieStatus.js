@@ -5,27 +5,9 @@ import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import ProgressBar from 'Components/ProgressBar';
 import QueueDetails from 'Activity/Queue/QueueDetails';
-import formatBytes from 'Utilities/Number/formatBytes';
+import MovieQuality from 'Movie/MovieQuality';
 import Label from 'Components/Label';
 import styles from './MovieStatus.css';
-
-function getTooltip(title, quality, size) {
-  const revision = quality.revision;
-
-  if (revision.real && revision.real > 0) {
-    title += ' [REAL]';
-  }
-
-  if (revision.version && revision.version > 1) {
-    title += ' [PROPER]';
-  }
-
-  if (size) {
-    title += ` - ${formatBytes(size)}`;
-  }
-
-  return title;
-}
 
 function MovieStatus(props) {
   const {
@@ -78,17 +60,16 @@ function MovieStatus(props) {
 
   if (hasMovieFile) {
     const quality = movieFile.quality;
-    // TODO: Fix on Backend
-    // const isCutoffNotMet = movieFile.qualityCutoffNotMet;
+    const isCutoffNotMet = movieFile.qualityCutoffNotMet;
 
     return (
       <div className={styles.center}>
-        <Label
-          kind={kinds.SUCCESS}
-          title={getTooltip('Movie Downloaded', quality, movieFile.size)}
-        >
-          {quality.quality.name}
-        </Label>
+        <MovieQuality
+          title={quality.quality.name}
+          size={movieFile.size}
+          quality={quality}
+          isCutoffNotMet={isCutoffNotMet}
+        />
       </div>
     );
   }
