@@ -106,17 +106,17 @@ export const filters = [
 ];
 
 export const filterPredicates = {
-  missing: function(item){
+  missing: function(item) {
     const { statistics = {} } = item;
 
     return statistics.episodeCount - statistics.episodeFileCount > 0;
   },
 
-  added: function(item, filterValue, type){
+  added: function(item, filterValue, type) {
     return dateFilterPredicate(item.added, filterValue, type);
   },
 
-  ratings: function(item, filterValue, type){
+  ratings: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
     return predicate(item.ratings.value * 10, filterValue);
@@ -124,7 +124,7 @@ export const filterPredicates = {
 };
 
 export const sortPredicates = {
-  status: function(item){
+  status: function(item) {
     let result = 0;
 
     if (item.monitored) {
