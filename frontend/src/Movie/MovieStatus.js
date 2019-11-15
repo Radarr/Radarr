@@ -91,8 +91,7 @@ function MovieStatus(props) {
         </Label>
       </div>
     );
-  }
-  else if (hasMovieFile && !monitored) {
+  } else if (hasMovieFile && !monitored) {
     const quality = movieFile.quality;
 
     return (
