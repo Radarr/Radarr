@@ -46,8 +46,8 @@ export const filters = [
     ]
   },
   {
-    key: 'wanted',
-    label: 'Wanted Missing',
+    key: 'missing',
+    label: 'Missing',
     filters: [
       {
         key: 'monitored',
@@ -60,6 +60,27 @@ export const filters = [
         type: filterTypes.EQUAL
       }
     ]
+  },
+  {
+    key: 'wanted',
+    label: 'Wanted',
+    filters: [
+      {
+        key: 'monitored',
+        value: true,
+        type: filterTypes.EQUAL
+      },
+	  {
+	    key: 'hasFile',
+	    value: false,
+	    type: filterTypes.EQUAL
+	  },
+	  {
+	    key: 'isAvailable',
+		value: true,
+		type: filterTypes.EQUAL
+	  }
+	]
   },
   {
     key: 'cutoffunmet',
