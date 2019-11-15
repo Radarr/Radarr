@@ -76,7 +76,7 @@ function MovieStatus(props) {
     );
   }
 
-  if (hasMovieFile) {
+  if (hasMovieFile && monitored) {
     const quality = movieFile.quality;
     // TODO: Fix on Backend
     // const isCutoffNotMet = movieFile.qualityCutoffNotMet;
@@ -91,6 +91,20 @@ function MovieStatus(props) {
         </Label>
       </div>
     );
+  }
+  else if (hasMovieFile && !monitored) {
+    const quality = movieFile.quality;
+
+	return (
+	  <div className={styles.center}>
+	    <Label
+		  kind={kinds.DISABLED}
+		  title={getTooltip('Movie Downloaded', quality, movieFile.size)}
+		>
+		  {quality.quality.name}
+		</Label>
+      </div>
+	);
   }
 
   if (!inCinemas) {
