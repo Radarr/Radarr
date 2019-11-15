@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import isBefore from 'Utilities/Date/isBefore';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import ProgressBar from 'Components/ProgressBar';
