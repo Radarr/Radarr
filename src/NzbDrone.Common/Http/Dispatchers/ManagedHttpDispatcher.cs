@@ -116,7 +116,7 @@ namespace NzbDrone.Common.Http.Dispatchers
 
             using (var responseStream = httpWebResponse.GetResponseStream())
             {
-                if (responseStream != null && responseStream != Stream.Null)
+                if (responseStream != null && responseStream != Stream.Null && httpWebResponse.StatusCode == HttpStatusCode.OK)
                 {
                     try
                     {
