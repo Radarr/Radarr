@@ -30,6 +30,7 @@ function getTooltip(title, quality, size) {
 function MovieStatus(props) {
   const {
     inCinemas,
+	isAvailable,
     monitored,
     grabbed,
     queueItem,
@@ -38,7 +39,7 @@ function MovieStatus(props) {
 
   const hasMovieFile = !!movieFile;
   const isQueued = !!queueItem;
-  const hasReleased = isBefore(inCinemas);
+  const hasReleased = isAvailable;
 
   if (isQueued) {
     const {
@@ -144,6 +145,7 @@ function MovieStatus(props) {
 
 MovieStatus.propTypes = {
   inCinemas: PropTypes.string,
+  isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
