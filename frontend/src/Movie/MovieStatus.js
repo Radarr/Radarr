@@ -30,7 +30,7 @@ function getTooltip(title, quality, size) {
 function MovieStatus(props) {
   const {
     inCinemas,
-	isAvailable,
+    isAvailable,
     monitored,
     grabbed,
     queueItem,

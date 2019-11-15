@@ -14,7 +14,7 @@ function createMapStateToProps() {
     (movie, queueItem) => {
       const result = _.pick(movie, [
         'inCinemas',
-		'isAvailable',
+        'isAvailable',
         'monitored',
         'grabbed'
       ]);
