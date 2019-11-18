@@ -1,11 +1,22 @@
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.RadarrInstance
 {
+    public class RadarrInstanceSettingsValidator : AbstractValidator<RadarrInstanceSettings>
+    {
+        public RadarrInstanceSettingsValidator()
+        {
+            RuleFor(c => c.URL).ValidRootUrl();
+            RuleFor(c => c.APIKey).NotEmpty();
+            RuleFor(c => c.ProfileId).NotEmpty();
+        }
+    }
     public class RadarrInstanceSettings : IProviderConfig
     {
+        private static readonly RadarrInstanceSettingsValidator Validator = new RadarrInstanceSettingsValidator();
 
         public RadarrInstanceSettings()
         {
@@ -24,7 +35,7 @@ namespace NzbDrone.Core.NetImport.RadarrInstance
 
         public NzbDroneValidationResult Validate()
         {
-            return new NzbDroneValidationResult();
+            return new NzbDroneValidationResult(Validator.Validate(this));
         }
     }
 }
