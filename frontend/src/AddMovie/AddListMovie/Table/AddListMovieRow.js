@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeartRating from 'Components/HeartRating';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import MovieStatusCell from './MovieStatusCell';
@@ -38,7 +37,6 @@ class AddListMovieRow extends Component {
 
   render() {
     const {
-      style,
       status,
       tmdbId,
       title,
@@ -64,140 +62,136 @@ class AddListMovieRow extends Component {
     const linkProps = isExistingMovie ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
 
     return (
-      <div>
-        <VirtualTableRow style={style}>
-          {
-            columns.map((column) => {
-              const {
-                name,
-                isVisible
-              } = column;
+      <>
+        {
+          columns.map((column) => {
+            const {
+              name,
+              isVisible
+            } = column;
 
-              if (!isVisible) {
-                return null;
-              }
-
-              if (name === 'status') {
-                return (
-                  <MovieStatusCell
-                    key={name}
-                    className={styles[name]}
-                    // monitored={monitored}
-                    status={status}
-                    component={VirtualTableRowCell}
-                  />
-                );
-              }
-
-              if (name === 'sortTitle') {
-                return (
-                  <VirtualTableRowCell
-                    key={name}
-                    className={styles[name]}
-                  >
-                    <Link
-                      {...linkProps}
-                    >
-                      {title}
-                    </Link>
-                  </VirtualTableRowCell>
-                );
-              }
-
-              if (name === 'studio') {
-                return (
-                  <VirtualTableRowCell
-                    key={name}
-                    className={styles[name]}
-                  >
-                    {studio}
-                  </VirtualTableRowCell>
-                );
-              }
-
-              if (name === 'inCinemas') {
-                return (
-                  <RelativeDateCellConnector
-                    key={name}
-                    className={styles[name]}
-                    date={inCinemas}
-                    component={VirtualTableRowCell}
-                  />
-                );
-              }
-
-              if (name === 'physicalRelease') {
-                return (
-                  <RelativeDateCellConnector
-                    key={name}
-                    className={styles[name]}
-                    date={physicalRelease}
-                    component={VirtualTableRowCell}
-                  />
-                );
-              }
-
-              if (name === 'genres') {
-                const joinedGenres = genres.join(', ');
-
-                return (
-                  <VirtualTableRowCell
-                    key={name}
-                    className={styles[name]}
-                  >
-                    <span title={joinedGenres}>
-                      {joinedGenres}
-                    </span>
-                  </VirtualTableRowCell>
-                );
-              }
-
-              if (name === 'ratings') {
-                return (
-                  <VirtualTableRowCell
-                    key={name}
-                    className={styles[name]}
-                  >
-                    <HeartRating
-                      rating={ratings.value}
-                    />
-                  </VirtualTableRowCell>
-                );
-              }
-
-              if (name === 'certification') {
-                return (
-                  <VirtualTableRowCell
-                    key={name}
-                    className={styles[name]}
-                  >
-                    {certification}
-                  </VirtualTableRowCell>
-                );
-              }
-
+            if (!isVisible) {
               return null;
-            })
-          }
+            }
 
-          <AddNewMovieModal
-            isOpen={isNewAddMovieModalOpen && !isExistingMovie}
-            tmdbId={tmdbId}
-            title={title}
-            year={year}
-            overview={overview}
-            folder={folder}
-            images={images}
-            onModalClose={this.onAddMovieModalClose}
-          />
-        </VirtualTableRow>
-      </div>
+            if (name === 'status') {
+              return (
+                <MovieStatusCell
+                  key={name}
+                  className={styles[name]}
+                  status={status}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'sortTitle') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <Link
+                    {...linkProps}
+                  >
+                    {title}
+                  </Link>
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'studio') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {studio}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'inCinemas') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={inCinemas}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'physicalRelease') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={physicalRelease}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'genres') {
+              const joinedGenres = genres.join(', ');
+
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <span title={joinedGenres}>
+                    {joinedGenres}
+                  </span>
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'ratings') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <HeartRating
+                    rating={ratings.value}
+                  />
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'certification') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {certification}
+                </VirtualTableRowCell>
+              );
+            }
+
+            return null;
+          })
+        }
+
+        <AddNewMovieModal
+          isOpen={isNewAddMovieModalOpen && !isExistingMovie}
+          tmdbId={tmdbId}
+          title={title}
+          year={year}
+          overview={overview}
+          folder={folder}
+          images={images}
+          onModalClose={this.onAddMovieModalClose}
+        />
+      </>
     );
   }
 }
 
 AddListMovieRow.propTypes = {
-  style: PropTypes.object.isRequired,
   tmdbId: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

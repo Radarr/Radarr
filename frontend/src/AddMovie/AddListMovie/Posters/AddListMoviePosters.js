@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Grid, WindowScroller } from 'react-virtualized';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItems';
 import dimensions from 'Styles/Variables/dimensions';
-import { sortDirections } from 'Helpers/Props';
 import Measure from 'Components/Measure';
 import AddListMovieItemConnector from 'AddMovie/AddListMovie/AddListMovieItemConnector';
 import AddListMoviePosterConnector from './AddListMoviePosterConnector';
@@ -98,52 +96,46 @@ class AddListMoviePosters extends Component {
     this._grid = null;
   }
 
-  componentDidMount() {
-    this._contentBodyNode = ReactDOM.findDOMNode(this.props.contentBody);
-  }
-
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       items,
-      filters,
       sortKey,
-      sortDirection,
       posterOptions,
       jumpToCharacter
     } = this.props;
 
-    const itemsChanged = hasDifferentItems(prevProps.items, items);
+    const {
+      width,
+      columnWidth,
+      columnCount,
+      rowHeight
+    } = this.state;
 
-    if (
-      prevProps.sortKey !== sortKey ||
-      prevProps.posterOptions !== posterOptions ||
-      itemsChanged
-    ) {
+    if (prevProps.sortKey !== sortKey ||
+        prevProps.posterOptions !== posterOptions) {
       this.calculateGrid();
     }
 
-    if (
-      prevProps.filters !== filters ||
-      prevProps.sortKey !== sortKey ||
-      prevProps.sortDirection !== sortDirection ||
-      itemsChanged
-    ) {
+    if (this._grid &&
+        (prevState.width !== width ||
+            prevState.columnWidth !== columnWidth ||
+            prevState.columnCount !== columnCount ||
+            prevState.rowHeight !== rowHeight ||
+            hasDifferentItemsOrOrder(prevProps.items, items))) {
+      // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
       const index = getIndexOfFirstCharacter(items, jumpToCharacter);
 
-      if (index != null) {
-        const {
-          columnCount,
-          rowHeight
-        } = this.state;
-
+      if (this._grid && index != null) {
         const row = Math.floor(index / columnCount);
-        const scrollTop = rowHeight * row;
 
-        this.props.onScroll({ scrollTop });
+        this._grid.scrollToCell({
+          rowIndex: row,
+          columnIndex: 0
+        });
       }
     }
   }
@@ -205,19 +197,23 @@ class AddListMoviePosters extends Component {
     }
 
     return (
-      <AddListMovieItemConnector
+      <div
         key={key}
-        component={AddListMoviePosterConnector}
-        sortKey={sortKey}
-        posterWidth={posterWidth}
-        posterHeight={posterHeight}
-        showTitle={showTitle}
-        showRelativeDates={showRelativeDates}
-        shortDateFormat={shortDateFormat}
-        timeFormat={timeFormat}
         style={style}
-        movieId={movie.tmdbId}
-      />
+      >
+        <AddListMovieItemConnector
+          key={movie.id}
+          component={AddListMoviePosterConnector}
+          sortKey={sortKey}
+          posterWidth={posterWidth}
+          posterHeight={posterHeight}
+          showTitle={showTitle}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          movieId={movie.tmdbId}
+        />
+      </div>
     );
   }
 
@@ -228,22 +224,14 @@ class AddListMoviePosters extends Component {
     this.calculateGrid(width, this.props.isSmallScreen);
   }
 
-  onSectionRendered = () => {
-    if (!this._isInitialized && this._contentBodyNode) {
-      this.props.onRender();
-      this._isInitialized = true;
-    }
-  }
-
   //
   // Render
 
   render() {
     const {
-      items,
-      scrollTop,
       isSmallScreen,
-      onScroll
+      scroller,
+      items
     } = this.props;
 
     const {
@@ -256,28 +244,34 @@ class AddListMoviePosters extends Component {
     const rowCount = Math.ceil(items.length / columnCount);
 
     return (
-      <Measure onMeasure={this.onMeasure}>
+      <Measure
+        whitelist={['width']}
+        onMeasure={this.onMeasure}
+      >
         <WindowScroller
-          scrollElement={isSmallScreen ? undefined : this._contentBodyNode}
-          onScroll={onScroll}
+          scrollElement={isSmallScreen ? undefined : scroller}
         >
-          {({ height, isScrolling }) => {
+          {({ height, registerChild, onChildScroll, scrollTop }) => {
             return (
-              <Grid
-                ref={this.setGridRef}
-                className={styles.grid}
-                autoHeight={true}
-                height={height}
-                columnCount={columnCount}
-                columnWidth={columnWidth}
-                rowCount={rowCount}
-                rowHeight={rowHeight}
-                width={width}
-                scrollTop={scrollTop}
-                overscanRowCount={2}
-                cellRenderer={this.cellRenderer}
-                onSectionRendered={this.onSectionRendered}
-              />
+              <div ref={registerChild}>
+                <Grid
+                  ref={this.setGridRef}
+                  className={styles.grid}
+                  autoHeight={true}
+                  height={height}
+                  columnCount={columnCount}
+                  columnWidth={columnWidth}
+                  rowCount={rowCount}
+                  rowHeight={rowHeight}
+                  width={width}
+                  onScroll={onChildScroll}
+                  scrollTop={scrollTop}
+                  overscanRowCount={2}
+                  cellRenderer={this.cellRenderer}
+                  scrollToAlignment={'start'}
+                  isScrollingOptOut={true}
+                />
+              </div>
             );
           }
           }
@@ -289,19 +283,14 @@ class AddListMoviePosters extends Component {
 
 AddListMoviePosters.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
-  sortDirection: PropTypes.oneOf(sortDirections.all),
   posterOptions: PropTypes.object.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
-  contentBody: PropTypes.object.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  timeFormat: PropTypes.string.isRequired,
-  onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  timeFormat: PropTypes.string.isRequired
 };
 
 export default AddListMoviePosters;

@@ -47,7 +47,6 @@ class AddListMoviePoster extends Component {
 
   render() {
     const {
-      style,
       tmdbId,
       title,
       year,
@@ -75,67 +74,64 @@ class AddListMoviePoster extends Component {
     };
 
     return (
-      <div className={styles.container} style={style}>
-        <div className={styles.content}>
-          <div className={styles.posterContainer}>
-            {
-              status === 'ended' &&
-                <div
-                  className={styles.ended}
-                  title="Ended"
-                />
-            }
-
-            <Link
-              className={styles.link}
-              style={elementStyle}
-              {...linkProps}
-            >
-              <MoviePoster
-                className={styles.poster}
-                style={elementStyle}
-                images={images}
-                size={250}
-                lazy={false}
-                overflow={true}
-                onError={this.onPosterLoadError}
-                onLoad={this.onPosterLoad}
-              />
-
-              {
-                hasPosterError &&
-                  <div className={styles.overlayTitle}>
-                    {title}
-                  </div>
-              }
-            </Link>
-          </div>
-
+      <div className={styles.content}>
+        <div className={styles.posterContainer}>
           {
-            showTitle &&
-              <div className={styles.title}>
-                {title}
-              </div>
+            status === 'ended' &&
+              <div
+                className={styles.ended}
+                title="Ended"
+              />
           }
 
-          <AddNewMovieModal
-            isOpen={isNewAddMovieModalOpen && !isExistingMovie}
-            tmdbId={tmdbId}
-            title={title}
-            year={year}
-            overview={overview}
-            folder={folder}
-            images={images}
-            onModalClose={this.onAddMovieModalClose}
-          />
+          <Link
+            className={styles.link}
+            style={elementStyle}
+            {...linkProps}
+          >
+            <MoviePoster
+              className={styles.poster}
+              style={elementStyle}
+              images={images}
+              size={250}
+              lazy={false}
+              overflow={true}
+              onError={this.onPosterLoadError}
+              onLoad={this.onPosterLoad}
+            />
+
+            {
+              hasPosterError &&
+                <div className={styles.overlayTitle}>
+                  {title}
+                </div>
+            }
+          </Link>
         </div>
+
+        {
+          showTitle &&
+            <div className={styles.title}>
+              {title}
+            </div>
+        }
+
+        <AddNewMovieModal
+          isOpen={isNewAddMovieModalOpen && !isExistingMovie}
+          tmdbId={tmdbId}
+          title={title}
+          year={year}
+          overview={overview}
+          folder={folder}
+          images={images}
+          onModalClose={this.onAddMovieModalClose}
+        />
       </div>
     );
   }
 }
 
 AddListMoviePoster.propTypes = {
-  style: PropTypes.object.isRequired,
   tmdbId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
