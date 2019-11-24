@@ -44,7 +44,7 @@ class AddListMovie extends Component {
 
     this.state = {
       contentBody: null,
-      jumpBarItems: [],
+      jumpBarItems: { order: [] },
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
       isOverviewOptionsModalOpen: false,
@@ -96,29 +96,39 @@ class AddListMovie extends Component {
 
     // Reset if not sorting by sortTitle
     if (sortKey !== 'sortTitle') {
-      this.setState({ jumpBarItems: [] });
+      this.setState({ jumpBarItems: { order: [] } });
       return;
     }
 
     const characters = _.reduce(items, (acc, item) => {
+      let char = item.sortTitle.charAt(0);
 
-      const firstCharacter = item.sortTitle.charAt(0);
+      if (!isNaN(char)) {
+        char = '#';
+      }
 
-      if (isNaN(firstCharacter)) {
-        acc.push(firstCharacter);
+      if (char in acc) {
+        acc[char] = acc[char] + 1;
       } else {
-        acc.push('#');
+        acc[char] = 1;
       }
 
       return acc;
-    }, []).sort();
+    }, {});
+
+    const order = Object.keys(characters).sort();
 
     // Reverse if sorting descending
     if (sortDirection === sortDirections.DESCENDING) {
-      characters.reverse();
+      order.reverse();
     }
 
-    this.setState({ jumpBarItems: _.sortedUniq(characters) });
+    const jumpBarItems = {
+      characters,
+      order
+    };
+
+    this.setState({ jumpBarItems });
   }
 
   //
@@ -317,7 +327,7 @@ class AddListMovie extends Component {
           </PageContentBodyConnector>
 
           {
-            isLoaded && !!jumpBarItems.length &&
+            isLoaded && !!jumpBarItems.order.length &&
               <PageJumpBar
                 items={jumpBarItems}
                 onItemPress={this.onJumpBarItemPress}
