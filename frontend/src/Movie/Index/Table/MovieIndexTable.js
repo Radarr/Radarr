@@ -24,10 +24,9 @@ class MovieIndexTable extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      items
+      items,
+      jumpToCharacter
     } = this.props;
-
-    const jumpToCharacter = this.props.jumpToCharacter;
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
 
@@ -61,7 +60,7 @@ class MovieIndexTable extends Component {
         style={style}
       >
         <MovieIndexItemConnector
-          key={rowIndex}
+          key={movie.id}
           component={MovieIndexRow}
           columns={columns}
           movieId={movie.id}
@@ -81,15 +80,11 @@ class MovieIndexTable extends Component {
     const {
       items,
       columns,
-      filters,
       sortKey,
       sortDirection,
       isSmallScreen,
-      scrollTop,
-      contentBody,
       onSortPress,
-      onRender,
-      onScroll,
+      scroller,
       allSelected,
       allUnselected,
       onSelectAllChange,
@@ -101,10 +96,9 @@ class MovieIndexTable extends Component {
       <VirtualTable
         className={styles.tableContainer}
         items={items}
-        scrollTop={scrollTop}
         scrollIndex={this.state.scrollIndex}
-        contentBody={contentBody}
         isSmallScreen={isSmallScreen}
+        scroller={scroller}
         rowHeight={38}
         overscanRowCount={2}
         rowRenderer={this.rowRenderer}
@@ -122,12 +116,6 @@ class MovieIndexTable extends Component {
         }
         selectedState={selectedState}
         columns={columns}
-        filters={filters}
-        sortKey={sortKey}
-        sortDirection={sortDirection}
-        onRender={onRender}
-        onScroll={onScroll}
-        isScrollingOptOut={true}
       />
     );
   }
@@ -136,16 +124,12 @@ class MovieIndexTable extends Component {
 MovieIndexTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
-  contentBody: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   onSortPress: PropTypes.func.isRequired,
-  onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,

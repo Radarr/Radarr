@@ -55,7 +55,7 @@ class MovieIndex extends Component {
     super(props, context);
 
     this.state = {
-      contentBody: null,
+      scroller: null,
       jumpBarItems: { order: [] },
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
@@ -68,8 +68,7 @@ class MovieIndex extends Component {
       allSelected: false,
       allUnselected: false,
       lastToggled: null,
-      selectedState: {},
-      isRendered: false
+      selectedState: {}
     };
   }
 
@@ -83,7 +82,6 @@ class MovieIndex extends Component {
       items,
       sortKey,
       sortDirection,
-      scrollTop,
       isDeleting,
       deleteError
     } = this.props;
@@ -96,7 +94,7 @@ class MovieIndex extends Component {
       this.setSelectedState();
     }
 
-    if (this.state.jumpToCharacter != null && scrollTop !== prevProps.scrollTop) {
+    if (this.state.jumpToCharacter != null) {
       this.setState({ jumpToCharacter: null });
     }
 
@@ -112,8 +110,8 @@ class MovieIndex extends Component {
   //
   // Control
 
-  setContentBodyRef = (ref) => {
-    this.setState({ contentBody: ref });
+  setScrollerRef = (ref) => {
+    this.setState({ scroller: ref });
   }
 
   getSelectedIds = () => {
@@ -289,27 +287,6 @@ class MovieIndex extends Component {
     this.setState({ isConfirmSearchModalOpen: false });
   }
 
-  onRender = () => {
-    this.setState({ isRendered: true }, () => {
-      const {
-        scrollTop,
-        isSmallScreen
-      } = this.props;
-
-      if (isSmallScreen) {
-        // Seems to result in the view being off by 125px (distance to the top of the page)
-        // document.documentElement.scrollTop = document.body.scrollTop = scrollTop;
-
-        // This works, but then jumps another 1px after scrolling
-        document.documentElement.scrollTop = scrollTop;
-      }
-    });
-  }
-
-  onScroll = ({ scrollTop }) => {
-    this.props.onScroll({ scrollTop });
-  }
-
   //
   // Render
 
@@ -335,7 +312,7 @@ class MovieIndex extends Component {
       saveError,
       isDeleting,
       deleteError,
-      scrollTop,
+      onScroll,
       onSortSelect,
       onFilterSelect,
       onViewSelect,
@@ -346,7 +323,7 @@ class MovieIndex extends Component {
     } = this.props;
 
     const {
-      contentBody,
+      scroller,
       jumpBarItems,
       jumpToCharacter,
       isPosterOptionsModalOpen,
@@ -354,7 +331,6 @@ class MovieIndex extends Component {
       isInteractiveImportModalOpen,
       isConfirmSearchModalOpen,
       isMovieEditorActive,
-      isRendered,
       selectedState,
       allSelected,
       allUnselected
@@ -363,7 +339,7 @@ class MovieIndex extends Component {
     const selectedMovieIds = this.getSelectedIds();
 
     const ViewComponent = getViewComponent(view);
-    const isLoaded = !!(!error && isPopulated && items.length && contentBody);
+    const isLoaded = !!(!error && isPopulated && items.length && scroller);
     const hasNoMovie = !totalItems;
 
     return (
@@ -503,11 +479,10 @@ class MovieIndex extends Component {
 
         <div className={styles.pageContentBodyWrapper}>
           <PageContentBodyConnector
-            ref={this.setContentBodyRef}
+            registerScroller={this.setScrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
-            scrollTop={isRendered ? scrollTop : 0}
-            onScroll={this.onScroll}
+            onScroll={onScroll}
           >
             {
               isFetching && !isPopulated &&
@@ -525,14 +500,12 @@ class MovieIndex extends Component {
               isLoaded &&
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
-                    contentBody={contentBody}
+                    scroller={scroller}
                     items={items}
                     filters={filters}
                     sortKey={sortKey}
                     sortDirection={sortDirection}
-                    scrollTop={scrollTop}
                     jumpToCharacter={jumpToCharacter}
-                    onRender={this.onRender}
                     isMovieEditorActive={isMovieEditorActive}
                     allSelected={allSelected}
                     allUnselected={allUnselected}
@@ -640,7 +613,6 @@ MovieIndex.propTypes = {
   isOrganizingMovie: PropTypes.bool.isRequired,
   isSearchingMovies: PropTypes.bool.isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
