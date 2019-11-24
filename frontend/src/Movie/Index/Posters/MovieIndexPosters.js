@@ -214,33 +214,39 @@ class MovieIndexPosters extends Component {
       showQualityProfile
     } = posterOptions;
 
-    const movie = items[rowIndex * columnCount + columnIndex];
+    const movieIdx = rowIndex * columnCount + columnIndex;
+    const movie = items[movieIdx];
 
     if (!movie) {
       return null;
     }
 
     return (
-      <MovieIndexItemConnector
+      <div
+        className={styles.container}
         key={key}
-        component={MovieIndexPoster}
-        sortKey={sortKey}
-        posterWidth={posterWidth}
-        posterHeight={posterHeight}
-        detailedProgressBar={detailedProgressBar}
-        showTitle={showTitle}
-        showMonitored={showMonitored}
-        showQualityProfile={showQualityProfile}
-        showRelativeDates={showRelativeDates}
-        shortDateFormat={shortDateFormat}
-        timeFormat={timeFormat}
         style={style}
-        movieId={movie.id}
-        qualityProfileId={movie.qualityProfileId}
-        isSelected={selectedState[movie.id]}
-        onSelectedChange={onSelectedChange}
-        isMovieEditorActive={isMovieEditorActive}
-      />
+      >
+        <MovieIndexItemConnector
+          key={movieIdx}
+          component={MovieIndexPoster}
+          sortKey={sortKey}
+          posterWidth={posterWidth}
+          posterHeight={posterHeight}
+          detailedProgressBar={detailedProgressBar}
+          showTitle={showTitle}
+          showMonitored={showMonitored}
+          showQualityProfile={showQualityProfile}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          movieId={movie.id}
+          qualityProfileId={movie.qualityProfileId}
+          isSelected={selectedState[movie.id]}
+          onSelectedChange={onSelectedChange}
+          isMovieEditorActive={isMovieEditorActive}
+        />
+      </div>
     );
   }
 
@@ -302,6 +308,7 @@ class MovieIndexPosters extends Component {
                 cellRenderer={this.cellRenderer}
                 onSectionRendered={this.onSectionRendered}
                 selectedState={selectedState}
+                isScrollingOptOut={true}
               />
             );
           }

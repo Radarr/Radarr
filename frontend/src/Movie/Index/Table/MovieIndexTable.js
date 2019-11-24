@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
 import MovieIndexHeaderConnector from './MovieIndexHeaderConnector';
 import MovieIndexRow from './MovieIndexRow';
@@ -55,17 +56,21 @@ class MovieIndexTable extends Component {
     const movie = items[rowIndex];
 
     return (
-      <MovieIndexItemConnector
+      <VirtualTableRow
         key={key}
-        component={MovieIndexRow}
         style={style}
-        columns={columns}
-        movieId={movie.id}
-        qualityProfileId={movie.qualityProfileId}
-        isSelected={selectedState[movie.id]}
-        onSelectedChange={onSelectedChange}
-        isMovieEditorActive={isMovieEditorActive}
-      />
+      >
+        <MovieIndexItemConnector
+          key={rowIndex}
+          component={MovieIndexRow}
+          columns={columns}
+          movieId={movie.id}
+          qualityProfileId={movie.qualityProfileId}
+          isSelected={selectedState[movie.id]}
+          onSelectedChange={onSelectedChange}
+          isMovieEditorActive={isMovieEditorActive}
+        />
+      </VirtualTableRow>
     );
   }
 
@@ -122,6 +127,7 @@ class MovieIndexTable extends Component {
         sortDirection={sortDirection}
         onRender={onRender}
         onScroll={onScroll}
+        isScrollingOptOut={true}
       />
     );
   }
