@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
 import titleCase from 'Utilities/String/titleCase';
 import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-// import ProgressBar from 'Components/ProgressBar';
 import TagListConnector from 'Components/TagListConnector';
-// import CheckInput from 'Components/Form/CheckInput';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import MovieTitleLink from 'Movie/MovieTitleLink';
@@ -63,7 +59,6 @@ class MovieIndexRow extends Component {
 
   render() {
     const {
-      style,
       id,
       monitored,
       status,
@@ -97,7 +92,7 @@ class MovieIndexRow extends Component {
     } = this.state;
 
     return (
-      <VirtualTableRow style={style}>
+      <>
         {
           columns.map((column) => {
             const {
@@ -339,13 +334,12 @@ class MovieIndexRow extends Component {
           movieId={id}
           onModalClose={this.onDeleteMovieModalClose}
         />
-      </VirtualTableRow>
+      </>
     );
   }
 }
 
 MovieIndexRow.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,

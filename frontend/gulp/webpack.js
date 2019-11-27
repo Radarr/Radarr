@@ -5,14 +5,21 @@ const path = require('path');
 const webpack = require('webpack');
 const errorHandler = require('./helpers/errorHandler');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const uiFolder = 'UI';
 const frontendFolder = path.join(__dirname, '..');
 const srcFolder = path.join(frontendFolder, 'src');
 const isProduction = process.argv.indexOf('--production') > -1;
+const isProfiling = isProduction && process.argv.indexOf('--profile') > -1;
+
+const distFolder = path.resolve(frontendFolder, '..', '_output', uiFolder);
 
 console.log('Source Folder:', srcFolder);
+console.log('Output Folder:', distFolder);
 console.log('isProduction:', isProduction);
+console.log('isProfiling:', isProduction);
 
 const cssVarsFiles = [
   '../src/Styles/Variables/colors',
@@ -22,6 +29,22 @@ const cssVarsFiles = [
   '../src/Styles/Variables/zIndexes'
 ].map(require.resolve);
 
+// Override the way HtmlWebpackPlugin injects the scripts
+HtmlWebpackPlugin.prototype.injectAssetsIntoHtml = function(html, assets, assetTags) {
+  const head = assetTags.head.map((v) => {
+    v.attributes = { rel: 'stylesheet', type: 'text/css', href: `/${v.attributes.href.replace('\\', '/')}` };
+    return this.createHtmlTag(v);
+  });
+  const body = assetTags.body.map((v) => {
+    v.attributes = { src: `/${v.attributes.src}` };
+    return this.createHtmlTag(v);
+  });
+
+  return html
+    .replace('<!-- webpack bundles head -->', head.join('\r\n  '))
+    .replace('<!-- webpack bundles body -->', body.join('\r\n  '));
+};
+
 const plugins = [
   new webpack.DefinePlugin({
     __DEV__: !isProduction,
@@ -29,7 +52,12 @@ const plugins = [
   }),
 
   new MiniCssExtractPlugin({
-    filename: path.join('_output', uiFolder, 'Content', 'styles.css')
+    filename: path.join('Content', 'styles.css')
+  }),
+
+  new HtmlWebpackPlugin({
+    template: 'frontend/src/index.html',
+    filename: 'index.html'
   })
 ];
 
@@ -46,8 +74,6 @@ const config = {
   },
 
   entry: {
-    preload: 'preload.js',
-    vendor: 'vendor.js',
     index: 'index.js'
   },
 
@@ -63,12 +89,20 @@ const config = {
   },
 
   output: {
-    filename: path.join('_output', uiFolder, '[name].js'),
+    path: distFolder,
+    filename: '[name].js',
     sourceMapFilename: '[file].map'
   },
 
   optimization: {
-    chunkIds: 'named'
+    chunkIds: 'named',
+    splitChunks: {
+      chunks: 'initial'
+    }
+  },
+
+  performance: {
+    hints: false
   },
 
   plugins,
@@ -82,6 +116,15 @@ const config = {
 
   module: {
     rules: [
+      {
+        test: /\.worker\.js$/,
+        use: {
+          loader: 'worker-loader',
+          options: {
+            name: '[name].js'
+          }
+        }
+      },
       {
         test: /\.js?$/,
         exclude: /(node_modules|JsLibraries)/,
@@ -182,9 +225,27 @@ const config = {
   }
 };
 
+if (isProfiling) {
+  config.resolve.alias['react-dom$'] = 'react-dom/profiling';
+  config.resolve.alias['scheduler/tracing'] = 'scheduler/tracing-profiling';
+
+  config.optimization.minimizer = [
+    new TerserPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: true, // Must be set to true if using source-maps in production
+      terserOptions: {
+        mangle: false,
+        keep_classnames: true,
+        keep_fnames: true
+      }
+    })
+  ];
+}
+
 gulp.task('webpack', () => {
   return webpackStream(config)
-    .pipe(gulp.dest('./'));
+    .pipe(gulp.dest('_output/UI'));
 });
 
 gulp.task('webpackWatch', () => {
@@ -192,7 +253,7 @@ gulp.task('webpackWatch', () => {
 
   return webpackStream(config)
     .on('error', errorHandler)
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('_output/UI'))
     .on('error', errorHandler)
     .pipe(livereload())
     .on('error', errorHandler);

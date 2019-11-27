@@ -10,8 +10,12 @@ import History from './History';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.history,
-    (history) => {
+    (state) => state.movies,
+    (history, movies) => {
       return {
+        isMoviesFetching: movies.isFetching,
+        isMoviesPopulated: movies.isPopulated,
+        moviesError: movies.error,
         ...history
       };
     }

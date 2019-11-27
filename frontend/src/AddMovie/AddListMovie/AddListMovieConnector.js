@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createAddMovieClientSideCollectionItemsSelector from 'Store/Selectors/createAddMovieClientSideCollectionItemsSelector';
-import dimensions from 'Styles/Variables/dimensions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { fetchListMovies, clearAddMovie, setListMovieSort, setListMovieFilter, setListMovieView, setListMovieTableOption } from 'Store/Actions/addMovieActions';
@@ -11,29 +10,6 @@ import scrollPositions from 'Store/scrollPositions';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import withScrollPosition from 'Components/withScrollPosition';
 import AddListMovie from './AddListMovie';
-
-const POSTERS_PADDING = 15;
-const POSTERS_PADDING_SMALL_SCREEN = 5;
-const TABLE_PADDING = parseInt(dimensions.pageContentBodyPadding);
-const TABLE_PADDING_SMALL_SCREEN = parseInt(dimensions.pageContentBodyPaddingSmallScreen);
-
-// If the scrollTop is greater than zero it needs to be offset
-// by the padding so when it is set initially so it is correct
-// after React Virtualized takes the padding into account.
-
-function getScrollTop(view, scrollTop, isSmallScreen) {
-  if (scrollTop === 0) {
-    return 0;
-  }
-
-  let padding = isSmallScreen ? TABLE_PADDING_SMALL_SCREEN : TABLE_PADDING;
-
-  if (view === 'posters') {
-    padding = isSmallScreen ? POSTERS_PADDING_SMALL_SCREEN : POSTERS_PADDING;
-  }
-
-  return scrollTop + padding;
-}
 
 function createMapStateToProps() {
   return createSelector(
@@ -85,23 +61,6 @@ function createMapDispatchToProps(dispatch, props) {
 
 class AddListMovieConnector extends Component {
 
-  //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    const {
-      view,
-      scrollTop,
-      isSmallScreen
-    } = props;
-
-    this.state = {
-      scrollTop: getScrollTop(view, scrollTop, isSmallScreen)
-    };
-  }
-
   componentDidMount() {
     registerPagePopulator(this.repopulate);
     this.props.dispatchFetchRootFolders();
@@ -117,18 +76,11 @@ class AddListMovieConnector extends Component {
   // Listeners
 
   onViewSelect = (view) => {
-    // Reset the scroll position before changing the view
-    this.setState({ scrollTop: 0 }, () => {
-      this.props.dispatchSetListMovieView(view);
-    });
+    this.props.dispatchSetListMovieView(view);
   }
 
   onScroll = ({ scrollTop }) => {
-    this.setState({
-      scrollTop
-    }, () => {
-      scrollPositions.addMovie = scrollTop;
-    });
+    scrollPositions.addMovie = scrollTop;
   }
 
   //
@@ -138,7 +90,6 @@ class AddListMovieConnector extends Component {
     return (
       <AddListMovie
         {...this.props}
-        scrollTop={this.state.scrollTop}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
         onSaveSelected={this.onSaveSelected}
@@ -150,7 +101,6 @@ class AddListMovieConnector extends Component {
 AddListMovieConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
   dispatchFetchListMovies: PropTypes.func.isRequired,
   dispatchClearListMovie: PropTypes.func.isRequired,

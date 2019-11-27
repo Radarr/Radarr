@@ -24,6 +24,9 @@ class History extends Component {
       isFetching,
       isPopulated,
       error,
+      isMoviesFetching,
+      isMoviesPopulated,
+      moviesError,
       items,
       columns,
       selectedFilterKey,
@@ -34,7 +37,9 @@ class History extends Component {
       ...otherProps
     } = this.props;
 
-    const hasError = error;
+    const isFetchingAny = isFetching || isMoviesFetching;
+    const isAllPopulated = isPopulated && (isMoviesPopulated || !items.length);
+    const hasError = error || moviesError;
 
     return (
       <PageContent title="History">
@@ -71,12 +76,12 @@ class History extends Component {
 
         <PageContentBodyConnector>
           {
-            isFetching && !isPopulated &&
+            isFetchingAny && !isAllPopulated &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && hasError &&
+            !isFetchingAny && hasError &&
               <div>Unable to load history</div>
           }
 
@@ -91,7 +96,7 @@ class History extends Component {
           }
 
           {
-            isPopulated && !hasError && !!items.length &&
+            isAllPopulated && !hasError && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -130,6 +135,9 @@ History.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  isMoviesFetching: PropTypes.bool.isRequired,
+  isMoviesPopulated: PropTypes.bool.isRequired,
+  moviesError: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedFilterKey: PropTypes.string.isRequired,

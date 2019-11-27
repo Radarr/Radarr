@@ -12,11 +12,15 @@ import Queue from './Queue';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.movies,
     (state) => state.queue.options,
     (state) => state.queue.paged,
     createCommandExecutingSelector(commandNames.CHECK_FOR_FINISHED_DOWNLOAD),
-    (options, queue, isCheckForFinishedDownloadExecuting) => {
+    (movies, options, queue, isCheckForFinishedDownloadExecuting) => {
       return {
+        isMoviesFetching: movies.isFetching,
+        isMoviesPopulated: movies.isPopulated,
+        moviesError: movies.error,
         isCheckForFinishedDownloadExecuting,
         ...options,
         ...queue

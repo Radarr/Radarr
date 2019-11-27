@@ -1,12 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Grid, WindowScroller } from 'react-virtualized';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import dimensions from 'Styles/Variables/dimensions';
-import { sortDirections } from 'Helpers/Props';
 import Measure from 'Components/Measure';
 import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
 import MovieIndexOverview from './MovieIndexOverview';
@@ -66,77 +63,50 @@ class MovieIndexOverviews extends Component {
       rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
     };
 
-    this._isInitialized = false;
     this._grid = null;
   }
 
-  componentDidMount() {
-    this._contentBodyNode = ReactDOM.findDOMNode(this.props.contentBody);
-  }
-
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       items,
-      filters,
       sortKey,
-      sortDirection,
       overviewOptions,
       jumpToCharacter
     } = this.props;
 
-    const itemsChanged = hasDifferentItems(prevProps.items, items);
-    const overviewOptionsChanged = !_.isMatch(prevProps.overviewOptions, overviewOptions);
+    const {
+      width,
+      rowHeight
+    } = this.state;
 
-    if (
-      prevProps.sortKey !== sortKey ||
-      prevProps.overviewOptions !== overviewOptions ||
-      itemsChanged
-    ) {
+    if (prevProps.sortKey !== sortKey ||
+        prevProps.overviewOptions !== overviewOptions) {
       this.calculateGrid();
     }
 
-    if (
-      prevProps.filters !== filters ||
-      prevProps.sortKey !== sortKey ||
-      prevProps.sortDirection !== sortDirection ||
-      itemsChanged ||
-      overviewOptionsChanged
-    ) {
+    if (this._grid &&
+        (prevState.width !== width ||
+            prevState.rowHeight !== rowHeight ||
+            hasDifferentItemsOrOrder(prevProps.items, items))) {
+      // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
       const index = getIndexOfFirstCharacter(items, jumpToCharacter);
 
-      if (index != null) {
-        const {
-          rowHeight
-        } = this.state;
+      if (this._grid && index != null) {
 
-        const scrollTop = rowHeight * index;
-
-        this.props.onScroll({ scrollTop });
+        this._grid.scrollToCell({
+          rowIndex: index,
+          columnIndex: 0
+        });
       }
     }
   }
 
   //
   // Control
-
-  scrollToFirstCharacter(character) {
-    const items = this.props.items;
-    const {
-      rowHeight
-    } = this.state;
-
-    const index = getIndexOfFirstCharacter(items, character);
-
-    if (index != null) {
-      const scrollTop = rowHeight * index;
-
-      this.props.onScroll({ scrollTop });
-    }
-  }
 
   setGridRef = (ref) => {
     this._grid = ref;
@@ -188,26 +158,31 @@ class MovieIndexOverviews extends Component {
     }
 
     return (
-      <MovieIndexItemConnector
+      <div
+        className={styles.container}
         key={key}
-        component={MovieIndexOverview}
-        sortKey={sortKey}
-        posterWidth={posterWidth}
-        posterHeight={posterHeight}
-        rowHeight={rowHeight}
-        overviewOptions={overviewOptions}
-        showRelativeDates={showRelativeDates}
-        shortDateFormat={shortDateFormat}
-        longDateFormat={longDateFormat}
-        timeFormat={timeFormat}
-        isSmallScreen={isSmallScreen}
         style={style}
-        movieId={movie.id}
-        qualityProfileId={movie.qualityProfileId}
-        isSelected={selectedState[movie.id]}
-        onSelectedChange={onSelectedChange}
-        isMovieEditorActive={isMovieEditorActive}
-      />
+      >
+        <MovieIndexItemConnector
+          key={movie.id}
+          component={MovieIndexOverview}
+          sortKey={sortKey}
+          posterWidth={posterWidth}
+          posterHeight={posterHeight}
+          rowHeight={rowHeight}
+          overviewOptions={overviewOptions}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          longDateFormat={longDateFormat}
+          timeFormat={timeFormat}
+          isSmallScreen={isSmallScreen}
+          movieId={movie.id}
+          qualityProfileId={movie.qualityProfileId}
+          isSelected={selectedState[movie.id]}
+          onSelectedChange={onSelectedChange}
+          isMovieEditorActive={isMovieEditorActive}
+        />
+      </div>
     );
   }
 
@@ -218,22 +193,14 @@ class MovieIndexOverviews extends Component {
     this.calculateGrid(width, this.props.isSmallScreen);
   }
 
-  onSectionRendered = () => {
-    if (!this._isInitialized && this._contentBodyNode) {
-      this.props.onRender();
-      this._isInitialized = true;
-    }
-  }
-
   //
   // Render
 
   render() {
     const {
-      items,
-      scrollTop,
       isSmallScreen,
-      onScroll,
+      scroller,
+      items,
       selectedState
     } = this.props;
 
@@ -243,29 +210,39 @@ class MovieIndexOverviews extends Component {
     } = this.state;
 
     return (
-      <Measure onMeasure={this.onMeasure}>
+      <Measure
+        whitelist={['width']}
+        onMeasure={this.onMeasure}
+      >
         <WindowScroller
-          scrollElement={isSmallScreen ? undefined : this._contentBodyNode}
-          onScroll={onScroll}
+          scrollElement={isSmallScreen ? undefined : scroller}
         >
-          {({ height, isScrolling }) => {
+          {({ height, registerChild, onChildScroll, scrollTop }) => {
+            if (!height) {
+              return <div />;
+            }
+
             return (
-              <Grid
-                ref={this.setGridRef}
-                className={styles.grid}
-                autoHeight={true}
-                height={height}
-                columnCount={1}
-                columnWidth={width}
-                rowCount={items.length}
-                rowHeight={rowHeight}
-                width={width}
-                scrollTop={scrollTop}
-                overscanRowCount={2}
-                cellRenderer={this.cellRenderer}
-                onSectionRendered={this.onSectionRendered}
-                selectedState={selectedState}
-              />
+              <div ref={registerChild}>
+                <Grid
+                  ref={this.setGridRef}
+                  className={styles.grid}
+                  autoHeight={true}
+                  height={height}
+                  columnCount={1}
+                  columnWidth={width}
+                  rowCount={items.length}
+                  rowHeight={rowHeight}
+                  width={width}
+                  onScroll={onChildScroll}
+                  scrollTop={scrollTop}
+                  overscanRowCount={2}
+                  cellRenderer={this.cellRenderer}
+                  selectedState={selectedState}
+                  scrollToAlignment={'start'}
+                  isScrollingOptout={true}
+                />
+              </div>
             );
           }
           }
@@ -277,20 +254,15 @@ class MovieIndexOverviews extends Component {
 
 MovieIndexOverviews.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
-  sortDirection: PropTypes.oneOf(sortDirections.all),
   overviewOptions: PropTypes.object.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
-  contentBody: PropTypes.object.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
-  onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired,
   selectedState: PropTypes.object.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   isMovieEditorActive: PropTypes.bool.isRequired

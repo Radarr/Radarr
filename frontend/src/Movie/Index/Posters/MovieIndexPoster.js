@@ -76,7 +76,6 @@ class MovieIndexPoster extends Component {
 
   render() {
     const {
-      style,
       id,
       title,
       monitored,
@@ -119,11 +118,10 @@ class MovieIndexPoster extends Component {
     };
 
     return (
-      <div className={styles.container} style={style}>
-        <div className={styles.content}>
-          <div className={styles.posterContainer}>
-            {
-              isMovieEditorActive &&
+      <div className={styles.content}>
+        <div className={styles.posterContainer}>
+          {
+            isMovieEditorActive &&
               <div className={styles.editorSelect}>
                 <CheckInput
                   className={styles.checkInput}
@@ -132,126 +130,124 @@ class MovieIndexPoster extends Component {
                   onChange={this.onChange}
                 />
               </div>
-            }
-            <Label className={styles.controls}>
-              <SpinnerIconButton
-                className={styles.action}
-                name={icons.REFRESH}
-                title="Refresh movie"
-                isSpinning={isRefreshingMovie}
-                onPress={onRefreshMoviePress}
-              />
-
-              {
-                showSearchAction &&
-                  <SpinnerIconButton
-                    className={styles.action}
-                    name={icons.SEARCH}
-                    title="Search for movie"
-                    isSpinning={isSearchingMovie}
-                    onPress={onSearchPress}
-                  />
-              }
-
-              <IconButton
-                className={styles.action}
-                name={icons.EDIT}
-                title="Edit movie"
-                onPress={this.onEditMoviePress}
-              />
-            </Label>
+          }
+          <Label className={styles.controls}>
+            <SpinnerIconButton
+              className={styles.action}
+              name={icons.REFRESH}
+              title="Refresh movie"
+              isSpinning={isRefreshingMovie}
+              onPress={onRefreshMoviePress}
+            />
 
             {
-              status === 'ended' &&
-                <div
-                  className={styles.ended}
-                  title="Ended"
+              showSearchAction &&
+                <SpinnerIconButton
+                  className={styles.action}
+                  name={icons.SEARCH}
+                  title="Search for movie"
+                  isSpinning={isSearchingMovie}
+                  onPress={onSearchPress}
                 />
             }
 
-            <Link
-              className={styles.link}
-              style={elementStyle}
-              to={link}
-            >
-              <MoviePoster
-                className={styles.poster}
-                style={elementStyle}
-                images={images}
-                size={250}
-                lazy={false}
-                overflow={true}
-                onError={this.onPosterLoadError}
-                onLoad={this.onPosterLoad}
+            <IconButton
+              className={styles.action}
+              name={icons.EDIT}
+              title="Edit movie"
+              onPress={this.onEditMoviePress}
+            />
+          </Label>
+
+          {
+            status === 'ended' &&
+              <div
+                className={styles.ended}
+                title="Ended"
               />
-
-              {
-                hasPosterError &&
-                  <div className={styles.overlayTitle}>
-                    {title}
-                  </div>
-              }
-            </Link>
-          </div>
-
-          <MovieIndexProgressBar
-            monitored={monitored}
-            hasFile={hasFile}
-            status={status}
-            posterWidth={posterWidth}
-            detailedProgressBar={detailedProgressBar}
-          />
-
-          {
-            showTitle &&
-              <div className={styles.title}>
-                {title}
-              </div>
           }
 
-          {
-            showMonitored &&
-              <div className={styles.title}>
-                {monitored ? 'Monitored' : 'Unmonitored'}
-              </div>
-          }
+          <Link
+            className={styles.link}
+            style={elementStyle}
+            to={link}
+          >
+            <MoviePoster
+              className={styles.poster}
+              style={elementStyle}
+              images={images}
+              size={250}
+              lazy={false}
+              overflow={true}
+              onError={this.onPosterLoadError}
+              onLoad={this.onPosterLoad}
+            />
 
-          {
-            showQualityProfile &&
-              <div className={styles.title}>
-                {qualityProfile.name}
-              </div>
-          }
-
-          <MovieIndexPosterInfo
-            qualityProfile={qualityProfile}
-            showQualityProfile={showQualityProfile}
-            showRelativeDates={showRelativeDates}
-            shortDateFormat={shortDateFormat}
-            timeFormat={timeFormat}
-            {...otherProps}
-          />
-
-          <EditMovieModalConnector
-            isOpen={isEditMovieModalOpen}
-            movieId={id}
-            onModalClose={this.onEditMovieModalClose}
-            onDeleteMoviePress={this.onDeleteMoviePress}
-          />
-
-          <DeleteMovieModal
-            isOpen={isDeleteMovieModalOpen}
-            movieId={id}
-            onModalClose={this.onDeleteMovieModalClose}
-          />
+            {
+              hasPosterError &&
+                <div className={styles.overlayTitle}>
+                  {title}
+                </div>
+            }
+          </Link>
         </div>
+
+        <MovieIndexProgressBar
+          monitored={monitored}
+          hasFile={hasFile}
+          status={status}
+          posterWidth={posterWidth}
+          detailedProgressBar={detailedProgressBar}
+        />
+
+        {
+          showTitle &&
+            <div className={styles.title}>
+              {title}
+            </div>
+        }
+
+        {
+          showMonitored &&
+            <div className={styles.title}>
+              {monitored ? 'Monitored' : 'Unmonitored'}
+            </div>
+        }
+
+        {
+          showQualityProfile &&
+            <div className={styles.title}>
+              {qualityProfile.name}
+            </div>
+        }
+
+        <MovieIndexPosterInfo
+          qualityProfile={qualityProfile}
+          showQualityProfile={showQualityProfile}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          {...otherProps}
+        />
+
+        <EditMovieModalConnector
+          isOpen={isEditMovieModalOpen}
+          movieId={id}
+          onModalClose={this.onEditMovieModalClose}
+          onDeleteMoviePress={this.onDeleteMoviePress}
+        />
+
+        <DeleteMovieModal
+          isOpen={isDeleteMovieModalOpen}
+          movieId={id}
+          onModalClose={this.onDeleteMovieModalClose}
+        />
       </div>
     );
   }
 }
 
 MovieIndexPoster.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,

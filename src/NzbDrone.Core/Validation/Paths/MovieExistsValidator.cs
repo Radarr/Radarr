@@ -1,4 +1,3 @@
-using System;
 using FluentValidation.Validators;
 using NzbDrone.Core.Movies;
 
@@ -20,7 +19,7 @@ namespace NzbDrone.Core.Validation.Paths
 
             int tmdbId = (int)context.PropertyValue;
 
-            return (!_movieService.GetAllMovies().Exists(s => s.TmdbId == tmdbId));
+            return (_movieService.FindByTmdbId(tmdbId) == null);
         }
     }
 }

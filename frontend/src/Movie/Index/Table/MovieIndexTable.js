@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
 import MovieIndexHeaderConnector from './MovieIndexHeaderConnector';
 import MovieIndexRow from './MovieIndexRow';
@@ -23,10 +24,9 @@ class MovieIndexTable extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      items
+      items,
+      jumpToCharacter
     } = this.props;
-
-    const jumpToCharacter = this.props.jumpToCharacter;
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
 
@@ -55,17 +55,21 @@ class MovieIndexTable extends Component {
     const movie = items[rowIndex];
 
     return (
-      <MovieIndexItemConnector
+      <VirtualTableRow
         key={key}
-        component={MovieIndexRow}
         style={style}
-        columns={columns}
-        movieId={movie.id}
-        qualityProfileId={movie.qualityProfileId}
-        isSelected={selectedState[movie.id]}
-        onSelectedChange={onSelectedChange}
-        isMovieEditorActive={isMovieEditorActive}
-      />
+      >
+        <MovieIndexItemConnector
+          key={movie.id}
+          component={MovieIndexRow}
+          columns={columns}
+          movieId={movie.id}
+          qualityProfileId={movie.qualityProfileId}
+          isSelected={selectedState[movie.id]}
+          onSelectedChange={onSelectedChange}
+          isMovieEditorActive={isMovieEditorActive}
+        />
+      </VirtualTableRow>
     );
   }
 
@@ -76,15 +80,11 @@ class MovieIndexTable extends Component {
     const {
       items,
       columns,
-      filters,
       sortKey,
       sortDirection,
       isSmallScreen,
-      scrollTop,
-      contentBody,
       onSortPress,
-      onRender,
-      onScroll,
+      scroller,
       allSelected,
       allUnselected,
       onSelectAllChange,
@@ -96,10 +96,9 @@ class MovieIndexTable extends Component {
       <VirtualTable
         className={styles.tableContainer}
         items={items}
-        scrollTop={scrollTop}
         scrollIndex={this.state.scrollIndex}
-        contentBody={contentBody}
         isSmallScreen={isSmallScreen}
+        scroller={scroller}
         rowHeight={38}
         overscanRowCount={2}
         rowRenderer={this.rowRenderer}
@@ -117,11 +116,6 @@ class MovieIndexTable extends Component {
         }
         selectedState={selectedState}
         columns={columns}
-        filters={filters}
-        sortKey={sortKey}
-        sortDirection={sortDirection}
-        onRender={onRender}
-        onScroll={onScroll}
       />
     );
   }
@@ -130,16 +124,12 @@ class MovieIndexTable extends Component {
 MovieIndexTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
-  contentBody: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   onSortPress: PropTypes.func.isRequired,
-  onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,
