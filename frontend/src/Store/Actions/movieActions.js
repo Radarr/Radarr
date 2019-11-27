@@ -116,6 +116,14 @@ export const filterPredicates = {
     return dateFilterPredicate(item.added, filterValue, type);
   },
 
+  inCinemas: function(item, filterValue, type) {
+    return dateFilterPredicate(item.inCinemas, filterValue, type);
+  },
+
+  physicalRelease: function(item, filterValue, type) {
+    return dateFilterPredicate(item.physicalRelease, filterValue, type);
+  },
+
   ratings: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
