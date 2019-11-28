@@ -57,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (audioFormat.EqualsIgnoreCase("E-AC-3"))
             {
-                if (splitAdditionalFeatures.ContainsIgnoreCase("JOC"))
+                if (audioAdditionalFeatures == "JOC")
                 {
                     return "EAC3 Atmos";
                 }
