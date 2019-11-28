@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase("DTS, A_DTS, , , XBR", "DTSHD-HRA", "DTS-HD HRA")]
         [TestCase("DTS, A_DTS, , , DTS", "DTS", "DTS")]
         [TestCase("E-AC-3, A_EAC3, , , JOC", "EAC3.Atmos", "EAC3 Atmos")]
-        [TestCase("E-AC-3, A_EAC3, , , ", "DD5.1", "EAC3")]
+        [TestCase("E-AC-3, A_EAC3, , , ", "DDP5.1", "EAC3")]
         [TestCase("AC-3, A_AC3, , , ", "DD5.1", "AC3")]
         [TestCase("A_QUICKTIME, A_QUICKTIME, , , ", "", "")]
         [TestCase("ADPCM, 2, , , ", "Custom?", "PCM")]
