@@ -2,7 +2,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
 
 namespace Radarr.Api.V2.NetImport 
-    {
+{
     public class NetImportResource : ProviderResource 
     {
         public bool Enabled { get; set; }
