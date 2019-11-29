@@ -14,6 +14,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
 import styles from './EditNetImportModalContent.css';
+import availabilityOptions from 'Components/Form/AvailabilitySelectInput';
 
 function EditNetImportModalContent(props) {
   const {
@@ -40,6 +41,7 @@ function EditNetImportModalContent(props) {
     enabled,
     enableAuto,
     shouldMonitor,
+    minimumAvailability,
     qualityProfileId,
     rootFolderPath,
     tags,
@@ -55,127 +57,138 @@ function EditNetImportModalContent(props) {
       <ModalBody>
         {
           isFetching &&
-            <LoadingIndicator />
+          <LoadingIndicator />
         }
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new list, please try again.</div>
+          <div>Unable to add a new list, please try again.</div>
         }
 
         {
           !isFetching && !error &&
-            <Form
-              {...otherProps}
-            >
-              <FormGroup>
-                <FormLabel>Name</FormLabel>
+          <Form
+            {...otherProps}
+          >
+            <FormGroup>
+              <FormLabel>Name</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.TEXT}
-                  name="name"
-                  {...name}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+              <FormInputGroup
+                type={inputTypes.TEXT}
+                name="name"
+                {...name}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-              <FormGroup>
-                <FormLabel>Enable</FormLabel>
+            <FormGroup>
+              <FormLabel>Enable</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="enabled"
-                  helpText="Enable this list for use in Radarr"
-                  {...enabled}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="enabled"
+                helpText="Enable this list for use in Radarr"
+                {...enabled}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-              <FormGroup>
-                <FormLabel>Enable Automatic Add</FormLabel>
+            <FormGroup>
+              <FormLabel>Enable Automatic Add</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="enableAuto"
-                  helpText="If enabled, Movies will be automatically added to Radarr from this list"
-                  {...enableAuto}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="enableAuto"
+                helpText="If enabled, Movies will be automatically added to Radarr from this list"
+                {...enableAuto}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-              <FormGroup>
-                <FormLabel>Add Movies Monitored</FormLabel>
+            <FormGroup>
+              <FormLabel>Add Movies Monitored</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="shouldMonitor"
-                  helpText="If enabled, movies added by this list are added and monitored"
-                  {...shouldMonitor}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="shouldMonitor"
+                helpText="If enabled, movies added by this list are added and monitored"
+                {...shouldMonitor}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-              <FormGroup>
-                <FormLabel>Quality Profile</FormLabel>
+            <FormGroup>
+              <FormLabel>Minimum Availability</FormLabel>
+              <FormInputGroup
+                type={inputTypes.AVAILABILITY_SELECT}
+                name="minimumAvailability"
+                values={availabilityOptions}
+                {...minimumAvailability}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-                <FormInputGroup
-                  type={inputTypes.QUALITY_PROFILE_SELECT}
-                  name="qualityProfileId"
-                  {...qualityProfileId}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+            <FormGroup>
+              <FormLabel>Quality Profile</FormLabel>
 
-              <FormGroup>
-                <FormLabel>Folder</FormLabel>
+              <FormInputGroup
+                type={inputTypes.QUALITY_PROFILE_SELECT}
+                name="qualityProfileId"
+                {...qualityProfileId}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-                <FormInputGroup
-                  type={inputTypes.ROOT_FOLDER_SELECT}
-                  name="rootFolderPath"
-                  {...rootFolderPath}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+            <FormGroup>
+              <FormLabel>Folder</FormLabel>
 
-              <FormGroup>
-                <FormLabel>Radarr Tags</FormLabel>
+              <FormInputGroup
+                type={inputTypes.ROOT_FOLDER_SELECT}
+                name="rootFolderPath"
+                {...rootFolderPath}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-                <FormInputGroup
-                  type={inputTypes.TAG}
-                  name="tags"
-                  helpText="Add movie from this list with these tags"
-                  {...tags}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+            <FormGroup>
+              <FormLabel>Radarr Tags</FormLabel>
 
-              {
-                fields.map((field) => {
-                  return (
-                    <ProviderFieldFormGroup
-                      key={field.name}
-                      advancedSettings={advancedSettings}
-                      provider="netImport"
-                      providerData={item}
-                      {...field}
-                      onChange={onFieldChange}
-                    />
-                  );
-                })
-              }
+              <FormInputGroup
+                type={inputTypes.TAG}
+                name="tags"
+                helpText="Add movie from this list with these tags"
+                {...tags}
+                onChange={onInputChange}
+              />
+            </FormGroup>
 
-            </Form>
+            {
+              fields.map((field) => {
+                return (
+                  <ProviderFieldFormGroup
+                    key={field.name}
+                    advancedSettings={advancedSettings}
+                    provider="netImport"
+                    providerData={item}
+                    {...field}
+                    onChange={onFieldChange}
+                  />
+                );
+              })
+            }
+
+          </Form>
         }
       </ModalBody>
       <ModalFooter>
         {
           id &&
-            <Button
-              className={styles.deleteButton}
-              kind={kinds.DANGER}
-              onPress={onDeleteNetImportPress}
-            >
-              Delete
+          <Button
+            className={styles.deleteButton}
+            kind={kinds.DANGER}
+            onPress={onDeleteNetImportPress}
+          >
+            Delete
             </Button>
         }
 
