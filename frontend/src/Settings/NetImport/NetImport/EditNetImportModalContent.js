@@ -189,7 +189,7 @@ function EditNetImportModalContent(props) {
             onPress={onDeleteNetImportPress}
           >
             Delete
-            </Button>
+          </Button>
         }
 
         <SpinnerErrorButton
