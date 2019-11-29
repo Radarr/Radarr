@@ -1,8 +1,10 @@
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
 
-namespace Radarr.Api.V2.NetImport {
-    public class NetImportResource : ProviderResource {
+namespace Radarr.Api.V2.NetImport 
+    {
+    public class NetImportResource : ProviderResource 
+    {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
         public bool ShouldMonitor { get; set; }
@@ -11,9 +13,12 @@ namespace Radarr.Api.V2.NetImport {
         public MovieStatusType MinimumAvailability { get; set; }
     }
 
-    public class NetImportResourceMapper : ProviderResourceMapper<NetImportResource, NetImportDefinition> {
-        public override NetImportResource ToResource (NetImportDefinition definition) {
-            if (definition == null) {
+    public class NetImportResourceMapper : ProviderResourceMapper<NetImportResource, NetImportDefinition>
+    {
+        public override NetImportResource ToResource (NetImportDefinition definition)
+        {
+            if (definition == null) 
+            {
                 return null;
             }
 
@@ -29,8 +34,10 @@ namespace Radarr.Api.V2.NetImport {
             return resource;
         }
 
-        public override NetImportDefinition ToModel (NetImportResource resource) {
-            if (resource == null) {
+        public override NetImportDefinition ToModel (NetImportResource resource)
+        {
+            if (resource == null)
+            {
                 return null;
             }
 
