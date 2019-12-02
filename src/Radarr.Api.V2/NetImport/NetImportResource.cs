@@ -1,9 +1,9 @@
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
 
-namespace Radarr.Api.V2.NetImport 
+namespace Radarr.Api.V2.NetImport
 {
-    public class NetImportResource : ProviderResource 
+    public class NetImportResource : ProviderResource
     {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
@@ -15,14 +15,14 @@ namespace Radarr.Api.V2.NetImport
 
     public class NetImportResourceMapper : ProviderResourceMapper<NetImportResource, NetImportDefinition>
     {
-        public override NetImportResource ToResource (NetImportDefinition definition)
+        public override NetImportResource ToResource(NetImportDefinition definition)
         {
-            if (definition == null) 
+            if (definition == null)
             {
                 return null;
             }
 
-            var resource = base.ToResource (definition);
+            var resource = base.ToResource(definition);
 
             resource.Enabled = definition.Enabled;
             resource.EnableAuto = definition.EnableAuto;
@@ -34,14 +34,14 @@ namespace Radarr.Api.V2.NetImport
             return resource;
         }
 
-        public override NetImportDefinition ToModel (NetImportResource resource)
+        public override NetImportDefinition ToModel(NetImportResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            var definition = base.ToModel (resource);
+            var definition = base.ToModel(resource);
 
             definition.Enabled = resource.Enabled;
             definition.EnableAuto = resource.EnableAuto;
