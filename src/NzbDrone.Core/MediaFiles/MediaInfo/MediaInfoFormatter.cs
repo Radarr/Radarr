@@ -173,7 +173,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             if (audioFormat.EqualsIgnoreCase("E-AC-3"))
-            {                 
+            {
                 return "EAC3";
             }
 
