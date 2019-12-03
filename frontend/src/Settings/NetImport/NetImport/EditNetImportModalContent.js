@@ -57,17 +57,17 @@ function EditNetImportModalContent(props) {
       <ModalBody>
         {
           isFetching &&
-          <LoadingIndicator />
+            <LoadingIndicator />
         }
 
         {
           !isFetching && !!error &&
-          <div>Unable to add a new list, please try again.</div>
+            <div>Unable to add a new list, please try again.</div>
         }
 
         {
           !isFetching && !error &&
-          <Form
+            <Form
             {...otherProps}
           >
             <FormGroup>
@@ -183,7 +183,7 @@ function EditNetImportModalContent(props) {
       <ModalFooter>
         {
           id &&
-          <Button
+            <Button
             className={styles.deleteButton}
             kind={kinds.DANGER}
             onPress={onDeleteNetImportPress}
