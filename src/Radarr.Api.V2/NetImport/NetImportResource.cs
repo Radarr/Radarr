@@ -29,6 +29,7 @@ namespace Radarr.Api.V2.NetImport
             resource.ShouldMonitor = definition.ShouldMonitor;
             resource.RootFolderPath = definition.RootFolderPath;
             resource.QualityProfileId = definition.ProfileId;
+            resource.MinimumAvailability = definition.MinimumAvailability;
 
             return resource;
         }
@@ -47,6 +48,7 @@ namespace Radarr.Api.V2.NetImport
             definition.ShouldMonitor = resource.ShouldMonitor;
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ProfileId = resource.QualityProfileId;
+            definition.MinimumAvailability = resource.MinimumAvailability;
 
             return definition;
         }
