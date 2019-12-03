@@ -107,26 +107,24 @@ _NCrunch_*
 _TeamCity*
 
 # Radarr
-Backups/
-logs/
-#MediaCover/
-UpdateLogs/
-xdg/
 config.xml
-logs.db*
-nzbdrone.db*
-nzbdrone.pid
+nzbdrone.log*txt
+UpdateLogs/
 *workspace.xml
 *.test-cache
 *.userprefs
 */test-results/*
 src/UI/.idea/*
+*log.txt
 node_modules/
 _output*
+_artifacts
 _rawPackage/
 _dotTrace*
 _tests/
 *.Result.xml
+coverage*.xml
+coverage*.json
 setup/Output/
 *.~is
 

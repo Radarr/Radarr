@@ -6,7 +6,7 @@
 #define AppURL "https://radarr.video/"
 #define ForumsURL "https://forums.radarr.video/"
 #define AppExeName "Radarr.exe"
-#define BaseVersion "2.0.0"
+#define BaseVersion GetEnv('MAJORVERSION')
 #define BuildNumber GetEnv('MINORVERSION')
 #define BuildVersion GetEnv('RADARRVERSION')
 #define BranchName GetEnv('BUILD_SOURCEBRANCHNAME')

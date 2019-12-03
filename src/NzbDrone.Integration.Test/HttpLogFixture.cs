@@ -22,15 +22,15 @@ namespace NzbDrone.Integration.Test
             var logFile = "radarr.trace.txt";
             var logLines = Logs.GetLogFileLines(logFile);
 
-            var resultPost = Movies.InvalidPost(new Radarr.Api.V2.Movies.MovieResource());
+            var resultPost = Movies.InvalidPost(new Radarr.Api.V3.Movies.MovieResource());
 
             // Skip 2 and 1 to ignore the logs endpoint
             logLines = Logs.GetLogFileLines(logFile).Skip(logLines.Length + 2).ToArray();
             Array.Resize(ref logLines, logLines.Length - 1);
 
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req") && v.Contains("/api/v2/movie/"));
-            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res") && v.Contains("/api/v2/movie/: 400.BadRequest"));
-            logLines.Should().Contain(v => v.Contains("|Debug|Api|") && v.Contains("/api/v2/movie/: 400.BadRequest"));
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Req") && v.Contains("/api/v3/movie/"));
+            logLines.Should().Contain(v => v.Contains("|Trace|Http|Res") && v.Contains("/api/v3/movie/: 400.BadRequest"));
+            logLines.Should().Contain(v => v.Contains("|Debug|Api|") && v.Contains("/api/v3/movie/: 400.BadRequest"));
         }
     }
 }

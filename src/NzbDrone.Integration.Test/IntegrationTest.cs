@@ -26,7 +26,7 @@ namespace NzbDrone.Integration.Test
 
         protected override void InitializeTestTarget()
         {
-            Indexers.Post(new Radarr.Api.V2.Indexers.IndexerResource
+            Indexers.Post(new Radarr.Api.V3.Indexers.IndexerResource
             {
                 EnableRss = false,
                 EnableInteractiveSearch = false,

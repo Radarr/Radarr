@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Radarr.Api.V2.Movies;
+using Radarr.Api.V3.Movies;
 using NzbDrone.Integration.Test.Client;
 using System;
 using System.Collections.Generic;

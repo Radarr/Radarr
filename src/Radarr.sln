@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{4E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Api", "NzbDrone.Api\Radarr.Api.csproj", "{59D9DA5C-FD93-4599-BE2F-AFC540B180C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Api.V2", "Radarr.Api.V2\Radarr.Api.V2.csproj", "{D1D48E1D-9EEB-470B-992C-3954F90FB014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Api.V3", "Radarr.Api.V3\Radarr.Api.V3.csproj", "{D1D48E1D-9EEB-470B-992C-3954F90FB014}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Http", "Radarr.Http\Radarr.Http.csproj", "{F8A02FD4-A7A4-40D0-BB81-6319105A3302}"
 EndProject
