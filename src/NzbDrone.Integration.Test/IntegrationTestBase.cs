@@ -9,16 +9,16 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using Radarr.Api.V2.Blacklist;
-using Radarr.Api.V2.Commands;
-using Radarr.Api.V2.Config;
-using Radarr.Api.V2.DownloadClient;
-using Radarr.Api.V2.MovieFiles;
-using Radarr.Api.V2.History;
-using Radarr.Api.V2.Profiles.Quality;
-using Radarr.Api.V2.RootFolders;
-using Radarr.Api.V2.Movies;
-using Radarr.Api.V2.Tags;
+using Radarr.Api.V3.Blacklist;
+using Radarr.Api.V3.Commands;
+using Radarr.Api.V3.Config;
+using Radarr.Api.V3.DownloadClient;
+using Radarr.Api.V3.MovieFiles;
+using Radarr.Api.V3.History;
+using Radarr.Api.V3.Profiles.Quality;
+using Radarr.Api.V3.RootFolders;
+using Radarr.Api.V3.Movies;
+using Radarr.Api.V3.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaFiles.Events;
@@ -97,7 +97,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/v2/");
+            RestClient = new RestClient(RootUrl + "api/v3/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 

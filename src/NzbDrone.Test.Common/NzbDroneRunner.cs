@@ -26,7 +26,7 @@ namespace NzbDrone.Test.Common
         public NzbDroneRunner(Logger logger, int port = 7878)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient("http://localhost:7878/api");
+            _restClient = new RestClient("http://localhost:7878/api/v3");
         }
 
         public void Start()

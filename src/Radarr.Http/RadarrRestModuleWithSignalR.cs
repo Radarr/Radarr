@@ -54,7 +54,7 @@ namespace Radarr.Http
         {
             if (!_signalRBroadcaster.IsConnected) return;
 
-            if (GetType().Namespace.Contains("V2"))
+            if (GetType().Namespace.Contains("V3"))
             {
                 var signalRMessage = new SignalRMessage
                                      {
@@ -71,7 +71,7 @@ namespace Radarr.Http
         {
             if (!_signalRBroadcaster.IsConnected) return;
 
-            if (GetType().Namespace.Contains("V2"))
+            if (GetType().Namespace.Contains("V3"))
             {
                 var signalRMessage = new SignalRMessage
                                      {

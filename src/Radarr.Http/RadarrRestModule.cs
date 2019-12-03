@@ -12,10 +12,10 @@ namespace Radarr.Http
 
         private static string BaseUrl()
         {
-            var isV3 = typeof(TResource).Namespace.Contains(".V2.");
+            var isV3 = typeof(TResource).Namespace.Contains(".V3.");
             if (isV3)
             {
-                return "/api/v2/";
+                return "/api/v3/";
             }
             return "/api/";
         }

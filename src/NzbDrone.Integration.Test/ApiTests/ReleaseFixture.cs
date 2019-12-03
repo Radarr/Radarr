@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Radarr.Api.V2.Indexers;
+using Radarr.Api.V3.Indexers;
 using System.Linq;
 using System.Net;
 
