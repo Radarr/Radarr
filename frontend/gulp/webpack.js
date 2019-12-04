@@ -122,7 +122,7 @@ const config = {
           loader: 'worker-loader',
           options: {
             name: '[name].js',
-            publicPath: '/'
+            inline: true
           }
         }
       },
