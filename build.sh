@@ -64,15 +64,17 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
+    slnFile=src/Radarr.sln
+
     if [ $os = "windows" ]; then
-        slnFile=src/Radarr.Windows.sln
+        platform=Windows
     else
-        slnFile=src/Radarr.Posix.sln
+        platform=Posix
     fi
 
     dotnet clean $slnFile -c Debug
     dotnet clean $slnFile -c Release
-    dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
+    dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
 
     ProgressEnd 'Build'
 }
