@@ -103,7 +103,7 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ### Requirements
 
-* [Visual Studio Community 2017](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
+* [Visual Studio Community 2019](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
 * [Yarn](https://yarnpkg.com/)
