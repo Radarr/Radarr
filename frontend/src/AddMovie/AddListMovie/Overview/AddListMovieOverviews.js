@@ -204,6 +204,10 @@ class AddListMovieOverviews extends Component {
           scrollElement={isSmallScreen ? undefined : scroller}
         >
           {({ height, registerChild, onChildScroll, scrollTop }) => {
+            if (!height) {
+              return <div />;
+            }
+
             return (
               <div ref={registerChild}>
                 <Grid
