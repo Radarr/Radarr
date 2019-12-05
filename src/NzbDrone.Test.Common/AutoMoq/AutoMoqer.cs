@@ -142,7 +142,7 @@ namespace NzbDrone.Test.Common.AutoMoq
             _registeredMocks = new Dictionary<Type, object>();
             AddTheAutoMockingContainerExtensionToTheContainer(container);
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
             ContainerBuilderBase.RegisterNativeResolver(new [] {"System.Data.SQLite", "Radarr.Core"});
 #endif
         }

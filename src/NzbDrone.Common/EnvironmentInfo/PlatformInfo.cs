@@ -27,9 +27,9 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         static PlatformInfo()
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             _platform = PlatformType.NetCore;
-            _version = new Version("3.0");
+            _version = Environment.Version;
 #else
             if (Type.GetType("Mono.Runtime") != null)
             {

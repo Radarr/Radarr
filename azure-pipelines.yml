@@ -12,7 +12,7 @@ variables:
   radarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'radarr'
-  dotnetVersion: '3.0.x'
+  dotnetVersion: '3.1.x'
 
 trigger:
   branches:
@@ -52,10 +52,9 @@ stages:
         submodules: true
         fetchDepth: 1
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - bash: ./build.sh --backend
         displayName: Build Radarr Backend
       - bash: |
@@ -69,7 +68,7 @@ stages:
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.0/win-x64/publish'
+      - publish: '$(testsFolder)/netcoreapp3.1/win-x64/publish'
         artifact: WindowsCoreTests
         displayName: Publish Windows Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -77,11 +76,11 @@ stages:
         artifact: LinuxTests
         displayName: Publish Linux Mono Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.0/linux-x64/publish'
+      - publish: '$(testsFolder)/netcoreapp3.1/linux-x64/publish'
         artifact: LinuxCoreTests
         displayName: Publish Linux Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.0/osx-x64/publish'
+      - publish: '$(testsFolder)/netcoreapp3.1/osx-x64/publish'
         artifact: MacCoreTests
         displayName: Publish MacOS Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -149,8 +148,8 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=netcoreapp3.0
-          cp setup/output/Radarr.*windows.netcoreapp3.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
+          setup/inno/ISCC.exe setup/radarr.iss //DFramework=netcoreapp3.1
+          cp setup/output/Radarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
         displayName: Create .NET Core Windows installer
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
@@ -192,14 +191,14 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/windows/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/windows/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create MacOS Core app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/macos-app/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create MacOS Core tar
         inputs:
@@ -207,7 +206,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/macos/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create Linux Mono tar
         inputs:
@@ -223,7 +222,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create ARM32 Linux Core tar
         inputs:
@@ -231,7 +230,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create ARM64 Linux Core tar
         inputs:
@@ -239,7 +238,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm64/netcoreapp3.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm64/netcoreapp3.1
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -286,10 +285,9 @@ stages:
       steps:
       - checkout: none
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
         inputs:
@@ -380,10 +378,9 @@ stages:
       - bash: mono --version
         displayName: Check Mono version
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -443,10 +440,9 @@ stages:
         displayName: Set Mono Version
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -530,10 +526,9 @@ stages:
       - bash: mono --version
         displayName: Check Mono version
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -601,10 +596,9 @@ stages:
         
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core 3.0'
+        displayName: 'Install .net core'
         inputs:
           version: $(dotnetVersion)
-        condition: ne(variables['osName'], 'Windows')
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -718,7 +712,7 @@ stages:
     #   - checkout: self # Need history for Sonar analysis
     #     submodules: true
     #   - task: UseDotNet@2
-    #     displayName: 'Install .net core 3.0'
+    #     displayName: 'Install .net core'
     #     inputs:
     #       version: $(dotnetVersion)
     #   - task: SonarCloudPrepare@1
