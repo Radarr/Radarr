@@ -121,7 +121,8 @@ const config = {
         use: {
           loader: 'worker-loader',
           options: {
-            name: '[name].js'
+            name: '[name].js',
+            publicPath: '/'
           }
         }
       },
