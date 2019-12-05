@@ -6,7 +6,7 @@ namespace NzbDrone.Common.Extensions
 {
     public static class DictionaryExtensions
     {
-#if !NETCOREAPP3_0
+#if !NETCOREAPP
         public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
         {
             TValue value;

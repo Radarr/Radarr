@@ -923,10 +923,10 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@microsoft/signalr@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.0.0.tgz#df03564f900957db0a62469cad576eb573368c9d"
-  integrity sha512-M0KMWvJ62yZuizPxFLZakitJb4aOZkJH6epXTLvp5LednJZdzacRDxWT3La7Cexp1cHxVbldBFtc3jrdfwmtxw==
+"@microsoft/signalr@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.1.0.tgz#2ed5ab78de1ae252d3c18504355ca74814c62284"
+  integrity sha512-ZAScxodI15jr1MF359jwelhrr/fkvCCTWUB5awRO+ibPyBvMS6KsSzWfN/AObc0EqvJPmYtjJgCBWR62nInlCg==
   dependencies:
     eventsource "^1.0.7"
     request "^2.88.0"

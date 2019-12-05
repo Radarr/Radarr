@@ -91,7 +91,7 @@ namespace Radarr.Host
                 {
                     services
                     .AddSignalR()
-#if !NETCOREAPP3_0
+#if !NETCOREAPP
                     .AddJsonProtocol(
 #else
                     .AddNewtonsoftJsonProtocol(
@@ -103,7 +103,7 @@ namespace Radarr.Host
                 })
                 .Configure(app =>
                 {
-#if NETCOREAPP3_0
+#if NETCOREAPP
                     app.UseRouting();
 #endif
                     app.Properties["host.AppName"] = BuildInfo.AppName;

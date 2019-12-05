@@ -57,7 +57,7 @@ namespace Radarr.Host.Middleware
                 }
             });
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
             appBuilder.UseEndpoints(x =>
             {
                 x.MapHub<MessageHub>(URL_BASE + "/signalr/messages");

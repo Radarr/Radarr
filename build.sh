@@ -131,7 +131,7 @@ PackageLinux()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -163,7 +163,7 @@ PackageMacOS()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -198,16 +198,16 @@ PackageTests()
     ProgressStart 'Creating Test Package'
 
     cp test.sh $testPackageFolder/net462/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/win-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/osx-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/win-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/linux-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/osx-x64/publish
 
     rm -f $testPackageFolder/*.log.config
 
     # geckodriver.exe isn't copied by dotnet publish
-    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
+    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
     unzip -o gecko.zip
-    cp geckodriver.exe $testPackageFolder/netcoreapp3.0/win-x64/publish
+    cp geckodriver.exe $testPackageFolder/netcoreapp3.1/win-x64/publish
 
     CleanFolder $testPackageFolder
 
@@ -319,11 +319,11 @@ fi
 if [ "$PACKAGES" = "YES" ];
 then
     UpdateVersionNumber
-    PackageWindows "netcoreapp3.0"
+    PackageWindows "netcoreapp3.1"
     PackageLinux "net462" "linux-x64"
-    PackageLinux "netcoreapp3.0" "linux-x64"
-    PackageLinux "netcoreapp3.0" "linux-arm64"
-    PackageLinux "netcoreapp3.0" "linux-arm"
-    PackageMacOS "netcoreapp3.0"
-    PackageMacOSApp "netcoreapp3.0"
+    PackageLinux "netcoreapp3.1" "linux-x64"
+    PackageLinux "netcoreapp3.1" "linux-arm64"
+    PackageLinux "netcoreapp3.1" "linux-arm"
+    PackageMacOS "netcoreapp3.1"
+    PackageMacOSApp "netcoreapp3.1"
 fi
