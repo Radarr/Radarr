@@ -624,9 +624,9 @@ stages:
         displayName: Move Package Contents
       - bash: |
           if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-macos.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz
           elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
           else
           echo "Unhandled OS"
           exit 1
@@ -682,66 +682,69 @@ stages:
         env:
           FORCE_COLOR: 0
 
-    # - job: Analyze_Frontend
-    #   displayName: Frontend
-    #   condition: eq(variables['system.pullrequest.isfork'], false)
-    #   pool:
-    #     vmImage: windows-2019
-    #   steps:
-    #   - checkout: self # Need history for Sonar analysis
-    #   - task: SonarCloudPrepare@1
-    #     env:
-    #       SONAR_SCANNER_OPTS: ''
-    #     inputs:
-    #       SonarCloud: 'SonarCloud'
-    #       organization: 'radarr'
-    #       scannerMode: 'CLI'
-    #       configMode: 'manual'
-    #       cliProjectKey: 'radarr_Radarr.UI'
-    #       cliProjectName: 'RadarrUI'
-    #       cliProjectVersion: '$(radarrVersion)'
-    #       cliSources: './frontend'
-    #   - task: SonarCloudAnalyze@1
+    - job: Analyze_Frontend
+      displayName: Frontend
+      pool:
+        vmImage: windows-2019
+      steps:
+      - checkout: self # Need history for Sonar analysis
+      - task: SonarCloudPrepare@1
+        env:
+          SONAR_SCANNER_OPTS: ''
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: 'radarr'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'Radarr_Radarr.UI'
+          cliProjectName: 'RadarrI'
+          cliProjectVersion: '$(radarrVersion)'
+          cliSources: './frontend'
+      - task: SonarCloudAnalyze@1
 
-    # - job: Analyze_Backend
-    #   displayName: Backend
-    #   condition: eq(variables['system.pullrequest.isfork'], false)
-    #   pool:
-    #     vmImage: windows-2019
-    #   steps:
-    #   - checkout: self # Need history for Sonar analysis
-    #     submodules: true
-    #   - task: UseDotNet@2
-    #     displayName: 'Install .net core'
-    #     inputs:
-    #       version: $(dotnetVersion)
-    #   - task: SonarCloudPrepare@1
-    #     inputs:
-    #       SonarCloud: 'SonarCloud'
-    #       organization: 'radarr'
-    #       scannerMode: 'MSBuild'
-    #       projectKey: 'radarr_Radarr'
-    #       projectName: 'Radarr'
-    #       projectVersion: '$(radarrVersion)'
-    #       extraProperties: |
-    #         sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
-    #         sonar.coverage.exclusions=**/Radarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
-    #         sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/_tests/CoverageResults/coverage.opencover.xml
-    #         sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
-    #   - task: DotNetCoreCLI@2
-    #     displayName: Build backend
-    #     inputs:
-    #       command: 'build'
-    #       projects: 'src/Radarr.Windows.sln'
-    #   - task: Bash@3
-    #     displayName: Coverage Unit Tests
-    #     inputs:
-    #       targetType: 'filePath'
-    #       filePath: ./test.sh
-    #       arguments: Windows Unit Coverage
-    #   - task: PublishCodeCoverageResults@1
-    #     displayName: Publish Coverage Results
-    #     inputs:
-    #       codeCoverageTool: 'cobertura'
-    #       summaryFileLocation: './_tests/CoverageResults/coverage.cobertura.xml'
-    #   - task: SonarCloudAnalyze@1
+    - job: Analyze_Backend
+      displayName: Backend
+      pool:
+        vmImage: windows-2019
+      variables:
+        disable.coverage.autogenerate: 'true'
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Install .net core'
+        inputs:
+          version: $(dotnetVersion)
+      - checkout: self # Need history for Sonar analysis
+        submodules: true
+      - powershell: Set-Service SCardSvr -StartupType Manual
+        displayName: Enable Windows Test Service
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: 'radarr'
+          scannerMode: 'MSBuild'
+          projectKey: 'Radarr_Radarr'
+          projectName: 'Radarr'
+          projectVersion: '$(radarrVersion)'
+          extraProperties: |
+            sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
+            sonar.coverage.exclusions=**/Radarr.Api.V3/**/*,**/Radarr.Api/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
+            sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
+      - bash: |
+          ./build.sh --backend -f netcoreapp3.1 -r win-x64
+          TEST_DIR=_tests/netcoreapp3.1/win-x64/publish/ ./test.sh Windows Unit Coverage
+        displayName: Coverage Unit Tests
+      - task: SonarCloudAnalyze@1
+        displayName: Publish SonarCloud Results
+      - task: reportgenerator@4
+        displayName: Generate Coverage Report
+        inputs:
+          reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml'
+          targetdir: '$(Build.SourcesDirectory)/CoverageResults/combined'
+          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish Coverage Report
+        inputs:
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: './CoverageResults/combined/Cobertura.xml'
+          reportDirectory: './CoverageResults/combined/'

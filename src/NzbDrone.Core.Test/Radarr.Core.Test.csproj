@@ -10,6 +10,9 @@
     <PackageReference Include="NBuilder" Version="6.0.1" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="coverlet.collector" Version="1.1.0" PrivateAssets="all" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
