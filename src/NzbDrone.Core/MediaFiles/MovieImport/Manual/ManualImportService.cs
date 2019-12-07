@@ -132,7 +132,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, false);
             var movieFiles = _diskScanService.GetVideoFiles(baseFolder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, baseFolder));
+            var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, baseFolder), filterExistingFiles);
 
             return decisions.Select(decision => MapItem(decision, rootFolder, downloadId, directoryInfo.Name)).ToList();
         }

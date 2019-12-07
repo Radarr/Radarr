@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.History;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 
 
@@ -24,6 +19,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
     {
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool filterExistingFiles);
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -33,11 +29,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IAggregationService _aggregationService;
         private readonly IDiskProvider _diskProvider;
         private readonly IDetectSample _detectSample;
-        private readonly IQualityDefinitionService _qualitiesService;
-        private readonly IConfigService _config;
-        private readonly IHistoryService _historyService;
         private readonly IParsingService _parsingService;
-        private readonly ICached<string> _warnedFiles;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -45,11 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IAggregationService aggregationService,
                                    IDiskProvider diskProvider,
                                    IDetectSample detectSample,
-                                   IQualityDefinitionService qualitiesService,
-                                   IConfigService config,
-                                   IHistoryService historyService,
                                    IParsingService parsingService,
-                                   ICacheManager cacheManager,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -57,22 +45,23 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _aggregationService = aggregationService;
             _diskProvider = diskProvider;
             _detectSample = detectSample;
-            _qualitiesService = qualitiesService;
-            _config = config;
-            _historyService = historyService;
             _parsingService = parsingService;
-            _warnedFiles = cacheManager.GetCache<string>(this.GetType());
             _logger = logger;
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie)
         {
-            return GetImportDecisions(videoFiles, movie, null, null, true);
+            return GetImportDecisions(videoFiles, movie, null, null, false);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource)
         {
-            var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
+            return GetImportDecisions(videoFiles, movie, downloadClientItem, folderInfo, sceneSource, true);
+        }
+
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool filterExistingFiles)
+        {
+            var newFiles = filterExistingFiles ? _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie) : videoFiles.ToList();
 
             _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
 
@@ -96,7 +85,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     DownloadClientMovieInfo = downloadClientItemInfo,
                     FolderMovieInfo = folderInfo,
                     Path = file,
-                    SceneSource = sceneSource
+                    SceneSource = sceneSource,
+                    ExistingFile = movie.Path.IsParentPath(file)
                 };
 
                 decisions.AddIfNotNull(GetDecision(localMovie, downloadClientItem, nonSampleVideoFileCount > 1));
