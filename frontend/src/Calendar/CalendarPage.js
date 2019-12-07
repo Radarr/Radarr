@@ -156,7 +156,7 @@ class CalendarPage extends Component {
           }
 
           {
-            hasMovie && !! movieError &&
+            hasMovie && !movieError &&
               <LegendConnector />
           }
         </PageContentBodyConnector>
