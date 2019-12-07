@@ -253,6 +253,7 @@ class InteractiveImportRow extends Component {
         <SelectMovieModal
           isOpen={isSelectMovieModalOpen}
           ids={[id]}
+          relativePath={relativePath}
           onModalClose={this.onSelectMovieModalClose}
         />
 
