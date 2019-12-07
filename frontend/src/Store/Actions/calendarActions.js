@@ -18,6 +18,8 @@ import { executeCommandHelper } from './commandActions';
 export const section = 'calendar';
 
 const viewRanges = {
+  [calendarViews.DAY]: 'day',
+  [calendarViews.WEEK]: 'week',
   [calendarViews.MONTH]: 'month',
   [calendarViews.FORECAST]: 'day'
 };
