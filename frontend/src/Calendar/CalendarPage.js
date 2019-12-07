@@ -134,9 +134,9 @@ class CalendarPage extends Component {
         >
           {
             movieError &&
-            <div className={styles.errorMessage}>
-              {getErrorMessage(movieError, 'Failed to load movie from API')}
-            </div>
+              <div className={styles.errorMessage}>
+                {getErrorMessage(movieError, 'Failed to load movie from API')}
+              </div>
           }
 
           {

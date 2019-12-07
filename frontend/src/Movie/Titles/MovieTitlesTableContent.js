@@ -51,20 +51,20 @@ class MovieTitlesTableContent extends Component {
 
         {
           isPopulated && hasItems && !error &&
-          <Table columns={columns}>
-            <TableBody>
-              {
-                items.reverse().map((item) => {
-                  return (
-                    <MovieTitlesRow
-                      key={item.id}
-                      {...item}
-                    />
-                  );
-                })
-              }
-            </TableBody>
-          </Table>
+            <Table columns={columns}>
+              <TableBody>
+                {
+                  items.reverse().map((item) => {
+                    return (
+                      <MovieTitlesRow
+                        key={item.id}
+                        {...item}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
         }
       </div>
     );

@@ -106,9 +106,9 @@ class Notification extends Component {
 
         {
           supportsOnHealthIssue && onHealthIssue &&
-          <Label kind={kinds.SUCCESS}>
-            On Health Issue
-          </Label>
+            <Label kind={kinds.SUCCESS}>
+              On Health Issue
+            </Label>
         }
 
         {

@@ -55,14 +55,14 @@ class Updates extends Component {
               <div className={styles.updateAvailable}>
                 {
                   !isDocker &&
-                  <SpinnerButton
-                    className={styles.updateAvailable}
-                    kind={kinds.PRIMARY}
-                    isSpinning={isInstallingUpdate}
-                    onPress={onInstallLatestPress}
-                  >
-                    Install Latest
-                  </SpinnerButton>
+                    <SpinnerButton
+                      className={styles.updateAvailable}
+                      kind={kinds.PRIMARY}
+                      isSpinning={isInstallingUpdate}
+                      onPress={onInstallLatestPress}
+                    >
+                      Install Latest
+                    </SpinnerButton>
                 }
 
                 {

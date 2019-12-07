@@ -93,32 +93,32 @@ class SecuritySettings extends Component {
 
         {
           authenticationEnabled &&
-          <FormGroup>
-            <FormLabel>Username</FormLabel>
+            <FormGroup>
+              <FormLabel>Username</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.TEXT}
-              name="username"
-              helpTextWarning="Requires restart to take effect"
-              onChange={onInputChange}
-              {...username}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.TEXT}
+                name="username"
+                helpTextWarning="Requires restart to take effect"
+                onChange={onInputChange}
+                {...username}
+              />
+            </FormGroup>
         }
 
         {
           authenticationEnabled &&
-          <FormGroup>
-            <FormLabel>Password</FormLabel>
+            <FormGroup>
+              <FormLabel>Password</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.PASSWORD}
-              name="password"
-              helpTextWarning="Requires restart to take effect"
-              onChange={onInputChange}
-              {...password}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.PASSWORD}
+                name="password"
+                helpTextWarning="Requires restart to take effect"
+                onChange={onInputChange}
+                {...password}
+              />
+            </FormGroup>
         }
 
         <FormGroup>

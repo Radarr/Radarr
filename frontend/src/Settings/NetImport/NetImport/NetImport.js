@@ -86,12 +86,12 @@ class NetImport extends Component {
 
           {
             !enabled && !enableAuto &&
-            <Label
-              kind={kinds.DISABLED}
-              outline={true}
-            >
-              Disabled
-            </Label>
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                Disabled
+              </Label>
           }
         </div>
 

@@ -96,12 +96,12 @@ class Indexer extends Component {
 
           {
             !enableRss && !enableAutomaticSearch && !enableInteractiveSearch &&
-            <Label
-              kind={kinds.DISABLED}
-              outline={true}
-            >
-              Disabled
-            </Label>
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                Disabled
+              </Label>
           }
         </div>
 

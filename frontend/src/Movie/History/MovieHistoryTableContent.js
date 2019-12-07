@@ -78,21 +78,21 @@ class MovieHistoryTableContent extends Component {
 
         {
           isPopulated && hasItems && !error &&
-          <Table columns={columns}>
-            <TableBody>
-              {
-                items.reverse().map((item) => {
-                  return (
-                    <MovieHistoryRowConnector
-                      key={item.id}
-                      {...item}
-                      onMarkAsFailedPress={onMarkAsFailedPress}
-                    />
-                  );
-                })
-              }
-            </TableBody>
-          </Table>
+            <Table columns={columns}>
+              <TableBody>
+                {
+                  items.reverse().map((item) => {
+                    return (
+                      <MovieHistoryRowConnector
+                        key={item.id}
+                        {...item}
+                        onMarkAsFailedPress={onMarkAsFailedPress}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
         }
       </div>
     );

@@ -88,27 +88,27 @@ class AddNewMovieSearchResult extends Component {
 
               {
                 !title.contains(year) && !!year &&
-                <span className={styles.year}>({year})</span>
+                  <span className={styles.year}>({year})</span>
               }
 
               {
                 isExistingMovie &&
-                <Icon
-                  className={styles.alreadyExistsIcon}
-                  name={icons.CHECK_CIRCLE}
-                  size={36}
-                  title="Already in your library"
-                />
+                  <Icon
+                    className={styles.alreadyExistsIcon}
+                    name={icons.CHECK_CIRCLE}
+                    size={36}
+                    title="Already in your library"
+                  />
               }
 
               {
                 isExclusionMovie &&
-                <Icon
-                  className={styles.exclusionIcon}
-                  name={icons.DANGER}
-                  size={36}
-                  title="Movie is on Net Import Exclusion List"
-                />
+                  <Icon
+                    className={styles.exclusionIcon}
+                    name={icons.DANGER}
+                    size={36}
+                    title="Movie is on Net Import Exclusion List"
+                  />
               }
             </div>
 
@@ -122,19 +122,19 @@ class AddNewMovieSearchResult extends Component {
 
               {
                 !!studio &&
-                <Label size={sizes.LARGE}>
-                  {studio}
-                </Label>
+                  <Label size={sizes.LARGE}>
+                    {studio}
+                  </Label>
               }
 
               {
                 status === 'ended' &&
-                <Label
-                  kind={kinds.DANGER}
-                  size={sizes.LARGE}
-                >
-                  Ended
-                </Label>
+                  <Label
+                    kind={kinds.DANGER}
+                    size={sizes.LARGE}
+                  >
+                    Ended
+                  </Label>
               }
             </div>
 
