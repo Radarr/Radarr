@@ -40,6 +40,7 @@ function CalendarDay(props) {
               <CalendarEventConnector
                 key={event.id}
                 movieId={event.id}
+                date={date}
                 {...event}
                 onEventModalOpenToggle={onEventModalOpenToggle}
               />
