@@ -57,6 +57,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
 
             _movie = Builder<Movie>.CreateNew()
+                                     .With(e => e.Path = @"C:\Test\Movie".AsOsAgnostic())
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
@@ -111,9 +112,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         public void should_call_all_specifications()
         {
             var downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
+            GivenAugmentationSuccess();
             GivenSpecifications(_pass1, _pass2, _pass3, _fail1, _fail2, _fail3);
 
-            Subject.GetImportDecisions(_videoFiles, new Movie(), downloadClientItem, null, false);
+            Subject.GetImportDecisions(_videoFiles, _movie, downloadClientItem, null, false, true);
 
             _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
             _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalMovie>(), downloadClientItem), Times.Once());
@@ -128,7 +130,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenSpecifications(_fail1);
 
-            var result = Subject.GetImportDecisions(_videoFiles, new Movie());
+            var result = Subject.GetImportDecisions(_videoFiles, _movie);
 
             result.Single().Approved.Should().BeFalse();
         }
@@ -138,17 +140,18 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenSpecifications(_pass1, _fail1, _pass2, _pass3);
 
-            var result = Subject.GetImportDecisions(_videoFiles, new Movie());
+            var result = Subject.GetImportDecisions(_videoFiles, _movie);
 
             result.Single().Approved.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_pass_if_all_specs_pass()
+        public void should_return_approved_if_all_specs_pass()
         {
+            GivenAugmentationSuccess();
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            var result = Subject.GetImportDecisions(_videoFiles, new Movie());
+            var result = Subject.GetImportDecisions(_videoFiles, _movie);
 
             result.Single().Approved.Should().BeTrue();
         }
@@ -156,9 +159,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         [Test]
         public void should_have_same_number_of_rejections_as_specs_that_failed()
         {
+            GivenAugmentationSuccess();
             GivenSpecifications(_pass1, _pass2, _pass3, _fail1, _fail2, _fail3);
 
-            var result = Subject.GetImportDecisions(_videoFiles, new Movie());
+            var result = Subject.GetImportDecisions(_videoFiles, _movie);
             result.Single().Rejections.Should().HaveCount(3);
         }
 
