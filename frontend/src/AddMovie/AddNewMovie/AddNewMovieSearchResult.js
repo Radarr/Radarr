@@ -39,6 +39,10 @@ class AddNewMovieSearchResult extends Component {
     this.setState({ isNewAddMovieModalOpen: false });
   }
 
+  onTMDBLinkPress = (event) => {
+    event.stopPropagation();
+  }
+
   //
   // Render
 
@@ -82,7 +86,7 @@ class AddNewMovieSearchResult extends Component {
               />
           }
 
-          <div>
+          <div className={styles.content}>
             <div className={styles.title}>
               {title}
 
@@ -110,6 +114,18 @@ class AddNewMovieSearchResult extends Component {
                     title="Movie is on Net Import Exclusion List"
                   />
               }
+
+              <Link
+                className={styles.tmdbLink}
+                to={`https://www.themoviedb.org/movie/${tmdbId}`}
+                onPress={this.onTMDBLinkPress}
+              >
+                <Icon
+                  className={styles.tmdbLinkIcon}
+                  name={icons.EXTERNAL_LINK}
+                  size={28}
+                />
+              </Link>
             </div>
 
             <div>
