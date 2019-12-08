@@ -111,7 +111,8 @@ class MovieIndexPosters extends Component {
       items,
       sortKey,
       posterOptions,
-      jumpToCharacter
+      jumpToCharacter,
+      isMovieEditorActive
     } = this.props;
 
     const {
@@ -131,7 +132,8 @@ class MovieIndexPosters extends Component {
             prevState.columnWidth !== columnWidth ||
             prevState.columnCount !== columnCount ||
             prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.items, items))) {
+            hasDifferentItemsOrOrder(prevProps.items, items) ||
+            prevState.isMovieEditorActive !== isMovieEditorActive)) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
