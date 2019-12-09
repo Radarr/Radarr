@@ -19,7 +19,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
  using NzbDrone.Core.Movies.AlternativeTitles;
 
