@@ -121,8 +121,7 @@ const config = {
         use: {
           loader: 'worker-loader',
           options: {
-            name: '[name].js',
-            inline: true
+            name: '[name].js'
           }
         }
       },
