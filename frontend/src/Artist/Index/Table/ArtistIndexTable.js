@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import ArtistIndexItemConnector from 'Artist/Index/ArtistIndexItemConnector';
 import ArtistIndexHeaderConnector from './ArtistIndexHeaderConnector';
 import ArtistIndexRow from './ArtistIndexRow';
@@ -50,16 +51,21 @@ class ArtistIndexTable extends Component {
     const artist = items[rowIndex];
 
     return (
-      <ArtistIndexItemConnector
+      <VirtualTableRow
         key={key}
-        component={ArtistIndexRow}
         style={style}
-        columns={columns}
-        artistId={artist.id}
-        qualityProfileId={artist.qualityProfileId}
-        metadataProfileId={artist.metadataProfileId}
-        showBanners={showBanners}
-      />
+      >
+        <ArtistIndexItemConnector
+          key={artist.id}
+          component={ArtistIndexRow}
+          style={style}
+          columns={columns}
+          artistId={artist.id}
+          qualityProfileId={artist.qualityProfileId}
+          metadataProfileId={artist.metadataProfileId}
+          showBanners={showBanners}
+        />
+      </VirtualTableRow>
     );
   }
 
@@ -108,6 +114,7 @@ class ArtistIndexTable extends Component {
         sortDirection={sortDirection}
         onRender={onRender}
         onScroll={onScroll}
+        isScrollingOptOut={true}
       />
     );
   }

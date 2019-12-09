@@ -219,24 +219,28 @@ class ArtistIndexBanners extends Component {
     }
 
     return (
-      <ArtistIndexItemConnector
-        key={key}
-        component={ArtistIndexBanner}
-        sortKey={sortKey}
-        bannerWidth={bannerWidth}
-        bannerHeight={bannerHeight}
-        detailedProgressBar={detailedProgressBar}
-        showTitle={showTitle}
-        showMonitored={showMonitored}
-        showQualityProfile={showQualityProfile}
-        showRelativeDates={showRelativeDates}
-        shortDateFormat={shortDateFormat}
-        timeFormat={timeFormat}
+      <div
         style={style}
-        artistId={artist.id}
-        qualityProfileId={artist.qualityProfileId}
-        metadataProfileId={artist.metadataProfileId}
-      />
+        key={key}
+      >
+        <ArtistIndexItemConnector
+          key={artist.id}
+          component={ArtistIndexBanner}
+          sortKey={sortKey}
+          bannerWidth={bannerWidth}
+          bannerHeight={bannerHeight}
+          detailedProgressBar={detailedProgressBar}
+          showTitle={showTitle}
+          showMonitored={showMonitored}
+          showQualityProfile={showQualityProfile}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          artistId={artist.id}
+          qualityProfileId={artist.qualityProfileId}
+          metadataProfileId={artist.metadataProfileId}
+        />
+      </div>
     );
   }
 
@@ -296,6 +300,7 @@ class ArtistIndexBanners extends Component {
                 overscanRowCount={2}
                 cellRenderer={this.cellRenderer}
                 onSectionRendered={this.onSectionRendered}
+                isScrollingOptOut={true}
               />
             );
           }

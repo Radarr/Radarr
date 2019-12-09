@@ -10,8 +10,6 @@ import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
 import TagListConnector from 'Components/TagListConnector';
-// import CheckInput from 'Components/Form/CheckInput';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
@@ -79,7 +77,6 @@ class ArtistIndexRow extends Component {
 
   render() {
     const {
-      style,
       id,
       monitored,
       status,
@@ -121,7 +118,7 @@ class ArtistIndexRow extends Component {
     } = this.state;
 
     return (
-      <VirtualTableRow style={style}>
+      <>
         {
           columns.map((column) => {
             const {
@@ -436,13 +433,12 @@ class ArtistIndexRow extends Component {
           artistId={id}
           onModalClose={this.onDeleteArtistModalClose}
         />
-      </VirtualTableRow>
+      </>
     );
   }
 }
 
 ArtistIndexRow.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,

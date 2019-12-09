@@ -70,7 +70,6 @@ class ArtistIndexOverview extends Component {
 
   render() {
     const {
-      style,
       id,
       artistName,
       overview,
@@ -122,7 +121,7 @@ class ArtistIndexOverview extends Component {
     const overviewHeight = contentHeight - titleRowHeight;
 
     return (
-      <div className={styles.container} style={style}>
+      <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.poster}>
             <div className={styles.posterContainer}>
@@ -245,7 +244,6 @@ class ArtistIndexOverview extends Component {
 }
 
 ArtistIndexOverview.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,

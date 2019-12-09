@@ -212,31 +212,36 @@ class ArtistIndexPosters extends Component {
       showQualityProfile
     } = posterOptions;
 
-    const artist = items[rowIndex * columnCount + columnIndex];
+    const artistIdx = rowIndex * columnCount + columnIndex;
+    const artist = items[artistIdx];
 
     if (!artist) {
       return null;
     }
 
     return (
-      <ArtistIndexItemConnector
+      <div
         key={key}
-        component={ArtistIndexPoster}
-        sortKey={sortKey}
-        posterWidth={posterWidth}
-        posterHeight={posterHeight}
-        detailedProgressBar={detailedProgressBar}
-        showTitle={showTitle}
-        showMonitored={showMonitored}
-        showQualityProfile={showQualityProfile}
-        showRelativeDates={showRelativeDates}
-        shortDateFormat={shortDateFormat}
-        timeFormat={timeFormat}
         style={style}
-        artistId={artist.id}
-        qualityProfileId={artist.qualityProfileId}
-        metadataProfileId={artist.metadataProfileId}
-      />
+      >
+        <ArtistIndexItemConnector
+          key={artist.id}
+          component={ArtistIndexPoster}
+          sortKey={sortKey}
+          posterWidth={posterWidth}
+          posterHeight={posterHeight}
+          detailedProgressBar={detailedProgressBar}
+          showTitle={showTitle}
+          showMonitored={showMonitored}
+          showQualityProfile={showQualityProfile}
+          showRelativeDates={showRelativeDates}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          artistId={artist.id}
+          qualityProfileId={artist.qualityProfileId}
+          metadataProfileId={artist.metadataProfileId}
+        />
+      </div>
     );
   }
 
@@ -296,6 +301,7 @@ class ArtistIndexPosters extends Component {
                 overscanRowCount={2}
                 cellRenderer={this.cellRenderer}
                 onSectionRendered={this.onSectionRendered}
+                isScrollingOptOut={true}
               />
             );
           }

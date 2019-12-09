@@ -54,7 +54,6 @@ class ArtistIndexBanner extends Component {
 
   render() {
     const {
-      style,
       id,
       artistName,
       monitored,
@@ -102,7 +101,7 @@ class ArtistIndexBanner extends Component {
     };
 
     return (
-      <div className={styles.container} style={style}>
+      <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.bannerContainer}>
             <Label className={styles.controls}>
@@ -234,7 +233,6 @@ class ArtistIndexBanner extends Component {
 }
 
 ArtistIndexBanner.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
