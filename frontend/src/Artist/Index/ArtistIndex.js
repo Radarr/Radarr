@@ -54,7 +54,7 @@ class ArtistIndex extends Component {
 
     this.state = {
       contentBody: null,
-      jumpBarItems: [],
+      jumpBarItems: { order: [] },
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
       isBannerOptionsModalOpen: false,
@@ -103,28 +103,39 @@ class ArtistIndex extends Component {
 
     // Reset if not sorting by sortName
     if (sortKey !== 'sortName') {
-      this.setState({ jumpBarItems: [] });
+      this.setState({ jumpBarItems: { order: [] } });
       return;
     }
 
     const characters = _.reduce(items, (acc, item) => {
-      const firstCharacter = item.sortName.charAt(0);
+      let char = item.sortName.charAt(0);
 
-      if (isNaN(firstCharacter)) {
-        acc.push(firstCharacter);
+      if (!isNaN(char)) {
+        char = '#';
+      }
+
+      if (char in acc) {
+        acc[char] = acc[char] + 1;
       } else {
-        acc.push('#');
+        acc[char] = 1;
       }
 
       return acc;
-    }, []).sort();
+    }, {});
+
+    const order = Object.keys(characters).sort();
 
     // Reverse if sorting descending
     if (sortDirection === sortDirections.DESCENDING) {
-      characters.reverse();
+      order.reverse();
     }
 
-    this.setState({ jumpBarItems: _.sortedUniq(characters) });
+    const jumpBarItems = {
+      characters,
+      order
+    };
+
+    this.setState({ jumpBarItems });
   }
 
   //
@@ -371,7 +382,7 @@ class ArtistIndex extends Component {
           </PageContentBodyConnector>
 
           {
-            isLoaded && !!jumpBarItems.length &&
+            isLoaded && !!jumpBarItems.order.length &&
               <PageJumpBar
                 items={jumpBarItems}
                 onItemPress={this.onJumpBarItemPress}
