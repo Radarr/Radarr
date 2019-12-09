@@ -14,8 +14,6 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Movies;
 using System.Threading;
-using NLog.Fluent;
-using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
