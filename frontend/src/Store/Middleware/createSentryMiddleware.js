@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 import parseUrl from 'Utilities/String/parseUrl';
 
 function cleanseUrl(url) {
@@ -32,6 +33,13 @@ function cleanseData(data) {
 
 function identity(stuff) {
   return stuff;
+}
+
+function stripUrlBase(frame) {
+  if (frame.filename && window.Radarr.urlBase) {
+    frame.filename = frame.filename.replace(window.Lidarr.urlBase, '');
+  }
+  return frame;
 }
 
 function createMiddleware() {
@@ -80,7 +88,8 @@ export default function createSentryMiddleware() {
     environment: branch,
     release,
     sendDefaultPii: true,
-    beforeSend: cleanseData
+    beforeSend: cleanseData,
+    integrations: [new Integrations.RewriteFrames({ iteratee: stripUrlBase })]
   });
 
   sentry.configureScope((scope) => {
