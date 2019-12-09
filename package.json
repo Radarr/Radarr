@@ -124,7 +124,8 @@
     "uglifyjs-webpack-plugin": "2.2.0",
     "url-loader": "2.1.0",
     "webpack": "4.39.3",
-    "webpack-stream": "5.2.1"
+    "webpack-stream": "5.2.1",
+    "worker-loader": "2.0.0"
   },
   "devDependencies": {
     "@sentry/cli": "1.47.1"

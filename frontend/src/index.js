@@ -1,6 +1,4 @@
-/* eslint-disable-next-line no-undef */
-__webpack_public_path__ = `${window.Lidarr.urlBase}/`;
-
+import './preload.js';
 import React from 'react';
 import { render } from 'react-dom';
 import { createBrowserHistory } from 'history';
