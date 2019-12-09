@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -21,16 +22,15 @@ class UnmappedFilesTable extends Component {
     super(props, context);
 
     this.state = {
-      contentBody: null,
-      scrollTop: 0
+      scroller: null
     };
   }
 
   //
   // Control
 
-  setContentBodyRef = (ref) => {
-    this.setState({ contentBody: ref });
+  setScrollerRef = (ref) => {
+    this.setState({ scroller: ref });
   }
 
   rowRenderer = ({ key, rowIndex, style }) => {
@@ -43,21 +43,18 @@ class UnmappedFilesTable extends Component {
     const item = items[rowIndex];
 
     return (
-      <UnmappedFilesTableRow
-        style={style}
+      <VirtualTableRow
         key={key}
-        columns={columns}
-        deleteUnmappedFile={deleteUnmappedFile}
-        {...item}
-      />
+        style={style}
+      >
+        <UnmappedFilesTableRow
+          key={item.id}
+          columns={columns}
+          deleteUnmappedFile={deleteUnmappedFile}
+          {...item}
+        />
+      </VirtualTableRow>
     );
-  }
-
-  //
-  // Listeners
-
-  onScroll = ({ scrollTop }) => {
-    this.setState({ scrollTop });
   }
 
   render() {
@@ -77,8 +74,7 @@ class UnmappedFilesTable extends Component {
     } = this.props;
 
     const {
-      scrollTop,
-      contentBody
+      scroller
     } = this.state;
 
     return (
@@ -100,8 +96,7 @@ class UnmappedFilesTable extends Component {
         </PageToolbar>
 
         <PageContentBodyConnector
-          ref={this.setContentBodyRef}
-          onScroll={this.onScroll}
+          registerScroller={this.setScrollerRef}
         >
           {
             isFetching && !isPopulated &&
@@ -116,14 +111,12 @@ class UnmappedFilesTable extends Component {
           }
 
           {
-            isPopulated && !error && !!items.length && contentBody &&
+            isPopulated && !error && !!items.length && scroller &&
               <VirtualTable
                 items={items}
                 columns={columns}
-                contentBody={contentBody}
+                scroller={scroller}
                 isSmallScreen={false}
-                scrollTop={scrollTop}
-                onScroll={this.onScroll}
                 overscanRowCount={10}
                 rowRenderer={this.rowRenderer}
                 header={

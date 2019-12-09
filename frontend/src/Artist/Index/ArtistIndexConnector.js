@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistClientSideCollectionItemsSelector from 'Store/Selectors/createArtistClientSideCollectionItemsSelector';
-import dimensions from 'Styles/Variables/dimensions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import scrollPositions from 'Store/scrollPositions';
@@ -13,35 +12,6 @@ import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
 import ArtistIndex from './ArtistIndex';
-
-const POSTERS_PADDING = 15;
-const POSTERS_PADDING_SMALL_SCREEN = 5;
-const BANNERS_PADDING = 15;
-const BANNERS_PADDING_SMALL_SCREEN = 5;
-const TABLE_PADDING = parseInt(dimensions.pageContentBodyPadding);
-const TABLE_PADDING_SMALL_SCREEN = parseInt(dimensions.pageContentBodyPaddingSmallScreen);
-
-// If the scrollTop is greater than zero it needs to be offset
-// by the padding so when it is set initially so it is correct
-// after React Virtualized takes the padding into account.
-
-function getScrollTop(view, scrollTop, isSmallScreen) {
-  if (scrollTop === 0) {
-    return 0;
-  }
-
-  let padding = isSmallScreen ? TABLE_PADDING_SMALL_SCREEN : TABLE_PADDING;
-
-  if (view === 'posters') {
-    padding = isSmallScreen ? POSTERS_PADDING_SMALL_SCREEN : POSTERS_PADDING;
-  }
-
-  if (view === 'banners') {
-    padding = isSmallScreen ? BANNERS_PADDING_SMALL_SCREEN : BANNERS_PADDING;
-  }
-
-  return scrollTop + padding;
-}
 
 function createMapStateToProps() {
   return createSelector(
@@ -100,38 +70,14 @@ function createMapDispatchToProps(dispatch, props) {
 class ArtistIndexConnector extends Component {
 
   //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    const {
-      view,
-      scrollTop,
-      isSmallScreen
-    } = props;
-
-    this.state = {
-      scrollTop: getScrollTop(view, scrollTop, isSmallScreen)
-    };
-  }
-
-  //
   // Listeners
 
   onViewSelect = (view) => {
-    // Reset the scroll position before changing the view
-    this.setState({ scrollTop: 0 }, () => {
-      this.props.dispatchSetArtistView(view);
-    });
+    this.props.dispatchSetArtistView(view);
   }
 
   onScroll = ({ scrollTop }) => {
-    this.setState({
-      scrollTop
-    }, () => {
-      scrollPositions.artistIndex = scrollTop;
-    });
+    scrollPositions.artistIndex = scrollTop;
   }
 
   //
@@ -141,7 +87,6 @@ class ArtistIndexConnector extends Component {
     return (
       <ArtistIndex
         {...this.props}
-        scrollTop={this.state.scrollTop}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
       />
@@ -152,7 +97,6 @@ class ArtistIndexConnector extends Component {
 ArtistIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   dispatchSetArtistView: PropTypes.func.isRequired
 };
 

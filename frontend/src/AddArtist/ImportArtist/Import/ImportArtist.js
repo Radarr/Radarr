@@ -22,16 +22,15 @@ class ImportArtist extends Component {
       allUnselected: false,
       lastToggled: null,
       selectedState: {},
-      contentBody: null,
-      scrollTop: 0
+      scroller: null
     };
   }
 
   //
   // Control
 
-  setContentBodyRef = (ref) => {
-    this.setState({ contentBody: ref });
+  setScrollerRef = (ref) => {
+    this.setState({ scroller: ref });
   }
 
   //
@@ -72,10 +71,6 @@ class ImportArtist extends Component {
     this.props.onImportPress(this.getSelectedIds());
   }
 
-  onScroll = ({ scrollTop }) => {
-    this.setState({ scrollTop });
-  }
-
   //
   // Render
 
@@ -94,13 +89,13 @@ class ImportArtist extends Component {
       allSelected,
       allUnselected,
       selectedState,
-      contentBody
+      scroller
     } = this.state;
 
     return (
       <PageContent title="Import Artist">
         <PageContentBodyConnector
-          ref={this.setContentBodyRef}
+          registerScroller={this.setScrollerRef}
           onScroll={this.onScroll}
         >
           {
@@ -121,20 +116,18 @@ class ImportArtist extends Component {
           }
 
           {
-            !rootFoldersError && rootFoldersPopulated && !!unmappedFolders.length && contentBody &&
+            !rootFoldersError && rootFoldersPopulated && !!unmappedFolders.length && scroller &&
               <ImportArtistTableConnector
                 rootFolderId={rootFolderId}
                 unmappedFolders={unmappedFolders}
                 allSelected={allSelected}
                 allUnselected={allUnselected}
                 selectedState={selectedState}
-                contentBody={contentBody}
+                scroller={scroller}
                 showMetadataProfile={showMetadataProfile}
-                scrollTop={this.state.scrollTop}
                 onSelectAllChange={this.onSelectAllChange}
                 onSelectedChange={this.onSelectedChange}
                 onRemoveSelectedStateItem={this.onRemoveSelectedStateItem}
-                onScroll={this.onScroll}
               />
           }
         </PageContentBodyConnector>

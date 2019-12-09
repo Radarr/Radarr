@@ -23,10 +23,12 @@ class ArtistIndexTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const jumpToCharacter = this.props.jumpToCharacter;
+    const {
+      items,
+      jumpToCharacter
+    } = this.props;
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
-      const items = this.props.items;
 
       const scrollIndex = getIndexOfFirstCharacter(items, jumpToCharacter);
 
@@ -76,26 +78,21 @@ class ArtistIndexTable extends Component {
     const {
       items,
       columns,
-      filters,
       sortKey,
       sortDirection,
       showBanners,
       isSmallScreen,
-      scrollTop,
-      contentBody,
       onSortPress,
-      onRender,
-      onScroll
+      scroller
     } = this.props;
 
     return (
       <VirtualTable
         className={styles.tableContainer}
         items={items}
-        scrollTop={scrollTop}
         scrollIndex={this.state.scrollIndex}
-        contentBody={contentBody}
         isSmallScreen={isSmallScreen}
+        scroller={scroller}
         rowHeight={showBanners ? 70 : 38}
         overscanRowCount={2}
         rowRenderer={this.rowRenderer}
@@ -109,12 +106,8 @@ class ArtistIndexTable extends Component {
           />
         }
         columns={columns}
-        filters={filters}
         sortKey={sortKey}
         sortDirection={sortDirection}
-        onRender={onRender}
-        onScroll={onScroll}
-        isScrollingOptOut={true}
       />
     );
   }
@@ -123,17 +116,13 @@ class ArtistIndexTable extends Component {
 ArtistIndexTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   showBanners: PropTypes.bool.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   jumpToCharacter: PropTypes.string,
-  contentBody: PropTypes.object.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  onSortPress: PropTypes.func.isRequired,
-  onRender: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  onSortPress: PropTypes.func.isRequired
 };
 
 export default ArtistIndexTable;

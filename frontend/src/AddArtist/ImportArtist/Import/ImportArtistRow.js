@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { inputTypes } from 'Helpers/Props';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import ImportArtistSelectArtistConnector from './SelectArtist/ImportArtistSelectArtistConnector';
@@ -10,7 +9,6 @@ import styles from './ImportArtistRow.css';
 
 function ImportArtistRow(props) {
   const {
-    style,
     id,
     monitor,
     qualityProfileId,
@@ -25,7 +23,7 @@ function ImportArtistRow(props) {
   } = props;
 
   return (
-    <VirtualTableRow style={style}>
+    <>
       <VirtualTableSelectCell
         inputClassName={styles.selectInput}
         id={id}
@@ -82,12 +80,11 @@ function ImportArtistRow(props) {
           isExistingArtist={isExistingArtist}
         />
       </VirtualTableRowCell>
-    </VirtualTableRow>
+    </>
   );
 }
 
 ImportArtistRow.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,

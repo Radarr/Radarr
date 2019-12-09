@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import ImportArtistHeader from './ImportArtistHeader';
 import ImportArtistRowConnector from './ImportArtistRowConnector';
 
@@ -110,15 +111,20 @@ class ImportArtistTable extends Component {
     const item = items[rowIndex];
 
     return (
-      <ImportArtistRowConnector
+      <VirtualTableRow
         key={key}
         style={style}
-        rootFolderId={rootFolderId}
-        showMetadataProfile={showMetadataProfile}
-        isSelected={selectedState[item.id]}
-        onSelectedChange={onSelectedChange}
-        id={item.id}
-      />
+      >
+        <ImportArtistRowConnector
+          key={item.id}
+          style={style}
+          rootFolderId={rootFolderId}
+          showMetadataProfile={showMetadataProfile}
+          isSelected={selectedState[item.id]}
+          onSelectedChange={onSelectedChange}
+          id={item.id}
+        />
+      </VirtualTableRow>
     );
   }
 
@@ -131,12 +137,10 @@ class ImportArtistTable extends Component {
       allSelected,
       allUnselected,
       isSmallScreen,
-      contentBody,
       showMetadataProfile,
-      scrollTop,
+      scroller,
       selectedState,
-      onSelectAllChange,
-      onScroll
+      onSelectAllChange
     } = this.props;
 
     if (!items.length) {
@@ -146,10 +150,9 @@ class ImportArtistTable extends Component {
     return (
       <VirtualTable
         items={items}
-        contentBody={contentBody}
         isSmallScreen={isSmallScreen}
+        scroller={scroller}
         rowHeight={52}
-        scrollTop={scrollTop}
         overscanRowCount={2}
         rowRenderer={this.rowRenderer}
         header={
@@ -161,7 +164,6 @@ class ImportArtistTable extends Component {
           />
         }
         selectedState={selectedState}
-        onScroll={onScroll}
       />
     );
   }
@@ -180,15 +182,14 @@ ImportArtistTable.propTypes = {
   selectedState: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   allArtists: PropTypes.arrayOf(PropTypes.object),
-  contentBody: PropTypes.object.isRequired,
+  scroller: PropTypes.instanceOf(Element).isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   onSelectAllChange: PropTypes.func.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onRemoveSelectedStateItem: PropTypes.func.isRequired,
   onArtistLookup: PropTypes.func.isRequired,
-  onSetImportArtistValue: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired
+  onSetImportArtistValue: PropTypes.func.isRequired
 };
 
 export default ImportArtistTable;
