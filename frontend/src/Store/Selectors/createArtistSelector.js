@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
-import createAllArtistSelector from './createAllArtistSelector';
 
 function createArtistSelector() {
   return createSelector(
     (state, { artistId }) => artistId,
-    createAllArtistSelector(),
-    (artistId, allArtists) => {
-      return allArtists.find((artist) => artist.id === artistId );
+    (state) => state.artist.itemMap,
+    (state) => state.artist.items,
+    (artistId, itemMap, allArtists) => {
+      return allArtists[itemMap[artistId]];
     }
   );
 }
