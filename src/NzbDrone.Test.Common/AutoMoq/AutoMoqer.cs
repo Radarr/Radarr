@@ -152,7 +152,7 @@ namespace NzbDrone.Test.Common.AutoMoq
             RegisterPlatformLibrary(container);
             AddTheAutoMockingContainerExtensionToTheContainer(container);
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
             ContainerBuilderBase.RegisterSQLiteResolver();
 #endif
         }

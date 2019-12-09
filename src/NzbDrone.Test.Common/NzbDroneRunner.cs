@@ -50,7 +50,7 @@ namespace NzbDrone.Test.Common
 
             if (BuildInfo.IsDebug)
             {
-                var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.0" : "net462";
+                var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.1" : "net462";
                 Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", frameworkFolder, lidarrConsoleExe));
             }
             else

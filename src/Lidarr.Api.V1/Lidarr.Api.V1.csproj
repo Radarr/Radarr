@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
@@ -10,13 +10,13 @@
     <ProjectReference Include="..\NzbDrone.SignalR\Lidarr.SignalR.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.4.0" />
+    <PackageReference Include="FluentValidation" Version="8.6.0" />
     <PackageReference Include="Ical.Net" Version="4.1.11" />
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Nancy.Authentication.Basic" Version="2.0.0" />
     <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="NLog" Version="4.6.7" />
-    <PackageReference Include="System.IO.Abstractions" Version="6.0.38" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
   </ItemGroup>
 </Project>

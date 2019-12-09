@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
-    <PackageReference Include="FluentValidation" Version="8.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="NLog" Version="4.6.7" />
+    <PackageReference Include="FluentValidation" Version="8.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
-    <PackageReference Include="System.IO.Abstractions" Version="6.0.38" />
+    <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
-    <PackageReference Include="SpotifyAPI.Web" Version="4.2.0" />
+    <PackageReference Include="SpotifyAPI.Web" Version="4.2.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
     <PackageReference Include="Equ" Version="2.2.0" />
   </ItemGroup>
@@ -36,10 +36,10 @@
       <Link>Resources\Logo\64.png</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.0'">
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.0'">
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>

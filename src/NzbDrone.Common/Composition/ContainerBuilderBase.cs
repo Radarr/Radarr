@@ -6,7 +6,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
 using TinyIoC;
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using System.IO;
 using System.Runtime.Loader;
 using System.Runtime.InteropServices;
@@ -27,7 +27,7 @@ namespace NzbDrone.Common.Composition
             assemblies.Add(OsInfo.IsWindows ? "Lidarr.Windows" : "Lidarr.Mono");
             assemblies.Add("Lidarr.Common");
 
-#if !NETCOREAPP3_0
+#if !NETCOREAPP
             foreach (var assembly in assemblies)
             {
                 _loadedTypes.AddRange(Assembly.Load(assembly).GetTypes());
@@ -49,7 +49,7 @@ namespace NzbDrone.Common.Composition
             Container.Register(args);
         }
 
-#if  NETCOREAPP3_0
+#if  NETCOREAPP
         private static Assembly ContainerResolveEventHandler(object sender, ResolveEventArgs args)
         {
             var _resolver = new AssemblyDependencyResolver(args.RequestingAssembly.Location);

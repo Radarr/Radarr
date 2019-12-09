@@ -7,7 +7,7 @@ using System.ServiceProcess;
 using NLog;
 using NzbDrone.Common.Processes;
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using Microsoft.Extensions.Hosting.WindowsServices;
 #endif
 
@@ -61,7 +61,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
-#if !NETCOREAPP3_0
+#if !NETCOREAPP
         public static bool IsUserInteractive => Environment.UserInteractive;
 #else
         // Note that Environment.UserInteractive is always true on net core: https://stackoverflow.com/a/57325783

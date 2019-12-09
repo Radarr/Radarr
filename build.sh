@@ -137,7 +137,7 @@ PackageLinux()
 
     echo "Adding Lidarr.Mono to UpdatePackage"
     cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
     fi
@@ -169,7 +169,7 @@ PackageMacOS()
 
     echo "Adding Lidarr.Mono to UpdatePackage"
     cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
     fi
@@ -254,7 +254,7 @@ PackageTests()
     # geckodriver.exe isn't copied by dotnet publish
     if [ "$runtime" = "win-x64" ];
     then
-        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
+        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
         unzip -o gecko.zip
         cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
     fi
@@ -338,9 +338,9 @@ then
     Build
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        PackageTests "netcoreapp3.0" "win-x64"
-        PackageTests "netcoreapp3.0" "linux-x64"
-        PackageTests "netcoreapp3.0" "osx-x64"
+        PackageTests "netcoreapp3.1" "win-x64"
+        PackageTests "netcoreapp3.1" "linux-x64"
+        PackageTests "netcoreapp3.1" "osx-x64"
         PackageTests "net462" "linux-x64"
     else
         PackageTests "$FRAMEWORK" "$RID"
@@ -369,11 +369,11 @@ then
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        Package "netcoreapp3.0" "win-x64"
-        Package "netcoreapp3.0" "linux-x64"
-        Package "netcoreapp3.0" "linux-arm64"
-        Package "netcoreapp3.0" "linux-arm"
-        Package "netcoreapp3.0" "osx-x64"
+        Package "netcoreapp3.1" "win-x64"
+        Package "netcoreapp3.1" "linux-x64"
+        Package "netcoreapp3.1" "linux-arm64"
+        Package "netcoreapp3.1" "linux-arm"
+        Package "netcoreapp3.1" "osx-x64"
         Package "net462" "linux-x64"
     else
         Package "$FRAMEWORK" "$RID"
