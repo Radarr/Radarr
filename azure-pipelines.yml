@@ -684,6 +684,7 @@ stages:
 
     - job: Analyze_Frontend
       displayName: Frontend
+      condition: eq(variables['System.PullRequest.IsFork'], 'False')
       pool:
         vmImage: windows-2019
       steps:
@@ -697,7 +698,7 @@ stages:
           scannerMode: 'CLI'
           configMode: 'manual'
           cliProjectKey: 'Radarr_Radarr.UI'
-          cliProjectName: 'RadarrI'
+          cliProjectName: 'RadarrUI'
           cliProjectVersion: '$(radarrVersion)'
           cliSources: './frontend'
       - task: SonarCloudAnalyze@1
@@ -718,6 +719,7 @@ stages:
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
       - task: SonarCloudPrepare@1
+        condition: eq(variables['System.PullRequest.IsFork'], 'False')
         inputs:
           SonarCloud: 'SonarCloud'
           organization: 'radarr'
@@ -735,6 +737,7 @@ stages:
           TEST_DIR=_tests/netcoreapp3.1/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@1
+        condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
       - task: reportgenerator@4
         displayName: Generate Coverage Report
