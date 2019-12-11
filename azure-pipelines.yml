@@ -342,15 +342,6 @@ stages:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono512:
-            testName: 'Mono 5.12'
-            containerImage: radarr/testimages:mono-5.12
-          mono514:
-            testName: 'Mono 5.14'
-            containerImage: radarr/testimages:mono-5.14
-          mono516:
-            testName: 'Mono 5.16'
-            containerImage: radarr/testimages:mono-5.16
           mono518:
             testName: 'Mono 5.18'
             containerImage: radarr/testimages:mono-5.18
@@ -487,15 +478,6 @@ stages:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono512:
-            testName: 'Mono 5.12'
-            containerImage: radarr/testimages:mono-5.12
-          mono514:
-            testName: 'Mono 5.14'
-            containerImage: radarr/testimages:mono-5.14
-          mono516:
-            testName: 'Mono 5.16'
-            containerImage: radarr/testimages:mono-5.16
           mono518:
             testName: 'Mono 5.18'
             containerImage: radarr/testimages:mono-5.18
