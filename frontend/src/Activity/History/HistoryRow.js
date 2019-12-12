@@ -105,7 +105,7 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'language') {
+            if (name === 'languages') {
               return (
                 <TableRowCell key={name}>
                   <MovieLanguage
