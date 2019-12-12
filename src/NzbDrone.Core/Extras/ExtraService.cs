@@ -66,13 +66,15 @@ namespace NzbDrone.Core.Extras
             var sourcePath = localMovie.Path;
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
-            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.AllDirectories).OrderByDescending(d => d).ToArray();
+            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
 
             var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                                      .Select(e => e.Trim(' ', '.'))
                                                                      .ToList();
 
-            foreach (var matchingFilename in files)
+            var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName, StringComparison.InvariantCultureIgnoreCase));
+
+            foreach (var matchingFilename in matchingFilenames)
             {
                 var matchingExtension = wantedExtensions.FirstOrDefault(e => matchingFilename.EndsWith(e));
 
