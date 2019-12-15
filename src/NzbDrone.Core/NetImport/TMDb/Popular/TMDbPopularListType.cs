@@ -1,11 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace NzbDrone.Core.NetImport.TMDb
+namespace NzbDrone.Core.NetImport.TMDb.Popular
 {
-    public enum TMDbListType
+    public enum TMDbPopularListType
     {
-        [EnumMember(Value = "List")]
-        List = 0,
         [EnumMember(Value = "In Theaters")]
         Theaters = 1,
         [EnumMember(Value = "Popular")]
