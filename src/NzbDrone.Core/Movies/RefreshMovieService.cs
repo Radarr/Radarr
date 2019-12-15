@@ -220,10 +220,9 @@ namespace NzbDrone.Core.Movies
 
                 var updatedTMDBMovies = new HashSet<int>();
 
-                if (message.LastExecutionTime.HasValue && message.LastExecutionTime.Value.AddDays(14) > DateTime.UtcNow)
+                if (message.LastStartTime.HasValue && message.LastStartTime.Value.AddDays(14) > DateTime.UtcNow)
                 {
-                    // TODO: Should we add some overlap to ensure we get everything?
-                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastExecutionTime.Value);
+                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
                 }
 
                 foreach (var movie in allMovie)
