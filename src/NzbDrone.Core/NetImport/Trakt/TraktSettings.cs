@@ -3,6 +3,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
+using System;
 using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.NetImport.Trakt
@@ -13,6 +14,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         public TraktSettingsValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
+            RuleFor(c => c.AccessToken).NotEmpty();
+            RuleFor(c => c.RefreshToken).NotEmpty();
+            RuleFor(c => c.Expires).NotEmpty();
 
             // List name required for UserCustomList
             RuleFor(c => c.Listname)
@@ -59,6 +63,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         public TraktSettings()
         {
             Link = "https://api.trakt.tv";
+            SignIn = "startOAuth";
             ListType = (int)TraktListType.Popular;
             Username = "";
             Listname = "";
@@ -68,6 +73,20 @@ namespace NzbDrone.Core.NetImport.Trakt
             Years = "";
             Limit = 100;
         }
+
+        public string OAuthUrl => "http://radarr.aeonlucid.com/v1/trakt/redirect";
+        public string RenewUri => "http://radarr.aeonlucid.com/v1/trakt/refresh";
+        public string ClientId => "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6";
+        public virtual string Scope => "";
+
+        [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
+        public string AccessToken { get; set; }
+
+        [FieldDefinition(0, Label = "Refresh Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
+        public string RefreshToken { get; set; }
+
+        [FieldDefinition(0, Label = "Expires", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
+        public DateTime Expires { get; set; }
 
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
         public string Link { get; set; }
@@ -98,6 +117,9 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         [FieldDefinition(9, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]
         public string TraktAdditionalParameters { get; set; }
+
+        [FieldDefinition(99, Label = "Authenticate with Trakt", Type = FieldType.OAuth)]
+        public string SignIn { get; set; }
 
 
         public NzbDroneValidationResult Validate()

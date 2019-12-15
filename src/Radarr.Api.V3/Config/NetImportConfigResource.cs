@@ -8,9 +8,6 @@ namespace Radarr.Api.V3.Config
         public int NetImportSyncInterval { get; set; }
 	    public string ListSyncLevel { get; set; }
 	    public string ImportExclusions { get; set; }
-	    public string TraktAuthToken { get; set; }
-	    public string TraktRefreshToken { get; set; }
-	    public int TraktTokenExpiry { get; set; }
     }
 
     public static class NetImportConfigResourceMapper
@@ -21,10 +18,7 @@ namespace Radarr.Api.V3.Config
             {
                 NetImportSyncInterval = model.NetImportSyncInterval,
 		        ListSyncLevel = model.ListSyncLevel,
-		        ImportExclusions = model.ImportExclusions,
-	            TraktAuthToken = model.TraktAuthToken,
-	            TraktRefreshToken = model.TraktRefreshToken,
-	            TraktTokenExpiry = model.TraktTokenExpiry,
+		        ImportExclusions = model.ImportExclusions
             };
         }
     }

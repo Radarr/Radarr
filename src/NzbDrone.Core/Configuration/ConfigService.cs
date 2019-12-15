@@ -119,45 +119,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("NetImportSyncInterval", value); }
         }
 
-        public string TraktAuthToken
-        {
-            get { return GetValue("TraktAuthToken", string.Empty); }
-
-            set { SetValue("TraktAuthToken", value); }
-        }
-
-        public string TraktRefreshToken
-        {
-            get { return GetValue("TraktRefreshToken", string.Empty); }
-
-            set { SetValue("TraktRefreshToken", value); }
-        }
-
-        public int TraktTokenExpiry
-        {
-            get { return GetValueInt("TraktTokenExpiry", 0); }
-
-            set { SetValue("TraktTokenExpiry", value); }
-        }
-
-        public string NewTraktAuthToken
-        {
-            get { return GetValue("NewTraktAuthToken", string.Empty); }
-            set { SetValue("NewTraktAuthToken", value); }
-        }
-
-        public string NewTraktRefreshToken
-        {
-            get { return GetValue("NewTraktRefreshToken", string.Empty); }
-            set { SetValue("NewTraktRefreshToken", value); }
-        }
-
-        public int NewTraktTokenExpiry
-        {
-            get { return GetValueInt("NewTraktTokenExpiry", 0); }
-            set { SetValue("NewTraktTokenExpiry", value); }
-        }
-
         public string ListSyncLevel
         {
             get { return GetValue("ListSyncLevel", "disabled"); }
