@@ -52,10 +52,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public HashSet<int> GetChangedMovies (DateTime startTime)
         {
+            var startDate = startTime.ToString("o");
+
             var request = _movieBuilder.Create()
                 .SetSegment("route", "movie")
                 .SetSegment("id", "")
                 .SetSegment("secondaryRoute", "changes")
+                .AddQueryParam("start_date", startDate)
                 .Build();
 
             request.AllowAutoRedirect = true;
