@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
@@ -47,7 +46,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    },
                        };
 
-            _movie.Profile = new LazyLoaded<Profile>(_profile);
+            _movie.Profile = _profile;
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 

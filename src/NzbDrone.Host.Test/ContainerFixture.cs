@@ -17,6 +17,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.SignalR;
 using Moq;
+using NzbDrone.Core.CustomFormats;
 
 namespace NzbDrone.App.Test
 {
@@ -37,6 +38,11 @@ namespace NzbDrone.App.Test
             // set up a dummy broadcaster to allow tests to resolve
             var mockBroadcaster = new Mock<IBroadcastSignalRMessage>();
             _container.Register<IBroadcastSignalRMessage>(mockBroadcaster.Object);
+
+            // A dummy custom format repository since this isn't a DB test
+            var mockCustomFormat = Mocker.GetMock<ICustomFormatRepository>();
+            mockCustomFormat.Setup(x => x.All()).Returns(new List<CustomFormatDefinition>());
+            _container.Register<ICustomFormatRepository>(mockCustomFormat.Object);
         }
 
         [Test]

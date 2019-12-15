@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Marr.Data;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -168,7 +166,7 @@ namespace NzbDrone.Core.Extras
 
             foreach (var movieFile in movieFiles)
             {
-                movieFile.Movie = new LazyLoaded<Movie>(_movieService.GetMovie(movieId));
+                movieFile.Movie = _movieService.GetMovie(movieId);
             }
 
             return movieFiles;

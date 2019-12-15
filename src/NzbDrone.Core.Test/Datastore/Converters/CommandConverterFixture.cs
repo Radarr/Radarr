@@ -1,64 +1,51 @@
-using System;
-using System.Data;
-using FluentAssertions;
-using Marr.Data.Converters;
-using Moq;
-using NUnit.Framework;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies.Commands;
+using NUnit.Framework;
+using FluentAssertions;
+using System.Data.SQLite;
 
 namespace NzbDrone.Core.Test.Datastore.Converters
 {
     [TestFixture]
     public class CommandConverterFixture : CoreTest<CommandConverter>
     {
+        SQLiteParameter param;
+
+        [SetUp]
+        public void Setup()
+        {
+            param = new SQLiteParameter();
+        }
+
         [Test]
         public void should_return_json_string_when_saving_boolean_to_db()
         {
             var command = new RefreshMovieCommand();
 
-            Subject.ToDB(command).Should().BeOfType<string>();
+            Subject.SetValue(param, command);
+            param.Value.Should().BeOfType<string>();
         }
 
         [Test]
         public void should_return_null_for_null_value_when_saving_to_db()
         {
-            Subject.ToDB(null).Should().Be(null);
-        }
-
-        [Test]
-        public void should_return_db_null_for_db_null_value_when_saving_to_db()
-        {
-            Subject.ToDB(DBNull.Value).Should().Be(DBNull.Value);
+            Subject.SetValue(param, null);
+            param.Value.Should().BeNull();
         }
 
         [Test]
         public void should_return_command_when_getting_json_from_db()
         {
-            var dataRecordMock = new Mock<IDataRecord>();
-            dataRecordMock.Setup(s => s.GetOrdinal("Name")).Returns(0);
-            dataRecordMock.Setup(s => s.GetString(0)).Returns("RefreshMovie");
+            var data = "{\"name\": \"RefreshMovie\"}";
 
-            var context = new ConverterContext
-                          {
-                              DataRecord = dataRecordMock.Object,
-                              DbValue = new RefreshMovieCommand().ToJson()
-                          };
-
-            Subject.FromDB(context).Should().BeOfType<RefreshMovieCommand>();
+            Subject.Parse(data).Should().BeOfType<RefreshMovieCommand>();
         }
 
         [Test]
         public void should_return_null_for_null_value_when_getting_from_db()
         {
-            var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
-
-            Subject.FromDB(context).Should().Be(null);
+            Subject.Parse(null).Should().BeNull();
         }
     }
 }

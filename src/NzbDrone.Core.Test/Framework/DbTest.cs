@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
-using FluentMigrator.Runner;
-using Marr.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
@@ -111,7 +108,7 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<IConnectionStringFactory>(Mocker.Resolve<ConnectionStringFactory>());
             Mocker.SetConstant<IMigrationController>(Mocker.Resolve<MigrationController>());
 
-            MapRepository.Instance.EnableTraceLogging = true;
+            SqlBuilderExtensions.LogSql = true;
         }
 
         [SetUp]

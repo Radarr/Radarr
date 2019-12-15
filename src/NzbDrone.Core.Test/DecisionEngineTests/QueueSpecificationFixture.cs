@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
+            _movie.Profile.Cutoff = Quality.Bluray1080p.Id;
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
+            _movie.Profile.Cutoff = Quality.Bluray1080p.Id;
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_quality_in_queue_meets_cutoff()
         {
-            _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality.Id;
+            _movie.Profile.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality.Id;
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
@@ -151,8 +151,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_is_better_and_upgrade_allowed_is_false_for_quality_profile()
         {
-            _movie.Profile.Value.Cutoff = Quality.Bluray1080p.Id;
-            _movie.Profile.Value.UpgradeAllowed = false;
+            _movie.Profile.Cutoff = Quality.Bluray1080p.Id;
+            _movie.Profile.UpgradeAllowed = false;
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                 .With(r => r.Movie = _movie)

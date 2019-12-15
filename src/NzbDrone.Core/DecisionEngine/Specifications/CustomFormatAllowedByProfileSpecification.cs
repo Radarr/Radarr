@@ -22,7 +22,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             var formats = subject.ParsedMovieInfo.Quality.CustomFormats.WithNone();
             _logger.Debug("Checking if report meets custom format requirements. {0}", formats.ToExtendedString());
-            var notAllowedFormats = subject.Movie.Profile.Value.FormatItems.Where(v => v.Allowed == false).Select(f => f.Format).ToList();
+            var notAllowedFormats = subject.Movie.Profile.FormatItems.Where(v => v.Allowed == false).Select(f => f.Format).ToList();
             var notWantedFormats = notAllowedFormats.Intersect(formats);
             if (notWantedFormats.Any())
             {

@@ -1,3 +1,4 @@
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -13,10 +14,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.GetDataMapper())
+            using (var mapper = _database.OpenConnection())
             {
 
-                mapper.ExecuteNonQuery(@"DELETE FROM IndexerStatus
+                mapper.Execute(@"DELETE FROM IndexerStatus
                                      WHERE Id IN (
                                      SELECT IndexerStatus.Id FROM IndexerStatus
                                      LEFT OUTER JOIN Indexers

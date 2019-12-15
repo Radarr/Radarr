@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
@@ -36,7 +34,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 								   .With(m => m.Title = "Fack Ju Göthe 2")
 								   .With(m => m.CleanTitle = "fackjugoethe2")
 			                       .With(m => m.Year = 2015)
-			                       .With(m => m.AlternativeTitles = new LazyList<AlternativeTitle>( new List<AlternativeTitle> {new AlternativeTitle("Fack Ju Göthe 2: Same same")}))
+                                   .With(m => m.AlternativeTitles = new List<AlternativeTitle> {new AlternativeTitle("Fack Ju Göthe 2: Same same")})
 								   .Build();
 
 			_parsedMovieInfo = new ParsedMovieInfo

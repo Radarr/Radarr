@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Backup
         public void BackupDatabase(IDatabase database, string targetDirectory)
         {
             var sourceConnectionString = "";
-            using (var db = database.GetDataMapper())
+            using (var db = database.OpenConnection())
             {
                 sourceConnectionString = db.ConnectionString;
             }

@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Parser.Model
         public string Codec { get; set; }
         public string Resolution { get; set; }
 
-	public IndexerFlags IndexerFlags { get; set; }
+        public IndexerFlags IndexerFlags { get; set; }
 
         public int Age
         {
