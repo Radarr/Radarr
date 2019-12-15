@@ -9,5 +9,6 @@ namespace NzbDrone.Core.MetadataSource
     {
         Movie GetMovieInfo(string ImdbId);
         Movie GetMovieInfo(int TmdbId, Profile profile, bool hasPreDBEntry);
+        HashSet<int> GetChangedMovies(DateTime startTime);
     }
 }

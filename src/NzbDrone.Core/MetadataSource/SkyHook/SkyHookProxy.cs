@@ -50,6 +50,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
+        public HashSet<int> GetChangedMovies (DateTime startTime)
+        {
+            var request = _movieBuilder.Create()
+                .SetSegment("route", "movie")
+                .SetSegment("id", "")
+                .SetSegment("secondaryRoute", "changes")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get<MovieSearchRoot>(request);
+
+            return new HashSet<int>(response.Resource.results.Select(c => c.id));
+        }
+
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
