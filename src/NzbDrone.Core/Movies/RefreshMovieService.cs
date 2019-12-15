@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Movies
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: never recan after refresh", movie);
+                _logger.Trace("Skipping refresh of {0}. Reason: never rescan after refresh", movie);
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
