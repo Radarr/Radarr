@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Profiles
 
         public bool Exists(int id)
         {
-            return DataMapper.Query<Profile>().Where(p => p.Id == id).GetRowCount() == 1;
+            return Query(x => x.Id == id).Count == 1;
         }
     }
 }

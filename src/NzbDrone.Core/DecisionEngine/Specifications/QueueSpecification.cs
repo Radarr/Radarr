@@ -35,7 +35,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             foreach (var queueItem in matchingMovies)
             {
                 var remoteMovie = queueItem.RemoteMovie;
-                var qualityProfile = subject.Movie.Profile.Value;
+                var qualityProfile = subject.Movie.Profile;
 
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteMovie.ParsedMovieInfo.Quality);
 

@@ -1,7 +1,5 @@
 using System;
 using System.Data.SQLite;
-using Marr.Data;
-using Marr.Data.Reflection;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
@@ -31,7 +29,6 @@ namespace NzbDrone.Core.Datastore
         {
             InitializeEnvironment();
 
-            MapRepository.Instance.ReflectionStrategy = new SimpleReflectionStrategy();
             TableMapping.Map();
         }
 
@@ -98,12 +95,11 @@ namespace NzbDrone.Core.Datastore
 
             var db = new Database(migrationContext.MigrationType.ToString(), () =>
             {
-                var dataMapper = new DataMapper(SQLiteFactory.Instance, connectionString)
-                {
-                    SqlMode = SqlModes.Text,
-                };
+                var conn = SQLiteFactory.Instance.CreateConnection();
+                conn.ConnectionString = connectionString;
+                conn.Open();
 
-                return dataMapper;
+                return conn;
             });
 
             return db;

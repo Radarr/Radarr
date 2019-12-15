@@ -22,7 +22,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var profile = subject.Movie.Profile.Value;
+            var profile = subject.Movie.Profile;
 
             if (subject.Movie.MovieFile != null)
             {
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     var qualityCutoffIndex = profile.GetIndex(profile.Cutoff);
                     var qualityCutoff = profile.Items[qualityCutoffIndex.Index];
 
-                    return Decision.Reject("Existing file meets cutoff: {0} - {1}", qualityCutoff, subject.Movie.Profile.Value.Cutoff);
+                    return Decision.Reject("Existing file meets cutoff: {0} - {1}", qualityCutoff, subject.Movie.Profile.Cutoff);
                 }
             }
 

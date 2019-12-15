@@ -37,14 +37,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var profile = subject.Movie.Profile.Value;
+            var profile = subject.Movie.Profile;
             var delayProfile = _delayProfileService.BestForTags(subject.Movie.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
             // Preferred word count 
             var title = subject.Release.Title;
-            var preferredWords = subject.Movie.Profile?.Value?.PreferredTags;
+            var preferredWords = subject.Movie.Profile?.PreferredTags;
             var preferredCount = 0;
 
             if (preferredWords == null)

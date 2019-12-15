@@ -7,6 +7,10 @@ namespace NzbDrone.Core.CustomFormats
 {
     public class CustomFormat : ModelBase, IEquatable<CustomFormat>
     {
+        public string Name { get; set; }
+
+        public List<FormatTag> FormatTags { get; set; }
+
         public CustomFormat()
         {
 
@@ -18,9 +22,7 @@ namespace NzbDrone.Core.CustomFormats
             FormatTags = tags.Select(t => new FormatTag(t)).ToList();
         }
 
-        public string Name { get; set; }
-
-        public List<FormatTag> FormatTags { get; set; }
+        public static implicit operator CustomFormatDefinition(CustomFormat format) => new CustomFormatDefinition { Id = format.Id, Name = format.Name, FormatTags = format.FormatTags };
 
         public override string ToString()
         {

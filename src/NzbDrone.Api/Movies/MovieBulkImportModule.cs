@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using System.Linq;
 using System;
-using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;

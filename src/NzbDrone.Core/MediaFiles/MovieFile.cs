@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Marr.Data;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
@@ -24,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles
         public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public string Edition { get; set; }
-        public LazyLoaded<Movie> Movie { get; set; }
+        public Movie Movie { get; set; }
 
         public override string ToString()
         {

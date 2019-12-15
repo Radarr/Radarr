@@ -18,10 +18,9 @@ namespace NzbDrone.Core.Configuration
         {
         }
 
-
         public Config Get(string key)
         {
-            return Query.Where(c => c.Key == key).SingleOrDefault();
+            return Query(c => c.Key == key).SingleOrDefault();
         }
 
         public Config Upsert(string key, string value)

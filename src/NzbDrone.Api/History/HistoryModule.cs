@@ -1,13 +1,11 @@
 using System;
 using System.Linq;
 using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Radarr.Http;
-using Radarr.Http.REST;
 using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.History
@@ -37,7 +35,7 @@ namespace NzbDrone.Api.History
 
             if (model.Movie != null)
             {
-                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Movie.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Movie.Profile, model.Quality);
             }
 
             return resource;

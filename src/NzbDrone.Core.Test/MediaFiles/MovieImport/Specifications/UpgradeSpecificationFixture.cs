@@ -1,7 +1,5 @@
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
@@ -48,13 +46,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
 
             _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+            _localMovie.Movie.MovieFile =
                     new MovieFile
                     {
                         Quality = new QualityModel(Quality.SDTV, new Revision(version: 1))
-                    }
-                );
-
+                    };
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
         }
@@ -64,12 +60,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void should_return_false_if_not_an_upgrade_for_existing_episodeFile()
         {
             _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+            _localMovie.Movie.MovieFile =
                 new MovieFile
                 {
                     Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 1))
-                }
-            );
+                };
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
         }

@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void ConvertQualityProfiles(IDbConnection conn, IDbTransaction tran)
         {
-            var qualityProfileItemConverter = new EmbeddedDocumentConverter(new QualityIntConverter());
+            var qualityProfileItemConverter = new EmbeddedDocumentConverter<List<ProfileQualityItem>>(new QualityIntConverter());
 
             // Convert 'Allowed' column in QualityProfiles from Json List<object> to Json List<int> (int = Quality)
             using (IDbCommand qualityProfileCmd = conn.CreateCommand())
@@ -44,13 +44,12 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         var items = Quality.DefaultQualityDefinitions.OrderBy(v => v.Weight).Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) }).ToList();
 
-                        var allowedNewJson = qualityProfileItemConverter.ToDB(items);
-
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
                             updateCmd.CommandText = "UPDATE QualityProfiles SET Items = ? WHERE Id = ?";
-                            updateCmd.AddParameter(allowedNewJson);
+                            var param = updateCmd.CreateParameter();
+                            qualityProfileItemConverter.SetValue(param, items);
                             updateCmd.AddParameter(id);
 
                             updateCmd.ExecuteNonQuery();
@@ -70,7 +69,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void ConvertQualityModel(IDbConnection conn, IDbTransaction tran, string tableName)
         {
-            var qualityModelConverter = new EmbeddedDocumentConverter(new QualityIntConverter());
+            var qualityModelConverter = new EmbeddedDocumentConverter<DestinationQualityModel036>(new QualityIntConverter());
 
             using (IDbCommand qualityModelCmd = conn.CreateCommand())
             {
@@ -89,17 +88,18 @@ namespace NzbDrone.Core.Datastore.Migration
                             continue;
                         }
 
-                        var qualityNewJson = qualityModelConverter.ToDB(new DestinationQualityModel036
-                                                                        {
-                                                                            Quality = sourceQuality.Quality.Id,
-                                                                            Proper = sourceQuality.Proper
-                                                                        });
+                        var qualityNew = new DestinationQualityModel036
+                        {
+                            Quality = sourceQuality.Quality.Id,
+                            Proper = sourceQuality.Proper
+                        };
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
                             updateCmd.CommandText = "UPDATE " + tableName + " SET Quality = ? WHERE Quality = ?";
-                            updateCmd.AddParameter(qualityNewJson);
+                            var param = updateCmd.CreateParameter();
+                            qualityModelConverter.SetValue(param, qualityNew);
                             updateCmd.AddParameter(qualityJson);
 
                             updateCmd.ExecuteNonQuery();

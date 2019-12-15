@@ -5,8 +5,9 @@ namespace NzbDrone.Core.Qualities
 {
     public class Revision : IEquatable<Revision>, IComparable<Revision>
     {
-        private Revision()
+        public Revision()
         {
+            Version = 1;
         }
         
         public Revision(int version = 1, int real = 0, bool isRepack = false)

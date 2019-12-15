@@ -1,43 +1,19 @@
 ﻿using System;
-using System.Globalization;
-using Marr.Data.Converters;
-using Marr.Data.Mapping;
-using NzbDrone.Common.Extensions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class TimeSpanConverter : IConverter
+    public class TimeSpanConverter : JsonConverter<TimeSpan>
     {
-        public object FromDB(ConverterContext context)
+        public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (context.DbValue == DBNull.Value)
-            {
-                return TimeSpan.Zero;
-            }
-
-            if (context.DbValue is TimeSpan)
-            {
-                return context.DbValue;
-            }
-
-            return TimeSpan.Parse(context.DbValue.ToString(), CultureInfo.InvariantCulture);
+            return TimeSpan.Parse(reader.GetString());
         }
 
-        public object FromDB(ColumnMap map, object dbValue)
+        public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
         {
-            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
+            writer.WriteStringValue(value.ToString());
         }
-
-        public object ToDB(object clrValue)
-        {
-            if (clrValue.ToString().IsNullOrWhiteSpace())
-            {
-                return null;
-            }
-
-            return ((TimeSpan)clrValue).ToString("c", CultureInfo.InvariantCulture);
-        }
-
-        public Type DbType { get; private set; }
     }
 }

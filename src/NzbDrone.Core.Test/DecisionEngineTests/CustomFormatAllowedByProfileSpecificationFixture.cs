@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Parser.Model;
@@ -33,7 +32,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.Bluray1080p.Id })
+                .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id })
                          .Build();
 
             remoteMovie = new RemoteMovie
@@ -49,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_format_is_defined_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {_format1};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
         }
@@ -58,7 +57,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_deny_if_format_is_defined_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {_format2};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -67,7 +66,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_deny_if_one_format_is_defined_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {_format2, _format1};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -76,7 +75,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_all_format_is_defined_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {_format2, _format1};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
         }
@@ -85,7 +84,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_deny_if_no_format_was_parsed_and_none_not_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -94,7 +93,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_no_format_was_parsed_and_none_in_profile()
         {
             remoteMovie.ParsedMovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> {};
-            remoteMovie.Movie.Profile.Value.FormatItems = CustomFormatsFixture.GetSampleFormatItems(CustomFormats.CustomFormat.None.Name, _format1.Name, _format2.Name);
+            remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(CustomFormats.CustomFormat.None.Name, _format1.Name, _format2.Name);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
         }
