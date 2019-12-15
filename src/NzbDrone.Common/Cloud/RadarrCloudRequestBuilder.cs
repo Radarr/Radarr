@@ -16,17 +16,19 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("https://radarr.lidarr.audio/v1/")
                 .CreateFactory();
 
-            TMDB = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}/{id}{secondaryRoute}")
-                .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
+            TMDB = new HttpRequestBuilder("https://api.themoviedb.org/{api}/{route}/{id}{secondaryRoute}")
+                .SetHeader("Authorization", $"Bearer {AuthToken}")
                 .CreateFactory();
 
             TMDBSingle = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}")
-                .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
+                .SetHeader("Authorization", $"Bearer {AuthToken}")
                 .CreateFactory();
         }
 
         public IHttpRequestBuilderFactory Services { get; private set; }
         public IHttpRequestBuilderFactory TMDB { get; private set; }
         public IHttpRequestBuilderFactory TMDBSingle { get; private set; }
+
+        public string AuthToken => "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTczNzMzMDE5NjFkMDNmOTdmODUzYTg3NmRkMTIxMiIsInN1YiI6IjU4NjRmNTkyYzNhMzY4MGFiNjAxNzUzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gh1BwogCCKOda6xj9FRMgAAj_RYKMMPC3oNlcBtlmwk";
     }
 }

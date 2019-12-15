@@ -28,17 +28,17 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*"/>
+    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
       <Link>Resources\Logo\64.png</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" >
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" >
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
@@ -30,7 +31,12 @@ namespace Radarr.Api.V3.Movies
 
             foreach (var movie in results)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                var mapped = movie;
+
+                if (movie.TmdbId == 0 || !movie.Images.Any() || movie.Overview.IsNullOrWhiteSpace())
+                {
+                    mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                }
 
                 if (mapped != null)
                 {
