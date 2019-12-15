@@ -606,9 +606,9 @@ stages:
         displayName: Move Package Contents
       - bash: |
           if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-macos.tar.gz
           elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
           else
           echo "Unhandled OS"
           exit 1

@@ -205,7 +205,7 @@ PackageTests()
     rm -f $testPackageFolder/*.log.config
 
     # geckodriver.exe isn't copied by dotnet publish
-    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
+    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
     unzip -o gecko.zip
     cp geckodriver.exe $testPackageFolder/netcoreapp3.1/win-x64/publish
 
