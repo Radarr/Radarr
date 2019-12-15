@@ -40,7 +40,7 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'language',
+      name: 'languages',
       label: 'Language',
       isSortable: true,
       isVisible: true
