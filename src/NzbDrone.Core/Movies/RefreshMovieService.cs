@@ -12,7 +12,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
@@ -219,9 +218,17 @@ namespace NzbDrone.Core.Movies
             {
                 var allMovie = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
 
+                var updatedTMDBMovies = new HashSet<int>();
+
+                if (message.LastExecutionTime.HasValue && message.LastExecutionTime.Value.AddDays(14) > DateTime.UtcNow)
+                {
+                    // TODO: Should we add some overlap to ensure we get everything?
+                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastExecutionTime.Value);
+                }
+
                 foreach (var movie in allMovie)
                 {
-                    if (message.Trigger == CommandTrigger.Manual || _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie))
+                    if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
