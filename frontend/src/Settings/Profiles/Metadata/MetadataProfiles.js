@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import sortByName from 'Utilities/Array/sortByName';
-import { icons } from 'Helpers/Props';
+import { icons, metadataProfileNames } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
 import Icon from 'Components/Icon';
@@ -58,7 +58,7 @@ class MetadataProfiles extends Component {
         >
           <div className={styles.metadataProfiles}>
             {
-              items.sort(sortByName).map((item) => {
+              items.filter((item) => item.name !== metadataProfileNames.NONE).sort(sortByName).map((item) => {
                 return (
                   <MetadataProfile
                     key={item.id}

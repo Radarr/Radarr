@@ -7,6 +7,7 @@ import * as filterTypes from './filterTypes';
 import * as icons from './icons';
 import * as kinds from './kinds';
 import * as messageTypes from './messageTypes';
+import * as metadataProfileNames from './metadataProfileNames';
 import * as sizes from './sizes';
 import * as scrollDirections from './scrollDirections';
 import * as sortDirections from './sortDirections';
@@ -22,6 +23,7 @@ export {
   icons,
   kinds,
   messageTypes,
+  metadataProfileNames,
   sizes,
   scrollDirections,
   sortDirections,

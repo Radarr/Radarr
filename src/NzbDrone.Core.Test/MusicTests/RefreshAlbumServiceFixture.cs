@@ -172,7 +172,7 @@ namespace NzbDrone.Core.Test.MusicTests
             Subject.RefreshAlbumInfo(album, null, false);
             
             Mocker.GetMock<IAlbumService>()
-                .Verify(x => x.DeleteAlbum(album.Id, true),
+                .Verify(x => x.DeleteAlbum(album.Id, true, false),
                         Times.Once());
             
             ExceptionVerification.ExpectedWarns(1);

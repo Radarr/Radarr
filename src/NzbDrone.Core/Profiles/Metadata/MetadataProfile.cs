@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Indexers;
 
 namespace NzbDrone.Core.Profiles.Metadata
 {

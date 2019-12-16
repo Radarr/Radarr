@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 .Returns(default(RemoteAlbum));
 
             // handle deletion event
-            Subject.Handle(new AlbumDeletedEvent(remoteAlbum.Albums.First(), false));
+            Subject.Handle(new AlbumDeletedEvent(remoteAlbum.Albums.First(), false, false));
 
             // verify download has null remote album
             var trackedDownloads = Subject.GetTrackedDownloads();

@@ -73,7 +73,7 @@ namespace NzbDrone.Automation.Test
 
             page.WaitForNoSpinner();
 
-            page.Find(By.CssSelector("input[class*='AddNewArtist-searchInput']")).Should().NotBeNull();
+            page.Find(By.CssSelector("input[class*='AddNewItem-searchInput']")).Should().NotBeNull();
         }
     }
 }

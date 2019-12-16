@@ -176,11 +176,19 @@ class SignalRConnector extends Component {
   }
 
   handleAlbum = (body) => {
-    if (body.action === 'updated') {
+    const action = body.action;
+    const section = 'albums';
+
+    if (action === 'updated') {
       this.props.dispatchUpdateItem({
-        section: 'albums',
+        section,
         updateOnly: true,
         ...body.resource
+      });
+    } else if (action === 'deleted') {
+      this.props.dispatchRemoveItem({
+        section,
+        id: body.resource.id
       });
     }
   }

@@ -10,12 +10,16 @@ namespace NzbDrone.Core.ImportLists.Exclusions
         ImportListExclusion Add(ImportListExclusion importListExclusion);
         List<ImportListExclusion> All();
         void Delete(int id);
+        void Delete(string foreignId);
         ImportListExclusion Get(int id);
         ImportListExclusion FindByForeignId(string foreignId);
+        List<ImportListExclusion> FindByForeignId(List<string> foreignIds);
         ImportListExclusion Update(ImportListExclusion importListExclusion);
     }
 
-    public class ImportListExclusionService : IImportListExclusionService, IHandleAsync<ArtistDeletedEvent>
+    public class ImportListExclusionService : IImportListExclusionService,
+                                              IHandleAsync<ArtistDeletedEvent>,
+                                              IHandleAsync<AlbumDeletedEvent>
     {
         private readonly IImportListExclusionRepository _repo;
 
@@ -39,6 +43,15 @@ namespace NzbDrone.Core.ImportLists.Exclusions
             _repo.Delete(id);
         }
 
+        public void Delete(string foreignId)
+        {
+            var exclusion = FindByForeignId(foreignId);
+            if (exclusion != null)
+            {
+                Delete(exclusion.Id);
+            }
+        }
+
         public ImportListExclusion Get(int id)
         {
             return _repo.Get(id);
@@ -47,6 +60,11 @@ namespace NzbDrone.Core.ImportLists.Exclusions
         public ImportListExclusion FindByForeignId(string foreignId)
         {
             return _repo.FindByForeignId(foreignId);
+        }
+
+        public List<ImportListExclusion> FindByForeignId(List<string> foreignIds)
+        {
+            return _repo.FindByForeignId(foreignIds);
         }
 
         public List<ImportListExclusion> All()
@@ -72,6 +90,29 @@ namespace NzbDrone.Core.ImportLists.Exclusions
             {
                 ForeignId = message.Artist.ForeignArtistId,
                 Name = message.Artist.Name
+            };
+
+            _repo.Insert(importExclusion);
+        }
+
+        public void HandleAsync(AlbumDeletedEvent message)
+        {
+            if (!message.AddImportListExclusion)
+            {
+                return;
+            }
+
+            var existingExclusion = _repo.FindByForeignId(message.Album.ForeignAlbumId);
+
+            if (existingExclusion != null)
+            {
+                return;
+            }
+
+            var importExclusion = new ImportListExclusion
+            {
+                ForeignId = message.Album.ForeignAlbumId,
+                Name = $"{message.Album.ArtistMetadata.Value.Name} - {message.Album.Title}"
             };
 
             _repo.Insert(importExclusion);

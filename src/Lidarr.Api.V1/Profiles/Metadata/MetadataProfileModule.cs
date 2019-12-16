@@ -12,7 +12,7 @@ namespace Lidarr.Api.V1.Profiles.Metadata
         public MetadataProfileModule(IMetadataProfileService profileService)
         {
             _profileService = profileService;
-            SharedValidator.RuleFor(c => c.Name).NotEmpty();
+            SharedValidator.RuleFor(c => c.Name).NotEqual("None").WithMessage("'None' is a reserved profile name").NotEmpty();
             SharedValidator.RuleFor(c => c.PrimaryAlbumTypes).MustHaveAllowedPrimaryType();
             SharedValidator.RuleFor(c => c.SecondaryAlbumTypes).MustHaveAllowedSecondaryType();
             SharedValidator.RuleFor(c => c.ReleaseStatuses).MustHaveAllowedReleaseStatus();

@@ -26,7 +26,7 @@ const links = [
     children: [
       {
         title: 'Add New',
-        to: '/add/new'
+        to: '/add/search'
       },
       {
         title: 'Import',

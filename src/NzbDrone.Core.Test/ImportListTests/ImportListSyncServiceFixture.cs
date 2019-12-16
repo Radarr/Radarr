@@ -72,6 +72,13 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns(new Artist{ForeignArtistId = _importListReports.First().ArtistMusicBrainzId });
         }
 
+        private void WithExistingAlbum()
+        {
+            Mocker.GetMock<IAlbumService>()
+                .Setup(v => v.FindById(_importListReports.First().AlbumMusicBrainzId))
+                .Returns(new Album{ForeignAlbumId = _importListReports.First().AlbumMusicBrainzId });
+        }
+
         private void WithExcludedArtist()
         {
             Mocker.GetMock<IImportListExclusionService>()
@@ -79,6 +86,17 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns(new List<ImportListExclusion> {
                     new ImportListExclusion {
                         ForeignId = "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                    }
+                });
+        }
+
+        private void WithExcludedAlbum()
+        {
+            Mocker.GetMock<IImportListExclusionService>()
+                .Setup(v => v.All())
+                .Returns(new List<ImportListExclusion> {
+                    new ImportListExclusion {
+                        ForeignId = "09474d62-17dd-3a4f-98fb-04c65f38a479"
                     }
                 });
         }
@@ -120,17 +138,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_search_with_lidarr_id_if_album_id_and_no_artist_id()
-        {
-            WithAlbumId();
-            Subject.Execute(new ImportListSyncCommand());
-
-            Mocker.GetMock<ISearchForNewAlbum>()
-                .Verify(v => v.SearchForNewAlbum($"lidarr:{_importListReports.First().AlbumMusicBrainzId}", null), Times.Once());
-        }
-
-        [Test]
-        public void should_not_search_if_album_id_and_artist_id()
+        public void should_not_search_if_album_title_and_album_id()
         {
             WithArtistId();
             WithAlbumId();
@@ -159,8 +167,6 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_not_add_if_existing_artist()
         {
             WithArtistId();
-            WithAlbum();
-            WithAlbumId();
             WithExistingArtist();
 
             Subject.Execute(new ImportListSyncCommand());
@@ -169,14 +175,37 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Verify(v => v.AddArtists(It.Is<List<Artist>>(t=>t.Count == 0)));
         }
 
+        [Test]
+        public void should_not_add_if_existing_album()
+        {
+            WithAlbumId();
+            WithExistingAlbum();
+
+            Subject.Execute(new ImportListSyncCommand());
+
+            Mocker.GetMock<IAddArtistService>()
+                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t=>t.Count == 0)));
+        }
+
+        [Test]
+        public void should_add_if_existing_artist_but_new_album()
+        {
+            WithAlbumId();
+            WithExistingArtist();
+
+            Subject.Execute(new ImportListSyncCommand());
+
+            Mocker.GetMock<IAddAlbumService>()
+                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t=>t.Count == 1)));
+        }
+
+
         [TestCase(ImportListMonitorType.None, false)]
         [TestCase(ImportListMonitorType.SpecificAlbum, true)]
         [TestCase(ImportListMonitorType.EntireArtist, true)]
         public void should_add_if_not_existing_artist(ImportListMonitorType monitor, bool expectedArtistMonitored)
         {
             WithArtistId();
-            WithAlbum();
-            WithAlbumId();
             WithMonitorType(monitor);
 
             Subject.Execute(new ImportListSyncCommand());
@@ -185,12 +214,24 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 1 && t.First().Monitored == expectedArtistMonitored)));
         }
 
+        [TestCase(ImportListMonitorType.None, false)]
+        [TestCase(ImportListMonitorType.SpecificAlbum, true)]
+        [TestCase(ImportListMonitorType.EntireArtist, true)]
+        public void should_add_if_not_existing_album(ImportListMonitorType monitor, bool expectedAlbumMonitored)
+        {
+            WithAlbumId();
+            WithMonitorType(monitor);
+
+            Subject.Execute(new ImportListSyncCommand());
+
+            Mocker.GetMock<IAddAlbumService>()
+                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t => t.Count == 1 && t.First().Monitored == expectedAlbumMonitored)));
+        }
+
         [Test]
-        public void should_not_add_if_excluded_artist()
+        public void should_not_add_artist_if_excluded_artist()
         {
             WithArtistId();
-            WithAlbum();
-            WithAlbumId();
             WithExcludedArtist();
 
             Subject.Execute(new ImportListSyncCommand());
@@ -200,42 +241,28 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_mark_album_for_monitor_if_album_id_and_specific_monitor_selected()
+        public void should_not_add_album_if_excluded_album()
         {
-            WithArtistId();
-            WithAlbum();
             WithAlbumId();
-            WithMonitorType(ImportListMonitorType.SpecificAlbum);
+            WithExcludedAlbum();
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 1 && t.First().AddOptions.AlbumsToMonitor.Contains("09474d62-17dd-3a4f-98fb-04c65f38a479"))));
+            Mocker.GetMock<IAddAlbumService>()
+                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t => t.Count == 0)));
         }
 
         [Test]
-        public void should_not_mark_album_for_monitor_if_album_id_and_monitor_all_selected()
+        public void should_not_add_album_if_excluded_artist()
         {
-            WithArtistId();
-            WithAlbum();
             WithAlbumId();
-            WithMonitorType(ImportListMonitorType.EntireArtist);
-
-            Subject.Execute(new ImportListSyncCommand());
-
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 1 && !t.First().AddOptions.AlbumsToMonitor.Any())));
-        }
-
-        [Test]
-        public void should_not_mark_album_for_monitor_if_no_album_id()
-        {
             WithArtistId();
+            WithExcludedArtist();
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 1 && t.First().AddOptions.AlbumsToMonitor.Count == 0)));
+            Mocker.GetMock<IAddAlbumService>()
+                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t => t.Count == 0)));
         }
     }
 }

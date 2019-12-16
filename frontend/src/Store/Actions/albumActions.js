@@ -10,6 +10,7 @@ import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptio
 import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import albumEntities from 'Album/albumEntities';
 import createFetchHandler from './Creators/createFetchHandler';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createHandleActions from './Creators/createHandleActions';
 import { updateItem } from './baseActions';
 
@@ -113,6 +114,7 @@ export const SET_ALBUMS_TABLE_OPTION = 'albums/setAlbumsTableOption';
 export const CLEAR_ALBUMS = 'albums/clearAlbums';
 export const SET_ALBUM_VALUE = 'albums/setAlbumValue';
 export const SAVE_ALBUM = 'albums/saveAlbum';
+export const DELETE_ALBUM = 'albums/deleteAlbum';
 export const TOGGLE_ALBUM_MONITORED = 'albums/toggleAlbumMonitored';
 export const TOGGLE_ALBUMS_MONITORED = 'albums/toggleAlbumsMonitored';
 
@@ -128,6 +130,16 @@ export const toggleAlbumsMonitored = createThunk(TOGGLE_ALBUMS_MONITORED);
 
 export const saveAlbum = createThunk(SAVE_ALBUM);
 
+export const deleteAlbum = createThunk(DELETE_ALBUM, (payload) => {
+  return {
+    ...payload,
+    queryParams: {
+      deleteFiles: payload.deleteFiles,
+      addImportListExclusion: payload.addImportListExclusion
+    }
+  };
+});
+
 export const setAlbumValue = createAction(SET_ALBUM_VALUE, (payload) => {
   return {
     section: 'albums',
@@ -141,6 +153,7 @@ export const setAlbumValue = createAction(SET_ALBUM_VALUE, (payload) => {
 export const actionHandlers = handleThunks({
   [FETCH_ALBUMS]: createFetchHandler(section, '/album'),
   [SAVE_ALBUM]: createSaveProviderHandler(section, '/album'),
+  [DELETE_ALBUM]: createRemoveItemHandler(section, '/album'),
 
   [TOGGLE_ALBUM_MONITORED]: function(getState, payload, dispatch) {
     const {

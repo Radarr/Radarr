@@ -3,16 +3,15 @@ using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using NzbDrone.Test.Common.Categories;
 using Moq;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Music;
 using System.Collections.Generic;
+using System;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
     [TestFixture]
-    [IntegrationTest]
     public class SkyHookProxySearchFixture : CoreTest<SkyHookProxy>
     {
         [SetUp]
@@ -106,6 +105,29 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             result.Should().BeEmpty();
             
             ExceptionVerification.IgnoreWarns();
+        }
+
+        [TestCase("Eminem", 0, typeof(Artist), "Eminem")]
+        [TestCase("Eminem Kamikaze", 0, typeof(Artist), "Eminem")]
+        [TestCase("Eminem Kamikaze", 1, typeof(Album), "Kamikaze")]
+        public void successful_combined_search(string query, int position, Type resultType, string expected)
+        {
+            var result = Subject.SearchForNewEntity(query);
+            result.Should().NotBeEmpty();
+            result[position].GetType().Should().Be(resultType);
+
+            if (resultType == typeof(Artist))
+            {
+                var cast = result[position] as Artist;
+                cast.Should().NotBeNull();
+                cast.Name.Should().Be(expected);
+            }
+            else
+            {
+                var cast = result[position] as Album;
+                cast.Should().NotBeNull();
+                cast.Title.Should().Be(expected);
+            }
         }
     }
 }

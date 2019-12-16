@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { setImportArtistValue, importArtist, clearImportArtist } from 'Store/Actions/importArtistActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { setAddArtistDefault } from 'Store/Actions/addArtistActions';
+import { setAddDefault } from 'Store/Actions/searchActions';
 import createRouteMatchShape from 'Helpers/Props/Shapes/createRouteMatchShape';
 import ImportArtist from './ImportArtist';
 
@@ -67,7 +67,7 @@ const mapDispatchToProps = {
   dispatchImportArtist: importArtist,
   dispatchClearImportArtist: clearImportArtist,
   dispatchFetchRootFolders: fetchRootFolders,
-  dispatchSetAddArtistDefault: setAddArtistDefault
+  dispatchSetAddDefault: setAddDefault
 };
 
 class ImportArtistConnector extends Component {
@@ -82,7 +82,7 @@ class ImportArtistConnector extends Component {
       defaultQualityProfileId,
       defaultMetadataProfileId,
       dispatchFetchRootFolders,
-      dispatchSetAddArtistDefault
+      dispatchSetAddDefault
     } = this.props;
 
     if (!this.props.rootFoldersPopulated) {
@@ -109,7 +109,7 @@ class ImportArtistConnector extends Component {
     }
 
     if (setDefaults) {
-      dispatchSetAddArtistDefault(setDefaultPayload);
+      dispatchSetAddDefault(setDefaultPayload);
     }
   }
 
@@ -121,7 +121,7 @@ class ImportArtistConnector extends Component {
   // Listeners
 
   onInputChange = (ids, name, value) => {
-    this.props.dispatchSetAddArtistDefault({ [name]: value });
+    this.props.dispatchSetAddDefault({ [name]: value });
 
     ids.forEach((id) => {
       this.props.dispatchSetImportArtistValue({
@@ -164,7 +164,7 @@ ImportArtistConnector.propTypes = {
   dispatchImportArtist: PropTypes.func.isRequired,
   dispatchClearImportArtist: PropTypes.func.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
-  dispatchSetAddArtistDefault: PropTypes.func.isRequired
+  dispatchSetAddDefault: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(ImportArtistConnector);

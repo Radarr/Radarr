@@ -15,7 +15,6 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
     [TestFixture]
-    [IntegrationTest]
     public class SkyHookProxyFixture : CoreTest<SkyHookProxy>
     {
         private MetadataProfile _metadataProfile;

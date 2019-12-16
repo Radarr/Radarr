@@ -58,12 +58,12 @@ function EditImportListExclusionModalContent(props) {
               {...otherProps}
             >
               <FormGroup>
-                <FormLabel>Artist Name</FormLabel>
+                <FormLabel>Entity Name</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="artistName"
-                  helpText="The name of the artist to exclude (can be anything meaningful)"
+                  helpText="The name of the artist/album to exclude (can be anything meaningful)"
                   {...artistName}
                   onChange={onInputChange}
                 />
@@ -75,7 +75,7 @@ function EditImportListExclusionModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="foreignId"
-                  helpText="The Musicbrainz Id of the artist to exclude"
+                  helpText="The Musicbrainz Id of the artist/album to exclude"
                   {...foreignId}
                   onChange={onInputChange}
                 />

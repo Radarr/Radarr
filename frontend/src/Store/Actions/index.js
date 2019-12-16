@@ -1,4 +1,3 @@
-import * as addArtist from './addArtistActions';
 import * as app from './appActions';
 import * as blacklist from './blacklistActions';
 import * as calendar from './calendarActions';
@@ -24,6 +23,7 @@ import * as artist from './artistActions';
 import * as artistEditor from './artistEditorActions';
 import * as artistHistory from './artistHistoryActions';
 import * as artistIndex from './artistIndexActions';
+import * as search from './searchActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
@@ -31,7 +31,6 @@ import * as tracks from './trackActions';
 import * as wanted from './wantedActions';
 
 export default [
-  addArtist,
   app,
   blacklist,
   captcha,
@@ -57,6 +56,7 @@ export default [
   artistEditor,
   artistHistory,
   artistIndex,
+  search,
   settings,
   system,
   tags,

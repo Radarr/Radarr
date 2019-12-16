@@ -17,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesWithBasePath(string path);
         TrackFile GetFileWithPath(string path);
         void DeleteFilesByAlbum(int albumId);
+        void UnlinkFilesByAlbum(int albumId);
     }
 
 
@@ -68,6 +69,13 @@ namespace NzbDrone.Core.MediaFiles
         {
             var ids = DataMapper.Query<TrackFile>().Where(x => x.AlbumId == albumId);
             DeleteMany(ids);
+        }
+
+        public void UnlinkFilesByAlbum(int albumId)
+        {
+            var files = DataMapper.Query<TrackFile>().Where(x => x.AlbumId == albumId).ToList();
+            files.ForEach(x => x.AlbumId = 0);
+            SetFields(files, f => f.AlbumId);
         }
 
         public List<TrackFile> GetFilesByRelease(int releaseId)

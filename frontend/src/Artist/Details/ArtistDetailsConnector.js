@@ -28,13 +28,15 @@ const selectAlbums = createSelector(
 
     const hasAlbums = !!items.length;
     const hasMonitoredAlbums = items.some((e) => e.monitored);
+    const albumTypes = _.uniq(_.map(items, 'albumType'));
 
     return {
       isAlbumsFetching: isFetching,
       isAlbumsPopulated: isPopulated,
       albumsError: error,
       hasAlbums,
-      hasMonitoredAlbums
+      hasMonitoredAlbums,
+      albumTypes
     };
   }
 );
@@ -65,20 +67,12 @@ function createMapStateToProps() {
     (state, { foreignArtistId }) => foreignArtistId,
     selectAlbums,
     selectTrackFiles,
-    (state) => state.settings.metadataProfiles,
     createAllArtistSelector(),
     createCommandsSelector(),
-    (foreignArtistId, albums, trackFiles, metadataProfiles, allArtists, commands) => {
+    (foreignArtistId, albums, trackFiles, allArtists, commands) => {
       const sortedArtist = _.orderBy(allArtists, 'sortName');
       const artistIndex = _.findIndex(sortedArtist, { foreignArtistId });
       const artist = sortedArtist[artistIndex];
-      const metadataProfile = _.find(metadataProfiles.items, { id: artist.metadataProfileId });
-      const albumTypes = _.reduce(metadataProfile.primaryAlbumTypes, (acc, primaryType) => {
-        if (primaryType.allowed) {
-          acc.push(primaryType.albumType.name);
-        }
-        return acc;
-      }, []);
 
       if (!artist) {
         return {};
@@ -89,7 +83,8 @@ function createMapStateToProps() {
         isAlbumsPopulated,
         albumsError,
         hasAlbums,
-        hasMonitoredAlbums
+        hasMonitoredAlbums,
+        albumTypes
       } = albums;
 
       const {

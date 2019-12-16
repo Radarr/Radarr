@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -11,7 +11,10 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
 import MoveArtistModal from 'Artist/MoveArtist/MoveArtistModal';
+import ArtistMetadataProfilePopoverContent from 'AddArtist/ArtistMetadataProfilePopoverContent';
 import styles from './EditArtistModalContent.css';
 
 class EditArtistModalContent extends Component {
@@ -122,12 +125,28 @@ class EditArtistModalContent extends Component {
             {
               showMetadataProfile &&
                 <FormGroup>
-                  <FormLabel>Metadata Profile</FormLabel>
+                  <FormLabel>
+                    Metadata Profile
+
+                    <Popover
+                      anchor={
+                        <Icon
+                          className={styles.labelIcon}
+                          name={icons.INFO}
+                        />
+                      }
+                      title="Metadata Profile"
+                      body={<ArtistMetadataProfilePopoverContent />}
+                      position={tooltipPositions.RIGHT}
+                    />
+
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.METADATA_PROFILE_SELECT}
                     name="metadataProfileId"
                     helpText="Changes will take place on next artist refresh"
+                    includeNone={true}
                     {...metadataProfileId}
                     onChange={onInputChange}
                   />

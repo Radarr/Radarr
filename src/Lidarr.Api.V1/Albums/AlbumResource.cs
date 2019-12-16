@@ -43,7 +43,7 @@ namespace Lidarr.Api.V1.Albums
         public List<MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
         public AlbumStatisticsResource Statistics { get; set; }
-
+        public AddAlbumOptions AddOptions { get; set; }
         public string RemoteCover { get; set; }
 
         //Hiding this so people don't think its usable (only used to set the initial state)
@@ -88,6 +88,8 @@ namespace Lidarr.Api.V1.Albums
         {
             if (resource == null) return null;
 
+            var artist = resource.Artist?.ToModel() ?? new NzbDrone.Core.Music.Artist();
+
             return new Album
             {
                 Id = resource.Id,
@@ -96,9 +98,13 @@ namespace Lidarr.Api.V1.Albums
                 Disambiguation = resource.Disambiguation,
                 Overview = resource.Overview,
                 Images = resource.Images,
+                AlbumType = resource.AlbumType,
                 Monitored = resource.Monitored,
                 AnyReleaseOk = resource.AnyReleaseOk,
-                AlbumReleases = resource.Releases.ToModel()
+                AlbumReleases = resource.Releases.ToModel(),
+                AddOptions = resource.AddOptions,
+                Artist = artist,
+                ArtistMetadata = artist.Metadata.Value
             };
         }
 

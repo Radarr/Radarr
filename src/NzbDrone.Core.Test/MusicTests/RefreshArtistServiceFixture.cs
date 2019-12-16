@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -14,6 +12,7 @@ using NzbDrone.Test.Common;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.ImportLists.Exclusions;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
@@ -24,6 +23,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private Album _album1;
         private Album _album2;
         private List<Album> _albums;
+        private List<Album> _remoteAlbums;
 
         [SetUp]
         public void Setup()
@@ -37,6 +37,9 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Build();
 
             _albums = new List<Album> {_album1, _album2};
+
+            _remoteAlbums = _albums.JsonClone();
+            _remoteAlbums.ForEach(x => x.Id = 0);
 
             var metadata = Builder<ArtistMetadata>.CreateNew().Build();
 
@@ -62,6 +65,10 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<IHistoryService>()
                 .Setup(x => x.GetByArtist(It.IsAny<int>(), It.IsAny<HistoryEventType?>()))
                 .Returns(new List<History.History>());
+
+            Mocker.GetMock<IImportListExclusionService>()
+                .Setup(x => x.FindByForeignId(It.IsAny<List<string>>()))
+                .Returns(new List<ImportListExclusion>());
         }
 
         private void GivenNewArtistInfo(Artist artist)
@@ -78,11 +85,11 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns(Builder<TrackFile>.CreateListOfSize(1).BuildList());
         }
 
-        private void GivenAlbumsForRefresh()
+        private void GivenAlbumsForRefresh(List<Album> albums)
         {
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
                 .Setup(s => s.GetAlbumsForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
-                .Returns(new List<Album>());
+                .Returns(albums);
         }
 
         private void AllowArtistUpdate()
@@ -97,10 +104,10 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _albums;
+            newArtistInfo.Albums = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
-            GivenAlbumsForRefresh();
+            GivenAlbumsForRefresh(_albums);
             AllowArtistUpdate();
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
@@ -117,10 +124,10 @@ namespace NzbDrone.Core.Test.MusicTests
             newArtistInfo.Metadata.Value.Images = new List<MediaCover.MediaCover> {
                 new MediaCover.MediaCover(MediaCover.MediaCoverTypes.Logo, "dummy")
             };
-            newArtistInfo.Albums = _albums;
+            newArtistInfo.Albums = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
-            GivenAlbumsForRefresh();
+            GivenAlbumsForRefresh(new List<Album>());
             AllowArtistUpdate();
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
@@ -151,7 +158,7 @@ namespace NzbDrone.Core.Test.MusicTests
         public void should_log_error_but_not_delete_if_musicbrainz_id_not_found_and_artist_has_files()
         {
             GivenArtistFiles();
-            GivenAlbumsForRefresh();
+            GivenAlbumsForRefresh(new List<Album>());
             
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
@@ -169,7 +176,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _albums;
+            newArtistInfo.Albums = _remoteAlbums;
             newArtistInfo.ForeignArtistId = _artist.ForeignArtistId + 1;
             newArtistInfo.Metadata.Value.Id = 100;
 
@@ -222,8 +229,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             var newArtistInfo = clash.JsonClone();
             newArtistInfo.Metadata = clash.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _albums.JsonClone();
-            newArtistInfo.Albums.Value.ForEach(x => x.Id = 0);
+            newArtistInfo.Albums = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
 

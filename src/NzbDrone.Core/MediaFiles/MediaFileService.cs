@@ -160,7 +160,14 @@ namespace NzbDrone.Core.MediaFiles
 
         public void HandleAsync(AlbumDeletedEvent message)
         {
-            _mediaFileRepository.DeleteFilesByAlbum(message.Album.Id);
+            if (message.DeleteFiles)
+            {
+                _mediaFileRepository.DeleteFilesByAlbum(message.Album.Id);
+            }
+            else
+            {
+                _mediaFileRepository.UnlinkFilesByAlbum(message.Album.Id);
+            }
         }
 
         public List<TrackFile> GetFilesByArtist(int artistId)

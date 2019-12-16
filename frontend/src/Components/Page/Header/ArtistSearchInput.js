@@ -209,7 +209,7 @@ class ArtistSearchInput extends Component {
     }
 
     suggestionGroups.push({
-      title: 'Add New Artist',
+      title: 'Add New Item',
       suggestions: [
         {
           type: ADD_NEW_TYPE,

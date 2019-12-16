@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -19,6 +20,18 @@ function createMapStateToProps() {
       const foreignAlbumId = match.params.foreignAlbumId;
       const isFetching = albums.isFetching || artist.isFetching;
       const isPopulated = albums.isPopulated && artist.isPopulated;
+
+      // if albums have been fetched, make sure requested one exists
+      // otherwise don't map foreignAlbumId to trigger not found page
+      if (!isFetching && isPopulated) {
+        const albumIndex = _.findIndex(albums.items, { foreignAlbumId });
+        if (albumIndex === -1) {
+          return {
+            isFetching,
+            isPopulated
+          };
+        }
+      }
 
       return {
         foreignAlbumId,

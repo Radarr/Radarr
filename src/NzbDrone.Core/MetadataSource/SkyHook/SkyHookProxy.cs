@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using NLog;
-using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
@@ -15,7 +14,7 @@ using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideArtistInfo, ISearchForNewArtist, IProvideAlbumInfo, ISearchForNewAlbum
+    public class SkyHookProxy : IProvideArtistInfo, ISearchForNewArtist, IProvideAlbumInfo, ISearchForNewAlbum, ISearchForNewEntity
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -247,11 +246,37 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                     .AddQueryParam("type", "album")
                                     .AddQueryParam("query", title.ToLower().Trim())
                                     .AddQueryParam("artist", artist.IsNotNullOrWhiteSpace() ? artist.ToLower().Trim() : string.Empty)
+                                    .AddQueryParam("includeTracks", "1")
                                     .Build();
 
 
 
                 var httpResponse = _httpClient.Get<List<AlbumResource>>(httpRequest);
+
+                return httpResponse.Resource.SelectList(MapSearchResult);
+            }
+            catch (HttpException)
+            {
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with LidarrAPI.", title);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from LidarrAPI.", title);
+            }
+        }
+
+        public List<Object> SearchForNewEntity(string title)
+        {
+            try
+            {
+                var httpRequest = _requestBuilder.GetRequestBuilder().Create()
+                                    .SetSegment("route", "search")
+                                    .AddQueryParam("type", "all")
+                                    .AddQueryParam("query", title.ToLower().Trim())
+                                    .Build();
+
+                var httpResponse = _httpClient.Get<List<EntityResource>>(httpRequest);
 
                 return httpResponse.Resource.SelectList(MapSearchResult);
             }
@@ -280,18 +305,32 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private Album MapSearchResult(AlbumResource resource)
         {
-            var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource, null);
+            var artists = resource.Artists.Select(MapArtistMetadata).ToDictionary(x => x.ForeignArtistId, x => x);
 
             var artist = _artistService.FindById(resource.ArtistId);
             if (artist == null)
             {
                 artist = new Artist();
-                artist.Metadata = MapArtistMetadata(resource.Artists.Single(x => x.Id == resource.ArtistId));
+                artist.Metadata = artists[resource.ArtistId];
             }
+
+            var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource, artists);
             album.Artist = artist;
-            album.ArtistMetadata = artist.Metadata;
+            album.ArtistMetadata = artist.Metadata.Value;
 
             return album;
+        }
+
+        private Object MapSearchResult(EntityResource resource)
+        {
+            if (resource.Artist != null)
+            {
+                return MapSearchResult(resource.Artist);
+            }
+            else
+            {
+                return MapSearchResult(resource.Album);
+            }
         }
 
         private static Album MapAlbum(AlbumResource resource, Dictionary<string, ArtistMetadata> artistDict)

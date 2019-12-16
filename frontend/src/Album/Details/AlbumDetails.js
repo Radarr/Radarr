@@ -18,6 +18,7 @@ import AlbumCover from 'Album/AlbumCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
 import EditAlbumModalConnector from 'Album/Edit/EditAlbumModalConnector';
+import DeleteAlbumModal from 'Album/Delete/DeleteAlbumModal';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
@@ -88,6 +89,7 @@ class AlbumDetails extends Component {
       isInteractiveSearchModalOpen: false,
       isManageTracksOpen: false,
       isEditAlbumModalOpen: false,
+      isDeleteAlbumModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {}
@@ -119,6 +121,17 @@ class AlbumDetails extends Component {
 
   onEditAlbumModalClose = () => {
     this.setState({ isEditAlbumModalOpen: false });
+  }
+
+  onDeleteAlbumPress = () => {
+    this.setState({
+      isEditAlbumModalOpen: false,
+      isDeleteAlbumModalOpen: true
+    });
+  }
+
+  onDeleteAlbumModalClose = () => {
+    this.setState({ isDeleteAlbumModalOpen: false });
   }
 
   onManageTracksPress = () => {
@@ -208,6 +221,7 @@ class AlbumDetails extends Component {
       isArtistHistoryModalOpen,
       isInteractiveSearchModalOpen,
       isEditAlbumModalOpen,
+      isDeleteAlbumModalOpen,
       isManageTracksOpen,
       allExpanded,
       allCollapsed,
@@ -274,6 +288,12 @@ class AlbumDetails extends Component {
               label="Edit"
               iconName={icons.EDIT}
               onPress={this.onEditAlbumPress}
+            />
+
+            <PageToolbarButton
+              label="Delete"
+              iconName={icons.DELETE}
+              onPress={this.onDeleteAlbumPress}
             />
 
           </PageToolbarSection>
@@ -549,6 +569,14 @@ class AlbumDetails extends Component {
             albumId={id}
             artistId={artist.id}
             onModalClose={this.onEditAlbumModalClose}
+            onDeleteArtistPress={this.onDeleteAlbumPress}
+          />
+
+          <DeleteAlbumModal
+            isOpen={isDeleteAlbumModalOpen}
+            albumId={id}
+            foreignArtistId={artist.foreignArtistId}
+            onModalClose={this.onDeleteAlbumModalClose}
           />
 
         </PageContentBodyConnector>
