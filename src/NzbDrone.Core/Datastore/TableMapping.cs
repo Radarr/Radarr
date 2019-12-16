@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Authentication;
@@ -171,7 +172,8 @@ namespace NzbDrone.Core.Datastore
 
         private static void RegisterProviderSettingConverter()
         {
-            var settingTypes = typeof(IProviderConfig).Assembly.ImplementationsOf<IProviderConfig>();
+            var settingTypes = typeof(IProviderConfig).Assembly.ImplementationsOf<IProviderConfig>()
+                .Where(x => !x.ContainsGenericParameters);
 
             var providerSettingConverter = new ProviderSettingConverter();
             foreach (var embeddedType in settingTypes)
