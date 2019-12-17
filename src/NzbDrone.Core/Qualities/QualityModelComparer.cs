@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Qualities
             left = left.WithNone();
 
             var leftIndicies = GetIndicies(left, _profile);
-            var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
+            var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format.Id, right));
 
             return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
         }
