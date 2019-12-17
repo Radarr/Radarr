@@ -86,6 +86,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
+
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 throw new MovieNotFoundException("Movie not found.");
@@ -305,14 +306,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             // request.SuppressHttpError = true;
 
             var response = _httpClient.Get<FindRoot>(request);
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new HttpException(request, response);
-            }
 
-            if (response.Headers.ContentType != HttpAccept.JsonCharset.Value)
+            if (response.HasHttpError)
             {
-                throw new HttpException(request, response);
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new MovieNotFoundException(imdbId);
+                }
+                else
+                {
+                    throw new HttpException(request, response);
+                }
             }
 
             // The dude abides, so should us, Lets be nice to TMDb
@@ -328,9 +332,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var resources = response.Resource;
+            var resource = response.Resource.movie_results.FirstOrDefault();
 
-            return resources.movie_results.SelectList(MapMovie).FirstOrDefault();
+            return MapMovie(resource);
         }
 
         public List<Movie> DiscoverNewMovies(string action)
@@ -381,102 +385,114 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public List<Movie> SearchForNewMovie(string title)
         {
-            var lowerTitle = title.ToLower();
-
-            lowerTitle = lowerTitle.Replace(".", "");
-
-            var parserResult = Parser.Parser.ParseMovieTitle(title, true, true);
-
-            var yearTerm = "";
-
-            if (parserResult != null && parserResult.MovieTitle != title)
+            try
             {
-                //Parser found something interesting!
-                lowerTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
-                if (parserResult.Year > 1800)
+                var lowerTitle = title.ToLower();
+
+                lowerTitle = lowerTitle.Replace(".", "");
+
+                var parserResult = Parser.Parser.ParseMovieTitle(title, true, true);
+
+                var yearTerm = "";
+
+                if (parserResult != null && parserResult.MovieTitle != title)
                 {
-                    yearTerm = parserResult.Year.ToString();
+                    //Parser found something interesting!
+                    lowerTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
+                    if (parserResult.Year > 1800)
+                    {
+                        yearTerm = parserResult.Year.ToString();
+                    }
+
+                    if (parserResult.ImdbId.IsNotNullOrWhiteSpace())
+                    {
+                        try
+                        {
+                            return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
+                        }
+                        catch (Exception)
+                        {
+                            return new List<Movie>();
+                        }
+
+                    }
                 }
 
-                if (parserResult.ImdbId.IsNotNullOrWhiteSpace())
+                lowerTitle = StripTrailingTheFromTitle(lowerTitle);
+
+                if (lowerTitle.StartsWith("imdb:") || lowerTitle.StartsWith("imdbid:"))
                 {
-                    try
-                    {
-                        return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
-                    }
-                    catch (Exception)
+                    var slug = lowerTitle.Split(':')[1].Trim();
+
+                    string imdbid = slug;
+
+                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace))
                     {
                         return new List<Movie>();
                     }
 
+                    try
+                    {
+                        return new List<Movie> { GetMovieInfo(imdbid) };
+                    }
+                    catch (MovieNotFoundException)
+                    {
+                        return new List<Movie>();
+                    }
                 }
+
+                if (lowerTitle.StartsWith("tmdb:") || lowerTitle.StartsWith("tmdbid:"))
+                {
+                    var slug = lowerTitle.Split(':')[1].Trim();
+
+                    int tmdbid = -1;
+
+                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !(int.TryParse(slug, out tmdbid)))
+                    {
+                        return new List<Movie>();
+                    }
+
+                    try
+                    {
+                        return new List<Movie> { GetMovieInfo(tmdbid) };
+                    }
+                    catch (MovieNotFoundException)
+                    {
+                        return new List<Movie>();
+                    }
+                }
+
+                var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
+
+                var firstChar = searchTerm.First();
+
+                var request = _movieBuilder.Create()
+                    .SetSegment("route", "search")
+                    .SetSegment("id", "movie")
+                    .SetSegment("secondaryRoute", "")
+                    .AddQueryParam("query", searchTerm)
+                    .AddQueryParam("year", yearTerm)
+                    .AddQueryParam("include_adult", false)
+                    .Build();
+
+                request.AllowAutoRedirect = true;
+                request.SuppressHttpError = true;
+
+                var response = _httpClient.Get<MovieSearchRoot>(request);
+
+                var movieResults = response.Resource.results;
+
+                return movieResults.SelectList(MapMovie);
             }
-
-            lowerTitle = StripTrailingTheFromTitle(lowerTitle);
-
-            if (lowerTitle.StartsWith("imdb:") || lowerTitle.StartsWith("imdbid:"))
+            catch (HttpException)
             {
-                var slug = lowerTitle.Split(':')[1].Trim();
-
-                string imdbid = slug;
-
-                if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace))
-                {
-                    return new List<Movie>();
-                }
-
-                try
-                {
-                    return new List<Movie> { GetMovieInfo(imdbid) };
-                }
-                catch (MovieNotFoundException)
-                {
-                    return new List<Movie>();
-                }
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", title);
             }
-
-            if (lowerTitle.StartsWith("tmdb:") || lowerTitle.StartsWith("tmdbid:"))
+            catch (Exception ex)
             {
-                var slug = lowerTitle.Split(':')[1].Trim();
-
-                int tmdbid = -1;
-
-                if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !(int.TryParse(slug, out tmdbid)))
-                {
-                    return new List<Movie>();
-                }
-
-                try
-                {
-                    return new List<Movie> { GetMovieInfo(tmdbid) };
-                }
-                catch (MovieNotFoundException)
-                {
-                    return new List<Movie>();
-                }
+                _logger.Warn(ex, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from TMDb.", title);
             }
-
-            var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
-
-            var firstChar = searchTerm.First();
-
-            var request = _movieBuilder.Create()
-                .SetSegment("route", "search")
-                .SetSegment("id", "movie")
-                .SetSegment("secondaryRoute", "")
-                .AddQueryParam("query", searchTerm)
-                .AddQueryParam("year", yearTerm)
-                .AddQueryParam("include_adult", false)
-                .Build();
-
-            request.AllowAutoRedirect = true;
-            request.SuppressHttpError = true;
-
-            var response = _httpClient.Get<MovieSearchRoot>(request);
-
-            var movieResults = response.Resource.results;
-
-            return movieResults.SelectList(MapMovie);
         }
 
         public Movie MapMovie(MovieResult result)
