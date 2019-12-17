@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Download
             }
 
             var movieGrabbedEvent = new MovieGrabbedEvent(remoteMovie);
-            movieGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
+            movieGrabbedEvent.DownloadClient = downloadClient.Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))
             {
