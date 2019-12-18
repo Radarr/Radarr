@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using FluentAssertions;
+using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
@@ -27,10 +29,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 },
                 Movie = new Movie
                          {
-                             Profile = new Profile
-                             {
-                                 Language = Language.English
-                             }
+                             Profile = new LazyLoaded<Profile>(new Profile
+                                                               {
+                                                                   Language = Language.English
+                                                               })
                          }
             };
         }
@@ -64,10 +66,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_allowed_language_any()
         {
-            _remoteMovie.Movie.Profile = new Profile
+            _remoteMovie.Movie.Profile = new LazyLoaded<Profile>(new Profile
             {
                 Language = Language.Any
-            };
+            });
 
             WithGermanRelease();
 

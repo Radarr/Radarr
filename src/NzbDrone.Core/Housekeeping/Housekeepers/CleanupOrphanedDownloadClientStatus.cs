@@ -1,5 +1,4 @@
-﻿using Dapper;
-using NzbDrone.Core.Datastore;
+﻿using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -14,9 +13,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.OpenConnection();
+            var mapper = _database.GetDataMapper();
 
-            mapper.Execute(@"DELETE FROM DownloadClientStatus
+            mapper.ExecuteNonQuery(@"DELETE FROM DownloadClientStatus
                                      WHERE Id IN (
                                      SELECT DownloadClientStatus.Id FROM DownloadClientStatus
                                      LEFT OUTER JOIN DownloadClients

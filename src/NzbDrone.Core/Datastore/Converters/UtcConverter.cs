@@ -1,34 +1,32 @@
-using System;
-using System.Data;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Dapper;
+﻿using System;
+using Marr.Data.Converters;
+using Marr.Data.Mapping;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class DapperUtcConverter : SqlMapper.TypeHandler<DateTime>
+    public class UtcConverter : IConverter
     {
-        public override void SetValue(IDbDataParameter parameter, DateTime value)
+        public object FromDB(ConverterContext context)
         {
-            parameter.Value = value.ToUniversalTime();
+            return context.DbValue;
         }
 
-        public override DateTime Parse(object value)
+        public object FromDB(ColumnMap map, object dbValue)
         {
-            return DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc);
-        }
-    }
-
-    public class UtcConverter : JsonConverter<DateTime>
-    {
-        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            return DateTime.Parse(reader.GetString());
+            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
         }
 
-        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        public object ToDB(object clrValue)
         {
-            writer.WriteStringValue(value.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"));
+            if (clrValue == DBNull.Value)
+            {
+                return clrValue;
+            }
+
+            var dateTime = (DateTime)clrValue;
+            return dateTime.ToUniversalTime();
         }
+
+        public Type DbType => typeof(DateTime);
     }
 }

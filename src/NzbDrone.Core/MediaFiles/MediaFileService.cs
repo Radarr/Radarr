@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -24,27 +25,27 @@ namespace NzbDrone.Core.MediaFiles
 
     public class MediaFileService : IMediaFileService, IHandleAsync<MovieDeletedEvent>
     {
-        private readonly IMediaFileRepository _mediaFileRepository;
-        private readonly IMovieRepository _movieRepository;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMediaFileRepository _mediaFileRepository;
+        private readonly Logger _logger;
 
         public MediaFileService(IMediaFileRepository mediaFileRepository,
-                                IMovieRepository movieRepository,
-                                IEventAggregator eventAggregator)
+                                IEventAggregator eventAggregator, Logger logger)
         {
             _mediaFileRepository = mediaFileRepository;
-            _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
+            _logger = logger;
         }
 
         public MovieFile Add(MovieFile movieFile)
         {
             var addedFile = _mediaFileRepository.Insert(movieFile);
-            if (addedFile.Movie == null)
+            addedFile.Movie.LazyLoad();
+            if (addedFile.Movie == null || addedFile.Movie.Value == null)
             {
-                addedFile.Movie = _movieRepository.Get(movieFile.MovieId);
+                _logger.Error("Movie is null for the file {0}. Please run the houskeeping command to ensure movies and files are linked correctly.");
             }
-
+            //_movieService.SetFileId(addedFile.Movie.Value, addedFile); //Should not be necessary, but sometimes below fails?
             _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
 
             return addedFile;
@@ -63,11 +64,8 @@ namespace NzbDrone.Core.MediaFiles
         public void Delete(MovieFile movieFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the movie attached for the event consumers
-            if (movieFile.Movie == null)
-            {
-                movieFile.Movie = _movieRepository.Get(movieFile.MovieId);
-            }
-            movieFile.Path = Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
+            movieFile.Movie.LazyLoad();
+            movieFile.Path = Path.Combine(movieFile.Movie.Value.Path, movieFile.RelativePath);
 
             _mediaFileRepository.Delete(movieFile);
             _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));

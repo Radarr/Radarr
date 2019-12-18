@@ -3,8 +3,6 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.30" />
-    <PackageReference Include="Dapper.SqlBuilder" Version="2.0.30" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.7.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
@@ -17,9 +15,9 @@
     <PackageReference Include="TinyTwitter" Version="1.1.2" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
     <ProjectReference Include="..\MonoTorrent\MonoTorrent.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
   </ItemGroup>

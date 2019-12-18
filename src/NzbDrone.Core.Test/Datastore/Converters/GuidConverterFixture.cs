@@ -1,6 +1,6 @@
 using System;
-using System.Data.SQLite;
 using FluentAssertions;
+using Marr.Data.Converters;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Test.Framework;
@@ -10,21 +10,18 @@ namespace NzbDrone.Core.Test.Datastore.Converters
     [TestFixture]
     public class GuidConverterFixture : CoreTest<GuidConverter>
     {
-        SQLiteParameter param;
-
-        [SetUp]
-        public void Setup()
-        {
-            param = new SQLiteParameter();
-        }
-
         [Test]
         public void should_return_string_when_saving_guid_to_db()
         {
             var guid = Guid.NewGuid();
 
-            Subject.SetValue(param, guid);
-            param.Value.Should().Be(guid.ToString());
+            Subject.ToDB(guid).Should().Be(guid.ToString());
+        }
+
+        [Test]
+        public void should_return_db_null_for_null_value_when_saving_to_db()
+        {
+            Subject.ToDB(null).Should().Be(DBNull.Value);
         }
 
         [Test]
@@ -32,13 +29,23 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         {
             var guid = Guid.NewGuid();
 
-            Subject.Parse(guid.ToString()).Should().Be(guid);
+            var context = new ConverterContext
+                          {
+                              DbValue = guid.ToString()
+                          };
+
+            Subject.FromDB(context).Should().Be(guid);
         }
 
         [Test]
         public void should_return_empty_guid_for_db_null_value_when_getting_from_db()
         {
-            Subject.Parse(null).Should().Be(Guid.Empty);
+            var context = new ConverterContext
+                          {
+                              DbValue = DBNull.Value
+                          };
+
+            Subject.FromDB(context).Should().Be(Guid.Empty);
         }
     }
 }

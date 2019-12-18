@@ -7,7 +7,9 @@ using NzbDrone.Common.Composition;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.CustomFormats
@@ -21,7 +23,8 @@ namespace NzbDrone.Core.CustomFormats
         void Delete(int id);
     }
 
-    public class CustomFormatService : ICustomFormatService
+
+    public class CustomFormatService : ICustomFormatService, IHandle<ApplicationStartedEvent>
     {
         private readonly ICustomFormatRepository _formatRepository;
         private IProfileService _profileService;
@@ -55,9 +58,6 @@ namespace NzbDrone.Core.CustomFormats
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
             _historyService = historyService;
             _logger = logger;
-
-            // Fill up the cache for subsequent DB lookups
-            All();
         }
 
         public void Update(CustomFormat customFormat)
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.CustomFormats
         {
             return _cache.Get("all", () =>
             {
-                var all = _formatRepository.All().Select(x => (CustomFormat)x).ToDictionary(m => m.Id);
+                var all = _formatRepository.All().ToDictionary(m => m.Id);
                 AllCustomFormats = all;
                 return all;
             });
@@ -193,6 +193,12 @@ namespace NzbDrone.Core.CustomFormats
                     }
                 };
             }
+        }
+
+        public void Handle(ApplicationStartedEvent message)
+        {
+            // Fillup cache for DataMapper.
+            All();
         }
     }
 }

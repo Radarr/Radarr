@@ -1,24 +1,40 @@
 ﻿using System;
-using System.Data;
-using Dapper;
+using Marr.Data.Converters;
+using Marr.Data.Mapping;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class GuidConverter : SqlMapper.TypeHandler<Guid>
+    public class GuidConverter : IConverter
     {
-        public override Guid Parse(object value)
+        public object FromDB(ConverterContext context)
         {
-            if (value == null)
+            if (context.DbValue == DBNull.Value)
             {
                 return Guid.Empty;
             }
 
-            return new Guid((string)value);
+            var value = (string)context.DbValue;
+
+            return new Guid(value);
         }
 
-        public override void SetValue(IDbDataParameter parameter, Guid value)
+        public object FromDB(ColumnMap map, object dbValue)
         {
-            parameter.Value = value.ToString();
+            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
         }
+
+        public object ToDB(object clrValue)
+        {
+            if (clrValue == null)
+            {
+                return DBNull.Value;
+            }
+
+            var value = clrValue;
+
+            return value.ToString();
+        }
+
+        public Type DbType => typeof(string);
     }
 }

@@ -1,22 +1,39 @@
-﻿using System.Data;
-using System.Text.Json;
+﻿using System;
+using Marr.Data.Converters;
+using NzbDrone.Common.Reflection;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class ProviderSettingConverter : EmbeddedDocumentConverter<IProviderConfig>
+    public class ProviderSettingConverter : EmbeddedDocumentConverter
     {
-        public override IProviderConfig Parse(object value)
+        public override object FromDB(ConverterContext context)
         {
-            // We can't deserialize based on another column, happens in ProviderRepository instead
-            return null;
-        }
+            if (context.DbValue == DBNull.Value)
+            {
+                return NullConfig.Instance;
+            }
 
-        public override void SetValue(IDbDataParameter parameter, IProviderConfig value)
-        {
-            // Cast to object to get all properties written out
-            // https://github.com/dotnet/corefx/issues/38650
-            parameter.Value = JsonSerializer.Serialize((object)value, SerializerSettings);
+            var stringValue = (string)context.DbValue;
+
+            if (string.IsNullOrWhiteSpace(stringValue))
+            {
+                return NullConfig.Instance;
+            }
+
+            var ordinal = context.DataRecord.GetOrdinal("ConfigContract");
+            var contract = context.DataRecord.GetString(ordinal);
+
+
+            var impType = typeof (IProviderConfig).Assembly.FindTypeByName(contract);
+
+            if (impType == null)
+            {
+                throw new ConfigContractNotFoundException(contract);
+            }
+
+            return Json.Deserialize(stringValue, impType);
         }
 
     }

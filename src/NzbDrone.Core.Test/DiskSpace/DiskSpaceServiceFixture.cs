@@ -50,8 +50,8 @@ namespace NzbDrone.Core.Test.DiskSpace
         private void GivenMovies(params Movie[] movies)
         {
             Mocker.GetMock<IMovieService>()
-                .Setup(v => v.AllMoviePaths())
-                .Returns(movies.Select(x => x.Path).ToList());
+                  .Setup(v => v.GetAllMovies())
+                  .Returns(movies.ToList());
         }
 
         private void GivenExistingFolder(string folder)

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 		{
 			/*var mapper = _database.GetDataMapper();
 
-			mapper.Execute(@"UPDATE Movies
+			mapper.ExecuteNonQuery(@"UPDATE Movies
 				SET MovieFileId =
 				(Select Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)
 				WHERE MovieFileId !=

@@ -7,8 +7,6 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using Radarr.Host;
 using NzbDrone.Test.Common;
-using NzbDrone.Core.CustomFormats;
-using System.Collections.Generic;
 
 namespace NzbDrone.Common.Test
 {
@@ -21,11 +19,6 @@ namespace NzbDrone.Common.Test
             var container = MainAppContainerBuilder.BuildContainer(new StartupContext());
             container.Register<IMainDatabase>(new MainDatabase(null));
             container.Resolve<IAppFolderFactory>().Register();
-
-            // A dummy custom format repository since this isn't a DB test
-            var mockCustomFormat = Mocker.GetMock<ICustomFormatRepository>();
-            mockCustomFormat.Setup(x => x.All()).Returns(new List<CustomFormatDefinition>());
-            container.Register<ICustomFormatRepository>(mockCustomFormat.Object);
 
             Mocker.SetConstant(container);
 
