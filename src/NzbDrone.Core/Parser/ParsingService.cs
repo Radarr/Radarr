@@ -8,15 +8,12 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Augmenters;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {
@@ -84,11 +81,14 @@ namespace NzbDrone.Core.Parser
             }
 
             // minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Quality.Source, minimalInfo.Quality.Quality.Resolution,
-                // minimalInfo.Quality.Quality.Modifier);
+            // minimalInfo.Quality.Quality.Modifier);
 
-            minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
+            if (minimalInfo != null)
+            {
+                minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
 
-            _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
+                _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
+            }
 
             return minimalInfo;
         }
