@@ -346,7 +346,7 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteMovie.Movie.Profile.Value;
+            var profile = remoteMovie.Movie.Profile;
 
             foreach (var existingReport in existingReports)
             {

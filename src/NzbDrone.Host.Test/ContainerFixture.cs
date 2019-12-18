@@ -6,6 +6,7 @@ using NUnit.Framework;
 using NzbDrone.Common;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -37,6 +38,11 @@ namespace NzbDrone.App.Test
             // set up a dummy broadcaster to allow tests to resolve
             var mockBroadcaster = new Mock<IBroadcastSignalRMessage>();
             _container.Register<IBroadcastSignalRMessage>(mockBroadcaster.Object);
+
+            // A dummy custom format repository since this isn't a DB test
+            var mockCustomFormat = Mocker.GetMock<ICustomFormatRepository>();
+            mockCustomFormat.Setup(x => x.All()).Returns(new List<CustomFormatDefinition>());
+            _container.Register<ICustomFormatRepository>(mockCustomFormat.Object);
         }
 
         [Test]

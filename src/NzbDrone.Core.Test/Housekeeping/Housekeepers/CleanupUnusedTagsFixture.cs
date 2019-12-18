@@ -14,7 +14,10 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_delete_unused_tags()
         {
-            var tags = Builder<Tag>.CreateListOfSize(2).BuildList();
+            var tags = Builder<Tag>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Id = 0)
+                .BuildList();
 
             Db.InsertMany(tags);
             Subject.Clean();
@@ -24,11 +27,15 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_used_tags()
         {
-            var tags = Builder<Tag>.CreateListOfSize(2).BuildList();
+            var tags = Builder<Tag>.CreateListOfSize(2)
+                .All()
+                .With(x => x.Id = 0)
+                .BuildList();
             Db.InsertMany(tags);
 
             var restrictions = Builder<Restriction>.CreateListOfSize(2)
                 .All()
+                .With(v => v.Id = 0)
                 .With(v => v.Tags.Add(tags[0].Id))
                 .BuildList();
             Db.InsertMany(restrictions);

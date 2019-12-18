@@ -35,7 +35,7 @@ namespace NzbDrone.Api.History
 
             if (model.Movie != null)
             {
-                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Movie.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Movie.Profile, model.Quality);
             }
 
             return resource;

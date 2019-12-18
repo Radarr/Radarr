@@ -19,7 +19,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var wantedLanguage = subject.Movie.Profile.Value.Language;
+            var wantedLanguage = subject.Movie.Profile.Language;
 
             if (wantedLanguage == Language.Any)
             {

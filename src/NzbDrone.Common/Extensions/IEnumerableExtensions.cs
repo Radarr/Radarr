@@ -146,11 +146,6 @@ namespace NzbDrone.Common.Extensions
             }
         }
 
-        public static bool In<T>(this T source, List<T> list)
-        {
-            return list.Contains(source);
-        }
-
         public static string ConcatToString<TSource>(this IEnumerable<TSource> source, string separator = ", ")
         {
             return string.Join(separator, source.Select(x => x.ToString()));

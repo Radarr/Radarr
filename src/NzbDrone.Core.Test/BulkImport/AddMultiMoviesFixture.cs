@@ -32,6 +32,9 @@ namespace NzbDrone.Core.Test.BulkImport
                   .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))
                   .Returns((Movie m, NamingConfig n) => m.Title);
 
+            Mocker.GetMock<IMovieRepository>().Setup(s => s.FindByTmdbId(It.IsAny<List<int>>()))
+                .Returns(new List<Movie>());
+
             var movies = Subject.AddMovies(_fakeMovies);
 
             foreach (Movie movie in movies)
@@ -39,7 +42,7 @@ namespace NzbDrone.Core.Test.BulkImport
                 movie.Path.Should().NotBeNullOrEmpty();
             }
 
-            //Subject.GetAllMovies().Should().HaveCount(3);
+            // Subject.GetAllMovies().Should().HaveCount(3);
         }
 
         [Test]
@@ -49,7 +52,8 @@ namespace NzbDrone.Core.Test.BulkImport
                   .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))
                   .Returns((Movie m, NamingConfig n) => m.Title);
 
-            Mocker.GetMock<IMovieRepository>().Setup(s => s.All()).Returns(new List<Movie> { _fakeMovies[0] });
+            Mocker.GetMock<IMovieRepository>().Setup(s => s.FindByTmdbId(It.IsAny<List<int>>()))
+                .Returns(new List<Movie> { _fakeMovies[0] });
 
             var movies = Subject.AddMovies(_fakeMovies);
 
@@ -62,6 +66,9 @@ namespace NzbDrone.Core.Test.BulkImport
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))
                   .Returns((Movie m, NamingConfig n) => m.Title);
+
+            Mocker.GetMock<IMovieRepository>().Setup(s => s.FindByTmdbId(It.IsAny<List<int>>()))
+                .Returns(new List<Movie>());
 
             _fakeMovies[2].TmdbId = _fakeMovies[0].TmdbId;
 
