@@ -87,7 +87,7 @@ namespace NzbDrone.Console
                     for (int i = 0; i < 3600; i++)
                     {
                         System.Threading.Thread.Sleep(1000);
-                        if (System.Console.KeyAvailable) break;
+                        if (!System.Console.IsInputRedirected && System.Console.KeyAvailable) break;
                     }
                 }
 
