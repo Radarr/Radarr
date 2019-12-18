@@ -70,9 +70,7 @@ namespace Radarr.Api.V3.MovieFiles
                 SceneName = model.SceneName,
                 Quality = model.Quality,
                 Languages = model.Languages,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-
-                // QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
+                MediaInfo = model.MediaInfo.ToResource(model.SceneName)
             };
         }
 
@@ -96,7 +94,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
+                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile, model.Quality)
             };
         }
     }

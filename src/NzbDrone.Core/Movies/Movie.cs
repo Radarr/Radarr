@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
@@ -47,7 +46,7 @@ namespace NzbDrone.Core.Movies
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
         public string PhysicalReleaseNote { get; set; }
-        public LazyLoaded<Profile> Profile { get; set; }
+        public Profile Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }

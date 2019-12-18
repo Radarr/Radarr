@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void UpdateLanguage(IDbConnection conn, IDbTransaction tran)
         {
-            var languageConverter = new EmbeddedDocumentConverter(new LanguageIntConverter());
+            var languageConverter = new EmbeddedDocumentConverter<List<Language>>(new LanguageIntConverter());
 
             var profileLanguages = new Dictionary<int, int>();
             using (IDbCommand getProfileCmd = conn.CreateCommand())
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             foreach (var group in movieLanguages.GroupBy(v => v.Value, v => v.Key))
             {
-                var languageJson = languageConverter.ToDB(new List<Language> { Language.FindById(group.Key) });
+                var language = new List<Language> { Language.FindById(group.Key) };
 
                 var movieIds = group.Select(v => v.ToString()).Join(",");
 
@@ -87,7 +87,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateMovieFilesCmd.Transaction = tran;
                     updateMovieFilesCmd.CommandText = $"UPDATE MovieFiles SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateMovieFilesCmd.AddParameter(languageJson);
+                    var param = updateMovieFilesCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
 
                     updateMovieFilesCmd.ExecuteNonQuery();
                 }
@@ -96,7 +97,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateHistoryCmd.Transaction = tran;
                     updateHistoryCmd.CommandText = $"UPDATE History SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateHistoryCmd.AddParameter(languageJson);
+                    var param = updateHistoryCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
 
                     updateHistoryCmd.ExecuteNonQuery();
                 }
@@ -105,7 +107,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateBlacklistCmd.Transaction = tran;
                     updateBlacklistCmd.CommandText = $"UPDATE Blacklist SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateBlacklistCmd.AddParameter(languageJson);
+                    var param = updateBlacklistCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
 
                     updateBlacklistCmd.ExecuteNonQuery();
                 }

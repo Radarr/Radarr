@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Tags
 
         public Tag GetByLabel(string label)
         {
-            var model = Query.Where(c => c.Label == label).SingleOrDefault();
+            var model = FindByLabel(label);
 
             if (model == null)
             {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Tags
 
         public Tag FindByLabel(string label)
         {
-            return Query.Where(c => c.Label == label).SingleOrDefault();
+            return Query(x => x.Label == label).SingleOrDefault();
         }
     }
 }

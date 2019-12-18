@@ -1,4 +1,3 @@
-using Marr.Data;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
@@ -15,7 +14,6 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public int Votes { get; set; }
         public int VoteCount { get; set; }
         public Language Language { get; set; }
-        public LazyLoaded<Movie> Movie { get; set; }
 
         public AlternativeTitle()
         {
