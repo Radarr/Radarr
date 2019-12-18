@@ -1,5 +1,4 @@
-﻿using Dapper;
-using NzbDrone.Core.Datastore;
+﻿using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -14,10 +13,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
+            using (var mapper = _database.GetDataMapper())
             {
 
-                mapper.Execute(@"DELETE FROM AlternativeTitles
+                mapper.ExecuteNonQuery(@"DELETE FROM AlternativeTitles
                                      WHERE Id IN (
                                      SELECT AlternativeTitles.Id FROM AlternativeTitles
                                      LEFT OUTER JOIN Movies

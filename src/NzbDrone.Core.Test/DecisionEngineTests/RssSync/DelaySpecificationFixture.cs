@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -76,7 +78,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 			//                                                                         Quality = quality
 			//                                                                     });
 
-			_remoteEpisode.Movie.MovieFile = new MovieFile { Quality = quality };
+			_remoteEpisode.Movie.MovieFile = new LazyLoaded<MovieFile>(new MovieFile { Quality = quality });
         }
 
         private void GivenUpgradeForExistingFile()

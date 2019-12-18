@@ -1,5 +1,7 @@
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
@@ -37,11 +39,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Movie = Builder<Movie>.CreateNew()
                 .With(e => e.MovieFileId = 1)
-                .With(e => e.MovieFile =
+                .With(e => e.MovieFile = new LazyLoaded<MovieFile>(
                     new MovieFile
                     {
                         Size = _localMovie.Size + 100.Megabytes()
-                    })
+                    }))
                 .Build();
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
@@ -52,11 +54,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Movie = Builder<Movie>.CreateNew()
                 .With(e => e.MovieFileId = 1)
-                .With(e => e.MovieFile =
+                .With(e => e.MovieFile = new LazyLoaded<MovieFile>(
                     new MovieFile
                     {
                         Size = _localMovie.Size
-                    })
+                    }))
                 .Build();
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
@@ -67,7 +69,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Movie = Builder<Movie>.CreateNew()
                 .With(e => e.MovieFileId = 1)
-                .With(e => e.MovieFile = null)
+                .With(e => e.MovieFile = new LazyLoaded<MovieFile>((MovieFile)null))
                 .Build();
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();

@@ -1,25 +1,36 @@
 ﻿using System;
-using System.Data;
-using Dapper;
+using Marr.Data.Converters;
+using Marr.Data.Mapping;
 using NzbDrone.Common.Disk;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class OsPathConverter : SqlMapper.TypeHandler<OsPath>
+    public class OsPathConverter : IConverter
     {
-        public override void SetValue(IDbDataParameter parameter, OsPath value)
+        public object FromDB(ConverterContext context)
         {
-            parameter.Value =  value.FullPath;
-        }
-
-        public override OsPath Parse(object value)
-        {
-            if (value == null || value is DBNull)
+            if (context.DbValue == DBNull.Value)
             {
-                return new OsPath(null);
+                return DBNull.Value;
             }
 
-            return new OsPath((string) value);
+            var value = (string)context.DbValue;
+
+            return new OsPath(value);
         }
+
+        public object FromDB(ColumnMap map, object dbValue)
+        {
+            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
+        }
+
+        public object ToDB(object clrValue)
+        {
+            var value = (OsPath)clrValue;
+
+            return value.FullPath;
+        }
+
+        public Type DbType => typeof(string);
     }
 }

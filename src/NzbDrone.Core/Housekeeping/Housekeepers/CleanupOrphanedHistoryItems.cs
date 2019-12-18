@@ -1,4 +1,3 @@
-using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -19,10 +18,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void CleanupOrphanedByMovie()
         {
-            using (var mapper = _database.OpenConnection())
+            using (var mapper = _database.GetDataMapper())
             {
 
-                mapper.Execute(@"DELETE FROM History
+                mapper.ExecuteNonQuery(@"DELETE FROM History
                                      WHERE Id IN (
                                      SELECT History.Id FROM History
                                      LEFT OUTER JOIN Movies

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data;
+using Marr.Data;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -17,9 +17,9 @@ namespace NzbDrone.Core.Datastore
             _database = database;
         }
 
-        public IDbConnection OpenConnection()
+        public IDataMapper GetDataMapper()
         {
-            return _database.OpenConnection();
+            return _database.GetDataMapper();
         }
 
         public Version Version => _database.Version;

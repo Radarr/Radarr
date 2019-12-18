@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using Marr.Data;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
@@ -14,24 +17,27 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
     public class AlternativeTitleRepository : BasicRepository<AlternativeTitle>, IAlternativeTitleRepository
     {
+		protected IMainDatabase _database;
+
         public AlternativeTitleRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
+			_database = database;
         }
 
         public AlternativeTitle FindBySourceId(int sourceId)
         {
-            return Query(x => x.SourceId == sourceId).FirstOrDefault();
+            return Query.Where(t => t.SourceId == sourceId).FirstOrDefault();
         }
 
         public List<AlternativeTitle> FindBySourceIds(List<int> sourceIds)
         {
-            return Query(x => sourceIds.Contains(x.SourceId));
+            return Query.Where(t => t.SourceId.In(sourceIds)).ToList();
         }
 
         public List<AlternativeTitle> FindByMovieId(int movieId)
         {
-            return Query(x => x.MovieId == movieId);
+            return Query.Where(t => t.MovieId == movieId).ToList();
         }
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
@@ -75,11 +77,11 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    TestContext.Progress.WriteLine("Radarr is started. Running Tests");
+                    Console.WriteLine("Radarr is started. Running Tests");
                     return;
                 }
 
-                TestContext.Progress.WriteLine("Waiting for Radarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException.Message);
+                Console.WriteLine("Waiting for Radarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException.Message);
 
                 Thread.Sleep(500);
             }
@@ -114,7 +116,7 @@ namespace NzbDrone.Test.Common
 
         private void OnOutputDataReceived(string data)
         {
-            TestContext.Progress.WriteLine(data);
+            Console.WriteLine(data);
 
             if (data.Contains("Press enter to exit"))
             {
