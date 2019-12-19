@@ -544,7 +544,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 {
                     videoDynamicRange = "HDR";
                 }
-                if (DolbyCodecUsed = "1")
+                if (mediaInfo.DolbyCodecUsed.IsNotNullOrWhiteSpace())
                 {
                     videoDynamicRange = "DV";
                 }

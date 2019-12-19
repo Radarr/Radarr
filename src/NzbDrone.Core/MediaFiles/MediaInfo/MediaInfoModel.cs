@@ -14,6 +14,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string VideoCodec { get; set; }
         public string VideoFormat { get; set; }
         public string VideoCodecID { get; set; }
+        public string DolbyCodecUsed { get; set; }
         public string VideoProfile { get; set; }
         public string VideoCodecLibrary { get; set; }
         public int VideoBitrate { get; set; }

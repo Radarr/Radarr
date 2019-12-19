@@ -26,8 +26,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _diskProvider = diskProvider;
             _logger = logger;
         }
-
-
         public MediaInfoModel GetMediaInfo(string filename)
         {
             if (!_diskProvider.FileExists(filename))
@@ -133,37 +131,39 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                     int.TryParse(audioChannelsStr, out audioChannels);
 
-                    // Look for Dolby Vision video stream                   
+                    // Look for Dolby Vision video stream 
+                                     
                     int videoStreamCount = mediaInfo.Count_Get(StreamKind.Video);
                     _logger.Trace("Number of detected video streams: {0}", videoStreamCount);
-                    
-                    var NVideoCodecID = "";
-                    var DolbyCodecUsed = "";
+
+                    var videoCodecID = "";
+                    var dolbyCodecUsed = "";  
+
                     if (videoStreamCount > 1)
-                     {
-                    for (var VideoIndex = 0; VideoIndex < videoStreamCount; VideoIndex++)
+                    {
+                        for (var VideoIndex = 0; VideoIndex < videoStreamCount; VideoIndex++)
                         {
                             _logger.Trace("Index of stream: {0}", VideoIndex);
-                           string DVideoCodecID = mediaInfo.Get(StreamKind.Video, VideoIndex, "CodecID");
-                           _logger.Trace("VideoCodecID: {0} {1}", VideoIndex, DVideoCodecID);
-                           if (new[] {"dvhe", "dvav", "dva1", "dvh1"}.Contains(DVideoCodecID))
-                            {
-                                NVideoCodecID = DVideoCodecID; 
-                                DolbyCodecUsed = "1";
-                            }
+                            string NVideoCodecID = mediaInfo.Get(StreamKind.Video, VideoIndex, "CodecID");
+                            _logger.Trace("VideoCodecID: {0} {1}", VideoIndex,NVideoCodecID);
+                            if (new[] {"dvhe", "dvav", "dva1", "dvh1"}.Contains(NVideoCodecID))
+                                {
+                                    videoCodecID = NVideoCodecID; 
+                                    dolbyCodecUsed = "1";
+                                }
                         }
-                     }
+                    }
                     else
                     {
-                        NVideoCodecID =  mediaInfo.Get(StreamKind.Video, 0, "CodecID");
+                        videoCodecID =  mediaInfo.Get(StreamKind.Video, 0, "CodecID");
                     }
 
                     var mediaInfoModel = new MediaInfoModel
                     {
                         ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format"),
                         VideoFormat = mediaInfo.Get(StreamKind.Video, 0, "Format"),
-                        VideoCodecID = NVideoCodecID,
-                       // VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
+                        VideoCodecID = videoCodecID,
+                        DolbyCodecUsed = dolbyCodecUsed,
                         VideoProfile = videoProfile,
                         VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, 0, "Encoded_Library"),
                         VideoBitrate = videoBitRate,
