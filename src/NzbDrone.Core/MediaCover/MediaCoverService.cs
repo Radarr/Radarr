@@ -90,6 +90,7 @@ namespace NzbDrone.Core.MediaCover
 
         private void EnsureCovers(Movie movie)
         {
+            bool updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
 
             foreach (var cover in movie.Images)
@@ -102,6 +103,7 @@ namespace NzbDrone.Core.MediaCover
                     if (!alreadyExists)
                     {
                         DownloadCover(movie, cover);
+                        updated = true;
                     }
                 }
                 catch (WebException e)
@@ -129,6 +131,8 @@ namespace NzbDrone.Core.MediaCover
             {
                 _semaphore.Release();
             }
+
+            return updated;
         }
 
         private void DownloadCover(Movie movie, MediaCover cover)
@@ -186,8 +190,11 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(MovieUpdatedEvent message)
         {
-            EnsureCovers(message.Movie);
-            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
+            var updated = EnsureCovers(message.Movie);
+            if (updated)
+            {
+                _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
+            }
         }
 
         public void HandleAsync(MovieDeletedEvent message)
