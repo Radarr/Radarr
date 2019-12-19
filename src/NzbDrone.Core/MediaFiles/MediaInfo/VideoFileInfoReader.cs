@@ -131,11 +131,34 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     string audioProfile = mediaInfo.Get(StreamKind.Audio, 0, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
 
                     int.TryParse(audioChannelsStr, out audioChannels);
+
+                    // Look for Dolby Vision codec                    
+                    var videoStreamCount = mediaInfo.Count_Get(StreamKind.Video);
+                    _logger.Info("Number of detected video streams: {0}", videoStreamCount);
+                    if (videoStreamCount > 1)
+                     {
+                    for (int VideoIndex = 0; VideoIndex < videoStreamCount; VideoIndex++)
+                        {
+                            _logger.Debug("Index of stream: {0}", VideoIndex);
+                           string NVideoCodecID = mediaInfo.Get(StreamKind.Video, VideoIndex, "CodecID");
+                           _logger.Debug("VideoCodecID: {0} {1}", VideoIndex, NVideoCodecID);
+                           if (new[] {"hev1", "dvhe", "dvav", "dva1", "dvh1"}.Contains(NVideoCodecID))
+                            {
+                                var DVideoCodecID = NVideoCodecID; 
+                            }
+                        }
+                     }
+                    else
+                    {
+                        var DVideoCodecID =  mediaInfo.Get(StreamKind.Video, 0, "CodecID");
+                    }
+
                     var mediaInfoModel = new MediaInfoModel
                     {
                         ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format"),
                         VideoFormat = mediaInfo.Get(StreamKind.Video, 0, "Format"),
-                        VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
+                        VideoCodecID = DVideoCodecID,
+                       // VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
                         VideoProfile = videoProfile,
                         VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, 0, "Encoded_Library"),
                         VideoBitrate = videoBitRate,
