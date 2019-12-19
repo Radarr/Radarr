@@ -54,7 +54,6 @@ namespace Radarr.Api.V3.Movies
         public string FolderName { get; set; }
 
         public int Runtime { get; set; }
-        public DateTime? LastInfoSync { get; set; }
         public string CleanTitle { get; set; }
         public string ImdbId { get; set; }
         public int TmdbId { get; set; }
@@ -114,7 +113,6 @@ namespace Radarr.Api.V3.Movies
                 FolderName = model.FolderName(),
 
                 Runtime = model.Runtime,
-                LastInfoSync = model.LastInfoSync,
                 CleanTitle = model.CleanTitle,
                 ImdbId = model.ImdbId,
                 TitleSlug = model.TitleSlug,
@@ -175,7 +173,6 @@ namespace Radarr.Api.V3.Movies
                 FolderName = model.FolderName(),
 
                 Runtime = model.Runtime,
-                LastInfoSync = model.LastInfoSync,
                 CleanTitle = model.CleanTitle,
                 ImdbId = model.ImdbId,
                 TitleSlug = model.TitleSlug,
@@ -228,7 +225,6 @@ namespace Radarr.Api.V3.Movies
                 MinimumAvailability = resource.MinimumAvailability,
 
                 Runtime = resource.Runtime,
-                LastInfoSync = resource.LastInfoSync,
                 CleanTitle = resource.CleanTitle,
                 ImdbId = resource.ImdbId,
                 TitleSlug = resource.TitleSlug,

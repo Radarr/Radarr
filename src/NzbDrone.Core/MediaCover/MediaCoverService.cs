@@ -88,7 +88,7 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(_coverRootFolder, movieId.ToString());
         }
 
-        private void EnsureCovers(Movie movie)
+        private bool EnsureCovers(Movie movie)
         {
             bool updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
