@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 
@@ -132,32 +133,36 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                     int.TryParse(audioChannelsStr, out audioChannels);
 
-                    // Look for Dolby Vision codec                    
-                    var videoStreamCount = mediaInfo.Count_Get(StreamKind.Video);
-                    _logger.Info("Number of detected video streams: {0}", videoStreamCount);
+                    // Look for Dolby Vision video stream                   
+                    int videoStreamCount = mediaInfo.Count_Get(StreamKind.Video);
+                    _logger.Trace("Number of detected video streams: {0}", videoStreamCount);
+                    
+                    var NVideoCodecID = "";
+                    var DolbyCodecUsed = "";
                     if (videoStreamCount > 1)
                      {
-                    for (int VideoIndex = 0; VideoIndex < videoStreamCount; VideoIndex++)
+                    for (var VideoIndex = 0; VideoIndex < videoStreamCount; VideoIndex++)
                         {
-                            _logger.Debug("Index of stream: {0}", VideoIndex);
-                           string NVideoCodecID = mediaInfo.Get(StreamKind.Video, VideoIndex, "CodecID");
-                           _logger.Debug("VideoCodecID: {0} {1}", VideoIndex, NVideoCodecID);
-                           if (new[] {"hev1", "dvhe", "dvav", "dva1", "dvh1"}.Contains(NVideoCodecID))
+                            _logger.Trace("Index of stream: {0}", VideoIndex);
+                           string DVideoCodecID = mediaInfo.Get(StreamKind.Video, VideoIndex, "CodecID");
+                           _logger.Trace("VideoCodecID: {0} {1}", VideoIndex, DVideoCodecID);
+                           if (new[] {"dvhe", "dvav", "dva1", "dvh1"}.Contains(DVideoCodecID))
                             {
-                                var DVideoCodecID = NVideoCodecID; 
+                                NVideoCodecID = DVideoCodecID; 
+                                DolbyCodecUsed = "1";
                             }
                         }
                      }
                     else
                     {
-                        var DVideoCodecID =  mediaInfo.Get(StreamKind.Video, 0, "CodecID");
+                        NVideoCodecID =  mediaInfo.Get(StreamKind.Video, 0, "CodecID");
                     }
 
                     var mediaInfoModel = new MediaInfoModel
                     {
                         ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format"),
                         VideoFormat = mediaInfo.Get(StreamKind.Video, 0, "Format"),
-                        VideoCodecID = DVideoCodecID,
+                        VideoCodecID = NVideoCodecID,
                        // VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
                         VideoProfile = videoProfile,
                         VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, 0, "Encoded_Library"),

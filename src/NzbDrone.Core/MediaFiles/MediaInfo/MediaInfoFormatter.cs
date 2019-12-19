@@ -539,23 +539,18 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 mediaInfo.VideoColourPrimaries.IsNotNullOrWhiteSpace() &&
                 mediaInfo.VideoTransferCharacteristics.IsNotNullOrWhiteSpace())
             {
-                // Check if mediaInfo.VideoCodecID contains a Dolby Vision codec
-                if (new[] {"hev1", "dvhe", "dvav", "dva1", "dvh1"}.Contains(mediaInfo.VideoCodecID))
+                if (mediaInfo.VideoColourPrimaries.EqualsIgnoreCase(ValidHdrColourPrimaries) &&
+                    ValidHdrTransferFunctions.Any(mediaInfo.VideoTransferCharacteristics.Contains))
+                {
+                    videoDynamicRange = "HDR";
+                }
+                if (DolbyCodecUsed = "1")
                 {
                     videoDynamicRange = "DV";
                 }
-                else
-                {
-                if (mediaInfo.VideoColourPrimaries.EqualsIgnoreCase(ValidHdrColourPrimaries) &&
-                        ValidHdrTransferFunctions.Any(mediaInfo.VideoTransferCharacteristics.Contains))
-                    {
-                        videoDynamicRange = "HDR";
-                    }
-                }	
             }
+
             return videoDynamicRange;
         }
     }
-    
 }
-
