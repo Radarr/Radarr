@@ -248,7 +248,7 @@ namespace NzbDrone.Core.Parser
                                 }
 
                                 result.Languages = LanguageParser.EnhanceLanguages(simpleReleaseTitle, LanguageParser.ParseLanguages(releaseTitle));
-                                Logger.Debug("Languages parsed: {0}", result.Languages);
+                                Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
