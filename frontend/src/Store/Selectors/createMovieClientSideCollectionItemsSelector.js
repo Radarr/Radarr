@@ -1,6 +1,6 @@
-import { createSelector } from 'reselect';
-import createDeepEqualSelector from './createDeepEqualSelector';
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import createClientSideCollectionSelector from './createClientSideCollectionSelector';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 
 function createUnoptimizedSelector(uiSection) {
   return createSelector(
@@ -26,8 +26,17 @@ function createUnoptimizedSelector(uiSection) {
   );
 }
 
+function movieListEqual(a, b) {
+  return hasDifferentItemsOrOrder(a, b);
+}
+
+const createMovieEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  movieListEqual
+);
+
 function createMovieClientSideCollectionItemsSelector(uiSection) {
-  return createDeepEqualSelector(
+  return createMovieEqualSelector(
     createUnoptimizedSelector(uiSection),
     (movies) => movies
   );
