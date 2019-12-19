@@ -20,8 +20,6 @@ namespace Lidarr.Api.V1.Artist
 
         public bool Ended => Status == ArtistStatusType.Ended;
 
-        public DateTime? LastInfoSync { get; set; }
-
         public string ArtistName { get; set; }
         public string ForeignArtistId { get; set; }
         public string MBId { get; set; }
@@ -96,8 +94,6 @@ namespace Lidarr.Api.V1.Artist
                 AlbumFolder = model.AlbumFolder,
                 Monitored = model.Monitored,
 
-                LastInfoSync = model.LastInfoSync,
-
                 CleanName = model.CleanName,
                 ForeignArtistId = model.Metadata.Value.ForeignArtistId,
 
@@ -146,7 +142,6 @@ namespace Lidarr.Api.V1.Artist
                 AlbumFolder = resource.AlbumFolder,
                 Monitored = resource.Monitored,
 
-                LastInfoSync = resource.LastInfoSync,
                 CleanName = resource.CleanName,
                 RootFolderPath = resource.RootFolderPath,
 
