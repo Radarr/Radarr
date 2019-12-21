@@ -332,9 +332,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var resource = response.Resource.movie_results.FirstOrDefault();
+            if (!response.Resource.movie_results.Any())
+            {
+                throw new MovieNotFoundException(imdbId);
+            }
 
-            return MapMovie(resource);
+            return MapMovie(response.Resource.movie_results.First());
         }
 
         public List<Movie> DiscoverNewMovies(string action)

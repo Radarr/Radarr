@@ -39,6 +39,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("tmdbid: -12")]
         [TestCase("tmdbid:1")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
+        [TestCase("imdb: tt9805708")]
         public void no_search_result(string term)
         {
             var result = Subject.SearchForNewMovie(term);
