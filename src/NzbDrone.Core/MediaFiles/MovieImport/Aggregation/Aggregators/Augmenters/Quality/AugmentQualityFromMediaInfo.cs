@@ -1,3 +1,4 @@
+using System.Linq;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
@@ -7,12 +8,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
     {
         public AugmentQualityResult AugmentQuality(LocalMovie localMovie)
         {
-            if (localMovie.MediaInfo == null)
+            if (localMovie.MediaInfo == null || localMovie.MediaInfo.VideoStreams.Count == 0)
             {
                 return null;
             }
 
-            var width = localMovie.MediaInfo.Width;
+            var firstVideoStream = localMovie.MediaInfo.VideoStreams.First();
+
+            var width = firstVideoStream.Width;
 
             if (width >= 3200)
             {

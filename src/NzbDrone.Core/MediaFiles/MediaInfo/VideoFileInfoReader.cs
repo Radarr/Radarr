@@ -17,8 +17,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 3;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 5;
+        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 6;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 6;
 
         public VideoFileInfoReader(IDiskProvider diskProvider, Logger logger)
         {
@@ -81,85 +81,103 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                 if (open != 0)
                 {
-                    int width;
-                    int height;
-                    int videoBitRate;
-                    int audioBitRate;
-                    int audioRuntime;
-                    int videoRuntime;
                     int generalRuntime;
-                    int streamCount;
-                    int audioChannels;
-                    int videoBitDepth;
-                    decimal videoFrameRate;
-                    int videoMultiViewCount;
+
+                    int videoStreamCount = mediaInfo.Count_Get(StreamKind.Video);
+                    int audioStreamCount = mediaInfo.Count_Get(StreamKind.Audio);
 
                     string subtitles = mediaInfo.Get(StreamKind.General, 0, "Text_Language_List");
-                    string scanType = mediaInfo.Get(StreamKind.Video, 0, "ScanType");
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "Width"), out width);
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "Height"), out height);
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "BitRate"), out videoBitRate);
-                    if (videoBitRate <= 0)
-                    {
-                        int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "BitRate_Nominal"), out videoBitRate);
-                    }
-
-                    decimal.TryParse(mediaInfo.Get(StreamKind.Video, 0, "FrameRate"), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out videoFrameRate);
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "BitDepth"), out videoBitDepth);
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "MultiView_Count"), out videoMultiViewCount);
-
-                    //Runtime
-                    int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "PlayTime"), out videoRuntime);
-                    int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "PlayTime"), out audioRuntime);
                     int.TryParse(mediaInfo.Get(StreamKind.General, 0, "PlayTime"), out generalRuntime);
 
-                    string aBitRate = mediaInfo.Get(StreamKind.Audio, 0, "BitRate").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
+                    var mediaInfoModel = new MediaInfoModel();
 
-                    int.TryParse(aBitRate, out audioBitRate);
-                    int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "StreamCount"), out streamCount);
-
-                    string audioChannelsStr = mediaInfo.Get(StreamKind.Audio, 0, "Channel(s)").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
-
-                    var audioChannelPositions = mediaInfo.Get(StreamKind.Audio, 0, "ChannelPositions/String2");
-                    var audioChannelPositionsText = mediaInfo.Get(StreamKind.Audio, 0, "ChannelPositions");
-
-                    string audioLanguages = mediaInfo.Get(StreamKind.General, 0, "Audio_Language_List");
-
-                    string videoProfile = mediaInfo.Get(StreamKind.Video, 0, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
-                    string audioProfile = mediaInfo.Get(StreamKind.Audio, 0, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
-
-                    int.TryParse(audioChannelsStr, out audioChannels);
-                    var mediaInfoModel = new MediaInfoModel
+                    for (var videoIndex = 0; videoIndex < videoStreamCount; videoIndex++)
                     {
-                        ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format"),
-                        VideoFormat = mediaInfo.Get(StreamKind.Video, 0, "Format"),
-                        VideoCodecID = mediaInfo.Get(StreamKind.Video, 0, "CodecID"),
-                        VideoProfile = videoProfile,
-                        VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, 0, "Encoded_Library"),
-                        VideoBitrate = videoBitRate,
-                        VideoBitDepth = videoBitDepth,
-                        VideoMultiViewCount = videoMultiViewCount,
-                        VideoColourPrimaries = mediaInfo.Get(StreamKind.Video, 0, "colour_primaries"),
-                        VideoTransferCharacteristics = mediaInfo.Get(StreamKind.Video, 0, "transfer_characteristics"),
-                        Height = height,
-                        Width = width,
-                        AudioFormat = mediaInfo.Get(StreamKind.Audio, 0, "Format"),
-                        AudioCodecID = mediaInfo.Get(StreamKind.Audio, 0, "CodecID"),
-                        AudioProfile = audioProfile,
-                        AudioCodecLibrary = mediaInfo.Get(StreamKind.Audio, 0, "Encoded_Library"),
-                        AudioAdditionalFeatures = mediaInfo.Get(StreamKind.Audio, 0, "Format_AdditionalFeatures"),
-                        AudioBitrate = audioBitRate,
-                        RunTime = GetBestRuntime(audioRuntime, videoRuntime, generalRuntime),
-                        AudioStreamCount = streamCount,
-                        AudioChannels = audioChannels,
-                        AudioChannelPositions = audioChannelPositions,
-                        AudioChannelPositionsText = audioChannelPositionsText,
-                        VideoFps = videoFrameRate,
-                        AudioLanguages = audioLanguages,
-                        Subtitles = subtitles,
-                        ScanType = scanType,
-                        SchemaRevision = CURRENT_MEDIA_INFO_SCHEMA_REVISION
-                    };
+                        int width;
+                        int height;
+                        int videoBitRate;
+                        int videoBitDepth;
+                        decimal videoFrameRate;
+                        int videoMultiViewCount;
+                        int videoRuntime;
+
+                        string scanType = mediaInfo.Get(StreamKind.Video, videoIndex, "ScanType");
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "Width"), out width);
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "Height"), out height);
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "BitRate"), out videoBitRate);
+
+                        if (videoBitRate <= 0)
+                        {
+                            int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "BitRate_Nominal"), out videoBitRate);
+                        }
+
+                        decimal.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "FrameRate"), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out videoFrameRate);
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "BitDepth"), out videoBitDepth);
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "MultiView_Count"), out videoMultiViewCount);
+
+                        //Runtime
+                        int.TryParse(mediaInfo.Get(StreamKind.Video, videoIndex, "PlayTime"), out videoRuntime);
+                        string videoProfile = mediaInfo.Get(StreamKind.Video, videoIndex, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
+
+                        mediaInfoModel.VideoStreams.Add(new VideoInfoModel
+                        {
+                            VideoFormat = mediaInfo.Get(StreamKind.Video, videoIndex, "Format"),
+                            VideoCodecID = mediaInfo.Get(StreamKind.Video, videoIndex, "CodecID"),
+                            VideoProfile = videoProfile,
+                            VideoCodecLibrary = mediaInfo.Get(StreamKind.Video, videoIndex, "Encoded_Library"),
+                            VideoBitrate = videoBitRate,
+                            VideoBitDepth = videoBitDepth,
+                            VideoMultiViewCount = videoMultiViewCount,
+                            VideoColourPrimaries = mediaInfo.Get(StreamKind.Video, videoIndex, "colour_primaries"),
+                            VideoTransferCharacteristics = mediaInfo.Get(StreamKind.Video, videoIndex, "transfer_characteristics"),
+                            Height = height,
+                            Width = width,
+                            VideoFps = videoFrameRate,
+                            ScanType = scanType,
+                            RunTime = TimeSpan.FromMilliseconds(videoRuntime),
+                        });
+                    }
+
+                    for (var audioIndex = 0; audioIndex < audioStreamCount; audioIndex++)
+                    {
+                        int audioBitRate;
+                        int audioRuntime;
+                        int audioChannels;
+
+                        int.TryParse(mediaInfo.Get(StreamKind.Audio, audioIndex, "PlayTime"), out audioRuntime);
+
+                        string aBitRate = mediaInfo.Get(StreamKind.Audio, audioIndex, "BitRate").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
+
+                        int.TryParse(aBitRate, out audioBitRate);
+
+                        string audioChannelsStr = mediaInfo.Get(StreamKind.Audio, audioIndex, "Channel(s)").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
+
+                        var audioChannelPositions = mediaInfo.Get(StreamKind.Audio, audioIndex, "ChannelPositions/String2");
+                        var audioChannelPositionsText = mediaInfo.Get(StreamKind.Audio, audioIndex, "ChannelPositions");
+
+                        string audioProfile = mediaInfo.Get(StreamKind.Audio, audioIndex, "Format_Profile").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
+                        int.TryParse(audioChannelsStr, out audioChannels);
+
+                        mediaInfoModel.AudioStreams.Add(new AudioInfoModel
+                        {
+                            AudioFormat = mediaInfo.Get(StreamKind.Audio, audioIndex, "Format"),
+                            AudioCodecID = mediaInfo.Get(StreamKind.Audio, audioIndex, "CodecID"),
+                            AudioProfile = audioProfile,
+                            AudioCodecLibrary = mediaInfo.Get(StreamKind.Audio, audioIndex, "Encoded_Library"),
+                            AudioAdditionalFeatures = mediaInfo.Get(StreamKind.Audio, audioIndex, "Format_AdditionalFeatures"),
+                            AudioBitrate = audioBitRate,
+                            AudioChannels = audioChannels,
+                            AudioChannelPositions = audioChannelPositions,
+                            AudioChannelPositionsText = audioChannelPositionsText,
+                            Language = mediaInfo.Get(StreamKind.Audio, audioIndex, "Language/String"),
+                            RunTime = TimeSpan.FromMilliseconds(audioRuntime)
+                        });
+                    }
+
+                    mediaInfoModel.ContainerFormat = mediaInfo.Get(StreamKind.General, 0, "Format");
+                    mediaInfoModel.RunTime = TimeSpan.FromMilliseconds(generalRuntime);
+                    mediaInfoModel.Subtitles = subtitles;
+                    mediaInfoModel.SchemaRevision = CURRENT_MEDIA_INFO_SCHEMA_REVISION;
 
                     return mediaInfoModel;
                 }

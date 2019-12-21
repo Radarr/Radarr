@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase("MPEG-2 Video", null, "MPEG2")]
         public void should_format_video_codec_with_source_title_legacy(string videoCodec, string sceneName, string expectedFormat)
         {
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new VideoInfoModel
             {
                 VideoCodec = videoCodec
             };
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         public void should_format_video_format(string videoFormatPack, string sceneName, string expectedFormat)
         {
             var split = videoFormatPack.Split(new string[] { ", " }, System.StringSplitOptions.None);
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new VideoInfoModel
             {
                 VideoFormat = split[0],
                 VideoCodecID = split[1],
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         public void should_format_video_format_fallbacks(string videoFormatPack, string sceneName, string expectedFormat)
         {
             var split = videoFormatPack.Split(new string[] { ", " }, System.StringSplitOptions.None);
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new VideoInfoModel
             {
                 VideoFormat = split[0],
                 VideoCodecID = split[1],
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         public void should_warn_on_unknown_video_format(string videoFormatPack, string sceneName, string expectedFormat)
         {
             var split = videoFormatPack.Split(new string[] { ", " }, System.StringSplitOptions.None);
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new VideoInfoModel
             {
                 VideoFormat = split[0],
                 VideoCodecID = split[1],
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [Test]
         public void should_return_VideoFormat_by_default()
         {
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new VideoInfoModel
             {
                 VideoFormat = "VideoCodec"
             };

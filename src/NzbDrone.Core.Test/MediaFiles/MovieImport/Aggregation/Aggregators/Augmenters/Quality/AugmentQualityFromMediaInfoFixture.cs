@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -26,7 +27,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_null_if_media_info_width_is_zero()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.Width = 0)
+                                                   .With(m => m.VideoStreams = new List<VideoInfoModel>
+                                                   {
+                                                       new VideoInfoModel
+                                                       {
+                                                           Width = 0
+                                                       }
+                                                   })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()
@@ -53,7 +60,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_closest_resolution(int mediaInfoWidth, Resolution expectedResolution)
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.Width = mediaInfoWidth)
+                                                   .With(m => m.VideoStreams = new List<VideoInfoModel>
+                                                   {
+                                                       new VideoInfoModel
+                                                       {
+                                                           Width = mediaInfoWidth
+                                                       }
+                                                   })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()

@@ -259,9 +259,21 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                AudioFormat = "DTS",
-                AudioLanguages = "English/Spanish",
+                VideoStreams  = new List<VideoInfoModel>
+                {
+                    new VideoInfoModel
+                    {
+                        VideoFormat = "AVC",
+                    }
+                },
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioFormat = "DTS",
+                        Language = "English/Spanish",
+                    }
+                },
                 Subtitles = "English/Spanish/Italian"
             };
 
@@ -276,9 +288,21 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                AudioFormat = "DTS",
-                AudioLanguages = "English",
+                VideoStreams = new List<VideoInfoModel>
+                {
+                    new VideoInfoModel
+                    {
+                        VideoFormat = "AVC",
+                    }
+                },
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioFormat = "DTS",
+                        Language = "English",
+                    }
+                },
                 Subtitles = "English/Spanish/Italian"
             };
 
@@ -293,10 +317,22 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                VideoMultiViewCount = 2,
-                AudioFormat = "DTS",
-                AudioLanguages = "English",
+                VideoStreams = new List<VideoInfoModel>
+                {
+                    new VideoInfoModel
+                    {
+                        VideoFormat = "AVC",
+                        VideoMultiViewCount = 2,
+                    }
+                },
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioFormat = "DTS",
+                        Language = "English",
+                    }
+                },
                 Subtitles = "English/Spanish/Italian"
             };
 
@@ -607,14 +643,27 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _movieFile.MediaInfo = new MediaInfoModel
             {
-                VideoCodec = videoCodec,
-                AudioFormat = audioCodec,
-                AudioChannels = audioChannels,
-                AudioLanguages = audioLanguages,
+                VideoStreams = new List<VideoInfoModel>
+                {
+                    new VideoInfoModel
+                    {
+                        VideoCodec = videoCodec,
+                        VideoMultiViewCount = 2,
+                        VideoBitDepth = videoBitDepth,
+                        VideoColourPrimaries = videoColourPrimaries,
+                        VideoTransferCharacteristics = videoTransferCharacteristics,
+                    }
+                },
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioFormat = audioCodec,
+                        AudioChannels = audioChannels,
+                        Language = audioLanguages,
+                    }
+                },
                 Subtitles = subtitles,
-                VideoBitDepth = videoBitDepth,
-                VideoColourPrimaries = videoColourPrimaries,
-                VideoTransferCharacteristics = videoTransferCharacteristics,
                 SchemaRevision = schemaRevision
             };
         }

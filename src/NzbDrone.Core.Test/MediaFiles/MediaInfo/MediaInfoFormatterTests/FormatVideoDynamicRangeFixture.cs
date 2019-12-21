@@ -16,12 +16,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase(10, "BT.2020", "HLG", "HDR")]
         public void should_format_video_dynamic_range(int bitDepth, string colourPrimaries, string transferCharacteristics, string expectedVideoDynamicRange)
         {
-            var mediaInfo = new MediaInfoModel
+            var mediaInfo = new VideoInfoModel
             {
                 VideoBitDepth = bitDepth,
                 VideoColourPrimaries = colourPrimaries,
-                VideoTransferCharacteristics = transferCharacteristics,
-                SchemaRevision = 5
+                VideoTransferCharacteristics = transferCharacteristics
             };
 
             MediaInfoFormatter.FormatVideoDynamicRange(mediaInfo).Should().Be(expectedVideoDynamicRange);

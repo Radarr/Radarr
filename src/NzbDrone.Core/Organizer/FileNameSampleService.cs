@@ -27,15 +27,29 @@ namespace NzbDrone.Core.Organizer
 
             var mediaInfo = new MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                VideoBitDepth = 10,
-                VideoMultiViewCount = 2,
-                VideoColourPrimaries = "BT.2020",
-                VideoTransferCharacteristics = "HLG",
-                AudioFormat = "DTS",
-                AudioChannels = 6,
-                AudioChannelPositions = "3/2/0.1",
-                AudioLanguages = "German",
+                VideoStreams = new List<VideoInfoModel>
+                {
+                    new VideoInfoModel
+                    {
+                        VideoFormat = "AVC",
+                        VideoBitDepth = 10,
+                        VideoMultiViewCount = 2,
+                        VideoColourPrimaries = "BT.2020",
+                        VideoTransferCharacteristics = "HLG",
+                    }
+                },
+
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioFormat = "DTS",
+                        AudioChannels = 6,
+                        AudioChannelPositions = "3/2/0.1",
+                        Language = "German",
+                    }
+                },
+
                 Subtitles = "English/German"
             };
 

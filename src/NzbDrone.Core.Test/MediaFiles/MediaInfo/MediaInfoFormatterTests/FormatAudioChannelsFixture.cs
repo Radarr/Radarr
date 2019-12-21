@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles.MediaInfo;
@@ -13,9 +14,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 6,
-                AudioChannelPositions = null,
-                AudioChannelPositionsText = "Front: L C R, Side: L R, LFE"
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 6,
+                        AudioChannelPositions = null,
+                        AudioChannelPositionsText = "Front: L C R, Side: L R, LFE"
+                    }
+                }
             };
 
             MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(5.1m);
@@ -26,9 +33,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = null,
-                AudioChannelPositionsText = "Front: L R"
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = null,
+                        AudioChannelPositionsText = "Front: L R"
+                    }
+                }
             };
 
             MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(2);
@@ -39,9 +52,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = null,
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = null,
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 2
             };
 
@@ -53,9 +72,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = null,
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = null,
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -67,9 +92,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "2/0/0",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "2/0/0",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -81,9 +112,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "3/2/0.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "3/2/0.1",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -95,9 +132,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "3/2/0.2.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "3/2/0.2.1",
+                        AudioChannelPositionsText = null,
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -109,9 +152,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "Object Based / 3/2/2.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "Object Based / 3/2/2.1",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -123,9 +172,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = " / 2/0/0.0",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = " / 2/0/0.0",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -137,9 +192,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "3/2/2.1 / 3/2/2.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "3/2/2.1 / 3/2/2.1",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -151,9 +212,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "3/2/0.2.1 / 3/2/0.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "3/2/0.2.1 / 3/2/0.1",
+                        AudioChannelPositionsText = null,
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -165,9 +232,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "1+1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "1+1",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -179,9 +252,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 6,
-                AudioChannelPositions = "15 objects",
-                AudioChannelPositionsText = "15 objects / Front: L C R, Side: L R, LFE",
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 6,
+                        AudioChannelPositions = "15 objects",
+                        AudioChannelPositionsText = "15 objects / Front: L C R, Side: L R, LFE"
+                    }
+                },
                 SchemaRevision = 3
             };
 
@@ -193,13 +272,41 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         {
             var mediaInfoModel = new MediaInfoModel
             {
-                AudioChannels = 2,
-                AudioChannelPositions = "15 objects / 3/2.1",
-                AudioChannelPositionsText = null,
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "15 objects / 3/2.1",
+                        AudioChannelPositionsText = null
+                    }
+                },
                 SchemaRevision = 3
             };
 
             MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(5.1m);
+        }
+
+        [Test]
+        public void should_warn_unknown_AudioChannelPostions()
+        {
+            var mediaInfoModel = new MediaInfoModel
+            {
+                AudioStreams = new List<AudioInfoModel>
+                {
+                    new AudioInfoModel
+                    {
+                        AudioChannels = 2,
+                        AudioChannelPositions = "3/2/0.2.1",
+                        AudioChannelPositionsText = null
+                    }
+                },
+                SchemaRevision = 3
+            };
+
+            MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(2m);
+
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }

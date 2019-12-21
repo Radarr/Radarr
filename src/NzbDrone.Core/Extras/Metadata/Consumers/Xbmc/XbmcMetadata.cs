@@ -213,14 +213,16 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         var fileInfo = new XElement("fileinfo");
                         var streamDetails = new XElement("streamdetails");
 
+                        var firstVideoStream = movieFile.MediaInfo.VideoStreams.First();
+
                         var video = new XElement("video");
-                        video.Add(new XElement("aspect", (float)movieFile.MediaInfo.Width / (float)movieFile.MediaInfo.Height));
-                        video.Add(new XElement("bitrate", movieFile.MediaInfo.VideoBitrate));
-                        video.Add(new XElement("codec", MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName)));
-                        video.Add(new XElement("framerate", movieFile.MediaInfo.VideoFps));
-                        video.Add(new XElement("height", movieFile.MediaInfo.Height));
-                        video.Add(new XElement("scantype", movieFile.MediaInfo.ScanType));
-                        video.Add(new XElement("width", movieFile.MediaInfo.Width));
+                        video.Add(new XElement("aspect", (float)firstVideoStream.Width / (float)firstVideoStream.Height));
+                        video.Add(new XElement("bitrate", firstVideoStream.VideoBitrate));
+                        video.Add(new XElement("codec", MediaInfoFormatter.FormatVideoCodec(firstVideoStream, sceneName)));
+                        video.Add(new XElement("framerate", firstVideoStream.VideoFps));
+                        video.Add(new XElement("height", firstVideoStream.Height));
+                        video.Add(new XElement("scantype", firstVideoStream.ScanType));
+                        video.Add(new XElement("width", firstVideoStream.Width));
 
                         if (movieFile.MediaInfo.RunTime != null)
                         {
@@ -230,12 +232,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                         streamDetails.Add(video);
 
-                        var audio = new XElement("audio");
-                        audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
-                        audio.Add(new XElement("channels", movieFile.MediaInfo.AudioChannels));
-                        audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName)));
-                        audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
-                        streamDetails.Add(audio);
+                        foreach (var audioStream in movieFile.MediaInfo.AudioStreams)
+                        {
+                            var audio = new XElement("audio");
+                            audio.Add(new XElement("bitrate", audioStream.AudioBitrate));
+                            audio.Add(new XElement("channels", audioStream.AudioChannels));
+                            audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(audioStream, sceneName)));
+                            audio.Add(new XElement("language", audioStream.Language));
+                            streamDetails.Add(audio);
+                        }
 
                         if (movieFile.MediaInfo.Subtitles != null && movieFile.MediaInfo.Subtitles.Length > 0)
                         {

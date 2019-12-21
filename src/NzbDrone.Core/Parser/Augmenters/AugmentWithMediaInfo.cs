@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
@@ -26,7 +27,8 @@ namespace NzbDrone.Core.Parser.Augmenters
                      quality.Quality.Source == Source.WEBDL) &&
                     !(quality.Quality.Resolution == (int)Resolution.R480p || quality.Quality.Resolution == (int)Resolution.R576p))
                 {
-                    var width = mediaInfo.Width;
+                    var firstVideoStream = mediaInfo.VideoStreams.First();
+                    var width = firstVideoStream.Width;
                     var existing = quality.Quality.Resolution;
 
                     if (width > 854)

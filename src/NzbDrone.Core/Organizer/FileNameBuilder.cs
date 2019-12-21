@@ -284,10 +284,14 @@ namespace NzbDrone.Core.Organizer
 
             var sceneName = movieFile.GetSceneOrFileName();
 
-            var videoCodec = MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
-            var audioCodec = MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
+            var firstVideoStream = movieFile.MediaInfo.VideoStreams.First();
+            var firstAudioStream = movieFile.MediaInfo.AudioStreams.First();
+
+            var videoCodec =  MediaInfoFormatter.FormatVideoCodec(firstVideoStream, sceneName);
+            var audioCodec =  MediaInfoFormatter.FormatAudioCodec(firstAudioStream, sceneName);
+
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
-            var audioLanguages = movieFile.MediaInfo.AudioLanguages ?? string.Empty;
+            var audioLanguages = movieFile.MediaInfo.AudioStreams.Select(x => x.Language).Join("/") ?? string.Empty;
             var subtitles = movieFile.MediaInfo.Subtitles ?? string.Empty;
 
             var mediaInfoAudioLanguages = GetLanguagesToken(audioLanguages);
@@ -308,12 +312,12 @@ namespace NzbDrone.Core.Organizer
                 mediaInfoSubtitleLanguages = $"[{mediaInfoSubtitleLanguages}]";
             }
 
-            var videoBitDepth = movieFile.MediaInfo.VideoBitDepth > 0 ? movieFile.MediaInfo.VideoBitDepth.ToString() : string.Empty;
+            var videoBitDepth = firstVideoStream.VideoBitDepth > 0 ? firstVideoStream.VideoBitDepth.ToString() : string.Empty;
             var audioChannelsFormatted = audioChannels > 0 ?
                                 audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
                                 string.Empty;
 
-            var mediaInfo3D = movieFile.MediaInfo.VideoMultiViewCount > 1 ? "3D" : string.Empty;
+            var mediaInfo3D = firstVideoStream.VideoMultiViewCount > 1 ? "3D" : string.Empty;
 
             tokenHandlers["{MediaInfo Video}"] = m => videoCodec;
             tokenHandlers["{MediaInfo VideoCodec}"] = m => videoCodec;
@@ -334,7 +338,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
 
             tokenHandlers[MediaInfoVideoDynamicRangeToken] =
-                m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
+                m => MediaInfoFormatter.FormatVideoDynamicRange(firstVideoStream);
         }
 
         private void AddCustomFormats(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile, List<CustomFormat> customFormats = null)

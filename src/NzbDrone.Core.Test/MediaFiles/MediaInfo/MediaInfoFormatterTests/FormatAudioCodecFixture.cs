@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase("DTS", "DTS")]
         public void should_format_audio_format_legacy(string audioFormat, string expectedFormat)
         {
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new AudioInfoModel
             {
                 AudioFormat = audioFormat
             };
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         public void should_format_audio_format(string audioFormatPack, string sceneName, string expectedFormat)
         {
             var split = audioFormatPack.Split(new string[] { ", " }, System.StringSplitOptions.None);
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new AudioInfoModel
             {
                 AudioFormat = split[0],
                 AudioCodecID = split[1],
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [Test]
         public void should_return_MP3_for_MPEG_Audio_with_Layer_3_for_the_profile()
         {
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new AudioInfoModel
             {
                 AudioFormat = "MPEG Audio",
                 AudioProfile = "Layer 3"
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [Test]
         public void should_return_AudioFormat_by_default()
         {
-            var mediaInfoModel = new MediaInfoModel
+            var mediaInfoModel = new AudioInfoModel
             {
                 AudioFormat = "Other Audio Format",
                 AudioCodecID = "Other Audio Codec"
