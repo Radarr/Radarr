@@ -65,6 +65,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
                 altTitles.Add(searchCriteria.Movie.Title);
+                altTitles.Reverse();
 
                 var realMaxPages = (int)MaxPages / (altTitles.Count());
 
