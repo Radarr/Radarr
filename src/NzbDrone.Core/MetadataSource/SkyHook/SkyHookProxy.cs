@@ -128,17 +128,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 return null;
             }
 
-			var movie = new Movie();
+            var movie = new Movie();
             var altTitles = new List<AlternativeTitle>();
 
-			if (langCode != "en")
-			{
-			    var iso = IsoLanguages.Find(resource.original_language);
-			    if (iso != null)
-			    {
-			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
-			    }
-			}
+            if (langCode != "en")
+            {
+                var iso = IsoLanguages.Find(resource.original_language);
+                if (iso != null)
+                {
+                    altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
+                }
+            }
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)
             {
@@ -244,7 +244,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             //otherwise the title has only been announced
             else
             {
-				movie.Status = MovieStatusType.Announced;
+                movie.Status = MovieStatusType.Announced;
             }
 
             //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
@@ -253,17 +253,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Status = MovieStatusType.Released;
             }
 
-			if (!hasPreDBEntry)
-			{
-				if (_predbService.HasReleases(movie))
-				{
-					movie.HasPreDBEntry = true;
-				}
-				else
-				{
-					movie.HasPreDBEntry = false;
-				}
-			}
+            if (!hasPreDBEntry)
+            {
+                if (_predbService.HasReleases(movie))
+                {
+                    movie.HasPreDBEntry = true;
+                }
+                else
+                {
+                    movie.HasPreDBEntry = false;
+                }
+            }
 
             if (resource.videos != null)
             {
@@ -533,37 +533,37 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
 
                 var now = DateTime.Now;
-				//handle the case when we have both theatrical and physical release dates
-				if (imdbMovie.InCinemas.HasValue && imdbMovie.PhysicalRelease.HasValue)
-				{
-					if (now < imdbMovie.InCinemas)
-						imdbMovie.Status = MovieStatusType.Announced;
-					else if (now >= imdbMovie.InCinemas)
-						imdbMovie.Status = MovieStatusType.InCinemas;
-					if (now >= imdbMovie.PhysicalRelease)
-						imdbMovie.Status = MovieStatusType.Released;
-				}
-				//handle the case when we have theatrical release dates but we dont know the physical release date
-				else if (imdbMovie.InCinemas.HasValue && (now >= imdbMovie.InCinemas))
-				{
-					imdbMovie.Status = MovieStatusType.InCinemas;
-				}
-				//handle the case where we only have a physical release date
-				else if (imdbMovie.PhysicalRelease.HasValue && (now >= imdbMovie.PhysicalRelease))
-				{
-					imdbMovie.Status = MovieStatusType.Released;
-				}
-				//otherwise the title has only been announced
-				else
-				{
-					imdbMovie.Status = MovieStatusType.Announced;
-				}
+                //handle the case when we have both theatrical and physical release dates
+                if (imdbMovie.InCinemas.HasValue && imdbMovie.PhysicalRelease.HasValue)
+                {
+                    if (now < imdbMovie.InCinemas)
+                        imdbMovie.Status = MovieStatusType.Announced;
+                    else if (now >= imdbMovie.InCinemas)
+                        imdbMovie.Status = MovieStatusType.InCinemas;
+                    if (now >= imdbMovie.PhysicalRelease)
+                        imdbMovie.Status = MovieStatusType.Released;
+                }
+                //handle the case when we have theatrical release dates but we dont know the physical release date
+                else if (imdbMovie.InCinemas.HasValue && (now >= imdbMovie.InCinemas))
+                {
+                    imdbMovie.Status = MovieStatusType.InCinemas;
+                }
+                //handle the case where we only have a physical release date
+                else if (imdbMovie.PhysicalRelease.HasValue && (now >= imdbMovie.PhysicalRelease))
+                {
+                    imdbMovie.Status = MovieStatusType.Released;
+                }
+                //otherwise the title has only been announced
+                else
+                {
+                    imdbMovie.Status = MovieStatusType.Announced;
+                }
 
-				//since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
-				if (!imdbMovie.PhysicalRelease.HasValue && (imdbMovie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(imdbMovie.InCinemas.Value)).TotalSeconds > 60 * 60 * 24 * 30 * 3))
-				{
-					imdbMovie.Status = MovieStatusType.Released;
-				}
+                //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
+                if (!imdbMovie.PhysicalRelease.HasValue && (imdbMovie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(imdbMovie.InCinemas.Value)).TotalSeconds > 60 * 60 * 24 * 30 * 3))
+                {
+                    imdbMovie.Status = MovieStatusType.Released;
+                }
 
                 imdbMovie.TitleSlug += "-" + imdbMovie.TmdbId;
 
@@ -659,48 +659,48 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie MapMovieToTmdbMovie(Movie movie)
         {
-			try
-			{
-				 Movie newMovie = movie;
-	            if (movie.TmdbId > 0)
-	            {
-	                newMovie = GetMovieInfo(movie.TmdbId);
-	            }
-	            else if (movie.ImdbId.IsNotNullOrWhiteSpace())
-	            {
-	                newMovie = GetMovieInfo(movie.ImdbId);
-	            }
-	            else
-	            {
-	                var yearStr = "";
-	                if (movie.Year > 1900)
-	                {
-	                    yearStr = $" {movie.Year}";
-	                }
-	                newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
-	            }
+            try
+            {
+                 Movie newMovie = movie;
+                if (movie.TmdbId > 0)
+                {
+                    newMovie = GetMovieInfo(movie.TmdbId);
+                }
+                else if (movie.ImdbId.IsNotNullOrWhiteSpace())
+                {
+                    newMovie = GetMovieInfo(movie.ImdbId);
+                }
+                else
+                {
+                    var yearStr = "";
+                    if (movie.Year > 1900)
+                    {
+                        yearStr = $" {movie.Year}";
+                    }
+                    newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
+                }
 
-	            if (newMovie == null)
-	            {
-	                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
-	                return null;
-	            }
+                if (newMovie == null)
+                {
+                    _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
+                    return null;
+                }
 
-	            newMovie.Path = movie.Path;
-	            newMovie.RootFolderPath = movie.RootFolderPath;
-	            newMovie.ProfileId = movie.ProfileId;
-	            newMovie.Monitored = movie.Monitored;
-	            newMovie.MovieFile = movie.MovieFile;
-	            newMovie.MinimumAvailability = movie.MinimumAvailability;
-	            newMovie.Tags = movie.Tags;
+                newMovie.Path = movie.Path;
+                newMovie.RootFolderPath = movie.RootFolderPath;
+                newMovie.ProfileId = movie.ProfileId;
+                newMovie.Monitored = movie.Monitored;
+                newMovie.MovieFile = movie.MovieFile;
+                newMovie.MinimumAvailability = movie.MinimumAvailability;
+                newMovie.Tags = movie.Tags;
 
-	            return newMovie;
-			}
-			catch (Exception ex)
-			{
-				_logger.Warn(ex, "Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
-	                return null;
-			}
+                return newMovie;
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
+                    return null;
+            }
         }
     }
 }

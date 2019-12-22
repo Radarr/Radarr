@@ -30,7 +30,7 @@ namespace Radarr.Host
         {
             // Tell system to ignore the Ctrl+C and not terminate. We'll do that.
             e.Cancel = true;
-	
+    
             var shouldTerminate = false;
             lock (_syncRoot)
             {
@@ -46,7 +46,7 @@ namespace Radarr.Host
             else
             {
                 GracefulShutdown();
-            }	
+            }   
         }
   
         private void GracefulShutdown()

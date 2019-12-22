@@ -114,7 +114,7 @@ namespace Marr.Data.Reflection
             if (getMethodInfo == null) return null;
 
 #if NO_EXPRESSIONS
-			return o => propertyInfo.GetGetMethod().Invoke(o, new object[] { });
+            return o => propertyInfo.GetGetMethod().Invoke(o, new object[] { });
 #else
             try
             {

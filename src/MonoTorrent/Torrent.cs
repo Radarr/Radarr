@@ -62,17 +62,17 @@ namespace MonoTorrent
         /// <summary>
         /// This dictionary is specific for azureus client 
         /// It can contain 
-        /// 	dht_backup_enable (number)
-        /// 	Content (dictionnary)
-        ///  		Publisher
-        /// 		Description
-        /// 		Title
-        /// 		Creation Date
-        /// 		Content Hash
-        /// 		Revision Date
-        /// 		Thumbnail (string) = Base64 encoded image
-        /// 		Progressive
-        /// 		Speed Bps (number)
+        ///     dht_backup_enable (number)
+        ///     Content (dictionnary)
+        ///         Publisher
+        ///         Description
+        ///         Title
+        ///         Creation Date
+        ///         Content Hash
+        ///         Revision Date
+        ///         Thumbnail (string) = Base64 encoded image
+        ///         Progressive
+        ///         Speed Bps (number)
         /// but not useful for MT
         /// </summary>
         public BEncodedValue AzureusProperties

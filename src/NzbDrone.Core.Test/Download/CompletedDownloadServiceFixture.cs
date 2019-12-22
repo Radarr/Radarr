@@ -63,9 +63,9 @@ namespace NzbDrone.Core.Test.Download
 
         private RemoteMovie BuildRemoteMovie()
         {
-			return new RemoteMovie
-			{
-				Movie = new Movie()
+            return new RemoteMovie
+            {
+                Movie = new Movie()
             };
         }
 
@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Test.Download
                                        new LocalMovie {Path = @"C:\TestPath\Droned.1998.mkv"},new Rejection("Rejected!")), "Test Failure")
                            });
 
-			_trackedDownload.RemoteMovie.Movie = null;
+            _trackedDownload.RemoteMovie.Movie = null;
 
             Subject.Process(_trackedDownload);
 
@@ -318,7 +318,7 @@ namespace NzbDrone.Core.Test.Download
 
         [Test]
         public void should_mark_as_import_title_mismatch_if_ignore_warnings_is_true()
-		{
+        {
 
             Mocker.GetMock<IDownloadedMovieImportService>()
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))

@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Movies
     {
         Movie GetMovie(int movieId);
         List<Movie> GetMovies(IEnumerable<int> movieIds);
-		PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec);
+        PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec);
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Movies
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
-		void SetFileId(Movie movie, MovieFile movieFile);
+        void SetFileId(Movie movie, MovieFile movieFile);
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
         List<Movie> AllForTag(int tagId);
@@ -141,10 +141,10 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.Get(movieIds).ToList();
         }
 
-		public PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec)
-		{
-			return _movieRepository.GetPaged(pagingSpec);
-		}
+        public PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec)
+        {
+            return _movieRepository.GetPaged(pagingSpec);
+        }
 
         public Movie AddMovie(Movie newMovie)
         {
@@ -185,10 +185,10 @@ namespace NzbDrone.Core.Movies
             newMovies.ForEach(m =>
             {
                  MoviePathState defaultState = MoviePathState.Static;
-	            if (!_configService.PathsDefaultStatic)
-	            {
-	                defaultState = MoviePathState.Dynamic;
-	            }
+                if (!_configService.PathsDefaultStatic)
+                {
+                    defaultState = MoviePathState.Dynamic;
+                }
                 if (string.IsNullOrWhiteSpace(m.Path))
                 {
                     var folderName = _fileNameBuilder.GetMovieFolder(m);
@@ -371,11 +371,11 @@ namespace NzbDrone.Core.Movies
             _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
         }
 
-		public void SetFileId(Movie movie, MovieFile movieFile)
-		{
-			_movieRepository.SetFileId(movieFile.Id, movie.Id);
-			_logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
-		}
+        public void SetFileId(Movie movie, MovieFile movieFile)
+        {
+            _movieRepository.SetFileId(movieFile.Id, movie.Id);
+            _logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
+        }
 
         public void Handle(MovieFileDeletedEvent message)
         {

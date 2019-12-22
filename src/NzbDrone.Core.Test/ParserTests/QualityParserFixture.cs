@@ -235,12 +235,12 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
         }
 
-		[TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
-		[TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
-		public void should_parse_bluray576p_quality(string title)
-		{
-			ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
-		}
+        [TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
+        [TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
+        public void should_parse_bluray576p_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
+        }
 
         [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]

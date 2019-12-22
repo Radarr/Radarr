@@ -47,7 +47,7 @@ namespace Radarr.Api.V3.Movies
 
         //Editing Only
         public bool Monitored { get; set; }
-	    public MovieStatusType MinimumAvailability { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
         public bool IsAvailable { get; set; }
         public string FolderName { get; set; }
 
@@ -105,7 +105,7 @@ namespace Radarr.Api.V3.Movies
                 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
-		
+        
                 IsAvailable = model.IsAvailable(),
                 FolderName = model.FolderName(),
 
@@ -158,7 +158,7 @@ namespace Radarr.Api.V3.Movies
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,
-		
+        
                 Runtime = resource.Runtime,
                 LastInfoSync = resource.LastInfoSync,
                 CleanTitle = resource.CleanTitle,

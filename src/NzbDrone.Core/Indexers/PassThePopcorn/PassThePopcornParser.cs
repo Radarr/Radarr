@@ -62,11 +62,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 {
                     var id = torrent.Id;
                     var title = torrent.ReleaseName;
-			        IndexerFlags flags = 0;
+                    IndexerFlags flags = 0;
 
                     if (torrent.GoldenPopcorn)
                     {
-			            flags |= IndexerFlags.PTP_Golden;//title = $"{title} 🍿";
+                        flags |= IndexerFlags.PTP_Golden;//title = $"{title} 🍿";
                     }
 
                     if (torrent.Checked)

@@ -57,15 +57,15 @@ namespace NzbDrone.Core.Configuration
 
         bool PreferIndexerFlags { get; set; }
 
-		int AvailabilityDelay { get; set; }
+        int AvailabilityDelay { get; set; }
 
-		bool AllowHardcodedSubs { get; set; }
-		string WhitelistedHardcodedSubs { get; set; }
+        bool AllowHardcodedSubs { get; set; }
+        string WhitelistedHardcodedSubs { get; set; }
         ParsingLeniencyType ParsingLeniency { get; set; }
 
         int NetImportSyncInterval { get; set; }
-		string ListSyncLevel { get; set; }
-		string ImportExclusions { get; set; }
+        string ListSyncLevel { get; set; }
+        string ImportExclusions { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

@@ -71,14 +71,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
         private void GivenExistingFile(QualityModel quality)
         {
-			//_remoteEpisode.Episodes.First().EpisodeFileId = 1;
+            //_remoteEpisode.Episodes.First().EpisodeFileId = 1;
 
-			//_remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
-			//                                                                     {
-			//                                                                         Quality = quality
-			//                                                                     });
+            //_remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
+            //                                                                     {
+            //                                                                         Quality = quality
+            //                                                                     });
 
-			_remoteEpisode.Movie.MovieFile = new LazyLoaded<MovieFile>(new MovieFile { Quality = quality });
+            _remoteEpisode.Movie.MovieFile = new LazyLoaded<MovieFile>(new MovieFile { Quality = quality });
         }
 
         private void GivenUpgradeForExistingFile()

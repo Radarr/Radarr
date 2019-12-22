@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Notifications.Pushalot
         public override void OnMovieRename(Movie movie)
         {
         }
-		
+        
         public override string Name => "Pushalot";
 
         public override ValidationResult Test()

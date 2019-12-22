@@ -20,12 +20,12 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
 
     public class ImportExclusionsRepository : BasicRepository<ImportExclusion>, IImportExclusionsRepository
     {
-		protected IMainDatabase _database;
+        protected IMainDatabase _database;
 
         public ImportExclusionsRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-			_database = database;
+            _database = database;
         }
 
         public bool IsMovieExcluded(int tmdbid)

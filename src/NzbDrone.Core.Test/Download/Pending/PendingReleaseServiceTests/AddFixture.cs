@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
-		private ParsedMovieInfo _parsedMovieInfo;
+        private ParsedMovieInfo _parsedMovieInfo;
         private RemoteMovie _remoteMovie;
         private List<PendingRelease> _heldReleases;
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
             _remoteMovie = new RemoteMovie();
-			_remoteMovie.Movie = _movie;
+            _remoteMovie.Movie = _movie;
             _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
             _remoteMovie.Release = _release;
 

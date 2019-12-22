@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
-		private ParsedMovieInfo _parsedMovieInfo;
+        private ParsedMovieInfo _parsedMovieInfo;
         private RemoteMovie _remoteMovie;
 
         [SetUp]
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                   .Returns(new List<Movie> { _movie });
 
             Mocker.GetMock<IParsingService>()
-			      .Setup(s => s.GetMovie(It.IsAny<string>()))
+                  .Setup(s => s.GetMovie(It.IsAny<string>()))
                   .Returns(_movie);
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()

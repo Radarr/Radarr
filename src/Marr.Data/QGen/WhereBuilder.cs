@@ -148,7 +148,7 @@ namespace Marr.Data.QGen
         private object GetRightValue(Expression expression)
         {
             object rightValue = null;
-			
+            
             var simpleConstExp = expression as ConstantExpression;
             if (simpleConstExp == null) // Value is not directly passed in as a constant
             {

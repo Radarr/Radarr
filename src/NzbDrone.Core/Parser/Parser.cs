@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Parser
             //That did not work? Maybe some tool uses [] for years. Who would do that?
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-			//As a last resort for movies that have ( or [ in their title.
-			new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //As a last resort for movies that have ( or [ in their title.
+            new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
         };
 
@@ -467,40 +467,40 @@ namespace NzbDrone.Core.Parser
             var movieName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
-			var parts = movieName.Split('.');
-			movieName = "";
-			int n = 0;
-			bool previousAcronym = false;
-			string nextPart = "";
-			foreach (var part in parts)
-			{
-				if (parts.Length >= n+2)
-				{
-					nextPart = parts[n+1];
-				}
-				if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
-				{
-					movieName += part + ".";
-					previousAcronym = true;
-				}
-				else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
-				{
-					movieName += part + ".";
-					previousAcronym = true;
-				}
-				else
-				{
-					if (previousAcronym)
-					{
-						movieName += " ";
-						previousAcronym = false;
-					}
-					movieName += part + " ";
-				}
-				n++;
-			}
+            var parts = movieName.Split('.');
+            movieName = "";
+            int n = 0;
+            bool previousAcronym = false;
+            string nextPart = "";
+            foreach (var part in parts)
+            {
+                if (parts.Length >= n+2)
+                {
+                    nextPart = parts[n+1];
+                }
+                if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
+                {
+                    movieName += part + ".";
+                    previousAcronym = true;
+                }
+                else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
+                {
+                    movieName += part + ".";
+                    previousAcronym = true;
+                }
+                else
+                {
+                    if (previousAcronym)
+                    {
+                        movieName += " ";
+                        previousAcronym = false;
+                    }
+                    movieName += part + " ";
+                }
+                n++;
+            }
 
-			movieName = movieName.Trim(' ');
+            movieName = movieName.Trim(' ');
 
             int airYear;
             int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);

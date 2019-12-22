@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
 
         public RenameMovieFolderCommand(List<int> ids)
         {
-		MovieIds = ids;
+        MovieIds = ids;
         }
     }
 }

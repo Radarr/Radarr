@@ -167,11 +167,11 @@ namespace NzbDrone.Core.Indexers.Torznab
             return base.GetPeers(item);
         }
 
-		protected IndexerFlags GetFlags(XElement item)
-		{
-			IndexerFlags flags = 0;
+        protected IndexerFlags GetFlags(XElement item)
+        {
+            IndexerFlags flags = 0;
 
-			var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
+            var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
 
             var uploadFactor = TryGetFloatTorznabAttribute(item, "uploadvolumefactor", 1);
 
@@ -191,7 +191,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             }
 
             return flags;
-		}
+        }
 
         protected string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
         {
@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             return defaultValue;
         }
 
-		protected float TryGetFloatTorznabAttribute(XElement item, string key, float defaultValue = 0)
+        protected float TryGetFloatTorznabAttribute(XElement item, string key, float defaultValue = 0)
         {
             var attr = TryGetTorznabAttribute(item, key, defaultValue.ToString());
 

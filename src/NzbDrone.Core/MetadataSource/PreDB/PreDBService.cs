@@ -81,36 +81,36 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
             var response = _httpClient.Get(request);
 
-			if (response.StatusCode != System.Net.HttpStatusCode.OK)
-			{
-				_logger.Warn("Non 200 StatusCode {0} encountered while searching PreDB.", response.StatusCode);
-				return new List<PreDBResult>();
-			}
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                _logger.Warn("Non 200 StatusCode {0} encountered while searching PreDB.", response.StatusCode);
+                return new List<PreDBResult>();
+            }
 
-			try
-			{
-				var reader = XmlReader.Create(new StringReader(response.Content));
+            try
+            {
+                var reader = XmlReader.Create(new StringReader(response.Content));
 
-				var items = SyndicationFeed.Load(reader);
+                var items = SyndicationFeed.Load(reader);
 
-				var results = new List<PreDBResult>();
+                var results = new List<PreDBResult>();
 
-				foreach (SyndicationItem item in items.Items)
-				{
-					var result = new PreDBResult();
-					result.Title = item.Title.Text;
-					result.Link = item.Links[0].Uri.ToString();
-					results.Add(result);
-				}
+                foreach (SyndicationItem item in items.Items)
+                {
+                    var result = new PreDBResult();
+                    result.Title = item.Title.Text;
+                    result.Link = item.Links[0].Uri.ToString();
+                    results.Add(result);
+                }
 
-				return results;
-			}
-			catch (Exception ex)
-			{
-				_logger.Error(ex, "Error while searching PreDB.");
-			}
+                return results;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error while searching PreDB.");
+            }
 
-			return new List<PreDBResult>(); */
+            return new List<PreDBResult>(); */
         }
 
         private List<Movie> FindMatchesToResults(List<PreDBResult> results)
@@ -157,7 +157,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
             {
                 if (!movie.HasPreDBEntry)
                 {
-					movie.HasPreDBEntry = true;
+                    movie.HasPreDBEntry = true;
                     _movieService.UpdateMovie(movie);
                 }
 
@@ -172,32 +172,32 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
         public bool HasReleases(Movie movie)
         {
-		try
-		{
-			var results = GetResults("movies", movie.Title);
+        try
+        {
+            var results = GetResults("movies", movie.Title);
 
-			foreach (PreDBResult result in results)
-			{
-				var parsed = Parser.Parser.ParseMovieTitle(result.Title, true);
-				if (parsed == null)
-				{
-					parsed = new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title, Year = 0 };
-				}
-				var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
+            foreach (PreDBResult result in results)
+            {
+                var parsed = Parser.Parser.ParseMovieTitle(result.Title, true);
+                if (parsed == null)
+                {
+                    parsed = new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title, Year = 0 };
+                }
+                var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
 
-				if (match != null && match.RemoteMovie.Movie != null && match.RemoteMovie.Movie.Id == movie.Id)
-				{
-					return true;
-				}
-			}
+                if (match != null && match.RemoteMovie.Movie != null && match.RemoteMovie.Movie.Id == movie.Id)
+                {
+                    return true;
+                }
+            }
 
-			return false;	
-		}
-		catch (Exception ex)
-		{
-			_logger.Warn(ex, "Error while looking on predb.me.");
-			return false;
-		}
+            return false;   
+        }
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Error while looking on predb.me.");
+            return false;
+        }
             
         }
     }

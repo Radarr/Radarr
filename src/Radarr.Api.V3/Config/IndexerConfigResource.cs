@@ -11,9 +11,9 @@ namespace Radarr.Api.V3.Config
         public int Retention { get; set; }
         public int RssSyncInterval { get; set; }
         public bool PreferIndexerFlags { get; set; }
-		public int AvailabilityDelay { get; set; }
-		public bool AllowHardcodedSubs { get; set; }
-		public string WhitelistedHardcodedSubs { get; set; }
+        public int AvailabilityDelay { get; set; }
+        public bool AllowHardcodedSubs { get; set; }
+        public string WhitelistedHardcodedSubs { get; set; }
         public ParsingLeniencyType ParsingLeniency { get; set; }
     }
 
@@ -28,9 +28,9 @@ namespace Radarr.Api.V3.Config
                 Retention = model.Retention,
                 RssSyncInterval = model.RssSyncInterval,
                 PreferIndexerFlags = model.PreferIndexerFlags,
-				AvailabilityDelay = model.AvailabilityDelay,
-				AllowHardcodedSubs = model.AllowHardcodedSubs,
-				WhitelistedHardcodedSubs = model.WhitelistedHardcodedSubs,
+                AvailabilityDelay = model.AvailabilityDelay,
+                AllowHardcodedSubs = model.AllowHardcodedSubs,
+                WhitelistedHardcodedSubs = model.WhitelistedHardcodedSubs,
                 ParsingLeniency = model.ParsingLeniency,
             };
         }

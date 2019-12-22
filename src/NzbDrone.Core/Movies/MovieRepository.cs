@@ -32,12 +32,12 @@ namespace NzbDrone.Core.Movies
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
     {
-		protected IMainDatabase _database;
+        protected IMainDatabase _database;
 
         public MovieRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-			_database = database;
+            _database = database;
         }
 
         public bool MoviePathExists(string path)
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Movies
         }
 
         private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
-		{
+        {
             return Query
                  .Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
                  .Where(pagingSpec.FilterExpressions.FirstOrDefault())
@@ -148,20 +148,20 @@ namespace NzbDrone.Core.Movies
             return string.Format("({0})", string.Join(" OR ", clauses));
         }
 
-		private string BuildQualityCutoffWhereClauseSpecial(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
-		{
-			var clauses = new List<string>();
+        private string BuildQualityCutoffWhereClauseSpecial(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        {
+            var clauses = new List<string>();
 
-			foreach (var profile in qualitiesBelowCutoff)
-			{
-				foreach (var belowCutoff in profile.QualityIds)
-				{
-					clauses.Add(string.Format("(Movies.ProfileId = {0} AND MovieFiles.Quality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
-				}
-			}
+            foreach (var profile in qualitiesBelowCutoff)
+            {
+                foreach (var belowCutoff in profile.QualityIds)
+                {
+                    clauses.Add(string.Format("(Movies.ProfileId = {0} AND MovieFiles.Quality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+                }
+            }
 
-			return string.Format("({0})", string.Join(" OR ", clauses));
-		}
+            return string.Format("({0})", string.Join(" OR ", clauses));
+        }
 
         private Movie FindByTitle(string cleanTitle, int? year)
         {

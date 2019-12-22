@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Organizer
     {
         string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null);
         string BuildFilePath(Movie movie, string fileName, string extension);
-	    string BuildMoviePath(Movie movie, NamingConfig namingConfig = null);
+        string BuildMoviePath(Movie movie, NamingConfig namingConfig = null);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetMovieFolder(Movie movie, NamingConfig namingConfig = null);
     }
@@ -214,10 +214,10 @@ namespace NzbDrone.Core.Organizer
         {
             string[] prefixes = { "The ", "An ", "A " };
 
-			if (title.Length < 5)
-			{
-				return title;
-			}
+            if (title.Length < 5)
+            {
+                return title;
+            }
 
             foreach (string prefix in prefixes)
             {
