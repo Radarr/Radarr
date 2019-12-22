@@ -91,7 +91,12 @@ namespace NzbDrone.Core.Indexers.Newznab
             HelpText = "By default, Radarr will try to search by IMDB ID if your indexer supports that. However, some indexers are not very good at tagging their releases correctly, so you can force Radarr to search that indexer by title instead.",
             Advanced = true, Type = FieldType.Checkbox)]
         public bool SearchByTitle { get; set; }
-        // Field 8 is used by TorznabSettings MinimumSeeders
+        
+        [FieldDefinition(8, Label = "and by \"Also known as\"",
+            HelpText = "Search by Title has to be activated!\nWill also search for the \"Also known as\" titles.",
+            Advanced = true, Type = FieldType.Checkbox)]
+        public bool SearchByAkas { get; set; }
+        // Field 9 is used by TorznabSettings MinimumSeeders
         // If you need to add another field here, update TorznabSettings as well and this comment
 
         public virtual NzbDroneValidationResult Validate()
