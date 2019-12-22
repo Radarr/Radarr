@@ -342,21 +342,15 @@ stages:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono518:
-            testName: 'Mono 5.18'
-            containerImage: radarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
             containerImage: radarr/testimages:mono-5.20
-          mono600:
-            testName: 'Mono 6.0'
-            containerImage: radarr/testimages:mono-6.0
-          mono604:
-            testName: 'Mono 6.4'
-            containerImage: radarr/testimages:mono-6.4
           mono606:
             testName: 'Mono 6.6'
             containerImage: radarr/testimages:mono-6.6
+          mono608:
+            testName: 'Mono 6.8'
+            containerImage: radarr/testimages:mono-6.8
 
       pool:
         vmImage: 'ubuntu-16.04'
@@ -478,21 +472,15 @@ stages:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono518:
-            testName: 'Mono 5.18'
-            containerImage: radarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
             containerImage: radarr/testimages:mono-5.20
-          mono600:
-            testName: 'Mono 6.0'
-            containerImage: radarr/testimages:mono-6.0
-          mono604:
-            testName: 'Mono 6.4'
-            containerImage: radarr/testimages:mono-6.4
           mono606:
             testName: 'Mono 6.6'
             containerImage: radarr/testimages:mono-6.6
+          mono608:
+            testName: 'Mono 6.8'
+            containerImage: radarr/testimages:mono-6.8
 
       variables:
         pattern: 'Radarr.**.linux.tar.gz'
