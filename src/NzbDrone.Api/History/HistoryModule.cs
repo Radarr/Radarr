@@ -3,10 +3,10 @@ using System.Linq;
 using Nancy;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Radarr.Http;
-using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.History
 {
@@ -25,7 +25,7 @@ namespace NzbDrone.Api.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Post("/failed",  x => MarkAsFailed());
+            Post("/failed", x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(Core.History.History model)

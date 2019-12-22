@@ -5,7 +5,8 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Extras.Files
 {
-    public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile> where TExtraFile : ExtraFile, new()
+    public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile>
+        where TExtraFile : ExtraFile, new()
     {
         void DeleteForMovie(int movieId);
         void DeleteForMovieFile(int movieFileId);

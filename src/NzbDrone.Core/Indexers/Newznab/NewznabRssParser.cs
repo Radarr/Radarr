@@ -27,7 +27,10 @@ namespace NzbDrone.Core.Indexers.Newznab
             var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
-            if (error == null) return true;
+            if (error == null)
+            {
+                return true;
+            }
 
             var code = Convert.ToInt32(error.Attribute("code").Value);
             var errorMessage = error.Attribute("description").Value;
@@ -74,7 +77,6 @@ namespace NzbDrone.Core.Indexers.Newznab
             releaseInfo = base.ProcessItem(item, releaseInfo);
             releaseInfo.ImdbId = GetImdbId(item);
 
-
             //// This shouldn't be needed with changes to the DownloadDecisionMaker
             //var imdbMovieTitle = GetImdbTitle(item);
             //var imdbYear = GetImdbYear(item);
@@ -90,7 +92,6 @@ namespace NzbDrone.Core.Indexers.Newznab
             //        releaseInfo.Title = Regex.Replace(releaseInfo.Title, imdbMovieTitle, imdbMovieTitle + "." + imdbYear, RegexOptions.IgnoreCase);
             //    }
             //}
-
             return releaseInfo;
         }
 
@@ -162,9 +163,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(
                     Parser.Parser.ReplaceGermanUmlauts(
-                        Parser.Parser.NormalizeTitle(imdbTitle).Replace(" ", ".")
-                    )
-                 );
+                        Parser.Parser.NormalizeTitle(imdbTitle).Replace(" ", ".")));
             }
 
             return string.Empty;

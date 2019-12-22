@@ -8,19 +8,20 @@ using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
+
     //TODO: Update all of this for movies.
     public class ImportApprovedMoviesFixture : CoreTest<ImportApprovedMovie>
     {
@@ -44,8 +45,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new Rejection("Rejected!")));
             _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new Rejection("Rejected!")));
 
-            _approvedDecisions.Add(new ImportDecision
-                                       (
+            _approvedDecisions.Add(new ImportDecision(
                                        new LocalMovie
                                        {
                                            Movie = movie,
@@ -53,7 +53,6 @@ namespace NzbDrone.Core.Test.MediaFiles
                                            Quality = new QualityModel(),
                                            ReleaseGroup = "DRONE"
                                        }));
-
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Setup(s => s.UpgradeMovieFile(It.IsAny<MovieFile>(), It.IsAny<LocalMovie>(), It.IsAny<bool>()))
@@ -193,15 +192,14 @@ namespace NzbDrone.Core.Test.MediaFiles
             var fileDecision = _approvedDecisions.First();
             fileDecision.LocalMovie.Size = 1.Gigabytes();
 
-            var sampleDecision = new ImportDecision
-                (new LocalMovie
+            var sampleDecision = new ImportDecision(
+                new LocalMovie
                 {
                     Movie = fileDecision.LocalMovie.Movie,
                     Path = @"C:\Test\TV\30 Rock\30 Rock - 2017 - Pilot.avi".AsOsAgnostic(),
                     Quality = new QualityModel(),
                     Size = 80.Megabytes()
                 });
-
 
             var all = new List<ImportDecision>();
             all.Add(fileDecision);
@@ -217,7 +215,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_copy_when_cannot_move_files_downloads()
         {
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "30.Rock.S01E01", CanMoveFiles = false});
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "30.Rock.S01E01", CanMoveFiles = false });
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeMovieFile(It.IsAny<MovieFile>(), _approvedDecisions.First().LocalMovie, true), Times.Once());

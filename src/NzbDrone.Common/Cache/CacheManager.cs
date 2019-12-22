@@ -20,7 +20,6 @@ namespace NzbDrone.Common.Cache
         public CacheManager()
         {
             _cache = new Cached<ICached>();
-
         }
 
         public void Clear()

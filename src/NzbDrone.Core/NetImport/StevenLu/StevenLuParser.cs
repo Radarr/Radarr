@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using NzbDrone.Core.NetImport.Exceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.NetImport.Exceptions;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {
@@ -62,6 +62,5 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
             return true;
         }
-
     }
 }

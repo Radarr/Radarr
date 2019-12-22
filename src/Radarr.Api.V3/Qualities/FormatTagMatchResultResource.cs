@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Qualities
 {
@@ -29,7 +29,10 @@ namespace Radarr.Api.V3.Qualities
     {
         public static FormatTagMatchResultResource ToResource(this FormatTagMatchResult model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new FormatTagMatchResultResource
             {

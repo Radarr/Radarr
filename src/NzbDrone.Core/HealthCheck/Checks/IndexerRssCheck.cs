@@ -30,7 +30,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (active.Empty())
             {
-                 return new HealthCheck(GetType(), HealthCheckResult.Warning, "All rss-capable indexers are temporarily unavailable due to recent indexer errors");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "All rss-capable indexers are temporarily unavailable due to recent indexer errors");
             }
 
             return new HealthCheck(GetType());

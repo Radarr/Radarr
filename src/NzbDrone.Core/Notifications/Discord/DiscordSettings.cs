@@ -26,7 +26,6 @@ namespace NzbDrone.Core.Notifications.Discord
         [FieldDefinition(2, Label = "Avatar", HelpText = "Change the avatar that is used for messages from this integration", Type = FieldType.Textbox)]
         public string Avatar { get; set; }
 
-
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

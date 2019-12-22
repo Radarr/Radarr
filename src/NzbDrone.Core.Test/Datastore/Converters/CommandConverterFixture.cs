@@ -6,8 +6,8 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Converters;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore.Converters
 {
@@ -42,10 +42,10 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             dataRecordMock.Setup(s => s.GetString(0)).Returns("RefreshMovie");
 
             var context = new ConverterContext
-                          {
-                              DataRecord = dataRecordMock.Object,
-                              DbValue = new RefreshMovieCommand().ToJson()
-                          };
+            {
+                DataRecord = dataRecordMock.Object,
+                DbValue = new RefreshMovieCommand().ToJson()
+            };
 
             Subject.FromDB(context).Should().BeOfType<RefreshMovieCommand>();
         }
@@ -54,9 +54,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_null_for_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(null);
         }

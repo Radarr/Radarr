@@ -2,9 +2,9 @@
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {

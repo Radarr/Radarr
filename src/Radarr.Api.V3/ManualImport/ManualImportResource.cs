@@ -29,19 +29,24 @@ namespace Radarr.Api.V3.ManualImport
     {
         public static ManualImportResource ToResource(this ManualImportItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ManualImportResource
             {
                 Id = HashConverter.GetHashInt31(model.Path),
                 Path = model.Path,
                 RelativePath = model.RelativePath,
+
                 // FolderName = model.FolderName,
                 Name = model.Name,
                 Size = model.Size,
                 Movie = model.Movie.ToResource(),
                 Quality = model.Quality,
                 Languages = model.Languages,
+
                 //QualityWeight
                 DownloadId = model.DownloadId,
                 Rejections = model.Rejections

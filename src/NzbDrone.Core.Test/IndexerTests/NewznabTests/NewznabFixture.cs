@@ -19,15 +19,15 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Id = 5,
+                Name = "Newznab",
+                Settings = new NewznabSettings()
                 {
-                    Id = 5,
-                    Name = "Newznab",
-                    Settings = new NewznabSettings()
-                        {
-                            BaseUrl = "http://indexer.local/",
-                            Categories = new int[] { 1 }
-                        }
-                };
+                    BaseUrl = "http://indexer.local/",
+                    Categories = new int[] { 1 }
+                }
+            };
 
             _caps = new NewznabCapabilities();
             Mocker.GetMock<INewznabCapabilitiesProvider>()

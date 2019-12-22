@@ -12,6 +12,9 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public static class MediaInfoFormatter
     {
+        private const string ValidHdrColourPrimaries = "BT.2020";
+        private static readonly string[] ValidHdrTransferFunctions = { "PQ", "HLG" };
+
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(MediaInfoFormatter));
 
         public static decimal FormatAudioChannels(MediaInfoModel mediaInfo)
@@ -42,7 +45,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             var audioCodecID = mediaInfo.AudioCodecID ?? string.Empty;
             var audioProfile = mediaInfo.AudioProfile ?? string.Empty;
             var audioCodecLibrary = mediaInfo.AudioCodecLibrary ?? string.Empty;
-            var splitAdditionalFeatures = (mediaInfo.AudioAdditionalFeatures ?? string.Empty).Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var splitAdditionalFeatures = (mediaInfo.AudioAdditionalFeatures ?? string.Empty).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (audioFormat.Empty())
             {
@@ -82,6 +85,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     {
                         return "DTS-X";
                     }
+
                     return "DTS-HD MA";
                 }
 
@@ -457,10 +461,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                 if (audioChannelPositions.Contains("/"))
                 {
-                    return Regex.Replace(audioChannelPositions, @"^\d+\sobjects", "",
+                    return Regex.Replace(audioChannelPositions,
+                            @"^\d+\sobjects",
+                            "",
                             RegexOptions.Compiled | RegexOptions.IgnoreCase)
                         .Replace("Object Based / ", "")
-                        .Split(new string[] {" / "}, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new string[] { " / " }, StringSplitOptions.RemoveEmptyEntries)
                         .FirstOrDefault()
                         ?.Split('/')
                         .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
@@ -526,9 +532,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             // Last token is the default.
             return tokens.Last();
         }
-
-        private static readonly string[] ValidHdrTransferFunctions = {"PQ", "HLG"};
-        private const string ValidHdrColourPrimaries = "BT.2020";
 
         public static string FormatVideoDynamicRange(MediaInfoModel mediaInfo)
         {

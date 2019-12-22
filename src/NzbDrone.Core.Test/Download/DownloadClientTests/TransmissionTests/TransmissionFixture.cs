@@ -284,7 +284,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             item.RemainingTime.Should().NotHaveValue();
         }
 
-
         [Test]
         public void should_not_be_removable_and_should_not_allow_move_files_if_max_ratio_reached_and_not_stopped()
         {
@@ -340,7 +339,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             item.CanMoveFiles.Should().BeFalse();
         }
 
-
         [Test]
         public void should_not_be_removable_and_should_not_allow_move_files_if_max_idletime_reached_and_not_paused()
         {
@@ -389,7 +387,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         public void should_not_be_removable_if_overridden_max_idletime_not_reached_and_paused()
         {
             GivenGlobalSeedLimits(null, 20);
-            PrepareClientToReturnCompletedItem(true,  ratio: 2.0, seedingTime: 30, idleLimit: 40);
+            PrepareClientToReturnCompletedItem(true, ratio: 2.0, seedingTime: 30, idleLimit: 40);
 
             var item = Subject.GetItems().Single();
             item.CanBeRemoved.Should().BeFalse();

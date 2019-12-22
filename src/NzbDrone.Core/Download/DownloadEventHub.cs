@@ -60,7 +60,6 @@ namespace NzbDrone.Core.Download
             RemoveFromDownloadClient(trackedDownload);
         }
 
-
         private void RemoveFromDownloadClient(TrackedDownload trackedDownload)
         {
             var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);

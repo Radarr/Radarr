@@ -18,7 +18,8 @@ namespace Radarr.Http.Frontend.Mappers
 
         protected HtmlMapperBase(IDiskProvider diskProvider,
                                  Func<ICacheBreakerProvider> cacheBreakProviderFactory,
-                                 Logger logger) : base(diskProvider, logger)
+                                 Logger logger)
+            : base(diskProvider, logger)
         {
             _diskProvider = diskProvider;
             _cacheBreakProviderFactory = cacheBreakProviderFactory;
@@ -65,7 +66,6 @@ namespace Radarr.Http.Frontend.Mappers
                 {
                     url = match.Groups["path"].Value;
                 }
-
                 else
                 {
                     url = cacheBreakProvider.AddCacheBreakerToPath(match.Groups["path"].Value);

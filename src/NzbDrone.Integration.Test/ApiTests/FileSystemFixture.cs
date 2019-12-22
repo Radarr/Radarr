@@ -1,14 +1,14 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Common;
+using NzbDrone.Common.Disk;
 using NzbDrone.Integration.Test.Client;
 using RestSharp;
-using System.Net;
-using NzbDrone.Common.Disk;
-using System.Reflection;
-using System.IO;
-using System.Collections.Generic;
-using NzbDrone.Common;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

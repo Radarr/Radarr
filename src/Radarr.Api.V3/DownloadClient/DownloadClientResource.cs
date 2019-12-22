@@ -14,7 +14,10 @@ namespace Radarr.Api.V3.DownloadClient
     {
         public override DownloadClientResource ToResource(DownloadClientDefinition definition)
         {
-            if (definition == null) return null;
+            if (definition == null)
+            {
+                return null;
+            }
 
             var resource = base.ToResource(definition);
 
@@ -27,7 +30,10 @@ namespace Radarr.Api.V3.DownloadClient
 
         public override DownloadClientDefinition ToModel(DownloadClientResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             var definition = base.ToModel(resource);
 

@@ -65,7 +65,6 @@ namespace NzbDrone.Api.Movies
 
             //add a grabbed field in MovieResource?
             //resource.Grabbed = true;
-
             BroadcastResourceChange(ModelAction.Updated, resource);
         }
 

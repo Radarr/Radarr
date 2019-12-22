@@ -1,5 +1,5 @@
-using Radarr.Http.REST;
 using NzbDrone.Core.Configuration;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Config
 {

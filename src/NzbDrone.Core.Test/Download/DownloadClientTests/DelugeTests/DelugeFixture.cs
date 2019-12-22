@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Deluge;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
@@ -31,57 +31,57 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
             };
 
             _queued = new DelugeTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = false,
-                        State = DelugeTorrentStatus.Queued,
-                        Name = _title,
-                        Size = 1000,
-                        BytesDownloaded = 0,
-                        Progress = 0.0,
-                        DownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = false,
+                State = DelugeTorrentStatus.Queued,
+                Name = _title,
+                Size = 1000,
+                BytesDownloaded = 0,
+                Progress = 0.0,
+                DownloadPath = "somepath"
+            };
 
             _downloading = new DelugeTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = false,
-                        State = DelugeTorrentStatus.Downloading,
-                        Name = _title,
-                        Size = 1000,
-                        BytesDownloaded = 100,
-                        Progress = 10.0,
-                        DownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = false,
+                State = DelugeTorrentStatus.Downloading,
+                Name = _title,
+                Size = 1000,
+                BytesDownloaded = 100,
+                Progress = 10.0,
+                DownloadPath = "somepath"
+            };
 
             _failed = new DelugeTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = false,
-                        State = DelugeTorrentStatus.Error,
-                        Name = _title,
-                        Size = 1000,
-                        BytesDownloaded = 100,
-                        Progress = 10.0,
-                        Message = "Error",
-                        DownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = false,
+                State = DelugeTorrentStatus.Error,
+                Name = _title,
+                Size = 1000,
+                BytesDownloaded = 100,
+                Progress = 10.0,
+                Message = "Error",
+                DownloadPath = "somepath"
+            };
 
             _completed = new DelugeTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = true,
-                        State = DelugeTorrentStatus.Paused,
-                        Name = _title,
-                        Size = 1000,
-                        BytesDownloaded = 1000,
-                        Progress = 100.0,
-                        DownloadPath = "somepath",
-                        IsAutoManaged = true,
-                        StopAtRatio = true,
-                        StopRatio = 1.0,
-                        Ratio = 1.5
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = true,
+                State = DelugeTorrentStatus.Paused,
+                Name = _title,
+                Size = 1000,
+                BytesDownloaded = 1000,
+                Progress = 100.0,
+                DownloadPath = "somepath",
+                IsAutoManaged = true,
+                StopAtRatio = true,
+                StopRatio = 1.0,
+                Ratio = 1.5
+            };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
                   .Setup(s => s.GetHashFromTorrentFile(It.IsAny<byte[]>()))

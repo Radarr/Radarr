@@ -1,12 +1,13 @@
 using System.Linq;
 using System.Reflection;
+using NzbDrone.Core.Configuration;
 using Radarr.Http;
 using Radarr.Http.REST;
-using NzbDrone.Core.Configuration;
 
 namespace Radarr.Api.V3.Config
 {
-    public abstract class RadarrConfigModule<TResource> : RadarrRestModule<TResource> where TResource : RestResource, new()
+    public abstract class RadarrConfigModule<TResource> : RadarrRestModule<TResource>
+        where TResource : RestResource, new()
     {
         private readonly IConfigService _configService;
 
@@ -15,8 +16,8 @@ namespace Radarr.Api.V3.Config
         {
         }
 
-        protected RadarrConfigModule(string resource, IConfigService configService) :
-            base("config/" + resource.Trim('/'))
+        protected RadarrConfigModule(string resource, IConfigService configService)
+            : base("config/" + resource.Trim('/'))
         {
             _configService = configService;
 

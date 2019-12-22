@@ -15,11 +15,14 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (context.PropertyValue == null) return true;
+            if (context.PropertyValue == null)
+            {
+                return true;
+            }
 
             int tmdbId = (int)context.PropertyValue;
 
-            return (_movieService.FindByTmdbId(tmdbId) == null);
+            return _movieService.FindByTmdbId(tmdbId) == null;
         }
     }
 }

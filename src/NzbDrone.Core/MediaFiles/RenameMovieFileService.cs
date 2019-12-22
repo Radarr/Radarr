@@ -1,26 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using NLog;
-using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IRenameMovieFileService
     {
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
-    void RenameMoviePath(Movie movie, bool shouldRenameFiles);
+        void RenameMoviePath(Movie movie, bool shouldRenameFiles);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
@@ -65,32 +65,30 @@ namespace NzbDrone.Core.MediaFiles
             var file = _mediaFileService.GetFilesByMovie(movieId);
 
             return GetPreviews(movie, file).OrderByDescending(m => m.MovieId).ToList(); //TODO: Would really like to not have these be lists
-
         }
 
         private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)
         {
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 var movieFilePath = Path.Combine(movie.Path, file.RelativePath);
 
                 var newName = _filenameBuilder.BuildFileName(movie, file);
                 var newPath = _filenameBuilder.BuildFilePath(movie, newName, Path.GetExtension(movieFilePath));
 
-                if(!movieFilePath.PathEquals(newPath, StringComparison.Ordinal))
+                if (!movieFilePath.PathEquals(newPath, StringComparison.Ordinal))
                 {
                     yield return new RenameMovieFilePreview
                     {
                         MovieId = movie.Id,
                         MovieFileId = file.Id,
                         ExistingPath = movieFilePath,
+
                         //NewPath = movie.Path.GetRelativePath(newPath)
                         NewPath = newPath
                     };
                 }
-
             }
-
         }
 
         private void RenameFiles(List<MovieFile> movieFiles, Movie movie, string oldMoviePath = null)
@@ -119,7 +117,6 @@ namespace NzbDrone.Core.MediaFiles
                     _logger.Debug("Renamed movie file: {0}", movieFile);
 
                     _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, oldMovieFilePath));
-
                 }
                 catch (SameFilenameException ex)
                 {
@@ -142,14 +139,13 @@ namespace NzbDrone.Core.MediaFiles
             var newFolder = _filenameBuilder.BuildMoviePath(movie);
             if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
             {
-
                 if (!_configService.AutoRenameFolders)
                 {
                     _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
                     return;
                 }
 
-                 _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+                _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
                 var oldFolder = movie.Path;
                 movie.Path = newFolder;
 
@@ -162,15 +158,12 @@ namespace NzbDrone.Core.MediaFiles
                 //  RenameFiles(movieFiles, movie, oldFolder);
                 //  _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
                 // }
-
                 _movieService.UpdateMovie(movie);
 
                 if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)
                 {
                     _recycleBinProvider.DeleteFolder(oldFolder);
                 }
-
-
             }
 
             if (movie.PathState == MoviePathState.StaticOnce)
@@ -195,34 +188,33 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Debug("Renaming movie files for selected movie");
             var moviesToRename = _movieService.GetMovies(message.MovieIds);
 
-            foreach(var movie in moviesToRename)
+            foreach (var movie in moviesToRename)
             {
                 var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
                 _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 RenameFiles(movieFiles, movie);
                 _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
             }
-
         }
 
-    public void Execute(RenameMovieFolderCommand message)
-    {
-        try
+        public void Execute(RenameMovieFolderCommand message)
         {
-            _logger.Debug("Renaming movie folder for selected movie if necessary");
-            var moviesToRename = _movieService.GetMovies(message.MovieIds);
-            foreach(var movie in moviesToRename)
+            try
             {
-                var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-                //_logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
-                RenameMoviePath(movie);
+                _logger.Debug("Renaming movie folder for selected movie if necessary");
+                var moviesToRename = _movieService.GetMovies(message.MovieIds);
+                foreach (var movie in moviesToRename)
+                {
+                    var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+
+                    //_logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
+                    RenameMoviePath(movie);
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                _logger.Warn(ex, "wtf: {0}, {1}", ex.ResultCode, ex.Data);
             }
         }
-        catch (SQLiteException ex)
-        {
-            _logger.Warn(ex, "wtf: {0}, {1}", ex.ResultCode, ex.Data);
-        }
-
-    }
     }
 }

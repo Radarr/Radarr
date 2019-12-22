@@ -20,7 +20,6 @@ namespace NzbDrone.Core.NetImport.RSSImport
         //{
         //    return new NetImportPageableRequestChain();
         //}
-
         private IEnumerable<NetImportRequest> GetMovies(string searchParameters)
         {
             var request = new NetImportRequest($"{Settings.Link.Trim()}", HttpAccept.Rss);

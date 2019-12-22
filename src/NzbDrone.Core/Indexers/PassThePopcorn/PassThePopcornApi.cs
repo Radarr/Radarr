@@ -61,7 +61,5 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public string Result { get; set; }
         public string Popcron { get; set; }
         public string AntiCsrfToken { get; set; }
-
     }
-
 }

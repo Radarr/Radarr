@@ -1,4 +1,4 @@
-﻿﻿namespace NzbDrone.Core.Parser
+﻿namespace NzbDrone.Core.Parser
 {
     public static class SceneChecker
     {
@@ -6,8 +6,15 @@
         //It's better not to use a title that might be scene than to use one that isn't scene
         public static bool IsSceneTitle(string title)
         {
-            if (!title.Contains(".")) return false;
-            if (title.Contains(" ")) return false;
+            if (!title.Contains("."))
+            {
+                return false;
+            }
+
+            if (title.Contains(" "))
+            {
+                return false;
+            }
 
             var parsedTitle = Parser.ParseMovieTitle(title, false); //We are not lenient when it comes to scene checking!
 

@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
         private readonly INamingConfigService _namingConfigService;
-        private readonly ICached<Dictionary<string, WatchFolderItem>>  _watchFolderItemCache;
+        private readonly ICached<Dictionary<string, WatchFolderItem>> _watchFolderItemCache;
 
         public ScanWatchFolder(ICacheManager cacheManager, IDiskScanService diskScanService, INamingConfigService namingConfigService, IDiskProvider diskProvider, Logger logger)
         {

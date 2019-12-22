@@ -1,8 +1,8 @@
-using Radarr.Http.REST;
+using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Update;
-using NzbDrone.Common.Http.Proxy;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
 {
@@ -54,6 +54,7 @@ namespace NzbDrone.Api.Config
                 LaunchBrowser = model.LaunchBrowser,
                 AuthenticationMethod = model.AuthenticationMethod,
                 AnalyticsEnabled = model.AnalyticsEnabled,
+
                 //Username
                 //Password
                 LogLevel = model.LogLevel,

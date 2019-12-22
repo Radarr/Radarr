@@ -36,7 +36,6 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
             {
                 yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=latestmovies&passkey={Settings.Passkey.Trim()}", HttpAccept.Rss);
             }
-
         }
     }
 }

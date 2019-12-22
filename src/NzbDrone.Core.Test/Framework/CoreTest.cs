@@ -1,17 +1,17 @@
-using Moq;
 using System;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Http.Dispatchers;
-using NzbDrone.Common.TPL;
-using NzbDrone.Test.Common;
 using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Core.Http;
+using NzbDrone.Common.TPL;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Http;
 using NzbDrone.Core.Parser;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Framework
 {
@@ -47,12 +47,14 @@ namespace NzbDrone.Core.Test.Framework
                     {
                         result.Quality = QualityParser.ParseQuality(title);
                     }
+
                     return result;
                 });
         }
     }
 
-    public abstract class CoreTest<TSubject> : CoreTest where TSubject : class
+    public abstract class CoreTest<TSubject> : CoreTest
+        where TSubject : class
     {
         private TSubject _subject;
 
@@ -73,7 +75,6 @@ namespace NzbDrone.Core.Test.Framework
 
                 return _subject;
             }
-
         }
     }
 }

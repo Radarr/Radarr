@@ -1,10 +1,10 @@
-using FluentAssertions;
-using NUnit.Framework;
-using Radarr.Api.V3.Movies;
-using NzbDrone.Integration.Test.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Integration.Test.Client;
+using Radarr.Api.V3.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

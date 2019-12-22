@@ -44,22 +44,36 @@ namespace NzbDrone.Common.Disk
             {
                 return OsPathKind.Unix;
             }
+
             if (HasWindowsDriveLetter(path) || path.Contains('\\'))
             {
                 return OsPathKind.Windows;
             }
+
             if (path.Contains('/'))
             {
                 return OsPathKind.Unix;
             }
+
             return OsPathKind.Unknown;
         }
 
         private static bool HasWindowsDriveLetter(string path)
         {
-            if (path.Length < 2)    return false;
-            if (!char.IsLetter(path[0]) || path[1] != ':') return false;
-            if (path.Length > 2 && path[2] != '\\' && path[2] != '/') return false;
+            if (path.Length < 2)
+            {
+                return false;
+            }
+
+            if (!char.IsLetter(path[0]) || path[1] != ':')
+            {
+                return false;
+            }
+
+            if (path.Length > 2 && path[2] != '\\' && path[2] != '/')
+            {
+                return false;
+            }
 
             return true;
         }
@@ -93,6 +107,7 @@ namespace NzbDrone.Common.Disk
                 {
                     return _path.StartsWith(@"\\") || HasWindowsDriveLetter(_path);
                 }
+
                 if (IsUnixPath)
                 {
                     return _path.StartsWith("/");
@@ -191,10 +206,12 @@ namespace NzbDrone.Common.Disk
             {
                 return Equals((OsPath)obj);
             }
+
             if (obj is string)
             {
                 return Equals(new OsPath(obj as string));
             }
+
             return false;
         }
 
@@ -212,6 +229,7 @@ namespace NzbDrone.Common.Disk
                 case OsPathKind.Unix:
                     return new OsPath(_path.TrimEnd('/') + "/", _kind);
             }
+
             return this;
         }
 
@@ -245,7 +263,10 @@ namespace NzbDrone.Common.Disk
 
         public bool Equals(OsPath other)
         {
-            if (ReferenceEquals(other, null)) return false;
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
 
             if (_path == other._path)
             {
@@ -259,19 +280,26 @@ namespace NzbDrone.Common.Disk
             {
                 return string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase);
             }
+
             return string.Equals(left, right, StringComparison.InvariantCulture);
         }
 
         public static bool operator ==(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
 
             return left.Equals(right);
         }
 
         public static bool operator !=(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null)) return !ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+            {
+                return !ReferenceEquals(right, null);
+            }
 
             return !left.Equals(right);
         }
@@ -297,10 +325,12 @@ namespace NzbDrone.Common.Disk
             {
                 return new OsPath(string.Join("\\", left._path.TrimEnd('\\'), right._path.TrimStart('\\')), OsPathKind.Windows);
             }
+
             if (left.Kind == OsPathKind.Unix || right.Kind == OsPathKind.Unix)
             {
                 return new OsPath(string.Join("/", left._path.TrimEnd('/'), right._path), OsPathKind.Unix);
             }
+
             return new OsPath(string.Join("/", left._path, right._path), OsPathKind.Unknown);
         }
 
@@ -356,6 +386,7 @@ namespace NzbDrone.Common.Disk
             {
                 return new OsPath(string.Join("\\", newFragments), OsPathKind.Unknown);
             }
+
             return new OsPath(string.Join("/", newFragments), OsPathKind.Unknown);
         }
     }

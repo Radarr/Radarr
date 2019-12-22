@@ -1,4 +1,3 @@
-using Nancy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +5,11 @@ using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
-using NzbDrone.Core.Movies;
+using Nancy;
 using Nancy.Responses;
-using NzbDrone.Core.Tags;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Tags;
 
 namespace NzbDrone.Api.Calendar
 {
@@ -24,9 +24,9 @@ namespace NzbDrone.Api.Calendar
             _movieService = movieService;
             _tagService = tagService;
 
-            Get("/NzbDrone.ics",  options => GetCalendarFeed());
-            Get("/Sonarr.ics",  options => GetCalendarFeed());
-            Get("/Radarr.ics",  options => GetCalendarFeed());
+            Get("/NzbDrone.ics", options => GetCalendarFeed());
+            Get("/Sonarr.ics", options => GetCalendarFeed());
+            Get("/Radarr.ics", options => GetCalendarFeed());
         }
 
         private object GetCalendarFeed()
@@ -36,6 +36,7 @@ namespace NzbDrone.Api.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var unmonitored = false;
+
             //var premiersOnly = false;
             var tags = new List<int>();
 
@@ -45,11 +46,19 @@ namespace NzbDrone.Api.Calendar
             var queryPastDays = Request.Query.PastDays;
             var queryFutureDays = Request.Query.FutureDays;
             var queryUnmonitored = Request.Query.Unmonitored;
+
             // var queryPremiersOnly = Request.Query.PremiersOnly;
             var queryTags = Request.Query.Tags;
 
-            if (queryStart.HasValue) start = DateTime.Parse(queryStart.Value);
-            if (queryEnd.HasValue) end = DateTime.Parse(queryEnd.Value);
+            if (queryStart.HasValue)
+            {
+                start = DateTime.Parse(queryStart.Value);
+            }
+
+            if (queryEnd.HasValue)
+            {
+                end = DateTime.Parse(queryEnd.Value);
+            }
 
             if (queryPastDays.HasValue)
             {
@@ -72,7 +81,6 @@ namespace NzbDrone.Api.Calendar
             //{
             //    premiersOnly = bool.Parse(queryPremiersOnly.Value);
             //}
-
             if (queryTags.HasValue)
             {
                 var tagInput = (string)queryTags.Value.ToString();
@@ -98,10 +106,9 @@ namespace NzbDrone.Api.Calendar
 
                 CreateEvent(calendar, movie, true);
                 CreateEvent(calendar, movie, false);
-
             }
 
-            var serializer = (IStringSerializer) new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
+            var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
             var icalendar = serializer.SerializeToString(calendar);
 
             return new TextResponse(icalendar, "text/calendar");

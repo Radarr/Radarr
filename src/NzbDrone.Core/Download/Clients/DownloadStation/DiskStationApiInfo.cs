@@ -16,7 +16,10 @@
 
         public string Path
         {
-            get { return _path; }
+            get
+            {
+                return _path;
+            }
 
             set
             {

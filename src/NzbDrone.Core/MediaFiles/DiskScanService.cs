@@ -10,8 +10,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -190,10 +190,8 @@ namespace NzbDrone.Core.MediaFiles
                 var permissions = _configService.FolderChmod;
                 _diskProvider.SetPermissions(path, permissions, _configService.ChownUser, _configService.ChownGroup);
             }
-
             catch (Exception ex)
             {
-
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
@@ -221,7 +219,6 @@ namespace NzbDrone.Core.MediaFiles
                 var movie = _movieService.GetMovie(message.MovieId.Value);
                 Scan(movie);
             }
-
             else
             {
                 var allMovies = _movieService.GetAllMovies();

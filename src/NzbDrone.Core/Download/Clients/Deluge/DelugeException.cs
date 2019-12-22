@@ -5,7 +5,7 @@
         public int Code { get; set; }
 
         public DelugeException(string message, int code)
-            :base (message + " (code " + code + ")")
+            : base(message + " (code " + code + ")")
         {
             Code = code;
         }

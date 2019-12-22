@@ -1,13 +1,13 @@
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using System.Collections.Generic;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Test.Datastore
 
         [Ignore("MovieFile isnt lazy loaded anymore so this will fail.")]
         [Test]
+
         //TODO: Update this!
         public void one_to_one()
         {
@@ -61,11 +62,10 @@ namespace NzbDrone.Core.Test.Datastore
             Db.Single<Movie>().MovieFile.Should().BeNull();
         }
 
-
         [Test]
         public void embedded_document_as_json()
         {
-            var quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2 )};
+            var quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2) };
             var languages = new List<Language> { Language.English };
 
             var history = Builder<History.History>.CreateNew()
@@ -90,10 +90,8 @@ namespace NzbDrone.Core.Test.Datastore
                             .With(c => c.Languages = languages)
                             .Build().ToList();
 
-            history[0].Quality = new QualityModel { Quality = Quality.HDTV1080p, Revision = new Revision(version: 2)};
-            history[1].Quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2)};
-
-
+            history[0].Quality = new QualityModel { Quality = Quality.HDTV1080p, Revision = new Revision(version: 2) };
+            history[1].Quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2) };
 
             Db.InsertMany(history);
 

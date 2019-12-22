@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.POST)))
-                  .Returns<HttpRequest>(r => new HttpResponse(r,new HttpHeader(), authStream.ToString()));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), authStream.ToString()));
 
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader {ContentType = HttpAccept.Json.Value}, responseJson));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader { ContentType = HttpAccept.Json.Value }, responseJson));
 
             var torrents = Subject.FetchRecent();
 
@@ -53,6 +53,7 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             first.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
             first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=452135&authkey=00000000000000000000000000000000&torrent_pass=00000000000000000000000000000000");
             first.InfoUrl.Should().Be("https://passthepopcorn.me/torrents.php?id=148131&torrentid=452135");
+
             //first.PublishDate.Should().Be(DateTime.Parse("2017-04-17T12:13:42+0000").ToUniversalTime()); stupid timezones
             first.Size.Should().Be(2466170624L);
             first.InfoHash.Should().BeNullOrEmpty();

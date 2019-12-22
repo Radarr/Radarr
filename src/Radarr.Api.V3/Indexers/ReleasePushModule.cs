@@ -12,7 +12,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace Radarr.Api.V3.Indexers
 {
-    class ReleasePushModule : ReleaseModuleBase
+    public class ReleasePushModule : ReleaseModuleBase
     {
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IProcessDownloadDecisions _downloadDecisionProcessor;
@@ -34,7 +34,7 @@ namespace Radarr.Api.V3.Indexers
             PostValidator.RuleFor(s => s.Protocol).NotEmpty();
             PostValidator.RuleFor(s => s.PublishDate).NotEmpty();
 
-            Post("/push",  x => ProcessRelease(ReadResourceFromRequest()));
+            Post("/push", x => ProcessRelease(ReadResourceFromRequest()));
         }
 
         private object ProcessRelease(ReleaseResource release)
@@ -54,10 +54,10 @@ namespace Radarr.Api.V3.Indexers
 
             if (firstDecision?.RemoteMovie.ParsedMovieInfo == null)
             {
-                throw new ValidationException(new List<ValidationFailure>{ new ValidationFailure("Title", "Unable to parse", release.Title) });
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new [] { firstDecision });
+            return MapDecisions(new[] { firstDecision });
         }
 
         private void ResolveIndexer(ReleaseInfo release)

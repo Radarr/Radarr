@@ -5,10 +5,10 @@ using Radarr.Http.Validation;
 
 namespace Radarr.Http
 {
-    public abstract class RadarrRestModule<TResource> : RestModule<TResource> where TResource : RestResource, new()
+    public abstract class RadarrRestModule<TResource> : RestModule<TResource>
+        where TResource : RestResource, new()
     {
         protected string Resource { get; private set; }
-
 
         private static string BaseUrl()
         {
@@ -17,6 +17,7 @@ namespace Radarr.Http
             {
                 return "/api/v3/";
             }
+
             return "/api/";
         }
 

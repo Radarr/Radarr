@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
     public class DelugeProxy : IDelugeProxy
     {
-        private static readonly string[] requiredProperties = new string[] { "hash", "name", "state", "progress", "eta", "message", "is_finished", "save_path", "total_size", "total_done", "time_added", "active_time", "ratio", "is_auto_managed", "stop_at_ratio", "remove_at_ratio", "stop_ratio" };
+        private static readonly string[] RequiredProperties = new string[] { "hash", "name", "state", "progress", "eta", "message", "is_finished", "save_path", "total_size", "total_done", "time_added", "active_time", "ratio", "is_auto_managed", "stop_at_ratio", "remove_at_ratio", "stop_ratio" };
 
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             // TODO: get_torrents_status returns the files as well, which starts to cause deluge timeouts when you get enough season packs.
             //var response = ProcessRequest<Dictionary<String, DelugeTorrent>>(settings, "core.get_torrents_status", filter, new String[0]);
-            var response = ProcessRequest<DelugeUpdateUIResult>(settings, "web.update_ui", requiredProperties, filter);
+            var response = ProcessRequest<DelugeUpdateUIResult>(settings, "web.update_ui", RequiredProperties, filter);
 
             return GetTorrents(response);
         }
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             filter.Add("label", label);
 
             //var response = ProcessRequest<Dictionary<String, DelugeTorrent>>(settings, "core.get_torrents_status", filter, new String[0]);
-            var response = ProcessRequest<DelugeUpdateUIResult>(settings, "web.update_ui", requiredProperties, filter);
+            var response = ProcessRequest<DelugeUpdateUIResult>(settings, "web.update_ui", RequiredProperties, filter);
 
             return GetTorrents(response);
         }
@@ -101,10 +101,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         public string AddTorrentFromMagnet(string magnetLink, DelugeSettings settings)
         {
             var options = new
-                          {
-                              add_paused = settings.AddPaused,
-                              remove_at_ratio = false
-                          };
+            {
+                add_paused = settings.AddPaused,
+                remove_at_ratio = false
+            };
 
             var response = ProcessRequest<string>(settings, "core.add_torrent_magnet", magnetLink, options);
 
@@ -114,10 +114,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         public string AddTorrentFromFile(string filename, byte[] fileContent, DelugeSettings settings)
         {
             var options = new
-                          {
-                              add_paused = settings.AddPaused,
-                              remove_at_ratio = false
-                          };
+            {
+                add_paused = settings.AddPaused,
+                remove_at_ratio = false
+            };
 
             var response = ProcessRequest<string>(settings, "core.add_torrent_file", filename, fileContent, options);
 
@@ -167,7 +167,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, DelugeSettings settings)
         {
-            if (seedConfiguration == null) return;
+            if (seedConfiguration == null)
+            {
+                return;
+            }
 
             var ratioArguments = new Dictionary<string, object>();
 
@@ -224,6 +227,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                     {
                         return response.Result;
                     }
+
                     error = response.Error.ToObject<DelugeError>();
 
                     throw new DownloadClientAuthenticationException(error.Message);
@@ -294,6 +298,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                     _logger.Debug("Deluge authentication failed.");
                     throw new DownloadClientAuthenticationException("Failed to authenticate with Deluge.");
                 }
+
                 _logger.Debug("Deluge authentication succeeded.");
 
                 cookies = response.GetCookies();
@@ -326,7 +331,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             if (resultHosts.Result != null)
             {
                 // The returned list contains the id, ip, port and status of each available connection. We want the 127.0.0.1
-                var connection = resultHosts.Result.FirstOrDefault(v => "127.0.0.1" == (v[1] as string));
+                var connection = resultHosts.Result.FirstOrDefault(v => (v[1] as string) == "127.0.0.1");
 
                 if (connection != null)
                 {
@@ -337,7 +342,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 }
             }
 
-           throw new DownloadClientException("Failed to connect to Deluge daemon.");
+            throw new DownloadClientException("Failed to connect to Deluge daemon.");
         }
 
         private DelugeTorrent[] GetTorrents(DelugeUpdateUIResult result)

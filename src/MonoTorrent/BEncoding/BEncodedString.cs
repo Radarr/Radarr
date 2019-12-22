@@ -97,7 +97,7 @@ namespace MonoTorrent.BEncoding
         public override int Encode(byte[] buffer, int offset)
         {
             int written = offset;
-            written += Message.WriteAscii(buffer, written, textBytes.Length.ToString ());
+            written += Message.WriteAscii(buffer, written, textBytes.Length.ToString());
             written += Message.WriteAscii(buffer, written, ":");
             written += Message.Write(buffer, written, textBytes);
             return written - offset;
@@ -144,7 +144,7 @@ namespace MonoTorrent.BEncoding
             int prefix = 1; // Account for ':'
 
             // Count the number of characters needed for the length prefix
-            for (int i = textBytes.Length; i != 0; i = i/10)
+            for (int i = textBytes.Length; i != 0; i = i / 10)
                 prefix += 1;
 
             if (textBytes.Length == 0)
@@ -164,7 +164,7 @@ namespace MonoTorrent.BEncoding
             if (other == null)
                 return 1;
 
-            int difference=0;
+            int difference = 0;
             int length = this.textBytes.Length > other.textBytes.Length ? other.textBytes.Length : this.textBytes.Length;
 
             for (int i = 0; i < length; i++)

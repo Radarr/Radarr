@@ -15,7 +15,10 @@ namespace Radarr.Api.V3.NetImport
     {
         public static ImportExclusionsResource ToResource(this NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ImportExclusionsResource
             {

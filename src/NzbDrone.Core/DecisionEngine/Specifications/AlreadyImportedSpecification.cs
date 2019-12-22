@@ -86,9 +86,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     }
                 }
 
-            // Only based on title because a release with the same title on another indexer/released at
+                // Only based on title because a release with the same title on another indexer/released at
                 // a different time very likely has the exact same content and we don't need to also try it.
-
                 if (release.Title.Equals(lastGrabbed.SourceTitle, StringComparison.InvariantCultureIgnoreCase))
                 {
                     _logger.Debug("Has same release name as a grabbed and imported release");

@@ -30,8 +30,8 @@ namespace Radarr.Api.V3.System.Backup
             GetResourceAll = GetBackupFiles;
             DeleteResource = DeleteBackup;
 
-            Post(@"/restore/(?<id>[\d]{1,10})",  x => Restore((int)x.Id));
-            Post("/restore/upload",  x => UploadAndRestore());
+            Post(@"/restore/(?<id>[\d]{1,10})", x => Restore((int)x.Id));
+            Post("/restore/upload", x => UploadAndRestore());
         }
 
         public List<BackupResource> GetBackupFiles()
@@ -39,13 +39,13 @@ namespace Radarr.Api.V3.System.Backup
             var backups = _backupService.GetBackups();
 
             return backups.Select(b => new BackupResource
-                                       {
-                                           Id = GetBackupId(b),
-                                           Name = b.Name,
-                                           Path = $"/backup/{b.Type.ToString().ToLower()}/{b.Name}",
-                                           Type = b.Type,
-                                           Time = b.Time
-                                       })
+            {
+                Id = GetBackupId(b),
+                Name = b.Name,
+                Path = $"/backup/{b.Type.ToString().ToLower()}/{b.Name}",
+                Type = b.Type,
+                Time = b.Time
+            })
                                        .OrderByDescending(b => b.Time)
                                        .ToList();
         }
@@ -77,9 +77,9 @@ namespace Radarr.Api.V3.System.Backup
             _backupService.Restore(path);
 
             return new
-                   {
-                       RestartRequired = true
-                   };
+            {
+                RestartRequired = true
+            };
         }
 
         public object UploadAndRestore()
@@ -108,9 +108,9 @@ namespace Radarr.Api.V3.System.Backup
             _diskProvider.DeleteFile(path);
 
             return new
-                   {
-                       RestartRequired = true
-                   };
+            {
+                RestartRequired = true
+            };
         }
 
         private string GetBackupPath(NzbDrone.Core.Backup.Backup backup)

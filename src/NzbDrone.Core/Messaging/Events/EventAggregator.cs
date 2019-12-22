@@ -17,7 +17,8 @@ namespace NzbDrone.Core.Messaging.Events
         private readonly TaskFactory _taskFactory;
         private readonly Dictionary<string, object> _eventSubscribers;
 
-        private class EventSubscribers<TEvent> where TEvent : class, IEvent
+        private class EventSubscribers<TEvent>
+            where TEvent : class, IEvent
         {
             private IServiceFactory _serviceFactory;
 
@@ -49,7 +50,8 @@ namespace NzbDrone.Core.Messaging.Events
             _eventSubscribers = new Dictionary<string, object>();
         }
 
-        public void PublishEvent<TEvent>(TEvent @event) where TEvent : class, IEvent
+        public void PublishEvent<TEvent>(TEvent @event)
+            where TEvent : class, IEvent
         {
             Ensure.That(@event, () => @event).IsNotNull();
 
@@ -137,21 +139,22 @@ namespace NzbDrone.Core.Messaging.Events
             return string.Format("{0}<{1}>", eventType.Name.Remove(eventType.Name.IndexOf('`')), eventType.GetGenericArguments()[0].Name);
         }
 
-        internal static int GetEventHandleOrder<TEvent>(IHandle<TEvent> eventHandler) where TEvent : class, IEvent
+        internal static int GetEventHandleOrder<TEvent>(IHandle<TEvent> eventHandler)
+            where TEvent : class, IEvent
         {
             // TODO: Convert "Handle" to nameof(eventHandler.Handle) after .net 4.5
-            var method = eventHandler.GetType().GetMethod("Handle", new Type[] {typeof(TEvent)});
+            var method = eventHandler.GetType().GetMethod("Handle", new Type[] { typeof(TEvent) });
 
             if (method == null)
             {
-                return (int) EventHandleOrder.Any;
+                return (int)EventHandleOrder.Any;
             }
 
             var attribute = method.GetCustomAttributes(typeof(EventHandleOrderAttribute), true).FirstOrDefault() as EventHandleOrderAttribute;
 
             if (attribute == null)
             {
-                return (int) EventHandleOrder.Any;
+                return (int)EventHandleOrder.Any;
             }
 
             return (int)attribute.EventHandleOrder;

@@ -33,7 +33,7 @@ namespace NzbDrone.Mono.EnvironmentInfo.VersionAdapters
             foreach (var releaseFile in releaseFiles)
             {
                 var fileContent = _diskProvider.ReadAllText(releaseFile);
-                var lines = Regex.Split(fileContent, "\r\n|\r|\n"); ;
+                var lines = Regex.Split(fileContent, "\r\n|\r|\n");
 
                 foreach (var line in lines)
                 {
@@ -71,7 +71,6 @@ namespace NzbDrone.Mono.EnvironmentInfo.VersionAdapters
             }
 
             return new OsVersionModel(name, version, fullName);
-
         }
 
         public bool Enabled => OsInfo.IsLinux;

@@ -15,7 +15,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.GetDataMapper())
             {
-
                 mapper.ExecuteNonQuery(@"DELETE FROM Users
                                      WHERE ID NOT IN (
                                      SELECT ID FROM Users
@@ -24,4 +23,3 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         }
     }
 }
-

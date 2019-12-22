@@ -1,10 +1,10 @@
-﻿using NLog;
+﻿using System;
+using System.Collections.Generic;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
-using System;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -57,7 +57,6 @@ namespace NzbDrone.Core.NetImport.Trakt
             {
                 _logger.Warn($"Error refreshing trakt access token");
             }
-
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()
@@ -70,7 +69,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                 RefreshToken();
             }
 
-            return new TraktRequestGenerator() { Settings = Settings, _configService=_configService, HttpClient = _httpClient, };
+            return new TraktRequestGenerator() { Settings = Settings, _configService = _configService, HttpClient = _httpClient, };
         }
 
         public override IParseNetImportResponse GetParser()

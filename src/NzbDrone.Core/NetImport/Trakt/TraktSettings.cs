@@ -1,14 +1,13 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Text.RegularExpressions;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using System;
-using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
-
     public class TraktSettingsValidator : AbstractValidator<TraktSettings>
     {
         public TraktSettingsValidator()
@@ -51,6 +50,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             // Limit not smaller than 1 and not larger than 100
             RuleFor(c => c.Limit)
                 .GreaterThan(0)
+
             //    .InclusiveBetween(1, 500)
                 .WithMessage("Must be integer greater than 0");
         }
@@ -121,13 +121,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(99, Label = "Authenticate with Trakt", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
-
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
     }
-
-
-
 }

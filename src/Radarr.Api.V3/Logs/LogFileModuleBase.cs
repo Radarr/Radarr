@@ -26,7 +26,7 @@ namespace Radarr.Api.V3.Logs
             _configFileProvider = configFileProvider;
             GetResourceAll = GetLogFilesResponse;
 
-            Get(LOGFILE_ROUTE,  options => GetLogFileResponse(options.filename));
+            Get(LOGFILE_ROUTE, options => GetLogFileResponse(options.filename));
         }
 
         private List<LogFileResource> GetLogFilesResponse()
@@ -60,7 +60,9 @@ namespace Radarr.Api.V3.Logs
             var filePath = GetLogFilePath(filename);
 
             if (!_diskProvider.FileExists(filePath))
+            {
                 return new NotFoundResponse();
+            }
 
             var data = _diskProvider.ReadAllText(filePath);
 

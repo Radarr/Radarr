@@ -1,16 +1,18 @@
-using System.Data;
-using FluentMigrator;
-using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Datastore.Converters;
-using NzbDrone.Core.Languages;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using FluentMigrator;
+using NzbDrone.Core.Datastore.Converters;
+using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
     // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+#pragma warning disable SA1200
     using NzbDrone.Common.Extensions;
+#pragma warning restore SA1200
 
     [Migration(154)]
     public class add_language_to_files_history_blacklist : NzbDroneMigrationBase
@@ -31,7 +33,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void UpdateLanguage(IDbConnection conn, IDbTransaction tran)
         {
-            var LanguageConverter = new EmbeddedDocumentConverter(new LanguageIntConverter());
+            var languageConverter = new EmbeddedDocumentConverter(new LanguageIntConverter());
 
             var profileLanguages = new Dictionary<int, int>();
             using (IDbCommand getProfileCmd = conn.CreateCommand())
@@ -77,7 +79,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             foreach (var group in movieLanguages.GroupBy(v => v.Value, v => v.Key))
             {
-                var languageJson = LanguageConverter.ToDB(new List<Language> { Language.FindById(group.Key) });
+                var languageJson = languageConverter.ToDB(new List<Language> { Language.FindById(group.Key) });
 
                 var movieIds = group.Select(v => v.ToString()).Join(",");
 

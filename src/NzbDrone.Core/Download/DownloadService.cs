@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Download
         void DownloadReport(RemoteMovie remoteMovie);
     }
 
-
     public class DownloadService : IDownloadService
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
@@ -91,6 +90,7 @@ namespace NzbDrone.Core.Download
                 {
                     _indexerStatusService.RecordFailure(remoteMovie.Release.IndexerId);
                 }
+
                 throw;
             }
 

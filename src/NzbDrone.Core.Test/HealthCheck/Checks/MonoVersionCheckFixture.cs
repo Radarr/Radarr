@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                   .Returns(new Version(version));
         }
 
-
         [TestCase("5.18")]
         [TestCase("5.20")]
         public void should_return_ok(string version)

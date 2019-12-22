@@ -10,19 +10,19 @@ namespace NzbDrone.Api.MediaCovers
 {
     public class MediaCoverModule : NzbDroneApiModule
     {
+        private const string MEDIA_COVER_ROUTE = @"/(?<movieId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
         private static readonly Regex RegexResizedImage = new Regex(@"-\d+\.jpg$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private const string MEDIA_COVER_ROUTE = @"/(?<seriesId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
 
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
 
-        public MediaCoverModule(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider) : base("MediaCover")
+        public MediaCoverModule(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider)
+            : base("MediaCover")
         {
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get(MEDIA_COVER_ROUTE,  options => GetMediaCover(options.seriesId, options.filename));
+            Get(MEDIA_COVER_ROUTE, options => GetMediaCover(options.seriesId, options.filename));
         }
 
         private object GetMediaCover(int seriesId, string filename)
@@ -38,6 +38,7 @@ namespace NzbDrone.Api.MediaCovers
                 {
                     return new NotFoundResponse();
                 }
+
                 filePath = basefilePath;
             }
 

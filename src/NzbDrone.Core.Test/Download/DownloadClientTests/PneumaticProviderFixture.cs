@@ -58,7 +58,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_nzbUrl, _nzbPath), Times.Once());
         }
 
-
         [Test]
         public void should_throw_on_failed_download()
         {

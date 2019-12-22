@@ -38,7 +38,6 @@ namespace NzbDrone.Core.Restrictions
             else
             {
                 return new CaseInsensitiveTermMatcher(term).IsMatch;
-
             }
         }
 

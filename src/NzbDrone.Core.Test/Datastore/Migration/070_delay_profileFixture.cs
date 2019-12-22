@@ -66,30 +66,30 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             var db = WithMigrationTestDb(c =>
             {
                 c.Insert.IntoTable("Profiles").Row(new
-                                                   {
-                                                       GrabDelay = 1,
-                                                       Name = "OneHour",
-                                                       Cutoff = 0,
-                                                       Items = "[]"
-                                                   });
+                {
+                    GrabDelay = 1,
+                    Name = "OneHour",
+                    Cutoff = 0,
+                    Items = "[]"
+                });
 
                 c.Insert.IntoTable("Series").Row(new
-                                                 {
-                                                     TvdbId = 0,
-                                                     TvRageId = 0,
-                                                     Title = "Series",
-                                                     TitleSlug = "series",
-                                                     CleanTitle = "series",
-                                                     Status = 0,
-                                                     Images = "[]",
-                                                     Path = @"C:\Test\Series",
-                                                     Monitored = 1,
-                                                     SeasonFolder = 1,
-                                                     RunTime = 0,
-                                                     SeriesType = 0,
-                                                     UseSceneNumbering = 0,
-                                                     Tags = "[1]"
-                                                 });
+                {
+                    TvdbId = 0,
+                    TvRageId = 0,
+                    Title = "Series",
+                    TitleSlug = "series",
+                    CleanTitle = "series",
+                    Status = 0,
+                    Images = "[]",
+                    Path = @"C:\Test\Series",
+                    Monitored = 1,
+                    SeasonFolder = 1,
+                    RunTime = 0,
+                    SeriesType = 0,
+                    UseSceneNumbering = 0,
+                    Tags = "[1]"
+                });
             });
 
             var tag = db.Query<Tag69>("SELECT Id, Label FROM Tags").Single();

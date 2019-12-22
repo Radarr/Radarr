@@ -66,7 +66,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return false;
-
         }
 
         public bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality)

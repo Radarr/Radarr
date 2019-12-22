@@ -7,7 +7,6 @@ namespace NzbDrone.Api.Config
         public UiConfigModule(IConfigService configService)
             : base(configService)
         {
-
         }
 
         protected override UiConfigResource ToResource(IConfigService model)

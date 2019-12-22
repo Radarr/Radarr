@@ -7,7 +7,6 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ThingiProvider
 {
-
     public class ProviderRepositoryFixture : DbTest<IndexerRepository, IndexerDefinition>
     {
         [Test]
@@ -24,7 +23,7 @@ namespace NzbDrone.Core.Test.ThingiProvider
 
             var storedSetting = (NewznabSettings)storedProvider.Settings;
 
-            storedSetting.Should().BeEquivalentTo(newznabSettings, o=>o.IncludingAllRuntimeProperties());
+            storedSetting.Should().BeEquivalentTo(newznabSettings, o => o.IncludingAllRuntimeProperties());
         }
     }
 }

@@ -15,7 +15,6 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IUpdateMovieFileQualityService
     {
-
     }
 
     public class UpdateMovieFileQualityService : IUpdateMovieFileQualityService, IExecute<UpdateMovieFileQualityCommand>
@@ -57,7 +56,7 @@ namespace NzbDrone.Core.MediaFiles
                 var sizeMovie = new LocalMovie();
                 sizeMovie.Size = movieFile.Size;
 
-                var helpers = new List<object>{sizeMovie};
+                var helpers = new List<object> { sizeMovie };
 
                 if (movieFile.MediaInfo != null)
                 {
@@ -96,7 +95,6 @@ namespace NzbDrone.Core.MediaFiles
 
                 count++;
             }
-
         }
     }
 }

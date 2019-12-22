@@ -9,8 +9,8 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -25,6 +25,8 @@ namespace NzbDrone.Core.Organizer
 
     public class FileNameBuilder : IBuildFileNames
     {
+        private const string MediaInfoVideoDynamicRangeToken = "{MediaInfo VideoDynamicRange}";
+
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IUpdateMediaInfo _mediaInfoUpdater;
@@ -142,9 +144,8 @@ namespace NzbDrone.Core.Organizer
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddIdTokens(tokenHandlers, movie);
 
-            if(movie.MovieFile != null)
+            if (movie.MovieFile != null)
             {
-
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
                 AddMovieFileTokens(tokenHandlers, movieFile);
@@ -154,7 +155,6 @@ namespace NzbDrone.Core.Organizer
             {
                 AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" });
             }
-
 
             var directoryName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             directoryName = FileNameCleanupRegex.Replace(directoryName, match => match.Captures[0].Value[0].ToString());
@@ -166,7 +166,6 @@ namespace NzbDrone.Core.Organizer
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
         {
             return new BasicNamingConfig(); //For now let's be lazy
-
         }
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)
@@ -194,7 +193,7 @@ namespace NzbDrone.Core.Organizer
             }
             else
             {
-                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}"});
+                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" });
             }
 
             string name = ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig);
@@ -286,6 +285,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile);
+
             //tokenHandlers["{IMDb Id}"] = m =>
             tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
@@ -305,17 +305,16 @@ namespace NzbDrone.Core.Organizer
             var qualityProper = GetQualityProper(movie, movieFile.Quality);
             var qualityReal = GetQualityReal(movie, movieFile.Quality);
 
-            tokenHandlers["{Quality Full}"] = m => String.Format("{0} {1} {2}", qualityTitle, qualityProper, qualityReal);
+            tokenHandlers["{Quality Full}"] = m => string.Format("{0} {1} {2}", qualityTitle, qualityProper, qualityReal);
             tokenHandlers["{Quality Title}"] = m => qualityTitle;
             tokenHandlers["{Quality Proper}"] = m => qualityProper;
             tokenHandlers["{Quality Real}"] = m => qualityReal;
         }
 
-        private const string MediaInfoVideoDynamicRangeToken = "{MediaInfo VideoDynamicRange}";
         private static readonly IReadOnlyDictionary<string, int> MinimumMediaInfoSchemaRevisions =
             new Dictionary<string, int>(FileNameBuilderTokenEqualityComparer.Instance)
         {
-            {MediaInfoVideoDynamicRangeToken, 5}
+            { MediaInfoVideoDynamicRangeToken, 5 }
         };
 
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
@@ -329,9 +328,8 @@ namespace NzbDrone.Core.Organizer
 
             var sceneName = movieFile.GetSceneOrFileName();
 
-
-            var videoCodec =  MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
-            var audioCodec =  MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
+            var videoCodec = MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
+            var audioCodec = MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
             var audioLanguages = movieFile.MediaInfo.AudioLanguages ?? string.Empty;
             var subtitles = movieFile.MediaInfo.Subtitles ?? string.Empty;
@@ -389,7 +387,9 @@ namespace NzbDrone.Core.Organizer
             foreach (var item in mediaInfoLanguages.Split('/'))
             {
                 if (!string.IsNullOrWhiteSpace(item))
+                {
                     tokens.Add(item.Trim());
+                }
             }
 
             var cultures = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
@@ -400,7 +400,9 @@ namespace NzbDrone.Core.Organizer
                     var cultureInfo = cultures.FirstOrDefault(p => p.EnglishName == tokens[i]);
 
                     if (cultureInfo != null)
+                    {
                         tokens[i] = cultureInfo.TwoLetterISOLanguageName.ToUpper();
+                    }
                 }
                 catch
                 {
@@ -483,7 +485,10 @@ namespace NzbDrone.Core.Organizer
         private string ReplaceNumberToken(string token, int value)
         {
             var split = token.Trim('{', '}').Split(':');
-            if (split.Length == 1) return value.ToString("0");
+            if (split.Length == 1)
+            {
+                return value.ToString("0");
+            }
 
             return value.ToString(split[1]);
         }
@@ -495,7 +500,7 @@ namespace NzbDrone.Core.Organizer
                 return "Proper";
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         private string GetQualityReal(Movie movie, QualityModel quality)

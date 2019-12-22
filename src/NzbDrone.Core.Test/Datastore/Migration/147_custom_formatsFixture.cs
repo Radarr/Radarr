@@ -1,14 +1,14 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.Datastore.Migration
 {
@@ -31,7 +31,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
         public void WithDefaultProfiles(add_custom_formats m)
         {
-            AddDefaultProfile(m, "Any", Quality.Bluray480p,
+            AddDefaultProfile(m,
+                "Any",
+                Quality.Bluray480p,
                 Quality.WORKPRINT,
                 Quality.CAM,
                 Quality.TELESYNC,
@@ -57,7 +59,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Quality.Remux2160p,
                 Quality.BRDISK);
 
-            AddDefaultProfile(m, "SD", Quality.Bluray480p,
+            AddDefaultProfile(m,
+                "SD",
+                Quality.Bluray480p,
                 Quality.WORKPRINT,
                 Quality.CAM,
                 Quality.TELESYNC,
@@ -70,24 +74,32 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Quality.Bluray480p,
                 Quality.Bluray576p);
 
-            AddDefaultProfile(m, "HD-720p", Quality.Bluray720p,
+            AddDefaultProfile(m,
+                "HD-720p",
+                Quality.Bluray720p,
                 Quality.HDTV720p,
                 Quality.WEBDL720p,
                 Quality.Bluray720p);
 
-            AddDefaultProfile(m, "HD-1080p", Quality.Bluray1080p,
+            AddDefaultProfile(m,
+                "HD-1080p",
+                Quality.Bluray1080p,
                 Quality.HDTV1080p,
                 Quality.WEBDL1080p,
                 Quality.Bluray1080p,
                 Quality.Remux1080p);
 
-            AddDefaultProfile(m, "Ultra-HD", Quality.Remux2160p,
+            AddDefaultProfile(m,
+                "Ultra-HD",
+                Quality.Remux2160p,
                 Quality.HDTV2160p,
                 Quality.WEBDL2160p,
                 Quality.Bluray2160p,
                 Quality.Remux2160p);
 
-            AddDefaultProfile(m, "HD - 720p/1080p", Quality.Bluray720p,
+            AddDefaultProfile(m,
+                "HD - 720p/1080p",
+                Quality.Bluray720p,
                 Quality.HDTV720p,
                 Quality.HDTV1080p,
                 Quality.WEBDL720p,
@@ -95,8 +107,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Quality.Bluray720p,
                 Quality.Bluray1080p,
                 Quality.Remux1080p,
-                Quality.Remux2160p
-                );
+                Quality.Remux2160p);
         }
 
         [Test]

@@ -1,8 +1,8 @@
+using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using FluentAssertions;
 
 namespace NzbDrone.Core.Test.OrganizerTests
 {
@@ -10,15 +10,15 @@ namespace NzbDrone.Core.Test.OrganizerTests
 
     public class GetMovieFolderFixture : CoreTest<FileNameBuilder>
     {
-        private NamingConfig namingConfig;
+        private NamingConfig _namingConfig;
 
         [SetUp]
         public void Setup()
         {
-            namingConfig = NamingConfig.Default;
+            _namingConfig = NamingConfig.Default;
 
             Mocker.GetMock<INamingConfigService>()
-                  .Setup(c => c.GetConfig()).Returns(namingConfig);
+                  .Setup(c => c.GetConfig()).Returns(_namingConfig);
         }
 
         [TestCase("Arrival", 2016, "{Movie Title} ({Release Year})", "Arrival (2016)")]
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
         [TestCase("The Big Short", 2015, "{Movie Title} ({Release Year})", "The Big Short (2015)")]
         public void should_use_movieFolderFormat_to_build_folder_name(string movieTitle, int year, string format, string expected)
         {
-            namingConfig.MovieFolderFormat = format;
+            _namingConfig.MovieFolderFormat = format;
 
             var movie = new Movie { Title = movieTitle, Year = year };
 

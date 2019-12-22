@@ -1,16 +1,16 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Sabnzbd;
 using NzbDrone.Core.Download.Clients.Sabnzbd.Responses;
-using NzbDrone.Test.Common;
 using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Validation;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
 {
@@ -28,20 +28,20 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new SabnzbdSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              ApiKey = "5c770e3197e4fe763423ee7c392c25d1",
-                                              Username = "admin",
-                                              Password = "pass",
-                                              MovieCategory = "movie",
-                                              RecentMoviePriority = (int)SabnzbdPriority.High
-                                          };
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                ApiKey = "5c770e3197e4fe763423ee7c392c25d1",
+                Username = "admin",
+                Password = "pass",
+                MovieCategory = "movie",
+                RecentMoviePriority = (int)SabnzbdPriority.High
+            };
             _queued = new SabnzbdQueue
-                {
-                    DefaultRootFolder = @"Y:\nzbget\root".AsOsAgnostic(),
-                    Paused = false,
-                    Items = new List<SabnzbdQueueItem>()
+            {
+                DefaultRootFolder = @"Y:\nzbget\root".AsOsAgnostic(),
+                Paused = false,
+                Items = new List<SabnzbdQueueItem>()
                     {
                         new SabnzbdQueueItem
                         {
@@ -54,11 +54,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
-                };
+            };
 
             _failed = new SabnzbdHistory
-                {
-                    Items = new List<SabnzbdHistoryItem>()
+            {
+                Items = new List<SabnzbdHistoryItem>()
                     {
                         new SabnzbdHistoryItem
                         {
@@ -69,11 +69,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
-                };
+            };
 
             _completed = new SabnzbdHistory
-                {
-                    Items = new List<SabnzbdHistoryItem>()
+            {
+                Items = new List<SabnzbdHistoryItem>()
                     {
                         new SabnzbdHistoryItem
                         {
@@ -85,19 +85,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Storage = "/remote/mount/vv/Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
-                };
+            };
 
             _config = new SabnzbdConfig
+            {
+                Misc = new SabnzbdConfigMisc
                 {
-                    Misc = new SabnzbdConfigMisc
-                        {
-                            complete_dir = @"/remote/mount"
-                        },
-                    Categories = new List<SabnzbdCategory>
+                    complete_dir = @"/remote/mount"
+                },
+                Categories = new List<SabnzbdCategory>
                         {
                             new SabnzbdCategory  { Name = "movie", Dir = "vv" }
                         }
-                };
+            };
 
             Mocker.GetMock<ISabnzbdProxy>()
                   .Setup(v => v.GetVersion(It.IsAny<SabnzbdSettings>()))
@@ -108,9 +108,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                 .Returns(_config);
 
             _fullStatus = new SabnzbdFullStatus
-                {
-                    CompleteDir = @"Y:\sabnzbd\root\complete".AsOsAgnostic()
-                };
+            {
+                CompleteDir = @"Y:\sabnzbd\root\complete".AsOsAgnostic()
+            };
 
             Mocker.GetMock<ISabnzbdProxy>()
                 .Setup(s => s.GetFullStatus(It.IsAny<SabnzbdSettings>()))
@@ -161,7 +161,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         protected virtual void GivenHistory(SabnzbdHistory history)
         {
             if (history == null)
+            {
                 history = new SabnzbdHistory() { Items = new List<SabnzbdHistoryItem>() };
+            }
 
             Mocker.GetMock<ISabnzbdProxy>()
                 .Setup(s => s.GetHistory(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<SabnzbdSettings>()))

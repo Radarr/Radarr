@@ -8,7 +8,6 @@ namespace NzbDrone.Core.Validation.Paths
     {
         private readonly IAppFolderInfo _appFolderInfo;
 
-
         public StartupFolderValidator(IAppFolderInfo appFolderInfo)
             : base("Path cannot be an ancestor of the start up folder")
         {
@@ -17,7 +16,10 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (context.PropertyValue == null) return true;
+            if (context.PropertyValue == null)
+            {
+                return true;
+            }
 
             return !_appFolderInfo.StartUpFolder.IsParentPath(context.PropertyValue.ToString());
         }

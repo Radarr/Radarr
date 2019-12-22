@@ -1,6 +1,6 @@
 using System;
-using Radarr.Http.REST;
 using NzbDrone.Core.Backup;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.System.Backup
 {

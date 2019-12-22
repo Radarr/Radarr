@@ -1,6 +1,5 @@
 ﻿namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-
     public class ConfigResource
     {
         public Images images { get; set; }
@@ -17,5 +16,4 @@
         public string[] profile_sizes { get; set; }
         public string[] still_sizes { get; set; }
     }
-
 }

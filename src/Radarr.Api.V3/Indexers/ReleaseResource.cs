@@ -53,10 +53,8 @@ namespace Radarr.Api.V3.Indexers
         public bool Special { get; set; }
 
         // Sent when queuing an unknown release
-
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int? MovieId { get; set; }
-
     }
 
     public static class ReleaseResourceMapper
@@ -73,6 +71,7 @@ namespace Radarr.Api.V3.Indexers
             {
                 Guid = releaseInfo.Guid,
                 Quality = parsedMovieInfo.Quality,
+
                 //QualityWeight
                 Age = releaseInfo.Age,
                 AgeHours = releaseInfo.AgeHours,
@@ -95,16 +94,14 @@ namespace Radarr.Api.V3.Indexers
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
                 DownloadAllowed = remoteMovie.DownloadAllowed,
+
                 //ReleaseWeight
-
-
                 MagnetUrl = torrentInfo.MagnetUrl,
                 InfoHash = torrentInfo.InfoHash,
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                 Protocol = releaseInfo.DownloadProtocol
             };
-
         }
 
         public static ReleaseInfo ToModel(this ReleaseResource resource)

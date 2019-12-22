@@ -45,7 +45,7 @@ namespace Radarr.Api.V3.Indexers
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             GetResourceAll = GetReleases;
-            Post("/",  x => DownloadRelease(ReadResourceFromRequest()));
+            Post("/", x => DownloadRelease(ReadResourceFromRequest()));
 
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }

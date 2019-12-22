@@ -3,8 +3,8 @@ using System.Windows.Forms;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation;
-using Radarr.Host;
 using NzbDrone.SysTray;
+using Radarr.Host;
 
 namespace NzbDrone
 {

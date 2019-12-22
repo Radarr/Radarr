@@ -54,17 +54,17 @@ namespace NzbDrone.Core.Indexers.Torznab
         private IndexerDefinition GetDefinition(string name, TorznabSettings settings)
         {
             return new IndexerDefinition
-                   {
-                       EnableRss = false,
-                       EnableAutomaticSearch = false,
-                       EnableInteractiveSearch = false,
-                       Name = name,
-                       Implementation = GetType().Name,
-                       Settings = settings,
-                       Protocol = DownloadProtocol.Usenet,
-                       SupportsRss = SupportsRss,
-                       SupportsSearch = SupportsSearch
-                   };
+            {
+                EnableRss = false,
+                EnableAutomaticSearch = false,
+                EnableInteractiveSearch = false,
+                Name = name,
+                Implementation = GetType().Name,
+                Settings = settings,
+                Protocol = DownloadProtocol.Usenet,
+                SupportsRss = SupportsRss,
+                SupportsSearch = SupportsSearch
+            };
         }
 
         private TorznabSettings GetSettings(string url, string apiPath = null, int[] categories = null)
@@ -87,7 +87,11 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected override void Test(List<ValidationFailure> failures)
         {
             base.Test(failures);
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestCapabilities());
         }
 
@@ -98,7 +102,9 @@ namespace NzbDrone.Core.Indexers.Torznab
             foreach (var category in categories)
             {
                 if (category.Subcategories != null)
+                {
                     l.AddRange(CategoryIds(category.Subcategories));
+                }
             }
 
             return l;
@@ -116,7 +122,9 @@ namespace NzbDrone.Core.Indexers.Torznab
                 {
                     _logger.Warn($"{Definition.Name} does not support the following categories: {string.Join(", ", notSupported)}. You should probably remove them.");
                     if (notSupported.Count() == Settings.Categories.Count())
+                    {
                         return new ValidationFailure(string.Empty, $"This indexer does not support any of the selected categories! (You may need to turn on advanced settings to see them)");
+                    }
                 }
 
                 if (capabilities.SupportedSearchParameters != null && capabilities.SupportedSearchParameters.Contains("q"))

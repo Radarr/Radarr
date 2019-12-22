@@ -5,15 +5,15 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Movies
 {
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Movies
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
         List<Movie> MoviesWithFiles(int movieId);
-        System.Linq.Expressions.Expression<Func<Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue, string filterType = null);
+        System.Linq.Expressions.Expression<Func<Movie, bool>> ConstructFilterExpression(string filterKey, string filterValue, string filterType = null);
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
@@ -73,24 +73,23 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-
-        public System.Linq.Expressions.Expression<Func<Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue, string FilterType = null)
+        public System.Linq.Expressions.Expression<Func<Movie, bool>> ConstructFilterExpression(string filterKey, string filterValue, string filterType = null)
         {
             //if (FilterKey == "all" && FilterValue == "all")
             //{
             //    return v => v.Monitored == true || v.Monitored == false;
             //}
-            if (FilterKey == "monitored" && FilterValue == "false")
+            if (filterKey == "monitored" && filterValue == "false")
             {
                 return v => v.Monitored == false;
             }
-            else if (FilterKey == "monitored" && FilterValue == "true")
+            else if (filterKey == "monitored" && filterValue == "true")
             {
                 return v => v.Monitored == true;
             }
-            else if (FilterKey == "status")
+            else if (filterKey == "status")
             {
-                switch (FilterValue)
+                switch (filterValue)
                 {
                     case "released":
                         return v => v.Status == MovieStatusType.Released;
@@ -103,31 +102,32 @@ namespace NzbDrone.Core.Movies
                              ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
                              (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
                              (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
-                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released || v.HasPreDBEntry == true));
+                             ((v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released) || v.HasPreDBEntry == true));
                 }
             }
-            else if (FilterKey == "downloaded")
+            else if (filterKey == "downloaded")
             {
                 return v => v.MovieFileId == 0;
             }
-            else if (FilterKey == "title")
+            else if (filterKey == "title")
             {
-                if (FilterValue == string.Empty || FilterValue == null)
+                if (filterValue == string.Empty || filterValue == null)
                 {
                     return v => true;
                 }
                 else
                 {
-                    if (FilterType == "contains")
+                    if (filterType == "contains")
                     {
-                        return v => v.CleanTitle.Contains(FilterValue);
+                        return v => v.CleanTitle.Contains(filterValue);
                     }
                     else
                     {
-                        return v => v.CleanTitle == FilterValue;
+                        return v => v.CleanTitle == filterValue;
                     }
                 }
             }
+
             return v => true;
         }
 
@@ -155,6 +155,7 @@ namespace NzbDrone.Core.Movies
             {
                 defaultState = MoviePathState.Dynamic;
             }
+
             if (string.IsNullOrWhiteSpace(newMovie.Path))
             {
                 var folderName = _fileNameBuilder.GetMovieFolder(newMovie);
@@ -184,11 +185,12 @@ namespace NzbDrone.Core.Movies
 
             newMovies.ForEach(m =>
             {
-                 MoviePathState defaultState = MoviePathState.Static;
+                MoviePathState defaultState = MoviePathState.Static;
                 if (!_configService.PathsDefaultStatic)
                 {
                     defaultState = MoviePathState.Dynamic;
                 }
+
                 if (string.IsNullOrWhiteSpace(m.Path))
                 {
                     var folderName = _fileNameBuilder.GetMovieFolder(m);
@@ -246,6 +248,7 @@ namespace NzbDrone.Core.Movies
                 // no movie matched
                 return list;
             }
+
             // build ordered list of movie by position in the search string
             var query =
                 list.Select(movie => new
@@ -254,7 +257,7 @@ namespace NzbDrone.Core.Movies
                     length = movie.CleanTitle.Length,
                     movie = movie
                 })
-                    .Where(s => (s.position>=0))
+                    .Where(s => (s.position >= 0))
                     .ToList()
                     .OrderBy(s => s.position)
                     .ThenByDescending(s => s.length)
@@ -267,6 +270,7 @@ namespace NzbDrone.Core.Movies
         public Movie FindByTitleInexact(string title)
         {
             var query = FindByTitleInexactAll(title);
+
             // get the leftmost movie that is the longest
             // movie are usually the first thing in release title, so we select the leftmost and longest match
             var match = query.First();
@@ -276,6 +280,7 @@ namespace NzbDrone.Core.Movies
             {
                 _logger.Debug("Multiple movie match candidate: {0} cleantitle: {1}", entry.Title, entry.CleanTitle);
             }
+
             return match;
         }
 
@@ -299,8 +304,9 @@ namespace NzbDrone.Core.Movies
             var movie = _movieRepository.Get(movieId);
             if (addExclusion)
             {
-                _exclusionService.AddExclusion(new ImportExclusion {TmdbId = movie.TmdbId, MovieTitle = movie.Title, MovieYear = movie.Year } );
+                _exclusionService.AddExclusion(new ImportExclusion { TmdbId = movie.TmdbId, MovieTitle = movie.Title, MovieYear = movie.Year });
             }
+
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));
             _logger.Info("Deleted movie {}", movie);
@@ -339,7 +345,6 @@ namespace NzbDrone.Core.Movies
                     s.Path = Path.Combine(s.RootFolderPath, folderName);
                     _logger.Trace("Changing path for {0} to {1}", s.Title, s.Path);
                 }
-
                 else
                 {
                     _logger.Trace("Not changing path for: {0}", s.Title);
@@ -367,6 +372,7 @@ namespace NzbDrone.Core.Movies
             var movie = message.MovieFile.Movie.Value;
             movie.MovieFileId = message.MovieFile.Id;
             _movieRepository.Update(movie);
+
             //_movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
             _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
         }
@@ -379,7 +385,6 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
-
             var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
             movie.MovieFileId = 0;
             _logger.Debug("Detaching movie {0} from file.", movie.Id);

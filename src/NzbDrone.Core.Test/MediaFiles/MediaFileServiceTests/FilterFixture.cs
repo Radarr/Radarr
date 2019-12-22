@@ -5,8 +5,8 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
@@ -20,10 +20,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
         public void Setup()
         {
             _series = new Movie
-                      {
-                          Id = 10,
-                          Path = @"C:\".AsOsAgnostic()
-                      };
+            {
+                Id = 10,
+                Path = @"C:\".AsOsAgnostic()
+            };
         }
 
         [Test]
@@ -39,7 +39,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             Mocker.GetMock<IMediaFileRepository>()
                 .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
                 .Returns(new List<MovieFile>());
-
 
             Subject.FilterExistingFiles(files, _series).Should().BeEquivalentTo(files);
         }
@@ -58,7 +57,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                 .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
                 .Returns(files.Select(f => new MovieFile { RelativePath = Path.GetFileName(f) }).ToList());
 
-
             Subject.FilterExistingFiles(files, _series).Should().BeEmpty();
         }
 
@@ -76,9 +74,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                 .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
                 .Returns(new List<MovieFile>
                 {
-                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile { RelativePath = "file2.avi".AsOsAgnostic() }
                 });
-
 
             Subject.FilterExistingFiles(files, _series).Should().HaveCount(2);
             Subject.FilterExistingFiles(files, _series).Should().NotContain("C:\\file2.avi".AsOsAgnostic());
@@ -100,9 +97,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                 .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
                 .Returns(new List<MovieFile>
                 {
-                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile { RelativePath = "file2.avi".AsOsAgnostic() }
                 });
-
 
             Subject.FilterExistingFiles(files, _series).Should().HaveCount(2);
             Subject.FilterExistingFiles(files, _series).Should().NotContain("C:\\file2.avi".AsOsAgnostic());
@@ -124,7 +120,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                 .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
                 .Returns(new List<MovieFile>
                 {
-                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile { RelativePath = "file2.avi".AsOsAgnostic() }
                 });
 
             Subject.FilterExistingFiles(files, _series).Should().HaveCount(3);

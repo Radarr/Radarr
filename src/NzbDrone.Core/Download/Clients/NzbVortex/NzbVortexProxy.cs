@@ -92,7 +92,6 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         {
             var requestBuilder = BuildRequest(settings).Resource("nzb");
 
-
             if (settings.TvCategory.IsNotNullOrWhiteSpace())
             {
                 requestBuilder.AddQueryParam("groupName", settings.TvCategory);

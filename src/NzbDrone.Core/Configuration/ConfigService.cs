@@ -4,12 +4,12 @@ using System.Globalization;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Core.Security;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Security;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -57,7 +57,10 @@ namespace NzbDrone.Core.Configuration
             {
                 object currentValue;
                 allWithDefaults.TryGetValue(configValue.Key, out currentValue);
-                if (currentValue == null || configValue.Value == null) continue;
+                if (currentValue == null || configValue.Value == null)
+                {
+                    continue;
+                }
 
                 var equal = configValue.Value.ToString().Equals(currentValue.ToString());
 

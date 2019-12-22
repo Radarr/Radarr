@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Nancy;
 using NzbDrone.Common.Extensions;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -9,11 +9,11 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
-using Nancy;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -25,21 +25,19 @@ namespace Radarr.Api.V3.Movies
                                 IHandle<MovieDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
-
     {
         protected readonly IMovieService _moviesService;
         private readonly IMapCoversToLocal _coverMapper;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
-                            IMovieService moviesService,
-                            IMapCoversToLocal coverMapper,
-                            RootFolderValidator rootFolderValidator,
-                            MoviePathValidator moviesPathValidator,
-                            MovieExistsValidator moviesExistsValidator,
-                            MovieAncestorValidator moviesAncestorValidator,
-                            ProfileExistsValidator profileExistsValidator,
-                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator
-            )
+                           IMovieService moviesService,
+                           IMapCoversToLocal coverMapper,
+                           RootFolderValidator rootFolderValidator,
+                           MoviePathValidator moviesPathValidator,
+                           MovieExistsValidator moviesExistsValidator,
+                           MovieAncestorValidator moviesAncestorValidator,
+                           ProfileExistsValidator profileExistsValidator,
+                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
@@ -93,7 +91,10 @@ namespace Radarr.Api.V3.Movies
 
         protected MovieResource MapToResource(Movie movies)
         {
-            if (movies == null) return null;
+            if (movies == null)
+            {
+                return null;
+            }
 
             var resource = movies.ToResource();
             MapCoversToLocal(resource);
@@ -159,7 +160,10 @@ namespace Radarr.Api.V3.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
-            if (message.Reason == DeleteMediaFileReason.Upgrade) return;
+            if (message.Reason == DeleteMediaFileReason.Upgrade)
+            {
+                return;
+            }
 
             BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Radarr.Http.REST;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.ExtraFiles
 {

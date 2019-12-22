@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -5,7 +6,6 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -29,14 +29,12 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(s => s.MovieId = 12)
                 .BuildListOfNew();
 
-
             Db.InsertMany(files);
 
             var movieFiles = Subject.GetFilesByMovie(12);
 
             movieFiles.Should().HaveCount(4);
             movieFiles.Should().OnlyContain(c => c.MovieId == 12);
-
         }
     }
 }

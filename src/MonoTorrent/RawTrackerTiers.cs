@@ -7,98 +7,103 @@ namespace MonoTorrent
 {
     public class RawTrackerTiers : IList<RawTrackerTier>
     {
-        BEncodedList Tiers {
+        BEncodedList Tiers
+        {
             get; set;
         }
 
-        public RawTrackerTiers ()
-            : this (new BEncodedList ())
+        public RawTrackerTiers()
+            : this(new BEncodedList())
         {
         }
 
-        public RawTrackerTiers (BEncodedList tiers)
+        public RawTrackerTiers(BEncodedList tiers)
         {
             Tiers = tiers;
         }
 
-        public int IndexOf (RawTrackerTier item)
+        public int IndexOf(RawTrackerTier item)
         {
-            if (item != null) {
+            if (item != null)
+            {
                 for (int i = 0; i < Tiers.Count; i++)
-                    if (item.Tier == Tiers [i])
+                    if (item.Tier == Tiers[i])
                         return i;
             }
             return -1;
         }
 
-        public void Insert (int index, RawTrackerTier item)
+        public void Insert(int index, RawTrackerTier item)
         {
-            Tiers.Insert (index, item.Tier);
+            Tiers.Insert(index, item.Tier);
         }
 
-        public void RemoveAt (int index)
+        public void RemoveAt(int index)
         {
-            Tiers.RemoveAt (index);
+            Tiers.RemoveAt(index);
         }
 
-        public RawTrackerTier this[int index] {
-            get { return new RawTrackerTier ((BEncodedList) Tiers [index]); }
-            set { Tiers [index] = value.Tier; }
-        }
-
-        public void Add (RawTrackerTier item)
+        public RawTrackerTier this[int index]
         {
-            Tiers.Add (item.Tier);
+            get { return new RawTrackerTier((BEncodedList)Tiers[index]); }
+            set { Tiers[index] = value.Tier; }
         }
 
-        public void AddRange (IEnumerable<RawTrackerTier> tiers)
+        public void Add(RawTrackerTier item)
+        {
+            Tiers.Add(item.Tier);
+        }
+
+        public void AddRange(IEnumerable<RawTrackerTier> tiers)
         {
             foreach (var v in tiers)
-                Add (v);
+                Add(v);
         }
 
-        public void Clear ()
+        public void Clear()
         {
-            Tiers.Clear ();
+            Tiers.Clear();
         }
 
-        public bool Contains (RawTrackerTier item)
+        public bool Contains(RawTrackerTier item)
         {
-            return IndexOf (item) != -1;
+            return IndexOf(item) != -1;
         }
 
-        public void CopyTo (RawTrackerTier[] array, int arrayIndex)
+        public void CopyTo(RawTrackerTier[] array, int arrayIndex)
         {
             foreach (var v in this)
-                array [arrayIndex ++] = v;
+                array[arrayIndex++] = v;
         }
 
-        public bool Remove (RawTrackerTier item)
+        public bool Remove(RawTrackerTier item)
         {
-            int index = IndexOf (item);
+            int index = IndexOf(item);
             if (index != -1)
-                RemoveAt (index);
+                RemoveAt(index);
 
             return index != -1;
         }
 
-        public int Count {
+        public int Count
+        {
             get { return Tiers.Count; }
         }
 
-        public bool IsReadOnly {
+        public bool IsReadOnly
+        {
             get { return Tiers.IsReadOnly; }
         }
 
-        public IEnumerator<RawTrackerTier> GetEnumerator ()
+        public IEnumerator<RawTrackerTier> GetEnumerator()
         {
             foreach (var v in Tiers)
-                yield return new RawTrackerTier ((BEncodedList) v);
+                yield return new RawTrackerTier((BEncodedList)v);
         }
 
-        IEnumerator IEnumerable.GetEnumerator ()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator ();
+            return GetEnumerator();
         }
     }
 }

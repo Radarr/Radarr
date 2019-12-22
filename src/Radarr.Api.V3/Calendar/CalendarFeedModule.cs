@@ -1,4 +1,3 @@
-using Nancy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +5,11 @@ using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
-using NzbDrone.Core.Movies;
+using Nancy;
 using Nancy.Responses;
-using NzbDrone.Core.Tags;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Tags;
 
 namespace Radarr.Api.V3.Calendar
 {
@@ -24,7 +24,7 @@ namespace Radarr.Api.V3.Calendar
             _movieService = movieService;
             _tagService = tagService;
 
-            Get("/Radarr.ics",  options => GetCalendarFeed());
+            Get("/Radarr.ics", options => GetCalendarFeed());
         }
 
         private object GetCalendarFeed()
@@ -44,8 +44,15 @@ namespace Radarr.Api.V3.Calendar
             var queryUnmonitored = Request.Query.Unmonitored;
             var queryTags = Request.Query.Tags;
 
-            if (queryStart.HasValue) start = DateTime.Parse(queryStart.Value);
-            if (queryEnd.HasValue) end = DateTime.Parse(queryEnd.Value);
+            if (queryStart.HasValue)
+            {
+                start = DateTime.Parse(queryStart.Value);
+            }
+
+            if (queryEnd.HasValue)
+            {
+                end = DateTime.Parse(queryEnd.Value);
+            }
 
             if (queryPastDays.HasValue)
             {
@@ -89,7 +96,6 @@ namespace Radarr.Api.V3.Calendar
 
                 CreateEvent(calendar, movie, true);
                 CreateEvent(calendar, movie, false);
-
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());

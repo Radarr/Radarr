@@ -42,10 +42,10 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             var request = requestBuilder.Build();
 
             return new PlexTvPinUrlResponse
-                   {
-                       Url = request.Url.ToString(),
-                       Headers = request.Headers.ToDictionary(h => h.Key, h => h.Value)
-                   };
+            {
+                Url = request.Url.ToString(),
+                Headers = request.Headers.ToDictionary(h => h.Key, h => h.Value)
+            };
         }
 
         public PlexTvSignInUrlResponse GetSignInUrl(string callbackUrl, int pinId, string pinCode)
@@ -67,10 +67,10 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             var request = requestBuilder.Build();
 
             return new PlexTvSignInUrlResponse
-                   {
-                       OauthUrl = request.Url.ToString(),
-                       PinId = pinId
-                   };
+            {
+                OauthUrl = request.Url.ToString(),
+                PinId = pinId
+            };
         }
 
         public string GetAuthToken(int pinId)

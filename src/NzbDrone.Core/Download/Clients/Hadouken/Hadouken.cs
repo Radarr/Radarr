@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     Title = torrent.Name,
                     TotalSize = torrent.TotalSize,
                     SeedRatio = torrent.DownloadedBytes <= 0 ? 0 :
-                        (double) torrent.UploadedBytes / torrent.DownloadedBytes
+                        (double)torrent.UploadedBytes / torrent.DownloadedBytes
                 };
 
                 if (!string.IsNullOrEmpty(torrent.Error))
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                item.CanMoveFiles = item.CanBeRemoved = (torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused);
+                item.CanMoveFiles = item.CanBeRemoved = torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused;
 
                 items.Add(item);
             }
@@ -142,7 +142,11 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestGetTorrents());
         }
 
@@ -189,7 +193,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             catch (Exception ex)
             {
                 _logger.Error(ex, ex.Message);
-                return new NzbDroneValidationFailure(String.Empty, "Failed to get the list of torrents: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 
             return null;

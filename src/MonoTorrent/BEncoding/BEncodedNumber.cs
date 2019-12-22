@@ -101,16 +101,16 @@ namespace MonoTorrent.BEncoding
             if (reader.PeekByte() == '-')
             {
                 sign = -1;
-                reader.ReadByte ();
+                reader.ReadByte();
             }
 
             int letter;
             while (((letter = reader.PeekByte()) != -1) && letter != 'e')
             {
-                if(letter < '0' || letter > '9')
+                if (letter < '0' || letter > '9')
                     throw new BEncodingException("Invalid number found.");
                 number = number * 10 + (letter - '0');
-                reader.ReadByte ();
+                reader.ReadByte();
             }
             if (reader.ReadByte() != 'e')        //remove the trailing 'e'
                 throw new BEncodingException("Invalid data found. Aborting.");

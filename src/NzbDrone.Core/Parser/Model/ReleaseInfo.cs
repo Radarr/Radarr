@@ -26,14 +26,11 @@ namespace NzbDrone.Core.Parser.Model
         public string Codec { get; set; }
         public string Resolution { get; set; }
 
-    public IndexerFlags IndexerFlags { get; set; }
+        public IndexerFlags IndexerFlags { get; set; }
 
         public int Age
         {
-            get
-            {
-                return DateTime.UtcNow.Subtract(PublishDate).Days;
-            }
+            get { return DateTime.UtcNow.Subtract(PublishDate).Days; }
 
             //This prevents manually downloading a release from blowing up in mono
             //TODO: Is there a better way?
@@ -42,10 +39,7 @@ namespace NzbDrone.Core.Parser.Model
 
         public double AgeHours
         {
-            get
-            {
-                return DateTime.UtcNow.Subtract(PublishDate).TotalHours;
-            }
+            get { return DateTime.UtcNow.Subtract(PublishDate).TotalHours; }
 
             //This prevents manually downloading a release from blowing up in mono
             //TODO: Is there a better way?
@@ -54,10 +48,7 @@ namespace NzbDrone.Core.Parser.Model
 
         public double AgeMinutes
         {
-            get
-            {
-                return DateTime.UtcNow.Subtract(PublishDate).TotalMinutes;
-            }
+            get { return DateTime.UtcNow.Subtract(PublishDate).TotalMinutes; }
 
             //This prevents manually downloading a release from blowing up in mono
             //TODO: Is there a better way?

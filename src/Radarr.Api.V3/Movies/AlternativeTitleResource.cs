@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
-using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies.AlternativeTitles;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -10,13 +10,11 @@ namespace Radarr.Api.V3.Movies
     {
         public AlternativeTitleResource()
         {
-
         }
 
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
         public SourceType SourceType { get; set; }
         public int MovieId { get; set; }
         public string Title { get; set; }
@@ -33,7 +31,10 @@ namespace Radarr.Api.V3.Movies
     {
         public static AlternativeTitleResource ToResource(this AlternativeTitle model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new AlternativeTitleResource
             {
@@ -50,7 +51,10 @@ namespace Radarr.Api.V3.Movies
 
         public static AlternativeTitle ToModel(this AlternativeTitleResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new AlternativeTitle
             {

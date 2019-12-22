@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.DecisionEngine
             var right = y.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats;
 
             var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile.Value);
-            var rightIndicies =  QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile.Value);
+            var rightIndicies = QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile.Value);
 
             var leftTotal = leftIndicies.Sum();
             var rightTotal = rightIndicies.Sum();
@@ -98,7 +98,6 @@ namespace NzbDrone.Core.DecisionEngine
                 var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
 
                 return num;
-
             });
         }
 
@@ -189,7 +188,6 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareSize(DownloadDecision x, DownloadDecision y)
         {
             // TODO: Is smaller better? Smaller for usenet could mean no par2 files.
-
             return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode => remoteEpisode.Release.Size.Round(200.Megabytes()));
         }
 

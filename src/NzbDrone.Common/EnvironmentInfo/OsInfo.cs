@@ -33,14 +33,14 @@ namespace NzbDrone.Common.EnvironmentInfo
                         Os = Os.Windows;
                         break;
                     }
+
                 case PlatformID.MacOSX:
                 case PlatformID.Unix:
                     {
                         // Sometimes Mac OS reports itself as Unix
                         if (Directory.Exists("/System/Library/CoreServices/") &&
                             (File.Exists("/System/Library/CoreServices/SystemVersion.plist") ||
-                            File.Exists("/System/Library/CoreServices/ServerVersion.plist"))
-                            )
+                            File.Exists("/System/Library/CoreServices/ServerVersion.plist")))
                         {
                             Os = Os.Osx;
                         }
@@ -48,6 +48,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                         {
                             Os = Os.Linux;
                         }
+
                         break;
                     }
             }

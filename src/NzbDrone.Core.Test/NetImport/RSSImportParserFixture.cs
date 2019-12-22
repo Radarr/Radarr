@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Test.NetImport
             return new NetImportResponse(new NetImportRequest(httpRequest), httpResponse);
         }
 
-
         [Test]
         public void should_parse_xml_of_imdb()
         {

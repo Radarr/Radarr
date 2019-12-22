@@ -1,6 +1,6 @@
-using Radarr.Http.REST;
 using System.Collections.Generic;
 using System.Linq;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Movies
 {
@@ -16,7 +16,10 @@ namespace NzbDrone.Api.Movies
     {
         public static RenameMovieResource ToResource(this Core.MediaFiles.RenameMovieFilePreview model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RenameMovieResource
             {

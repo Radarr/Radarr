@@ -150,11 +150,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         public void should_use_AudioChannelPositionText_when_AudioChannelChannelPosition_is_invalid()
         {
             var mediaInfoModel = new MediaInfoModel
-                {
+            {
                 AudioChannels = 6,
                 AudioChannelPositions = "15 objects",
                 AudioChannelPositionsText = "15 objects / Front: L C R, Side: L R, LFE",
-                    SchemaRevision = 3
+                SchemaRevision = 3
             };
 
             MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(5.1m);

@@ -15,7 +15,6 @@ namespace NzbDrone.Core.Qualities
 
         public QualityDefinition()
         {
-
         }
 
         public QualityDefinition(Quality quality)

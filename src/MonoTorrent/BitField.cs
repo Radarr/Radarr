@@ -394,7 +394,7 @@ namespace MonoTorrent
                 v = (v & 0x33333333) + ((v >> 2) & 0x33333333);
                 count += (((v + (v >> 4) & 0xF0F0F0F) * 0x1010101)) >> 24;
             }
-            this.trueCount = (int)count ;
+            this.trueCount = (int)count;
         }
 
         void ZeroUnusedBits()

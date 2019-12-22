@@ -9,16 +9,16 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
 {
     [TestFixture]
     public class MediaCoverServiceFixture : CoreTest<MediaCoverService>
     {
-        Movie _movie;
+        private Movie _movie;
 
         [SetUp]
         public void Setup()
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             var covers = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Banner}
+                    new MediaCover.MediaCover { CoverType = MediaCoverTypes.Banner }
                 };
 
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
@@ -59,7 +59,6 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Subject.ConvertToLocalUrls(12, covers);
 
-
             covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg");
         }
 
@@ -68,12 +67,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             var covers = new List<MediaCover.MediaCover>
                 {
-                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Banner}
+                    new MediaCover.MediaCover { CoverType = MediaCoverTypes.Banner }
                 };
 
-
             Subject.ConvertToLocalUrls(12, covers);
-
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg");
         }

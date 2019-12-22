@@ -13,10 +13,10 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Movies.Commands;
-using NzbDrone.Core.Update.Commands;
 using NzbDrone.Core.MetadataSource.PreDB;
+using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.NetImport;
+using NzbDrone.Core.Update.Commands;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -71,14 +71,15 @@ namespace NzbDrone.Core.Jobs
 
             var defaultTasks = new[]
                 {
-                    new ScheduledTask{ Interval = 1*60, TypeName = typeof(PreDBSyncCommand).FullName},
-                    new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
-                    new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
-                    new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(CleanUpRecycleBinCommand).FullName},
+                    new ScheduledTask { Interval = 1 * 60, TypeName = typeof(PreDBSyncCommand).FullName },
+                    new ScheduledTask { Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName },
+                    new ScheduledTask { Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName },
+
+                    // new ScheduledTask { Interval = 3 * 60, TypeName = typeof(UpdateSceneMappingCommand).FullName },
+                    new ScheduledTask { Interval = 6 * 60, TypeName = typeof(CheckHealthCommand).FullName },
+                    new ScheduledTask { Interval = 24 * 60, TypeName = typeof(RefreshMovieCommand).FullName },
+                    new ScheduledTask { Interval = 24 * 60, TypeName = typeof(HousekeepingCommand).FullName },
+                    new ScheduledTask { Interval = 24 * 60, TypeName = typeof(CleanUpRecycleBinCommand).FullName },
 
                     new ScheduledTask
                     {

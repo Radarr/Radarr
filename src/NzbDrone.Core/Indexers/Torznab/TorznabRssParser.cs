@@ -22,12 +22,18 @@ namespace NzbDrone.Core.Indexers.Torznab
             var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
-            if (error == null) return true;
+            if (error == null)
+            {
+                return true;
+            }
 
             var code = Convert.ToInt32(error.Attribute("code").Value);
             var errorMessage = error.Attribute("description").Value;
 
-            if (code >= 100 && code <= 199) throw new ApiKeyException("Invalid API key");
+            if (code >= 100 && code <= 199)
+            {
+                throw new ApiKeyException("Invalid API key");
+            }
 
             if (!indexerResponse.Request.Url.FullUri.Contains("apikey=") && errorMessage == "Missing parameter")
             {
@@ -57,7 +63,6 @@ namespace NzbDrone.Core.Indexers.Torznab
 
             return torrentInfo;
         }
-
 
         protected override bool PostProcess(IndexerResponse indexerResponse, List<XElement> items, List<ReleaseInfo> releases)
         {
@@ -122,7 +127,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected virtual string GetImdbId(XElement item)
         {
             var imdbIdString = TryGetTorznabAttribute(item, "imdbid");
-            return (!imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null);
+            return !imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null;
         }
 
         protected override string GetInfoHash(XElement item)

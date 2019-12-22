@@ -75,7 +75,6 @@ namespace NzbDrone.Core.Test.Profiles.Delay
                 {
                     delayProfile.Order.Should().Be(int.MaxValue);
                 }
-
                 else
                 {
                     delayProfile.Order.Should().Be(i + 1);

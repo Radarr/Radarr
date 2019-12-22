@@ -35,13 +35,15 @@ namespace NzbDrone.Core.Notifications.Email
             NetworkCredential credentials = null;
 
             if (!string.IsNullOrWhiteSpace(settings.Username))
+            {
                 credentials = new NetworkCredential(settings.Username, settings.Password);
+            }
 
             try
             {
                 Send(email, settings.Server, settings.Port, settings.Ssl, credentials);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error("Error sending email. Subject: {0}", email.Subject);
                 _logger.Debug(ex, ex.Message);

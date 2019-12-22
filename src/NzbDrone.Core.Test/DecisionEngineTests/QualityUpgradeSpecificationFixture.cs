@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -26,7 +26,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-
         }
 
         private void GivenAutoDownloadPropers(bool autoDownloadPropers)
@@ -36,7 +35,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(autoDownloadPropers);
         }
 
-        [Test, TestCaseSource("IsUpgradeTestCases")]
+        [Test]
+        [TestCaseSource("IsUpgradeTestCases")]
         public void IsUpgradeTest(Quality current, int currentVersion, Quality newQuality, int newVersion, Quality cutoff, bool expected)
         {
             GivenAutoDownloadPropers(true);
@@ -57,7 +57,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
                     .Should().BeFalse();
         }
-
 
         [Test]
         public void should_return_false_if_release_and_existing_file_are_the_same()

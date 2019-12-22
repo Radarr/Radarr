@@ -46,7 +46,8 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 catch (DownloadClientUnavailableException)
                 {
                     _logger.Warn("Failed to set torrent post-import label \"{0}\" for {1} in Deluge. Does the label exist?",
-                        Settings.MovieImportedCategory, downloadClientItem.Title);
+                        Settings.MovieImportedCategory,
+                        downloadClientItem.Title);
                 }
             }
         }
@@ -69,8 +70,8 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
-            if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
-                !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)
+            if ((isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First) ||
+                (!isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First))
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
@@ -96,8 +97,8 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
-            if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
-                !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)
+            if ((isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First) ||
+                (!isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First))
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
@@ -124,7 +125,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             foreach (var torrent in torrents)
             {
-                if (torrent.Hash == null) continue;
+                if (torrent.Hash == null)
+                {
+                    continue;
+                }
 
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.Hash.ToUpper();
@@ -218,7 +222,11 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestCategory());
             failures.AddIfNotNull(TestGetTorrents());
         }

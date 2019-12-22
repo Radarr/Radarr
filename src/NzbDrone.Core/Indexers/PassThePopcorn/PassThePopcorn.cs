@@ -14,8 +14,12 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override bool SupportsSearch => true;
         public override int PageSize => 50;
 
-        public PassThePopcorn(IHttpClient httpClient, ICacheManager cacheManager, IIndexerStatusService indexerStatusService,
-            IConfigService configService, IParsingService parsingService, Logger logger)
+        public PassThePopcorn(IHttpClient httpClient,
+            ICacheManager cacheManager,
+            IIndexerStatusService indexerStatusService,
+            IConfigService configService,
+            IParsingService parsingService,
+            Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
         }

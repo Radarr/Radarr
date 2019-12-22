@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
-
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileRepository : IBasicRepository<MovieFile>
@@ -10,7 +9,6 @@ namespace NzbDrone.Core.MediaFiles
         List<MovieFile> GetFilesByMovie(int movieId);
         List<MovieFile> GetFilesWithoutMediaInfo();
     }
-
 
     public class MediaFileRepository : BasicRepository<MovieFile>, IMediaFileRepository
     {

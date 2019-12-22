@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+
 //using NzbDrone.Core.DataAugmentation.DailyMovie;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
@@ -86,6 +87,7 @@ namespace NzbDrone.Core.Movies
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
+
             //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
@@ -134,12 +136,12 @@ namespace NzbDrone.Core.Movies
                 _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
 
-
             _movieService.UpdateMovie(movie);
 
             try
             {
                 var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
+
                 //_titleService.AddAltTitles(newTitles.ToList(), movie);
             }
             catch (Exception e)
@@ -245,7 +247,6 @@ namespace NzbDrone.Core.Movies
 
                         RescanMovie(movie, false, trigger);
                     }
-
                     else
                     {
                         _logger.Info("Skipping refresh of movie: {0}", movie.Title);

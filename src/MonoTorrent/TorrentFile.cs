@@ -125,14 +125,14 @@ namespace MonoTorrent
 
         }
 
-        public TorrentFile (string path, long length, string fullPath)
-            : this (path, length, fullPath, 0, 0)
+        public TorrentFile(string path, long length, string fullPath)
+            : this(path, length, fullPath, 0, 0)
         {
 
         }
 
-        public TorrentFile (string path, long length, int startIndex, int endIndex)
-            : this (path, length, path, startIndex, endIndex)
+        public TorrentFile(string path, long length, int startIndex, int endIndex)
+            : this(path, length, path, startIndex, endIndex)
         {
 
         }

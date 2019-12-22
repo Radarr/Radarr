@@ -1,6 +1,6 @@
-﻿using FluentMigrator;
+﻿using System.Data;
+using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -22,6 +22,5 @@ namespace NzbDrone.Core.Datastore.Migration
                 getSeriesCmd.ExecuteNonQuery();
             }
         }
-
     }
 }

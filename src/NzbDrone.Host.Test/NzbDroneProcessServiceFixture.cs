@@ -3,8 +3,8 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Model;
 using NzbDrone.Common.Processes;
-using Radarr.Host;
 using NzbDrone.Test.Common;
+using Radarr.Host;
 
 namespace NzbDrone.App.Test
 {
@@ -35,7 +35,7 @@ namespace NzbDrone.App.Test
                   .Setup(c => c.FindProcessByName(It.Is<string>(f => f.Contains("Radarr"))))
                   .Returns(new List<ProcessInfo>
                            {
-                               new ProcessInfo {Id = CURRENT_PROCESS_ID}
+                               new ProcessInfo { Id = CURRENT_PROCESS_ID }
                            });
 
             Subject.PreventStartIfAlreadyRunning();
@@ -50,8 +50,8 @@ namespace NzbDrone.App.Test
                   .Setup(c => c.FindProcessByName(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME))
                   .Returns(new List<ProcessInfo>
                            {
-                               new ProcessInfo {Id = 10},
-                               new ProcessInfo {Id = CURRENT_PROCESS_ID}
+                               new ProcessInfo { Id = 10 },
+                               new ProcessInfo { Id = CURRENT_PROCESS_ID }
                            });
 
             Assert.Throws<TerminateApplicationException>(() => Subject.PreventStartIfAlreadyRunning());
@@ -66,9 +66,8 @@ namespace NzbDrone.App.Test
                   .Setup(c => c.FindProcessByName(ProcessProvider.RADARR_PROCESS_NAME))
                   .Returns(new List<ProcessInfo>
                            {
-                               new ProcessInfo {Id = CURRENT_PROCESS_ID},
-                               new ProcessInfo {Id = 10}
-
+                               new ProcessInfo { Id = CURRENT_PROCESS_ID },
+                               new ProcessInfo { Id = 10 }
                            });
 
             Assert.Throws<TerminateApplicationException>(() => Subject.PreventStartIfAlreadyRunning());

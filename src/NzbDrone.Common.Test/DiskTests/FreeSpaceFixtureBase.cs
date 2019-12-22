@@ -7,7 +7,8 @@ using NzbDrone.Test.Common;
 
 namespace NzbDrone.Common.Test.DiskTests
 {
-    public abstract class FreeSpaceFixtureBase<TSubject> : TestBase<TSubject> where TSubject : class, IDiskProvider
+    public abstract class FreeSpaceFixtureBase<TSubject> : TestBase<TSubject>
+        where TSubject : class, IDiskProvider
     {
         [Ignore("Docker")]
         [Test]
@@ -58,10 +59,12 @@ namespace NzbDrone.Common.Test.DiskTests
             WindowsOnly();
 
             // Find a drive that doesn't exist.
-            for (char driveletter = 'Z'; driveletter > 'D' ; driveletter--)
+            for (char driveletter = 'Z'; driveletter > 'D'; driveletter--)
             {
                 if (new DriveInfo(driveletter.ToString()).IsReady)
+                {
                     continue;
+                }
 
                 Assert.Throws<DirectoryNotFoundException>(() => Subject.GetAvailableSpace(driveletter + @":\NOT_A_REAL_PATH\DOES_NOT_EXIST".AsOsAgnostic()));
                 return;

@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         }
 
         [TestCase("Prometheus", "Prometheus")]
+
         // TODO: TMDB Doesn't like when we clean periods from this
         // [TestCase("The Man from U.N.C.L.E.", "The Man from U.N.C.L.E.")]
         [TestCase("imdb:tt2527336", "Star Wars: The Last Jedi")]

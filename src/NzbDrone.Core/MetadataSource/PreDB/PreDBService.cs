@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NLog;
+using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Common.Http;
 using NzbDrone.Core.Movies;
-using System;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.MetadataSource.PreDB
 {
@@ -131,9 +131,6 @@ namespace NzbDrone.Core.MetadataSource.PreDB
             return matches;
         }
 
-
-
-
         private List<Movie> Sync()
         {
             _logger.ProgressInfo("Starting PreDB Sync");
@@ -168,33 +165,33 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
         public bool HasReleases(Movie movie)
         {
-        try
-        {
-            var results = GetResults("movies", movie.Title);
-
-            foreach (PreDBResult result in results)
+            try
             {
-                var parsed = Parser.Parser.ParseMovieTitle(result.Title, true);
-                if (parsed == null)
-                {
-                    parsed = new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title, Year = 0 };
-                }
-                var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
+                var results = GetResults("movies", movie.Title);
 
-                if (match != null && match.RemoteMovie.Movie != null && match.RemoteMovie.Movie.Id == movie.Id)
+                foreach (PreDBResult result in results)
                 {
-                    return true;
+                    var parsed = Parser.Parser.ParseMovieTitle(result.Title, true);
+                    if (parsed == null)
+                    {
+                        parsed = new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title, Year = 0 };
+                    }
+
+                    var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
+
+                    if (match != null && match.RemoteMovie.Movie != null && match.RemoteMovie.Movie.Id == movie.Id)
+                    {
+                        return true;
+                    }
                 }
+
+                return false;
             }
-
-            return false;
-        }
-        catch (Exception ex)
-        {
-            _logger.Warn(ex, "Error while looking on predb.me.");
-            return false;
-        }
-
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Error while looking on predb.me.");
+                return false;
+            }
         }
     }
 }

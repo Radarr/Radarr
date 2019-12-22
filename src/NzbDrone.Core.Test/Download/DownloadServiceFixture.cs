@@ -10,9 +10,9 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Download
 {
@@ -108,7 +108,8 @@ namespace NzbDrone.Core.Test.Download
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()))
-                .Callback<RemoteMovie>(v => {
+                .Callback<RemoteMovie>(v =>
+                {
                     throw new ReleaseDownloadException(v.Release, "Error", new WebException());
                 });
 
@@ -127,7 +128,8 @@ namespace NzbDrone.Core.Test.Download
 
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()))
-                .Callback<RemoteMovie>(v => {
+                .Callback<RemoteMovie>(v =>
+                {
                     throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
 
@@ -176,7 +178,8 @@ namespace NzbDrone.Core.Test.Download
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()))
-                .Callback<RemoteMovie>(v => {
+                .Callback<RemoteMovie>(v =>
+                {
                     throw new ReleaseUnavailableException(v.Release, "Error", new WebException());
                 });
 

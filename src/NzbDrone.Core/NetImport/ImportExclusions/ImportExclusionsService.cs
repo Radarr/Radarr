@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions
 {
@@ -22,7 +22,6 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-
         public ImportExclusionsService(IImportExclusionsRepository exclusionRepository,
                              IEventAggregator eventAggregator,
                              IConfigService configService,
@@ -40,6 +39,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
             {
                 return _exclusionRepository.GetByTmdbid(exclusion.TmdbId);
             }
+
             return _exclusionRepository.Insert(exclusion);
         }
 

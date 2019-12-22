@@ -13,7 +13,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
 
         public CouchPotatoImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
-        { }
+        {
+        }
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {

@@ -6,7 +6,8 @@ namespace NzbDrone.Api.NetImport
 {
     public class NetImportModule : ProviderModuleBase<NetImportResource, INetImport, NetImportDefinition>
     {
-        public NetImportModule(NetImportFactory netImportFactory) : base(netImportFactory, "netimport")
+        public NetImportModule(NetImportFactory netImportFactory)
+            : base(netImportFactory, "netimport")
         {
             PostValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
@@ -41,7 +42,11 @@ namespace NzbDrone.Api.NetImport
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }

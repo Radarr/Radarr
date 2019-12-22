@@ -31,7 +31,8 @@ namespace NzbDrone.Api.Profiles
 
             var formatItems = _formatService.All().Select(v => new ProfileFormatItem
             {
-                Format = v, Allowed = true
+                Format = v,
+                Allowed = true
             }).ToList();
 
             formatItems.Insert(0, new ProfileFormatItem

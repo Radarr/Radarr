@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            if (!this.Schema.Schema("dbo").Table("NetImport").Exists())
+            if (!Schema.Schema("dbo").Table("NetImport").Exists())
             {
                 Create.TableForModel("NetImport")
                     .WithColumn("Enabled").AsBoolean()

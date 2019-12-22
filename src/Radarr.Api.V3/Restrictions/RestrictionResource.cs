@@ -22,7 +22,10 @@ namespace Radarr.Api.V3.Restrictions
     {
         public static RestrictionResource ToResource(this Restriction model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RestrictionResource
             {
@@ -37,7 +40,10 @@ namespace Radarr.Api.V3.Restrictions
 
         public static Restriction ToModel(this RestrictionResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new Restriction
             {

@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public object ToDB(object clrValue)
         {
-            var val = (Nullable<bool>)clrValue;
+            var val = (bool?)clrValue;
 
             switch (val)
             {

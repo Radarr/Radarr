@@ -63,6 +63,5 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
         }*/
-
     }
 }

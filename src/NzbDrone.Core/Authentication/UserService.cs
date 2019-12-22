@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Authentication
         public User Add(string username, string password)
         {
             return _repo.Insert(new User
-                                {
-                                    Identifier = Guid.NewGuid(),
-                                    Username = username.ToLowerInvariant(),
-                                    Password = password.SHA256Hash()
-                                });
+            {
+                Identifier = Guid.NewGuid(),
+                Username = username.ToLowerInvariant(),
+                Password = password.SHA256Hash()
+            });
         }
 
         public User Update(User user)

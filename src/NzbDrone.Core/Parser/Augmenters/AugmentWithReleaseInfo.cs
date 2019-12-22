@@ -8,7 +8,6 @@ using NzbDrone.Core.Parser.Model;
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithReleaseInfo : IAugmentParsedMovieInfo
-
     {
         private readonly IIndexerFactory _indexerFactory;
 
@@ -29,15 +28,16 @@ namespace NzbDrone.Core.Parser.Augmenters
         {
             if (helper is ReleaseInfo releaseInfo)
             {
-
                 IIndexerSettings indexerSettings = null;
-                try {
+                try
+                {
                     indexerSettings = _indexerFactory.Get(releaseInfo.IndexerId)?.Settings as IIndexerSettings;
                 }
                 catch (Exception)
                 {
                     //_logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
                 }                // First, let's augment the language!
+
                 var languageTitle = movieInfo.SimpleReleaseTitle;
                 if (movieInfo.MovieTitle.IsNotNullOrWhiteSpace())
                 {
@@ -45,12 +45,13 @@ namespace NzbDrone.Core.Parser.Augmenters
                     {
                         foreach (var i in indexerSettings.MultiLanguages)
                         {
-                            var language = (Language) i;
+                            var language = (Language)i;
                             if (!movieInfo.Languages.Contains(language))
+                            {
                                 movieInfo.Languages.Add(language);
+                            }
                         }
                     }
-
                 }
 
                 //Next, let's add other useful info to the extra info dict
@@ -58,8 +59,8 @@ namespace NzbDrone.Core.Parser.Augmenters
                 {
                     movieInfo.ExtraInfo["Size"] = releaseInfo.Size;
                 }
-                movieInfo.ExtraInfo["IndexerFlags"] = releaseInfo.IndexerFlags;
 
+                movieInfo.ExtraInfo["IndexerFlags"] = releaseInfo.IndexerFlags;
             }
 
             return movieInfo;

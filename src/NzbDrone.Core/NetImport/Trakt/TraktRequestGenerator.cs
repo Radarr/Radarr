@@ -1,8 +1,7 @@
-﻿using NzbDrone.Common.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -24,6 +23,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         public TraktRequestGenerator()
         {
         }
+
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();

@@ -8,12 +8,10 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 {
     public class TorrentPotatoRequestGenerator : IIndexerRequestGenerator
     {
-
         public TorrentPotatoSettings Settings { get; set; }
 
         public TorrentPotatoRequestGenerator()
         {
-
         }
 
         public virtual IndexerPageableRequestChain GetRecentRequests()

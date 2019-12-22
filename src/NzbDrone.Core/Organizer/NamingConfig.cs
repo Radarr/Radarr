@@ -30,10 +30,9 @@ namespace NzbDrone.Core.Organizer
         SpaceDashSpace = 3
     }
 
-    static class ColonReplacementFormatMethods
+    public static class ColonReplacementFormatMethods
     {
-
-        public static String GetFormatString(this ColonReplacementFormat format)
+        public static string GetFormatString(this ColonReplacementFormat format)
         {
             switch (format)
             {

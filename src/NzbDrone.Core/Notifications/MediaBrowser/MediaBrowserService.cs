@@ -2,8 +2,8 @@ using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Core.Rest;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Rest;
 
 namespace NzbDrone.Core.Notifications.Emby
 {

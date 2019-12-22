@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,6 @@ using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 {
-
     [TestFixture]
     public class UsenetBlackholeFixture : DownloadClientFixtureBase<UsenetBlackhole>
     {
@@ -96,7 +94,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
             VerifyPostprocessing(result);
         }
-
 
         [Test]
         public void should_return_category()

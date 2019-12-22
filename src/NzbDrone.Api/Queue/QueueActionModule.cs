@@ -1,12 +1,12 @@
 using System;
 using Nancy;
-using Radarr.Http.Extensions;
-using Radarr.Http.REST;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Queue;
 using Radarr.Http;
+using Radarr.Http.Extensions;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Queue
 {
@@ -36,9 +36,9 @@ namespace NzbDrone.Api.Queue
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
 
-            Delete(@"/(?<id>[\d]{1,10})",  x => Remove((int)x.Id));
-            Post("/import",  x => Import());
-            Post("/grab",  x => Grab());
+            Delete(@"/(?<id>[\d]{1,10})", x => Remove((int)x.Id));
+            Post("/import", x => Import());
+            Post("/grab", x => Grab());
         }
 
         private object Remove(int id)

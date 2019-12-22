@@ -61,7 +61,7 @@ namespace NzbDrone.Common.OAuth
         /// <returns></returns>
         public static string GetNonce()
         {
-            const string chars = (Lower + Digit);
+            const string chars = Lower + Digit;
 
             var nonce = new char[16];
             lock (_randomLock)
@@ -71,6 +71,7 @@ namespace NzbDrone.Common.OAuth
                     nonce[i] = chars[_random.Next(0, chars.Length)];
                 }
             }
+
             return new string(nonce);
         }
 
@@ -98,7 +99,7 @@ namespace NzbDrone.Common.OAuth
 
         private static long ToUnixTime(DateTime dateTime)
         {
-            var timeSpan = (dateTime - new DateTime(1970, 1, 1));
+            var timeSpan = dateTime - new DateTime(1970, 1, 1);
             var timestamp = (long)timeSpan.TotalSeconds;
 
             return timestamp;
@@ -138,6 +139,7 @@ namespace NzbDrone.Common.OAuth
                     sb.Append(string.Format("%{0:X}", b));
                 }
             }
+
             return sb.ToString();
         }
 
@@ -155,8 +157,7 @@ namespace NzbDrone.Common.OAuth
             var ret = original.OfType<char>().Where(
                 c => !Unreserved.OfType<char>().Contains(c) && c != '%').Aggregate(
                     value, (current, c) => current.Replace(
-                          c.ToString(), PercentEncode(c.ToString())
-                          ));
+                          c.ToString(), PercentEncode(c.ToString())));
 
             return ret.Replace("%%", "%25%"); // Revisit to encode actual %'s
         }
@@ -211,7 +212,7 @@ namespace NzbDrone.Common.OAuth
 
             copy.RemoveAll(exclusions);
 
-            foreach(var parameter in copy)
+            foreach (var parameter in copy)
             {
                 parameter.Value = UrlEncodeStrict(parameter.Value);
             }
@@ -225,7 +226,7 @@ namespace NzbDrone.Common.OAuth
 #if WINRT
             return CultureInfo.InvariantCulture.CompareInfo.Compare(left, right, CompareOptions.IgnoreCase) == 0;
 #else
-            return String.Compare(left, right, StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Compare(left, right, StringComparison.InvariantCultureIgnoreCase) == 0;
 #endif
         }
 
@@ -353,7 +354,7 @@ namespace NzbDrone.Common.OAuth
         {
             if (IsNullOrBlank(tokenSecret))
             {
-                tokenSecret = String.Empty;
+                tokenSecret = string.Empty;
             }
 
             consumerSecret = UrlEncodeRelaxed(consumerSecret);
@@ -381,6 +382,7 @@ namespace NzbDrone.Common.OAuth
 
                         break;
                     }
+
                 default:
                     throw new NotImplementedException("Only HMAC-SHA1 is currently supported.");
             }
@@ -403,7 +405,7 @@ namespace NzbDrone.Common.OAuth
 
         private static bool IsNullOrBlank(string value)
         {
-            return String.IsNullOrEmpty(value) || (!String.IsNullOrEmpty(value) && value.Trim() == String.Empty);
+            return string.IsNullOrEmpty(value) || (!string.IsNullOrEmpty(value) && value.Trim() == string.Empty);
         }
     }
 }

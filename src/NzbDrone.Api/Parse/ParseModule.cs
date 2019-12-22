@@ -21,7 +21,6 @@ namespace NzbDrone.Api.Parse
             var title = Request.Query.Title.Value as string;
             var parsedMovieInfo = _parsingService.ParseMovieInfo(title, new List<object>());
 
-
             if (parsedMovieInfo == null)
             {
                 return null;

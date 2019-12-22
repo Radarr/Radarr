@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var guid = Guid.NewGuid();
 
             var context = new ConverterContext
-                          {
-                              DbValue = guid.ToString()
-                          };
+            {
+                DbValue = guid.ToString()
+            };
 
             Subject.FromDB(context).Should().Be(guid);
         }
@@ -41,9 +41,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_empty_guid_for_db_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(Guid.Empty);
         }

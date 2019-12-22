@@ -77,12 +77,12 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenDefaultProfileWithFormats()
         {
-            _customFormat1 = new CustomFormats.CustomFormat("My Format 1", "L_ENGLISH"){Id=1};
-            _customFormat2 = new CustomFormats.CustomFormat("My Format 2", "L_FRENCH"){Id=2};
+            _customFormat1 = new CustomFormats.CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
+            _customFormat2 = new CustomFormats.CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
 
             CustomFormatsFixture.GivenCustomFormats(CustomFormats.CustomFormat.None, _customFormat1, _customFormat2);
 
-            Subject = new QualityModelComparer(new Profile {Items = QualityFixture.GetDefaultQualities(), FormatItems = CustomFormatsFixture.GetSampleFormatItems()});
+            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(), FormatItems = CustomFormatsFixture.GetSampleFormatItems() });
         }
 
         [Test]
@@ -142,8 +142,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfileWithFormats();
 
-            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
-            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
+            var first = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormats.CustomFormat> { _customFormat1 } };
+            var second = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormats.CustomFormat> { _customFormat2 } };
 
             var compare = Subject.Compare(first, second);
 
@@ -155,8 +155,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfileWithFormats();
 
-            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
-            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
+            var first = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormats.CustomFormat> { _customFormat2 } };
+            var second = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormats.CustomFormat> { _customFormat1 } };
 
             var compare = Subject.Compare(first, second);
 

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public FreeSpaceSpecification(IDiskProvider diskProvider, IConfigService configService,  Logger logger)
+        public FreeSpaceSpecification(IDiskProvider diskProvider, IConfigService configService, Logger logger)
         {
             _diskProvider = diskProvider;
             _configService = configService;

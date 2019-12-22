@@ -10,7 +10,6 @@ namespace Radarr.Api.V3.Restrictions
     {
         private readonly IRestrictionService _restrictionService;
 
-
         public RestrictionModule(IRestrictionService restrictionService)
         {
             _restrictionService = restrictionService;

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Api.Movies;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Qualities;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.MovieFiles
 {
@@ -12,13 +12,11 @@ namespace NzbDrone.Api.MovieFiles
     {
         public MovieFileResource()
         {
-
         }
 
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
         public int MovieId { get; set; }
         public string RelativePath { get; set; }
         public string Path { get; set; }
@@ -38,7 +36,10 @@ namespace NzbDrone.Api.MovieFiles
     {
         public static MovieFileResource ToResource(this MovieFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             MovieResource movie = null;
 
@@ -69,11 +70,13 @@ namespace NzbDrone.Api.MovieFiles
 
         public static MovieFile ToModel(this MovieFileResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new MovieFile
             {
-
             };
         }
 

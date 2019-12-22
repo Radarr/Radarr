@@ -10,10 +10,10 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Validation;
-using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.Nzbget
 {
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
     {
         private readonly INzbgetProxy _proxy;
         private readonly string[] _successStatus = { "SUCCESS", "NONE" };
-        private readonly string[] _deleteFailedStatus =  { "HEALTH", "DUPE", "SCAN", "COPY" };
+        private readonly string[] _deleteFailedStatus = { "HEALTH", "DUPE", "SCAN", "COPY" };
 
         public Nzbget(INzbgetProxy proxy,
                       IHttpClient httpClient,
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 queueItem.CanMoveFiles = true;
                 queueItem.CanBeRemoved = true;
 
-                if (globalStatus.DownloadPaused || remainingSize == pausedSize && remainingSize != 0)
+                if (globalStatus.DownloadPaused || (remainingSize == pausedSize && remainingSize != 0))
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
                     queueItem.RemainingSize = remainingSize;
@@ -223,7 +223,10 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             {
                 var name = config.GetValueOrDefault("Category" + i + ".Name");
 
-                if (name == null) yield break;
+                if (name == null)
+                {
+                    yield break;
+                }
 
                 var destDir = config.GetValueOrDefault("Category" + i + ".DestDir");
 
@@ -273,6 +276,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 {
                     return new ValidationFailure("Username", "Authentication failed");
                 }
+
                 _logger.Error(ex, "Unable to connect to NZBGet");
                 return new ValidationFailure("Host", "Unable to connect to NZBGet");
             }

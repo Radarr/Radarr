@@ -1,13 +1,13 @@
 using System;
 using System.Text.RegularExpressions;
+using FluentValidation.Results;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NLog;
-using FluentValidation.Results;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Organizer;
+using NzbDrone.Core.RemotePathMappings;
 
 namespace NzbDrone.Core.Download.Clients.Transmission
 {

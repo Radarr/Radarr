@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.MetadataSource;
-
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
@@ -17,7 +16,10 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         private readonly ISearchForNewMovie _skyhookProxy;
 
-        public RadarrLists(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
+        public RadarrLists(IHttpClient httpClient,
+            IConfigService configService,
+            IParsingService parsingService,
+            ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {

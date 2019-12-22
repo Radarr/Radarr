@@ -1,14 +1,13 @@
 using FizzWare.NBuilder;
 using NUnit.Framework;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore
 {
-
     [TestFixture]
     public class MarrDataLazyLoadingFixture : DbTest
     {
@@ -16,12 +15,11 @@ namespace NzbDrone.Core.Test.Datastore
         public void Setup()
         {
             var profile = new Profile
-                {
-                    Name = "Test",
-                    Cutoff = Quality.WEBDL720p.Id,
-                    Items = Qualities.QualityFixture.GetDefaultQualities()
-                };
-
+            {
+                Name = "Test",
+                Cutoff = Quality.WEBDL720p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities()
+            };
 
             profile = Db.Insert(profile);
 
@@ -48,7 +46,5 @@ namespace NzbDrone.Core.Test.Datastore
 
             Db.InsertMany(episodes);
         }
-
-
     }
 }

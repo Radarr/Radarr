@@ -6,8 +6,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.TorrentRss;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.Search
@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                     IndexerId = 1,
                     Title = "Series.Title.S01.720p.BluRay.X264-RlsGrp",
                     Seeders = 0,
+
                     //IndexerSettings = new TorrentRssIndexerSettings {MinimumSeeders = 5}
                 }
             };
@@ -64,7 +65,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         }
 
         // These tests are not needed anymore, since indexer settings are saved on the release itself!
-
         [Test]
         public void should_return_true_if_indexer_not_specified()
         {

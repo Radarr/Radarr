@@ -12,6 +12,5 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("Blacklist").AlterColumn("SeriesId").AsInt32().Nullable();
             Alter.Table("Blacklist").AlterColumn("EpisodeIds").AsString().Nullable();
         }
-
     }
 }

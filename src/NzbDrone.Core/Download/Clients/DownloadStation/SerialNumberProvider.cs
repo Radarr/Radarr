@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
     public class SerialNumberProvider : ISerialNumberProvider
     {
         private readonly IDSMInfoProxy _proxy;
-        private ICached<string> _cache;
         private readonly ILogger _logger;
+        private ICached<string> _cache;
 
         public SerialNumberProvider(ICacheManager cacheManager,
                                     IDSMInfoProxy proxy,

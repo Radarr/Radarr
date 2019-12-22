@@ -23,7 +23,10 @@ namespace Radarr.Api.V3.Notifications
     {
         public override NotificationResource ToResource(NotificationDefinition definition)
         {
-            if (definition == null) return default(NotificationResource);
+            if (definition == null)
+            {
+                return default(NotificationResource);
+            }
 
             var resource = base.ToResource(definition);
 
@@ -44,7 +47,10 @@ namespace Radarr.Api.V3.Notifications
 
         public override NotificationDefinition ToModel(NotificationResource resource)
         {
-            if (resource == null) return default(NotificationDefinition);
+            if (resource == null)
+            {
+                return default(NotificationDefinition);
+            }
 
             var definition = base.ToModel(resource);
 

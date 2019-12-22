@@ -2,7 +2,6 @@ using System;
 
 namespace NzbDrone.Core.Indexers.TorrentPotato
 {
-
     public class TorrentPotatoResponse
     {
         public Result[] results { get; set; }
@@ -22,5 +21,4 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         public int seeders { get; set; }
         public DateTime publish_date { get; set; }
     }
-
 }

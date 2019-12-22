@@ -29,7 +29,7 @@ namespace Radarr.Http
             if (pagingResource.SortKey == null)
             {
                 pagingSpec.SortKey = defaultSortKey;
-                if(pagingResource.SortDirection == SortDirection.Default)
+                if (pagingResource.SortDirection == SortDirection.Default)
                 {
                     pagingSpec.SortDirection = defaultSortDirection;
                 }

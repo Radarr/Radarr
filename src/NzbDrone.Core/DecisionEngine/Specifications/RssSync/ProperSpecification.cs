@@ -36,21 +36,20 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var file = subject.Movie.MovieFile;
 
-                if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
+            if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
+            {
+                if (file.DateAdded < DateTime.Today.AddDays(-7))
                 {
-                    if (file.DateAdded < DateTime.Today.AddDays(-7))
-                    {
-                        _logger.Debug("Proper for old file, rejecting: {0}", subject);
-                        return Decision.Reject("Proper for old file");
-                    }
-
-                    if (!_configService.AutoDownloadPropers)
-                    {
-                        _logger.Debug("Auto downloading of propers is disabled");
-                        return Decision.Reject("Proper downloading is disabled");
-                    }
+                    _logger.Debug("Proper for old file, rejecting: {0}", subject);
+                    return Decision.Reject("Proper for old file");
                 }
 
+                if (!_configService.AutoDownloadPropers)
+                {
+                    _logger.Debug("Auto downloading of propers is disabled");
+                    return Decision.Reject("Proper downloading is disabled");
+                }
+            }
 
             return Decision.Accept();
         }
