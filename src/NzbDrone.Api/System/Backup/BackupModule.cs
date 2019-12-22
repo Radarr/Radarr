@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NzbDrone.Core.Backup;
 using Radarr.Http;

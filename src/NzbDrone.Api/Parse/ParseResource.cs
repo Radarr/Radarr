@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NzbDrone.Api.Movies;
 using Radarr.Http.REST;
 using NzbDrone.Core.Parser.Model;

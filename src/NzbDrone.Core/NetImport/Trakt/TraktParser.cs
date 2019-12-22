@@ -2,7 +2,6 @@
 using NzbDrone.Core.NetImport.Exceptions;
 using System.Collections.Generic;
 using System.Net;
-using NLog;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.NetImport.Trakt

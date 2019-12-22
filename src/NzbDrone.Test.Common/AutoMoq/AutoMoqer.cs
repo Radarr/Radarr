@@ -12,7 +12,6 @@ using Moq.Language.Flow;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common.AutoMoq.Unity;
-using Unity.Resolution;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 

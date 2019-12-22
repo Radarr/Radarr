@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Radarr.Http.REST;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using Radarr.Http;
 

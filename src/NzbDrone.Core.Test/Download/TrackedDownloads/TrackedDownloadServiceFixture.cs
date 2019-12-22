@@ -10,7 +10,6 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Indexers;
-using System.Linq;
 
 namespace NzbDrone.Core.Test.Download.TrackedDownloads
 {

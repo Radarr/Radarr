@@ -1,13 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Radarr.Http.REST;
-using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Api.Movies
 {

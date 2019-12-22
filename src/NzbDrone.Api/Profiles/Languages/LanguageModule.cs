@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Profiles.Languages

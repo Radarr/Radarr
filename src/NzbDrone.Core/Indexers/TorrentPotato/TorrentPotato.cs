@@ -1,15 +1,8 @@
 using System;
-using System.Collections.Generic;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.TorrentPotato
 {

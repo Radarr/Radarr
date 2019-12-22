@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 

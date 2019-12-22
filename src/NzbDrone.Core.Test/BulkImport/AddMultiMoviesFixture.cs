@@ -5,7 +5,6 @@ using Moq;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies.Events;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.BulkImport

@@ -1,9 +1,5 @@
 ﻿using FluentMigrator;
-using Marr.Data.Mapping;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Datastore.Extensions;
 
 namespace NzbDrone.Core.Datastore.Migration
 {

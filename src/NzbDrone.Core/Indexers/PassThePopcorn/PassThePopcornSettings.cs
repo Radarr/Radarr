@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
-using System.Linq;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {

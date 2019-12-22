@@ -11,7 +11,6 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.ProgressMessaging;
 using NzbDrone.SignalR;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 
 namespace NzbDrone.Api.Commands

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Core.Download;

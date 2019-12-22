@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Marr.Data;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.MediaFiles;
-using System.IO;
+﻿using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions
 {

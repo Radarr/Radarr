@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace NzbDrone.Core.NetImport.TMDb
+﻿namespace NzbDrone.Core.NetImport.TMDb
 {
     public enum TMDbLanguageCodes
     {

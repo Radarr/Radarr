@@ -1,6 +1,5 @@
 using FizzWare.NBuilder;
 using NUnit.Framework;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;

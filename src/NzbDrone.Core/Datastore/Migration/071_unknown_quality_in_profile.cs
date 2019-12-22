@@ -4,7 +4,6 @@ using System.Linq;
 using FluentMigrator;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Datastore.Migration
 {

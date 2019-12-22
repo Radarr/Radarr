@@ -4,9 +4,7 @@ using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Validation;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace Radarr.Api.V3.Profiles.Quality
 {

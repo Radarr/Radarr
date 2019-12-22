@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using FluentValidation;
-using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
 
 namespace NzbDrone.Api.NetImport

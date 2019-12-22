@@ -1,7 +1,6 @@
 ﻿using System;
 using Marr.Data.Converters;
 using Marr.Data.Mapping;
-using NzbDrone.Core.Qualities;
 using Newtonsoft.Json;
 using NzbDrone.Core.CustomFormats;
 

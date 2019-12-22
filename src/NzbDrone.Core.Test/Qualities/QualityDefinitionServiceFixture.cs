@@ -1,15 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
-using FizzWare.NBuilder;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Common.Composition;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 

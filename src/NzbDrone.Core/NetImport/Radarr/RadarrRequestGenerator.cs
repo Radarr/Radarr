@@ -3,8 +3,6 @@ using NzbDrone.Common.Http;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {

@@ -1,5 +1,3 @@
-using System.Linq;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers

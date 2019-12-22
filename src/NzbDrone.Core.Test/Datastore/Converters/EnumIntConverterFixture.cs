@@ -6,7 +6,6 @@ using Marr.Data.Mapping;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download.Pending;
 
 namespace NzbDrone.Core.Test.Datastore.Converters

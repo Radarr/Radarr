@@ -1,9 +1,6 @@
 using Radarr.Http.REST;
 using NzbDrone.Core.MediaFiles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Movies

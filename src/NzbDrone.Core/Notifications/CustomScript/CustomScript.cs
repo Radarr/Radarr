@@ -8,7 +8,6 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
-using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;

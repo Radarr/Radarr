@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using Nancy;
-using Radarr.Http.Extensions;
-using Radarr.Http.Validation;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using Radarr.Http;

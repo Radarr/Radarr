@@ -1,9 +1,6 @@
 ﻿using NzbDrone.Common.Http;
-using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 
 

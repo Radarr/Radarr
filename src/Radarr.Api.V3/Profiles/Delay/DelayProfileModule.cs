@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using FluentValidation;
-using FluentValidation.Results;
 using Radarr.Http.REST;
 using Radarr.Http.Validation;
 using NzbDrone.Core.Profiles.Delay;

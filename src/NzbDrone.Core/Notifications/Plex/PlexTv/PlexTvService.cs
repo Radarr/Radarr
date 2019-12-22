@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;

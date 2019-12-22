@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using Radarr.Http.REST;
 

@@ -3,12 +3,10 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Nancy;
-using Newtonsoft.Json;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 using Radarr.Http;
-using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3
 {

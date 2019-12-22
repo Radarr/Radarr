@@ -1,6 +1,5 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 

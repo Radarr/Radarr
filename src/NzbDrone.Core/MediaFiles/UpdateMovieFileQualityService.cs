@@ -10,7 +10,6 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using RestSharp.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {

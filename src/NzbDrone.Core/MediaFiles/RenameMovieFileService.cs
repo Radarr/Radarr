@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
-using System.Text;
 using System.IO;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;

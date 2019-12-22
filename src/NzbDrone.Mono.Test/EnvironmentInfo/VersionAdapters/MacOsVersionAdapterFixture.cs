@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using FluentAssertions;
 using Moq;

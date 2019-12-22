@@ -13,7 +13,6 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.MediaFiles.Commands;
 
 namespace NzbDrone.Core.MediaFiles
 {

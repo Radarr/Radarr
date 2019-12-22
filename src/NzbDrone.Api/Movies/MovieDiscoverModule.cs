@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
-using System;
 using Radarr.Http;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Api.NetImport;

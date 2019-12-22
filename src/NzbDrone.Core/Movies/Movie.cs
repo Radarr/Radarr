@@ -5,8 +5,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
-using System.IO;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Movies

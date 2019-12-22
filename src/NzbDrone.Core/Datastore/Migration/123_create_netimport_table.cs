@@ -1,5 +1,4 @@
 ﻿using FluentMigrator;
-using FluentMigrator.Expressions;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration

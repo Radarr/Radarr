@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaFiles.MediaInfo;
-using System;
 
 namespace NzbDrone.Core.Organizer
 {

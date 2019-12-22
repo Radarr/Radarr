@@ -10,7 +10,6 @@ using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
 using Radarr.Api.V3.Blacklist;
-using Radarr.Api.V3.Commands;
 using Radarr.Api.V3.Config;
 using Radarr.Api.V3.DownloadClient;
 using Radarr.Api.V3.MovieFiles;
@@ -20,17 +19,13 @@ using Radarr.Api.V3.RootFolders;
 using Radarr.Api.V3.Movies;
 using Radarr.Api.V3.Tags;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Serializer;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
 using RestSharp;
-using NzbDrone.Test.Common;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace NzbDrone.Integration.Test

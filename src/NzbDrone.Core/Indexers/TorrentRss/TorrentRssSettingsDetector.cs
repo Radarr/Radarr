@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;

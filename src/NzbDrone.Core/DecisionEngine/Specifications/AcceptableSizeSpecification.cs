@@ -1,11 +1,8 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {

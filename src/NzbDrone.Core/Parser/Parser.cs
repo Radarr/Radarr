@@ -2,17 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Languages;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 #if !LIBRARY
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Movies;
-using TinyIoC;
 #endif
 
 namespace NzbDrone.Core.Parser

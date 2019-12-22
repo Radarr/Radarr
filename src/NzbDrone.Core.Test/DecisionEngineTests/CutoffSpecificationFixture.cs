@@ -5,7 +5,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Test.CustomFormat;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests

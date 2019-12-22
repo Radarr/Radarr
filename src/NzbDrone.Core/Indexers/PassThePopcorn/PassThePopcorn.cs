@@ -3,7 +3,6 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {

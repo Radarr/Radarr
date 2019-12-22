@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport
 {
