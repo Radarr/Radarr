@@ -3,8 +3,6 @@ using System.Linq;
 using Radarr.Http.REST;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Qualities;
-using System;
 
 namespace Radarr.Api.V3.Qualities
 {

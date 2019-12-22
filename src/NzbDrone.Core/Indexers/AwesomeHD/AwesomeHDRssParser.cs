@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.AwesomeHD
 {

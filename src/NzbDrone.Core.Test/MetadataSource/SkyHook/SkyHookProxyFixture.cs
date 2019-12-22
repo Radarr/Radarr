@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;

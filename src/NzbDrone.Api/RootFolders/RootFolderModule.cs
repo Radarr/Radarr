@@ -4,7 +4,6 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.RootFolders
 {

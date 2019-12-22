@@ -1,17 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FizzWare.NBuilder;
-using FluentAssertions;
-using NUnit.Framework;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Newznab;
+﻿using NUnit.Framework;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests

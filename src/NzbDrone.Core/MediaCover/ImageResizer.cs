@@ -1,4 +1,3 @@
-using System;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using SixLabors.ImageSharp;

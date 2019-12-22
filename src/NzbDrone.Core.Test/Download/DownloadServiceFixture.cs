@@ -13,7 +13,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download
 {

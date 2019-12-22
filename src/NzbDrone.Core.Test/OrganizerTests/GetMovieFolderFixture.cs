@@ -1,10 +1,6 @@
 using NUnit.Framework;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NzbDrone.Core.Movies;
 using FluentAssertions;
 

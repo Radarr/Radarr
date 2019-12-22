@@ -15,7 +15,6 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles

@@ -1,9 +1,7 @@
 using NUnit.Framework;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {

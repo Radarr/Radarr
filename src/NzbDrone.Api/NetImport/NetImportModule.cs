@@ -1,5 +1,4 @@
 using FluentValidation;
-using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Validation.Paths;
 

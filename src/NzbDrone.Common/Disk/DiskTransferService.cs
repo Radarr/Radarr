@@ -5,7 +5,6 @@ using System.Threading;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Disk

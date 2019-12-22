@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;

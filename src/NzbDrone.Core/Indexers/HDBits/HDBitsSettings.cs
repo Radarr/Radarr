@@ -1,13 +1,7 @@
-using System;
-using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
-using System.Linq.Expressions;
-using FluentValidation.Results;
 using System.Collections.Generic;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {

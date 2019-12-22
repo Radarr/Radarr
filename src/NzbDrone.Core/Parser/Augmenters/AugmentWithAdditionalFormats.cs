@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {

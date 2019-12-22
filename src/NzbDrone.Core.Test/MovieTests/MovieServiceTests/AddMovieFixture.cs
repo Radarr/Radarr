@@ -4,7 +4,6 @@ using NUnit.Framework;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
 {

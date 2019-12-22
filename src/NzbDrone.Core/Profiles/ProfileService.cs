@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
- using NzbDrone.Core.CustomFormats;
- using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;

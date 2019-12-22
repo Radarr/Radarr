@@ -3,7 +3,6 @@ using NUnit.Framework;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

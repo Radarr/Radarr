@@ -8,7 +8,6 @@ using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Common.Instrumentation.Extensions;
 
 namespace NzbDrone.Common.Http.Dispatchers
 {

@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync

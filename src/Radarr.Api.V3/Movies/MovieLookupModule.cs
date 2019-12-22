@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;

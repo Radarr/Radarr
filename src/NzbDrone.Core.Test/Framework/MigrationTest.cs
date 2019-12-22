@@ -3,7 +3,6 @@ using FluentMigrator;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Test.Common.AutoMoq;
 
 namespace NzbDrone.Core.Test.Framework
 {

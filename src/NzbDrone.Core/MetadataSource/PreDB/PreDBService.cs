@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Indexers;
-using System.ServiceModel.Syndication;
-using System.Xml;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Movies;
 using System;
-using System.IO;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.IndexerSearch.Definitions;
 

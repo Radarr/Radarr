@@ -10,9 +10,6 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests

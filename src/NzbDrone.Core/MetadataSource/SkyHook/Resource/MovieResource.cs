@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
+﻿namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-        public class ImdbResource
+    public class ImdbResource
         {
             public int v { get; set; }
             public string q { get; set; }

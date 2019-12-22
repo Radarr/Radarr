@@ -6,7 +6,6 @@ using Marr.Data;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;

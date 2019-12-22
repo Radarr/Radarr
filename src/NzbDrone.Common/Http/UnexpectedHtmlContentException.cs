@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NzbDrone.Common.Http
+﻿namespace NzbDrone.Common.Http
 {
     public class UnexpectedHtmlContentException : HttpException
     {

@@ -1,11 +1,9 @@
-using Nancy;
 using FluentValidation;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Parser.Model;
-using Radarr.Http.Extensions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Movies;
 
 namespace Radarr.Api.V3.NetImport
 {

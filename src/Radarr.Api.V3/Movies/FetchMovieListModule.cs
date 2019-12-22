@@ -6,7 +6,6 @@ using System.Linq;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Movies;
 using Radarr.Http;
-using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3.Movies
 {

@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
-using Nancy.Responses;
 using Radarr.Http.Extensions;
-using Radarr.Http.REST;
 using NzbDrone.Core.Movies;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Movies
 {

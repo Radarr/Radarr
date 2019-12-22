@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 using NLog;
 using NzbDrone.Core.Datastore;
-using System.Data;
 
 namespace NzbDrone.Core.Backup
 {

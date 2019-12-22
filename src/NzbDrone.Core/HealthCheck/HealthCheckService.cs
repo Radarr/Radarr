@@ -6,13 +6,9 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Common.Reflection;
-using NzbDrone.Core.Configuration.Events;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.HealthCheck
 {

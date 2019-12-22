@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -10,7 +8,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.PassThePopcorn;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.IndexerTests.PTPTests
 {

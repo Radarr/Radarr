@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.IO;
 using NLog;
 using Radarr.Http;
-using Radarr.Http.REST;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;

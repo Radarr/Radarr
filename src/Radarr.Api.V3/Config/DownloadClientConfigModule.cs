@@ -1,6 +1,4 @@
-using FluentValidation;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Validation.Paths;
 
 namespace Radarr.Api.V3.Config
 {

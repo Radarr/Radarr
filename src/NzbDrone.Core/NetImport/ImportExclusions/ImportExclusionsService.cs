@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions

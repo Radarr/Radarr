@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Runtime.InteropServices.ComTypes;
 using Marr.Data.Converters;
 
 namespace Marr.Data.Parameters

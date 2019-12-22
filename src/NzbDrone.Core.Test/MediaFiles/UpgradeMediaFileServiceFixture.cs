@@ -1,7 +1,5 @@
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;

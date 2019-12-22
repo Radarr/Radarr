@@ -11,12 +11,7 @@ using NzbDrone.Test.Common;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.MediaInfo;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Test.Framework
 {

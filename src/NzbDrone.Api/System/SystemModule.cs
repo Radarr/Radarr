@@ -1,6 +1,4 @@
-using Nancy;
 using Nancy.Routing;
-using Radarr.Http.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;

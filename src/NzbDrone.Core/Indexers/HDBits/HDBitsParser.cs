@@ -6,7 +6,6 @@ using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {

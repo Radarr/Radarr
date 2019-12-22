@@ -9,7 +9,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.DecisionEngine;
 using System.Linq;
-using NzbDrone.Core.Datastore.Migration;
 
 namespace NzbDrone.Api.Indexers
 {

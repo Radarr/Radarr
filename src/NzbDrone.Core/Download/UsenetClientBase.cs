@@ -1,5 +1,4 @@
 using System.Net;
-using System;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;

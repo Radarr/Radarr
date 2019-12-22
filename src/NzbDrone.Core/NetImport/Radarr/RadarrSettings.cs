@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
-using NzbDrone.Core.MetadataSource.RadarrAPI;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {

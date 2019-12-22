@@ -4,7 +4,6 @@ using System.Net;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Pneumatic;
 using NzbDrone.Core.Parser.Model;

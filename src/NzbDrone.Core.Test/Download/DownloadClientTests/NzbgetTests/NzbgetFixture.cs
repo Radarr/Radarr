@@ -9,7 +9,6 @@ using NzbDrone.Core.Download.Clients.Nzbget;
 using NzbDrone.Test.Common;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using Newtonsoft.Json;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
