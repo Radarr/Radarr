@@ -131,7 +131,7 @@ namespace Marr.Data.QGen
         {
             sql.Append(OrderBy.ToString());
         }
-       
+
         public void BuildGroupBy(StringBuilder sql)
         {
             var baseTable = this.Tables.First();

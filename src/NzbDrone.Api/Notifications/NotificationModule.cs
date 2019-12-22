@@ -12,7 +12,7 @@ namespace NzbDrone.Api.Notifications
         protected override void MapToResource(NotificationResource resource, NotificationDefinition definition)
         {
             base.MapToResource(resource, definition);
-            
+
             resource.OnGrab = definition.OnGrab;
             resource.OnDownload = definition.OnDownload;
             resource.OnUpgrade = definition.OnUpgrade;

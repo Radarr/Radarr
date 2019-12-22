@@ -32,7 +32,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     return Decision.Reject("Quality for existing file on disk is of equal or higher preference: {0}", file.Quality);
                 }
-            
+
 
             return Decision.Accept();
         }

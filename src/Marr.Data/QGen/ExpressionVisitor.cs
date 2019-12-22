@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 namespace Marr.Data.QGen
 {
     ///<summary>
-    /// Expression visitor 
+    /// Expression visitor
     ///</summary>
     public class ExpressionVisitor
     {

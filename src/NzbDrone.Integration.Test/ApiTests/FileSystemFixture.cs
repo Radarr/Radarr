@@ -16,7 +16,7 @@ namespace NzbDrone.Integration.Test.ApiTests
     public class FileSystemFixture : IntegrationTest
     {
         public ClientBase FileSystem;
-        
+
         private string _file;
         private string _folder;
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             _file = Assembly.GetExecutingAssembly().Location;
             _folder = Path.GetDirectoryName(_file) + Path.DirectorySeparatorChar;
         }
-    
+
         [Test]
         public void get_filesystem_content_excluding_files()
         {

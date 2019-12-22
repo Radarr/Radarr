@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Extras.Others
         }
 
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
-        { 
+        {
             var extraFiles = _otherExtraFileService.GetFilesByMovie(movie.Id);
             var movedFiles = new List<OtherExtraFile>();
 

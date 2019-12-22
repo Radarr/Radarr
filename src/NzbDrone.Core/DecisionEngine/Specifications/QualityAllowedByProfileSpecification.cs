@@ -19,7 +19,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Checking if report meets quality requirements. {0}", subject.ParsedMovieInfo.Quality);
-            
+
             var profile = subject.Movie.Profile.Value;
             var qualityIndex = profile.GetIndex(subject.ParsedMovieInfo.Quality.Quality);
             var qualityOrGroup = profile.Items[qualityIndex.Index];

@@ -41,7 +41,7 @@ namespace NzbDrone.Core.NetImport.Radarr
 
             return jsonResponse.SelectList(_skyhookProxy.MapMovie);
 
-            
+
         }
 
         protected virtual bool PreProcess(NetImportResponse indexerResponse)

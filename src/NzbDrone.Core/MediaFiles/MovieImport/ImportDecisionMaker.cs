@@ -103,7 +103,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             if (fileMovieInfo != null)
             {
                 fileMovieInfo = _parsingService.EnhanceMovieInfo(fileMovieInfo);
-            }            
+            }
 
             localMovie.FileMovieInfo = fileMovieInfo;
             localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);

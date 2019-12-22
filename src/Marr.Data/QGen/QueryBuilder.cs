@@ -190,7 +190,7 @@ namespace Marr.Data.QGen
             _isGraph = true;
             return this;
         }
-        
+
         public virtual QueryBuilder<T> Page(int pageNumber, int pageSize)
         {
             _enablePaging = true;
@@ -198,7 +198,7 @@ namespace Marr.Data.QGen
             _take = pageSize;
             return this;
         }
-        
+
         private string[] ParseChildrenToLoad(Expression<Func<T, object>>[] childrenToLoad)
         {
             List<string> entitiesToLoad = new List<string>();
@@ -208,7 +208,7 @@ namespace Marr.Data.QGen
             {
                 MemberInfo member = (exp.Body as MemberExpression).Member;
                 entitiesToLoad.Add(member.Name);
-                
+
             }
 
             return entitiesToLoad.ToArray();

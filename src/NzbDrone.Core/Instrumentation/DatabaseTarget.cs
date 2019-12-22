@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Instrumentation
                         sqlCommand.Parameters.Add(new SQLiteParameter("ExceptionType", DbType.String) { Value = log.ExceptionType });
                         sqlCommand.Parameters.Add(new SQLiteParameter("Level", DbType.String) { Value = log.Level });
 
-                        sqlCommand.ExecuteNonQuery();   
+                        sqlCommand.ExecuteNonQuery();
                     }
                 }
 

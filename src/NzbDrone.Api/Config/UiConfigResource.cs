@@ -26,7 +26,7 @@ namespace NzbDrone.Api.Config
             {
                 FirstDayOfWeek = model.FirstDayOfWeek,
                 CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
-                
+
                 ShortDateFormat = model.ShortDateFormat,
                 LongDateFormat = model.LongDateFormat,
                 TimeFormat = model.TimeFormat,

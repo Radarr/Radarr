@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                c.Insert.IntoTable("Indexers").Row(new 
+                c.Insert.IntoTable("Indexers").Row(new
                 {
                     Name = "Kickass_wrong_url",
                     Implementation = "KickassTorrents",

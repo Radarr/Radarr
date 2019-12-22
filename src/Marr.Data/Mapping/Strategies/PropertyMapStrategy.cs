@@ -20,7 +20,7 @@ using System.Reflection;
 namespace Marr.Data.Mapping.Strategies
 {
     /// <summary>
-    /// Maps all public properties to DB columns.  
+    /// Maps all public properties to DB columns.
     /// </summary>
     public class PropertyMapStrategy : AttributeMapStrategy
     {

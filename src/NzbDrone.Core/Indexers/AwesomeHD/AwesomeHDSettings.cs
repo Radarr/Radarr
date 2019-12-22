@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since you Passkey will be sent to that host.")]
         public string BaseUrl { get; set; }
-        
+
         // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 

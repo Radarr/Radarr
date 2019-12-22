@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Test.Datastore.SqliteSchemaDumperTests
             result.Columns.First().Name.Should().Be("MyId");
             result.Columns.First().Type.Should().BeNull();
         }
-        
+
         [Test]
         public void should_ignore_unknown_symbols()
         {

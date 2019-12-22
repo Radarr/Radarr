@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Messaging.Commands
         IEnumerable<CommandModel> Queue(CancellationToken cancellationToken);
         List<CommandModel> All();
         CommandModel Get(int id);
-        List<CommandModel> GetStarted(); 
+        List<CommandModel> GetStarted();
         void SetMessage(CommandModel command, string message);
         void Start(CommandModel command);
         void Complete(CommandModel command, string message);
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
         private readonly CommandQueue _commandQueue;
 
-        public CommandQueueManager(ICommandRepository repo, 
+        public CommandQueueManager(ICommandRepository repo,
                                    IServiceFactory serviceFactory,
                                    Logger logger)
         {
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Messaging.Commands
         public void Fail(CommandModel command, string message, Exception e)
         {
             command.Exception = e.ToString();
-            
+
             Update(command, CommandStatus.Failed, message);
         }
 
@@ -206,7 +206,7 @@ namespace NzbDrone.Core.Messaging.Commands
         public void CleanCommands()
         {
             _logger.Trace("Cleaning up old commands");
-            
+
             var commands = _commandQueue.All()
                                         .Where(c => c.EndedAt < DateTime.UtcNow.AddMinutes(-5))
                                         .ToList();

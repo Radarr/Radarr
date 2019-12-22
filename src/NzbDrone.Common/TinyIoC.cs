@@ -676,7 +676,7 @@ namespace TinyIoC
     {
         /// <summary>
         /// Attempt to resolve type, even if the type isn't registered.
-        /// 
+        ///
         /// Registered types/options will always take precedence.
         /// </summary>
         AttemptResolve,
@@ -689,7 +689,7 @@ namespace TinyIoC
         /// <summary>
         /// Attempt to resolve unregistered type if requested type is generic
         /// and no registration exists for the specific generic parameters used.
-        /// 
+        ///
         /// Registered types/options will always take precedence.
         /// </summary>
         GenericsOnly
@@ -904,7 +904,7 @@ namespace TinyIoC
 #endif
             /// <summary>
             /// Switches to a custom lifetime manager factory if possible.
-            /// 
+            ///
             /// Usually used for RegisterOptions "To*" extension methods such as the ASP.Net per-request one.
             /// </summary>
             /// <param name="instance">RegisterOptions instance</param>
@@ -994,7 +994,7 @@ namespace TinyIoC
         #region Registration
         /// <summary>
         /// Attempt to automatically register all non-generic classes and interfaces in the current app domain.
-        /// 
+        ///
         /// If more than one class implements an interface then only one implementation will be registered
         /// although no error will be thrown.
         /// </summary>
@@ -1010,7 +1010,7 @@ namespace TinyIoC
         /// <summary>
         /// Attempt to automatically register all non-generic classes and interfaces in the current app domain.
         /// Types will only be registered if they pass the supplied registration predicate.
-        /// 
+        ///
         /// If more than one class implements an interface then only one implementation will be registered
         /// although no error will be thrown.
         /// </summary>
@@ -1056,7 +1056,7 @@ namespace TinyIoC
 
         /// <summary>
         /// Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
-        /// 
+        ///
         /// If more than one class implements an interface then only one implementation will be registered
         /// although no error will be thrown.
         /// </summary>
@@ -1069,7 +1069,7 @@ namespace TinyIoC
         /// <summary>
         /// Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
         /// Types will only be registered if they pass the supplied registration predicate.
-        /// 
+        ///
         /// If more than one class implements an interface then only one implementation will be registered
         /// although no error will be thrown.
         /// </summary>
@@ -1361,7 +1361,7 @@ namespace TinyIoC
 
         /// <summary>
         /// Register multiple implementations of a type.
-        /// 
+        ///
         /// Internally this registers each implementation using the full name of the class as its registration name.
         /// </summary>
         /// <typeparam name="RegisterType">Type that each implementation implements</typeparam>
@@ -1374,7 +1374,7 @@ namespace TinyIoC
 
         /// <summary>
         /// Register multiple implementations of a type.
-        /// 
+        ///
         /// Internally this registers each implementation using the full name of the class as its registration name.
         /// </summary>
         /// <param name="registrationType">Type that each implementation implements</param>
@@ -1720,7 +1720,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <param name="resolveType">Type to resolve</param>
@@ -1736,7 +1736,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <param name="resolveType">Type to resolve</param>
@@ -1753,7 +1753,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <param name="resolveType">Type to resolve</param>
@@ -1770,7 +1770,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <param name="resolveType">Type to resolve</param>
@@ -1845,7 +1845,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <typeparam name="ResolveType">Type to resolve</typeparam>
@@ -1862,7 +1862,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <typeparam name="ResolveType">Type to resolve</typeparam>
@@ -1880,7 +1880,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <typeparam name="ResolveType">Type to resolve</typeparam>
@@ -1898,7 +1898,7 @@ namespace TinyIoC
         ///
         /// Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
         /// All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
-        /// 
+        ///
         /// Note: Resolution may still fail if user defined factory registations fail to construct objects when called.
         /// </summary>
         /// <typeparam name="ResolveType">Type to resolve</typeparam>
@@ -2360,7 +2360,7 @@ namespace TinyIoC
         {
             /// <summary>
             /// Whether to assume this factory sucessfully constructs its objects
-            /// 
+            ///
             /// Generally set to true for delegate style factories as CanResolve cannot delve
             /// into the delegates they contain.
             /// </summary>
@@ -2638,7 +2638,7 @@ namespace TinyIoC
 
         /// <summary>
         /// Stores an particular instance to return for a type
-        /// 
+        ///
         /// Stores the instance with a weak reference
         /// </summary>
         private class WeakInstanceFactory : ObjectFactoryBase, IDisposable
@@ -3427,7 +3427,7 @@ namespace TinyIoC
 
                 var isParameterOverload = parameters.ContainsKey(parameter.Name);
 
-                //#if NETFX_CORE                
+                //#if NETFX_CORE
                 //              if (parameter.ParameterType.GetTypeInfo().IsPrimitive && !isParameterOverload)
                 //#else
                 if (parameter.ParameterType.IsPrimitive() && !isParameterOverload)
@@ -3578,7 +3578,7 @@ namespace TinyIoC
 
             // We could lock the cache here, but there's no real side
             // effect to two threads creating the same ObjectConstructor
-            // at the same time, compared to the cost of a lock for 
+            // at the same time, compared to the cost of a lock for
             // every creation.
             var constructorParams = constructor.GetParameters();
             var lambdaParams = Expression.Parameter(typeof(object[]), "parameters");

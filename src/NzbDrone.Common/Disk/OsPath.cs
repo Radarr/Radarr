@@ -97,7 +97,7 @@ namespace NzbDrone.Common.Disk
                 {
                     return _path.StartsWith("/");
                 }
-                
+
                 return false;
             }
         }
@@ -112,7 +112,7 @@ namespace NzbDrone.Common.Disk
                 {
                     return new OsPath(null);
                 }
-                
+
                 return new OsPath(_path.Substring(0, index), _kind).AsDirectory();
             }
         }
@@ -136,7 +136,7 @@ namespace NzbDrone.Common.Disk
 
                     return path;
                 }
-                
+
                 return _path.Substring(index).Trim('\\', '/');
             }
         }

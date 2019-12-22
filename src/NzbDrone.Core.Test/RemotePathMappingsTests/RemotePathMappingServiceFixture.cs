@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.RemotePathMappingsTests
             Subject.Remove(1);
             Mocker.GetMock<IRemotePathMappingRepository>().Verify(c => c.Delete(1), Times.Once());
         }
-        
+
         [TestCase("my-server.localdomain", "/mnt/storage", @"D:\mountedstorage")]
         [TestCase("my-server.localdomain", "/mnt/storage", @"D:\mountedstorage2")]
         public void adding_duplicated_mapping_should_throw(string host, string remotePath, string localPath)

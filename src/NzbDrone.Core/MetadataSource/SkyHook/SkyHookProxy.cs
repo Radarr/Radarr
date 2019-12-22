@@ -26,7 +26,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
-        
+
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
         private readonly IMovieService _movieService;

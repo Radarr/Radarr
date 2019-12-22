@@ -114,11 +114,11 @@ namespace NzbDrone.Api.Calendar
             {
                 return;
             }
-            
+
             var occurrence = calendar.Create<CalendarEvent>();
             occurrence.Uid = "NzbDrone_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
             occurrence.Status = movie.Status == MovieStatusType.Announced ? EventStatus.Tentative : EventStatus.Confirmed;
-            
+
             occurrence.Start = new CalDateTime(date.Value);
             occurrence.End = occurrence.Start;
             occurrence.IsAllDay = true;

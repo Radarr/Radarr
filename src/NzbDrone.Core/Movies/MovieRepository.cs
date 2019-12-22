@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Movies
                 var query = Query.Where(m =>
                         (m.InCinemas >= start && m.InCinemas <= end) ||
                         (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
-                
+
                 if (!includeUnmonitored)
                 {
                     query.AndWhere(e => e.Monitored == true);
@@ -178,7 +178,7 @@ namespace NzbDrone.Core.Movies
             }
 
             Movie result = Query.Where(s => s.CleanTitle == cleanTitle).FirstWithYear(year);
-            
+
             if (result == null)
             {
                 result = Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers || movie.CleanTitle == cleanTitleWithRomanNumbers)

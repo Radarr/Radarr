@@ -29,7 +29,7 @@ namespace Radarr.Http.ErrorManagement
                 _logger.Warn(apiException, "API Error");
                 return apiException.ToErrorResponse(context);
             }
-            
+
             if (exception is ValidationException validationException)
             {
                 _logger.Warn("Invalid request {0}", validationException.Message);

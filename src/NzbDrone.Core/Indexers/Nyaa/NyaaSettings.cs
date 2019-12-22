@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         [FieldDefinition(0, Label = "Website URL")]
         public string BaseUrl { get; set; }
-                
+
         // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 

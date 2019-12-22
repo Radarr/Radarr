@@ -17,9 +17,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         private INetImportRepository _netImportRepository;
 
         public TraktImport(INetImportRepository netImportRepository,
-                           IHttpClient httpClient, 
-                           IConfigService configService, 
-                           IParsingService parsingService, 
+                           IHttpClient httpClient,
+                           IConfigService configService,
+                           IParsingService parsingService,
                            Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {

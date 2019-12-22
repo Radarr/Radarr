@@ -33,7 +33,7 @@ namespace Radarr.Http.Authentication
         private static AuthenticationType AUTH_METHOD;
 
         [ThreadStatic]
-        private static NancyContext _context; 
+        private static NancyContext _context;
 
         public AuthenticationService(IConfigFileProvider configFileProvider, IUserService userService)
         {

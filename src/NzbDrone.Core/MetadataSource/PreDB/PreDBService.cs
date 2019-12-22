@@ -131,7 +131,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
             return matches;
         }
 
-        
+
 
 
         private List<Movie> Sync()
@@ -148,7 +148,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
         public void Execute(PreDBSyncCommand message)
         {
             var haveNewReleases = Sync();
-            
+
             foreach (Movie movie in haveNewReleases)
             {
                 if (!movie.HasPreDBEntry)
@@ -187,14 +187,14 @@ namespace NzbDrone.Core.MetadataSource.PreDB
                 }
             }
 
-            return false;   
+            return false;
         }
         catch (Exception ex)
         {
             _logger.Warn(ex, "Error while looking on predb.me.");
             return false;
         }
-            
+
         }
     }
 }

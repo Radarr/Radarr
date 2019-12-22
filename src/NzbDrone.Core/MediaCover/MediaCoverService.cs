@@ -125,7 +125,7 @@ namespace NzbDrone.Core.MediaCover
                         _logger.Warn(e, "Couldn't download media cover for {0}. {1}", movie, e.Message);
                         if (retried < 3)
                         {
-                            retried += 1; 
+                            retried += 1;
                             _logger.Warn("Retrying for the {0}. time in ten seconds.", retried);
                             System.Threading.Thread.Sleep(10 * 1000);
                             EnsureCovers(movie, retried);

@@ -122,7 +122,7 @@ namespace Radarr.Api.V3.Queue
             switch (pagingSpec.SortKey)
             {
                 case "status":
-                    return q => q.Status;                
+                    return q => q.Status;
                 case "movie.sortTitle":
                     return q => q.Movie.SortTitle;
                 case "title":

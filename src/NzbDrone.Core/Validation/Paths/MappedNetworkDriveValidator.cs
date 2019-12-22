@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Validation.Paths
             var path = context.PropertyValue.ToString();
 
             if (!DriveRegex.IsMatch(path)) return true;
-            
+
             var mount = _diskProvider.GetMount(path);
 
             if (mount != null && mount.DriveType == DriveType.Network)

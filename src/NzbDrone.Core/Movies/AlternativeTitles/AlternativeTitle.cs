@@ -16,16 +16,16 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public int VoteCount { get; set; }
         public Language Language { get; set; }
         public LazyLoaded<Movie> Movie { get; set; }
-        
-        public AlternativeTitle() 
-        { 
-             
-        } 
- 
-        public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0, Language language = null) 
-        { 
-            Title = title; 
-            CleanTitle = title.CleanSeriesTitle(); 
+
+        public AlternativeTitle()
+        {
+
+        }
+
+        public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0, Language language = null)
+        {
+            Title = title;
+            CleanTitle = title.CleanSeriesTitle();
             SourceType = sourceType;
             SourceId = sourceId;
             Language = language ?? Language.English;

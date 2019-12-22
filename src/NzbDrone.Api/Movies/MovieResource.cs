@@ -18,7 +18,7 @@ namespace NzbDrone.Api.Movies
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-         
+
         //View Only
         public string Title { get; set; }
         public List<AlternativeTitleResource> AlternativeTitles { get; set; }
@@ -96,9 +96,9 @@ namespace NzbDrone.Api.Movies
             long size = model.MovieFile?.Size ?? 0;
             bool downloaded = model.MovieFile != null;
             MovieFileResource movieFile = model.MovieFile?.ToResource();
-            
 
-            
+
+
             /*if(model.MovieFile != null)
             {
                 model.MovieFile.LazyLoad();
@@ -110,7 +110,7 @@ namespace NzbDrone.Api.Movies
                 downloaded = true;
                 movieFile = model.MovieFile.Value.ToResource();
             }*/
-            
+
             //model.AlternativeTitles.LazyLoad();
 
             return new MovieResource
@@ -134,18 +134,18 @@ namespace NzbDrone.Api.Movies
                 //NextAiring
                 //PreviousAiring
                 Images = model.Images,
-                
+
                 Year = model.Year,
                 SecondaryYear = model.SecondaryYear,
                 SecondaryYearSourceId = model.SecondaryYearSourceId,
-                
+
                 Path = model.Path,
                 ProfileId = model.ProfileId,
                 PathState = model.PathState,
-                
+
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
-        
+
                 IsAvailable = model.IsAvailable(),
                 FolderName = model.FolderName(),
 
@@ -205,7 +205,7 @@ namespace NzbDrone.Api.Movies
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,
-        
+
                 Runtime = resource.Runtime,
                 LastInfoSync = resource.LastInfoSync,
                 CleanTitle = resource.CleanTitle,

@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
             threadLimit = Math.Max(THREAD_LOWER_BOUND, threadLimit);
             threadLimit = Math.Min(THREAD_UPPER_BOUND, threadLimit);
-            
+
             _logger.Info("Starting {} threads for tasks.", threadLimit);
 
             for (int i = 0; i < threadLimit + 1; i++)

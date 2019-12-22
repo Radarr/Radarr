@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download
 
         protected DownloadClientBase(IConfigService configService,
             INamingConfigService namingConfigService,
-            IDiskProvider diskProvider, 
+            IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
         {

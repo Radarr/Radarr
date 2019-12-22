@@ -157,7 +157,7 @@ namespace Marr.Data.QGen
                 _db.CloseConnection();
             }
 
-            
+
             if (_generateQuery)
             {
                 // Return to previous sql mode

@@ -72,7 +72,7 @@ namespace Radarr.Host
 
                 EnsureSingleInstance(applicationModes == ApplicationModes.Service, startupContext);
             }
-            
+
             _container.Resolve<Router>().Route(applicationModes);
         }
 

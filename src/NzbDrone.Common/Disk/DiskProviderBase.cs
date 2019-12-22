@@ -301,7 +301,7 @@ namespace NzbDrone.Common.Disk
         public void FileSetLastWriteTime(string path, DateTime dateTime)
         {
             Ensure.That(path, () => path).IsValidPath();
-            
+
             if (dateTime.Before(DateTimeExtensions.Epoch))
             {
                 dateTime = DateTimeExtensions.Epoch;

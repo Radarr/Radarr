@@ -45,6 +45,6 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             return new TorrentPotatoParser();
         }
 
-      
+
     }
 }

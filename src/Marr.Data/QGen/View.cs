@@ -25,7 +25,7 @@ namespace Marr.Data.QGen
         {
             get { return _tables; }
         }
-        
+
         public override string Name
         {
             get

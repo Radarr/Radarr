@@ -40,7 +40,7 @@ namespace Marr.Data.Reflection
         }
 
         /// <summary>
-        /// Gets the CLR data type of a MemberInfo.  
+        /// Gets the CLR data type of a MemberInfo.
         /// If the type is nullable, returns the underlying type.
         /// </summary>
         /// <param name="member"></param>

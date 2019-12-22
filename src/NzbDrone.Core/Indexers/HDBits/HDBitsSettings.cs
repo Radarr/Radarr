@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         [FieldDefinition(0, Label = "Username")]
         public string Username { get; set; }
-                
+
         //[FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 

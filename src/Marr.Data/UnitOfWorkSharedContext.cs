@@ -3,7 +3,7 @@
 namespace Marr.Data
 {
     /// <summary>
-    /// Works in conjunction with the UnitOfWork to create a new 
+    /// Works in conjunction with the UnitOfWork to create a new
     /// shared context that will preserve a single IDataMapper.
     /// </summary>
     public class UnitOfWorkSharedContext : IDisposable

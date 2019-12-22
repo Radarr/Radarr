@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Notifications.Slack
     public class Slack : NotificationBase<SlackSettings>
     {
         private readonly ISlackProxy _proxy;
-  
+
         public Slack(ISlackProxy proxy)
         {
             _proxy = proxy;
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.Slack
                                         Title = movie.Title,
                                     }
                                 };
- 
+
              var payload = CreatePayload("Renamed", attachments);
 
             _proxy.SendPayload(payload, Settings);

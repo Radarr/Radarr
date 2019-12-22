@@ -74,7 +74,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                         return Decision.Reject("CDH is disabled and grab event in history is of equal or higher quality: {0}", mostRecent.Quality);
                     }
                 }
-            
+
 
             return Decision.Accept();
         }

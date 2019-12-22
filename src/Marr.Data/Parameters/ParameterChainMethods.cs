@@ -37,7 +37,7 @@ namespace Marr.Data.Parameters
             Parameter.ParameterName = parameterName;
 
             // Convert null to DBNull.Value
-            if (value == null) 
+            if (value == null)
                 value = DBNull.Value;
 
             Type valueType = value.GetType();
@@ -59,9 +59,9 @@ namespace Marr.Data.Parameters
                 else
                 {
                     Parameter.Value = value;
-                } 
+                }
             }
-            
+
 
             //// Determine the correct DbType based on the passed in value type
             //IDbTypeBuilder typeBuilder = MapRepository.Instance.DbTypeBuilder;
@@ -122,7 +122,7 @@ namespace Marr.Data.Parameters
             Parameter.Scale = scale;
             return this;
         }
-        
+
         public ParameterChainMethods Name(string name)
         {
             Parameter.ParameterName = name;

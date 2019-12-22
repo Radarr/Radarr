@@ -60,8 +60,8 @@ namespace MonoTorrent
 
 
         /// <summary>
-        /// This dictionary is specific for azureus client 
-        /// It can contain 
+        /// This dictionary is specific for azureus client
+        /// It can contain
         ///     dht_backup_enable (number)
         ///     Content (dictionnary)
         ///         Publisher
@@ -651,7 +651,7 @@ namespace MonoTorrent
         public static bool TryLoad(Stream stream, out Torrent torrent)
         {
             Check.Stream(stream);
-            
+
             try
             {
                 torrent = Torrent.Load(stream);
@@ -676,7 +676,7 @@ namespace MonoTorrent
         {
             Check.Url(url);
             Check.Location(location);
-            
+
             try
             {
                 torrent = Torrent.Load(url, location);

@@ -23,7 +23,7 @@ namespace NzbDrone.Api.Indexers
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
-        
+
         private readonly ICached<RemoteMovie> _remoteMovieCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Indexers
 
             //PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
-            
+
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
 
@@ -117,7 +117,7 @@ namespace NzbDrone.Api.Indexers
         {
 
            _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
-            
+
            return base.MapDecision(decision, initialWeight);
         }
     }

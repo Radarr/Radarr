@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Indexers
         {
             return new IndexerPageableRequestChain();
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

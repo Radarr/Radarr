@@ -16,7 +16,7 @@ namespace NzbDrone.Core.NetImport
             : base(database, eventAggregator)
         {
         }
-        
+
         public void UpdateSettings(NetImportDefinition model)
         {
             SetFields(model, m => m.Settings);

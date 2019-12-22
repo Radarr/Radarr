@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
 
         public virtual bool PreferTorrentFile => false;
-        
+
         protected abstract string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink);
         protected abstract string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent);
 

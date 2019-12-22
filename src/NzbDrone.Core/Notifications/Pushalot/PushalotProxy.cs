@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Notifications.Pushalot
 
             if (settings.Image)
             {
-                request.AddParameter("Image", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");                
+                request.AddParameter("Image", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");
             }
 
             request.AddParameter("Title", title);

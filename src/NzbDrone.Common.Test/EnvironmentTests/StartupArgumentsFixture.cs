@@ -55,7 +55,7 @@ namespace NzbDrone.Common.Test.EnvironmentTests
             args.PreservedArguments.Should().Be(preserved);
         }
 
-     
+
         [Test]
         public void should_preserver_both()
         {

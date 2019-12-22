@@ -72,7 +72,7 @@ namespace NzbDrone.Integration.Test.Client
                 Thread.Sleep(500);
                 resources = All();
             }
-            
+
             Assert.Fail("Commands still processing");
         }
     }

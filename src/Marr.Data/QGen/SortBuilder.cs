@@ -85,7 +85,7 @@ namespace Marr.Data.QGen
             _sortExpressions.Add(new SortColumn<T>(declaringType, propertyName, SortDirection.Desc));
             return this;
         }
-        
+
         public virtual SortBuilder<T> OrderBy(string orderByClause)
         {
             if (string.IsNullOrEmpty(orderByClause))

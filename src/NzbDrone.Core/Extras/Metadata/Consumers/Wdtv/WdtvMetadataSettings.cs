@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         [FieldDefinition(1, Label = "Movie Images", Type = FieldType.Checkbox)]
         public bool MovieImages { get; set; }
-        
+
         public bool IsValid => true;
 
         public NzbDroneValidationResult Validate()

@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
                 _logger.Trace("Feed doesn't have Seeders in Description, disabling option.");
                 parser.ParseSeedersInDescription = settings.ParseSeedersInDescription = false;
             }
-            
+
             if (!releases.Any(r => r.Size < ValidSizeThreshold))
             {
                 _logger.Trace("Feed has valid size in enclosure.");

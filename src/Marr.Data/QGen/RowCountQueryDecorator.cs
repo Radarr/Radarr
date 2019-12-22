@@ -10,7 +10,7 @@ namespace Marr.Data.QGen
         {
             _innerQuery = innerQuery;
         }
-        
+
         public string Generate()
         {
             // Decide which type of paging query to create
@@ -108,12 +108,12 @@ namespace Marr.Data.QGen
 }
 
 /*
-WITH GroupCTE AS 
+WITH GroupCTE AS
 (
-    SELECT [t0].[ID],[t0].[OrderName],[t1].[ID] AS OrderItemID,[t1].[OrderID],[t1].[ItemDescription],[t1].[Price], 
-    ROW_NUMBER() OVER (PARTITION BY [t0].[ID]  ORDER BY [t0].[OrderName]) As GroupRow  
-    FROM [Order] [t0] 
-    LEFT JOIN [OrderItem] [t1] ON (([t0].[ID] = [t1].[OrderID])) 
+    SELECT [t0].[ID],[t0].[OrderName],[t1].[ID] AS OrderItemID,[t1].[OrderID],[t1].[ItemDescription],[t1].[Price],
+    ROW_NUMBER() OVER (PARTITION BY [t0].[ID]  ORDER BY [t0].[OrderName]) As GroupRow
+    FROM [Order] [t0]
+    LEFT JOIN [OrderItem] [t1] ON (([t0].[ID] = [t1].[OrderID]))
     --WHERE (([t0].[OrderName] = @P0))
 )
 SELECT * FROM GroupCTE

@@ -31,12 +31,12 @@ namespace NzbDrone.Core.Profiles.Delay
         }
 
         public DelayProfile Add(DelayProfile profile)
-        {           
+        {
             profile.Order = _repo.Count();
 
             var result = _repo.Insert(profile);
             _bestForTagsCache.Clear();
-            
+
             return result;
         }
 
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Profiles.Delay
                     delayProfile.Order = afterCount;
                     afterCount++;
                 }
-               
+
                 else if (delayProfile.Order > movingOrder)
                 {
                     delayProfile.Order--;

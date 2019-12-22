@@ -21,7 +21,7 @@ namespace Radarr.Api.V3.History
         public HistoryEventType EventType { get; set; }
 
         public Dictionary<string, string> Data { get; set; }
-        
+
         public MovieResource Movie { get; set; }
     }
 
@@ -34,7 +34,7 @@ namespace Radarr.Api.V3.History
             return new HistoryResource
             {
                 Id = model.Id,
-                
+
                 MovieId = model.MovieId,
                 SourceTitle = model.SourceTitle,
                 Languages = model.Languages,

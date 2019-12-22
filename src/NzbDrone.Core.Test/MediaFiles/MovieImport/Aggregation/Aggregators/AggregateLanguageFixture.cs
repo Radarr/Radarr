@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
 {
-    [TestFixture]  
+    [TestFixture]
     public class AggregateLanguageFixture : CoreTest<AggregateLanguage>
     {
         private LocalMovie _localMovie;

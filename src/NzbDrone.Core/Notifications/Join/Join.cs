@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Notifications.Join
         {
             _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, message.Message, Settings);
         }
-        
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();

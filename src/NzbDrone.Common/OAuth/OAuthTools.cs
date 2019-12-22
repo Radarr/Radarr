@@ -55,7 +55,7 @@ namespace NzbDrone.Common.OAuth
 #endif
 
         /// <summary>
-        /// Generates a random 16-byte lowercase alphanumeric string. 
+        /// Generates a random 16-byte lowercase alphanumeric string.
         /// </summary>
         /// <seealso href="http://oauth.net/core/1.0#nonce"/>
         /// <returns></returns>
@@ -259,7 +259,7 @@ namespace NzbDrone.Common.OAuth
         }
 
         /// <summary>
-        /// Creates a request elements concatentation value to send with a request. 
+        /// Creates a request elements concatentation value to send with a request.
         /// This is also known as the signature base.
         /// </summary>
         /// <seealso href="http://oauth.net/core/1.0#rfc.section.9.1.3"/>
@@ -276,7 +276,7 @@ namespace NzbDrone.Common.OAuth
             var requestMethod = string.Concat(method.ToUpper(), "&");
             var requestUrl = string.Concat(UrlEncodeRelaxed(ConstructRequestUrl(new Uri(url))), "&");
             var requestParameters = UrlEncodeRelaxed(NormalizeRequestParameters(parameters));
-            
+
             sb.Append(requestMethod);
             sb.Append(requestUrl);
             sb.Append(requestParameters);
@@ -293,7 +293,7 @@ namespace NzbDrone.Common.OAuth
         /// <param name="signatureBase">The signature base</param>
         /// <param name="consumerSecret">The consumer key</param>
         /// <returns></returns>
-        public static string GetSignature(OAuthSignatureMethod signatureMethod, 
+        public static string GetSignature(OAuthSignatureMethod signatureMethod,
                                           string signatureBase,
                                           string consumerSecret)
         {
@@ -311,7 +311,7 @@ namespace NzbDrone.Common.OAuth
         /// <param name="consumerSecret">The consumer key</param>
         /// <returns></returns>
         public static string GetSignature(OAuthSignatureMethod signatureMethod,
-                                          OAuthSignatureTreatment signatureTreatment, 
+                                          OAuthSignatureTreatment signatureTreatment,
                                           string signatureBase,
                                           string consumerSecret)
         {
@@ -327,7 +327,7 @@ namespace NzbDrone.Common.OAuth
         /// <param name="consumerSecret">The consumer secret</param>
         /// <param name="tokenSecret">The token secret</param>
         /// <returns></returns>
-        public static string GetSignature(OAuthSignatureMethod signatureMethod, 
+        public static string GetSignature(OAuthSignatureMethod signatureMethod,
                                           string signatureBase,
                                           string consumerSecret,
                                           string tokenSecret)
@@ -345,7 +345,7 @@ namespace NzbDrone.Common.OAuth
         /// <param name="consumerSecret">The consumer secret</param>
         /// <param name="tokenSecret">The token secret</param>
         /// <returns></returns>
-        public static string GetSignature(OAuthSignatureMethod signatureMethod, 
+        public static string GetSignature(OAuthSignatureMethod signatureMethod,
                                           OAuthSignatureTreatment signatureTreatment,
                                           string signatureBase,
                                           string consumerSecret,

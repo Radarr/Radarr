@@ -8,13 +8,13 @@ namespace Radarr.Host
     {
         void Attach();
     }
-    
+
     class CancelHandler : ICancelHandler
     {
         private object _syncRoot;
         private volatile bool _cancelInitiated;
         private readonly ILifecycleService _lifecycleService;
-  
+
         public CancelHandler(ILifecycleService lifecycleService)
         {
             _lifecycleService = lifecycleService;
@@ -25,19 +25,19 @@ namespace Radarr.Host
             Console.CancelKeyPress += HandlerCancelKeyPress;
             _syncRoot = new object();
         }
-  
+
         private void HandlerCancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
             // Tell system to ignore the Ctrl+C and not terminate. We'll do that.
             e.Cancel = true;
-    
+
             var shouldTerminate = false;
             lock (_syncRoot)
             {
                 shouldTerminate = _cancelInitiated;
                 _cancelInitiated = true;
             }
-    
+
             // TODO: Probably should schedule these on the threadpool.
             if (shouldTerminate)
             {
@@ -46,16 +46,16 @@ namespace Radarr.Host
             else
             {
                 GracefulShutdown();
-            }   
+            }
         }
-  
+
         private void GracefulShutdown()
         {
             Console.WriteLine("Shutdown requested, press Ctrl+C again to terminate directly.");
             // TODO: Sent ApplicationShutdownRequested event or something like it.
             _lifecycleService.Shutdown();
         }
-  
+
         private void UngracefulShutdown()
         {
             Console.WriteLine("Termination requested.");

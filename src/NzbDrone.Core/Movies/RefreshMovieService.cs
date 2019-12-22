@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Movies
                 mappingsTitles = mappingsTitles.Where(t => t.IsTrusted()).ToList();
 
                 movieInfo.AlternativeTitles.AddRange(mappingsTitles);
-                
+
                 movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
 
                 if (mappings.Item2 != null)

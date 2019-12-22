@@ -92,8 +92,8 @@ namespace NzbDrone.Core.Parser.RomanNumerals
         /// Converts the string representation of a number to its 32-bit signed integer equivalent. A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="text">A string containing a number to convert. </param>
-        /// <param name="value">When this method returns, contains the 32-bit signed integer value equivalent of the number contained in <paramref name="text"/>, 
-        /// if the conversion succeeded, or zero if the conversion failed. The conversion fails if the <paramref name="text"/> parameter is null  or 
+        /// <param name="value">When this method returns, contains the 32-bit signed integer value equivalent of the number contained in <paramref name="text"/>,
+        /// if the conversion succeeded, or zero if the conversion failed. The conversion fails if the <paramref name="text"/> parameter is null  or
         /// <see cref="F:System.String.Empty"/>, is not of the correct format, or represents a number less than <see cref="F:System.Int32.MinValue"/> or greater than <see cref="F:System.Int32.MaxValue"/>. This parameter is passed uninitialized. </param><filterpriority>1</filterpriority>
         /// <returns>
         /// true if <paramref name="text"/> was converted successfully; otherwise, false.

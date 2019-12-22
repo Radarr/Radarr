@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             var column = new ColumnDefinition();
 
             column.Name = ParseIdentifier(reader);
-            
+
             reader.TrimBuffer();
 
             reader.Read();
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             reader.Read(); // ON
 
             index.TableName = ParseIdentifier(reader);
-            
+
             // Find Column List
             reader.SkipTillToken(SqliteSyntaxReader.TokenType.ListStart);
 

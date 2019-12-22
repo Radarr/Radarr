@@ -100,7 +100,7 @@ namespace MonoTorrent
             Check.InfoHash (infoHash);
             if (infoHash.Length != 32)
                 throw new ArgumentException("Infohash must be a base32 encoded 32 character string");
-            
+
             infoHash = infoHash.ToLower();
             int infohashOffset =0 ;
             byte[] hash = new byte[20];
@@ -126,7 +126,7 @@ namespace MonoTorrent
             Check.InfoHash (infoHash);
             if (infoHash.Length != 40)
                 throw new ArgumentException("Infohash must be 40 characters long");
-            
+
             byte[] hash = new byte[20];
             for (int i = 0; i < hash.Length; i++)
                 hash[i] = byte.Parse(infoHash.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);

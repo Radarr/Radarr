@@ -9,7 +9,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
 {
     [TestFixture]
-    
+
     public class EmptyFixture : CoreTest
     {
         private const string RecycleBin = @"C:\Test\RecycleBin";
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
 
         [Test]
         public void should_delete_all_folders()
-        {          
+        {
             Mocker.Resolve<RecycleBinProvider>().Empty();
 
             Mocker.GetMock<IDiskProvider>().Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Exactly(3));

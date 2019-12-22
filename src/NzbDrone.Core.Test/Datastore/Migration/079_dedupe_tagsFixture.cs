@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
                 c.Insert.IntoTable("Tags").Row(new
                 {
-                    Label = "test"                 
+                    Label = "test"
                 });
             });
 

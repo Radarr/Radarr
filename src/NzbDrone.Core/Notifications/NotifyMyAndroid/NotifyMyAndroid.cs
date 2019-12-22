@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
         public override void OnMovieRename(Movie movie)
         {
         }
-        
+
         public override string Name => "Notify My Android";
 
         public override ValidationResult Test()

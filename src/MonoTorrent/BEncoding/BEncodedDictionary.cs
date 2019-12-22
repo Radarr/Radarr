@@ -59,7 +59,7 @@ namespace MonoTorrent.BEncoding
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         internal override void DecodeInternal(RawReader reader)
@@ -133,7 +133,7 @@ namespace MonoTorrent.BEncoding
                 }
                 else
                     value = BEncodedValue.Decode(reader);                     // the value is a BEncoded value
-                    
+
                 torrent.dictionary.Add(key, value);
             }
 

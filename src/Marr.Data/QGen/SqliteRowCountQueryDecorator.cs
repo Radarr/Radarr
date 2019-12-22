@@ -10,11 +10,11 @@ namespace Marr.Data.QGen
         {
             _innerQuery = innerQuery;
         }
-        
+
         public string Generate()
         {
             StringBuilder sql = new StringBuilder();
-            
+
             BuildSelectCountClause(sql);
 
             if (_innerQuery.IsJoin)
@@ -29,7 +29,7 @@ namespace Marr.Data.QGen
 
                 return sql.ToString();
             }
-            
+
             _innerQuery.BuildFromClause(sql);
             _innerQuery.BuildJoinClauses(sql);
             _innerQuery.BuildWhereClause(sql);

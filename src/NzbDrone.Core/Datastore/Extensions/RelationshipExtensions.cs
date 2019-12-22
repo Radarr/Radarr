@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Datastore.Extensions
             return relationshipBuilder.For(portalExpression.GetMemberName())
                                 .LazyLoad(
                                             condition: parent => childIdSelector(parent) > 0,
-                                            query: (db, parent) => 
-                                            { 
+                                            query: (db, parent) =>
+                                            {
                                                 var id = childIdSelector(parent);
                                                 return db.Query<TChild>().Where(c => c.Id == id).SingleOrDefault();
                                             }

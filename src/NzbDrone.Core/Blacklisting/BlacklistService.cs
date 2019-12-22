@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Blacklisting
         public bool Blacklisted(int movieId, ReleaseInfo release)
         {
             var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(movieId, release.Title);
-            
+
             if (release.DownloadProtocol == DownloadProtocol.Torrent)
             {
                 var torrentInfo = release as TorrentInfo;

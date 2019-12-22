@@ -95,12 +95,12 @@ namespace NzbDrone.Core.Test.Messaging.Events
 
             var handlers = new List<IHandleAsync<EventA>>
                 {
-                    AsyncHandlerA1.Object, 
                     AsyncHandlerA1.Object,
                     AsyncHandlerA1.Object,
                     AsyncHandlerA1.Object,
                     AsyncHandlerA1.Object,
-                    AsyncHandlerA1.Object, 
+                    AsyncHandlerA1.Object,
+                    AsyncHandlerA1.Object,
                     AsyncHandlerA1.Object,
                 };
 

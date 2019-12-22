@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public  QBittorrentProxySelector(QBittorrentProxyV1 proxyV1,
                                          QBittorrentProxyV2 proxyV2,
-                                         IHttpClient httpClient, 
+                                         IHttpClient httpClient,
                                          ICacheManager cacheManager,
                                          Logger logger)
         {
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxyCache.Remove(proxyKey);
             }
 
-            return _proxyCache.Get(proxyKey, () => FetchProxy(settings), TimeSpan.FromMinutes(10.0));      
+            return _proxyCache.Get(proxyKey, () => FetchProxy(settings), TimeSpan.FromMinutes(10.0));
         }
 
         private IQBittorrentProxy FetchProxy(QBittorrentSettings settings)

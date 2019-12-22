@@ -48,7 +48,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             {
                 return string.Empty;
             }
-            
+
             if (audioFormat.ContainsIgnoreCase("Atmos"))
             {
                 return "TrueHD Atmos";

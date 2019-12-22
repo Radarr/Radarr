@@ -47,7 +47,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             {
                 throw new RadarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
             }
-            
+
 
             if (OsInfo.IsWindows)
             {

@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Jobs
                     },
 
                     new ScheduledTask
-                    { 
+                    {
                         Interval = GetRssSyncInterval(),
                         TypeName = typeof(RssSyncCommand).FullName
                     },

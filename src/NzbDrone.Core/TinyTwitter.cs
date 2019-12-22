@@ -43,11 +43,11 @@ namespace TinyTwitter
         }
 
         /**
-         * 
+         *
          * As of June 26th 2015 Direct Messaging is not part of TinyTwitter.
          * I have added it to Sonarr's copy to make our implementation easier
          * and added this banner so it's not blindly updated.
-         * 
+         *
          **/
 
         public void DirectMessage(string message, string screenName)
@@ -104,7 +104,7 @@ namespace TinyTwitter
                 WriteRequestBody(request);
 
                 // It looks like a bug in HttpWebRequest. It throws random TimeoutExceptions
-                // after some requests. Abort the request seems to work. More info: 
+                // after some requests. Abort the request seems to work. More info:
                 // http://stackoverflow.com/questions/2252762/getrequeststream-throws-timeout-exception-randomly
 
                 var response = request.GetResponse();

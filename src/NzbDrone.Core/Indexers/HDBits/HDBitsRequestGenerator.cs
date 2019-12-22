@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             }
             return false;
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
 

@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Download
             _httpClient = httpClient;
             _nzbValidationService = nzbValidationService;
         }
-        
+
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
         protected abstract string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents);

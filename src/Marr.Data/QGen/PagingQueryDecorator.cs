@@ -27,7 +27,7 @@ namespace Marr.Data.QGen
         public string Generate()
         {
             // Decide which type of paging query to create
-            
+
             if (_innerQuery.IsView || _innerQuery.IsJoin)
             {
                 return ComplexPaging();
@@ -56,7 +56,7 @@ namespace Marr.Data.QGen
 
             return sql.ToString();
         }
-        
+
         /// <summary>
         /// Generates a query that pages a view or joined inner query.
         /// </summary>
@@ -165,7 +165,7 @@ namespace Marr.Data.QGen
             {
                 orderBy = orderBy.Replace(string.Format("[{0}].", t.Alias), "");
             }
-            
+
             sql.AppendFormat(", ROW_NUMBER() OVER ({0}) As RowNumber ", orderBy);
         }
 

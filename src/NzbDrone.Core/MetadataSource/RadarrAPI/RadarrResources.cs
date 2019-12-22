@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
            return $"Error while calling api: {firstError.Title}\nFull error(s): {details}";
         }
     }
-    
+
     public class TitleInfo
     {
 
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         [JsonProperty("aka_clean_title")]
         public string AkaCleanTitle { get; set; }
     }
-    
+
     public class YearInfo
     {
 
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         [JsonProperty("mappings")]
         public Mappings Mappings { get; set; }
     }
-    
+
     public class AddTitleMapping
     {
 
@@ -177,7 +177,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         [JsonProperty("locked")]
         public bool Locked { get; set; }
     }
-    
+
     public class AddYearMapping
     {
 

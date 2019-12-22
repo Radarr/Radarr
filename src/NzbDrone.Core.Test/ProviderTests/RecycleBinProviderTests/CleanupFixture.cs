@@ -10,7 +10,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
 {
     [TestFixture]
-    
+
     public class CleanupFixture : CoreTest
     {
         private const string RecycleBin = @"C:\Test\RecycleBin";

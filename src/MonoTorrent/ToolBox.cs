@@ -26,7 +26,7 @@ namespace MonoTorrent
 
             foreach (T t in enumerable)
                 count += action(t);
-        
+
             return count;
         }
 

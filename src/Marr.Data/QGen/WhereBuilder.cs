@@ -49,7 +49,7 @@ namespace Marr.Data.QGen
             {
                 _sb.AppendFormat("{0} ", PrefixText);
                 base.Visit(filter);
-            }            
+            }
         }
 
         protected virtual string PrefixText
@@ -93,7 +93,7 @@ namespace Marr.Data.QGen
                 case "EndsWith":
                     Write_EndsWith(expression);
                     break;
-                    
+
                 case "In":
                     Write_In(expression);
                     break;
@@ -148,14 +148,14 @@ namespace Marr.Data.QGen
         private object GetRightValue(Expression expression)
         {
             object rightValue = null;
-            
+
             var simpleConstExp = expression as ConstantExpression;
             if (simpleConstExp == null) // Value is not directly passed in as a constant
             {
                 MemberExpression memberExp = expression as MemberExpression;
                 ConstantExpression constExp = null;
 
-                // Value may be nested in multiple levels of objects/properties, so traverse the MemberExpressions 
+                // Value may be nested in multiple levels of objects/properties, so traverse the MemberExpressions
                 // until a ConstantExpression property value is found, and then unwind the stack to get the value.
                 var memberNames = new Stack<string>();
 
@@ -218,8 +218,8 @@ namespace Marr.Data.QGen
 
         private string Decode(BinaryExpression expression)
         {
-            bool isRightSideNullConstant = expression.Right.NodeType == 
-                ExpressionType.Constant && 
+            bool isRightSideNullConstant = expression.Right.NodeType ==
+                ExpressionType.Constant &&
                 ((ConstantExpression)expression.Right).Value == null;
 
             if (isRightSideNullConstant)
@@ -315,7 +315,7 @@ namespace Marr.Data.QGen
             }
             return _constantWhereClause;
         }
-    } 
+    }
 
     internal enum WhereAppendType
     {

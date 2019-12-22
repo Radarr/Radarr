@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 throw new NotImplementedException();
             }
 
-          
+
         }
 
         [Test]

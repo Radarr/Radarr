@@ -56,7 +56,7 @@ namespace MonoTorrent.BEncoding
 
             int written = offset;
             buffer[written++] = (byte)'i';
-            
+
             if (number < 0)
             {
                 buffer[written++] = (byte)'-';
@@ -171,7 +171,7 @@ namespace MonoTorrent.BEncoding
 
         #region Overridden Methods
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -185,7 +185,7 @@ namespace MonoTorrent.BEncoding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -194,7 +194,7 @@ namespace MonoTorrent.BEncoding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             var isStopped = torrent.Status == TransmissionTorrentStatus.Stopped;
             var isSeeding = torrent.Status == TransmissionTorrentStatus.Seeding;
-            
+
             if (torrent.SeedRatioMode == 1)
             {
                 if (isStopped && ratio.HasValue && ratio >= torrent.SeedRatioLimit)
