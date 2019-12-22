@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 if (!Settings.SearchByAkas)
                 {
-                    var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(searchCriteria.Movie.Title));
+                    var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(searchCriteria.Movie.Title).ToLower());
 
                     var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
 
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 }
             }
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
