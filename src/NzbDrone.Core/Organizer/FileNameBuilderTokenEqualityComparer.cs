@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Organizer
 
         private FileNameBuilderTokenEqualityComparer()
         {
-            
+
         }
 
         public bool Equals(string s1, string s2)

@@ -62,7 +62,7 @@ namespace NzbDrone.Common.Test.DiskTests
             {
                 if (new DriveInfo(driveletter.ToString()).IsReady)
                     continue;
-                
+
                 Assert.Throws<DirectoryNotFoundException>(() => Subject.GetAvailableSpace(driveletter + @":\NOT_A_REAL_PATH\DOES_NOT_EXIST".AsOsAgnostic()));
                 return;
             }

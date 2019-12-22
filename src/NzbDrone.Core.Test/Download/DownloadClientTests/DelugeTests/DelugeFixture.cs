@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
                 .Returns("CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951".ToLower())
                 .Callback(PrepareClientToReturnQueuedItem);
         }
-        
+
         protected virtual void GivenTorrents(List<DelugeTorrent> torrents)
         {
             if (torrents == null)
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
 
         protected void PrepareClientToReturnQueuedItem()
         {
-            GivenTorrents(new List<DelugeTorrent> 
+            GivenTorrents(new List<DelugeTorrent>
                 {
                     _queued
                 });
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
 
         protected void PrepareClientToReturnDownloadingItem()
         {
-            GivenTorrents(new List<DelugeTorrent> 
+            GivenTorrents(new List<DelugeTorrent>
                 {
                     _downloading
                 });
@@ -150,7 +150,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
 
         protected void PrepareClientToReturnFailedItem()
         {
-            GivenTorrents(new List<DelugeTorrent> 
+            GivenTorrents(new List<DelugeTorrent>
                 {
                     _failed
                 });

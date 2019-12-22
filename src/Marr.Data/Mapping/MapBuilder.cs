@@ -36,7 +36,7 @@ namespace Marr.Data.Mapping
 
         /// <summary>
         /// Creates column mappings for the given type.
-        /// Maps all properties that are simple types (int, string, DateTime, etc).  
+        /// Maps all properties that are simple types (int, string, DateTime, etc).
         /// ICollection properties are not included.
         /// </summary>
         /// <typeparam name="T">The type that is being built.</typeparam>
@@ -49,7 +49,7 @@ namespace Marr.Data.Mapping
         }
 
         /// <summary>
-        /// Creates column mappings for the given type.  
+        /// Creates column mappings for the given type.
         /// Maps properties that are included in the include list.
         /// </summary>
         /// <typeparam name="T">The type that is being built.</typeparam>
@@ -71,7 +71,7 @@ namespace Marr.Data.Mapping
         /// <returns><see cref="ColumnMapCollection"/></returns>
         public ColumnMapBuilder<T> BuildColumnsExcept<T>(params string[] propertiesToExclude)
         {
-            return BuildColumns<T>(m => 
+            return BuildColumns<T>(m =>
                 m.MemberType == MemberTypes.Property &&
                 !propertiesToExclude.Contains(m.Name));
         }
@@ -105,7 +105,7 @@ namespace Marr.Data.Mapping
             MapRepository.Instance.Columns[entityType] = columns;
             return new ColumnMapBuilder<T>(null, columns);
         }
-        
+
         #endregion
 
         #region - Relationships -
@@ -118,8 +118,8 @@ namespace Marr.Data.Mapping
         /// <returns><see cref="RelationshipBuilder"/></returns>
         public RelationshipBuilder<T> BuildRelationships<T>()
         {
-            return BuildRelationships<T>(m => 
-                m.MemberType == MemberTypes.Property && 
+            return BuildRelationships<T>(m =>
+                m.MemberType == MemberTypes.Property &&
                 typeof(ICollection).IsAssignableFrom((m as PropertyInfo).PropertyType));
         }
 
@@ -132,10 +132,10 @@ namespace Marr.Data.Mapping
         /// <returns><see cref="RelationshipBuilder"/></returns>
         public RelationshipBuilder<T> BuildRelationships<T>(params string[] propertiesToInclude)
         {
-            Func<MemberInfo, bool> predicate = m => 
+            Func<MemberInfo, bool> predicate = m =>
                 (
                     // ICollection properties
-                    m.MemberType == MemberTypes.Property && 
+                    m.MemberType == MemberTypes.Property &&
                     typeof(ICollection).IsAssignableFrom((m as PropertyInfo).PropertyType) &&
                     propertiesToInclude.Contains(m.Name)
                 ) || ( // Single entity properties
@@ -143,7 +143,7 @@ namespace Marr.Data.Mapping
                     !typeof(ICollection).IsAssignableFrom((m as PropertyInfo).PropertyType) &&
                     propertiesToInclude.Contains(m.Name)
                 );
-            
+
             return BuildRelationships<T>(predicate);
         }
 
@@ -176,7 +176,7 @@ namespace Marr.Data.Mapping
             MapRepository.Instance.Relationships[entityType] = relationships;
             return new RelationshipBuilder<T>(null, relationships);
         }
-        
+
         #endregion
 
         #region - Tables -

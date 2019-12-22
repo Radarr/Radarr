@@ -18,7 +18,7 @@ namespace Radarr.Api.V3.Movies
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-         
+
         //View Only
         public string Title { get; set; }
         public List<AlternativeTitleResource> AlternateTitles { get; set; }
@@ -66,7 +66,7 @@ namespace Radarr.Api.V3.Movies
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
-        
+
     }
 
     public static class MovieResourceMapper
@@ -94,18 +94,18 @@ namespace Radarr.Api.V3.Movies
                 Overview = model.Overview,
 
                 Images = model.Images,
-                
+
                 Year = model.Year,
                 SecondaryYear = model.SecondaryYear,
                 SecondaryYearSourceId = model.SecondaryYearSourceId,
-                
+
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
                 PathState = model.PathState,
-                
+
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
-        
+
                 IsAvailable = model.IsAvailable(),
                 FolderName = model.FolderName(),
 
@@ -158,7 +158,7 @@ namespace Radarr.Api.V3.Movies
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,
-        
+
                 Runtime = resource.Runtime,
                 LastInfoSync = resource.LastInfoSync,
                 CleanTitle = resource.CleanTitle,

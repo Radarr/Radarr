@@ -238,14 +238,14 @@ namespace Marr.Data
         }
 
         /// <summary>
-        /// Gets the GroupingKeys for this entity.  
+        /// Gets the GroupingKeys for this entity.
         /// GroupingKeys determine when to create and add a new entity to the graph.
         /// </summary>
         /// <remarks>
         /// A simple entity with no relationships will return only its PrimaryKey columns.
         /// A parent entity with one-to-one child relationships will include its own PrimaryKeys,
         /// and it will recursively traverse all Children with one-to-one relationships and add their PrimaryKeys.
-        /// A child entity that has a one-to-one relationship with its parent will use the same 
+        /// A child entity that has a one-to-one relationship with its parent will use the same
         /// GroupingKeys already defined by its parent.
         /// </remarks>
         public GroupingKeyCollection GroupingKeyColumns

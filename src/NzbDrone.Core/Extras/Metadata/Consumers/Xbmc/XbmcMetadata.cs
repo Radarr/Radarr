@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     }
 
                     foreach (var poster in posters)
-                    {                    
+                    {
                         if (poster != null && poster.Url != null)
                         {
                             details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), poster.Url));

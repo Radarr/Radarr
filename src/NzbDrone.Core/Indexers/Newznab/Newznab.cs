@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 if (category.Subcategories != null)
                     l.AddRange(CategoryIds(category.Subcategories));
             }
-            
+
             return l;
         }
 
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
                 var notSupported = Settings.Categories.Except(CategoryIds(capabilities.Categories));
-                
+
                 if (notSupported.Any())
                 {
                     _logger.Warn($"{Definition.Name} does not support the following categories: {string.Join(", ", notSupported)}. You should probably remove them.");

@@ -135,7 +135,7 @@ namespace Marr.Data.Mapping
         }
 
         /// <summary>
-        /// Tries to add a Relationship for the given field name.  
+        /// Tries to add a Relationship for the given field name.
         /// Throws and exception if field cannot be found.
         /// </summary>
         private void TryAddRelationshipForField(string fieldName)

@@ -47,7 +47,7 @@ namespace NzbDrone.Windows.Disk
 
         public override void SetPermissions(string path, string mask, string user, string group)
         {
-            
+
         }
 
         public override long? GetTotalSize(string path)
@@ -104,7 +104,7 @@ namespace NzbDrone.Windows.Disk
             return 0;
         }
 
-        
+
         public override bool TryCreateHardLink(string source, string destination)
         {
             try

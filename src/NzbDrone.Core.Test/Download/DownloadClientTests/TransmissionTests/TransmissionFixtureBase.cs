@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
                   .Setup(s => s.AddTorrentFromData(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<TransmissionSettings>()))
                   .Callback(PrepareClientToReturnQueuedItem);
         }
-        
+
         protected virtual void GivenTorrents(List<TransmissionTorrent> torrents)
         {
             if (torrents == null)
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void PrepareClientToReturnQueuedItem()
         {
-            GivenTorrents(new List<TransmissionTorrent> 
+            GivenTorrents(new List<TransmissionTorrent>
             {
                 _queued
             });
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void PrepareClientToReturnDownloadingItem()
         {
-            GivenTorrents(new List<TransmissionTorrent> 
+            GivenTorrents(new List<TransmissionTorrent>
             {
                 _downloading
             });
@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void PrepareClientToReturnFailedItem()
         {
-            GivenTorrents(new List<TransmissionTorrent> 
+            GivenTorrents(new List<TransmissionTorrent>
             {
                 _failed
             });

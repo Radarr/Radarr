@@ -212,7 +212,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             }
 
             var error = response.Contains("_children") ?
-                        Json.Deserialize<PlexError>(response) : 
+                        Json.Deserialize<PlexError>(response) :
                         Json.Deserialize<PlexResponse<PlexError>>(response).MediaContainer;
 
             if (error != null && !error.Error.IsNullOrWhiteSpace())

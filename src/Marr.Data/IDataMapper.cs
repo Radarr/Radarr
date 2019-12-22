@@ -32,11 +32,11 @@ namespace Marr.Data
         DbCommand Command { get; }
 
         /// <summary>
-        /// Gets or sets a value that determines whether the DataMapper will 
-        /// use a stored procedure or a sql text command to access 
+        /// Gets or sets a value that determines whether the DataMapper will
+        /// use a stored procedure or a sql text command to access
         /// the database.  The default is stored procedure.
         /// </summary>
-        SqlModes SqlMode { get; set; }        
+        SqlModes SqlMode { get; set; }
 
         #endregion
 

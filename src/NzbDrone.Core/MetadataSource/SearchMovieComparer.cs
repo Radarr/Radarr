@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MetadataSource
         public SearchMovieComparer(string searchQuery)
         {
             SearchQuery = searchQuery;
-            
+
             var match = Regex.Match(SearchQuery, @"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$");
             if (match.Success)
             {
@@ -56,10 +56,10 @@ namespace NzbDrone.Core.MetadataSource
             // Compare prefix matches by year "(CSI: ..."
             result = CompareWithYear(x, y, s => s.Title.ToLowerInvariant().StartsWith(_searchQueryWithoutYear + ":"));
             if (result != 0) return -result;
-         
+
             return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Title) - GetYearFactor(s));
         }
-        
+
         public int Compare<T>(Movie x, Movie y, Func<Movie, T> keySelector)
             where T : IComparable<T>
         {

@@ -77,7 +77,7 @@ namespace Radarr.Api.V3.History
         {
             var queryDate = Request.Query.Date;
             var queryEventType = Request.Query.EventType;
-            
+
             if (!queryDate.HasValue)
             {
                 throw new BadRequestException("date is missing");

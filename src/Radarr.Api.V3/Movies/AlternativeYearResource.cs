@@ -6,7 +6,7 @@ namespace Radarr.Api.V3.Movies
     {
         public AlternativeYearResource()
         {
-            
+
         }
 
         //Todo: Sorters should be done completely on the client

@@ -23,7 +23,7 @@ namespace Radarr.Api.V3.Calendar
         {
             _movieService = movieService;
             _tagService = tagService;
-            
+
             Get("/Radarr.ics",  options => GetCalendarFeed());
         }
 

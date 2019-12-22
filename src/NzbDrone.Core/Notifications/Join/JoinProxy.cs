@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Notifications.Join
             {
                 request.AddParameter("deviceId", "group.all");
             }
-                
+
             request.AddParameter("apikey", settings.ApiKey);
             request.AddParameter("title", title);
             request.AddParameter("text", message);
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Notifications.Join
                     throw new JoinInvalidDeviceException(res.errorMessage);
                 }
                 // Oddly enough, rather than give us an "Invalid API key", the Join API seems to assume the key is valid,
-                // but fails when doing a device lookup associated with that key.  
+                // but fails when doing a device lookup associated with that key.
                 // In our case we are using "deviceIds" rather than "deviceId" so when the singular form error shows up
                 // we know the API key was the fault.
                 else if (res.errorMessage.Equals("No device to send message to"))

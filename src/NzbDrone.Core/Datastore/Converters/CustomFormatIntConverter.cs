@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Datastore.Converters
             {
                 //throw new Exception("Attempted to save an unknown custom format! Make sure you do not have stale custom formats lying around!");
             }
-            
+
             return quality.Id;
         }
 

@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Tags
         {
             var tag = GetTag(tagId);
             var delayProfiles = _delayProfileService.AllForTag(tagId);
-            var netImports = _netImportFactory.AllForTag(tagId); 
+            var netImports = _netImportFactory.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
             var restrictions = _restrictionService.AllForTag(tagId);
             var movies = _movieService.AllForTag(tagId);

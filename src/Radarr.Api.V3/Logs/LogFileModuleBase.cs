@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.Logs
             {
                 var file = files[i];
                 var filename = Path.GetFileName(file);
-                
+
                 result.Add(new LogFileResource
                 {
                     Id = i + 1,
@@ -63,7 +63,7 @@ namespace Radarr.Api.V3.Logs
                 return new NotFoundResponse();
 
             var data = _diskProvider.ReadAllText(filePath);
-            
+
             return new TextResponse(data);
         }
 

@@ -57,7 +57,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         private static readonly HashSet<string> IncludeExceptionMessageTypes = new HashSet<string> {
             "SQLiteException"
         };
-        
+
         private static readonly IDictionary<LogLevel, SentryLevel> LoggingLevelMap = new Dictionary<LogLevel, SentryLevel>
         {
             {LogLevel.Debug, SentryLevel.Debug},
@@ -244,7 +244,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                     {
                         return false;
                     }
-                    
+
                     if (FilteredExceptionMessages.Any(x => logEvent.Exception.Message.Contains(x)))
                     {
                         return false;

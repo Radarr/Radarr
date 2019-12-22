@@ -19,7 +19,7 @@ namespace Marr.Data.Mapping
         public FluentMappings(bool publicOnly)
         {
             _publicOnly = publicOnly;
-            
+
         }
 
         public MappingsFluentEntity<TEntity> Entity<TEntity>()
@@ -77,7 +77,7 @@ namespace Marr.Data.Mapping
 
             /// <summary>
             /// Creates column mappings for the given type.
-            /// Maps all properties that are simple types (int, string, DateTime, etc).  
+            /// Maps all properties that are simple types (int, string, DateTime, etc).
             /// ICollection properties are not included.
             /// </summary>
             /// <typeparam name="T">The type that is being built.</typeparam>

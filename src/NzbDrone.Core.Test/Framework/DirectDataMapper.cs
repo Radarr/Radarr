@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.Framework
             _providerFactory = dataMapper.ProviderFactory;
             _connectionString = dataMapper.ConnectionString;
         }
-        
+
         private DbConnection OpenConnection()
         {
             var connection = _providerFactory.CreateConnection();

@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()));
-            
+
             Subject.DownloadReport(_parseResult);
 
             VerifyEventPublished<MovieGrabbedEvent>();
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.Download
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()));
-            
+
             Subject.DownloadReport(_parseResult);
 
             mock.Verify(s => s.Download(It.IsAny<RemoteMovie>()), Times.Once());
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.Download
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()))
                 .Callback<RemoteMovie>(v => {
-                    throw new ReleaseDownloadException(v.Release, "Error", new WebException()); 
+                    throw new ReleaseDownloadException(v.Release, "Error", new WebException());
                 });
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.DownloadReport(_parseResult));
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.Download
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>()))
                 .Callback<RemoteMovie>(v => {
-                    throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response)); 
+                    throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.DownloadReport(_parseResult));

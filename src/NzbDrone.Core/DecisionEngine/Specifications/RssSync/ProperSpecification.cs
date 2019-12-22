@@ -50,7 +50,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                         return Decision.Reject("Proper downloading is disabled");
                     }
                 }
-            
+
 
             return Decision.Accept();
         }

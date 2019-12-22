@@ -37,7 +37,7 @@ namespace Marr.Data.QGen
             return me;
         }
     }
-    
+
     public enum SortDirection
     {
         Asc,

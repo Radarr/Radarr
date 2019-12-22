@@ -99,7 +99,7 @@ namespace Marr.Data.Mapping
         }
 
         /// <summary>
-        /// Parses and orders the parameters from the query text.  
+        /// Parses and orders the parameters from the query text.
         /// Filters the list of mapped columns to match the parameters found in the sql query.
         /// All parameters starting with the '@' or ':' symbol are matched and returned.
         /// </summary>
@@ -139,7 +139,7 @@ namespace Marr.Data.Mapping
 
         /// <summary>
         /// Set's each column's altname as the given prefix + the column name.
-        /// Ex: 
+        /// Ex:
         /// Original column name: "ID"
         /// Passed in prefix: "PRODUCT_"
         /// Generated AltName: "PRODUCT_ID"
@@ -154,7 +154,7 @@ namespace Marr.Data.Mapping
 
         /// <summary>
         /// Set's each column's altname as the column name + the given prefix.
-        /// Ex: 
+        /// Ex:
         /// Original column name: "ID"
         /// Passed in suffix: "_PRODUCT"
         /// Generated AltName: "ID_PRODUCT"

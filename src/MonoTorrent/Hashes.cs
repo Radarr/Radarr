@@ -61,7 +61,7 @@ namespace MonoTorrent
                 throw new ArgumentException(string.Format("Hash must be {0} bytes in length", HashCodeLength), "hash");
 
             if (hashIndex < 0 || hashIndex > this.count)
-                throw new ArgumentOutOfRangeException("hashIndex", string.Format("hashIndex must be between 0 and {0}", this.count)); 
+                throw new ArgumentOutOfRangeException("hashIndex", string.Format("hashIndex must be between 0 and {0}", this.count));
 
             int start = hashIndex * HashCodeLength;
             for (int i = 0; i < HashCodeLength; i++)

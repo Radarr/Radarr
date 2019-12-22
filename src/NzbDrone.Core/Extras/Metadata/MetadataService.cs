@@ -316,7 +316,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 _metadataFileService.Delete(file.Id);
             }
 
-            
+
             return matchingMetadataFiles.First();
         }
     }

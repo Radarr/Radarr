@@ -46,10 +46,10 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
             pageableRequests.Add(GetPagedRequests(string.Format("{0}",
                     searchCriteria.Movie.Title)));
-         
+
             return pageableRequests;
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

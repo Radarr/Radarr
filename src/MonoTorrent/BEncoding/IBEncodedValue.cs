@@ -87,7 +87,7 @@ namespace MonoTorrent.BEncoding
 
 
         /// <summary>
-        /// Decode BEncoded data in the given stream 
+        /// Decode BEncoded data in the given stream
         /// </summary>
         /// <param name="stream">The stream containing the BEncoded data</param>
         /// <returns>BEncodedValue containing the data that was in the stream</returns>
@@ -177,7 +177,7 @@ namespace MonoTorrent.BEncoding
 
 
         /// <summary>
-        /// Decode BEncoded data in the given stream 
+        /// Decode BEncoded data in the given stream
         /// </summary>
         /// <param name="stream">The stream containing the BEncoded data</param>
         /// <returns>BEncodedValue containing the data that was in the stream</returns>

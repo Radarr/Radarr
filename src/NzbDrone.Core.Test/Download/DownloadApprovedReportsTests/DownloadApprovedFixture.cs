@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                     MovieTitle = "A Movie",
                 },
                 Movie = movie,
-                
+
                 Release = new ReleaseInfo()
                 {
                     PublishDate = DateTime.UtcNow,

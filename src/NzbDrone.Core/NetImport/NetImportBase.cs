@@ -14,7 +14,7 @@ namespace NzbDrone.Core.NetImport
         public IList<Movie> Movies { get; set; }
         public bool AnyFailure { get; set; }
     }
-    
+
     public abstract class NetImportBase<TSettings> : INetImport
         where TSettings : IProviderConfig, new()
     {

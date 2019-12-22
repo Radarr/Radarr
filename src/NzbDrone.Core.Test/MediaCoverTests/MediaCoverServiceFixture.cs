@@ -36,10 +36,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         private void ExecuteAndVerifyCommand(Movie movie)
         {
             Subject.HandleAsync(new MovieUpdatedEvent(movie));
-            
+
             Mocker.GetMock<IManageCommandQueue>()
                 .Verify(v => v.Push(It.Is<EnsureMediaCoversCommand>(c => c.MovieId == movie.Id), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()), Times.Once());
-            
+
             Subject.Execute(new EnsureMediaCoversCommand(movie.Id));
         }
 

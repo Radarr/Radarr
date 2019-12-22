@@ -155,7 +155,7 @@ namespace Marr.Data.QGen
             {
                 _db.OpenConnection();
                 rowsAffected = _db.Command.ExecuteNonQuery();
-                _mappingHelper.SetOutputValues<T>(_entity, _mappings.OutputFields);                
+                _mappingHelper.SetOutputValues<T>(_entity, _mappings.OutputFields);
             }
             finally
             {

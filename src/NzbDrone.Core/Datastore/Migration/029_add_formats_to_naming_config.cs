@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Datastore.Migration
                                                                                         EpisodeSeparator = "x"
 
                                                                                     },
-                                                                                new 
+                                                                                new
                                                                                     {
                                                                                         Id = 1,
                                                                                         Name = "01x05",

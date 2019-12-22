@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 getProfilesCmd.Transaction = tran;
                 getProfilesCmd.CommandText = @"SELECT Id, GrabDelay FROM Profiles";
-                
+
                 using (IDataReader profileReader = getProfilesCmd.ExecuteReader())
                 {
                     while (profileReader.Read())

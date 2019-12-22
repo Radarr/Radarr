@@ -27,14 +27,14 @@ namespace Marr.Data
     /// </summary>
     internal static class DataHelper
     {
-        public static bool HasColumn(this IDataReader dr, string columnName) 
-        { 
-            for (int i=0; i < dr.FieldCount; i++) 
-            { 
-                if (dr.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase)) 
-                    return true; 
-            } 
-            return false; 
+        public static bool HasColumn(this IDataReader dr, string columnName)
+        {
+            for (int i=0; i < dr.FieldCount; i++)
+            {
+                if (dr.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            }
+            return false;
         }
 
         public static string ParameterPrefix(this IDbCommand command)
@@ -42,7 +42,7 @@ namespace Marr.Data
             string commandType = command.GetType().Name.ToLower();
             return commandType.Contains("oracle") ? ":" : "@";
         }
-        
+
         /// <summary>
         /// Returns the mapped name, or the member name.
         /// </summary>

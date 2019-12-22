@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Extras.Files
             {
                 filenameBuilder.Append(fileNameSuffix);
             }
-            
+
             filenameBuilder.Append(extraFile.Extension);
 
             var existingFileName = Path.Combine(movie.Path, extraFile.RelativePath);

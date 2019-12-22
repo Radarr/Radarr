@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Download
             else
             {
                 MarkItemAsImported(message.TrackedDownload);
-            }           
+            }
         }
 
         public void Handle(DownloadFailedEvent message)

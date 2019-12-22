@@ -6,7 +6,7 @@ namespace NzbDrone.Api.Movies
     {
         public AlternativeYearResource()
         {
-            
+
         }
 
         //Todo: Sorters should be done completely on the client

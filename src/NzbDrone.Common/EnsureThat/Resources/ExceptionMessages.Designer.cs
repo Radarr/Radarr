@@ -20,15 +20,15 @@ namespace NzbDrone.Common.EnsureThat.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ExceptionMessages {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ExceptionMessages() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -42,7 +42,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -56,7 +56,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Empty collection is not allowed..
         /// </summary>
@@ -65,7 +65,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsEmptyCollection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Empty Guid is not allowed..
         /// </summary>
@@ -74,7 +74,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsEmptyGuid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expected an expression that evaluates to false..
         /// </summary>
@@ -83,7 +83,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotFalse", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not greater than limit &apos;{1}&apos;..
         /// </summary>
@@ -92,7 +92,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotGt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not greater than or equal to limit &apos;{1}&apos;..
         /// </summary>
@@ -101,7 +101,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotGte", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is &gt; max &apos;{1}&apos;..
         /// </summary>
@@ -110,7 +110,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToHigh", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string is too long. Must be between &apos;{0}&apos; and  &apos;{1}&apos;. Must be between &apos;{0}&apos; and &apos;{1}&apos; but was &apos;{2}&apos; characters long..
         /// </summary>
@@ -119,7 +119,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToLong", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is &lt; min &apos;{1}&apos;..
         /// </summary>
@@ -128,7 +128,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToLow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string is not long enough. Must be between &apos;{0}&apos; and &apos;{1}&apos; but was &apos;{2}&apos; characters long..
         /// </summary>
@@ -137,7 +137,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToShort", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not lower than limit &apos;{1}&apos;..
         /// </summary>
@@ -146,7 +146,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotLt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not lower than or equal to limit &apos;{1}&apos;..
         /// </summary>
@@ -155,7 +155,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotLte", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Value can not be null..
         /// </summary>
@@ -164,7 +164,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string can&apos;t be null or empty..
         /// </summary>
@@ -173,7 +173,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNullOrEmpty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string can&apos;t be left empty, null or consist of only whitespaces..
         /// </summary>
@@ -182,7 +182,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The param is not of expected type: &apos;{0}&apos;..
         /// </summary>
@@ -191,7 +191,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotOfType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expected an expression that evaluates to true..
         /// </summary>
@@ -200,7 +200,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_IsNotTrue", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; does not match &apos;{1}&apos;.
         /// </summary>
@@ -209,7 +209,7 @@ namespace NzbDrone.Common.EnsureThat.Resources {
                 return ResourceManager.GetString("EnsureExtensions_NoMatch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No MemberExpression found in expression: &apos;{0}&apos;..
         /// </summary>

@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Notifications.Email
         {
             var email = new MailMessage();
             email.From = new MailAddress(settings.From);
-            
+
             email.To.Add(settings.To);
 
             email.Subject = subject;

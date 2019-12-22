@@ -15,7 +15,7 @@ namespace NzbDrone.Common.OAuth
             get
             {
                 var parameters = this.Where(p => p.Name.Equals(name));
-                
+
                 if(parameters.Count() == 0)
                 {
                     return null;
@@ -142,7 +142,7 @@ namespace NzbDrone.Common.OAuth
 
         public virtual void Add(WebParameter parameter)
         {
-            
+
             _parameters.Add(parameter);
         }
 

@@ -28,5 +28,5 @@ namespace Marr.Data.Mapping
         ParameterDirection ParamDirection { get; set; }
         string TryGetAltName();
     }
-   
+
 }

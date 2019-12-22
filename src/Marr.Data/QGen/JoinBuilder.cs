@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Marr.Data.QGen
 {
     /// <summary>
-    /// This class overrides the WhereBuilder which utilizes the ExpressionVisitor base class, 
+    /// This class overrides the WhereBuilder which utilizes the ExpressionVisitor base class,
     /// and it is responsible for translating the lambda expression into a "JOIN ON" clause.
     /// It populates the protected string builder, which outputs the "JOIN ON" clause when the ToString method is called.
     /// </summary>

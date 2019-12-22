@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _remoteMovie.Release.Container = container;
         }
-        
+
         [Test]
         public void should_return_true_if_no_container_specified()
         {

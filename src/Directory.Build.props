@@ -1,7 +1,8 @@
 <Project>
   <!-- Common to all Radarr Projects -->
   <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>$(SolutionDir)Stylecop.ruleset</CodeAnalysisRuleSet>
+    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
 
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
@@ -90,6 +91,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <!-- Set up stylecop -->
+  <ItemGroup Condition="'$(RadarrProject)'=='true' and '$(RadarrOutputType)'!='Test'">
+    <!-- StyleCop analysis -->
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
   </ItemGroup>
 
   <!--

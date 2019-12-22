@@ -16,7 +16,7 @@ namespace Marr.Data.QGen
         private const string DB_OracleDataAccessClient = "Oracle.DataAccess.Client.OracleClientFactory";
         private const string DB_FireBirdClient = "FirebirdSql.Data.FirebirdClient.FirebirdClientFactory";
         private const string DB_SQLiteClient = "System.Data.SQLite.SQLiteFactory";
-        
+
         public static IQuery CreateUpdateQuery(ColumnMapCollection columns, IDataMapper dataMapper, string target, string whereClause)
         {
             Dialect dialect = CreateDialect(dataMapper);

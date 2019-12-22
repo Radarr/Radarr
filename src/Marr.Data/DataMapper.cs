@@ -131,8 +131,8 @@ namespace Marr.Data
         #region - SP / SQL Mode -
 
         /// <summary>
-        /// Gets or sets a value that determines whether the DataMapper will 
-        /// use a stored procedure or a sql text command to access 
+        /// Gets or sets a value that determines whether the DataMapper will
+        /// use a stored procedure or a sql text command to access
         /// the database.  The default is stored procedure.
         /// </summary>
         public SqlModes SqlMode { get; set; }
@@ -617,7 +617,7 @@ namespace Marr.Data
                 {
                     while (reader.Read())
                     {
-                        // The entire EntityGraph is traversed for each record, 
+                        // The entire EntityGraph is traversed for each record,
                         // and multiple entities are created from each view record.
                         foreach (EntityGraph lvl in graph)
                         {

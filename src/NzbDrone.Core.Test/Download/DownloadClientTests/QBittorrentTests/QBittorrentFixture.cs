@@ -565,7 +565,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var item = Subject.GetItems().Single();
             item.CanBeRemoved.Should().BeFalse();
             item.CanMoveFiles.Should().BeFalse();
-            
+
             var item2 = Subject.GetItems().Single();
 
             Mocker.GetMock<IQBittorrentProxy>()

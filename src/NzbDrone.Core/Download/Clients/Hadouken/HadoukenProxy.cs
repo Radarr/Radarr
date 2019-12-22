@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         public HadoukenTorrent[] GetTorrents(HadoukenSettings settings)
         {
             var result = ProcessRequest<HadoukenTorrentResponse>(settings, "webui.list");
-            
+
             return GetTorrents(result.Torrents);
         }
 

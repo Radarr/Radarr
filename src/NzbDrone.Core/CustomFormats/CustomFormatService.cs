@@ -131,12 +131,12 @@ namespace NzbDrone.Core.CustomFormats
             Func<TModel, List<CustomFormat>, TModel> updateFunc, int customFormatId) where TModel : ModelBase, new()
         {
             var allItems = repository.All();
-            
+
             var toUpdate = allItems.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
             {
                 return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
             });
-            
+
             repository.UpdateMany(toUpdate.ToList());
         }
 

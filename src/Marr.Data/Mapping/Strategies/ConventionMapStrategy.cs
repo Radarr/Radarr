@@ -23,9 +23,9 @@ namespace Marr.Data.Mapping.Strategies
         }
 
         public Func<MemberInfo, bool> ColumnPredicate;
-        public Func<MemberInfo, bool> RelationshipPredicate;        
+        public Func<MemberInfo, bool> RelationshipPredicate;
 
-        
+
 
         protected override void CreateColumnMap(Type entityType, MemberInfo member, ColumnAttribute columnAtt, ColumnMapCollection columnMaps)
         {

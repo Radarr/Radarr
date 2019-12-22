@@ -21,7 +21,7 @@ namespace Marr.Data.QGen
         public string Generate()
         {
             return string.Format("DELETE FROM {0} {1} ",
-                Dialect.CreateToken(TargetTable.Name), 
+                Dialect.CreateToken(TargetTable.Name),
                 WhereClause);
         }
     }

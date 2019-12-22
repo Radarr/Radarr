@@ -87,7 +87,7 @@ namespace Marr.Data.Mapping.Strategies
                 ColumnAttribute columnAtt = GetColumnAttribute(member);
                 CreateColumnMap(entityType, member, columnAtt, columnMaps);
             }
-            
+
             return columnMaps;
         }
 
@@ -124,7 +124,7 @@ namespace Marr.Data.Mapping.Strategies
 
             return null;
         }
-        
+
         /// <summary>
         /// Inspect a member and optionally add a ColumnMap.
         /// </summary>

@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             {
                 ImdbId = "tt01000",
                 Title = "Does not exist"
-            }; 
+            };
         }
 
         [Test]

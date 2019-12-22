@@ -198,7 +198,7 @@ namespace Marr.Data.Mapping
         }
 
         /// <summary>
-        /// Tries to add a ColumnMap for the given field name.  
+        /// Tries to add a ColumnMap for the given field name.
         /// Throws and exception if field cannot be found.
         /// </summary>
         private void TryAddColumnMapForField(string fieldName)

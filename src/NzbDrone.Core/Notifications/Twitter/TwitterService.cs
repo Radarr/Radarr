@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Notifications.Twitter
             var oAuthRequest = OAuthRequest.ForAccessToken(consumerKey, consumerSecret, oauthToken, "", oauthVerifier);
             oAuthRequest.RequestUrl = "https://api.twitter.com/oauth/access_token";
             var qscoll = OAuthQuery(oAuthRequest);
-            
+
             return new OAuthToken
             {
                 AccessToken = qscoll["oauth_token"],
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Notifications.Twitter
                         message += string.Format(" @{0}", settings.Mention);
                     }
 
-                    twitter.UpdateStatus(message);                    
+                    twitter.UpdateStatus(message);
                 }
             }
             catch (WebException ex)

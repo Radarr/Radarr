@@ -7,7 +7,7 @@ namespace Marr.Data
     /// <summary>
     /// The UnitOfWork class can be used to manage the lifetime of an IDataMapper, from creation to disposal.
     /// When used in a "using" statement, the UnitOfWork will create and dispose an IDataMapper.
-    /// When the SharedContext property is used in a "using" statement, 
+    /// When the SharedContext property is used in a "using" statement,
     /// it will create a parent unit of work that will share a single IDataMapper with other units of work,
     /// and the IDataMapper will not be disposed until the shared context is disposed.
     /// If more than one shared context is created, the IDataMapper will be disposed when the outer most

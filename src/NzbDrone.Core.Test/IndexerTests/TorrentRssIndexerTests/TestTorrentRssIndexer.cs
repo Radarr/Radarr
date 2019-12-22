@@ -31,13 +31,13 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         /// </summary>
         private void SetupNLog()
         {
-            // Step 1. Create configuration object 
+            // Step 1. Create configuration object
             var config = new LoggingConfiguration();
 
             var fileTarget = new FileTarget();
             config.AddTarget("file", fileTarget);
 
-            // Step 3. Set target properties 
+            // Step 3. Set target properties
             fileTarget.FileName = "${basedir}/log.txt";
             fileTarget.Layout = GetStandardLayout();
 

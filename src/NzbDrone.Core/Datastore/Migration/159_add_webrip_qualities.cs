@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 var isGrouped = !profile.Items.Any(p => p.Quality == find);
 
-                
+
                 if (findIndex > -1 && !isGrouped)
                 {
                     var findQuality = profile.Items[findIndex];

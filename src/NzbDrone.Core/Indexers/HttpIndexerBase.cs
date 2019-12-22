@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Indexers
         protected IndexerPageableRequestChain GetRequestChain(SearchCriteriaBase searchCriteria = null)
         {
             var generator = GetRequestGenerator();
-            
+
             //A func ensures cookies are always updated to the latest. This way, the first page could update the cookies and then can be reused by the second page.
 
             generator.GetCookies = () =>
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Indexers
 
                 return cookies;
             };
-            
+
             var requests = searchCriteria == null ? generator.GetRecentRequests() : generator.GetSearchRequests(searchCriteria as MovieSearchCriteria);
 
             generator.CookiesUpdater = (cookies, expiration) =>

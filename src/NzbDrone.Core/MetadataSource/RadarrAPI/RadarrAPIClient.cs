@@ -119,7 +119,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
             return titles;
         }
-        
+
         public Tuple<List<AlternativeTitle>, AlternativeYear> AlternativeTitlesAndYearForMovie(int tmdbId)
         {
             var request = RadarrAPI.Create().SetSegment("route", "mappings").SetSegment("action", "find").AddQueryParam("tmdbid", tmdbId).Build();
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
                     SourceId = year.Id
                 };
             }
-            
+
             return new Tuple<List<AlternativeTitle>, AlternativeYear>(titles, newYear);
         }
 
@@ -157,11 +157,11 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
                 .AddQueryParam("aka_title", title.Title).Build();
 
             var newMapping = Execute<AddTitleMapping>(request);
-            
+
             var newTitle = new AlternativeTitle(newMapping.Info.AkaTitle, SourceType.Mappings, newMapping.Id, title.Language);
             newTitle.VoteCount = newMapping.VoteCount;
             newTitle.Votes = newMapping.Votes;
-            
+
             return newTitle;
         }
 
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
                 SourceId = newYear.Id
             };
         }
-        
+
         public IHttpRequestBuilderFactory RadarrAPI { get; private set; }
     }
 }

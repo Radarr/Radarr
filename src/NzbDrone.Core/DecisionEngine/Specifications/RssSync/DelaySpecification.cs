@@ -42,7 +42,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
-            // Preferred word count 
+            // Preferred word count
             var title = subject.Release.Title;
             var preferredWords = subject.Movie.Profile?.Value?.PreferredTags;
             var preferredCount = 0;
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                             return Decision.Accept();
                         }
                     }
-                
+
             }
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            
+
             var oldest = _pendingReleaseService.OldestPendingRelease(subject.Movie.Id);
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)

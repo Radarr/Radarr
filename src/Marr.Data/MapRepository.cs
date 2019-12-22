@@ -181,10 +181,10 @@ namespace Marr.Data
 
         /// <summary>
         /// Gets or sets the reflection strategy that the DataMapper will use to load entities.
-        /// By default the CachedReflector will be used, which provides a performance increase over the SimpleReflector.  
+        /// By default the CachedReflector will be used, which provides a performance increase over the SimpleReflector.
         /// However, the SimpleReflector can be used in Medium Trust enviroments.
         /// </summary>
-        /// 
+        ///
         public IReflectionStrategy ReflectionStrategy { get; set; }
 
         #endregion
@@ -236,7 +236,7 @@ namespace Marr.Data
 
         /// <summary>
         /// Gets or sets the IDBTypeBuilder that is responsible for converting parameter DbTypes based on the parameter value.
-        /// Defaults to use the DbTypeBuilder.  
+        /// Defaults to use the DbTypeBuilder.
         /// You can replace this with a more specific builder if you want more control over the way the parameter types are set.
         /// </summary>
         public IDbTypeBuilder DbTypeBuilder

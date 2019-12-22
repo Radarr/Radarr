@@ -32,7 +32,7 @@ namespace Radarr.Api.V3.NetImport
         {
             return _exclusionService.GetById(id).ToResource();
         }
-       
+
         public int AddExclusion(ImportExclusionsResource exclusionResource)
         {
             var model = exclusionResource.ToModel();

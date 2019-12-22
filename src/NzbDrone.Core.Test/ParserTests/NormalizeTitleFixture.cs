@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.ParserTests
                 dirty.CleanSeriesTitle().Should().Be("wordankleword");
             }
         }
-        
+
         [Test]
         public void should_not_remove_a_when_at_end_of_acronym()
         {
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.ParserTests
                 dirty.CleanSeriesTitle().Should().Be("wordnkleaword");
             }
         }
-       
+
         [TestCase("the")]
         [TestCase("and")]
         [TestCase("or")]

@@ -13,7 +13,7 @@ using NzbDrone.Core.Movies;
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
-        : IHandle<MovieRenamedEvent>, 
+        : IHandle<MovieRenamedEvent>,
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieDownloadedEvent>,
           IHandle<HealthCheckFailedEvent>
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Notifications
                 _logger.Debug("No tags set for this notification.");
                 return true;
             }
-            
+
             if (definition.Tags.Intersect(movie.Tags).Any())
             {
                 _logger.Debug("Notification and movie have one or more intersecting tags.");

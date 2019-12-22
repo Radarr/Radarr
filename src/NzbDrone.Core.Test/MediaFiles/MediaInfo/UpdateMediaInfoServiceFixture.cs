@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             Mocker.GetMock<IConfigService>()
                 .SetupGet(s => s.EnableMediaInfo)
                 .Returns(false);
-            
+
             GivenFileExists();
             GivenSuccessfulScan();
 
@@ -222,7 +222,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             Mocker.GetMock<IConfigService>()
                 .SetupGet(s => s.EnableMediaInfo)
                 .Returns(false);
-            
+
             GivenFileExists();
             GivenSuccessfulScan();
 
@@ -254,7 +254,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             Mocker.GetMock<IMediaFileService>()
                 .Verify(v => v.Update(movieFile), Times.Once());
         }
-        
+
         [Test]
         public void should_not_update_media_info_if_new_info_is_null()
         {
@@ -270,7 +270,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
 
             movieFile.MediaInfo.Should().NotBeNull();
         }
-        
+
         [Test]
         public void should_not_save_movie_file_if_new_info_is_null()
         {

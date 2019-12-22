@@ -259,7 +259,7 @@ namespace NzbDrone.Core.Parser
                                 if (!subGroup.IsNullOrWhiteSpace())
                                 {
                                     result.ReleaseGroup = subGroup;
-                                }                                
+                                }
 
                                 Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
 

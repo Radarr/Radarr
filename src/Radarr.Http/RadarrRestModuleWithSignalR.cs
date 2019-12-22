@@ -66,7 +66,7 @@ namespace Radarr.Http
                 _signalRBroadcaster.BroadcastMessage(signalRMessage);
             }
         }
-     
+
         protected void BroadcastResourceChange(ModelAction action)
         {
             if (!_signalRBroadcaster.IsConnected) return;

@@ -38,7 +38,7 @@ namespace MonoTorrent.BEncoding
         {
             if (list == null)
                 throw new ArgumentNullException("list");
- 
+
             this.list = new List<BEncodedValue>(list);
         }
 

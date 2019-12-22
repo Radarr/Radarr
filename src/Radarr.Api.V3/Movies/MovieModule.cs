@@ -17,11 +17,11 @@ using Radarr.Http;
 
 namespace Radarr.Api.V3.Movies
 {
-    public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Movie>, 
+    public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Movie>,
                                 IHandle<MovieImportedEvent>,
                                 IHandle<MovieFileDeletedEvent>,
-                                IHandle<MovieUpdatedEvent>,       
-                                IHandle<MovieEditedEvent>,  
+                                IHandle<MovieUpdatedEvent>,
+                                IHandle<MovieEditedEvent>,
                                 IHandle<MovieDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
@@ -132,7 +132,7 @@ namespace Radarr.Api.V3.Movies
                 _coverMapper.ConvertToLocalUrls(moviesResource.Id, moviesResource.Images);
             }
         }
-        
+
         private void PopulateAlternateTitles(List<MovieResource> resources)
         {
             foreach (var resource in resources)
@@ -146,7 +146,7 @@ namespace Radarr.Api.V3.Movies
             //var mappings = null;//_sceneMappingService.FindByTvdbId(resource.TvdbId);
 
             //if (mappings == null) return;
-            
+
             //Not necessary anymore
 
             //resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();

@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             ExecuteCommand();
 
             ExceptionVerification.ExpectedWarns(1);
-            
+
             Mocker.GetMock<IMediaFileService>().Verify(s => s.Update(It.IsAny<MovieFile>()), Times.Never());
         }
 

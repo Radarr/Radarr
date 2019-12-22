@@ -37,7 +37,7 @@ namespace Radarr.Api.V3.ManualImport
                 item.QualityWeight += item.Quality.Revision.Real * 10;
                 item.QualityWeight += item.Quality.Revision.Version;
             }
-           
+
             return item;
         }
     }
