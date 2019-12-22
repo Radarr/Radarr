@@ -10,6 +10,5 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Alter.Table("Movies").AddColumn("Studio").AsString().Nullable();
         }
-
     }
 }

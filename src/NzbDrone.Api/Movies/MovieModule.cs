@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentValidation;
+using Nancy;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
@@ -9,10 +10,9 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
-using Nancy;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
@@ -25,24 +25,22 @@ namespace NzbDrone.Api.Movies
                                 IHandle<MovieDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
-
     {
+        private const string TITLE_SLUG_ROUTE = "/titleslug/(?<slug>[^/]+)";
+
         protected readonly IMovieService _moviesService;
         private readonly IMapCoversToLocal _coverMapper;
 
-        private const string TITLE_SLUG_ROUTE = "/titleslug/(?<slug>[^/]+)";
-
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
-                            IMovieService moviesService,
-                            IMapCoversToLocal coverMapper,
-                            RootFolderValidator rootFolderValidator,
-                            MoviePathValidator moviesPathValidator,
-                            MovieExistsValidator moviesExistsValidator,
-                            MovieAncestorValidator moviesAncestorValidator,
-                            SystemFolderValidator systemFolderValidator,
-                            ProfileExistsValidator profileExistsValidator
-            )
-            : base(signalRBroadcaster)
+                           IMovieService moviesService,
+                           IMapCoversToLocal coverMapper,
+                           RootFolderValidator rootFolderValidator,
+                           MoviePathValidator moviesPathValidator,
+                           MovieExistsValidator moviesExistsValidator,
+                           MovieAncestorValidator moviesAncestorValidator,
+                           SystemFolderValidator systemFolderValidator,
+                           ProfileExistsValidator profileExistsValidator)
+        : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
 
@@ -84,7 +82,10 @@ namespace NzbDrone.Api.Movies
 
         protected MovieResource MapToResource(Movie movies)
         {
-            if (movies == null) return null;
+            if (movies == null)
+            {
+                return null;
+            }
 
             var resource = movies.ToResource();
             MapCoversToLocal(resource);
@@ -128,6 +129,7 @@ namespace NzbDrone.Api.Movies
             {
                 deleteFiles = Convert.ToBoolean(deleteFilesQuery.Value);
             }
+
             if (addExclusionQuery.HasValue)
             {
                 addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
@@ -151,7 +153,10 @@ namespace NzbDrone.Api.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
-            if (message.Reason == DeleteMediaFileReason.Upgrade) return;
+            if (message.Reason == DeleteMediaFileReason.Upgrade)
+            {
+                return;
+            }
 
             BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }

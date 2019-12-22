@@ -28,7 +28,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
             if (monoVersion == new Version("4.4.0") || monoVersion == new Version("4.4.1"))
             {
                 _logger.Debug("Mono version {0}", monoVersion);
-                return new HealthCheck(GetType(), HealthCheckResult.Error,
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
                     $"Currently installed Mono version {monoVersion} has a bug that causes issues connecting to indexers/download clients. You should upgrade to a higher version",
                     "#currently-installed-mono-version-is-old-and-unsupported");
             }
@@ -47,7 +48,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
             if (monoVersion >= stableVersion)
             {
                 _logger.Debug("Mono version is {0} or better: {1}", stableVersion, monoVersion);
-                return new HealthCheck(GetType(), HealthCheckResult.Notice,
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Notice,
                     $"Currently installed Mono version {monoVersion} is supported but upgrading to {bestVersion} is recommended.",
                     "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
             }
@@ -57,12 +59,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
             if (monoVersion >= supportedVersion)
             {
                 _logger.Debug("Mono version is {0} or better: {1}", supportedVersion, monoVersion);
-                return new HealthCheck(GetType(), HealthCheckResult.Warning,
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Warning,
                     $"Currently installed Mono version {monoVersion} is supported but has some known issues. Please upgrade Mono to version {bestVersion}.",
                     "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Error,
+            return new HealthCheck(GetType(),
+                HealthCheckResult.Error,
                 $"Currently installed Mono version {monoVersion} is old and unsupported. Please upgrade Mono to version {bestVersion}.",
                 "#currently-installed-mono-version-is-old-and-unsupported");
         }

@@ -16,7 +16,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         private readonly IHistoryService _historyService;
         private readonly IParsingService _parsingService;
 
-        public GrabbedReleaseQualitySpecification(Logger logger, IHistoryService historyService,
+        public GrabbedReleaseQualitySpecification(Logger logger,
+            IHistoryService historyService,
             IParsingService parsingService)
         {
             _logger = logger;

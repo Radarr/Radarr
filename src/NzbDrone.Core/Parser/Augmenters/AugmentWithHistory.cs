@@ -9,7 +9,6 @@ using NzbDrone.Core.Parser.Model;
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithHistory : IAugmentParsedMovieInfo
-
     {
         private readonly IIndexerFactory _indexerFactory;
         private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;

@@ -6,11 +6,10 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
-
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
 {

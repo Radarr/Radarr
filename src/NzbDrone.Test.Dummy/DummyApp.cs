@@ -7,7 +7,7 @@ namespace NzbDrone.Test.Dummy
     {
         public const string DUMMY_PROCCESS_NAME = "Radarr.Test.Dummy";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var process = Process.GetCurrentProcess();
 

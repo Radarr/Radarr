@@ -21,7 +21,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void AddCustomFormatsToProfile(IDbConnection conn, IDbTransaction tran)
         {
-
         }
     }
 }

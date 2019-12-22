@@ -2,10 +2,10 @@
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Synology;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.NotificationTests
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             {
                 Settings = new SynologyIndexerSettings
                 {
-                   UpdateLibrary = true
+                    UpdateLibrary = true
                 }
             };
         }

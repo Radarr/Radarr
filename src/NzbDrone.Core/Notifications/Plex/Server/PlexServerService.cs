@@ -47,14 +47,12 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 {
                     UpdatePartialSection(movie, sections, settings);
                 }
-
                 else
                 {
                     sections.ForEach(s => UpdateSection(s.Id, settings));
                 }
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Warn(ex, "Failed to Update Plex host: " + settings.Host);
                 throw;
@@ -168,7 +166,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                     return new ValidationFailure("Host", "At least one Movie library is required");
                 }
             }
-            catch(PlexAuthenticationException ex)
+            catch (PlexAuthenticationException ex)
             {
                 _logger.Error(ex, "Unable to connect to Plex Server");
                 return new ValidationFailure("AuthToken", "Invalid authentication token");

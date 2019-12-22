@@ -15,7 +15,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.GetDataMapper())
             {
-
                 mapper.ExecuteNonQuery(@"DELETE FROM Blacklist
                                      WHERE Id IN (
                                      SELECT Blacklist.Id FROM Blacklist

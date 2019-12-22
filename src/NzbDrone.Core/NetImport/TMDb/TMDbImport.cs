@@ -4,7 +4,6 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
-
 namespace NzbDrone.Core.NetImport.TMDb
 {
     public class TMDbImport : HttpNetImportBase<TMDbSettings>
@@ -15,7 +14,10 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         private readonly ISearchForNewMovie _skyhookProxy;
 
-        public TMDbImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
+        public TMDbImport(IHttpClient httpClient,
+            IConfigService configService,
+            IParsingService parsingService,
+            ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {

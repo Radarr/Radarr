@@ -1,17 +1,17 @@
-using FluentValidation;
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Download;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Parser.Model;
+using FluentValidation;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Api.Indexers
 {
-    class ReleasePushModule : ReleaseModuleBase
+    public class ReleasePushModule : ReleaseModuleBase
     {
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IProcessDownloadDecisions _downloadDecisionProcessor;
@@ -28,7 +28,7 @@ namespace NzbDrone.Api.Indexers
             _indexerFactory = indexerFactory;
             _logger = logger;
 
-            Post("/push",  x => ProcessRelease(ReadResourceFromRequest()));
+            Post("/push", x => ProcessRelease(ReadResourceFromRequest()));
 
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.DownloadUrl).NotEmpty();

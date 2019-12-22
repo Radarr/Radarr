@@ -36,9 +36,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var expected = 10.5D;
 
             var context = new ConverterContext
-                          {
-                              DbValue = expected
-                          };
+            {
+                DbValue = expected
+            };
 
             Subject.FromDB(context).Should().Be(expected);
         }
@@ -49,9 +49,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var expected = 10.5D;
 
             var context = new ConverterContext
-                          {
-                              DbValue = $"{expected}"
-                          };
+            {
+                DbValue = $"{expected}"
+            };
 
             Subject.FromDB(context).Should().Be(expected);
         }
@@ -60,9 +60,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_null_for_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(DBNull.Value);
         }

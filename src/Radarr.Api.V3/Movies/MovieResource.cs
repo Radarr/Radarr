@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using Radarr.Api.V3.MovieFiles;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -33,6 +33,7 @@ namespace Radarr.Api.V3.Movies
         public string PhysicalReleaseNote { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
+
         //public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
@@ -66,14 +67,16 @@ namespace Radarr.Api.V3.Movies
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
-
     }
 
     public static class MovieResourceMapper
     {
         public static MovieResource ToResource(this Movie model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             long size = model.MovieFile?.Size ?? 0;
             MovieFileResource movieFile = model.MovieFile?.ToResource(model);
@@ -131,7 +134,10 @@ namespace Radarr.Api.V3.Movies
 
         public static Movie ToModel(this MovieResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new Movie
             {

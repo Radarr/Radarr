@@ -25,7 +25,8 @@ namespace NzbDrone.Api.System
                             IRouteCacheProvider routeCacheProvider,
                             IConfigFileProvider configFileProvider,
                             IMainDatabase database,
-                            ILifecycleService lifecycleService) : base("system")
+                            ILifecycleService lifecycleService)
+            : base("system")
         {
             _appFolderInfo = appFolderInfo;
             _runtimeInfo = runtimeInfo;
@@ -35,10 +36,10 @@ namespace NzbDrone.Api.System
             _configFileProvider = configFileProvider;
             _database = database;
             _lifecycleService = lifecycleService;
-            Get("/status",  x => GetStatus());
-            Get("/routes",  x => GetRoutes());
-            Post("/shutdown",  x => Shutdown());
-            Post("/restart",  x => Restart());
+            Get("/status", x => GetStatus());
+            Get("/routes", x => GetRoutes());
+            Post("/shutdown", x => Shutdown());
+            Post("/restart", x => Restart());
         }
 
         private object GetStatus()

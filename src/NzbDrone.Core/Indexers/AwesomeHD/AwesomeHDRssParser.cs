@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Xml;
+using System.Xml.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using System;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace NzbDrone.Core.Indexers.AwesomeHD
 {
@@ -124,7 +124,6 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                 throw new IndexerException(indexerResponse,
                    "An error occurred while processing feed, feed invalid");
             }
-
 
             return torrentInfos.OrderByDescending(o => ((dynamic)o).Seeders).ToArray();
         }

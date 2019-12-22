@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using RestSharp;
-using NzbDrone.Core.Rest;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Rest;
+using RestSharp;
 using RestSharp.Authenticators;
 
 namespace NzbDrone.Core.Notifications.PushBullet
@@ -21,9 +21,9 @@ namespace NzbDrone.Core.Notifications.PushBullet
 
     public class PushBulletProxy : IPushBulletProxy
     {
-        private readonly Logger _logger;
         private const string PUSH_URL = "https://api.pushbullet.com/v2/pushes";
         private const string DEVICE_URL = "https://api.pushbullet.com/v2/devices";
+        private readonly Logger _logger;
 
         public PushBulletProxy(Logger logger)
         {
@@ -154,7 +154,6 @@ namespace NzbDrone.Core.Notifications.PushBullet
             {
                 request.AddParameter("device_id", integerId);
             }
-
             else
             {
                 request.AddParameter("device_iden", deviceId);

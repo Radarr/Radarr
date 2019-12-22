@@ -68,10 +68,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
             var matchingMovies = allMovies.FirstOrDefault(s =>
             {
                 return s.ImdbNumber == movie.ImdbId || s.Label == movie.Title;
-
             });
 
-            if (matchingMovies != null) return matchingMovies.File;
+            if (matchingMovies != null)
+            {
+                return matchingMovies.File;
+            }
 
             return null;
         }
@@ -87,11 +89,9 @@ namespace NzbDrone.Core.Notifications.Xbmc
                     moviePath = new OsPath(moviePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                     _logger.Debug("Updating movie {0} (Path: {1}) on XBMC host: {2}", movie, moviePath, settings.Address);
                 }
-
                 else
                 {
-                    _logger.Debug("Movie {0} doesn't exist on XBMC host: {1}, Updating Entire Library", movie,
-                                 settings.Address);
+                    _logger.Debug("Movie {0} doesn't exist on XBMC host: {1}, Updating Entire Library", movie, settings.Address);
                 }
 
                 var response = _proxy.UpdateLibrary(settings, moviePath);
@@ -101,7 +101,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
                     _logger.Debug("Failed to update library for: {0}", settings.Address);
                 }
             }
-
             catch (Exception ex)
             {
                 _logger.Debug(ex, ex.Message);

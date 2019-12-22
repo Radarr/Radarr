@@ -1,7 +1,7 @@
-using Radarr.Http.REST;
-using NzbDrone.Core.MediaFiles;
 using System.Collections.Generic;
+using NzbDrone.Core.MediaFiles;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -21,7 +21,7 @@ namespace Radarr.Api.V3.Movies
         {
             int movieId;
 
-            if(Request.Query.MovieId.HasValue)
+            if (Request.Query.MovieId.HasValue)
             {
                 movieId = (int)Request.Query.MovieId;
             }
@@ -32,6 +32,5 @@ namespace Radarr.Api.V3.Movies
 
             return _renameMovieFileService.GetRenamePreviews(movieId).ToResource();
         }
-
     }
 }

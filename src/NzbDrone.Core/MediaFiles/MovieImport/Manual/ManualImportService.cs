@@ -11,12 +11,12 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 {
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
             }
 
-            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> {file}, movie, downloadClientItem, null, SceneSource(movie, baseFolder));
+            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, downloadClientItem, null, SceneSource(movie, baseFolder));
 
             if (importDecisions.Any())
             {
@@ -274,7 +274,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 localMovie.Quality = file.Quality;
 
                 //TODO: Cleanup non-tracked downloads
-
                 var importDecision = new ImportDecision(localMovie);
 
                 if (trackedDownload == null)
@@ -288,10 +287,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     imported.Add(importResult);
 
                     importedTrackedDownload.Add(new ManuallyImportedFile
-                                                {
-                                                    TrackedDownload = trackedDownload,
-                                                    ImportResult = importResult
-                                                });
+                    {
+                        TrackedDownload = trackedDownload,
+                        ImportResult = importResult
+                    });
                 }
             }
 
@@ -311,7 +310,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     }
                 }
 
-                if (groupedTrackedDownload.Select(c => c.ImportResult).Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, 1)) //TODO: trackedDownload.RemoteMovie.Movie.Count is always 1?
+                //TODO: trackedDownload.RemoteMovie.Movie.Count is always 1?
+                if (groupedTrackedDownload.Select(c => c.ImportResult).Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, 1))
                 {
                     trackedDownload.State = TrackedDownloadStage.Imported;
                     _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));

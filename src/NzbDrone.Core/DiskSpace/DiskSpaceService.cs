@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -73,11 +73,11 @@ namespace NzbDrone.Core.DiskSpace
                     }
 
                     diskSpace = new DiskSpace
-                                {
-                                    Path = path,
-                                    FreeSpace = freeSpace.Value,
-                                    TotalSpace = totalSpace.Value
-                                };
+                    {
+                        Path = path,
+                        FreeSpace = freeSpace.Value,
+                        TotalSpace = totalSpace.Value
+                    };
 
                     diskSpace.Label = _diskProvider.GetVolumeLabel(path);
                 }

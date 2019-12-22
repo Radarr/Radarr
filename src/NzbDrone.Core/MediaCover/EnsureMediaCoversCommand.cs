@@ -8,7 +8,6 @@ namespace NzbDrone.Core.MediaCover
 
         public EnsureMediaCoversCommand()
         {
-
         }
 
         public EnsureMediaCoversCommand(int movieId)

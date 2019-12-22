@@ -4,10 +4,10 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -33,9 +33,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             Subject.Definition = new NotificationDefinition();
             Subject.Definition.Settings = new XbmcSettings
-                                          {
-                                              UpdateLibrary = true
-                                          };
+            {
+                UpdateLibrary = true
+            };
         }
 
         private void GivenOldFiles()
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                                                                .ToList();
 
             Subject.Definition.Settings = new XbmcSettings
-                                          {
-                                              UpdateLibrary = true,
-                                              CleanLibrary = true
-                                          };
+            {
+                UpdateLibrary = true,
+                CleanLibrary = true
+            };
         }
 
         [Test]

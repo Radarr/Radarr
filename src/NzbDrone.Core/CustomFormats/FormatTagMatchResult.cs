@@ -9,6 +9,7 @@ namespace NzbDrone.Core.CustomFormats
         {
             GroupMatches = new List<FormatTagMatchesGroup>();
         }
+
         public CustomFormat CustomFormat { get; set; }
         public List<FormatTagMatchesGroup> GroupMatches { get; set; }
         public bool GoodMatch { get; set; }
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.CustomFormats
                        Matches.All(m => m.Value == false));
             }
         }
+
         public Dictionary<FormatTag, bool> Matches { get; set; }
     }
 }

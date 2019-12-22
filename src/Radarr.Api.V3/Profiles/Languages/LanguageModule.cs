@@ -27,10 +27,10 @@ namespace Radarr.Api.V3.Profiles.Languages
         private List<LanguageResource> GetAll()
         {
             return Language.All.Select(l => new LanguageResource
-                                        {
-                                            Id = (int)l,
-                                            Name = l.ToString()
-                                        })
+            {
+                Id = (int)l,
+                Name = l.ToString()
+            })
                                     .OrderBy(l => l.Name)
                                     .ToList();
         }

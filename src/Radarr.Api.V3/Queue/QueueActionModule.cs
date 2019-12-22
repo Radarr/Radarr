@@ -33,11 +33,11 @@ namespace Radarr.Api.V3.Queue
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
 
-            Post(@"/grab/(?<id>[\d]{1,10})",  x => Grab((int)x.Id));
-            Post("/grab/bulk",  x => Grab());
+            Post(@"/grab/(?<id>[\d]{1,10})", x => Grab((int)x.Id));
+            Post("/grab/bulk", x => Grab());
 
-            Delete(@"/(?<id>[\d]{1,10})",  x => Remove((int)x.Id));
-            Delete("/bulk",  x => Remove());
+            Delete(@"/(?<id>[\d]{1,10})", x => Remove((int)x.Id));
+            Delete("/bulk", x => Remove());
         }
 
         private object Grab(int id)

@@ -50,10 +50,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         {
             var folderInfo = new ParsedMovieInfo
             {
-                Languages = new List<Language> {Language.French}
+                Languages = new List<Language> { Language.French }
             };
 
-            MovieInfo.Languages = new List<Language>{Language.English};
+            MovieInfo.Languages = new List<Language> { Language.English };
 
             var result = Subject.AugmentMovieInfo(MovieInfo, folderInfo);
 

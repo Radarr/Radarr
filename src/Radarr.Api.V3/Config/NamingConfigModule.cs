@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Nancy.ModelBinding;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
-using Nancy.ModelBinding;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Config
@@ -30,7 +30,7 @@ namespace Radarr.Api.V3.Config
             GetResourceById = GetNamingConfig;
             UpdateResource = UpdateNamingConfig;
 
-            Get("/examples",  x => GetExamples(this.Bind<NamingConfigResource>()));
+            Get("/examples", x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();

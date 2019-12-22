@@ -11,6 +11,5 @@ namespace NzbDrone.Core.Indexers
 
         public IDictionary<string, string> Cookies { get; set; }
         public DateTime? CookiesExpirationDate { get; set; }
-
     }
 }

@@ -5,8 +5,8 @@ using Marr.Data.Converters;
 using Marr.Data.Mapping;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore.Converters
 {
@@ -35,10 +35,10 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var expected = PendingReleaseReason.Delay;
 
             var context = new ConverterContext
-                          {
-                              ColumnMap = new ColumnMap(mockMemberInfo.Object) { FieldType = typeof(PendingReleaseReason) },
-                              DbValue = (long)expected
-                          };
+            {
+                ColumnMap = new ColumnMap(mockMemberInfo.Object) { FieldType = typeof(PendingReleaseReason) },
+                DbValue = (long)expected
+            };
 
             Subject.FromDB(context).Should().Be(expected);
         }
@@ -47,9 +47,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_null_for_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(null);
         }

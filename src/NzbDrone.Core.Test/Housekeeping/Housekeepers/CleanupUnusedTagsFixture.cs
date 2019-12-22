@@ -2,9 +2,9 @@
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tags;
 using NzbDrone.Core.Restrictions;
+using NzbDrone.Core.Tags;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {

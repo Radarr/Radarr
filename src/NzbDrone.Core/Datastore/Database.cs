@@ -62,6 +62,7 @@ namespace NzbDrone.Core.Datastore
                 {
                     db.ExecuteNonQuery("Vacuum;");
                 }
+
                 _logger.Info("{0} database compressed", _databaseName);
             }
             catch (Exception e)

@@ -1,21 +1,21 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using FluentValidation.Results;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NLog;
-using NzbDrone.Core.Validation;
-using FluentValidation.Results;
 using NzbDrone.Core.Download.Clients.rTorrent;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.RTorrent
 {
@@ -51,8 +51,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warn(ex, "Failed to set torrent post-import label \"{0}\" for {1} in rTorrent. Does the label exist?",
-                        Settings.MovieImportedCategory, downloadClientItem.Title);
+                    _logger.Warn(ex,
+                        "Failed to set torrent post-import label \"{0}\" for {1} in rTorrent. Does the label exist?",
+                        Settings.MovieImportedCategory,
+                        downloadClientItem.Title);
                 }
             }
         }
@@ -109,7 +111,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             foreach (RTorrentTorrent torrent in torrents)
             {
                 // Don't concern ourselves with categories other than specified
-                if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && torrent.Category != Settings.MovieCategory) continue;
+                if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && torrent.Category != Settings.MovieCategory)
+                {
+                    continue;
+                }
 
                 if (torrent.Path.StartsWith("."))
                 {
@@ -171,7 +176,6 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         public override DownloadClientInfo GetStatus()
         {
             // XXX: This function's correctness has not been considered
-
             var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
@@ -183,7 +187,11 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestGetTorrents());
             failures.AddIfNotNull(TestDirectory());
         }

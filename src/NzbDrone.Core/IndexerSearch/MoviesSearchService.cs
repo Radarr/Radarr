@@ -1,14 +1,14 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Queue;
-using NzbDrone.Core.DecisionEngine;
 
 namespace NzbDrone.Core.IndexerSearch
 {
@@ -49,10 +49,10 @@ namespace NzbDrone.Core.IndexerSearch
                     continue;
                 }
 
-                var decisions = _nzbSearchService.MovieSearch(movieId, false, false);//_nzbSearchService.SeasonSearch(message.MovieId, season.SeasonNumber, false, message.Trigger == CommandTrigger.Manual);
+                var decisions = _nzbSearchService.MovieSearch(movieId, false, false); //_nzbSearchService.SeasonSearch(message.MovieId, season.SeasonNumber, false, message.Trigger == CommandTrigger.Manual);
                 downloadedCount += _processDownloadDecisions.ProcessDecisions(decisions).Grabbed.Count;
-
             }
+
             _logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
         }
 
@@ -73,7 +73,6 @@ namespace NzbDrone.Core.IndexerSearch
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingMovies(missing, message.Trigger == CommandTrigger.Manual);
-
         }
 
         public void Execute(CutoffUnmetMoviesSearchCommand message)
@@ -94,7 +93,6 @@ namespace NzbDrone.Core.IndexerSearch
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingMovies(missing, message.Trigger == CommandTrigger.Manual);
-
         }
 
         private void SearchForMissingMovies(List<Movie> movies, bool userInvokedSearch)
@@ -112,7 +110,7 @@ namespace NzbDrone.Core.IndexerSearch
                 }
                 catch (Exception ex)
                 {
-                    var message = String.Format("Unable to search for missing movie {0}", movieId.Key);
+                    var message = string.Format("Unable to search for missing movie {0}", movieId.Key);
                     _logger.Error(ex, message);
                     continue;
                 }
@@ -124,8 +122,5 @@ namespace NzbDrone.Core.IndexerSearch
 
             _logger.ProgressInfo("Completed missing search for {0} movies. {1} reports downloaded.", movies.Count, downloadedCount);
         }
-
-
-
     }
 }

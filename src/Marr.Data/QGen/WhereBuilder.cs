@@ -167,7 +167,7 @@ namespace Marr.Data.QGen
                     var methodExp = memberExp.Expression as MethodCallExpression;
                     if (methodExp != null)
                     {
-                        var errMsg = string.Format("Function calls are not supported by the Where clause expression parser.  Please evaluate your function call, '{0}', manually and then use the resulting paremeter value in your Where expression.",  methodExp.Method.Name);
+                        var errMsg = string.Format("Function calls are not supported by the Where clause expression parser.  Please evaluate your function call, '{0}', manually and then use the resulting paremeter value in your Where expression.", methodExp.Method.Name);
                         throw new NotSupportedException(errMsg);
                     }
 

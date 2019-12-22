@@ -7,7 +7,8 @@ namespace NzbDrone.Api.Qualities
 {
     public class FormatTagValidator : PropertyValidator
     {
-        public FormatTagValidator() : base("{ValidationMessage}")
+        public FormatTagValidator()
+            : base("{ValidationMessage}")
         {
         }
 
@@ -19,11 +20,14 @@ namespace NzbDrone.Api.Qualities
                 return false;
             }
 
-            var tags = (IEnumerable<string>) context.PropertyValue;
+            var tags = (IEnumerable<string>)context.PropertyValue;
 
             var invalidTags = tags.Where(t => !FormatTag.QualityTagRegex.IsMatch(t));
 
-            if (invalidTags.Count() == 0) return true;
+            if (invalidTags.Count() == 0)
+            {
+                return true;
+            }
 
             var formatMessage =
                 $"Format Tags ({string.Join(", ", invalidTags)}) are in an invalid format! Check the Wiki to learn how they should look.";

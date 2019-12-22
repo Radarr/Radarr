@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     SavePath = Convert.ToString(item[26])
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Failed to map Hadouken torrent data.");
             }

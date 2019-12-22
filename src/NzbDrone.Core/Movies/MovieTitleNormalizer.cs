@@ -4,7 +4,7 @@ namespace NzbDrone.Core.Movies
 {
     public static class MovieTitleNormalizer
     {
-        private readonly static Dictionary<int, string> PreComputedTitles = new Dictionary<int, string>
+        private static readonly Dictionary<int, string> PreComputedTitles = new Dictionary<int, string>
                                                                      {
                                                                          { 999999999, "a to z" },
                                                                      };

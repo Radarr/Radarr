@@ -12,13 +12,14 @@ namespace NzbDrone.Common.Instrumentation
 {
     public static class NzbDroneLogger
     {
+        private const string FILE_LOG_LAYOUT = @"${date:format=yy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
+
         private static bool _isConfigured;
 
         static NzbDroneLogger()
         {
             LogManager.Configuration = new LoggingConfiguration();
         }
-
 
         public static void Register(IStartupContext startupContext, bool updateApp, bool inConsole)
         {
@@ -61,13 +62,11 @@ namespace NzbDrone.Common.Instrumentation
 
         private static void RegisterSentry(bool updateClient)
         {
-
             string dsn;
 
             if (updateClient)
             {
                 dsn = "https://379d628d45ba475a98d2e55675d14a02@sentry.radarr.video/5";
-
             }
             else
             {
@@ -116,8 +115,6 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration.AddTarget("console", coloredConsoleTarget);
             LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
-
-        private const string FILE_LOG_LAYOUT = @"${date:format=yy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
 
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo)
         {
@@ -194,6 +191,5 @@ namespace NzbDrone.Common.Instrumentation
         {
             return GetLogger(obj.GetType());
         }
-
     }
 }

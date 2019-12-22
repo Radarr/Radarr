@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Parser.Model;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Core.Parser.Model;
 #if !LIBRARY
 #endif
 
@@ -37,7 +37,6 @@ namespace NzbDrone.Core.Parser
 
             //As a last resort for movies that have ( or [ in their title.
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
         };
 
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
@@ -54,7 +53,6 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportMovieTitleLenientRegexAfter = new Regex[]
         {
-
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -138,11 +136,11 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex ReportEditionRegex = new Regex(@"\b(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-               private static Dictionary<String, String> _umlautMappings = new Dictionary<string, string>
+        private static Dictionary<string, string> _umlautMappings = new Dictionary<string, string>
         {
-            {"ö", "oe"},
-            {"ä", "ae"},
-            {"ü", "ue"},
+            { "ö", "oe" },
+            { "ä", "ae" },
+            { "ü", "ue" },
         };
 
         public static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
@@ -164,14 +162,16 @@ namespace NzbDrone.Core.Parser
             }
 
             return result;
-
         }
 
         public static ParsedMovieInfo ParseMovieTitle(string title, bool isLenient, bool isDir = false)
         {
             try
             {
-                if (!ValidateBeforeParsing(title)) return null;
+                if (!ValidateBeforeParsing(title))
+                {
+                    return null;
+                }
 
                 Logger.Debug("Parsing string '{0}'", title);
 
@@ -234,7 +234,6 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
                                 //TODO: Add tests for this!
-
                                 var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(title, string.Empty);
 
                                 if (result.MovieTitle.IsNotNullOrWhiteSpace())
@@ -287,7 +286,9 @@ namespace NzbDrone.Core.Parser
             catch (Exception e)
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                {
                     Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                }
             }
 
             Logger.Debug("Unable to parse {0}", title);
@@ -377,7 +378,9 @@ namespace NzbDrone.Core.Parser
 
             //If Title only contains numbers return it as is.
             if (long.TryParse(title, out number))
+            {
                 return title;
+            }
 
             return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLower()).RemoveAccent();
         }
@@ -445,6 +448,7 @@ namespace NzbDrone.Core.Parser
                     {
                         return string.Empty;
                     }
+
                     return m.Value;
                 });
 
@@ -458,7 +462,6 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-
             var movieName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
@@ -469,10 +472,11 @@ namespace NzbDrone.Core.Parser
             string nextPart = "";
             foreach (var part in parts)
             {
-                if (parts.Length >= n+2)
+                if (parts.Length >= n + 2)
                 {
-                    nextPart = parts[n+1];
+                    nextPart = parts[n + 1];
                 }
+
                 if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
                 {
                     movieName += part + ".";
@@ -490,8 +494,10 @@ namespace NzbDrone.Core.Parser
                         movieName += " ";
                         previousAcronym = false;
                     }
+
                     movieName += part + " ";
                 }
+
                 n++;
             }
 

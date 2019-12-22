@@ -22,7 +22,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.GetDataMapper())
             {
-
                 mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.GetDataMapper())
             {
-
                 mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
@@ -51,7 +49,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.GetDataMapper())
             {
-
                 mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles

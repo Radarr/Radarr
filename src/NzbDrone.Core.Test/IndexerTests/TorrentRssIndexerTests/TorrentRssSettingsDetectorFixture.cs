@@ -37,14 +37,14 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
             var settings = Subject.Detect(_indexerSettings);
 
             settings.Should().BeEquivalentTo(new TorrentRssIndexerParserSettings
-                {
-                    UseEZTVFormat = true,
-                    UseEnclosureUrl = false,
-                    UseEnclosureLength = false,
-                    ParseSizeInDescription = false,
-                    ParseSeedersInDescription = false,
-                    SizeElementName = null
-                });
+            {
+                UseEZTVFormat = true,
+                UseEnclosureUrl = false,
+                UseEnclosureLength = false,
+                ParseSizeInDescription = false,
+                ParseSeedersInDescription = false,
+                SizeElementName = null
+            });
         }
 
         [Test]

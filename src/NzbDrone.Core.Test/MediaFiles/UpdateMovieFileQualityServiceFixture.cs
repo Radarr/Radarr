@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             _newQuality = _oldQuality.JsonClone();
             var format = new CustomFormats.CustomFormat("Awesome Format");
             format.Id = 1;
-            _newQuality.CustomFormats = new List<CustomFormats.CustomFormat>{format};
+            _newQuality.CustomFormats = new List<CustomFormats.CustomFormat> { format };
 
             _newInfo = new ParsedMovieInfo
             {
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             };
 
             Mocker.GetMock<IMediaFileService>().Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
-                .Returns(new List<MovieFile>{_movieFile});
+                .Returns(new List<MovieFile> { _movieFile });
 
             Mocker.GetMock<IHistoryService>().Setup(s => s.GetByMovieId(It.IsAny<int>(), null))
                 .Returns(new List<History.History>());
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void ExecuteCommand()
         {
-            Subject.Execute(new UpdateMovieFileQualityCommand(new List<int>{0}));
+            Subject.Execute(new UpdateMovieFileQualityCommand(new List<int> { 0 }));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(h => h.SourceTitle = "My Movie 2018.mkv").Build();
 
             Mocker.GetMock<IHistoryService>().Setup(s => s.GetByMovieId(It.IsAny<int>(), null))
-                .Returns(new List<History.History> {imported});
+                .Returns(new List<History.History> { imported });
 
             Mocker.GetMock<IParsingService>().Setup(s => s.ParseMovieInfo("My Movie 2018.mkv", It.IsAny<List<object>>()))
                 .Returns(_newInfo);

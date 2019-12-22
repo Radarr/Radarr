@@ -36,9 +36,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                                      IDiskProvider diskProvider,
                                      IRemotePathMappingService remotePathMappingService,
                                      IValidateNzbs nzbValidationService,
-                                     Logger logger
-                                     )
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
+                                     Logger logger)
+        : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _dsInfoProxy = dsInfoProxy;
             _dsTaskProxy = dsTaskProxy;
@@ -191,7 +190,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestOutputPath());
             failures.AddIfNotNull(TestGetNZB());
         }
@@ -238,7 +241,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 return null;
             }
-            catch (DownloadClientAuthenticationException ex) // User could not have permission to access to downloadstation
+            catch (DownloadClientAuthenticationException ex)
             {
                 _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
@@ -275,6 +278,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                         DetailedDescription = "Please verify the hostname and port."
                     };
                 }
+
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
             catch (Exception ex)

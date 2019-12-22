@@ -5,7 +5,6 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
-
     [TestFixture]
     public class ParserFixture : CoreTest
     {

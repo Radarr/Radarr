@@ -19,9 +19,9 @@ namespace Marr.Data.Mapping
 {
     public interface IColumnInfo
     {
-        string Name { get; set;  }
+        string Name { get; set; }
         string AltName { get; set; }
-        int Size { get; set;  }
+        int Size { get; set; }
         bool IsPrimaryKey { get; set; }
         bool IsAutoIncrement { get; set; }
         bool ReturnValue { get; set; }

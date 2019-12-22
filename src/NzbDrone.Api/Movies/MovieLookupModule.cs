@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Nancy;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using System.Linq;
-using System;
 using Radarr.Http;
 using Radarr.Http.REST;
 
@@ -19,15 +19,15 @@ namespace NzbDrone.Api.Movies
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
-            Get("/",  x => Search());
-            Get("/tmdb",  x => SearchByTmdbId());
-            Get("/imdb",  x => SearchByImdbId());
+            Get("/", x => Search());
+            Get("/tmdb", x => SearchByTmdbId());
+            Get("/imdb", x => SearchByImdbId());
         }
 
         private object SearchByTmdbId()
         {
             int tmdbId = -1;
-            if(Int32.TryParse(Request.Query.tmdbId, out tmdbId))
+            if (int.TryParse(Request.Query.tmdbId, out tmdbId))
             {
                 var result = _movieInfo.GetMovieInfo(tmdbId, null, true);
                 return result.ToResource();

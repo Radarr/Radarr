@@ -38,14 +38,17 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public object ToDB(object clrValue)
         {
-            if(clrValue == DBNull.Value) return null;
+            if (clrValue == DBNull.Value)
+            {
+                return null;
+            }
 
-            if(!(clrValue is CustomFormat))
+            if (!(clrValue is CustomFormat))
             {
                 throw new InvalidOperationException("Attempted to save a quality definition that isn't really a quality definition");
             }
 
-            var quality = (CustomFormat) clrValue;
+            var quality = (CustomFormat)clrValue;
 
             if (CustomFormatService.AllCustomFormats?.ContainsKey(quality.Id) == false)
             {

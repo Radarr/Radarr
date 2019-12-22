@@ -20,7 +20,9 @@ namespace NzbDrone.Core.ProgressMessaging
         public static bool LockReentrancy()
         {
             if (_reentrancyLock)
+            {
                 return false;
+            }
 
             _reentrancyLock = true;
             return true;

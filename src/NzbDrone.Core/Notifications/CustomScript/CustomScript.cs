@@ -8,8 +8,8 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.CustomScript
@@ -124,6 +124,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             ExecuteScript(environmentVariables);
         }
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();

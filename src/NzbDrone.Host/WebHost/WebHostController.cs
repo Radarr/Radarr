@@ -92,14 +92,17 @@ namespace Radarr.Host
                     services
                     .AddSignalR()
 #if !NETCOREAPP
-                    .AddJsonProtocol(
+                    .AddJsonProtocol(options =>
+                    {
+                        options.PayloadSerializerSettings = Json.GetSerializerSettings();
+                    });
 #else
-                    .AddNewtonsoftJsonProtocol(
+                    .AddNewtonsoftJsonProtocol(options =>
+                    {
+                        options.PayloadSerializerSettings = Json.GetSerializerSettings();
+                    });
 #endif
-                        options =>
-                        {
-                            options.PayloadSerializerSettings = Json.GetSerializerSettings();
-                        });
+
                 })
                 .Configure(app =>
                 {

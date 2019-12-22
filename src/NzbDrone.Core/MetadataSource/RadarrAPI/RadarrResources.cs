@@ -29,7 +29,8 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
     {
         public RadarrError APIErrors;
 
-        public RadarrAPIException(RadarrError apiError) : base(HumanReadable(apiError))
+        public RadarrAPIException(RadarrError apiError)
+            : base(HumanReadable(apiError))
         {
             APIErrors = apiError;
         }
@@ -41,13 +42,12 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
             {
                 return $"{error.Title} ({error.Status}, RayId: {error.RayId}), Details: {error.Detail}";
             }));
-           return $"Error while calling api: {firstError.Title}\nFull error(s): {details}";
+            return $"Error while calling api: {firstError.Title}\nFull error(s): {details}";
         }
     }
 
     public class TitleInfo
     {
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -60,7 +60,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class YearInfo
     {
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -70,7 +69,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class Title
     {
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -98,7 +96,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class Year
     {
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -126,7 +123,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class Mappings
     {
-
         [JsonProperty("titles")]
         public IList<Title> Titles { get; set; }
 
@@ -136,7 +132,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class Mapping
     {
-
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -152,7 +147,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class AddTitleMapping
     {
-
         [JsonProperty("tmdbid")]
         public string Tmdbid { get; set; }
 
@@ -180,7 +174,6 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class AddYearMapping
     {
-
         [JsonProperty("tmdbid")]
         public string Tmdbid { get; set; }
 
@@ -205,5 +198,4 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         [JsonProperty("locked")]
         public bool Locked { get; set; }
     }
-
 }

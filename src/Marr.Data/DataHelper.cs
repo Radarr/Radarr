@@ -29,7 +29,7 @@ namespace Marr.Data
     {
         public static bool HasColumn(this IDataReader dr, string columnName)
         {
-            for (int i=0; i < dr.FieldCount; i++)
+            for (int i = 0; i < dr.FieldCount; i++)
             {
                 if (dr.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase))
                     return true;

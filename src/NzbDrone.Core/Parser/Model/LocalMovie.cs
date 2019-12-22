@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -25,7 +25,6 @@ namespace NzbDrone.Core.Parser.Model
         public bool SceneSource { get; set; }
         public string ReleaseGroup { get; set; }
         public string Edition { get; set; }
-
 
         public override string ToString()
         {

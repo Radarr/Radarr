@@ -21,8 +21,15 @@ namespace NzbDrone.Core.Indexers
 
         public TorrentSeedConfiguration GetSeedConfiguration(RemoteMovie remoteMovie)
         {
-            if (remoteMovie.Release.DownloadProtocol != DownloadProtocol.Torrent) return null;
-            if (remoteMovie.Release.IndexerId == 0) return null;
+            if (remoteMovie.Release.DownloadProtocol != DownloadProtocol.Torrent)
+            {
+                return null;
+            }
+
+            if (remoteMovie.Release.IndexerId == 0)
+            {
+                return null;
+            }
 
             try
             {

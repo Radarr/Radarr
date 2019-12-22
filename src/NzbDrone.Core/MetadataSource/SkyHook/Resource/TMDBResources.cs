@@ -2,11 +2,11 @@
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-
     public class FindRoot
     {
         public MovieResult[] movie_results { get; set; }
     }
+
     public class MovieSearchRoot
     {
         public int page { get; set; }
@@ -36,7 +36,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string physical_release { get; set; }
         public string physical_release_note { get; set; }
     }
-
 
     public class MovieResourceRoot
     {
@@ -173,5 +172,4 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string name { get; set; }
         public string original_name { get; set; }
     }
-
 }

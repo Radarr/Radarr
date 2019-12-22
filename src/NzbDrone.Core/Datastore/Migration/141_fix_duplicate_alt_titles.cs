@@ -21,7 +21,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 cmd.CommandText = "DELETE FROM AlternativeTitles WHERE rowid NOT IN ( SELECT MIN(rowid) FROM AlternativeTitles GROUP BY CleanTitle )";
 
                 cmd.ExecuteNonQuery();
-
             }
         }
     }

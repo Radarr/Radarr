@@ -25,7 +25,7 @@ namespace NzbDrone.Common.TPL
         {
             var waitUntil = _rateLimitStore.AddOrUpdate(key,
                 (s) => DateTime.UtcNow + interval,
-                (s,i) => new DateTime(Math.Max(DateTime.UtcNow.Ticks, i.Ticks), DateTimeKind.Utc) + interval);
+                (s, i) => new DateTime(Math.Max(DateTime.UtcNow.Ticks, i.Ticks), DateTimeKind.Utc) + interval);
 
             waitUntil -= interval;
 

@@ -10,7 +10,6 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Alter.Table("IndexerStatus").AddColumn("Cookies").AsString().Nullable()
                 .AddColumn("CookiesExpirationDate").AsDateTime().Nullable();
-
         }
     }
 }

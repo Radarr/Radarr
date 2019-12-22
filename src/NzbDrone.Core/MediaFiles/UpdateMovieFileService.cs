@@ -90,7 +90,6 @@ namespace NzbDrone.Core.MediaFiles
 
                         return true;
                     }
-
                     catch (Exception ex)
                     {
                         _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
@@ -130,7 +129,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Movie.Title);
             }
-
             else
             {
                 _logger.ProgressDebug("No file dates changed for {0}", message.Movie.Title);
@@ -155,14 +153,12 @@ namespace NzbDrone.Core.MediaFiles
 
                         return true;
                     }
-
                     catch (Exception ex)
                     {
                         _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
                     }
                 }
             }
-
             else
             {
                 _logger.Debug("Could not create valid date to change file [{0}]", filePath);
@@ -184,7 +180,6 @@ namespace NzbDrone.Core.MediaFiles
 
                     return true;
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");

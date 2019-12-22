@@ -12,14 +12,13 @@ namespace Radarr.Http.Frontend
         private readonly IEnumerable<IMapHttpRequestsToDisk> _requestMappers;
         private readonly Logger _logger;
 
-
         public StaticResourceModule(IEnumerable<IMapHttpRequestsToDisk> requestMappers, Logger logger)
         {
             _requestMappers = requestMappers;
             _logger = logger;
 
-            Get("/{resource*}",  x => Index());
-            Get("/",  x => Index());
+            Get("/{resource*}", x => Index());
+            Get("/", x => Index());
         }
 
         private Response Index()

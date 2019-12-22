@@ -9,7 +9,8 @@ namespace NzbDrone.Api.NetImport
     {
         private readonly IImportExclusionsService _exclusionService;
 
-        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService) : base("exclusions")
+        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService)
+            : base("exclusions")
         {
             _exclusionService = exclusionService;
             GetResourceAll = GetAll;
@@ -35,7 +36,7 @@ namespace NzbDrone.Api.NetImport
             return _exclusionService.AddExclusion(model).Id;
         }
 
-        public void RemoveExclusion (int id)
+        public void RemoveExclusion(int id)
         {
             _exclusionService.RemoveExclusion(new ImportExclusion { Id = id });
         }

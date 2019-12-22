@@ -12,9 +12,9 @@ namespace NzbDrone.Core.ThingiProvider
         {
         }
 
-//        public void DeleteImplementations(string implementation)
-//        {
-//            DataMapper.Delete<TProviderDefinition>(c => c.Implementation == implementation);
-//        }
+        //        public void DeleteImplementations(string implementation)
+        //        {
+        //            DataMapper.Delete<TProviderDefinition>(c => c.Implementation == implementation);
+        //        }
     }
 }

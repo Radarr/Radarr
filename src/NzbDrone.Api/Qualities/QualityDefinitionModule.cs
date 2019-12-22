@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Radarr.Http.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Qualities
 {

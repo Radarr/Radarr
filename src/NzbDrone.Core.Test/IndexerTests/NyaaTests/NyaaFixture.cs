@@ -18,10 +18,10 @@ namespace NzbDrone.Core.Test.IndexerTests.NyaaTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
-                {
-                    Name = "Nyaa",
-                    Settings = new NyaaSettings()
-                };
+            {
+                Name = "Nyaa",
+                Settings = new NyaaSettings()
+            };
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NyaaTests
             torrentInfo.Size.Should().Be(2523293286); //2.35 GiB
             torrentInfo.InfoHash.Should().Be(null);
             torrentInfo.MagnetUrl.Should().Be(null);
-            torrentInfo.Peers.Should().Be(2+1);
+            torrentInfo.Peers.Should().Be(2 + 1);
             torrentInfo.Seeders.Should().Be(1);
         }
     }

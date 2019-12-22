@@ -5,7 +5,7 @@ using NzbDrone.Mono.Disk;
 namespace NzbDrone.Mono.Test.DiskProviderTests
 {
     [TestFixture]
-    [Platform(Exclude="Win")]
+    [Platform(Exclude = "Win")]
     public class FreeSpaceFixture : FreeSpaceFixtureBase<DiskProvider>
     {
         public FreeSpaceFixture()

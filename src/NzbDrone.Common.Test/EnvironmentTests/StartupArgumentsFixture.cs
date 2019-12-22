@@ -26,7 +26,6 @@ namespace NzbDrone.Common.Test.EnvironmentTests
             args.Flags.Contains("t").Should().BeTrue();
         }
 
-
         [TestCase("/key=value")]
         [TestCase("/KEY=value")]
         [TestCase(" /key=\"value\"")]
@@ -36,7 +35,6 @@ namespace NzbDrone.Common.Test.EnvironmentTests
             args.Args.Should().HaveCount(1);
             args.Args["key"].Should().Be("value");
         }
-
 
         [TestCase("/data=test", "/data=test")]
         [TestCase("/Data=/a/b/c", "/data=/a/b/c")]
@@ -54,7 +52,6 @@ namespace NzbDrone.Common.Test.EnvironmentTests
             var args = new StartupContext(new[] { arg });
             args.PreservedArguments.Should().Be(preserved);
         }
-
 
         [Test]
         public void should_preserver_both()

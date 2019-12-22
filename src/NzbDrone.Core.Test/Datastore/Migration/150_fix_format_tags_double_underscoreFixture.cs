@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -12,10 +12,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class fix_format_tags_double_underscoreFixture : MigrationTest<fix_format_tags_double_underscore>
     {
-
         public void AddCustomFormat(fix_format_tags_double_underscore c, string name, params string[] formatTags)
         {
-            var customFormat = new {Name = name, FormatTags = formatTags.ToList().ToJson()};
+            var customFormat = new { Name = name, FormatTags = formatTags.ToList().ToJson() };
 
             c.Insert.IntoTable("CustomFormats").Row(customFormat);
         }

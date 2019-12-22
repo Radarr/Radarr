@@ -5,14 +5,13 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.Extras;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Extras;
-
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
 {
@@ -52,12 +51,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             //I added a null op for the rare case that the quality is null. TODO: find out why that would even happen in the first place.
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
-                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel{Quality = Quality.Unknown}, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
+                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel { Quality = Quality.Unknown }, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
                    .ThenByDescending(c => c.LocalMovie.Size))
                .SelectMany(c => c)
                .ToList();
-
-
 
             var importResults = new List<ImportResult>();
 

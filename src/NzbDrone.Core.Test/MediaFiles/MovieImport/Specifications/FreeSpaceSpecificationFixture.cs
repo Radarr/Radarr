@@ -6,9 +6,9 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
@@ -23,17 +23,17 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [SetUp]
         public void Setup()
         {
-             _rootFolder = @"C:\Test\TV".AsOsAgnostic();
+            _rootFolder = @"C:\Test\TV".AsOsAgnostic();
 
             _movie = Builder<Movie>.CreateNew()
                 .With(s => s.Path = Path.Combine(_rootFolder, "30 Rock"))
                 .Build();
 
             _localMovie = new LocalMovie()
-                                {
-                                    Path = @"C:\Test\Unsorted\30 Rock\30.rock.s01e01.avi".AsOsAgnostic(),
-                                    Movie = _movie
-                                };
+            {
+                Path = @"C:\Test\Unsorted\30 Rock\30.rock.s01e01.avi".AsOsAgnostic(),
+                Movie = _movie
+            };
         }
 
         private void GivenFileSize(long size)
@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_reject_when_there_isnt_enough_space_for_file_plus_min_free_space()
         {
-
             Mocker.GetMock<IConfigService>()
                 .Setup(s => s.MinimumFreeSpaceWhenImporting)
                 .Returns(100);

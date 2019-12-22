@@ -23,7 +23,6 @@ namespace Radarr.Http.REST
 
         private static object GetValue(object container, Func<TResource, IEnumerable<Field>> fieldListAccessor, string fieldName)
         {
-
             var resource = fieldListAccessor((TResource)container).SingleOrDefault(c => c.Name == fieldName);
 
             if (resource == null)

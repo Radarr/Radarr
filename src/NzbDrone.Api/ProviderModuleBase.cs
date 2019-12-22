@@ -3,10 +3,10 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Nancy;
+using Newtonsoft.Json;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using Newtonsoft.Json;
 using Radarr.Http;
 using Radarr.Http.ClientSchema;
 
@@ -24,9 +24,9 @@ namespace NzbDrone.Api
         {
             _providerFactory = providerFactory;
 
-            Get("schema",  x => GetTemplates());
-            Post("test",  x => Test(ReadResourceFromRequest(true)));
-            Post("action/{action}",  x => RequestAction(x.action, ReadResourceFromRequest(true)));
+            Get("schema", x => GetTemplates());
+            Post("test", x => Test(ReadResourceFromRequest(true)));
+            Post("action/{action}", x => RequestAction(x.action, ReadResourceFromRequest(true)));
 
             GetResourceAll = GetAll;
             GetResourceById = GetProviderById;
@@ -35,7 +35,7 @@ namespace NzbDrone.Api
             DeleteResource = DeleteProvider;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Name).Must((v,c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
+            SharedValidator.RuleFor(c => c.Name).Must((v, c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
             SharedValidator.RuleFor(c => c.Implementation).NotEmpty();
             SharedValidator.RuleFor(c => c.ConfigContract).NotEmpty();
 
@@ -180,7 +180,6 @@ namespace NzbDrone.Api
 
             return "{}";
         }
-
 
         private object RequestAction(string action, TProviderResource providerResource)
         {

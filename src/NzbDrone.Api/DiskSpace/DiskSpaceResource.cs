@@ -14,7 +14,10 @@ namespace NzbDrone.Api.DiskSpace
     {
         public static DiskSpaceResource MapToResource(this Core.DiskSpace.DiskSpace model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new DiskSpaceResource
             {

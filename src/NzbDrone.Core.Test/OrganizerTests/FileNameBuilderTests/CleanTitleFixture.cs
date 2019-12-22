@@ -3,10 +3,10 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
@@ -56,6 +56,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("[a] title", "a title")]
         [TestCase("backslash \\ backlash", "backslash backlash")]
         [TestCase("I'm the Boss", "Im the Boss")]
+
         //[TestCase("", "")]
         public void should_get_expected_title_back(string title, string expected)
         {

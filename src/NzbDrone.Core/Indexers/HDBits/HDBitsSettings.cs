@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {

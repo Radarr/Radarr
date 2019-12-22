@@ -27,7 +27,8 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
         public string GetToken(RarbgSettings settings)
         {
-            return _tokenCache.Get(settings.BaseUrl, () =>
+            return _tokenCache.Get(settings.BaseUrl,
+                () =>
                 {
                     var requestBuilder = new HttpRequestBuilder(settings.BaseUrl.Trim('/'))
                         .WithRateLimit(3.0)
@@ -43,7 +44,8 @@ namespace NzbDrone.Core.Indexers.Rarbg
                     var response = _httpClient.Get<JObject>(requestBuilder.Build());
 
                     return response.Resource["token"].ToString();
-                }, TimeSpan.FromMinutes(14.0));
+                },
+                TimeSpan.FromMinutes(14.0));
         }
     }
 }

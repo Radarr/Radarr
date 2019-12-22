@@ -36,7 +36,8 @@ namespace MonoTorrent
             if (e == null)
                 return;
 
-            ThreadPool.QueueUserWorkItem(delegate {
+            ThreadPool.QueueUserWorkItem(delegate
+            {
                 if (e != null)
                     e(o, args);
             });

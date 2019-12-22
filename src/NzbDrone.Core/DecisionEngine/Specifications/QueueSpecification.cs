@@ -26,7 +26,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-
             var queue = _queueService.GetQueue();
             var matchingMovies = queue.Where(q => q.RemoteMovie?.Movie != null &&
                                                    q.RemoteMovie.Movie.Id == subject.Movie.Id)

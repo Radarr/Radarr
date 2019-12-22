@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Profiles.Quality
 {
@@ -42,7 +42,10 @@ namespace Radarr.Api.V3.Profiles.Quality
     {
         public static QualityProfileResource ToResource(this Profile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QualityProfileResource
             {
@@ -60,7 +63,10 @@ namespace Radarr.Api.V3.Profiles.Quality
 
         public static QualityProfileQualityItemResource ToResource(this ProfileQualityItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QualityProfileQualityItemResource
             {
@@ -83,7 +89,10 @@ namespace Radarr.Api.V3.Profiles.Quality
 
         public static Profile ToModel(this QualityProfileResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new Profile
             {
@@ -101,7 +110,10 @@ namespace Radarr.Api.V3.Profiles.Quality
 
         public static ProfileQualityItem ToModel(this QualityProfileQualityItemResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ProfileQualityItem
             {

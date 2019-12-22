@@ -10,7 +10,8 @@ namespace Radarr.Api.V3.NetImport
     {
         private readonly IImportExclusionsService _exclusionService;
 
-        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService) : base("exclusions")
+        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService)
+            : base("exclusions")
         {
             _exclusionService = exclusionService;
             GetResourceAll = GetAll;
@@ -38,11 +39,10 @@ namespace Radarr.Api.V3.NetImport
             var model = exclusionResource.ToModel();
 
             // TODO: Add some more validation here and auto pull the title if not provided
-
             return _exclusionService.AddExclusion(model).Id;
         }
 
-        public void RemoveExclusion (int id)
+        public void RemoveExclusion(int id)
         {
             _exclusionService.RemoveExclusion(new ImportExclusion { Id = id });
         }

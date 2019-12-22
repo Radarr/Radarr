@@ -1,22 +1,24 @@
-using NLog;
-using NzbDrone.Common;
-using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.Serializer;
-using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Messaging.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using NLog;
+using NzbDrone.Common;
+using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Messaging.Commands
 {
     public interface IManageCommandQueue
     {
-        List<CommandModel> PushMany<TCommand>(List<TCommand> commands) where TCommand : Command;
-        CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified) where TCommand : Command;
+        List<CommandModel> PushMany<TCommand>(List<TCommand> commands)
+            where TCommand : Command;
+        CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified)
+            where TCommand : Command;
         CommandModel Push(string commandName, DateTime? lastExecutionTime, DateTime? lastStartTime, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified);
         IEnumerable<CommandModel> Queue(CancellationToken cancellationToken);
         List<CommandModel> All();
@@ -50,7 +52,8 @@ namespace NzbDrone.Core.Messaging.Commands
             _commandQueue = new CommandQueue();
         }
 
-        public List<CommandModel> PushMany<TCommand>(List<TCommand> commands) where TCommand : Command
+        public List<CommandModel> PushMany<TCommand>(List<TCommand> commands)
+            where TCommand : Command
         {
             _logger.Trace("Publishing {0} commands", commands.Count);
 
@@ -89,7 +92,8 @@ namespace NzbDrone.Core.Messaging.Commands
             return commandModels;
         }
 
-        public CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified) where TCommand : Command
+        public CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified)
+            where TCommand : Command
         {
             Ensure.That(command, () => command).IsNotNull();
 

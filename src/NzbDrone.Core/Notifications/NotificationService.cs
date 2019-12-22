@@ -6,9 +6,9 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications
 {
@@ -17,7 +17,6 @@ namespace NzbDrone.Core.Notifications
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieDownloadedEvent>,
           IHandle<HealthCheckFailedEvent>
-
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -31,18 +30,18 @@ namespace NzbDrone.Core.Notifications
         private string GetMessage(Movie movie, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
-            var ImdbUrl = "https://www.imdb.com/title/" + movie.ImdbId + "/";
+            var imdbUrl = "https://www.imdb.com/title/" + movie.ImdbId + "/";
 
             if (quality.Revision.Version > 1)
             {
-                    qualityString += " Proper";
+                qualityString += " Proper";
             }
 
             return string.Format("{0} ({1}) [{2}] {3}",
                                     movie.Title,
                                     movie.Year,
                                     qualityString,
-                                    ImdbUrl);
+                                    imdbUrl);
         }
 
         private bool ShouldHandleMovie(ProviderDefinition definition, Movie movie)
@@ -95,10 +94,13 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleMovie(notification.Definition, message.Movie.Movie)) continue;
+                    if (!ShouldHandleMovie(notification.Definition, message.Movie.Movie))
+                    {
+                        continue;
+                    }
+
                     notification.OnGrab(grabMessage);
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unable to send OnGrab notification to {0}", notification.Definition.Name);
@@ -128,7 +130,6 @@ namespace NzbDrone.Core.Notifications
                         }
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
@@ -147,7 +148,6 @@ namespace NzbDrone.Core.Notifications
                         notification.OnMovieRename(message.Movie);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
@@ -166,7 +166,6 @@ namespace NzbDrone.Core.Notifications
                         notification.OnHealthIssue(message.HealthCheck);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);

@@ -1,8 +1,8 @@
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             movie.Studio.Should().NotBeNullOrWhiteSpace();
             movie.Runtime.Should().BeGreaterThan(0);
             movie.TitleSlug.Should().NotBeNullOrWhiteSpace();
+
             //series.TvRageId.Should().BeGreaterThan(0);
             movie.TmdbId.Should().BeGreaterThan(0);
         }

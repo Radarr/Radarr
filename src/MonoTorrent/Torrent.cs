@@ -263,7 +263,7 @@ namespace MonoTorrent
 
         protected Torrent()
         {
-            this.announceUrls = new RawTrackerTiers ();
+            this.announceUrls = new RawTrackerTiers();
             this.comment = string.Empty;
             this.createdBy = string.Empty;
             this.creationDate = new DateTime(1970, 1, 1, 0, 0, 0);
@@ -298,15 +298,15 @@ namespace MonoTorrent
             return this.infoHash.GetHashCode();
         }
 
-        internal byte [] ToBytes ()
+        internal byte[] ToBytes()
         {
-            return this.originalDictionary.Encode ();
+            return this.originalDictionary.Encode();
         }
 
-        internal BEncodedDictionary ToDictionary ()
+        internal BEncodedDictionary ToDictionary()
         {
             // Give the user a copy of the original dictionary.
-            return BEncodedValue.Clone (this.originalDictionary);
+            return BEncodedValue.Clone(this.originalDictionary);
         }
 
         public override string ToString()
@@ -423,7 +423,7 @@ namespace MonoTorrent
                 else
                 {
                     startIndex = (int)(this.size / this.pieceLength);
-                    endIndex = (int)((this.size  + length) / this.pieceLength);
+                    endIndex = (int)((this.size + length) / this.pieceLength);
                     if ((this.size + length) % this.pieceLength == 0)
                         endIndex--;
                 }
@@ -702,7 +702,7 @@ namespace MonoTorrent
 
             try
             {
-                Torrent t = Torrent.LoadCore ((BEncodedDictionary) BEncodedDictionary.Decode(stream));
+                Torrent t = Torrent.LoadCore((BEncodedDictionary)BEncodedDictionary.Decode(stream));
                 t.torrentPath = path;
                 return t;
             }
@@ -714,7 +714,7 @@ namespace MonoTorrent
 
         public static Torrent Load(BEncodedDictionary torrentInformation)
         {
-            return LoadCore ((BEncodedDictionary)BEncodedValue.Decode (torrentInformation.Encode ()));
+            return LoadCore((BEncodedDictionary)BEncodedValue.Decode(torrentInformation.Encode()));
         }
 
         internal static Torrent LoadCore(BEncodedDictionary torrentInformation)
@@ -743,7 +743,7 @@ namespace MonoTorrent
                             // Ignore this if we have an announce-list
                             if (torrentInformation.ContainsKey("announce-list"))
                                 break;
-                            this.announceUrls.Add(new RawTrackerTier ());
+                            this.announceUrls.Add(new RawTrackerTier());
                             this.announceUrls[0].Add(keypair.Value.ToString());
                             break;
 
@@ -811,7 +811,7 @@ namespace MonoTorrent
 
                         case ("info"):
                             using (SHA1 s = HashAlgoFactory.Create<SHA1>())
-                                this.infoHash = new InfoHash (s.ComputeHash(keypair.Value.Encode()));
+                                this.infoHash = new InfoHash(s.ComputeHash(keypair.Value.Encode()));
                             this.ProcessInfo(((BEncodedDictionary)keypair.Value));
                             break;
 
@@ -835,7 +835,7 @@ namespace MonoTorrent
 
                                     Toolbox.Randomize<string>(tier);
 
-                                    RawTrackerTier collection = new RawTrackerTier ();
+                                    RawTrackerTier collection = new RawTrackerTier();
                                     for (int k = 0; k < tier.Count; k++)
                                         collection.Add(tier[k]);
 

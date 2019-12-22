@@ -19,13 +19,13 @@ namespace NzbDrone.Core.Test.Blacklisting
         public void Setup()
         {
             _blacklist = new Blacklist
-                     {
-                         MovieId = 1234,
-                         Quality = new QualityModel(),
-                         Languages = new List<Language>(),
-                         SourceTitle = "movie.title.1998",
-                         Date = DateTime.UtcNow
-                     };
+            {
+                MovieId = 1234,
+                Quality = new QualityModel(),
+                Languages = new List<Language>(),
+                SourceTitle = "movie.title.1998",
+                Date = DateTime.UtcNow
+            };
         }
 
         [Test]

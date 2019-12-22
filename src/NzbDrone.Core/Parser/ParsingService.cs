@@ -8,12 +8,12 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Parser.Augmenters;
 
 namespace NzbDrone.Core.Parser
 {
@@ -82,7 +82,6 @@ namespace NzbDrone.Core.Parser
 
             // minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Quality.Source, minimalInfo.Quality.Quality.Resolution,
             // minimalInfo.Quality.Quality.Modifier);
-
             if (minimalInfo != null)
             {
                 minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
@@ -190,8 +189,9 @@ namespace NzbDrone.Core.Parser
         {
             var result = GetMovie(parsedMovieInfo, imdbId, searchCriteria);
 
-            if (result == null) {
-                result = new MappingResult {MappingResultType = MappingResultType.Unknown};
+            if (result == null)
+            {
+                result = new MappingResult { MappingResultType = MappingResultType.Unknown };
                 result.Movie = null;
             }
 
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Parser
         {
             // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
             MappingResult result = null;
-            if (!String.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
+            if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out result))
                 {
@@ -233,17 +233,23 @@ namespace NzbDrone.Core.Parser
         private bool TryGetMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId, out MappingResult result)
         {
             var movie = _movieService.FindByImdbId(imdbId);
+
             //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
             if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.Year && movie.SecondaryYear != parsedMovieInfo.Year))
             {
-                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear};
+                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear };
                 return false;
             }
-            if (movie != null) {
+
+            if (movie != null)
+            {
                 result = new MappingResult { Movie = movie };
-            } else {
-                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.TitleNotFound};
             }
+            else
+            {
+                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.TitleNotFound };
+            }
+
             return movie != null;
         }
 
@@ -264,7 +270,7 @@ namespace NzbDrone.Core.Parser
                 movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
-                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear};
+                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear };
                     return false;
                 }
 
@@ -273,12 +279,12 @@ namespace NzbDrone.Core.Parser
                     movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
                     if (isNotNull(movieByTitleAndOrYear))
                     {
-                        result = new MappingResult {Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping};
+                        result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
                         return true;
                     }
                 }
 
-                result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
+                result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound };
                 return false;
             }
 
@@ -294,12 +300,12 @@ namespace NzbDrone.Core.Parser
                 movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
-                    result = new MappingResult {Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping};
+                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
                     return true;
                 }
             }
 
-            result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
+            result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound };
             return false;
         }
 
@@ -331,7 +337,6 @@ namespace NzbDrone.Core.Parser
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     //_logger.Debug(cleanTitle);
-
                     if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
                         possibleMovie = searchCriteria.Movie;
@@ -341,7 +346,6 @@ namespace NzbDrone.Core.Parser
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
-
                 }
             }
 
@@ -352,6 +356,7 @@ namespace NzbDrone.Core.Parser
                     result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.Success };
                     return true;
                 }
+
                 result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                 return false;
             }
@@ -362,9 +367,9 @@ namespace NzbDrone.Core.Parser
                     cleanTitle.Contains(searchCriteria.Movie.CleanTitle))
                 {
                     possibleMovie = searchCriteria.Movie;
-                    if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
+                    if ((parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year) || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
                     {
-                        result = new MappingResult {Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping};
+                        result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
                         return true;
                     }
 
@@ -383,9 +388,7 @@ namespace NzbDrone.Core.Parser
 
             return false;
         }
-
     }
-
 
     public class MappingResult
     {
@@ -417,8 +420,10 @@ namespace NzbDrone.Core.Parser
 
         public RemoteMovie RemoteMovie;
         public MappingResultType MappingResultType { get; set; }
-        public Movie Movie {
-            get {
+        public Movie Movie
+        {
+            get
+            {
                 return RemoteMovie.Movie;
             }
             set
@@ -428,6 +433,7 @@ namespace NzbDrone.Core.Parser
                 {
                     parsedInfo = RemoteMovie.ParsedMovieInfo;
                 }
+
                 RemoteMovie = new RemoteMovie
                 {
                     Movie = value,
@@ -438,11 +444,13 @@ namespace NzbDrone.Core.Parser
 
         public string ReleaseName { get; set; }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format(Message, RemoteMovie.Movie);
         }
 
-        public Rejection ToRejection() {
+        public Rejection ToRejection()
+        {
             switch (MappingResultType)
             {
                 case MappingResultType.Success:

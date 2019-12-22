@@ -1,11 +1,11 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Datastore.Extensions;
+using System.Linq;
 using Marr.Data.QGen;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
@@ -78,16 +78,16 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
         {
-                var query = Query.Where(m =>
-                        (m.InCinemas >= start && m.InCinemas <= end) ||
-                        (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
+            var query = Query.Where(m =>
+                    (m.InCinemas >= start && m.InCinemas <= end) ||
+                    (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
 
-                if (!includeUnmonitored)
-                {
-                    query.AndWhere(e => e.Monitored == true);
-                }
+            if (!includeUnmonitored)
+            {
+                query.AndWhere(e => e.Monitored == true);
+            }
 
-                return query.ToList();
+            return query.ToList();
         }
 
         public List<Movie> MoviesWithFiles(int movieId)
@@ -216,9 +216,12 @@ namespace NzbDrone.Core.Movies
         protected override QueryBuilder<TActual> AddJoinQueries<TActual>(QueryBuilder<TActual> baseQuery)
         {
             baseQuery = base.AddJoinQueries(baseQuery);
-            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
+            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left,
+                m => m.AlternativeTitles,
                 (m, t) => m.Id == t.MovieId);
-            baseQuery = baseQuery.Join<Movie, MovieFile>(JoinType.Left, m => m.MovieFile, (m, f) => m.Id == f.MovieId);
+            baseQuery = baseQuery.Join<Movie, MovieFile>(JoinType.Left,
+                m => m.MovieFile,
+                (m, f) => m.Id == f.MovieId);
 
             return baseQuery;
         }

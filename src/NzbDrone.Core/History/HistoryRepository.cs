@@ -4,8 +4,8 @@ using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
@@ -23,7 +23,6 @@ namespace NzbDrone.Core.History
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
     {
-
         public HistoryRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
@@ -55,8 +54,8 @@ namespace NzbDrone.Core.History
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.DownloadFolderImported)
-                 ).ToList();
+                 h.EventType == HistoryEventType.DownloadFolderImported))
+                 .ToList();
         }
 
         public List<History> GetByMovieId(int movieId, HistoryEventType? eventType)

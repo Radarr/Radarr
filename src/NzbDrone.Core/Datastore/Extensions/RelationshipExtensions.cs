@@ -19,8 +19,7 @@ namespace NzbDrone.Core.Datastore.Extensions
                                             {
                                                 var id = childIdSelector(parent);
                                                 return db.Query<TChild>().Where(c => c.Id == id).SingleOrDefault();
-                                            }
-                                         );
+                                            });
         }
 
         public static RelationshipBuilder<TParent> Relationship<TParent>(this ColumnMapBuilder<TParent> mapBuilder)

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using CookComputing.XmlRpc;
 using NLog;
 using NzbDrone.Common.Extensions;
-using CookComputing.XmlRpc;
 
 namespace NzbDrone.Core.Download.Clients.RTorrent
 {
@@ -73,7 +73,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _logger.Debug("Executing remote method: d.multicall2");
 
             var client = BuildClient(settings);
-            var ret = ExecuteRequest(() => client.TorrentMulticall("", "",
+            var ret = ExecuteRequest(() => client.TorrentMulticall(
+                    "",
+                    "",
                     "d.name=", // string
                     "d.hash=", // string
                     "d.base_path=", // string
@@ -84,8 +86,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                     "d.ratio=", // long
                     "d.is_open=", // long
                     "d.is_active=", // long
-                    "d.complete=") //long
-            );
+                    "d.complete=")); //long
 
             var items = new List<RTorrentTorrent>();
 

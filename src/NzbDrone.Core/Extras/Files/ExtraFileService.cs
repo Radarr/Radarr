@@ -108,7 +108,6 @@ namespace NzbDrone.Core.Extras.Files
             {
                 _logger.Debug("Removing movie file from DB as part of cleanup routine, not deleting extra files from disk.");
             }
-
             else
             {
                 var movie = _movieService.GetMovie(message.MovieFile.MovieId);

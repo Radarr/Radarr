@@ -14,7 +14,8 @@ namespace Radarr.Http.Extensions
 
         public static readonly string LastModified = BuildInfo.BuildDateTime.ToString("r");
 
-        public static T FromJson<T>(this Stream body) where T : class, new()
+        public static T FromJson<T>(this Stream body)
+            where T : class, new()
         {
             return FromJson<T>(body, typeof(T));
         }

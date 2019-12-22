@@ -26,7 +26,10 @@ namespace NzbDrone.Common.Instrumentation
         {
             var exception = e.ExceptionObject as Exception;
 
-            if (exception == null) return;
+            if (exception == null)
+            {
+                return;
+            }
 
             if (exception is NullReferenceException &&
                 exception.ToString().Contains("Microsoft.AspNet.SignalR.Transports.TransportHeartbeat.ProcessServerCommand"))
@@ -37,7 +40,7 @@ namespace NzbDrone.Common.Instrumentation
 
             if (PlatformInfo.IsMono)
             {
-                if (exception is TypeInitializationException && exception.InnerException is DllNotFoundException ||
+                if ((exception is TypeInitializationException && exception.InnerException is DllNotFoundException) ||
                     exception is DllNotFoundException)
                 {
                     Logger.Debug(exception, "Minor Fail: " + exception.Message);

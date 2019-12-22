@@ -7,7 +7,6 @@ using NzbDrone.Core.Qualities;
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithMediaInfo : IAugmentParsedMovieInfo
-
     {
         public Type HelperType
         {
@@ -52,7 +51,6 @@ namespace NzbDrone.Core.Parser.Augmenters
                         movieInfo.Quality = quality;
                     }
                 }
-
             }
 
             return movieInfo;

@@ -8,7 +8,8 @@ namespace Radarr.Http.Exceptions
         {
         }
 
-        public InvalidApiKeyException(string message) : base(message)
+        public InvalidApiKeyException(string message)
+            : base(message)
         {
         }
     }

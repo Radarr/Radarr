@@ -4,13 +4,13 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
-using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -51,14 +51,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail3"));
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" } };
-            _remoteEpisode = new RemoteMovie {
+            _remoteEpisode = new RemoteMovie
+            {
                 Movie = new Movie(),
                 ParsedMovieInfo = new ParsedMovieInfo()
             };
 
-            _mappingResult = new MappingResult {Movie = new Movie(), MappingResultType = MappingResultType.Success};
+            _mappingResult = new MappingResult { Movie = new Movie(), MappingResultType = MappingResultType.Success };
             _mappingResult.RemoteMovie = _remoteEpisode;
-
 
             Mocker.GetMock<IParsingService>()
                   .Setup(c => c.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<SearchCriteriaBase>())).Returns(_mappingResult);
@@ -184,9 +184,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _reports = new List<ReleaseInfo>
                 {
-                    new ReleaseInfo{Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT"},
-                    new ReleaseInfo{Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT"},
-                    new ReleaseInfo{Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT"}
+                    new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" },
+                    new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" },
+                    new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" }
                 };
 
             Subject.GetRssDecision(_reports);
@@ -248,7 +248,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _reports = new List<ReleaseInfo>
                 {
-                    new ReleaseInfo{Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT"},
+                    new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" },
                 };
 
             Subject.GetRssDecision(_reports).Should().HaveCount(1);

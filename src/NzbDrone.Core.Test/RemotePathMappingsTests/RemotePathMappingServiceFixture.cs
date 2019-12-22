@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -7,7 +8,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using FizzWare.NBuilder;
 
 namespace NzbDrone.Core.Test.RemotePathMappingsTests
 {
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.RemotePathMappingsTests
             {
                 Host = "my-server.localdomain",
                 RemotePath = remotePath,
-                LocalPath = @"D:\mountedstorage\downloads\tv" .AsOsAgnostic()
+                LocalPath = @"D:\mountedstorage\downloads\tv".AsOsAgnostic()
             };
 
             var result = Subject.Add(mapping);

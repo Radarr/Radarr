@@ -24,9 +24,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var i = 5;
 
             var context = new ConverterContext
-                          {
-                              DbValue = i
-                          };
+            {
+                DbValue = i
+            };
 
             Subject.FromDB(context).Should().Be(i);
         }
@@ -37,9 +37,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var i = 5;
 
             var context = new ConverterContext
-                          {
-                              DbValue = i.ToString()
-                          };
+            {
+                DbValue = i.ToString()
+            };
 
             Subject.FromDB(context).Should().Be(i);
         }
@@ -48,9 +48,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_db_null_for_db_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(DBNull.Value);
         }

@@ -29,13 +29,18 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public override string ToString()
         {
-            return this.Title;
+            return Title;
         }
     }
 
     public enum DownloadStationTaskType
     {
-        BT, NZB, http, ftp, eMule, https
+        BT,
+        NZB,
+        http,
+        ftp,
+        eMule,
+        https
     }
 
     public enum DownloadStationTaskStatus

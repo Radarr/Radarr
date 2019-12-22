@@ -31,7 +31,6 @@ namespace NzbDrone.Integration.Test.Client
             var request = BuildRequest(slug);
             return Get<MovieResource>(request, statusCode);
         }
-
     }
 
     public class SystemInfoClient : ClientBase<MovieResource>

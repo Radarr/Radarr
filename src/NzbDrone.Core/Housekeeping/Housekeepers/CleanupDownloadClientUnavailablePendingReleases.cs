@@ -22,11 +22,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                                (p.Reason == PendingReleaseReason.DownloadClientUnavailable ||
                                                 p.Reason == PendingReleaseReason.Fallback));
 
-//            mapper.AddParameter("twoWeeksAgo", $"{DateTime.UtcNow.AddDays(-14).ToString("s")}Z");
+            //            mapper.AddParameter("twoWeeksAgo", $"{DateTime.UtcNow.AddDays(-14).ToString("s")}Z");
 
-//            mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
-//                                     WHERE Added < @twoWeeksAgo
-//                                     AND (Reason = 'DownloadClientUnavailable' OR Reason = 'Fallback')");
+            //            mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
+            //                                     WHERE Added < @twoWeeksAgo
+            //                                     AND (Reason = 'DownloadClientUnavailable' OR Reason = 'Fallback')");
         }
     }
 }

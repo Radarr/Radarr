@@ -1,8 +1,8 @@
 ﻿using System.Data;
 using System.Data.SQLite;
+using NLog;
 using NLog.Common;
 using NLog.Config;
-using NLog;
 using NLog.Targets;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore;
@@ -13,10 +13,10 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class DatabaseTarget : TargetWithLayout, IHandle<ApplicationShutdownRequested>
     {
-        private readonly IConnectionStringFactory _connectionStringFactory;
-
-        const string INSERT_COMMAND = "INSERT INTO [Logs]([Message],[Time],[Logger],[Exception],[ExceptionType],[Level]) " +
+        private const string INSERT_COMMAND = "INSERT INTO [Logs]([Message],[Time],[Logger],[Exception],[ExceptionType],[Level]) " +
                                       "VALUES(@Message,@Time,@Logger,@Exception,@ExceptionType,@Level)";
+
+        private readonly IConnectionStringFactory _connectionStringFactory;
 
         public DatabaseTarget(IConnectionStringFactory connectionStringFactory)
         {
@@ -101,7 +101,6 @@ namespace NzbDrone.Core.Instrumentation
                         sqlCommand.ExecuteNonQuery();
                     }
                 }
-
             }
             catch (SQLiteException ex)
             {

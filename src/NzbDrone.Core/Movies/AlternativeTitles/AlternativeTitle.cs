@@ -1,7 +1,7 @@
 using Marr.Data;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
 {
@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public AlternativeTitle()
         {
-
         }
 
         public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0, Language language = null)
@@ -51,7 +50,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
                 return false;
             }
 
-            return item.CleanTitle == this.CleanTitle;
+            return item.CleanTitle == CleanTitle;
         }
 
         public override int GetHashCode()
@@ -59,7 +58,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             return CleanTitle.GetHashCode();
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             return Title;
         }

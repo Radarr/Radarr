@@ -28,9 +28,9 @@ namespace Radarr.Api.V3.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Get("/since",  x => GetHistorySince());
-            Get("/movie",  x => GetMovieHistory());
-            Post("/failed",  x => MarkAsFailed());
+            Get("/since", x => GetHistorySince());
+            Get("/movie", x => GetMovieHistory());
+            Post("/failed", x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeMovie)

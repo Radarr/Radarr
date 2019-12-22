@@ -1,5 +1,5 @@
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download.Clients;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Parser.Model
 {

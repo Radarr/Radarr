@@ -29,7 +29,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         public static string AppName { get; } = "Radarr";
 
         public static Version Version { get; }
-        public static String Branch { get; }
+        public static string Branch { get; }
         public static string Release { get; }
 
         public static DateTime BuildDateTime

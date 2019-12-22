@@ -39,18 +39,17 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             if (backoffHours != 0.0)
             {
                 _blockedIndexers.Add(new IndexerStatus
-                    {
-                        ProviderId = id,
-                        InitialFailure = DateTime.UtcNow.AddHours(-failureHours),
-                        MostRecentFailure = DateTime.UtcNow.AddHours(-0.1),
-                        EscalationLevel = 5,
-                        DisabledTill = DateTime.UtcNow.AddHours(backoffHours)
-                    });
+                {
+                    ProviderId = id,
+                    InitialFailure = DateTime.UtcNow.AddHours(-failureHours),
+                    MostRecentFailure = DateTime.UtcNow.AddHours(-0.1),
+                    EscalationLevel = 5,
+                    DisabledTill = DateTime.UtcNow.AddHours(backoffHours)
+                });
             }
 
             return mockIndexer;
         }
-
 
         [Test]
         public void should_not_return_error_when_no_indexers()

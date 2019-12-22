@@ -7,7 +7,8 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
 {
     [TestFixture]
-    public abstract class AugmentMovieInfoFixture<TAugmenter> : CoreTest<TAugmenter> where TAugmenter : class, IAugmentParsedMovieInfo
+    public abstract class AugmentMovieInfoFixture<TAugmenter> : CoreTest<TAugmenter>
+        where TAugmenter : class, IAugmentParsedMovieInfo
     {
         protected ParsedMovieInfo MovieInfo;
 

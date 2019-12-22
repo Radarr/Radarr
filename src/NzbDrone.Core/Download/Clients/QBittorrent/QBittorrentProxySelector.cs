@@ -6,7 +6,6 @@ using NzbDrone.Common.Cache;
 
 using NzbDrone.Common.Http;
 
-
 namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     public interface IQBittorrentProxy
@@ -19,9 +18,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         QBittorrentTorrentProperties GetTorrentProperties(string hash, QBittorrentSettings settings);
 
         void AddTorrentFromUrl(string torrentUrl, QBittorrentSettings settings);
-        void AddTorrentFromFile(string fileName, Byte[] fileContent, QBittorrentSettings settings);
+        void AddTorrentFromFile(string fileName, byte[] fileContent, QBittorrentSettings settings);
 
-        void RemoveTorrent(string hash, Boolean removeData, QBittorrentSettings settings);
+        void RemoveTorrent(string hash, bool removeData, QBittorrentSettings settings);
         void SetTorrentLabel(string hash, string label, QBittorrentSettings settings);
         void AddLabel(string label, QBittorrentSettings settings);
         Dictionary<string, QBittorrentLabel> GetLabels(QBittorrentSettings settings);
@@ -46,7 +45,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         private readonly IQBittorrentProxy _proxyV1;
         private readonly IQBittorrentProxy _proxyV2;
 
-        public  QBittorrentProxySelector(QBittorrentProxyV1 proxyV1,
+        public QBittorrentProxySelector(QBittorrentProxyV1 proxyV1,
                                          QBittorrentProxyV2 proxyV2,
                                          IHttpClient httpClient,
                                          ICacheManager cacheManager,

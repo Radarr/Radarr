@@ -13,7 +13,11 @@ namespace Radarr.Api.V3.DownloadClient
 
         protected override void Validate(DownloadClientDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }

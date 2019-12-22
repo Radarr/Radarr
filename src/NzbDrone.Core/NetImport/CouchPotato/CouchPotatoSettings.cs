@@ -5,7 +5,6 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
 {
-
     public class CouchPotatoSettingsValidator : AbstractValidator<CouchPotatoSettings>
     {
         public CouchPotatoSettingsValidator()
@@ -48,5 +47,4 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
     }
-
 }

@@ -5,8 +5,8 @@ using NLog;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Subtitles;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Extras.Metadata
 {
@@ -41,7 +41,6 @@ namespace NzbDrone.Core.Extras.Metadata
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
                 // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
-
                 if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
                 {
                     continue;
@@ -81,7 +80,6 @@ namespace NzbDrone.Core.Extras.Metadata
 
             // Return files that were just imported along with files that were
             // previously imported so previously imported files aren't imported twice
-
             return metadataFiles.Concat(filterResult.PreviouslyImported);
         }
     }

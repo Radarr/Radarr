@@ -66,7 +66,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Certification").AsString().Nullable()
                 .WithColumn("AddOptions").AsString().Nullable();
 
-
             Create.TableForModel("Seasons")
                 .WithColumn("SeriesId").AsInt32()
                 .WithColumn("SeasonNumber").AsInt32()
@@ -142,7 +141,6 @@ namespace NzbDrone.Core.Datastore.Migration
                   .WithColumn("SceneName").AsString()
                   .WithColumn("TvdbId").AsInt32()
                   .WithColumn("SeasonNumber").AsInt32();
-
 
             Create.TableForModel("NamingConfig")
                   .WithColumn("UseSceneName").AsBoolean()

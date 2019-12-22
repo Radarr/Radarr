@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.RemotePathMappings;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.RemotePathMappings
 {
@@ -16,7 +16,10 @@ namespace NzbDrone.Api.RemotePathMappings
     {
         public static RemotePathMappingResource ToResource(this RemotePathMapping model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RemotePathMappingResource
             {
@@ -30,7 +33,10 @@ namespace NzbDrone.Api.RemotePathMappings
 
         public static RemotePathMapping ToModel(this RemotePathMappingResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new RemotePathMapping
             {

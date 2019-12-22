@@ -114,10 +114,11 @@ namespace NzbDrone.Common.Disk
                     {
                         return File.Exists(path) && path == path.GetActualCasing();
                     }
+
                 default:
-                {
-                     return File.Exists(path);
-                }
+                    {
+                        return File.Exists(path);
+                    }
             }
         }
 
@@ -362,9 +363,11 @@ namespace NzbDrone.Common.Disk
                     return;
                 }
 
-                var accessRule = new FileSystemAccessRule(sid, rights,
+                var accessRule = new FileSystemAccessRule(sid,
+                                                          rights,
                                                           InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                                                          PropagationFlags.InheritOnly, controlType);
+                                                          PropagationFlags.InheritOnly,
+                                                          controlType);
 
                 bool modified;
                 directorySecurity.ModifyAccessRule(AccessControlModification.Add, accessRule, out modified);
@@ -379,7 +382,6 @@ namespace NzbDrone.Common.Disk
                 Logger.Warn(e, "Couldn't set permission for {0}. account:{1} rights:{2} accessControlType:{3}", filename, accountSid, rights, controlType);
                 throw;
             }
-
         }
 
         private static void RemoveReadOnly(string path)
@@ -390,7 +392,7 @@ namespace NzbDrone.Common.Disk
 
                 if (attributes.HasFlag(FileAttributes.ReadOnly))
                 {
-                    var newAttributes = attributes & ~(FileAttributes.ReadOnly);
+                    var newAttributes = attributes & ~FileAttributes.ReadOnly;
                     File.SetAttributes(path, newAttributes);
                 }
             }
@@ -404,7 +406,7 @@ namespace NzbDrone.Common.Disk
 
                 if (dirInfo.Attributes.HasFlag(FileAttributes.ReadOnly))
                 {
-                    var newAttributes = dirInfo.Attributes & ~(FileAttributes.ReadOnly);
+                    var newAttributes = dirInfo.Attributes & ~FileAttributes.ReadOnly;
                     dirInfo.Attributes = newAttributes;
                 }
             }

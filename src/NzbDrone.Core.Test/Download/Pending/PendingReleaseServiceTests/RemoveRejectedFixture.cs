@@ -9,12 +9,12 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -34,18 +34,17 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
-
             _profile = new Profile
-                       {
-                           Name = "Test",
-                           Cutoff = Quality.HDTV720p.Id,
-                           Items = new List<ProfileQualityItem>
+            {
+                Name = "Test",
+                Cutoff = Quality.HDTV720p.Id,
+                Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
                                    },
-                       };
+            };
 
             _movie.Profile = new LazyLoaded<Profile>(_profile);
 
@@ -55,6 +54,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
             _remoteMovie = new RemoteMovie();
+
             //_remoteEpisode.Episodes = new List<Episode>{ _episode };
             _remoteMovie.Movie = _movie;
             _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
@@ -88,7 +88,6 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             var release = _release.JsonClone();
             release.Indexer = indexer;
             release.PublishDate = publishDate;
-
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()

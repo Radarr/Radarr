@@ -10,7 +10,6 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
 {
-
     public class GetVideoFilesFixture : CoreTest<DiskScanService>
     {
         private string[] _fileNames;

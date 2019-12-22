@@ -9,7 +9,6 @@ namespace Radarr.Http.RESTrictions
     {
         private readonly IRestrictionService _restrictionService;
 
-
         public RestrictionModule(IRestrictionService restrictionService)
         {
             _restrictionService = restrictionService;

@@ -3,10 +3,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -20,15 +20,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _remoteMovie = new RemoteMovie
             {
-                               Movie = new Movie
-                                        {
-                                            Tags = new HashSet<int>()
-                                        },
-                               Release = new ReleaseInfo
-                                         {
-                                             Title = "Dexter.S08E01.EDITED.WEBRip.x264-KYR"
-                                         }
-                           };
+                Movie = new Movie
+                {
+                    Tags = new HashSet<int>()
+                },
+                Release = new ReleaseInfo
+                {
+                    Title = "Dexter.S08E01.EDITED.WEBRip.x264-KYR"
+                }
+            };
 
             Mocker.SetConstant<ITermMatcher>(Mocker.Resolve<TermMatcher>());
         }

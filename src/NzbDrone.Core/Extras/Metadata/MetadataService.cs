@@ -133,7 +133,6 @@ namespace NzbDrone.Core.Extras.Metadata
 
             // TODO: Move EpisodeImage and EpisodeMetadata metadata files, instead of relying on consumers to do it
             // (Xbmc's EpisodeImage is more than just the extension)
-
             foreach (var consumer in _metadataFactory.GetAvailableProviders())
             {
                 foreach (var movieFile in movieFiles)
@@ -278,6 +277,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 {
                     _diskProvider.CopyFile(image.Url, fullPath);
                 }
+
                 _mediaFileAttributeService.SetFilePermissions(fullPath);
             }
             catch (WebException ex)
@@ -315,7 +315,6 @@ namespace NzbDrone.Core.Extras.Metadata
                 _recycleBinProvider.DeleteFile(path);
                 _metadataFileService.Delete(file.Id);
             }
-
 
             return matchingMetadataFiles.First();
         }

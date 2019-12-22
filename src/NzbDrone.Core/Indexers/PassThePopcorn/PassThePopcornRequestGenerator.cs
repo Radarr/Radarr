@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
     public class PassThePopcornRequestGenerator : IIndexerRequestGenerator
     {
-
         public PassThePopcornSettings Settings { get; set; }
 
         public IDictionary<string, string> Cookies { get; set; }

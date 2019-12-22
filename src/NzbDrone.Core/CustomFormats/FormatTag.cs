@@ -37,13 +37,16 @@ namespace NzbDrone.Core.CustomFormats
         // This function is needed for json deserialization to work.
         private FormatTag()
         {
-
         }
 
         public bool DoesItMatch(ParsedMovieInfo movieInfo)
         {
             var match = DoesItMatchWithoutMods(movieInfo);
-            if (TagModifier.HasFlag(TagModifier.Not)) match = !match;
+            if (TagModifier.HasFlag(TagModifier.Not))
+            {
+                match = !match;
+            }
+
             return match;
         }
 
@@ -62,31 +65,33 @@ namespace NzbDrone.Core.CustomFormats
                     {
                         compared = movieInfo.Edition;
                     }
+
                     if (TagModifier.HasFlag(TagModifier.Regex))
                     {
-                        Regex regexValue = (Regex) Value;
+                        Regex regexValue = (Regex)Value;
                         return regexValue.IsMatch(compared);
                     }
                     else
                     {
-                        string stringValue = (string) Value;
+                        string stringValue = (string)Value;
                         return compared.ToLower().Contains(stringValue.Replace(" ", string.Empty).ToLower());
                     }
+
                 case TagType.Language:
                     return movieInfo.Languages.Contains((Language)Value);
                 case TagType.Resolution:
-                    return movieInfo.Quality.Quality.Resolution == (int)(Resolution) Value;
+                    return movieInfo.Quality.Quality.Resolution == (int)(Resolution)Value;
                 case TagType.Modifier:
-                    return movieInfo.Quality.Quality.Modifier == (Modifier) Value;
+                    return movieInfo.Quality.Quality.Modifier == (Modifier)Value;
                 case TagType.Source:
-                    return movieInfo.Quality.Quality.Source == (Source) Value;
+                    return movieInfo.Quality.Quality.Source == (Source)Value;
                 case TagType.Size:
                     var size = (movieInfo.ExtraInfo.GetValueOrDefault("Size", 0.0) as long?) ?? 0;
                     var tuple = Value as (long, long)? ?? (0, 0);
                     return size > tuple.Item1 && size < tuple.Item2;
                 case TagType.Indexer:
 #if !LIBRARY
-                    return (movieInfo.ExtraInfo.GetValueOrDefault("IndexerFlags") as IndexerFlags?)?.HasFlag((IndexerFlags) Value) == true;
+                    return (movieInfo.ExtraInfo.GetValueOrDefault("IndexerFlags") as IndexerFlags?)?.HasFlag((IndexerFlags)Value) == true;
 #endif
                 default:
                     return false;
@@ -98,9 +103,20 @@ namespace NzbDrone.Core.CustomFormats
             var type = match.Groups["type"].Value.ToLower();
             var value = match.Groups["value"].Value.ToLower();
 
-            if (match.Groups["m_re"].Success) TagModifier |= TagModifier.AbsolutelyRequired;
-            if (match.Groups["m_r"].Success) TagModifier |= TagModifier.Regex;
-            if (match.Groups["m_n"].Success) TagModifier |= TagModifier.Not;
+            if (match.Groups["m_re"].Success)
+            {
+                TagModifier |= TagModifier.AbsolutelyRequired;
+            }
+
+            if (match.Groups["m_r"].Success)
+            {
+                TagModifier |= TagModifier.Regex;
+            }
+
+            if (match.Groups["m_n"].Success)
+            {
+                TagModifier |= TagModifier.Not;
+            }
 
             switch (type)
             {
@@ -124,6 +140,7 @@ namespace NzbDrone.Core.CustomFormats
                             Value = Resolution.R480p;
                             break;
                     }
+
                     break;
                 case "s":
                     TagType = TagType.Source;
@@ -154,6 +171,7 @@ namespace NzbDrone.Core.CustomFormats
                             Value = Source.BLURAY;
                             break;
                     }
+
                     break;
                 case "m":
                     TagType = TagType.Modifier;
@@ -175,6 +193,7 @@ namespace NzbDrone.Core.CustomFormats
                             Value = Modifier.REMUX;
                             break;
                     }
+
                     break;
                 case "e":
                     TagType = TagType.Edition;
@@ -186,6 +205,7 @@ namespace NzbDrone.Core.CustomFormats
                     {
                         Value = value;
                     }
+
                     break;
                 case "l":
                     TagType = TagType.Language;
@@ -199,7 +219,11 @@ namespace NzbDrone.Core.CustomFormats
                     foreach (IndexerFlags flagValue in flagValues)
                     {
                         var flagString = flagValue.ToString();
-                        if (flagString.ToLower().Replace("_", string.Empty) != value.ToLower().Replace("_", string.Empty)) continue;
+                        if (flagString.ToLower().Replace("_", string.Empty) != value.ToLower().Replace("_", string.Empty))
+                        {
+                            continue;
+                        }
+
                         Value = flagValue;
                         break;
                     }
@@ -223,10 +247,10 @@ namespace NzbDrone.Core.CustomFormats
                     {
                         Value = value;
                     }
+
                     break;
             }
         }
-
     }
 
     public enum TagType

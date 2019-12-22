@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using Radarr.Http.Extensions;
-using Radarr.Http.Validation;
 using NzbDrone.Common;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Commands;
@@ -11,7 +9,8 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.ProgressMessaging;
 using NzbDrone.SignalR;
 using Radarr.Http;
-
+using Radarr.Http.Extensions;
+using Radarr.Http.Validation;
 
 namespace NzbDrone.Api.Commands
 {

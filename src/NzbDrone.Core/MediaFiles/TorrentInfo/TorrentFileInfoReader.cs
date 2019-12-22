@@ -7,7 +7,7 @@ namespace NzbDrone.Core.MediaFiles.TorrentInfo
         string GetHashFromTorrentFile(byte[] fileContents);
     }
 
-    public class TorrentFileInfoReader: ITorrentFileInfoReader
+    public class TorrentFileInfoReader : ITorrentFileInfoReader
     {
         public string GetHashFromTorrentFile(byte[] fileContents)
         {

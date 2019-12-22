@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MonoTorrent
 {
-    public class InfoHash : IEquatable <InfoHash>
+    public class InfoHash : IEquatable<InfoHash>
     {
         static Dictionary<char, byte> base32DecodeTable;
 
@@ -97,24 +97,25 @@ namespace MonoTorrent
 
         public static InfoHash FromBase32(string infoHash)
         {
-            Check.InfoHash (infoHash);
+            Check.InfoHash(infoHash);
             if (infoHash.Length != 32)
                 throw new ArgumentException("Infohash must be a base32 encoded 32 character string");
 
             infoHash = infoHash.ToLower();
-            int infohashOffset =0 ;
+            int infohashOffset = 0;
             byte[] hash = new byte[20];
             var temp = new byte[8];
-            for (int i = 0; i < hash.Length; ) {
-                for (int j=0; j < 8; j++)
+            for (int i = 0; i < hash.Length;)
+            {
+                for (int j = 0; j < 8; j++)
                     if (!base32DecodeTable.TryGetValue(infoHash[infohashOffset++], out temp[j]))
-                        throw new ArgumentException ("infoHash", "Value is not a valid base32 encoded string");
+                        throw new ArgumentException("infoHash", "Value is not a valid base32 encoded string");
 
                 //8 * 5bits = 40 bits = 5 bytes
-                hash[i++] = (byte)((temp[0] << 3) | (temp [1]>> 2));
+                hash[i++] = (byte)((temp[0] << 3) | (temp[1] >> 2));
                 hash[i++] = (byte)((temp[1] << 6) | (temp[2] << 1) | (temp[3] >> 4));
-                hash[i++] = (byte)((temp[3] << 4) | (temp [4]>> 1));
-                hash[i++] = (byte)((temp[4] << 7) | (temp[5] << 2) | (temp [6]>> 3));
+                hash[i++] = (byte)((temp[3] << 4) | (temp[4] >> 1));
+                hash[i++] = (byte)((temp[4] << 7) | (temp[5] << 2) | (temp[6] >> 3));
                 hash[i++] = (byte)((temp[6] << 5) | temp[7]);
             }
 
@@ -123,7 +124,7 @@ namespace MonoTorrent
 
         public static InfoHash FromHex(string infoHash)
         {
-            Check.InfoHash (infoHash);
+            Check.InfoHash(infoHash);
             if (infoHash.Length != 40)
                 throw new ArgumentException("Infohash must be 40 characters long");
 

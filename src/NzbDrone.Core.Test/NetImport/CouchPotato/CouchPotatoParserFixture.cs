@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Test.NetImport.CouchPotato
             return new NetImportResponse(new NetImportRequest(httpRequest), httpResponse);
         }
 
-
         [Test]
         public void should_parse_json_of_couchpotato()
         {

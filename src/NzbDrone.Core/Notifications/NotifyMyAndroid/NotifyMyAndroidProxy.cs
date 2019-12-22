@@ -5,8 +5,8 @@ using System.Xml.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Exceptions;
-using RestSharp;
 using NzbDrone.Core.Rest;
+using RestSharp;
 
 namespace NzbDrone.Core.Notifications.NotifyMyAndroid
 {
@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
 
     public class NotifyMyAndroidProxy : INotifyMyAndroidProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://www.notifymyandroid.com/publicapi";
+        private readonly Logger _logger;
 
         public NotifyMyAndroidProxy(Logger logger)
         {

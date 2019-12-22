@@ -7,7 +7,6 @@ namespace NzbDrone.Api.Config
         public DownloadClientConfigModule(IConfigService configService)
             : base(configService)
         {
-
         }
 
         protected override DownloadClientConfigResource ToResource(IConfigService model)

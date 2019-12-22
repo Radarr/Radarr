@@ -1,13 +1,12 @@
-﻿using FluentValidation;
+﻿using System.Text.RegularExpressions;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
-
     public class TMDbSettingsValidator : AbstractValidator<TMDbSettings>
     {
         public TMDbSettingsValidator()
@@ -49,7 +48,6 @@ namespace NzbDrone.Core.NetImport.TMDb
                 .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
                 .When(c => c.ExcludeGenreIds.IsNotNullOrWhiteSpace())
                 .WithMessage("Genre Ids must be comma (,) or pipe (|) separated number ids");
-
         }
     }
 
@@ -98,5 +96,4 @@ namespace NzbDrone.Core.NetImport.TMDb
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
     }
-
 }

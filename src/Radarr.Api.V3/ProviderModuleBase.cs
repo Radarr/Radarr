@@ -24,10 +24,10 @@ namespace Radarr.Api.V3
             _providerFactory = providerFactory;
             _resourceMapper = resourceMapper;
 
-            Get("schema",  x => GetTemplates());
-            Post("test",  x => Test(ReadResourceFromRequest(true)));
-            Post("testall",  x => TestAll());
-            Post("action/{action}",  x => RequestAction(x.action, ReadResourceFromRequest(true)));
+            Get("schema", x => GetTemplates());
+            Post("test", x => Test(ReadResourceFromRequest(true)));
+            Post("testall", x => TestAll());
+            Post("action/{action}", x => RequestAction(x.action, ReadResourceFromRequest(true)));
 
             GetResourceAll = GetAll;
             GetResourceById = GetProviderById;
@@ -36,7 +36,7 @@ namespace Radarr.Api.V3
             DeleteResource = DeleteProvider;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Name).Must((v,c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
+            SharedValidator.RuleFor(c => c.Name).Must((v, c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
             SharedValidator.RuleFor(c => c.Implementation).NotEmpty();
             SharedValidator.RuleFor(c => c.ConfigContract).NotEmpty();
 
@@ -155,10 +155,10 @@ namespace Radarr.Api.V3
                 var validationResult = _providerFactory.Test(definition);
 
                 result.Add(new ProviderTestAllResult
-                           {
-                               Id = definition.Id,
-                               ValidationFailures = validationResult.Errors.ToList()
-                           });
+                {
+                    Id = definition.Id,
+                    ValidationFailures = validationResult.Errors.ToList()
+                });
             }
 
             return ResponseWithCode(result, result.Any(c => !c.IsValid) ? HttpStatusCode.BadRequest : HttpStatusCode.OK);

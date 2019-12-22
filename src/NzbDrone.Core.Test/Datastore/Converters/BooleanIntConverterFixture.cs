@@ -27,9 +27,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_bool_when_getting_int_from_db(int input, bool expected)
         {
             var context = new ConverterContext
-                          {
-                              DbValue = (long)input
-                          };
+            {
+                DbValue = (long)input
+            };
 
             Subject.FromDB(context).Should().Be(expected);
         }
@@ -38,9 +38,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_db_null_for_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(DBNull.Value);
         }
@@ -49,9 +49,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_throw_for_non_boolean_equivalent_number_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = (long)2
-                          };
+            {
+                DbValue = 2L
+            };
 
             Assert.Throws<ConversionException>(() => Subject.FromDB(context));
         }

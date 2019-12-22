@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Organizer
             var validationFailure = new ValidationFailure("MovieFormat", ERROR_MESSAGE);
             var parsedMovieInfo = Parser.Parser.ParseMovieTitle(sampleResult.FileName, false); //We are not lenient when testing naming schemes
 
-            if(parsedMovieInfo == null)
+            if (parsedMovieInfo == null)
             {
                 return validationFailure;
             }

@@ -4,10 +4,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {

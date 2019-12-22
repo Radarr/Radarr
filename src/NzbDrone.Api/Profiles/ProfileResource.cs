@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Api.Qualities;
-using Radarr.Http.REST;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Profiles
 {
@@ -36,13 +36,22 @@ namespace NzbDrone.Api.Profiles
     {
         public static ProfileResource ToResource(this Profile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             var cutoffItem = model.Items.First(q =>
             {
-                if (q.Id == model.Cutoff) return true;
+                if (q.Id == model.Cutoff)
+                {
+                    return true;
+                }
 
-                if (q.Quality == null) return false;
+                if (q.Quality == null)
+                {
+                    return false;
+                }
 
                 return q.Quality.Id == model.Cutoff;
             });
@@ -53,9 +62,15 @@ namespace NzbDrone.Api.Profiles
 
             var formatCutoffItem = model.FormatItems.First(q =>
             {
-                if (q.Id == model.FormatCutoff) return true;
+                if (q.Id == model.FormatCutoff)
+                {
+                    return true;
+                }
 
-                if (q.Format == null) return false;
+                if (q.Format == null)
+                {
+                    return false;
+                }
 
                 return q.Format.Id == model.FormatCutoff;
             });
@@ -93,7 +108,10 @@ namespace NzbDrone.Api.Profiles
 
         public static ProfileQualityItemResource ToResource(this ProfileQualityItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ProfileQualityItemResource
             {
@@ -113,7 +131,10 @@ namespace NzbDrone.Api.Profiles
 
         public static Profile ToModel(this ProfileResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new Profile
             {
@@ -131,7 +152,10 @@ namespace NzbDrone.Api.Profiles
 
         public static ProfileQualityItem ToModel(this ProfileQualityItemResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ProfileQualityItem
             {

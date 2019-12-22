@@ -43,6 +43,7 @@ namespace NzbDrone.Core.Indexers.HDBits
                 query.ImdbInfo.Id = imdbId;
                 return true;
             }
+
             return false;
         }
 

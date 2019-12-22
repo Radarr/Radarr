@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Notifications.Pushalot
 
     public class PushalotProxy : IPushalotProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://pushalot.com/api/sendmessage";
+        private readonly Logger _logger;
 
         public PushalotProxy(Logger logger)
         {

@@ -24,6 +24,7 @@ namespace NzbDrone.Core.MediaCover
 
     public class MediaCoverService :
         IHandleAsync<MovieUpdatedEvent>,
+
         //IHandleAsync<MovieAddedEvent>,
         IHandleAsync<MovieDeletedEvent>,
         IExecute<EnsureMediaCoversCommand>,
@@ -44,7 +45,6 @@ namespace NzbDrone.Core.MediaCover
         // ImageSharp is slow on ARM (no hardware acceleration on mono yet)
         // So limit the number of concurrent resizing tasks
         private static SemaphoreSlim _semaphore = new SemaphoreSlim((int)Math.Ceiling(Environment.ProcessorCount / 2.0));
-
 
         public MediaCoverService(IImageResizer resizer,
                                  IHttpClient httpClient,
@@ -224,6 +224,7 @@ namespace NzbDrone.Core.MediaCover
             //EnsureCovers(message.Movie);
             _logger.Info("Testing: {0}, {1}", _commandQueue, message.Movie.Id);
             _commandQueue.Push(new EnsureMediaCoversCommand(message.Movie.Id));
+
             //_eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
 

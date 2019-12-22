@@ -1,23 +1,22 @@
-using System.Collections.Generic;
-using Nancy;
-using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Parser;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Nancy;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
-using NzbDrone.Core.RootFolders;
-using NzbDrone.Common.Cache;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.RootFolders;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
-
     public class UnmappedComparer : IComparer<UnmappedFolder>
     {
         public int Compare(UnmappedFolder a, UnmappedFolder b)
@@ -37,10 +36,14 @@ namespace NzbDrone.Api.Movies
         private readonly IProfileService _profileService;
         private readonly IMovieService _movieService;
 
-        public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService,
+        public MovieBulkImportModule(ISearchForNewMovie searchProxy,
+            IRootFolderService rootFolderService,
             IMakeImportDecision importDecisionMaker,
-            IDiskScanService diskScanService, ICacheManager cacheManager,
-            IParsingService parsingService, IProfileService profileService, IMovieService movieService)
+            IDiskScanService diskScanService,
+            ICacheManager cacheManager,
+            IParsingService parsingService,
+            IProfileService profileService,
+            IMovieService movieService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
@@ -51,9 +54,8 @@ namespace NzbDrone.Api.Movies
             _movieService = movieService;
             _profileService = profileService;
             _parsingService = parsingService;
-            Get("/",  x => Search());
+            Get("/", x => Search());
         }
-
 
         private object Search()
         {
@@ -84,7 +86,7 @@ namespace NzbDrone.Api.Movies
 
             max = total_count >= max ? max : total_count;
 
-            var paged = unmapped.GetRange(min, max-min);
+            var paged = unmapped.GetRange(min, max - min);
 
             var mapped = paged.Select(f =>
             {
@@ -166,7 +168,6 @@ namespace NzbDrone.Api.Movies
                 Records = MapToResource(mapped.Where(m => m != null)).ToList()
             };
         }
-
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
         {

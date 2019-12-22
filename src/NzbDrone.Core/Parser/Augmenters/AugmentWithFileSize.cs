@@ -4,7 +4,6 @@ using NzbDrone.Core.Parser.Model;
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithFileSize : IAugmentParsedMovieInfo
-
     {
         public Type HelperType
         {

@@ -1,25 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
     [TestFixture]
+
     //TODO: Add tests to ensure helpers for augmenters are correctly passed.
     public class ImportDecisionMakerFixture : CoreTest<ImportDecisionMaker>
     {
@@ -201,7 +202,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                 .Setup(c => c.ParseMinimalPathMovieInfo(It.IsAny<string>()))
                 .Returns<ParsedMovieInfo>(null);
 
-            var folderInfo = new ParsedMovieInfo {SimpleReleaseTitle = "A Movie Folder 2018", Quality = _quality};
+            var folderInfo = new ParsedMovieInfo { SimpleReleaseTitle = "A Movie Folder 2018", Quality = _quality };
 
             var result = Subject.GetImportDecisions(_videoFiles, _movie, null, folderInfo, true);
 

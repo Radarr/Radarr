@@ -2,42 +2,42 @@ using System;
 using System.Collections.Generic;
 using Marr.Data;
 using Marr.Data.Mapping;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Reflection;
+using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFilters;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Instrumentation;
-using NzbDrone.Core.Jobs;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Core.Notifications;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Restrictions;
-using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.Tags;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Movies;
-using NzbDrone.Common.Disk;
-using NzbDrone.Core.Authentication;
-using NzbDrone.Core.CustomFilters;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Instrumentation;
+using NzbDrone.Core.Jobs;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.Languages;
+using NzbDrone.Core.Notifications;
+using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Restrictions;
+using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Tags;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -87,27 +87,26 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
 
-           Mapper.Entity<MovieFile>().RegisterModel("MovieFiles")
-                .Ignore(f => f.Path)
-                .Relationships.AutoMapICollectionOrComplexProperties()
-                .For("Movie")
-                .LazyLoad(condition: parent => parent.Id > 0,
-                            query: (db, parent) => db.Query<Movie>().Where(c => c.MovieFileId == parent.Id).ToList())
-                .HasOne(file => file.Movie, file => file.MovieId);
+            Mapper.Entity<MovieFile>().RegisterModel("MovieFiles")
+                 .Ignore(f => f.Path)
+                 .Relationships.AutoMapICollectionOrComplexProperties()
+                 .For("Movie")
+                 .LazyLoad(condition: parent => parent.Id > 0,
+                             query: (db, parent) => db.Query<Movie>().Where(c => c.MovieFileId == parent.Id).ToList())
+                 .HasOne(file => file.Movie, file => file.MovieId);
 
             Mapper.Entity<Movie>().RegisterModel("Movies")
                 .Ignore(s => s.RootFolderPath)
                 .Ignore(m => m.Actors)
                 .Relationship()
                 .HasOne(s => s.Profile, s => s.ProfileId);
-                //.HasOne(m => m.MovieFile, m => m.MovieFileId);
 
+            //.HasOne(m => m.MovieFile, m => m.MovieFileId);
             Mapper.Entity<AlternativeTitle>().RegisterModel("AlternativeTitles")
                 .For(t => t.Id)
                 .SetAltName("AltTitle_Id")
                 .Relationship()
                 .HasOne(t => t.Movie, t => t.MovieId);
-
 
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
 

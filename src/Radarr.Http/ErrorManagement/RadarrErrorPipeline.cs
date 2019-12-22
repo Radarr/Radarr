@@ -69,10 +69,12 @@ namespace Radarr.Http.ErrorManagement
                 if (context.Request.Method == "PUT" || context.Request.Method == "POST")
                 {
                     if (sqLiteException.Message.Contains("constraint failed"))
+                    {
                         return new ErrorModel
                         {
                             Message = exception.Message,
                         }.AsResponse(context, HttpStatusCode.Conflict);
+                    }
                 }
 
                 _logger.Error(sqLiteException, "[{0} {1}]", context.Request.Method, context.Request.Path);

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Profiles.Delay;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Profiles.Delay
 {
@@ -21,7 +21,10 @@ namespace NzbDrone.Api.Profiles.Delay
     {
         public static DelayProfileResource ToResource(this DelayProfile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new DelayProfileResource
             {
@@ -39,7 +42,10 @@ namespace NzbDrone.Api.Profiles.Delay
 
         public static DelayProfile ToModel(this DelayProfileResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new DelayProfile
             {

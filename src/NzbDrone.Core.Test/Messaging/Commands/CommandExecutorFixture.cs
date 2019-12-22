@@ -210,13 +210,10 @@ namespace NzbDrone.Core.Test.Messaging.Commands
 
     public class CommandB : Command
     {
-
         public CommandB()
         {
-
         }
 
         public override string CompletionMessage => null;
     }
-
 }

@@ -20,7 +20,7 @@ namespace Radarr.Api.V3.Queue
         private readonly IQueueService _queueService;
         private readonly IPendingReleaseService _pendingReleaseService;
 
-        private readonly QualityModelComparer QUALITY_COMPARER;
+        private readonly QualityModelComparer _qualityComparer;
 
         public QueueModule(IBroadcastSignalRMessage broadcastSignalRMessage,
                            IQueueService queueService,
@@ -32,7 +32,7 @@ namespace Radarr.Api.V3.Queue
             _pendingReleaseService = pendingReleaseService;
             GetResourcePaged = GetQueue;
 
-            QUALITY_COMPARER = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
+            _qualityComparer = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
         }
 
         private PagingResource<QueueResource> GetQueue(PagingResource<QueueResource> pagingResource)
@@ -61,7 +61,6 @@ namespace Radarr.Api.V3.Queue
                     ? fullQueue.OrderBy(q => q.Timeleft, new TimeleftComparer())
                     : fullQueue.OrderByDescending(q => q.Timeleft, new TimeleftComparer());
             }
-
             else if (pagingSpec.SortKey == "estimatedCompletionTime")
             {
                 ordered = ascending
@@ -69,41 +68,36 @@ namespace Radarr.Api.V3.Queue
                     : fullQueue.OrderByDescending(q => q.EstimatedCompletionTime,
                         new EstimatedCompletionTimeComparer());
             }
-
             else if (pagingSpec.SortKey == "protocol")
             {
                 ordered = ascending
                     ? fullQueue.OrderBy(q => q.Protocol)
                     : fullQueue.OrderByDescending(q => q.Protocol);
             }
-
             else if (pagingSpec.SortKey == "indexer")
             {
                 ordered = ascending
                     ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase)
                     : fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
             }
-
             else if (pagingSpec.SortKey == "downloadClient")
             {
                 ordered = ascending
                     ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase)
                     : fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
             }
-
             else if (pagingSpec.SortKey == "quality")
             {
                 ordered = ascending
-                    ? fullQueue.OrderBy(q => q.Quality, QUALITY_COMPARER)
-                    : fullQueue.OrderByDescending(q => q.Quality, QUALITY_COMPARER);
+                    ? fullQueue.OrderBy(q => q.Quality, _qualityComparer)
+                    : fullQueue.OrderByDescending(q => q.Quality, _qualityComparer);
             }
-
             else
             {
                 ordered = ascending ? fullQueue.OrderBy(orderByFunc) : fullQueue.OrderByDescending(orderByFunc);
             }
 
-            ordered = ordered.ThenByDescending(q => q.Size == 0 ? 0 : 100 - q.Sizeleft / q.Size * 100);
+            ordered = ordered.ThenByDescending(q => q.Size == 0 ? 0 : 100 - (q.Sizeleft / q.Size * 100));
 
             pagingSpec.Records = ordered.Skip((pagingSpec.Page - 1) * pagingSpec.PageSize).Take(pagingSpec.PageSize).ToList();
             pagingSpec.TotalRecords = fullQueue.Count;
@@ -117,7 +111,7 @@ namespace Radarr.Api.V3.Queue
             return pagingSpec;
         }
 
-        private Func<NzbDrone.Core.Queue.Queue, Object> GetOrderByFunc(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec)
+        private Func<NzbDrone.Core.Queue.Queue, object> GetOrderByFunc(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec)
         {
             switch (pagingSpec.SortKey)
             {
@@ -133,7 +127,7 @@ namespace Radarr.Api.V3.Queue
                     return q => q.Quality;
                 case "progress":
                     // Avoid exploding if a download's size is 0
-                    return q => 100 - q.Sizeleft / Math.Max(q.Size * 100, 1);
+                    return q => 100 - (q.Sizeleft / Math.Max(q.Size * 100, 1));
                 default:
                     return q => q.Timeleft;
             }

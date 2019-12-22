@@ -3,11 +3,11 @@ using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -24,26 +24,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 ParsedMovieInfo = new ParsedMovieInfo
                 {
-                    Languages = new List<Language> {Language.English}
+                    Languages = new List<Language> { Language.English }
                 },
                 Movie = new Movie
-                         {
-                             Profile = new LazyLoaded<Profile>(new Profile
-                                                               {
-                                                                   Language = Language.English
-                                                               })
-                         }
+                {
+                    Profile = new LazyLoaded<Profile>(new Profile
+                    {
+                        Language = Language.English
+                    })
+                }
             };
         }
 
         private void WithEnglishRelease()
         {
-            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> {Language.English};
+            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.English };
         }
 
         private void WithGermanRelease()
         {
-            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> {Language.German};
+            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.German };
         }
 
         [Test]

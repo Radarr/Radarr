@@ -20,10 +20,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             var updater = new ProfileUpdater159(conn, tran);
 
-            updater.CreateGroupAt(8, "WEB 480p", new int[]{12}); // Group WEBRip480p with WEBDL480p
-            updater.CreateGroupAt(5, "WEB 720p", new int[]{14}); // Group WEBRip720p with WEBDL720p
-            updater.CreateGroupAt(3, "WEB 1080p", new int[]{15}); // Group WEBRip1080p with WEBDL1080p
-            updater.CreateGroupAt(18, "WEB 2160p", new int[]{17}); // Group WEBRip2160p with WEBDL2160p
+            updater.CreateGroupAt(8, "WEB 480p", new int[] { 12 }); // Group WEBRip480p with WEBDL480p
+            updater.CreateGroupAt(5, "WEB 720p", new int[] { 14 }); // Group WEBRip720p with WEBDL720p
+            updater.CreateGroupAt(3, "WEB 1080p", new int[] { 15 }); // Group WEBRip1080p with WEBDL1080p
+            updater.CreateGroupAt(18, "WEB 2160p", new int[] { 17 }); // Group WEBRip2160p with WEBDL2160p
 
             updater.Commit();
         }
@@ -108,14 +108,12 @@ namespace NzbDrone.Core.Datastore.Migration
                     }
                 }
 
-
                 var findIndex = profile.Items.FindIndex(v =>
                 {
                     return v.Quality == find || (v.Items != null && v.Items.Any(b => b.Quality == find));
                 });
 
                 var isGrouped = !profile.Items.Any(p => p.Quality == find);
-
 
                 if (findIndex > -1 && !isGrouped)
                 {
@@ -163,7 +161,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 else
                 {
                     // If the ID isn't found for some reason (mangled migration 71?)
-
                     var groupItems = new List<ProfileItem159>();
 
                     foreach (var newQuality in newQualities)

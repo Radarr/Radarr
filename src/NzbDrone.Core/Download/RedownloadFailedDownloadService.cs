@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Download
 {

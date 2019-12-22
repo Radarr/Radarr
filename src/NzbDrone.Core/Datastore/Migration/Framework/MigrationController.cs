@@ -42,10 +42,11 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                     .WithGlobalConnectionString(connectionString)
                     .WithMigrationsIn(Assembly.GetExecutingAssembly()))
                 .Configure<TypeFilterOptions>(opt => opt.Namespace = "NzbDrone.Core.Datastore.Migration")
-                .Configure<ProcessorOptions>(opt => {
-                        opt.PreviewOnly = false;
-                        opt.Timeout = TimeSpan.FromSeconds(60);
-                    })
+                .Configure<ProcessorOptions>(opt =>
+                {
+                    opt.PreviewOnly = false;
+                    opt.Timeout = TimeSpan.FromSeconds(60);
+                })
                 .BuildServiceProvider();
 
             using (var scope = serviceProvider.CreateScope())

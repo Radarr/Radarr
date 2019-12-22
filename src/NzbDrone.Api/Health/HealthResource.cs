@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.HealthCheck;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Health
 {
@@ -17,7 +17,10 @@ namespace NzbDrone.Api.Health
     {
         public static HealthResource ToResource(this HealthCheck model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new HealthResource
             {

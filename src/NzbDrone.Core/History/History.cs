@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
@@ -26,16 +26,17 @@ namespace NzbDrone.Core.History
         public List<Language> Languages { get; set; }
 
         public string DownloadId { get; set; }
-
     }
 
     public enum HistoryEventType
     {
         Unknown = 0,
         Grabbed = 1,
+
         // SeriesFolderImported = 2, // deprecated
         DownloadFolderImported = 3,
         DownloadFailed = 4,
+
         // EpisodeFileDeleted = 5, // deprecated
         MovieFileDeleted = 6,
         MovieFolderImported = 7, // not used yet
