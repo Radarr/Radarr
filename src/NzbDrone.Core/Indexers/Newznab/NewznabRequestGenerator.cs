@@ -63,26 +63,49 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             else
             {
-                var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
-                altTitles.Add(searchCriteria.Movie.Title);
-
-                var realMaxPages = (int)MaxPages / (altTitles.Count());
-
-                //pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
-
-                //Also use alt titles for searching.
-                foreach (String altTitle in altTitles)
+                if (!Settings.SearchByAkas)
                 {
-                    var searchAltTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
-                    var queryString = $"&q={searchAltTitle}";
+                    var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(searchCriteria.Movie.Title));
+
+                    var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
+
+                    var realMaxPages = (int) MaxPages / (altTitles.Count() + 1);
+
+                    var queryString = $"&q={searchTitle}";
                     if (!Settings.RemoveYear)
                     {
                         queryString += $"%20{searchCriteria.Movie.Year}";
                     }
-                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", queryString));
+
+                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search",
+                        queryString));
+                }
+                else
+                {
+                    var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
+                    altTitles.Add(searchCriteria.Movie.Title);
+
+                    var realMaxPages = (int) MaxPages / (altTitles.Count());
+
+                    //pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
+
+                    //Also use alt titles for searching.
+                    foreach (String altTitle in altTitles)
+                    {
+                        var searchAltTitle =
+                            System.Web.HttpUtility.UrlPathEncode(
+                                Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
+                        var queryString = $"&q={searchAltTitle}";
+                        if (!Settings.RemoveYear)
+                        {
+                            queryString += $"%20{searchCriteria.Movie.Year}";
+                        }
+
+                        pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search",
+                            queryString));
+                    }
                 }
             }
-
             return pageableRequests;
         }
 
