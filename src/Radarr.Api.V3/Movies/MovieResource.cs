@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using Radarr.Api.V3.MovieFiles;
@@ -132,6 +133,67 @@ namespace Radarr.Api.V3.Movies
             };
         }
 
+        public static MovieResource ToResource(this Movie model, IUpgradableSpecification upgradableSpecification)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+
+            long size = model.MovieFile?.Size ?? 0;
+            MovieFileResource movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
+
+            return new MovieResource
+            {
+                Id = model.Id,
+                TmdbId = model.TmdbId,
+                Title = model.Title,
+                SortTitle = model.SortTitle,
+                InCinemas = model.InCinemas,
+                PhysicalRelease = model.PhysicalRelease,
+                PhysicalReleaseNote = model.PhysicalReleaseNote,
+                HasFile = model.HasFile,
+
+                SizeOnDisk = size,
+                Status = model.Status,
+                Overview = model.Overview,
+
+                Images = model.Images,
+
+                Year = model.Year,
+                SecondaryYear = model.SecondaryYear,
+                SecondaryYearSourceId = model.SecondaryYearSourceId,
+
+                Path = model.Path,
+                QualityProfileId = model.ProfileId,
+                PathState = model.PathState,
+
+                Monitored = model.Monitored,
+                MinimumAvailability = model.MinimumAvailability,
+
+                IsAvailable = model.IsAvailable(),
+                FolderName = model.FolderName(),
+
+                Runtime = model.Runtime,
+                LastInfoSync = model.LastInfoSync,
+                CleanTitle = model.CleanTitle,
+                ImdbId = model.ImdbId,
+                TitleSlug = model.TitleSlug,
+                RootFolderPath = model.RootFolderPath,
+                Certification = model.Certification,
+                Website = model.Website,
+                Genres = model.Genres,
+                Tags = model.Tags,
+                Added = model.Added,
+                AddOptions = model.AddOptions,
+                AlternateTitles = model.AlternativeTitles.ToResource(),
+                Ratings = model.Ratings,
+                MovieFile = movieFile,
+                YouTubeTrailerId = model.YouTubeTrailerId,
+                Studio = model.Studio
+            };
+        }
+
         public static Movie ToModel(this MovieResource resource)
         {
             if (resource == null)
@@ -195,6 +257,11 @@ namespace Radarr.Api.V3.Movies
         public static List<MovieResource> ToResource(this IEnumerable<Movie> movies)
         {
             return movies.Select(ToResource).ToList();
+        }
+
+        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, IUpgradableSpecification upgradableSpecification)
+        {
+            return movies.ToList().ConvertAll(f => f.ToResource(upgradableSpecification));
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)

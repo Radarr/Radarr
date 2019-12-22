@@ -3,6 +3,7 @@ using FluentValidation;
 using Nancy;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
@@ -28,20 +29,22 @@ namespace Radarr.Api.V3.Movies
     {
         protected readonly IMovieService _moviesService;
         private readonly IMapCoversToLocal _coverMapper;
+        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
-                           IMovieService moviesService,
-                           IMapCoversToLocal coverMapper,
-                           RootFolderValidator rootFolderValidator,
-                           MoviePathValidator moviesPathValidator,
-                           MovieExistsValidator moviesExistsValidator,
-                           MovieAncestorValidator moviesAncestorValidator,
-                           ProfileExistsValidator profileExistsValidator,
-                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
+                            IMovieService moviesService,
+                            IMapCoversToLocal coverMapper,
+                            IUpgradableSpecification qualityUpgradableSpecification,
+                            RootFolderValidator rootFolderValidator,
+                            MoviePathValidator moviesPathValidator,
+                            MovieExistsValidator moviesExistsValidator,
+                            MovieAncestorValidator moviesAncestorValidator,
+                            ProfileExistsValidator profileExistsValidator,
+                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
-
+            _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _coverMapper = coverMapper;
 
             GetResourceAll = AllMovie;
@@ -75,7 +78,7 @@ namespace Radarr.Api.V3.Movies
 
         private List<MovieResource> AllMovie()
         {
-            var moviesResources = _moviesService.GetAllMovies().ToResource();
+            var moviesResources = _moviesService.GetAllMovies().ToResource(_qualityUpgradableSpecification);
 
             MapCoversToLocal(moviesResources.ToArray());
             PopulateAlternateTitles(moviesResources);

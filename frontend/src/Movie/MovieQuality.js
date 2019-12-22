@@ -4,7 +4,7 @@ import formatBytes from 'Utilities/Number/formatBytes';
 import { kinds } from 'Helpers/Props';
 import Label from 'Components/Label';
 
-function getTooltip(title, quality, size) {
+function getTooltip(title, quality, size, isMonitored, isCutoffNotMet) {
   const revision = quality.revision;
 
   if (revision.real && revision.real > 0) {
@@ -19,6 +19,12 @@ function getTooltip(title, quality, size) {
     title += ` - ${formatBytes(size)}`;
   }
 
+  if (!isMonitored) {
+    title += ' [Not Monitored]';
+  } else if (isCutoffNotMet) {
+    title += ' [Cutoff Not Met]';
+  }
+
   return title;
 }
 
@@ -28,14 +34,22 @@ function MovieQuality(props) {
     title,
     quality,
     size,
+    isMonitored,
     isCutoffNotMet
   } = props;
+
+  let kind = kinds.DEFAULT;
+  if (!isMonitored) {
+    kind = kinds.DISABLED;
+  } else if (isCutoffNotMet) {
+    kind = kinds.INVERSE;
+  }
 
   return (
     <Label
       className={className}
-      kind={isCutoffNotMet ? kinds.INVERSE : kinds.DEFAULT}
-      title={getTooltip(title, quality, size)}
+      kind={kind}
+      title={getTooltip(title, quality, size, isMonitored, isCutoffNotMet)}
     >
       {quality.quality.name}
     </Label>
@@ -47,11 +61,13 @@ MovieQuality.propTypes = {
   title: PropTypes.string,
   quality: PropTypes.object.isRequired,
   size: PropTypes.number,
+  isMonitored: PropTypes.bool,
   isCutoffNotMet: PropTypes.bool
 };
 
 MovieQuality.defaultProps = {
-  title: ''
+  title: '',
+  isMonitored: true
 };
 
 export default MovieQuality;
