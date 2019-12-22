@@ -2,17 +2,17 @@
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
-	public class CleanupAdditionalUsers : IHousekeepingTask
-	{
-		private readonly IMainDatabase _database;
+    public class CleanupAdditionalUsers : IHousekeepingTask
+    {
+        private readonly IMainDatabase _database;
 
-		public CleanupAdditionalUsers(IMainDatabase database)
-		{
-			_database = database;
-		}
+        public CleanupAdditionalUsers(IMainDatabase database)
+        {
+            _database = database;
+        }
 
-		public void Clean()
-		{
+        public void Clean()
+        {
             using (var mapper = _database.GetDataMapper())
             {
 
@@ -22,6 +22,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      LIMIT 1)");
             }
         }
-	}
+    }
 }
 

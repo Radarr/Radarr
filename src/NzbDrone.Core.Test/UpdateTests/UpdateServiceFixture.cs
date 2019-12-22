@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [SetUp]
         public void Setup()
         {
-			if (OsInfo.IsLinux || OsInfo.IsOsx)
+            if (OsInfo.IsLinux || OsInfo.IsOsx)
             {
                 _updatePackage = new UpdatePackage
                 {

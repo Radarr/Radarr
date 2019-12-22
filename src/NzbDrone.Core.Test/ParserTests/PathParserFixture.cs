@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 /*
     [TestFixture]
-	[Ignore("Series")]//Is this really necessary with movies? I dont think so
+    [Ignore("Series")]//Is this really necessary with movies? I dont think so
     public class PathParserFixture : CoreTest
     {
         [TestCase(@"z:\tv shows\battlestar galactica (2003)\Season 3\S03E05 - Collaborators.mkv", 3, 5)]

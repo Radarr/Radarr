@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-			Alter.Table("Movies").AddColumn("HasPreDBEntry").AsBoolean().WithDefaultValue(false);
+            Alter.Table("Movies").AddColumn("HasPreDBEntry").AsBoolean().WithDefaultValue(false);
         }
     }
 }

@@ -21,13 +21,13 @@ namespace NzbDrone.Core.MediaFiles
     public interface IRenameMovieFileService
     {
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
-	void RenameMoviePath(Movie movie, bool shouldRenameFiles);
+    void RenameMoviePath(Movie movie, bool shouldRenameFiles);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
                                           IExecute<RenameFilesCommand>,
                                           IExecute<RenameMovieCommand>,
-					IExecute<RenameMovieFolderCommand>
+                    IExecute<RenameMovieFolderCommand>
     {
         private readonly IMovieService _movieService;
         private readonly IMediaFileService _mediaFileService;
@@ -138,33 +138,33 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-		public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
-		{
-			var newFolder = _filenameBuilder.BuildMoviePath(movie);
-	        if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
-	        {
+        public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
+        {
+            var newFolder = _filenameBuilder.BuildMoviePath(movie);
+            if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
+            {
 
-	            if (!_configService.AutoRenameFolders)
-	            {
-	                _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
-	                return;
-	            }
+                if (!_configService.AutoRenameFolders)
+                {
+                    _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
+                    return;
+                }
 
-	             _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+                 _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
                 var oldFolder = movie.Path;
                 movie.Path = newFolder;
 
-	            _diskProvider.MoveFolder(oldFolder, movie.Path);
+                _diskProvider.MoveFolder(oldFolder, movie.Path);
 
-				// if (false)
-				// {
-				// 	var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-				// 	_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-				// 	RenameFiles(movieFiles, movie, oldFolder);
-				// 	_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
-				// }
+                // if (false)
+                // {
+                //  var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+                //  _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+                //  RenameFiles(movieFiles, movie, oldFolder);
+                //  _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+                // }
 
-				_movieService.UpdateMovie(movie);
+                _movieService.UpdateMovie(movie);
 
                 if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)
                 {
@@ -172,14 +172,14 @@ namespace NzbDrone.Core.MediaFiles
                 }
 
 
-			}
+            }
 
             if (movie.PathState == MoviePathState.StaticOnce)
             {
                 movie.PathState = MoviePathState.Dynamic;
                 _movieService.UpdateMovie(movie);
             }
-		}
+        }
 
         public void Execute(RenameFilesCommand message)
         {
@@ -206,24 +206,24 @@ namespace NzbDrone.Core.MediaFiles
 
         }
 
-	public void Execute(RenameMovieFolderCommand message)
-	{
-	    try
-	    {
-	        _logger.Debug("Renaming movie folder for selected movie if necessary");
-	        var moviesToRename = _movieService.GetMovies(message.MovieIds);
-	        foreach(var movie in moviesToRename)
-	        {
-	            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-	            //_logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
-	            RenameMoviePath(movie);
-	        }
-	    }
-	    catch (SQLiteException ex)
-	    {
+    public void Execute(RenameMovieFolderCommand message)
+    {
+        try
+        {
+            _logger.Debug("Renaming movie folder for selected movie if necessary");
+            var moviesToRename = _movieService.GetMovies(message.MovieIds);
+            foreach(var movie in moviesToRename)
+            {
+                var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+                //_logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
+                RenameMoviePath(movie);
+            }
+        }
+        catch (SQLiteException ex)
+        {
             _logger.Warn(ex, "wtf: {0}, {1}", ex.ResultCode, ex.Data);
-	    }
+        }
 
-	}
+    }
     }
 }

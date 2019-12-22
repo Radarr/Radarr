@@ -34,14 +34,14 @@ namespace NzbDrone.Api.Movies
         private readonly IRootFolderService _rootFolderService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IDiskScanService _diskScanService;
-		private readonly ICached<Core.Movies.Movie> _mappedMovies;
+        private readonly ICached<Core.Movies.Movie> _mappedMovies;
         private readonly IParsingService _parsingService;
         private readonly IProfileService _profileService;
         private readonly IMovieService _movieService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService,
             IMakeImportDecision importDecisionMaker,
-		    IDiskScanService diskScanService, ICacheManager cacheManager,
+            IDiskScanService diskScanService, ICacheManager cacheManager,
             IParsingService parsingService, IProfileService profileService, IMovieService movieService)
             : base("/movies/bulkimport")
         {
@@ -49,7 +49,7 @@ namespace NzbDrone.Api.Movies
             _rootFolderService = rootFolderService;
             _importDecisionMaker = importDecisionMaker;
             _diskScanService = diskScanService;
-			_mappedMovies = cacheManager.GetCache<Core.Movies.Movie>(GetType(), "mappedMoviesCache");
+            _mappedMovies = cacheManager.GetCache<Core.Movies.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
             _profileService = profileService;
             _parsingService = parsingService;
@@ -89,73 +89,73 @@ namespace NzbDrone.Api.Movies
             var paged = unmapped.GetRange(min, max-min);
 
             var mapped = paged.Select(f =>
-			{
-				Core.Movies.Movie m = null;
+            {
+                Core.Movies.Movie m = null;
 
-				var mappedMovie = _mappedMovies.Find(f.Name);
+                var mappedMovie = _mappedMovies.Find(f.Name);
 
-				if (mappedMovie != null)
-				{
-					return mappedMovie;
-				}
+                if (mappedMovie != null)
+                {
+                    return mappedMovie;
+                }
 
-			    var parsedTitle = _parsingService.ParseMinimalPathMovieInfo(f.Name);
-				if (parsedTitle == null)
-				{
-					m = new Core.Movies.Movie
-					{
-						Title = f.Name.Replace(".", " ").Replace("-", " "),
-						Path = f.Path,
-					    Profile = tempProfile
-					};
-				}
-				else
-				{
-				    parsedTitle.ImdbId = Parser.ParseImdbId(parsedTitle.SimpleReleaseTitle);
+                var parsedTitle = _parsingService.ParseMinimalPathMovieInfo(f.Name);
+                if (parsedTitle == null)
+                {
+                    m = new Core.Movies.Movie
+                    {
+                        Title = f.Name.Replace(".", " ").Replace("-", " "),
+                        Path = f.Path,
+                        Profile = tempProfile
+                    };
+                }
+                else
+                {
+                    parsedTitle.ImdbId = Parser.ParseImdbId(parsedTitle.SimpleReleaseTitle);
 
-					m = new Core.Movies.Movie
-					{
-						Title = parsedTitle.MovieTitle,
-						Year = parsedTitle.Year,
-						ImdbId = parsedTitle.ImdbId,
-						Path = f.Path,
-					    Profile = tempProfile
-					};
-				}
+                    m = new Core.Movies.Movie
+                    {
+                        Title = parsedTitle.MovieTitle,
+                        Year = parsedTitle.Year,
+                        ImdbId = parsedTitle.ImdbId,
+                        Path = f.Path,
+                        Profile = tempProfile
+                    };
+                }
 
-				var files = _diskScanService.GetVideoFiles(f.Path);
+                var files = _diskScanService.GetVideoFiles(f.Path);
 
-				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
+                var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
 
-				var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
+                var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
 
-				if (decision != null)
-				{
-					var local = decision.LocalMovie;
+                if (decision != null)
+                {
+                    var local = decision.LocalMovie;
 
-					m.MovieFile = new MovieFile
-					{
-						Path = local.Path,
-						Edition = local.Edition,
-						Quality = local.Quality,
-						MediaInfo = local.MediaInfo,
-						ReleaseGroup = local.ReleaseGroup,
-						RelativePath = f.Path.GetRelativePath(local.Path)
-					};
-				}
+                    m.MovieFile = new MovieFile
+                    {
+                        Path = local.Path,
+                        Edition = local.Edition,
+                        Quality = local.Quality,
+                        MediaInfo = local.MediaInfo,
+                        ReleaseGroup = local.ReleaseGroup,
+                        RelativePath = f.Path.GetRelativePath(local.Path)
+                    };
+                }
 
-				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
+                mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
 
-				if (mappedMovie != null)
-				{
-					mappedMovie.Monitored = true;
+                if (mappedMovie != null)
+                {
+                    mappedMovie.Monitored = true;
 
-					_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
+                    _mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
 
-					return mappedMovie;
-				}
+                    return mappedMovie;
+                }
 
-				return null;
+                return null;
             });
 
             return new PagingResource<MovieResource>

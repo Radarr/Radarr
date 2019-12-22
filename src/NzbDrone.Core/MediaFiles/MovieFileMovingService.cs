@@ -183,7 +183,7 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
         {
             var movieFolder = Path.GetDirectoryName(filePath);
-		//movie.Path = movieFolder;
+        //movie.Path = movieFolder;
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
             var fileName = Path.GetFileName(filePath);
 

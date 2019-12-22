@@ -2,24 +2,24 @@
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
-	public class FixWronglyMatchedMovieFiles : IHousekeepingTask
-	{
-		private readonly IMainDatabase _database;
+    public class FixWronglyMatchedMovieFiles : IHousekeepingTask
+    {
+        private readonly IMainDatabase _database;
 
-		public FixWronglyMatchedMovieFiles(IMainDatabase database)
-		{
-			_database = database;
-		}
+        public FixWronglyMatchedMovieFiles(IMainDatabase database)
+        {
+            _database = database;
+        }
 
-		public void Clean()
-		{
-			/*var mapper = _database.GetDataMapper();
+        public void Clean()
+        {
+            /*var mapper = _database.GetDataMapper();
 
-			mapper.ExecuteNonQuery(@"UPDATE Movies
-				SET MovieFileId =
-				(Select Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)
-				WHERE MovieFileId !=
-				(SELECT Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)");*/
-		}
-	}
+            mapper.ExecuteNonQuery(@"UPDATE Movies
+                SET MovieFileId =
+                (Select Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)
+                WHERE MovieFileId !=
+                (SELECT Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)");*/
+        }
+    }
 }

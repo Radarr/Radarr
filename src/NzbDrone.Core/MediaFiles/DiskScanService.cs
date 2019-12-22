@@ -41,7 +41,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRootFolderService _rootFolderService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileService _movieFileRepository;
-	    private readonly IRenameMovieFileService _renameMovieFiles;
+        private readonly IRenameMovieFileService _renameMovieFiles;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.MediaFiles
                                IRootFolderService rootFolderService,
                                IEventAggregator eventAggregator,
                                IMediaFileService movieFileRepository,
-		                       IRenameMovieFileService renameMovieFiles,
+                               IRenameMovieFileService renameMovieFiles,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MediaFiles
             _rootFolderService = rootFolderService;
             _eventAggregator = eventAggregator;
             _movieFileRepository = movieFileRepository;
-		    _renameMovieFiles = renameMovieFiles;
+            _renameMovieFiles = renameMovieFiles;
             _logger = logger;
         }
 

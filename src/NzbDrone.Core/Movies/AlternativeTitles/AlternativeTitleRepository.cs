@@ -17,12 +17,12 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
     public class AlternativeTitleRepository : BasicRepository<AlternativeTitle>, IAlternativeTitleRepository
     {
-		protected IMainDatabase _database;
+        protected IMainDatabase _database;
 
         public AlternativeTitleRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-			_database = database;
+            _database = database;
         }
 
         public AlternativeTitle FindBySourceId(int sourceId)

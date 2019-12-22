@@ -11,7 +11,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 {
     public class RefreshRequestResponse
     {
-		public string access_token { get; set; }
+        public string access_token { get; set; }
         public string token_type { get; set; }
         public int expires_in { get; set; }
         public string refresh_token { get; set; }
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
     public class TraktRequestGenerator : INetImportRequestGenerator
     {
-    	public IConfigService _configService;
+        public IConfigService _configService;
         public IHttpClient HttpClient { get; set; }
         public TraktSettings Settings { get; set; }
 

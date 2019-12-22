@@ -345,7 +345,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         }
 
         [Test]
-		[Ignore("Series")]
+        [Ignore("Series")]
         public void Download_should_use_sabRecentTvPriority_when_recentEpisode_is_true()
         {
             Mocker.GetMock<ISabnzbdProxy>()

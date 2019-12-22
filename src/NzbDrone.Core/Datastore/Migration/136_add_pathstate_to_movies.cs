@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-			Alter.Table("Movies").AddColumn("PathState").AsInt32().WithDefaultValue(2);
+            Alter.Table("Movies").AddColumn("PathState").AsInt32().WithDefaultValue(2);
         }
     }
 }

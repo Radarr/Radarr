@@ -291,22 +291,22 @@ namespace NzbDrone.Core.Download.Pending
 
         private void Insert(DownloadDecision decision, PendingReleaseReason reason)
         {
-		    var release = new PendingRelease
+            var release = new PendingRelease
             {
-	            MovieId = decision.RemoteMovie.Movie.Id,
-	            ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
-	            Release = decision.RemoteMovie.Release,
-	            Title = decision.RemoteMovie.Release.Title,
-	            Added = DateTime.UtcNow,
+                MovieId = decision.RemoteMovie.Movie.Id,
+                ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
+                Release = decision.RemoteMovie.Release,
+                Title = decision.RemoteMovie.Release.Title,
+                Added = DateTime.UtcNow,
                 Reason = reason
             };
 
             if (release.ParsedMovieInfo == null)
-		    {
-			    _logger.Warn("Pending release {0} does not have ParsedMovieInfo, will cause issues.", release.Title);
-		    }
+            {
+                _logger.Warn("Pending release {0} does not have ParsedMovieInfo, will cause issues.", release.Title);
+            }
 
-	        _repository.Insert(release);
+            _repository.Insert(release);
 
             _eventAggregator.PublishEvent(new PendingReleasesUpdatedEvent());
         }
@@ -338,7 +338,7 @@ namespace NzbDrone.Core.Download.Pending
             var pendingReleases = GetPendingReleases(remoteMovie.Movie.Id);
 
 
-			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
+            var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
                                                              .ToList();
 
             if (existingReports.Empty())

@@ -36,26 +36,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             CustomFormatsFixture.GivenCustomFormats(CustomFormats.CustomFormat.None, _customFormat1, _customFormat2);
         }
 
-		private RemoteMovie GivenRemoteMovie(QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
-		{
-			var remoteMovie = new RemoteMovie();
-			remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
-			remoteMovie.ParsedMovieInfo.MovieTitle = "A Movie";
-			remoteMovie.ParsedMovieInfo.Year = 1998;
-		    remoteMovie.ParsedMovieInfo.Quality = quality;
+        private RemoteMovie GivenRemoteMovie(QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
+        {
+            var remoteMovie = new RemoteMovie();
+            remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
+            remoteMovie.ParsedMovieInfo.MovieTitle = "A Movie";
+            remoteMovie.ParsedMovieInfo.Year = 1998;
+            remoteMovie.ParsedMovieInfo.Quality = quality;
 
-			remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities(),
-				PreferredTags = new List<string> { "DTS-HD", "SPARKS"}, FormatItems = CustomFormatsFixture.GetSampleFormatItems() })
-				.With(m => m.Title = "A Movie").Build();
+            remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities(),
+                PreferredTags = new List<string> { "DTS-HD", "SPARKS"}, FormatItems = CustomFormatsFixture.GetSampleFormatItems() })
+                .With(m => m.Title = "A Movie").Build();
 
-			remoteMovie.Release = new ReleaseInfo();
-			remoteMovie.Release.PublishDate = DateTime.Now.AddDays(-age);
-			remoteMovie.Release.Size = size;
-			remoteMovie.Release.DownloadProtocol = downloadProtocol;
-			remoteMovie.Release.Title = "A Movie 1998";
+            remoteMovie.Release = new ReleaseInfo();
+            remoteMovie.Release.PublishDate = DateTime.Now.AddDays(-age);
+            remoteMovie.Release.Size = size;
+            remoteMovie.Release.DownloadProtocol = downloadProtocol;
+            remoteMovie.Release.Title = "A Movie 1998";
 
-			return remoteMovie;
-		}
+            return remoteMovie;
+        }
 
         private void GivenPreferredDownloadProtocol(DownloadProtocol downloadProtocol)
         {
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_put_propers_before_non_propers()
         {
-			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
             var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
 
             var decisions = new List<DownloadDecision>();
@@ -177,8 +177,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             remoteEpisode1.Release = torrentInfo1;
             remoteEpisode1.Release.Title = "A Movie 1998";
-			remoteEpisode2.Release = torrentInfo2;
-			remoteEpisode2.Release.Title = "A Movie 1998";
+            remoteEpisode2.Release = torrentInfo2;
+            remoteEpisode2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -207,8 +207,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             remoteEpisode1.Release = torrentInfo1;
             remoteEpisode1.Release.Title = "A Movie 1998";
-			remoteEpisode2.Release = torrentInfo2;
-			remoteEpisode2.Release.Title = "A Movie 1998";
+            remoteEpisode2.Release = torrentInfo2;
+            remoteEpisode2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -238,8 +238,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             remoteEpisode1.Release = torrentInfo1;
             remoteEpisode1.Release.Title = "A Movie 1998";
-			remoteEpisode2.Release = torrentInfo2;
-			remoteEpisode2.Release.Title = "A Movie 1998";
+            remoteEpisode2.Release = torrentInfo2;
+            remoteEpisode2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -268,9 +268,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             torrentInfo1.Size = 250.Megabytes();
 
             remoteEpisode1.Release = torrentInfo1;
-			remoteEpisode1.Release.Title = "A Movie 1998";
+            remoteEpisode1.Release.Title = "A Movie 1998";
             remoteEpisode2.Release = torrentInfo2;
-			remoteEpisode2.Release.Title = "A Movie 1998";
+            remoteEpisode2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -300,22 +300,22 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteEpisode1.Release);
         }
 
-		[Test]
-		public void should_prefer_more_prioritized_words()
-		{
-			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-			var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+        [Test]
+        public void should_prefer_more_prioritized_words()
+        {
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
 
-			remoteEpisode1.Release.Title += " DTS-HD";
-			remoteEpisode2.Release.Title += " DTS-HD SPARKS";
+            remoteEpisode1.Release.Title += " DTS-HD";
+            remoteEpisode2.Release.Title += " DTS-HD SPARKS";
 
-			var decisions = new List<DownloadDecision>();
-			decisions.Add(new DownloadDecision(remoteEpisode1));
-			decisions.Add(new DownloadDecision(remoteEpisode2));
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteEpisode1));
+            decisions.Add(new DownloadDecision(remoteEpisode2));
 
-			var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
-			qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteEpisode2.Release);
-		}
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteEpisode2.Release);
+        }
 
         [Test]
         public void should_prefer_better_custom_format()

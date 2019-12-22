@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                  new History.History(){
                      DownloadId = "35238",
                      SourceTitle = "TV Series S01",
-					 MovieId = 3,
+                     MovieId = 3,
                  }
                 });
         }
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             trackedDownload.Should().NotBeNull();
             trackedDownload.RemoteMovie.Should().NotBeNull();
             trackedDownload.RemoteMovie.Movie.Should().NotBeNull();
-			trackedDownload.RemoteMovie.Movie.Id.Should().Be(3);
+            trackedDownload.RemoteMovie.Movie.Id.Should().Be(3);
         }
 
 

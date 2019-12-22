@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Movies
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
-	    public MovieStatusType MinimumAvailability { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Movies
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }
-		public bool HasPreDBEntry { get; set; }
+        public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
         //Get Loaded via a Join Query
         public List<AlternativeTitle> AlternativeTitles { get; set; }
@@ -83,11 +83,11 @@ namespace NzbDrone.Core.Movies
 
         public string FolderName()
         {
-			if (Path.IsNullOrWhiteSpace())
-			{
-				return "";
-			}
-			//Well what about Path = Null?
+            if (Path.IsNullOrWhiteSpace())
+            {
+                return "";
+            }
+            //Well what about Path = Null?
             //return new DirectoryInfo(Path).Name;
             return Path;
         }
@@ -119,10 +119,10 @@ namespace NzbDrone.Core.Movies
                     break;
             }
 
-			if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
-			{
-				return true;
-			}
+            if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
+            {
+                return true;
+            }
 
             if (MinimumAvailabilityDate == DateTime.MinValue || MinimumAvailabilityDate == DateTime.MaxValue)
             {

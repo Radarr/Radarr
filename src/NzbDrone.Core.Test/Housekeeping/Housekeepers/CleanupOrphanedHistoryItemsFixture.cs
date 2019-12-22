@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Db.Insert(history);
 
             Subject.Clean();
-			AllStoredModels.Should().HaveCount(1);
+            AllStoredModels.Should().HaveCount(1);
         }
     }
 }

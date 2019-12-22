@@ -14,10 +14,10 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 Alter.Table("NetImport").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
             }
-	        if (!this.Schema.Schema("dbo").Table("Movies").Column("MinimumAvailability").Exists())
-	        {
-		        Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
-	        }
+            if (!this.Schema.Schema("dbo").Table("Movies").Column("MinimumAvailability").Exists())
+            {
+                Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
+            }
         }
     }
 }

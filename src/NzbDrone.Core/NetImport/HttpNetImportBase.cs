@@ -117,7 +117,7 @@ namespace NzbDrone.Core.NetImport
                 m.RootFolderPath = ((NetImportDefinition) Definition).RootFolderPath;
                 m.ProfileId = ((NetImportDefinition) Definition).ProfileId;
                 m.Monitored = ((NetImportDefinition) Definition).ShouldMonitor;
-		        m.MinimumAvailability = ((NetImportDefinition) Definition).MinimumAvailability;
+                m.MinimumAvailability = ((NetImportDefinition) Definition).MinimumAvailability;
                 m.Tags = ((NetImportDefinition) Definition).Tags;
                 return m;
             }).ToList();
