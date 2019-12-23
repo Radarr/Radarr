@@ -81,6 +81,23 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        [Retry(5)]
+        public void MoveFile_should_not_overwrite_existing_file()
+        {
+            var source1 = GetTempFilePath();
+            var source2 = GetTempFilePath();
+            var destination = GetTempFilePath();
+
+            File.WriteAllText(source1, "SourceFile1");
+            File.WriteAllText(source2, "SourceFile2");
+
+            Subject.MoveFile(source1, destination);
+            Assert.Throws<IOException>(() => Subject.MoveFile(source2, destination, false));
+
+            File.ReadAllText(destination).Should().Be("SourceFile1");
+        }
+
+        [Test]
         public void MoveFile_should_not_move_overwrite_itself()
         {
             var source = GetTempFilePath();
