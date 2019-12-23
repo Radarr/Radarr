@@ -253,8 +253,9 @@ stages:
         displayName: Publish Sentry Source Maps
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
-          SENTRY_AUTH_TOKEN: $(sentryAuthToken)
+          SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
           SENTRY_ORG: $(sentryOrg)
+          SENTRY_URL: https://sentry.radarr.video
     
   - stage: Unit_Test
     displayName: Unit Tests
