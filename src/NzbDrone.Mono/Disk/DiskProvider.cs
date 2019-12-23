@@ -151,7 +151,7 @@ namespace NzbDrone.Mono.Disk
             }
         }
 
-        protected override void MoveFileInternal(string source, string destination)
+        protected override void MoveFileInternal(string source, string destination, bool overwrite)
         {
             var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
 
@@ -188,7 +188,7 @@ namespace NzbDrone.Mono.Disk
             }
             else
             {
-                base.MoveFileInternal(source, destination);
+                base.MoveFileInternal(source, destination, overwrite);
             }
         }
 
