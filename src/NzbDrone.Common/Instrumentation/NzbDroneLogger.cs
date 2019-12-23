@@ -66,13 +66,13 @@ namespace NzbDrone.Common.Instrumentation
 
             if (updateClient)
             {
-                dsn = "https://2f3cc03453e4453bb3c1dd3ff77b15ab@sentry.io/1339335";
+                dsn = "https://b2fea06c1a9648819fda54e919039223@sentry.radarr.video/15";
             }
             else
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://f607fb34f89745f9bfe5ded0a97ab00a@sentry.io/209545"
-                    : "https://28faaa7023384031b29e38d3be74fa11@sentry.io/227247";
+                    ? "https://4e35724359dc4cee9b7e4df07d1897d2@sentry.radarr.video/11"
+                    : "https://13816615dc654302b0cd6de81fa8567a@sentry.radarr.video/13";
             }
 
             var target = new SentryTarget(dsn)

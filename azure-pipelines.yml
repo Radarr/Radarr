@@ -11,7 +11,7 @@ variables:
   minorVersion: $[counter('minorVersion', 1076)]
   lidarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(lidarrVersion)'
-  sentryOrg: 'lidarr'
+  sentryOrg: 'radarr'
   dotnetVersion: '3.1.100'
 
 trigger:
@@ -262,8 +262,9 @@ stages:
             and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           )
         env:
-          SENTRY_AUTH_TOKEN: $(sentryAuthToken)
+          SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
           SENTRY_ORG: $(sentryOrg)
+          SENTRY_URL: https://sentry.radarr.video
     
   - stage: Unit_Test
     displayName: Unit Tests
