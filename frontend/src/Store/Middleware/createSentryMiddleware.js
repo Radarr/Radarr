@@ -80,8 +80,8 @@ export default function createSentryMiddleware() {
     return;
   }
 
-  const dsn = isProduction ? 'https://cf0559cfe5c84ccfae3d907daef1b6bb@sentry.io/1523530' :
-    'https://df167d10dc51480b9e4f22e4e77c7315@sentry.io/1523531';
+  const dsn = isProduction ? 'https://f4833ba136384acfafc92ddfd1c7bbc9@sentry.radarr.video/4' :
+    'https://019aef70678c484da8a43fe218690300@sentry.radarr.video/7';
 
   sentry.init({
     dsn,
