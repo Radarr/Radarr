@@ -700,7 +700,7 @@ stages:
           projectVersion: '$(radarrVersion)'
           extraProperties: |
             sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
-            sonar.coverage.exclusions=**/Radarr.Api.V3/**/*,**/Radarr.Api/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
+            sonar.coverage.exclusions=**/Radarr.Api.V3/**/*,**/NzbDrone.Api/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |
