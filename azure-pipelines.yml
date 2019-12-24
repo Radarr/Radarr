@@ -25,9 +25,28 @@ pr:
 - aphrodite
 
 stages:
+  - stage: Setup
+    displayName: Setup
+    jobs:
+    - job:
+      displayName: Build Variables
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
+      - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
+        displayName: Set Build Name
+      - bash: |
+          git diff origin/aphrodite...origin/fix-quick-ui-build  --name-only | grep -qEv "^(src/|azure-pipelines.yml)"
+          echo $? > is_backend_update
+          cat is_backend_update
+        displayName: Check for Backend File Changes
+      - publish: is_backend_update
+        artifact: is_backend_update
+        displayName: Publish update type
   - stage: Build_Backend
     displayName: Build Backend
-          
+    dependsOn: Setup
     jobs:
     - job: Backend
       strategy:
@@ -45,9 +64,6 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
-      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:RADARRVERSION)"
-        displayName: Set Build Name
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -87,8 +103,7 @@ stages:
 
   - stage: Build_Frontend
     displayName: Frontend
-    dependsOn: []
-    
+    dependsOn: Setup
     jobs:
     - job: Build
       strategy:
@@ -260,10 +275,26 @@ stages:
   - stage: Unit_Test
     displayName: Unit Tests
     dependsOn: Build_Backend
-    condition: succeeded()
+
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'is_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+        name: setVar
+
     - job: Unit
       displayName: Unit Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+
       strategy:
         matrix:
           MacCore:
@@ -338,6 +369,8 @@ stages:
 
     - job: Unit_Docker
       displayName: Unit Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
       strategy:
         matrix:
           mono510:
@@ -391,10 +424,25 @@ stages:
   - stage: Integration
     displayName: Integration
     dependsOn: Packages
+
     jobs:
-    
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'is_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+        name: setVar
+
     - job: Integration_Native
       displayName: Integration Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
       strategy:
         matrix:
           MacCore:
@@ -468,6 +516,8 @@ stages:
 
     - job: Integration_Docker
       displayName: Integration Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
       strategy:
         matrix:
           mono510:
@@ -623,11 +673,24 @@ stages:
         displayName: Publish Test Results
 
   - stage: Analyze
-    dependsOn: []
+    dependsOn:
+    - Setup
     displayName: Analyze
 
-      
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'is_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+        name: setVar
+
     - job: Lint_Frontend
       displayName: Lint Frontend
       strategy:
@@ -676,10 +739,15 @@ stages:
 
     - job: Analyze_Backend
       displayName: Backend
-      pool:
-        vmImage: windows-2019
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+
       variables:
         disable.coverage.autogenerate: 'true'
+
+      pool:
+        vmImage: windows-2019
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .net core'
