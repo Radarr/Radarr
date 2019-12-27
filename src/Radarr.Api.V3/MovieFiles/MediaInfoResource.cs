@@ -7,6 +7,7 @@ namespace Radarr.Api.V3.MovieFiles
 {
     public class MediaInfoResource : RestResource
     {
+        public string AudioAdditionalFeatures { get; set; }
         public int AudioBitrate { get; set; }
         public decimal AudioChannels { get; set; }
         public string AudioCodec { get; set; }
@@ -33,6 +34,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             return new MediaInfoResource
                    {
+                       AudioAdditionalFeatures = model.AudioAdditionalFeatures,
                        AudioBitrate = model.AudioBitrate,
                        AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
                        AudioLanguages = model.AudioLanguages,

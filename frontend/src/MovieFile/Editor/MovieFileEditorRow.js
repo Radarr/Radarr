@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import formatBytes from 'Utilities/Number/formatBytes';
 import IconButton from 'Components/Link/IconButton';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
@@ -10,15 +10,13 @@ import MovieQuality from 'Movie/MovieQuality';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import Icon from 'Components/Icon';
-import Popover from 'Components/Tooltip/Popover';
 import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
 import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
 import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
-import MediaInfoPopover from './MediaInfoPopover';
 import styles from './MovieFileEditorRow.css';
+import FileDetailsModal from '../FileDetailsModal';
 
 class MovieFileEditorRow extends Component {
 
@@ -31,7 +29,8 @@ class MovieFileEditorRow extends Component {
     this.state = {
       isSelectQualityModalOpen: false,
       isSelectLanguageModalOpen: false,
-      isConfirmDeleteModalOpen: false
+      isConfirmDeleteModalOpen: false,
+      isFileDetailsModalOpen: false
     };
   }
 
@@ -68,6 +67,14 @@ class MovieFileEditorRow extends Component {
     this.setState({ isConfirmDeleteModalOpen: false });
   }
 
+  onFileDetailsPress = () => {
+    this.setState({ isFileDetailsModalOpen: true });
+  }
+
+  onFileDetailsModalClose = () => {
+    this.setState({ isFileDetailsModalOpen: false });
+  }
+
   //
   // Render
 
@@ -85,6 +92,7 @@ class MovieFileEditorRow extends Component {
     const {
       isSelectQualityModalOpen,
       isSelectLanguageModalOpen,
+      isFileDetailsModalOpen,
       isConfirmDeleteModalOpen
     } = this.state;
 
@@ -170,15 +178,9 @@ class MovieFileEditorRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.actions}>
-          <Popover
-            anchor={
-              <Icon
-                name={icons.MEDIA_INFO}
-              />
-            }
-            title="Media Info"
-            body={<MediaInfoPopover {...mediaInfo} />}
-            position={tooltipPositions.LEFT}
+          <IconButton
+            name={icons.MEDIA_INFO}
+            onPress={this.onFileDetailsPress}
           />
 
           <IconButton
@@ -187,6 +189,12 @@ class MovieFileEditorRow extends Component {
             onPress={this.onDeletePress}
           />
         </TableRowCell>
+
+        <FileDetailsModal
+          isOpen={isFileDetailsModalOpen}
+          onModalClose={this.onFileDetailsModalClose}
+          mediaInfo={mediaInfo}
+        />
 
         <ConfirmModal
           isOpen={isConfirmDeleteModalOpen}
