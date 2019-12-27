@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Organizer
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
-            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
+            AddIdTokens(tokenHandlers, movie);
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Organizer
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
-            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
+            AddIdTokens(tokenHandlers, movie);
 
             if(movie.MovieFile != null)
             {
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Organizer
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
-            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
+            AddIdTokens(tokenHandlers, movie);
 
             if (movie.MovieFile != null)
             {
@@ -276,9 +276,10 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); //Do I need m.CustomFormat?
         }
 
-        private void AddImdbIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, string imdbId)
+        private void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
         {
-            tokenHandlers["{IMDb Id}"] = m => $"{imdbId}";
+            tokenHandlers["{ImdbId}"] = m => movie.ImdbId ?? string.Empty;
+            tokenHandlers["{TmdbId}"] = m => movie.TmdbId.ToString();
         }
 
         private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)

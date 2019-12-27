@@ -67,6 +67,7 @@ namespace NzbDrone.Core.Organizer
                 Title = "The Movie: Title",
                 Year = 2010,
                 ImdbId = "tt0066921",
+                TmdbId = 345691,
                 MovieFile = _movieFile,
                 MovieFileId = 1,
             };
