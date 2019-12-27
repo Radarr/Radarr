@@ -30,7 +30,9 @@ function FileDetailsModal(props) {
         </ModalHeader>
 
         <ModalBody>
-          <MediaInfoPopover {...mediaInfo} />
+          <MediaInfoPopover
+            mediaInfo={mediaInfo}
+          />
         </ModalBody>
 
         <ModalFooter>
