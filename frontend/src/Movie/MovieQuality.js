@@ -38,7 +38,7 @@ function MovieQuality(props) {
     isCutoffNotMet
   } = props;
 
-  let kind = kinds.DEFAULT;
+  let kind = kinds.SUCCESS;
   if (!isMonitored) {
     kind = kinds.DISABLED;
   } else if (isCutoffNotMet) {
