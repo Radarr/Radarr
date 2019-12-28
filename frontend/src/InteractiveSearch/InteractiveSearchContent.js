@@ -64,6 +64,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'indexerFlags',
+    label: React.createElement(Icon, { name: icons.FLAG }),
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'rejections',
     label: React.createElement(Icon, { name: icons.DANGER }),
     isSortable: true,

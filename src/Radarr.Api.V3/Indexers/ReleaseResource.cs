@@ -40,17 +40,13 @@ namespace Radarr.Api.V3.Indexers
         public string InfoUrl { get; set; }
         public bool DownloadAllowed { get; set; }
         public int ReleaseWeight { get; set; }
+        public IEnumerable<string> IndexerFlags { get; set; }
 
         public string MagnetUrl { get; set; }
         public string InfoHash { get; set; }
         public int? Seeders { get; set; }
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
-
-        public bool IsDaily { get; set; }
-        public bool IsAbsoluteNumbering { get; set; }
-        public bool IsPossibleSpecialEpisode { get; set; }
-        public bool Special { get; set; }
 
         // Sent when queuing an unknown release
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -65,6 +61,7 @@ namespace Radarr.Api.V3.Indexers
             var parsedMovieInfo = model.RemoteMovie.ParsedMovieInfo;
             var remoteMovie = model.RemoteMovie;
             var torrentInfo = (model.RemoteMovie.Release as TorrentInfo) ?? new TorrentInfo();
+            var indexerFlags = torrentInfo.IndexerFlags.ToString().Split(new string[] { ", " }, StringSplitOptions.None).Where(x => x != "0");
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
@@ -100,7 +97,8 @@ namespace Radarr.Api.V3.Indexers
                 InfoHash = torrentInfo.InfoHash,
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
-                Protocol = releaseInfo.DownloadProtocol
+                Protocol = releaseInfo.DownloadProtocol,
+                IndexerFlags = indexerFlags
             };
         }
 
