@@ -388,7 +388,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.Debug()
-                  .Message("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName)
+                  .Message("Unknown video format: '{0}' in '{1}'.", string.Join(", ", mediaInfo.VideoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName)
                   .WriteSentryWarn("UnknownVideoFormat", mediaInfo.ContainerFormat, mediaInfo.VideoFormat, videoCodecID)
                   .Write();
 
