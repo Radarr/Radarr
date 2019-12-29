@@ -31,8 +31,8 @@ import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
-import MovieCastPostersConnector from './Cast/MovieCastPostersConnector';
-import MovieCrewPostersConnector from './Crew/MovieCrewPostersConnector';
+import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
+import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
@@ -181,7 +181,7 @@ class MovieDetails extends Component {
       isPopulated,
       isSmallScreen,
       movieFilesError,
-      moviePeopleError,
+      movieCreditsError,
       hasMovieFiles,
       previousMovie,
       nextMovie,
@@ -464,12 +464,12 @@ class MovieDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !movieFilesError && !moviePeopleError &&
+              !isPopulated && !movieFilesError && !movieCreditsError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && movieFilesError && !moviePeopleError &&
+              !isFetching && movieFilesError && !movieCreditsError &&
                 <div>Loading movie files failed</div>
             }
 
@@ -629,7 +629,7 @@ MovieDetails.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   movieFilesError: PropTypes.object,
-  moviePeopleError: PropTypes.object,
+  movieCreditsError: PropTypes.object,
   hasMovieFiles: PropTypes.bool.isRequired,
   previousMovie: PropTypes.object.isRequired,
   nextMovie: PropTypes.object.isRequired,

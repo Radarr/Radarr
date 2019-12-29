@@ -4,8 +4,8 @@ import { Grid, WindowScroller } from 'react-virtualized';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
-import MovieCastPoster from './MovieCastPoster';
-import styles from './MovieCastPosters.css';
+import MovieCreditPosterConnector from './MovieCreditPosterConnector';
+import styles from './MovieCreditPosters.css';
 
 // Poster container dimensions
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
@@ -47,7 +47,7 @@ function calculatePosterHeight(posterWidth) {
   return Math.ceil((250 / 170) * posterWidth);
 }
 
-class MovieCastPosters extends Component {
+class MovieCreditPosters extends Component {
 
   //
   // Lifecycle
@@ -70,7 +70,7 @@ class MovieCastPosters extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      cast
+      items
     } = this.props;
 
     const {
@@ -85,7 +85,7 @@ class MovieCastPosters extends Component {
             prevState.columnWidth !== columnWidth ||
             prevState.columnCount !== columnCount ||
             prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.cast, cast))) {
+            hasDifferentItemsOrOrder(prevProps.items, items))) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
@@ -119,7 +119,8 @@ class MovieCastPosters extends Component {
 
   cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
     const {
-      cast
+      items,
+      itemComponent
     } = this.props;
 
     const {
@@ -129,7 +130,7 @@ class MovieCastPosters extends Component {
     } = this.state;
 
     const movieIdx = rowIndex * columnCount + columnIndex;
-    const movie = cast[movieIdx];
+    const movie = items[movieIdx];
 
     if (!movie) {
       return null;
@@ -141,12 +142,14 @@ class MovieCastPosters extends Component {
         key={key}
         style={style}
       >
-        <MovieCastPoster
+        <MovieCreditPosterConnector
           key={movie.order}
+          component={itemComponent}
           posterWidth={posterWidth}
           posterHeight={posterHeight}
-          castId={movie.tmdbId}
-          castName={movie.name}
+          tmdbId={movie.personTmdbId}
+          personName={movie.personName}
+          job={movie.job}
           character={movie.character}
           images={movie.images}
         />
@@ -166,7 +169,7 @@ class MovieCastPosters extends Component {
 
   render() {
     const {
-      cast
+      items
     } = this.props;
 
     const {
@@ -176,7 +179,7 @@ class MovieCastPosters extends Component {
       rowHeight
     } = this.state;
 
-    const rowCount = Math.ceil(cast.length / columnCount);
+    const rowCount = Math.ceil(items.length / columnCount);
 
     return (
       <Measure
@@ -220,9 +223,10 @@ class MovieCastPosters extends Component {
   }
 }
 
-MovieCastPosters.propTypes = {
-  cast: PropTypes.arrayOf(PropTypes.object).isRequired,
+MovieCreditPosters.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  itemComponent: PropTypes.elementType.isRequired,
   isSmallScreen: PropTypes.bool.isRequired
 };
 
-export default MovieCastPosters;
+export default MovieCreditPosters;

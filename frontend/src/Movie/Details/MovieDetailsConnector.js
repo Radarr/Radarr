@@ -9,10 +9,11 @@ import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchMoviePeople, clearMoviePeople } from 'Store/Actions/moviePeopleActions';
+import { fetchMovieCredits, clearMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
 import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
+import { fetchNetImportSchema } from 'Store/Actions/settingsActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import MovieDetails from './MovieDetails';
@@ -41,19 +42,19 @@ const selectMovieFiles = createSelector(
   }
 );
 
-const selectMoviePeople = createSelector(
-  (state) => state.moviePeople,
-  (moviePeople) => {
+const selectMovieCredits = createSelector(
+  (state) => state.movieCredits,
+  (movieCredits) => {
     const {
       isFetching,
       isPopulated,
       error
-    } = moviePeople;
+    } = movieCredits;
 
     return {
-      isMoviePeopleFetching: isFetching,
-      isMoviePeoplePopulated: isPopulated,
-      moviePeopleError: error
+      isMovieCreditsFetching: isFetching,
+      isMovieCreditsPopulated: isPopulated,
+      movieCreditsError: error
     };
   }
 );
@@ -62,11 +63,11 @@ function createMapStateToProps() {
   return createSelector(
     (state, { titleSlug }) => titleSlug,
     selectMovieFiles,
-    selectMoviePeople,
+    selectMovieCredits,
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (titleSlug, movieFiles, moviePeople, allMovies, commands, dimensions) => {
+    (titleSlug, movieFiles, movieCredits, allMovies, commands, dimensions) => {
       const sortedMovies = _.orderBy(allMovies, 'sortTitle');
       const movieIndex = _.findIndex(sortedMovies, { titleSlug });
       const movie = sortedMovies[movieIndex];
@@ -84,10 +85,10 @@ function createMapStateToProps() {
       } = movieFiles;
 
       const {
-        isMoviePeopleFetching,
-        isMoviePeoplePopulated,
-        moviePeopleError
-      } = moviePeople;
+        isMovieCreditsFetching,
+        isMovieCreditsPopulated,
+        movieCreditsError
+      } = movieCredits;
 
       const previousMovie = sortedMovies[movieIndex - 1] || _.last(sortedMovies);
       const nextMovie = sortedMovies[movieIndex + 1] || _.first(sortedMovies);
@@ -106,8 +107,8 @@ function createMapStateToProps() {
         isRenamingMovieCommand.body.movieIds.indexOf(movie.id) > -1
       );
 
-      const isFetching = isMovieFilesFetching && isMoviePeopleFetching;
-      const isPopulated = isMovieFilesPopulated && isMoviePeoplePopulated;
+      const isFetching = isMovieFilesFetching && isMovieCreditsFetching;
+      const isPopulated = isMovieFilesPopulated && isMovieCreditsPopulated;
       const alternateTitles = _.reduce(movie.alternateTitles, (acc, alternateTitle) => {
         acc.push(alternateTitle.title);
         return acc;
@@ -125,7 +126,7 @@ function createMapStateToProps() {
         isFetching,
         isPopulated,
         movieFilesError,
-        moviePeopleError,
+        movieCreditsError,
         hasMovieFiles,
         sizeOnDisk,
         previousMovie,
@@ -139,10 +140,11 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   fetchMovieFiles,
   clearMovieFiles,
-  fetchMoviePeople,
-  clearMoviePeople,
+  fetchMovieCredits,
+  clearMovieCredits,
   clearReleases,
   cancelFetchReleases,
+  fetchNetImportSchema,
   toggleMovieMonitored,
   fetchQueueDetails,
   clearQueueDetails,
@@ -198,14 +200,15 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.fetchMovieFiles({ movieId });
-    this.props.fetchMoviePeople({ movieId });
+    this.props.fetchMovieCredits({ movieId });
     this.props.fetchQueueDetails({ movieId });
+    this.props.fetchNetImportSchema();
   }
 
   unpopulate = () => {
     this.props.cancelFetchReleases();
     this.props.clearMovieFiles();
-    this.props.clearMoviePeople();
+    this.props.clearMovieCredits();
     this.props.clearQueueDetails();
     this.props.clearReleases();
   }
@@ -260,13 +263,14 @@ MovieDetailsConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   fetchMovieFiles: PropTypes.func.isRequired,
   clearMovieFiles: PropTypes.func.isRequired,
-  fetchMoviePeople: PropTypes.func.isRequired,
-  clearMoviePeople: PropTypes.func.isRequired,
+  fetchMovieCredits: PropTypes.func.isRequired,
+  clearMovieCredits: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
   cancelFetchReleases: PropTypes.func.isRequired,
   toggleMovieMonitored: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
+  fetchNetImportSchema: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 
