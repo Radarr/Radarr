@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -21,12 +22,10 @@ namespace NzbDrone.Core.Indexers.HDBits
         public virtual IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
-            var queryBase = new TorrentQuery();
+            var query = new TorrentQuery();
 
-            if (TryAddSearchParameters(queryBase, searchCriteria))
+            if (TryAddSearchParameters(query, searchCriteria))
             {
-                var query = queryBase.Clone();
-                query.ImdbInfo.Id = int.Parse(searchCriteria.Movie.ImdbId.Substring(2));
                 pageableRequests.Add(GetRequest(query));
             }
 
@@ -35,6 +34,11 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         private bool TryAddSearchParameters(TorrentQuery query, SearchCriteriaBase searchCriteria)
         {
+            if (searchCriteria.Movie.ImdbId.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
             var imdbId = int.Parse(searchCriteria.Movie.ImdbId.Substring(2));
 
             if (imdbId != 0)
