@@ -37,7 +37,7 @@ stages:
       - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
         displayName: Set Build Name
       - bash: |
-          git diff origin/aphrodite...origin/fix-quick-ui-build  --name-only | grep -qEv "^(src/|azure-pipelines.yml)"
+          git diff origin/aphrodite...HEAD  --name-only | grep -qEv "^(src/|azure-pipelines.yml)"
           echo $? > is_backend_update
           cat is_backend_update
         displayName: Check for Backend File Changes
