@@ -50,6 +50,7 @@ namespace NzbDrone.Core.Datastore.Migration
                             updateCmd.CommandText = "UPDATE QualityProfiles SET Items = ? WHERE Id = ?";
                             var param = updateCmd.CreateParameter();
                             qualityProfileItemConverter.SetValue(param, items);
+                            updateCmd.Parameters.Add(param);
                             updateCmd.AddParameter(id);
 
                             updateCmd.ExecuteNonQuery();
@@ -100,6 +101,7 @@ namespace NzbDrone.Core.Datastore.Migration
                             updateCmd.CommandText = "UPDATE " + tableName + " SET Quality = ? WHERE Quality = ?";
                             var param = updateCmd.CreateParameter();
                             qualityModelConverter.SetValue(param, qualityNew);
+                            updateCmd.Parameters.Add(param);
                             updateCmd.AddParameter(qualityJson);
 
                             updateCmd.ExecuteNonQuery();

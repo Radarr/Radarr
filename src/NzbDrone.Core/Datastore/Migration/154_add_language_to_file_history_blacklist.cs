@@ -89,6 +89,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     updateMovieFilesCmd.CommandText = $"UPDATE MovieFiles SET Languages = ? WHERE MovieId IN ({movieIds})";
                     var param = updateMovieFilesCmd.CreateParameter();
                     languageConverter.SetValue(param, language);
+                    updateMovieFilesCmd.Parameters.Add(param);
 
                     updateMovieFilesCmd.ExecuteNonQuery();
                 }
@@ -99,6 +100,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     updateHistoryCmd.CommandText = $"UPDATE History SET Languages = ? WHERE MovieId IN ({movieIds})";
                     var param = updateHistoryCmd.CreateParameter();
                     languageConverter.SetValue(param, language);
+                    updateHistoryCmd.Parameters.Add(param);
 
                     updateHistoryCmd.ExecuteNonQuery();
                 }
@@ -109,6 +111,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     updateBlacklistCmd.CommandText = $"UPDATE Blacklist SET Languages = ? WHERE MovieId IN ({movieIds})";
                     var param = updateBlacklistCmd.CreateParameter();
                     languageConverter.SetValue(param, language);
+                    updateBlacklistCmd.Parameters.Add(param);
 
                     updateBlacklistCmd.ExecuteNonQuery();
                 }
