@@ -135,7 +135,12 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var movie in listedMovies)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                var mapped = movie;
+
+                if (mapped.TmdbId == 0)
+                {
+                    mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                }
 
                 if (mapped != null && mapped.TmdbId > 0)
                 {
@@ -169,22 +174,15 @@ namespace NzbDrone.Core.NetImport
         private void CleanLibrary(List<Movie> movies)
         {
             var moviesToUpdate = new List<Movie>();
+
             if (_configService.ListSyncLevel != "disabled")
             {
                 var moviesInLibrary = _movieService.GetAllMovies();
                 foreach (var movie in moviesInLibrary)
                 {
-                    bool foundMatch = false;
-                    foreach (var listedMovie in movies)
-                    {
-                        if (movie.TmdbId == listedMovie.TmdbId)
-                        {
-                            foundMatch = true;
-                            break;
-                        }
-                    }
+                    var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
 
-                    if (!foundMatch)
+                    if (!movieExists)
                     {
                         switch (_configService.ListSyncLevel)
                         {
