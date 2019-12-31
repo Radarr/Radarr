@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Credits;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
@@ -23,16 +24,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private readonly Logger _logger;
         private readonly IDetectXbmcNfo _detectNfo;
         private readonly IDiskProvider _diskProvider;
+        private readonly ICreditService _creditService;
 
         public XbmcMetadata(IDetectXbmcNfo detectNfo,
                             IDiskProvider diskProvider,
                             IMapCoversToLocal mediaCoverService,
+                            ICreditService creditService,
                             Logger logger)
         {
             _logger = logger;
             _mediaCoverService = mediaCoverService;
             _diskProvider = diskProvider;
             _detectNfo = detectNfo;
+            _creditService = creditService;
         }
 
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|landscape|logo|backdrop|clearlogo)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -153,6 +157,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));
                     }
 
+                    if (movie.Collection?.Name != null)
+                    {
+                        var setElement = new XElement("set");
+
+                        setElement.Add(new XElement("name", movie.Collection.Name));
+
+                        details.Add(setElement);
+                    }
+
                     foreach (var genre in movie.Genres)
                     {
                         details.Add(new XElement("genre", genre));
@@ -229,6 +242,29 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             var subtitle = new XElement("subtitle");
                             subtitle.Add(new XElement("language", movieFile.MediaInfo.Subtitles));
                             streamDetails.Add(subtitle);
+                        }
+
+                        var credits = _creditService.GetAllCreditsForMovie(movie.Id);
+
+                        foreach (var credit in credits)
+                        {
+                            if (credit.Name != null && credit.Character != null)
+                            {
+                                var actorElement = new XElement("actor");
+
+                                actorElement.Add(new XElement("name", credit.Name));
+                                actorElement.Add(new XElement("role", credit.Character));
+                                actorElement.Add(new XElement("order", credit.Order));
+
+                                var headshot = credit.Images.FirstOrDefault(m => m.CoverType == MediaCoverTypes.Headshot);
+
+                                if (headshot != null && headshot.Url != null)
+                                {
+                                    actorElement.Add(new XElement("thumb", headshot.Url));
+                                }
+
+                                details.Add(actorElement);
+                            }
                         }
 
                         fileInfo.Add(streamDetails);
