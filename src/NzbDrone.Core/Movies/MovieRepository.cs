@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Movies
             {
                 foreach (var belowCutoff in profile.QualityIds)
                 {
-                    clauses.Add(string.Format($"(\"{_table}\".\"ProfileId\" = {profile.ProfileId} AND \"MovieFile\".\"Quality\" LIKE '%_quality_: {belowCutoff},%')"));
+                    clauses.Add(string.Format($"(\"{_table}\".\"ProfileId\" = {profile.ProfileId} AND \"MovieFiles\".\"Quality\" LIKE '%_quality_: {belowCutoff},%')"));
                 }
             }
 
