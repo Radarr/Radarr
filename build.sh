@@ -66,10 +66,12 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
+    slnFile=src/Lidarr.sln
+
     if [ $os = "windows" ]; then
-        slnFile=src/Lidarr.Windows.sln
+        platform=Windows
     else
-        slnFile=src/Lidarr.Posix.sln
+        platform=Posix
     fi
 
     dotnet clean $slnFile -c Debug
@@ -77,9 +79,9 @@ Build()
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
     else
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:RuntimeIdentifiers=$RID -t:PublishAllRids
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
     fi
 
     ProgressEnd 'Build'
