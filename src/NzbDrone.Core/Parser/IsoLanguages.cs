@@ -15,22 +15,23 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("da", "dan"),
                                                                new IsoLanguage("nl", "nld"),
                                                                new IsoLanguage("ja", "jpn"),
-
-//                                                             new IsoLanguage("", ""),
-//                                                             new IsoLanguage("", ""),
+                                                               new IsoLanguage("is", "isl"),
+                                                               new IsoLanguage("zh", "zho"),
                                                                new IsoLanguage("ru", "rus"),
                                                                new IsoLanguage("pl", "pol"),
                                                                new IsoLanguage("vi", "vie"),
                                                                new IsoLanguage("sv", "swe"),
                                                                new IsoLanguage("no", "nor"),
+                                                               new IsoLanguage("nb", "nob"), // Norwegian Bokmål
                                                                new IsoLanguage("fi", "fin"),
                                                                new IsoLanguage("tr", "tur"),
                                                                new IsoLanguage("pt", "por"),
-
-//                                                             new IsoLanguage("nl", "nld"),
                                                                new IsoLanguage("el", "ell"),
                                                                new IsoLanguage("ko", "kor"),
-                                                               new IsoLanguage("hu", "hun")
+                                                               new IsoLanguage("hu", "hun"),
+                                                               new IsoLanguage("he", "heb"),
+                                                               new IsoLanguage("lt", "lit"),
+                                                               new IsoLanguage("cs", "ces")
                                                            };
 
         public static IsoLanguage Find(string isoCode)
