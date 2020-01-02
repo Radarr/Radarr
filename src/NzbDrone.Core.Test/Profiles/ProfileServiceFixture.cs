@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Profiles
         {
             Mocker.GetMock<ICustomFormatService>()
                 .Setup(s => s.All())
-                .Returns(new List<CustomFormats.CustomFormat>());
+                .Returns(new List<CustomFormat>());
 
             Subject.Handle(new ApplicationStartedEvent());
 

@@ -6,6 +6,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Movies;
@@ -13,7 +14,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Test.CustomFormat;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -23,18 +24,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     //TODO: Update for custom qualities!
     public class PrioritizeDownloadDecisionFixture : CoreTest<DownloadDecisionPriorizationService>
     {
-        private CustomFormats.CustomFormat _customFormat1;
-        private CustomFormats.CustomFormat _customFormat2;
+        private CustomFormat _customFormat1;
+        private CustomFormat _customFormat2;
 
         [SetUp]
         public void Setup()
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Usenet);
 
-            _customFormat1 = new CustomFormats.CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
-            _customFormat2 = new CustomFormats.CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
+            _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
+            _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
 
-            CustomFormatsFixture.GivenCustomFormats(CustomFormats.CustomFormat.None, _customFormat1, _customFormat2);
+            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None, _customFormat1, _customFormat2);
         }
 
         private RemoteMovie GivenRemoteMovie(QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
@@ -323,7 +324,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_prefer_better_custom_format()
         {
             var quality1 = new QualityModel(Quality.Bluray720p);
-            quality1.CustomFormats.Add(CustomFormats.CustomFormat.None);
+            quality1.CustomFormats.Add(CustomFormat.None);
             var remoteMovie1 = GivenRemoteMovie(quality1);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
@@ -365,7 +366,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie1 = GivenRemoteMovie(quality1);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
-            quality2.CustomFormats.AddRange(new List<CustomFormats.CustomFormat> { _customFormat1, _customFormat2 });
+            quality2.CustomFormats.AddRange(new List<CustomFormat> { _customFormat1, _customFormat2 });
             var remoteMovie2 = GivenRemoteMovie(quality2);
 
             var decisions = new List<DownloadDecision>();

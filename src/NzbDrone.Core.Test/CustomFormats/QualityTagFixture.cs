@@ -5,7 +5,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.CustomFormat
+namespace NzbDrone.Core.Test.CustomFormats
 {
     [TestFixture]
     public class QualityTagFixture : CoreTest

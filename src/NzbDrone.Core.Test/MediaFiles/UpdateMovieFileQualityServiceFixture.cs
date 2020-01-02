@@ -3,6 +3,7 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Commands;
@@ -33,9 +34,9 @@ namespace NzbDrone.Core.Test.MediaFiles
             _movieFile.Quality = _oldQuality;
 
             _newQuality = _oldQuality.JsonClone();
-            var format = new CustomFormats.CustomFormat("Awesome Format");
+            var format = new CustomFormat("Awesome Format");
             format.Id = 1;
-            _newQuality.CustomFormats = new List<CustomFormats.CustomFormat> { format };
+            _newQuality.CustomFormats = new List<CustomFormat> { format };
 
             _newInfo = new ParsedMovieInfo
             {

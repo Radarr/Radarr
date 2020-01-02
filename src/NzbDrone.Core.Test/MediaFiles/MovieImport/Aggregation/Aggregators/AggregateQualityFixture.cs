@@ -31,10 +31,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                                .Returns(AugmentQualityResult.ResolutionOnly((int)Resolution.R1080p, Confidence.MediaInfo));
 
             _fileExtensionAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
-                                   .Returns(new AugmentQualityResult(Source.TV, Confidence.Fallback, (int)Resolution.R720p, Confidence.Fallback, Modifier.NONE, Confidence.Fallback, new Revision(), new List<CustomFormats.CustomFormat>()));
+                                   .Returns(new AugmentQualityResult(Source.TV, Confidence.Fallback, (int)Resolution.R720p, Confidence.Fallback, Modifier.NONE, Confidence.Fallback, new Revision(), new List<CustomFormat>()));
 
             _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
-                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, (int)Resolution.R480p, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(), new List<CustomFormats.CustomFormat>()));
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, (int)Resolution.R480p, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(), new List<CustomFormat>()));
         }
 
         private void GivenAugmenters(params Mock<IAugmentQuality>[] mocks)
