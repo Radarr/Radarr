@@ -94,11 +94,13 @@ class AddNewAlbumSearchResult extends Component {
     const height = calculateHeight(230, isSmallScreen);
 
     return (
-      <div>
+      <div className={styles.searchResult}>
         <Link
-          className={styles.searchResult}
+          className={styles.underlay}
           {...linkProps}
-        >
+        />
+
+        <div className={styles.overlay}>
           {
             !isSmallScreen &&
             <AlbumCover
@@ -212,7 +214,7 @@ class AddNewAlbumSearchResult extends Component {
               />
             </div>
           </div>
-        </Link>
+        </div>
 
         <AddNewAlbumModal
           isOpen={isNewAddAlbumModalOpen && !isExistingAlbum}

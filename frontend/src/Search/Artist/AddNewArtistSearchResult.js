@@ -92,11 +92,13 @@ class AddNewArtistSearchResult extends Component {
     const height = calculateHeight(230, isSmallScreen);
 
     return (
-      <div>
+      <div className={styles.searchResult}>
         <Link
-          className={styles.searchResult}
+          className={styles.underlay}
           {...linkProps}
-        >
+        />
+
+        <div className={styles.overlay}>
           {
             isSmallScreen ?
               null :
@@ -190,7 +192,7 @@ class AddNewArtistSearchResult extends Component {
               />
             </div>
           </div>
-        </Link>
+        </div>
 
         <AddNewArtistModal
           isOpen={isNewAddArtistModalOpen && !isExistingArtist}
