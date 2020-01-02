@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.CustomFormat
+namespace NzbDrone.Core.Test.CustomFormats
 {
     [TestFixture]
     public class CustomFormatsFixture : CoreTest
     {
-        private static List<CustomFormats.CustomFormat> _customFormats { get; set; }
+        private static List<CustomFormat> _customFormats { get; set; }
 
-        public static void GivenCustomFormats(params CustomFormats.CustomFormat[] formats)
+        public static void GivenCustomFormats(params CustomFormat[] formats)
         {
             _customFormats = formats.ToList();
         }
@@ -28,7 +29,7 @@ namespace NzbDrone.Core.Test.CustomFormat
                 new ProfileFormatItem
                 {
                     Allowed = true,
-                    Format = CustomFormats.CustomFormat.None
+                    Format = CustomFormat.None
                 }
             };
         }

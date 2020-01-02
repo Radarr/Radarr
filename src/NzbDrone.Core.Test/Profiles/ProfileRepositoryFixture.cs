@@ -1,7 +1,9 @@
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Profiles
@@ -20,8 +22,8 @@ namespace NzbDrone.Core.Test.Profiles
             var profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-                FormatCutoff = CustomFormats.CustomFormat.None.Id,
-                FormatItems = CustomFormat.CustomFormatsFixture.GetDefaultFormatItems(),
+                FormatCutoff = CustomFormat.None.Id,
+                FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
                 Cutoff = Quality.Bluray1080p.Id,
                 Name = "TestProfile"
             };

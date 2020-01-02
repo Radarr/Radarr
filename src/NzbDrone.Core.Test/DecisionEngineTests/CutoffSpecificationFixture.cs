@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Test.CustomFormat;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -12,7 +13,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class CutoffSpecificationFixture : CoreTest<UpgradableSpecification>
     {
-        private CustomFormats.CustomFormat _customFormat;
+        private CustomFormat _customFormat;
 
         [SetUp]
         public void Setup()
@@ -21,9 +22,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenCustomFormatHigher()
         {
-            _customFormat = new CustomFormats.CustomFormat("My Format", "L_ENGLISH") { Id = 1 };
+            _customFormat = new CustomFormat("My Format", "L_ENGLISH") { Id = 1 };
 
-            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormats.CustomFormat.None);
+            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormat.None);
         }
 
         [Test]
@@ -68,15 +69,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenCustomFormatHigher();
             var old = new QualityModel(Quality.HDTV720p);
-            old.CustomFormats = new List<CustomFormats.CustomFormat> { CustomFormats.CustomFormat.None };
+            old.CustomFormats = new List<CustomFormat> { CustomFormat.None };
             var newQ = new QualityModel(Quality.Bluray1080p);
-            newQ.CustomFormats = new List<CustomFormats.CustomFormat> { _customFormat };
+            newQ.CustomFormats = new List<CustomFormat> { _customFormat };
             Subject.CutoffNotMet(
                 new Profile
                 {
                     Cutoff = Quality.HDTV720p.Id,
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
-                    FormatCutoff = CustomFormats.CustomFormat.None.Id,
+                    FormatCutoff = CustomFormat.None.Id,
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
                 },
                 old,

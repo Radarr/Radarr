@@ -2,9 +2,11 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
@@ -28,8 +30,8 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
             var profile = new Profile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-                    FormatItems = CustomFormat.CustomFormatsFixture.GetDefaultFormatItems(),
-                    FormatCutoff = CustomFormats.CustomFormat.None.Id,
+                    FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
+                    FormatCutoff = CustomFormat.None.Id,
                     Cutoff = Quality.Bluray1080p.Id,
                     Name = "TestProfile"
                 };
