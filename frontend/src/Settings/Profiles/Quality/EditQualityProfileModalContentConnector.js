@@ -239,6 +239,17 @@ class EditQualityProfileModalContentConnector extends Component {
     this.props.setQualityProfileValue({ name, value: cutoffId });
   }
 
+  onFormatCutoffChange = ({ name, value }) => {
+    const id = parseInt(value);
+    const item = _.find(this.props.item.formatItems.value, (i) => {
+      return i.format.id === id;
+    });
+
+    const cutoffId = item.format.id;
+
+    this.props.setQualityProfileValue({ name, value: cutoffId });
+  }
+
   onLanguageChange = ({ name, value }) => {
 
     const id = parseInt(value);
@@ -550,6 +561,7 @@ class EditQualityProfileModalContentConnector extends Component {
         onSavePress={this.onSavePress}
         onInputChange={this.onInputChange}
         onCutoffChange={this.onCutoffChange}
+        onFormatCutoffChange={this.onFormatCutoffChange}
         onLanguageChange={this.onLanguageChange}
         onCreateGroupPress={this.onCreateGroupPress}
         onDeleteGroupPress={this.onDeleteGroupPress}

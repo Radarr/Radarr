@@ -99,6 +99,7 @@ class EditQualityProfileModalContent extends Component {
       isInUse,
       onInputChange,
       onCutoffChange,
+      onFormatCutoffChange,
       onLanguageChange,
       onSavePress,
       onModalClose,
@@ -212,7 +213,7 @@ class EditQualityProfileModalContent extends Component {
                                 {...formatCutoff}
                                 values={customFormats}
                                 helpText="Once this custom format is reached Radarr will no longer download movies"
-                                onChange={onCutoffChange}
+                                onChange={onFormatCutoffChange}
                               />
                             </FormGroup>
                         }
@@ -319,6 +320,7 @@ EditQualityProfileModalContent.propTypes = {
   isInUse: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onCutoffChange: PropTypes.func.isRequired,
+  onFormatCutoffChange: PropTypes.func.isRequired,
   onLanguageChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onContentHeightChange: PropTypes.func.isRequired,
