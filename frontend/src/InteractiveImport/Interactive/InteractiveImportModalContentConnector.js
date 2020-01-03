@@ -109,7 +109,7 @@ class InteractiveImportModalContentConnector extends Component {
         const {
           movie,
           quality,
-          language
+          languages
         } = item;
 
         if (!movie) {
@@ -122,7 +122,7 @@ class InteractiveImportModalContentConnector extends Component {
           return false;
         }
 
-        if (!language) {
+        if (!languages) {
           this.setState({ interactiveImportErrorMessage: 'Language must be chosen for each selected file' });
           return false;
         }
@@ -132,7 +132,7 @@ class InteractiveImportModalContentConnector extends Component {
           folderName: item.folderName,
           movieId: movie.id,
           quality,
-          languages: [language],
+          languages,
           downloadId: this.props.downloadId
         });
       }
