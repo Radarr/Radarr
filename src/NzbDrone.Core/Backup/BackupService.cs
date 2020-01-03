@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Backup
 
         private string _backupTempFolder;
 
-        public static readonly Regex BackupFileRegex = new Regex(@"lidarr_backup_[._0-9]+\.zip", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        public static readonly Regex BackupFileRegex = new Regex(@"lidarr_backup_(v[0-9.]+_)?[._0-9]+\.zip", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public BackupService(IMainDatabase maindDb,
                              IMakeDatabaseBackup makeDatabaseBackup,
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Backup
             _diskProvider.EnsureFolder(_backupTempFolder);
             _diskProvider.EnsureFolder(GetBackupFolder(backupType));
 
-            var backupFilename = string.Format("lidarr_backup_{0:yyyy.MM.dd_HH.mm.ss}.zip", DateTime.Now);
+            var backupFilename = string.Format("lidarr_backup_v{0}_{1:yyyy.MM.dd_HH.mm.ss}.zip", BuildInfo.Version, DateTime.Now);
             var backupPath = Path.Combine(GetBackupFolder(backupType), backupFilename);
 
             Cleanup();
