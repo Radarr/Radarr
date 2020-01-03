@@ -26,4 +26,8 @@ MovieFormats.propTypes = {
   formats: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
+MovieFormats.defaultProps = {
+  formats: []
+};
+
 export default MovieFormats;
