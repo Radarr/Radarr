@@ -1,11 +1,10 @@
 using System.IO;
-using NzbDrone.Common.Extensions;
 using Equ;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
 {
-
     public enum MediaCoverTypes
     {
         Unknown = 0,

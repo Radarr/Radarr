@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Http
             {
                 return null;
             }
-            
+
             var proxySettings = new HttpProxySettings(_configService.ProxyType,
                                 _configService.ProxyHostname,
                                 _configService.ProxyPort,

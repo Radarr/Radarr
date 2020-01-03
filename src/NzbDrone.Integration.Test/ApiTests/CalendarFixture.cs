@@ -1,10 +1,10 @@
-using FluentAssertions;
-using NUnit.Framework;
-using Lidarr.Api.V1.Albums;
-using NzbDrone.Integration.Test.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
+using Lidarr.Api.V1.Albums;
+using NUnit.Framework;
+using NzbDrone.Integration.Test.Client;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

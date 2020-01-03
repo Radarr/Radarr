@@ -1,10 +1,10 @@
-using FluentAssertions;
-using NUnit.Framework;
-using Lidarr.Api.V1.Indexers;
-using System.Net;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
+using FluentAssertions;
+using Lidarr.Api.V1.Indexers;
+using NUnit.Framework;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

@@ -1,12 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
-using System.Collections.Generic;
-using System.Linq;
-using NzbDrone.Core.ImportLists;
-using NzbDrone.Common.Extensions;
-using System;
 
 namespace NzbDrone.Core.Profiles.Metadata
 {
@@ -87,17 +86,17 @@ namespace NzbDrone.Core.Profiles.Metadata
         {
             var primaryTypes = PrimaryAlbumType.All
                 .OrderByDescending(l => l.Name)
-                .Select(v => new ProfilePrimaryAlbumTypeItem {PrimaryAlbumType = v, Allowed = primAllowed.Contains(v)})
+                .Select(v => new ProfilePrimaryAlbumTypeItem { PrimaryAlbumType = v, Allowed = primAllowed.Contains(v) })
                 .ToList();
 
             var secondaryTypes = SecondaryAlbumType.All
                 .OrderByDescending(l => l.Name)
-                .Select(v => new ProfileSecondaryAlbumTypeItem {SecondaryAlbumType = v, Allowed = secAllowed.Contains(v)})
+                .Select(v => new ProfileSecondaryAlbumTypeItem { SecondaryAlbumType = v, Allowed = secAllowed.Contains(v) })
                 .ToList();
 
             var releaseStatues = ReleaseStatus.All
                 .OrderByDescending(l => l.Name)
-                .Select(v => new ProfileReleaseStatusItem {ReleaseStatus = v, Allowed = relAllowed.Contains(v)})
+                .Select(v => new ProfileReleaseStatusItem { ReleaseStatus = v, Allowed = relAllowed.Contains(v) })
                 .ToList();
 
             var profile = new MetadataProfile
@@ -131,7 +130,7 @@ namespace NzbDrone.Core.Profiles.Metadata
             {
                 _logger.Info("Setting up standard metadata profile");
 
-                AddDefaultProfile("Standard", new List<PrimaryAlbumType>{PrimaryAlbumType.Album}, new List<SecondaryAlbumType>{ SecondaryAlbumType.Studio }, new List<ReleaseStatus>{ReleaseStatus.Official});
+                AddDefaultProfile("Standard", new List<PrimaryAlbumType> { PrimaryAlbumType.Album }, new List<SecondaryAlbumType> { SecondaryAlbumType.Studio }, new List<ReleaseStatus> { ReleaseStatus.Official });
             }
 
             if (emptyProfile != null)

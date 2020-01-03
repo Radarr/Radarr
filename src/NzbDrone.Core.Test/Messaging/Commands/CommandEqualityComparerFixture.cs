@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_true_when_single_property_matches()
         {
-            var command1 = new AlbumSearchCommand { AlbumIds = new List<int>{ 1 } };
+            var command1 = new AlbumSearchCommand { AlbumIds = new List<int> { 1 } };
             var command2 = new AlbumSearchCommand { AlbumIds = new List<int> { 1 } };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeTrue();
@@ -51,12 +51,11 @@ namespace NzbDrone.Core.Test.Messaging.Commands
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
 
-
         [Test]
         public void should_return_false_when_only_one_has_properties()
         {
             var command1 = new ArtistSearchCommand();
-            var command2 = new ArtistSearchCommand { ArtistId = 2};
+            var command2 = new ArtistSearchCommand { ArtistId = 2 };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
@@ -107,7 +106,6 @@ namespace NzbDrone.Core.Test.Messaging.Commands
             var command2 = new ManualImportCommand { Files = files2 };
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeTrue();
         }
-
 
         [Test]
         public void should_return_false_when_commands_list_for_non_primitive_type_dont_match()

@@ -1,8 +1,8 @@
-using NLog;
-using NzbDrone.Core.Music;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Profiles.Releases
 {

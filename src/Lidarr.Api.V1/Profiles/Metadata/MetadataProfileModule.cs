@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
-using NzbDrone.Core.Profiles.Metadata;
 using Lidarr.Http;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace Lidarr.Api.V1.Profiles.Metadata
 {

@@ -10,14 +10,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IFingerprintingService _fingerprintingService;
         private readonly IConfigService _configService;
-        
+
         public FpcalcCheck(IFingerprintingService fingerprintingService,
                            IConfigService configService)
         {
             _fingerprintingService = fingerprintingService;
             _configService = configService;
         }
-        
+
         public override HealthCheck Check()
         {
             // always pass if fingerprinting is disabled
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 return new HealthCheck(GetType());
             }
-            
+
             if (!_fingerprintingService.IsSetup())
             {
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, $"fpcalc could not be found.  Audio fingerprinting disabled.", "#fpcalc-missing");

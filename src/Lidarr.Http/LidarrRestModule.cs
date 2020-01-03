@@ -1,14 +1,14 @@
 using System;
-using NzbDrone.Core.Datastore;
 using Lidarr.Http.REST;
 using Lidarr.Http.Validation;
+using NzbDrone.Core.Datastore;
 
 namespace Lidarr.Http
 {
-    public abstract class LidarrRestModule<TResource> : RestModule<TResource> where TResource : RestResource, new()
+    public abstract class LidarrRestModule<TResource> : RestModule<TResource>
+        where TResource : RestResource, new()
     {
         protected string Resource { get; private set; }
-
 
         private static string BaseUrl()
         {
@@ -17,6 +17,7 @@ namespace Lidarr.Http
             {
                 return "/api/v1/";
             }
+
             return "/api/";
         }
 

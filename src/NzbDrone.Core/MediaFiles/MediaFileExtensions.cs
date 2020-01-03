@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 
-
 namespace NzbDrone.Core.MediaFiles
 {
     public static class MediaFileExtensions
@@ -23,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles
                 { ".opus", Quality.Unknown },
                 { ".wma", Quality.WMA },
                 { ".wav", Quality.WAV },
-                { ".wv" , Quality.WAVPACK },
+                { ".wv", Quality.WAVPACK },
                 { ".flac", Quality.FLAC },
                 { ".ape", Quality.APE }
             };

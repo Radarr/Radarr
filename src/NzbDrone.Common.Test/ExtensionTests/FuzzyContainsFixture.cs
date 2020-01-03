@@ -49,9 +49,9 @@ namespace NzbDrone.Common.Test
         [TestCase("", "", 0)]
         [TestCase("abcdef", "de", 1)]
         [TestCase("abcdef", "defy", 0.75)]
-        [TestCase("abcdef", "abcdefghk", 6.0/9)]
-        [TestCase("abcdef", "zabcdefz", 6.0/8)]
-        [TestCase("plusifeelneedforredundantinformationintitlefield", "anthology", 4.0/9)]
+        [TestCase("abcdef", "abcdefghk", 6.0 / 9)]
+        [TestCase("abcdef", "zabcdefz", 6.0 / 8)]
+        [TestCase("plusifeelneedforredundantinformationintitlefield", "anthology", 4.0 / 9)]
         [TestCase("+ (Plus) - I feel the need for redundant information in the title field", "+", 1)]
         public void FuzzyContains(string text, string pattern, double expectedScore)
         {

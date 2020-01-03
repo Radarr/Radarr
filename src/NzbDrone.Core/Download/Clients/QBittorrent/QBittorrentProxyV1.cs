@@ -1,16 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
-using System;
-using System.Collections.Generic;
-using System.Net;
 
 namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     // API https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-Documentation
-
     public class QBittorrentProxyV1 : IQBittorrentProxy
     {
         private readonly IHttpClient _httpClient;
@@ -230,7 +229,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
                 throw;
             }
-
         }
 
         public void PauseTorrent(string hash, QBittorrentSettings settings)
@@ -354,7 +352,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     throw new DownloadClientUnavailableException("Failed to connect to qBittorrent, please check your settings.", ex);
                 }
 
-                if (response.Content != "Ok.") // returns "Fails." on bad login
+                // returns "Fails." on bad login
+                if (response.Content != "Ok.")
                 {
                     _logger.Debug("qbitTorrent authentication failed.");
                     throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.");

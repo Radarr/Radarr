@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Rest
     {
         public JsonNetSerializer()
         {
-                ContentType = "application/json";
+            ContentType = "application/json";
         }
 
         public string Serialize(object obj)

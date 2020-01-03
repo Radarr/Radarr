@@ -37,9 +37,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var quality = Quality.FLAC;
 
             var context = new ConverterContext
-                          {
-                              DbValue = quality.Id
-                          };
+            {
+                DbValue = quality.Id
+            };
 
             Subject.FromDB(context).Should().Be(quality);
         }
@@ -48,9 +48,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_db_null_for_db_null_value_when_getting_from_db()
         {
             var context = new ConverterContext
-                          {
-                              DbValue = DBNull.Value
-                          };
+            {
+                DbValue = DBNull.Value
+            };
 
             Subject.FromDB(context).Should().Be(Quality.Unknown);
         }

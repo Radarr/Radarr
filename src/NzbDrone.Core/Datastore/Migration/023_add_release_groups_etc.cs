@@ -1,12 +1,12 @@
-using FluentMigrator;
-using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Common.Serializer;
-using System.Collections.Generic;
-using NzbDrone.Core.Music;
-using System.Data;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using FluentMigrator;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -16,7 +16,6 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             // ARTISTS TABLE
-            
             Create.TableForModel("ArtistMetadata")
                 .WithColumn("ForeignArtistId").AsString().Unique()
                 .WithColumn("Name").AsString()
@@ -34,7 +33,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.Sql(@"INSERT INTO ArtistMetadata (ForeignArtistId, Name, Overview, Disambiguation, Type, Status, Images, Links, Genres, Ratings, Members)
                           SELECT ForeignArtistId, Name, Overview, Disambiguation, ArtistType, Status, Images, Links, Genres, Ratings, Members
                           FROM Artists");
-            
+
             // Add an ArtistMetadataId column to Artists
             Alter.Table("Artists").AddColumn("ArtistMetadataId").AsInt32().WithDefaultValue(0);
 
@@ -45,7 +44,6 @@ namespace NzbDrone.Core.Datastore.Migration
                                                   WHERE ArtistMetadata.ForeignArtistId = Artists.ForeignArtistId)");
 
             // ALBUM RELEASES TABLE - Do this before we mess with the Albums table
-
             Create.TableForModel("AlbumReleases")
                 .WithColumn("ForeignReleaseId").AsString().Unique()
                 .WithColumn("AlbumId").AsInt32().Indexed()
@@ -75,12 +73,12 @@ namespace NzbDrone.Core.Datastore.Migration
                                                   FROM ArtistMetadata 
                                                   JOIN Artists ON ArtistMetadata.Id = Artists.ArtistMetadataId
                                                   WHERE Albums.ArtistId = Artists.Id)");
-            
+
             // TRACKS TABLE
             Alter.Table("Tracks").AddColumn("ForeignRecordingId").AsString().WithDefaultValue("0");
             Alter.Table("Tracks").AddColumn("AlbumReleaseId").AsInt32().WithDefaultValue(0);
             Alter.Table("Tracks").AddColumn("ArtistMetadataId").AsInt32().WithDefaultValue(0);
-            
+
             // Set track release to the only release we've bothered populating
             Execute.Sql(@"UPDATE Tracks
                           SET AlbumReleaseId = (SELECT AlbumReleases.Id 
@@ -109,6 +107,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .Column("Genres")
                 .Column("Ratings")
                 .Column("Members")
+
                 // as well as the ones no longer used
                 .Column("MBId")
                 .Column("AMId")
@@ -146,7 +145,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // Remove old columns from TrackFiles
             Delete.Column("ArtistId").FromTable("TrackFiles");
-            
+
             // Add indices
             Create.Index().OnTable("Artists").OnColumn("ArtistMetadataId").Ascending();
             Create.Index().OnTable("Artists").OnColumn("Monitored").Ascending();
@@ -156,12 +155,11 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.Index().OnTable("Tracks").OnColumn("ForeignRecordingId").Ascending();
 
             // Force a metadata refresh
-            Update.Table("Artists").Set(new { LastInfoSync = new System.DateTime(2018, 1, 1, 0, 0, 1)}).AllRows();
-            Update.Table("Albums").Set(new { LastInfoSync = new System.DateTime(2018, 1, 1, 0, 0, 1)}).AllRows();
+            Update.Table("Artists").Set(new { LastInfoSync = new System.DateTime(2018, 1, 1, 0, 0, 1) }).AllRows();
+            Update.Table("Albums").Set(new { LastInfoSync = new System.DateTime(2018, 1, 1, 0, 0, 1) }).AllRows();
             Update.Table("ScheduledTasks")
-                .Set(new { LastExecution = new System.DateTime(2018, 1, 1, 0, 0, 1)})
+                .Set(new { LastExecution = new System.DateTime(2018, 1, 1, 0, 0, 1) })
                 .Where(new { TypeName = "NzbDrone.Core.Music.Commands.RefreshArtistCommand" });
-
         }
 
         private void PopulateReleases(IDbConnection conn, IDbTransaction tran)
@@ -173,6 +171,7 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 release.ForeignReleaseId = release.AlbumId.ToString();
             }
+
             WriteReleasesToReleases(releases, conn, tran);
         }
 
@@ -191,7 +190,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private List<AlbumRelease> ReadReleasesFromAlbums(IDbConnection conn, IDbTransaction tran)
         {
-
             // need to get all the old albums
             var releases = new List<AlbumRelease>();
 
@@ -213,26 +211,28 @@ namespace NzbDrone.Core.Datastore.Migration
                             var media = new List<Medium>();
                             for (var i = 1; i <= Math.Max(albumRelease.MediaCount, 1); i++)
                             {
-                                media.Add(new Medium { Number = i, Name = "", Format = albumRelease.Format ?? "Unknown" } );
+                                media.Add(new Medium { Number = i, Name = "", Format = albumRelease.Format ?? "Unknown" });
                             }
-                        
-                            toInsert = new AlbumRelease {
-                                    AlbumId = albumId,
-                                    ForeignReleaseId = albumRelease.Id.IsNotNullOrWhiteSpace() ? albumRelease.Id : albumId.ToString(),
-                                    Title = albumRelease.Title.IsNotNullOrWhiteSpace() ? albumRelease.Title : "",
-                                    Status = "",
-                                    Duration = 0,
-                                    Label = albumRelease.Label,
-                                    Disambiguation = albumRelease.Disambiguation,
-                                    Country = albumRelease.Country,
-                                    Media = media,
-                                    TrackCount = albumRelease.TrackCount,
-                                    Monitored = true
-                                };
+
+                            toInsert = new AlbumRelease
+                            {
+                                AlbumId = albumId,
+                                ForeignReleaseId = albumRelease.Id.IsNotNullOrWhiteSpace() ? albumRelease.Id : albumId.ToString(),
+                                Title = albumRelease.Title.IsNotNullOrWhiteSpace() ? albumRelease.Title : "",
+                                Status = "",
+                                Duration = 0,
+                                Label = albumRelease.Label,
+                                Disambiguation = albumRelease.Disambiguation,
+                                Country = albumRelease.Country,
+                                Media = media,
+                                TrackCount = albumRelease.TrackCount,
+                                Monitored = true
+                            };
                         }
                         else
                         {
-                            toInsert = new AlbumRelease {
+                            toInsert = new AlbumRelease
+                            {
                                 AlbumId = albumId,
                                 ForeignReleaseId = albumId.ToString(),
                                 Title = "",

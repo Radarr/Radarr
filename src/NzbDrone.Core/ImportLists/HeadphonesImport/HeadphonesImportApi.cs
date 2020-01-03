@@ -1,4 +1,3 @@
-
 namespace NzbDrone.Core.ImportLists.HeadphonesImport
 {
     public class HeadphonesImportArtist

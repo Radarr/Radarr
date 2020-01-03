@@ -1,19 +1,19 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
-using System.Collections.Generic;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Test.Qualities;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {
@@ -32,11 +32,9 @@ namespace NzbDrone.Core.Test.HistoryTests
             };
 
             _profileCustom = new QualityProfile
-
             {
                 Cutoff = Quality.MP3_320.Id,
                 Items = QualityFixture.GetDefaultQualities(Quality.MP3_256),
-
             };
         }
 
@@ -59,11 +57,11 @@ namespace NzbDrone.Core.Test.HistoryTests
             };
 
             var downloadClientItem = new DownloadClientItem
-                                     {
-                                        DownloadClient = "sab",
-                                        DownloadId = "abcd"
-                                     };
-            
+            {
+                DownloadClient = "sab",
+                DownloadId = "abcd"
+            };
+
             Subject.Handle(new TrackImportedEvent(localTrack, trackFile, new List<TrackFile>(), true, downloadClientItem));
 
             Mocker.GetMock<IHistoryRepository>()

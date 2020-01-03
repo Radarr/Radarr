@@ -60,7 +60,8 @@ namespace NzbDrone.Integration.Test.Client
             return response.Content;
         }
 
-        public T Execute<T>(IRestRequest request, HttpStatusCode statusCode) where T : class, new()
+        public T Execute<T>(IRestRequest request, HttpStatusCode statusCode)
+            where T : class, new()
         {
             var content = Execute(request, statusCode);
 
@@ -83,7 +84,6 @@ namespace NzbDrone.Integration.Test.Client
         public ClientBase(IRestClient restClient, string apiKey, string resource = null)
             : base(restClient, apiKey, resource ?? new TResource().ResourceName)
         {
-
         }
 
         public List<TResource> All()
@@ -161,19 +161,22 @@ namespace NzbDrone.Integration.Test.Client
             return Put<object>(request, statusCode);
         }
 
-        public T Get<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.OK) where T : class, new()
+        public T Get<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.OK)
+            where T : class, new()
         {
             request.Method = Method.GET;
             return Execute<T>(request, statusCode);
         }
 
-        public T Post<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.Created) where T : class, new()
+        public T Post<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.Created)
+            where T : class, new()
         {
             request.Method = Method.POST;
             return Execute<T>(request, statusCode);
         }
 
-        public T Put<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.Accepted) where T : class, new()
+        public T Put<T>(IRestRequest request, HttpStatusCode statusCode = HttpStatusCode.Accepted)
+            where T : class, new()
         {
             request.Method = Method.PUT;
             return Execute<T>(request, statusCode);

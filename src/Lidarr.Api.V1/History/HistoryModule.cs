@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nancy;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.History;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Tracks;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
 using Lidarr.Http.REST;
+using Nancy;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 
 namespace Lidarr.Api.V1.History
 {
@@ -30,9 +30,9 @@ namespace Lidarr.Api.V1.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Get("/since",  x => GetHistorySince());
-            Get("/artist",  x => GetArtistHistory());
-            Post("/failed",  x => MarkAsFailed());
+            Get("/since", x => GetHistorySince());
+            Get("/artist", x => GetArtistHistory());
+            Post("/failed", x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeArtist, bool includeAlbum, bool includeTrack)
@@ -43,15 +43,16 @@ namespace Lidarr.Api.V1.History
             {
                 resource.Artist = model.Artist.ToResource();
             }
+
             if (includeAlbum)
             {
                 resource.Album = model.Album.ToResource();
             }
+
             if (includeTrack)
             {
                 resource.Track = model.Track.ToResource();
             }
-            
 
             if (model.Artist != null)
             {
@@ -89,7 +90,6 @@ namespace Lidarr.Api.V1.History
                 var downloadId = downloadIdFilter.Value;
                 pagingSpec.FilterExpressions.Add(h => h.DownloadId == downloadId);
             }
-
 
             return ApplyToPage(_historyService.Paged, pagingSpec, h => MapToResource(h, includeArtist, includeAlbum, includeTrack));
         }

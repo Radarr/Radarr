@@ -10,11 +10,11 @@ using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
@@ -89,13 +89,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteAlbum1 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(1) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var remoteAlbum2 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(1), GetAlbum(2) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -122,13 +120,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteAlbum1 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(1) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var remoteAlbum2 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(2) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -142,18 +138,15 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteAlbum1 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(1) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var remoteAlbum2 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(2) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var remoteAlbum3 = GetRemoteAlbum(
                                                     new List<Album> { GetAlbum(2) },
-                                                    new QualityModel(Quality.MP3_192)
-                                                 );
+                                                    new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));

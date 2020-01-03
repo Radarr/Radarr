@@ -1,18 +1,18 @@
 using System;
 using System.Net;
 using MonoTorrent;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Configuration;
-using NLog;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Download
 {
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Download
             _httpClient = httpClient;
             _torrentFileInfoReader = torrentFileInfoReader;
         }
-        
+
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
 
         public virtual bool PreferTorrentFile => false;
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download
             {
                 magnetUrl = torrentInfo.MagnetUrl;
             }
-            
+
             if (PreferTorrentFile)
             {
                 if (torrentUrl.IsNotNullOrWhiteSpace())
@@ -192,7 +192,8 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Lidarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteAlbum.Release.DownloadUrl);
+                    Definition.Implementation,
+                    remoteAlbum.Release.DownloadUrl);
             }
 
             return actualHash;
@@ -223,7 +224,8 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Lidarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteAlbum.Release.DownloadUrl);
+                    Definition.Implementation,
+                    remoteAlbum.Release.DownloadUrl);
             }
 
             return actualHash;

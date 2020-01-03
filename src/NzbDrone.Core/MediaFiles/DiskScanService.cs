@@ -6,18 +6,18 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.MediaFiles.TrackImport;
-using NzbDrone.Common;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.MediaFiles
 
     public class DiskScanService :
         IDiskScanService,
-        IExecute<RescanArtistCommand> 
+        IExecute<RescanArtistCommand>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
@@ -67,6 +67,7 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
+
         private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$|^\.DS_store$|\.partial~$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -113,14 +114,14 @@ namespace NzbDrone.Core.MediaFiles
             var mediaFileList = FilterFiles(artist.Path, GetAudioFiles(artist.Path)).ToList();
             musicFilesStopwatch.Stop();
             _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
-            
+
             CleanMediaFiles(artist, mediaFileList.Select(x => x.FullName).ToList());
 
             var decisionsStopwatch = Stopwatch.StartNew();
             var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, artist, filter, true);
             decisionsStopwatch.Stop();
             _logger.Debug("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
-            
+
             var importStopwatch = Stopwatch.StartNew();
             _importApprovedTracks.Import(decisions, false);
 
@@ -128,20 +129,21 @@ namespace NzbDrone.Core.MediaFiles
             // Now we need to make sure anything new but not approved gets inserted
             // Note that knownFiles will include anything imported just now
             var knownFiles = _mediaFileService.GetFilesWithBasePath(artist.Path);
-            
+
             var newFiles = decisions
                 .ExceptBy(x => x.Item.Path, knownFiles, x => x.Path, PathEqualityComparer.Instance)
-                .Select(decision => new TrackFile {
-                        Path = decision.Item.Path,
-                        Size = decision.Item.Size,
-                        Modified = decision.Item.Modified,
-                        DateAdded = DateTime.UtcNow,
-                        Quality = decision.Item.Quality,
-                        MediaInfo = decision.Item.FileTrackInfo.MediaInfo
-                    })
+                .Select(decision => new TrackFile
+                {
+                    Path = decision.Item.Path,
+                    Size = decision.Item.Size,
+                    Modified = decision.Item.Modified,
+                    DateAdded = DateTime.UtcNow,
+                    Quality = decision.Item.Quality,
+                    MediaInfo = decision.Item.FileTrackInfo.MediaInfo
+                })
                 .ToList();
             _mediaFileService.AddMany(newFiles);
-            
+
             _logger.Debug($"Inserted {newFiles.Count} new unmatched trackfiles");
 
             // finally update info on size/modified for existing files
@@ -149,28 +151,30 @@ namespace NzbDrone.Core.MediaFiles
                 .Join(decisions,
                       x => x.Path,
                       x => x.Item.Path,
-                      (file, decision) => new {
+                      (file, decision) => new
+                      {
                           File = file,
                           Item = decision.Item
                       },
                       PathEqualityComparer.Instance)
                 .Where(x => x.File.Size != x.Item.Size ||
-                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1 )
-                .Select(x => {
-                        x.File.Size = x.Item.Size;
-                        x.File.Modified = x.Item.Modified;
-                        x.File.MediaInfo = x.Item.FileTrackInfo.MediaInfo;
-                        x.File.Quality = x.Item.Quality;
-                        return x.File;
-                    })
+                       Math.Abs((x.File.Modified - x.Item.Modified).TotalSeconds) > 1)
+                .Select(x =>
+                {
+                    x.File.Size = x.Item.Size;
+                    x.File.Modified = x.Item.Modified;
+                    x.File.MediaInfo = x.Item.FileTrackInfo.MediaInfo;
+                    x.File.Quality = x.Item.Quality;
+                    return x.File;
+                })
                 .ToList();
 
             _mediaFileService.Update(updatedFiles);
-            
+
             _logger.Debug($"Updated info for {updatedFiles.Count} known files");
 
             RemoveEmptyArtistFolder(artist.Path);
-            
+
             CompletedScanning(artist);
             importStopwatch.Stop();
             _logger.Debug("Track import complete for: {0} [{1}]", artist, importStopwatch.Elapsed);
@@ -246,10 +250,8 @@ namespace NzbDrone.Core.MediaFiles
                 var permissions = _configService.FolderChmod;
                 _diskProvider.SetPermissions(path, permissions, _configService.ChownUser, _configService.ChownGroup);
             }
-
             catch (Exception ex)
             {
-
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
@@ -277,7 +279,6 @@ namespace NzbDrone.Core.MediaFiles
                 var artist = _artistService.GetArtist(message.ArtistId.Value);
                 Scan(artist, message.Filter);
             }
-
             else
             {
                 var allArtists = _artistService.GetAllArtists();

@@ -1,12 +1,12 @@
-using NLog;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Parser;
+using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Music
 {
@@ -86,8 +86,9 @@ namespace NzbDrone.Core.Music
 
         private List<Tuple<Func<Album, string, double>, string>> AlbumScoringFunctions(string title, string cleanTitle)
         {
-            Func< Func<Album, string, double>, string, Tuple<Func<Album, string, double>, string>> tc = Tuple.Create;
-            var scoringFunctions = new List<Tuple<Func<Album, string, double>, string>> {
+            Func<Func<Album, string, double>, string, Tuple<Func<Album, string, double>, string>> tc = Tuple.Create;
+            var scoringFunctions = new List<Tuple<Func<Album, string, double>, string>>
+            {
                 tc((a, t) => a.CleanTitle.FuzzyMatch(t), cleanTitle),
                 tc((a, t) => a.Title.FuzzyMatch(t), title),
                 tc((a, t) => a.CleanTitle.FuzzyMatch(t), title.RemoveBracketsAndContents().CleanArtistName()),
@@ -120,7 +121,7 @@ namespace NzbDrone.Core.Music
         {
             var albums = GetAlbumsByArtistMetadataId(artistMetadataId);
             var output = new List<Album>();
-            
+
             foreach (var func in AlbumScoringFunctions(title, title.CleanArtistName()))
             {
                 output.AddRange(FindByStringInexact(albums, func.Item1, func.Item2));
@@ -135,10 +136,10 @@ namespace NzbDrone.Core.Music
             const double fuzzGap = 0.4;
 
             var sortedAlbums = albums.Select(s => new
-                {
-                    MatchProb = scoreFunction(s, title),
-                    Album = s
-                })
+            {
+                MatchProb = scoreFunction(s, title),
+                Album = s
+            })
                 .ToList()
                 .OrderByDescending(s => s.MatchProb)
                 .ToList();
@@ -264,6 +265,7 @@ namespace NzbDrone.Core.Music
             {
                 storedAlbum.AlbumReleases.LazyLoad();
             }
+
             _eventAggregator.PublishEvent(new AlbumEditedEvent(updatedAlbum, storedAlbum));
 
             return updatedAlbum;

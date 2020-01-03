@@ -1,11 +1,11 @@
-using Marr.Data;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
+using Marr.Data;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public int AlbumId { get; set; }
-        
+
         // These are queried from the database
         public LazyLoaded<List<Track>> Tracks { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }

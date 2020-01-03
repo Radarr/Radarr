@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("Notifications").AddColumn("OnTrackRetag").AsBoolean().WithDefaultValue(0);
 
             Delete.Column("OnDownload").FromTable("Notifications");
-            
+
             Rename.Column("OnAlbumDownload").OnTable("Notifications").To("OnReleaseImport");
         }
     }

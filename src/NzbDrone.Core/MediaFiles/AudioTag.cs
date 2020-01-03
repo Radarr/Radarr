@@ -1,17 +1,17 @@
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Parser.Model;
-using System.Linq;
-using System.Collections.Generic;
 using System;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Parser;
-using NzbDrone.Common.Instrumentation;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using NLog;
+using NLog.Fluent;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation;
+using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 using TagLib;
 using TagLib.Id3v2;
-using NLog.Fluent;
-using NzbDrone.Common.Instrumentation.Extensions;
-using System.Globalization;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -100,18 +100,18 @@ namespace NzbDrone.Core.MediaFiles
                 // Do the ones that aren't handled by the generic taglib implementation
                 if (file.TagTypesOnDisk.HasFlag(TagTypes.Id3v2))
                 {
-                    var id3tag = (TagLib.Id3v2.Tag) file.GetTag(TagTypes.Id3v2);
+                    var id3tag = (TagLib.Id3v2.Tag)file.GetTag(TagTypes.Id3v2);
                     Media = id3tag.GetTextAsString("TMED");
                     Date = ReadId3Date(id3tag, "TDRC");
                     OriginalReleaseDate = ReadId3Date(id3tag, "TDOR");
                     MusicBrainzAlbumComment = UserTextInformationFrame.Get(id3tag, "MusicBrainz Album Comment", false)?.Text.ExclusiveOrDefault();
-                    MusicBrainzReleaseTrackId =  UserTextInformationFrame.Get(id3tag, "MusicBrainz Release Track Id", false)?.Text.ExclusiveOrDefault();
+                    MusicBrainzReleaseTrackId = UserTextInformationFrame.Get(id3tag, "MusicBrainz Release Track Id", false)?.Text.ExclusiveOrDefault();
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Xiph))
                 {
                     // while publisher is handled by taglib, it seems to be mapped to 'ORGANIZATION' and not 'LABEL' like Picard is
                     // https://picard.musicbrainz.org/docs/mappings/
-                    var flactag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
+                    var flactag = (TagLib.Ogg.XiphComment)file.GetTag(TagLib.TagTypes.Xiph);
                     Media = flactag.GetField("MEDIA").ExclusiveOrDefault();
                     Date = DateTime.TryParse(flactag.GetField("DATE").ExclusiveOrDefault(), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(flactag.GetField("ORIGINALDATE").ExclusiveOrDefault(), out tempDate) ? tempDate : default(DateTime?);
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Ape))
                 {
-                    var apetag = (TagLib.Ape.Tag) file.GetTag(TagTypes.Ape);
+                    var apetag = (TagLib.Ape.Tag)file.GetTag(TagTypes.Ape);
                     Media = apetag.GetItem("Media")?.ToString();
                     Date = DateTime.TryParse(apetag.GetItem("Year")?.ToString(), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(apetag.GetItem("Original Date")?.ToString(), out tempDate) ? tempDate : default(DateTime?);
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Asf))
                 {
-                    var asftag = (TagLib.Asf.Tag) file.GetTag(TagTypes.Asf);
+                    var asftag = (TagLib.Asf.Tag)file.GetTag(TagTypes.Asf);
                     Media = asftag.GetDescriptorString("WM/Media");
                     Date = DateTime.TryParse(asftag.GetDescriptorString("WM/Year"), out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(asftag.GetDescriptorString("WM/OriginalReleaseTime"), out tempDate) ? tempDate : default(DateTime?);
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypesOnDisk.HasFlag(TagTypes.Apple))
                 {
-                    var appletag = (TagLib.Mpeg4.AppleTag) file.GetTag(TagTypes.Apple);
+                    var appletag = (TagLib.Mpeg4.AppleTag)file.GetTag(TagTypes.Apple);
                     Media = appletag.GetDashBox("com.apple.iTunes", "MEDIA");
                     Date = DateTime.TryParse(appletag.DataBoxes(FixAppleId("day")).FirstOrDefault()?.Text, out tempDate) ? tempDate : default(DateTime?);
                     OriginalReleaseDate = DateTime.TryParse(appletag.GetDashBox("com.apple.iTunes", "Original Date"), out tempDate) ? tempDate : default(DateTime?);
@@ -181,7 +181,8 @@ namespace NzbDrone.Core.MediaFiles
                         Quality = QualityParser.ParseQuality(file.Name, acodec.Description, bitrate, file.Properties.BitsPerSample);
                         Logger.Debug($"Quality parsed: {Quality}, Source: {Quality.QualityDetectionSource}");
 
-                        MediaInfo = new MediaInfoModel {
+                        MediaInfo = new MediaInfoModel
+                        {
                             AudioFormat = acodec.Description,
                             AudioBitrate = bitrate,
                             AudioChannels = acodec.AudioChannels,
@@ -228,7 +229,7 @@ namespace NzbDrone.Core.MediaFiles
                 // Taglib File.Length is unreliable so use System.IO
                 var size = new System.IO.FileInfo(path).Length;
                 var duration = file.Properties.Duration.TotalSeconds;
-                bitrate = (int) ((size * 8L) / (duration * 1024));
+                bitrate = (int)((size * 8L) / (duration * 1024));
 
                 Logger.Trace($"Estimating bitrate. Size: {size} Duration: {duration} Bitrate: {bitrate}");
             }
@@ -256,7 +257,7 @@ namespace NzbDrone.Core.MediaFiles
             else
             {
                 // taglib maps the v3 TORY to TDRC so we just get a year
-                return Int32.TryParse(date, out int year) && year >= 1860 && year <= DateTime.UtcNow.Year + 1 ? new DateTime(year, 1, 1) : default(DateTime?);
+                return int.TryParse(date, out int year) && year >= 1860 && year <= DateTime.UtcNow.Year + 1 ? new DateTime(year, 1, 1) : default(DateTime?);
             }
         }
 
@@ -269,6 +270,7 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     tag.SetTextFrame(v3ddmm, default(string));
                 }
+
                 tag.SetTextFrame(v4field, date.HasValue ? date.Value.ToString("yyyy-MM-dd") : null);
             }
             else
@@ -296,21 +298,26 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-		private static ReadOnlyByteVector FixAppleId(ByteVector id)
-		{
-			if (id.Count == 4) {
-				var roid = id as ReadOnlyByteVector;
-				if (roid != null)
-					return roid;
+        private static ReadOnlyByteVector FixAppleId(ByteVector id)
+        {
+            if (id.Count == 4)
+            {
+                var roid = id as ReadOnlyByteVector;
+                if (roid != null)
+                {
+                    return roid;
+                }
 
-				return new ReadOnlyByteVector(id);
-			}
+                return new ReadOnlyByteVector(id);
+            }
 
-			if (id.Count == 3)
-				return new ReadOnlyByteVector(0xa9, id[0], id[1], id[2]);
+            if (id.Count == 3)
+            {
+                return new ReadOnlyByteVector(0xa9, id[0], id[1], id[2]);
+            }
 
-			return null;
-		}
+            return null;
+        }
 
         public void Write(string path)
         {
@@ -355,7 +362,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (file.TagTypes.HasFlag(TagTypes.Id3v2))
                 {
-                    var id3tag = (TagLib.Id3v2.Tag) file.GetTag(TagTypes.Id3v2);
+                    var id3tag = (TagLib.Id3v2.Tag)file.GetTag(TagTypes.Id3v2);
                     id3tag.SetTextFrame("TMED", Media);
                     WriteId3Date(id3tag, "TDRC", "TYER", "TDAT", Date);
                     WriteId3Date(id3tag, "TDOR", "TORY", null, OriginalReleaseDate);
@@ -367,10 +374,11 @@ namespace NzbDrone.Core.MediaFiles
                     // while publisher is handled by taglib, it seems to be mapped to 'ORGANIZATION' and not 'LABEL' like Picard is
                     // https://picard.musicbrainz.org/docs/mappings/
                     tag.Publisher = null;
+
                     // taglib inserts leading zeros so set manually
                     tag.Track = 0;
 
-                    var flactag = (TagLib.Ogg.XiphComment) file.GetTag(TagLib.TagTypes.Xiph);
+                    var flactag = (TagLib.Ogg.XiphComment)file.GetTag(TagLib.TagTypes.Xiph);
 
                     flactag.SetField("DATE", Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
                     flactag.SetField("ORIGINALDATE", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
@@ -390,7 +398,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Ape))
                 {
-                    var apetag = (TagLib.Ape.Tag) file.GetTag(TagTypes.Ape);
+                    var apetag = (TagLib.Ape.Tag)file.GetTag(TagTypes.Ape);
 
                     apetag.SetValue("Year", Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
                     apetag.SetValue("Original Date", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
@@ -402,7 +410,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Asf))
                 {
-                    var asftag = (TagLib.Asf.Tag) file.GetTag(TagTypes.Asf);
+                    var asftag = (TagLib.Asf.Tag)file.GetTag(TagTypes.Asf);
 
                     asftag.SetDescriptorString(Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null, "WM/Year");
                     asftag.SetDescriptorString(OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null, "WM/OriginalReleaseTime");
@@ -414,7 +422,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else if (file.TagTypes.HasFlag(TagTypes.Apple))
                 {
-                    var appletag = (TagLib.Mpeg4.AppleTag) file.GetTag(TagTypes.Apple);
+                    var appletag = (TagLib.Mpeg4.AppleTag)file.GetTag(TagTypes.Apple);
 
                     appletag.SetText(FixAppleId("day"), Date.HasValue ? Date.Value.ToString("yyyy-MM-dd") : null);
                     appletag.SetDashBox("com.apple.iTunes", "Original Date", OriginalReleaseDate.HasValue ? OriginalReleaseDate.Value.ToString("yyyy-MM-dd") : null);
@@ -549,11 +557,12 @@ namespace NzbDrone.Core.MediaFiles
             return output;
         }
 
-        public static implicit operator ParsedTrackInfo (AudioTag tag)
+        public static implicit operator ParsedTrackInfo(AudioTag tag)
         {
             if (!tag.IsValid)
             {
-                return new ParsedTrackInfo {
+                return new ParsedTrackInfo
+                {
                     Quality = tag.Quality ?? new QualityModel { Quality = NzbDrone.Core.Qualities.Quality.Unknown },
                     MediaInfo = tag.MediaInfo ?? new MediaInfoModel()
                 };
@@ -572,12 +581,14 @@ namespace NzbDrone.Core.MediaFiles
                 Year = (int)tag.Year
             };
 
-            return new ParsedTrackInfo {
+            return new ParsedTrackInfo
+            {
                 AlbumTitle = tag.Album,
                 ArtistTitle = artist,
                 ArtistMBId = tag.MusicBrainzReleaseArtistId,
                 AlbumMBId = tag.MusicBrainzReleaseGroupId,
                 ReleaseMBId = tag.MusicBrainzReleaseId,
+
                 // SIC: the recording ID is stored in this field.
                 // See https://picard.musicbrainz.org/docs/mappings/
                 RecordingMBId = tag.MusicBrainzTrackId,
@@ -586,7 +597,7 @@ namespace NzbDrone.Core.MediaFiles
                 DiscCount = (int)tag.DiscCount,
                 Year = tag.Year,
                 Label = tag.Publisher,
-                TrackNumbers = new [] { (int) tag.Track },
+                TrackNumbers = new[] { (int)tag.Track },
                 ArtistTitleInfo = artistTitleInfo,
                 Title = tag.Title,
                 CleanTitle = tag.Title?.CleanTrackTitle(),

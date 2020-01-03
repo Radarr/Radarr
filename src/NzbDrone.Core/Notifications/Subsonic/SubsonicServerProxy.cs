@@ -1,10 +1,10 @@
+using System.IO;
+using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Rest;
 using RestSharp;
-using System.IO;
-using System.Xml.Linq;
 
 namespace NzbDrone.Core.Notifications.Subsonic
 {
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
             _logger.Trace("Version response: {0}", response.Content);
             CheckForError(response, settings);
-            
+
             var xDoc = XDocument.Load(new StringReader(response.Content.Replace("&", "&amp;")));
             var version = xDoc.Root?.Attribute("version")?.Value;
 
@@ -126,7 +126,6 @@ namespace NzbDrone.Core.Notifications.Subsonic
                 }
 
                 throw new SubsonicException(errorMessage);
-
             }
 
             if (response.Content.IsNullOrWhiteSpace())

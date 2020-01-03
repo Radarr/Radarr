@@ -10,7 +10,6 @@ using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
-
 namespace NzbDrone.Core.Datastore
 {
     public interface IDbFactory
@@ -73,7 +72,7 @@ namespace NzbDrone.Core.Datastore
         public IDatabase Create(MigrationContext migrationContext)
         {
             string connectionString;
-            
+
             switch (migrationContext.MigrationType)
             {
                 case MigrationType.Main:
@@ -83,6 +82,7 @@ namespace NzbDrone.Core.Datastore
 
                         break;
                     }
+
                 case MigrationType.Log:
                     {
                         connectionString = _connectionStringFactory.LogDbConnectionString;
@@ -90,6 +90,7 @@ namespace NzbDrone.Core.Datastore
 
                         break;
                     }
+
                 default:
                     {
                         throw new ArgumentException("Invalid MigrationType");
@@ -111,7 +112,6 @@ namespace NzbDrone.Core.Datastore
 
         private void CreateMain(string connectionString, MigrationContext migrationContext)
         {
-
             try
             {
                 _restoreDatabaseService.Restore();

@@ -4,11 +4,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Nyaa;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
@@ -24,8 +22,8 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
             UseRealHttp();
 
             _albumSearchCriteria = new AlbumSearchCriteria()
-                {
-                };
+            {
+            };
         }
 
         private void ValidateTorrentResult(IList<ReleaseInfo> reports, bool hasSize = false, bool hasInfoUrl = false, bool hasMagnet = false)
@@ -60,6 +58,5 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
                 reports.Should().OnlyContain(c => c.Size > 0);
             }
         }
-
     }
 }

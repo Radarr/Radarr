@@ -6,28 +6,27 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.History;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
     public class RefreshAlbumServiceFixture : CoreTest<RefreshAlbumService>
     {
+        private readonly List<ArtistMetadata> _fakeArtists = new List<ArtistMetadata> { new ArtistMetadata() };
+        private readonly string _fakeArtistForeignId = "xxx-xxx-xxx";
         private Artist _artist;
         private List<Album> _albums;
         private List<AlbumRelease> _releases;
-        private readonly string _fakeArtistForeignId = "xxx-xxx-xxx";
-        private readonly List<ArtistMetadata> _fakeArtists = new List<ArtistMetadata> { new ArtistMetadata() };
 
         [SetUp]
         public void Setup()
         {
-
             var release = Builder<AlbumRelease>
                 .CreateNew()
                 .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
@@ -37,7 +36,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Build();
 
             _releases = new List<AlbumRelease> { release };
-            
+
             var album1 = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .With(s => s.Id = 1234)
@@ -45,7 +44,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .With(s => s.AlbumReleases = _releases)
                 .Build();
 
-            _albums = new List<Album>{ album1 };
+            _albums = new List<Album> { album1 };
 
             _artist = Builder<Artist>.CreateNew()
                 .With(s => s.Albums = _albums)
@@ -60,7 +59,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(new List<AlbumRelease> { release });
 
             Mocker.GetMock<IArtistMetadataService>()
-                .Setup(s => s.UpsertMany(It.IsAny<List<ArtistMetadata> >()))
+                .Setup(s => s.UpsertMany(It.IsAny<List<ArtistMetadata>>()))
                 .Returns(true);
 
             Mocker.GetMock<IProvideAlbumInfo>()
@@ -116,15 +115,15 @@ namespace NzbDrone.Core.Test.MusicTests
             clash.Id = 100;
             clash.ArtistMetadata = existing.ArtistMetadata.Value.JsonClone();
             clash.ForeignAlbumId = clash.ForeignAlbumId + 1;
-            
+
             clash.AlbumReleases = Builder<AlbumRelease>.CreateListOfSize(10)
                 .All().With(x => x.AlbumId = clash.Id)
                 .BuildList();
-            
+
             Mocker.GetMock<IAlbumService>()
                 .Setup(x => x.FindById(clash.ForeignAlbumId))
                 .Returns(clash);
-            
+
             Mocker.GetMock<IReleaseService>()
                 .Setup(x => x.GetReleasesByAlbum(_albums.First().Id))
                 .Returns(_releases);
@@ -145,11 +144,11 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenNewAlbumInfo(newAlbumInfo);
 
             Subject.RefreshAlbumInfo(_albums, null, false, false);
-            
+
             // check releases moved to clashing album
             Mocker.GetMock<IReleaseService>()
                 .Verify(v => v.UpdateMany(It.Is<List<AlbumRelease>>(x => x.All(y => y.AlbumId == clash.Id) && x.Count == _releases.Count)));
-            
+
             // check old album is deleted
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.DeleteMany(It.Is<List<Album>>(x => x.First().ForeignAlbumId == existing.ForeignAlbumId)));
@@ -170,11 +169,11 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenNewAlbumInfo(album);
 
             Subject.RefreshAlbumInfo(album, null, false);
-            
+
             Mocker.GetMock<IAlbumService>()
                 .Verify(x => x.DeleteAlbum(album.Id, true, false),
                         Times.Once());
-            
+
             ExceptionVerification.ExpectedWarns(1);
         }
 
@@ -184,6 +183,7 @@ namespace NzbDrone.Core.Test.MusicTests
             var newAlbum = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .Build();
+
             // this is required because RefreshAlbumInfo will edit the album passed in
             var albumCopy = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
@@ -217,14 +217,14 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
 
             Subject.RefreshAlbumInfo(newAlbum, null, false);
-            
+
             Mocker.GetMock<IRefreshAlbumReleaseService>()
                 .Verify(x => x.RefreshEntityInfo(It.Is<List<AlbumRelease>>(l => l.Count == 7 && l.Count(y => y.Monitored) == 1),
                                                  It.IsAny<List<AlbumRelease>>(),
                                                  It.IsAny<bool>(),
                                                  It.IsAny<bool>()));
         }
-        
+
         [TestCase(true, true, 1)]
         [TestCase(true, false, 0)]
         [TestCase(false, true, 1)]
@@ -234,6 +234,7 @@ namespace NzbDrone.Core.Test.MusicTests
             var newAlbum = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .Build();
+
             // this is required because RefreshAlbumInfo will edit the album passed in
             var albumCopy = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
@@ -270,13 +271,12 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
 
             Subject.RefreshAlbumInfo(newAlbum, null, false);
-            
+
             Mocker.GetMock<IRefreshAlbumReleaseService>()
                 .Verify(x => x.RefreshEntityInfo(It.Is<List<AlbumRelease>>(l => l.Count == 10 && l.Count(y => y.Monitored) == 1),
                                                  It.IsAny<List<AlbumRelease>>(),
                                                  It.IsAny<bool>(),
                                                  It.IsAny<bool>()));
-
         }
 
         [Test]
@@ -285,6 +285,7 @@ namespace NzbDrone.Core.Test.MusicTests
             var newAlbum = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .Build();
+
             // this is required because RefreshAlbumInfo will edit the album passed in
             var albumCopy = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
@@ -325,28 +326,29 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
 
             Subject.RefreshAlbumInfo(newAlbum, null, false);
-            
+
             Mocker.GetMock<IRefreshAlbumReleaseService>()
                 .Verify(x => x.RefreshEntityInfo(It.Is<List<AlbumRelease>>(
-                                                     l => l.Count == 10 && 
+                                                     l => l.Count == 10 &&
                                                      l.Count(y => y.Monitored) == 1 &&
                                                      l.Single(y => y.Monitored).ForeignReleaseId == "ExistingId2"),
                                                  It.IsAny<List<AlbumRelease>>(),
                                                  It.IsAny<bool>(),
                                                  It.IsAny<bool>()));
         }
-        
+
         [Test]
         public void refreshing_album_should_change_monitored_release_if_monitored_release_deleted()
         {
             var newAlbum = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .Build();
+
             // this is required because RefreshAlbumInfo will edit the album passed in
             var albumCopy = Builder<Album>.CreateNew()
                 .With(x => x.ArtistMetadata = Builder<ArtistMetadata>.CreateNew().Build())
                 .Build();
-            
+
             // Only existingId1 monitored in skyhook.  ExistingId2 is missing
             var releases = Builder<AlbumRelease>.CreateListOfSize(10)
                 .All()
@@ -382,10 +384,10 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(Tuple.Create("dummy string", albumCopy, new List<ArtistMetadata>()));
 
             Subject.RefreshAlbumInfo(newAlbum, null, false);
-            
+
             Mocker.GetMock<IRefreshAlbumReleaseService>()
                 .Verify(x => x.RefreshEntityInfo(It.Is<List<AlbumRelease>>(
-                                                     l => l.Count == 11 && 
+                                                     l => l.Count == 11 &&
                                                      l.Count(y => y.Monitored) == 1 &&
                                                      l.Single(y => y.Monitored).ForeignReleaseId != "ExistingId2"),
                                                  It.IsAny<List<AlbumRelease>>(),

@@ -3,8 +3,8 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Test.Datastore
                 .Should()
                 .BeNull();
         }
-
 
         [Test]
         public void vaccume()

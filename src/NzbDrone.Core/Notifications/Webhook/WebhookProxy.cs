@@ -1,7 +1,7 @@
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Rest;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Notifications.Webhook
 {

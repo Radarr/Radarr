@@ -7,9 +7,9 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         [SetUp]
         public void Setup()
         {
-             _rootFolder = @"C:\Test\Music".AsOsAgnostic();
+            _rootFolder = @"C:\Test\Music".AsOsAgnostic();
 
             _artist = Builder<Artist>.CreateNew()
                                      .With(s => s.Path = Path.Combine(_rootFolder, "Alice in Chains"))
@@ -36,11 +36,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                            .ToList();
 
             _localTrack = new LocalTrack
-                                {
-                                    Path = @"C:\Test\Unsorted\Alice in Chains\Alice in Chains - track1.mp3".AsOsAgnostic(),
-                                    Tracks = tracks,
-                                    Artist = _artist
-                                };
+            {
+                Path = @"C:\Test\Unsorted\Alice in Chains\Alice in Chains - track1.mp3".AsOsAgnostic(),
+                Tracks = tracks,
+                Artist = _artist
+            };
         }
 
         private void GivenFileSize(long size)

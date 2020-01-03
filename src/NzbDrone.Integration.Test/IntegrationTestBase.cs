@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
-using NUnit.Framework;
+using Lidarr.Api.V1.Albums;
+using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Blacklist;
 using Lidarr.Api.V1.Config;
 using Lidarr.Api.V1.DownloadClient;
 using Lidarr.Api.V1.History;
 using Lidarr.Api.V1.Profiles.Quality;
 using Lidarr.Api.V1.RootFolders;
-using Lidarr.Api.V1.Artist;
-using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Tags;
+using Microsoft.AspNetCore.SignalR.Client;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
+using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
 using RestSharp;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
-using NzbDrone.Test.Common;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace NzbDrone.Integration.Test
 {
@@ -140,7 +140,6 @@ namespace NzbDrone.Integration.Test
         {
             if (_signalrConnection != null)
             {
-
                 await _signalrConnection.StopAsync();
 
                 _signalrConnection = null;
@@ -237,13 +236,17 @@ namespace NzbDrone.Integration.Test
             for (var i = 0; i < count; i++)
             {
                 if (predicate())
+                {
                     return;
+                }
 
                 Thread.Sleep(interval);
             }
 
             if (predicate())
+            {
                 return;
+            }
 
             Assert.Fail("Timed on wait");
         }
@@ -294,7 +297,6 @@ namespace NzbDrone.Integration.Test
             return result;
         }
 
-
         public void EnsureNoArtist(string lidarrId, string artistTitle)
         {
             var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
@@ -316,9 +318,12 @@ namespace NzbDrone.Integration.Test
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path, "Fake Track");
 
-                Commands.PostAndWait(new ManualImportCommand {
-                        Files = new List<ManualImportFile> {
-                            new ManualImportFile {
+                Commands.PostAndWait(new ManualImportCommand
+                {
+                    Files = new List<ManualImportFile>
+                    {
+                            new ManualImportFile
+                            {
                                 Path = path,
                                 ArtistId = artist.Id,
                                 AlbumId = albumId,
@@ -326,10 +331,10 @@ namespace NzbDrone.Integration.Test
                                 TrackIds = new List<int> { trackId },
                                 Quality = new QualityModel(quality)
                             }
-                        }
-                    });
+                    }
+                });
                 Commands.WaitAll();
-                
+
                 var track = Tracks.GetTracksInArtist(artist.Id).Single(x => x.Id == trackId);
 
                 track.TrackFileId.Should().NotBe(0);

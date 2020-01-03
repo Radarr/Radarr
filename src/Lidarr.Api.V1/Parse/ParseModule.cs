@@ -1,8 +1,7 @@
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Parser;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http;
+using NzbDrone.Core.Parser;
 
 namespace Lidarr.Api.V1.Parse
 {

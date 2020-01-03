@@ -4,10 +4,10 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .CreateNew()
                     .With(s => s.Title = "Anthology")
                     .Build();
-            
+
             _release = Builder<AlbumRelease>
                 .CreateNew()
                 .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
@@ -68,6 +68,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("The Amazing Race (Latin America)", "Amazing Race, The (Latin America)")]
         [TestCase("The Rat Pack (A&E)", "Rat Pack, The (A&E)")]
         [TestCase("The Climax: I (Almost) Got Away With It (2016)", "Climax- I (Almost) Got Away With It, The (2016)")]
+
         //[TestCase("", "")]
         public void should_get_expected_title_back(string name, string expected)
         {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace NzbDrone.Common.Serializer
 {
-
     public class JsonVisitor
     {
         protected void Dispatch(JToken json)
@@ -70,6 +65,7 @@ namespace NzbDrone.Common.Serializer
                 Visit(token);
             }
         }
+
         public virtual void Visit(JConstructor json)
         {
         }
@@ -89,7 +85,6 @@ namespace NzbDrone.Common.Serializer
 
         public virtual void Visit(JValue value)
         {
-
         }
     }
 }

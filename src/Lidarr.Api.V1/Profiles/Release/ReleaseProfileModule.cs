@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Lidarr.Http;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Profiles.Releases;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Profiles.Release
 {
     public class ReleaseProfileModule : LidarrRestModule<ReleaseProfileResource>
     {
         private readonly IReleaseProfileService _releaseProfileService;
-
 
         public ReleaseProfileModule(IReleaseProfileService releaseProfileService)
         {

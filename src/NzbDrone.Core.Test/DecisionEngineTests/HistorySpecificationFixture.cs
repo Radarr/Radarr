@@ -5,21 +5,24 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
     public class HistorySpecificationFixture : CoreTest<HistorySpecification>
     {
+        private const int FIRST_ALBUM_ID = 1;
+        private const int SECOND_ALBUM_ID = 2;
+
         private HistorySpecification _upgradeHistory;
 
         private RemoteAlbum _parseResultMulti;
@@ -27,8 +30,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private QualityModel _upgradableQuality;
         private QualityModel _notupgradableQuality;
         private Artist _fakeArtist;
-        private const int FIRST_ALBUM_ID = 1;
-        private const int SECOND_ALBUM_ID = 2;
 
         [SetUp]
         public void Setup()
@@ -37,11 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
             var singleAlbumList = new List<Album> { new Album { Id = FIRST_ALBUM_ID } };
-            var doubleAlbumList = new List<Album> {
-                                                            new Album {Id = FIRST_ALBUM_ID },
-                                                            new Album {Id = SECOND_ALBUM_ID },
-                                                            new Album {Id = 3 }
-                                                       };
+            var doubleAlbumList = new List<Album>
+            {
+                                                            new Album { Id = FIRST_ALBUM_ID },
+                                                            new Album { Id = SECOND_ALBUM_ID },
+                                                            new Album { Id = 3 }
+            };
 
             _fakeArtist = Builder<Artist>.CreateNew()
                 .With(c => c.QualityProfile = new QualityProfile
@@ -107,13 +109,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _upgradeHistory.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
         }
 
-//        [Test]
-//        public void should_return_true_if_latest_history_has_a_download_id_and_cdh_is_enabled()
-//        {
-//            GivenMostRecentForEpisode(FIRST_EPISODE_ID, "test", _notupgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
-//            _upgradeHistory.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
-//        }
-
+        //        [Test]
+        //        public void should_return_true_if_latest_history_has_a_download_id_and_cdh_is_enabled()
+        //        {
+        //            GivenMostRecentForEpisode(FIRST_EPISODE_ID, "test", _notupgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
+        //            _upgradeHistory.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
+        //        }
         [Test]
         public void should_return_true_if_latest_history_item_is_older_than_twelve_hours()
         {

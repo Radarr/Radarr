@@ -6,9 +6,9 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications

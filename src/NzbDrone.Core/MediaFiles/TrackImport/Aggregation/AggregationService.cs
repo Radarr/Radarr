@@ -73,7 +73,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation
                 {
                     _logger.Warn(ex, ex.Message);
                 }
-
             }
 
             return localAlbum;

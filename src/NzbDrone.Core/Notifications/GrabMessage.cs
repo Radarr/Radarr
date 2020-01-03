@@ -1,6 +1,6 @@
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {

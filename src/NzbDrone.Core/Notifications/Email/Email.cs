@@ -10,7 +10,6 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override string Name => "Email";
 
-
         public Email(IEmailService emailService)
         {
             _emailService = emailService;

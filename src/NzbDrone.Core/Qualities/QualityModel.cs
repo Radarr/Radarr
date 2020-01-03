@@ -12,11 +12,10 @@ namespace NzbDrone.Core.Qualities
 
         [JsonIgnore]
         public QualityDetectionSource QualityDetectionSource { get; set; }
-       
+
         public QualityModel()
             : this(Quality.Unknown, new Revision())
         {
-
         }
 
         public QualityModel(Quality quality, Revision revision = null)
@@ -32,11 +31,12 @@ namespace NzbDrone.Core.Qualities
 
         public override int GetHashCode()
         {
-            unchecked // Overflow is fine, just wrap
+            unchecked
             {
+                // Overflow is fine, just wrap
                 int hash = 17;
-                hash = hash * 23 + Revision.GetHashCode();
-                hash = hash * 23 + Quality.GetHashCode();
+                hash = (hash * 23) + Revision.GetHashCode();
+                hash = (hash * 23) + Quality.GetHashCode();
                 return hash;
             }
         }
@@ -82,16 +82,30 @@ namespace NzbDrone.Core.Qualities
 
         public bool Equals(QualityModel other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
             return other.Quality.Equals(Quality) && other.Revision.Equals(Revision);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
             return Equals(obj as QualityModel);
         }

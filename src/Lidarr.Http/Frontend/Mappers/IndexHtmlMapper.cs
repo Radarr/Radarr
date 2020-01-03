@@ -37,7 +37,6 @@ namespace Lidarr.Http.Frontend.Mappers
                    !resourceUrl.StartsWith("/mediacover") &&
                    !resourceUrl.Contains(".") &&
                    !resourceUrl.StartsWith("/login");
-
         }
     }
 }

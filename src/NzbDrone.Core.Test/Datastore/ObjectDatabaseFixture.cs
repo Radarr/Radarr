@@ -22,7 +22,6 @@ namespace NzbDrone.Core.Test.Datastore
                     .CreateNew()
                     .With(s => s.Id = 0)
                     .Build();
-
         }
 
         [Test]
@@ -72,13 +71,12 @@ namespace NzbDrone.Core.Test.Datastore
             _sampleType.Id.Should().Be(1);
         }
 
-
         [Test]
         public void should_read_and_write_in_utc()
         {
             var storedTime = DateTime.UtcNow;
 
-            _sampleType.LastExecution =storedTime;
+            _sampleType.LastExecution = storedTime;
 
             Subject.Insert(_sampleType);
 
@@ -122,15 +120,14 @@ namespace NzbDrone.Core.Test.Datastore
             item.Id.Should().Be(_sampleType.Id);
         }
 
-
         [Test]
         public void set_fields_should_only_update_selected_filed()
         {
             var childModel = new ScheduledTask
-                {
-                    TypeName = "Address",
-                    Interval = 12
-                };
+            {
+                TypeName = "Address",
+                Interval = 12
+            };
 
             Subject.Insert(childModel);
 
@@ -143,6 +140,4 @@ namespace NzbDrone.Core.Test.Datastore
             Db.All<ScheduledTask>().Single().Interval.Should().Be(12);
         }
     }
-
 }
-

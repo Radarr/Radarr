@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.IndexerTests.GazelleTests
 
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET && v.Url.FullUri.Contains("ajax.php?action=browse"))))
-                .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader{ContentType = "application/json" }, recentFeed));
+                .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader { ContentType = "application/json" }, recentFeed));
 
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.POST && v.Url.FullUri.Contains("ajax.php?action=index"))))

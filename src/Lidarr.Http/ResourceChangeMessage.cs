@@ -1,10 +1,11 @@
 using System;
-using NzbDrone.Core.Datastore.Events;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Datastore.Events;
 
 namespace Lidarr.Http
 {
-    public class ResourceChangeMessage<TResource> where TResource : RestResource
+    public class ResourceChangeMessage<TResource>
+        where TResource : RestResource
     {
         public TResource Resource { get; private set; }
         public ModelAction Action { get; private set; }
@@ -25,5 +26,4 @@ namespace Lidarr.Http
             Action = action;
         }
     }
-
 }

@@ -1,22 +1,21 @@
-using NLog;
-using NzbDrone.Core.Parser.Model;
-using System.IO;
-using System.Linq;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Music;
-using System.Collections.Generic;
-using NzbDrone.Core.Parser;
-using NzbDrone.Common.Disk;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using NLog;
 using NLog.Fluent;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Messaging.Events;
-using TagLib;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
+using TagLib;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -32,7 +31,7 @@ namespace NzbDrone.Core.MediaFiles
         List<RetagTrackFilePreview> GetRetagPreviewsByArtist(int artistId);
         List<RetagTrackFilePreview> GetRetagPreviewsByAlbum(int artistId);
     }
-    
+
     public class AudioTagService : IAudioTagService,
         IExecute<RetagArtistCommand>,
         IExecute<RetagFilesCommand>
@@ -44,7 +43,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
-        
+
         public AudioTagService(IConfigService configService,
                                IMediaFileService mediaFileService,
                                IDiskProvider diskProvider,
@@ -98,15 +97,17 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            return new AudioTag {
+            return new AudioTag
+            {
                 Title = track.Title,
-                Performers = new [] { artist.Name },
-                AlbumArtists = new [] { albumartist.Name },
+                Performers = new[] { artist.Name },
+                AlbumArtists = new[] { albumartist.Name },
                 Track = (uint)track.AbsoluteTrackNumber,
                 TrackCount = (uint)release.Tracks.Value.Count(x => x.MediumNumber == track.MediumNumber),
                 Album = album.Title,
                 Disc = (uint)track.MediumNumber,
                 DiscCount = (uint)release.Media.Count,
+
                 // We may have omitted media so index in the list isn't the same as medium number
                 Media = release.Media.SingleOrDefault(x => x.Number == track.MediumNumber).Format,
                 Date = release.ReleaseDate,
@@ -136,7 +137,7 @@ namespace NzbDrone.Core.MediaFiles
             var fileInfo = _diskProvider.GetFileInfo(path);
             trackfile.Size = fileInfo.Length;
             trackfile.Modified = fileInfo.LastWriteTimeUtc;
-            
+
             if (trackfile.Id > 0)
             {
                 _mediaFileService.Update(trackfile);
@@ -173,7 +174,7 @@ namespace NzbDrone.Core.MediaFiles
         public void RemoveMusicBrainzTags(string path)
         {
             var tags = new AudioTag(path);
-            
+
             tags.MusicBrainzReleaseCountry = null;
             tags.MusicBrainzReleaseStatus = null;
             tags.MusicBrainzReleaseType = null;
@@ -220,7 +221,7 @@ namespace NzbDrone.Core.MediaFiles
             newTags.Write(path);
 
             UpdateTrackfileSizeAndModified(trackfile, path);
-            
+
             _eventAggregator.PublishEvent(new TrackFileRetaggedEvent(trackfile.Artist.Value, trackfile, diff, _configService.ScrubAudioTags));
         }
 
@@ -304,7 +305,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Debug($"Removing MusicBrainz tags for {path}");
 
             RemoveMusicBrainzTags(path);
-            
+
             UpdateTrackfileSizeAndModified(trackfile, path);
         }
 
@@ -348,7 +349,8 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (diff.Any())
                 {
-                    yield return new RetagTrackFilePreview {
+                    yield return new RetagTrackFilePreview
+                    {
                         ArtistId = file.Artist.Value.Id,
                         AlbumId = file.Album.Value.Id,
                         TrackNumbers = file.Tracks.Value.Select(e => e.AbsoluteTrackNumber).ToList(),
@@ -370,9 +372,10 @@ namespace NzbDrone.Core.MediaFiles
             {
                 WriteTags(file, false, force: true);
             }
+
             _logger.ProgressInfo("Selected track files re-tagged for {0}", artist.Name);
         }
-        
+
         public void Execute(RetagArtistCommand message)
         {
             _logger.Debug("Re-tagging all files for selected artists");
@@ -386,6 +389,7 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     WriteTags(file, false, force: true);
                 }
+
                 _logger.ProgressInfo("All track files re-tagged for {0}", artist.Name);
             }
         }

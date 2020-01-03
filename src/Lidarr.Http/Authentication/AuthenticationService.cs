@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using Lidarr.Http.Extensions;
 using Nancy;
 using Nancy.Authentication.Basic;
 using Nancy.Authentication.Forms;
@@ -9,7 +10,6 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Http.Authentication
 {
@@ -25,15 +25,15 @@ namespace Lidarr.Http.Authentication
 
     public class AuthenticationService : IAuthenticationService
     {
-        private static readonly Logger _authLogger = LogManager.GetLogger("Auth");
         private const string AnonymousUser = "Anonymous";
+        private static readonly Logger _authLogger = LogManager.GetLogger("Auth");
         private readonly IUserService _userService;
 
         private static string API_KEY;
         private static AuthenticationType AUTH_METHOD;
 
         [ThreadStatic]
-        private static NancyContext _context; 
+        private static NancyContext _context;
 
         public AuthenticationService(IConfigFileProvider configFileProvider, IUserService userService)
         {
@@ -170,14 +170,20 @@ namespace Lidarr.Http.Authentication
 
         private bool ValidUser(NancyContext context)
         {
-            if (context.CurrentUser != null) return true;
+            if (context.CurrentUser != null)
+            {
+                return true;
+            }
 
             return false;
         }
 
         private bool ValidApiKey(string apiKey)
         {
-            if (API_KEY.Equals(apiKey)) return true;
+            if (API_KEY.Equals(apiKey))
+            {
+                return true;
+            }
 
             return false;
         }

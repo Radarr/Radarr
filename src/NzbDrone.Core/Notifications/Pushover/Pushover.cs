@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Notifications.Pushover
     public class Pushover : NotificationBase<PushoverSettings>
     {
         private readonly IPushoverProxy _proxy;
-        
+
         public Pushover(IPushoverProxy proxy)
         {
             _proxy = proxy;

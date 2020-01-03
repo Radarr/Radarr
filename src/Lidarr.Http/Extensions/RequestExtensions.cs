@@ -22,9 +22,9 @@ namespace Lidarr.Http.Extensions
 
         public static bool IsLocalRequest(this Request request)
         {
-            return (request.UserHostAddress.Equals("localhost") ||
+            return request.UserHostAddress.Equals("localhost") ||
                     request.UserHostAddress.Equals("127.0.0.1") ||
-                    request.UserHostAddress.Equals("::1"));
+                    request.UserHostAddress.Equals("::1");
         }
 
         public static bool IsLoginRequest(this Request request)

@@ -4,8 +4,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _firstAlbum = new Album { Monitored = true };
             _secondAlbum = new Album { Monitored = true };
-
 
             var singleAlbumList = new List<Album> { _firstAlbum };
             var doubleAlbumList = new List<Album> { _firstAlbum, _secondAlbum };
@@ -122,7 +121,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_true()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria{ MonitoredEpisodesOnly = true}).Accepted.Should().BeFalse();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria { MonitoredEpisodesOnly = true }).Accepted.Should().BeFalse();
         }
 
         [Test]

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
 {
@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
     public class FindByNameInexactFixture : CoreTest<ArtistService>
     {
         private List<Artist> _artists;
-        
+
         private Artist CreateArtist(string name)
         {
             return Builder<Artist>.CreateNew()
@@ -63,11 +63,9 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [TestCase("The Black Peas")]
         public void should_not_find_artist_in_db_by_ambiguous_name(string name)
         {
-
             var artist = Subject.FindByNameInexact(name);
 
             artist.Should().BeNull();
         }
-
     }
 }

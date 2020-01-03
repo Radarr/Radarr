@@ -20,15 +20,15 @@ namespace NzbDrone.Core.Test.IndexerTests.HeadphonesTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Name = "Headphones VIP",
+                Settings = new HeadphonesSettings()
                 {
-                    Name = "Headphones VIP",
-                    Settings = new HeadphonesSettings()
-                        {
-                            Categories = new int[] { 3000 },
-                            Username = "user",
-                            Password = "pass"
-                        }
-                };
+                    Categories = new int[] { 3000 },
+                    Username = "user",
+                    Password = "pass"
+                }
+            };
 
             _caps = new HeadphonesCapabilities();
             Mocker.GetMock<IHeadphonesCapabilitiesProvider>()

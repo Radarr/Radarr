@@ -1,14 +1,14 @@
-using NLog;
-using NzbDrone.Core.MediaFiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Music
 {
     public interface IRefreshTrackService
     {
-        bool RefreshTrackInfo(List<Track> add, List<Track> update, List<Tuple<Track, Track> > merge, List<Track> delete, List<Track> upToDate, List<Track> remoteTracks, bool forceUpdateFileTags);
+        bool RefreshTrackInfo(List<Track> add, List<Track> update, List<Tuple<Track, Track>> merge, List<Track> delete, List<Track> upToDate, List<Track> remoteTracks, bool forceUpdateFileTags);
     }
 
     public class RefreshTrackService : IRefreshTrackService
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public bool RefreshTrackInfo(List<Track> add, List<Track> update, List<Tuple<Track, Track> > merge, List<Track> delete, List<Track> upToDate, List<Track> remoteTracks, bool forceUpdateFileTags)
+        public bool RefreshTrackInfo(List<Track> add, List<Track> update, List<Tuple<Track, Track>> merge, List<Track> delete, List<Track> upToDate, List<Track> remoteTracks, bool forceUpdateFileTags)
         {
             var updateList = new List<Track>();
 
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Music
                 track.Title = track.Title ?? "Unknown";
                 updateList.Add(track);
             }
-                                  
+
             // Move trackfiles from merged entities into new one
             foreach (var item in merge)
             {
@@ -67,10 +67,10 @@ namespace NzbDrone.Core.Music
                 _logger.Debug("Forcing tag update due to Artist/Album/Release updates");
                 tagsToUpdate = updateList.Concat(upToDate).ToList();
             }
+
             _audioTagService.SyncTags(tagsToUpdate);
 
             return add.Any() || delete.Any() || updateList.Any() || merge.Any();
         }
     }
 }
-

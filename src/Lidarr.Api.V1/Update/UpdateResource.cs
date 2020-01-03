@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.REST;
 using Newtonsoft.Json;
 using NzbDrone.Core.Update;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Update
 {
@@ -27,7 +27,10 @@ namespace Lidarr.Api.V1.Update
     {
         public static UpdateResource ToResource(this UpdatePackage model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new UpdateResource
             {
@@ -37,6 +40,7 @@ namespace Lidarr.Api.V1.Update
                 ReleaseDate = model.ReleaseDate,
                 FileName = model.FileName,
                 Url = model.Url,
+
                 //Installed
                 //Installable
                 //Latest

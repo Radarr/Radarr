@@ -1,12 +1,10 @@
 using System.Threading.Tasks;
-using Nancy;
 using Nancy.Routing;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Lifecycle;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.System
 {
@@ -39,10 +37,10 @@ namespace Lidarr.Api.V1.System
             _configFileProvider = configFileProvider;
             _database = database;
             _lifecycleService = lifecycleService;
-            Get("/status",  x => GetStatus());
-            Get("/routes",  x => GetRoutes());
-            Post("/shutdown",  x => Shutdown());
-            Post("/restart",  x => Restart());
+            Get("/status", x => GetStatus());
+            Get("/routes", x => GetRoutes());
+            Post("/shutdown", x => Shutdown());
+            Post("/restart", x => Restart());
         }
 
         private object GetStatus()

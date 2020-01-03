@@ -8,12 +8,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -39,16 +39,16 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                        .Build();
 
             _profile = new QualityProfile
-                       {
-                           Name = "Test",
-                           Cutoff = Quality.MP3_256.Id,
-                           Items = new List<QualityProfileQualityItem>
+            {
+                Name = "Test",
+                Cutoff = Quality.MP3_256.Id,
+                Items = new List<QualityProfileQualityItem>
                                    {
                                        new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
                                        new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 },
                                        new QualityProfileQualityItem { Allowed = true, Quality = Quality.FLAC }
                                    },
-                       };
+            };
 
             _artist.QualityProfile = new LazyLoaded<QualityProfile>(_profile);
 
@@ -58,11 +58,11 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _parsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256);
 
             _remoteAlbum = new RemoteAlbum();
-            _remoteAlbum.Albums = new List<Album>{ _album };
+            _remoteAlbum.Albums = new List<Album> { _album };
             _remoteAlbum.Artist = _artist;
             _remoteAlbum.ParsedAlbumInfo = _parsedAlbumInfo;
             _remoteAlbum.Release = _release;
-            
+
             _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             _heldReleases = new List<PendingRelease>();
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
-                  .Returns(new List<Album> {_album});
+                  .Returns(new List<Album> { _album });
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisions(It.IsAny<List<DownloadDecision>>()))

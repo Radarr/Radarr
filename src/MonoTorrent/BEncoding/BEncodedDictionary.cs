@@ -82,7 +82,7 @@ namespace MonoTorrent.BEncoding
 
                 if (oldkey != null && oldkey.CompareTo(key) > 0)
                     if (strictDecoding)
-                        throw new BEncodingException(String.Format(
+                        throw new BEncodingException(string.Format(
                             "Illegal BEncodedDictionary. The attributes are not ordered correctly. Old key: {0}, New key: {1}",
                             oldkey, key));
 

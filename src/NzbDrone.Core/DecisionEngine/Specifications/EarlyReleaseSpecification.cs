@@ -50,9 +50,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             var releaseDate = subject.Albums.First().ReleaseDate;
 
-            if (releaseDate == null) return Decision.Accept();
+            if (releaseDate == null)
+            {
+                return Decision.Accept();
+            }
 
-            var isEarly = (releaseDate.Value > subject.Release.PublishDate.AddDays(indexerSettings.EarlyReleaseLimit.Value));
+            var isEarly = releaseDate.Value > subject.Release.PublishDate.AddDays(indexerSettings.EarlyReleaseLimit.Value);
 
             if (isEarly)
             {

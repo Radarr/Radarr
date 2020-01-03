@@ -27,11 +27,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return Decision.Accept();
             }
 
-                if (_cdContainerTypes.Contains(subject.Release.Container.ToLower()))
-                {
-                    _logger.Debug("Release contains raw CD, rejecting.");
-                    return Decision.Reject("Raw CD release");
-                }
+            if (_cdContainerTypes.Contains(subject.Release.Container.ToLower()))
+            {
+                _logger.Debug("Release contains raw CD, rejecting.");
+                return Decision.Reject("Raw CD release");
+            }
 
             return Decision.Accept();
         }

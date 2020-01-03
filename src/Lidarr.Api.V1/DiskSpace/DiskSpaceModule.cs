@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using NzbDrone.Core.DiskSpace;
 using Lidarr.Http;
+using NzbDrone.Core.DiskSpace;
 
 namespace Lidarr.Api.V1.DiskSpace
 {
-    public class DiskSpaceModule :LidarrRestModule<DiskSpaceResource>
+    public class DiskSpaceModule : LidarrRestModule<DiskSpaceResource>
     {
         private readonly IDiskSpaceService _diskSpaceService;
 
         public DiskSpaceModule(IDiskSpaceService diskSpaceService)
-            :base("diskspace")
+            : base("diskspace")
         {
             _diskSpaceService = diskSpaceService;
             GetResourceAll = GetFreeSpace;

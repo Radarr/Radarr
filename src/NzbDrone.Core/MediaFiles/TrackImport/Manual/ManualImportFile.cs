@@ -22,20 +22,25 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             {
                 return false;
             }
+
             return Path.PathEquals(other.Path);
         }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
             {
                 return false;
             }
+
             if (obj.GetType() != GetType())
             {
                 return false;
             }
+
             return Path.PathEquals(((ManualImportFile)obj).Path);
         }
+
         public override int GetHashCode()
         {
             return Path != null ? Path.GetHashCode() : 0;

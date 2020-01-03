@@ -8,8 +8,8 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -69,10 +69,10 @@ namespace NzbDrone.Core.Test.MusicTests
         public void should_have_proper_path()
         {
             var newArtist = new Artist
-                            {
-                                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
-                                RootFolderPath = @"C:\Test\Music"
-                            };
+            {
+                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                RootFolderPath = @"C:\Test\Music"
+            };
 
             GivenValidArtist(newArtist.ForeignArtistId);
             GivenValidPath();

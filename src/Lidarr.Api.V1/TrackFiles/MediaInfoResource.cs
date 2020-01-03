@@ -1,5 +1,5 @@
-using NzbDrone.Core.MediaFiles;
 using Lidarr.Http.REST;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 
 namespace Lidarr.Api.V1.TrackFiles
@@ -23,13 +23,13 @@ namespace Lidarr.Api.V1.TrackFiles
             }
 
             return new MediaInfoResource
-                   {
-                       AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
-                       AudioCodec = MediaInfoFormatter.FormatAudioCodec(model),
-                       AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model),
-                       AudioBits = MediaInfoFormatter.FormatAudioBitsPerSample(model),
-                       AudioSampleRate = MediaInfoFormatter.FormatAudioSampleRate(model)
-                    };
+            {
+                AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
+                AudioCodec = MediaInfoFormatter.FormatAudioCodec(model),
+                AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model),
+                AudioBits = MediaInfoFormatter.FormatAudioBitsPerSample(model),
+                AudioSampleRate = MediaInfoFormatter.FormatAudioSampleRate(model)
+            };
         }
     }
 }

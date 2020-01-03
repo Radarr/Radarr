@@ -1,13 +1,13 @@
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
-using NzbDrone.Core.Qualities;
-using Lidarr.Api.V1.Artist;
-using Lidarr.Api.V1.Albums;
-using Lidarr.Api.V1.Tracks;
-using Lidarr.Http.REST;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Api.V1.Albums;
+using Lidarr.Api.V1.Artist;
+using Lidarr.Api.V1.Tracks;
+using Lidarr.Http.REST;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -35,7 +35,10 @@ namespace Lidarr.Api.V1.ManualImport
     {
         public static ManualImportResource ToResource(this ManualImportItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ManualImportResource
             {
@@ -49,6 +52,7 @@ namespace Lidarr.Api.V1.ManualImport
                 AlbumReleaseId = model.Release?.Id ?? 0,
                 Tracks = model.Tracks.ToResource(),
                 Quality = model.Quality,
+
                 //QualityWeight
                 DownloadId = model.DownloadId,
                 Rejections = model.Rejections,

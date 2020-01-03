@@ -11,7 +11,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
-using Lidarr.Http.Extensions;
 using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Lidarr.Api.V1.Indexers
@@ -43,7 +42,7 @@ namespace Lidarr.Api.V1.Indexers
             _logger = logger;
 
             GetResourceAll = GetReleases;
-            Post("/",  x => DownloadRelease(ReadResourceFromRequest()));
+            Post("/", x => DownloadRelease(ReadResourceFromRequest()));
 
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();

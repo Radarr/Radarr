@@ -17,14 +17,14 @@ namespace NzbDrone.Core.Test.IndexerTests.WafflesTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Name = "Waffles",
+                Settings = new WafflesSettings()
                 {
-                    Name = "Waffles",
-                    Settings = new WafflesSettings()
-                        {
-                            UserId = "xxx",
-                            RssPasskey = "123456789"
-                        }
-                };
+                    UserId = "xxx",
+                    RssPasskey = "123456789"
+                }
+            };
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.IndexerTests.WafflesTests
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
                 .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
-            
+
             var releases = Subject.FetchRecent();
 
             releases.Should().HaveCount(15);

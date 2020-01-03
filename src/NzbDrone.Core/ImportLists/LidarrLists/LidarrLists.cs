@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.ImportLists.LidarrLists
 {
@@ -65,6 +65,5 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
         {
             return new LidarrListsParser(Settings);
         }
-
     }
 }

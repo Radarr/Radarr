@@ -81,13 +81,12 @@ namespace NzbDrone.Core.Music
                     // Catch Import Errors for now until we get things fixed up
                     _logger.Error(ex, "Failed to import id: {0} - {1}", s.Metadata.Value.ForeignArtistId, s.Metadata.Value.Name);
                 }
-                
             }
 
             // add metadata
             _artistMetadataService.UpsertMany(artistsToAdd.Select(x => x.Metadata.Value).ToList());
             artistsToAdd.ForEach(x => x.ArtistMetadataId = x.Metadata.Value.Id);
-            
+
             return _artistService.AddArtists(artistsToAdd);
         }
 

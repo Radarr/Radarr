@@ -1,6 +1,6 @@
-using Lidarr.Http.REST;
-using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Albums;
+using Lidarr.Api.V1.Artist;
+using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Search
 {

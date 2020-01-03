@@ -490,7 +490,10 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Callback(() =>
                 {
                     WithExistingFile(_tempTargetPath, true, 900);
-                    if (retry++ == 1) WithExistingFile(_tempTargetPath, true, 1000);
+                    if (retry++ == 1)
+                    {
+                        WithExistingFile(_tempTargetPath, true, 1000);
+                    }
                 });
 
             var result = Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Copy);
@@ -509,7 +512,10 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Callback(() =>
                 {
                     WithExistingFile(_tempTargetPath, true, 900);
-                    if (retry++ == 3) throw new Exception("Test Failed, retried too many times.");
+                    if (retry++ == 3)
+                    {
+                        throw new Exception("Test Failed, retried too many times.");
+                    }
                 });
 
             Assert.Throws<IOException>(() => Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Copy));
@@ -886,7 +892,9 @@ namespace NzbDrone.Common.Test.DiskTests
         {
             var dir = Path.GetDirectoryName(path);
             if (exists && dir.IsNotNullOrWhiteSpace())
+            {
                 WithExistingFolder(dir);
+            }
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FolderExists(path))
@@ -897,7 +905,9 @@ namespace NzbDrone.Common.Test.DiskTests
         {
             var dir = Path.GetDirectoryName(path);
             if (exists && dir.IsNotNullOrWhiteSpace())
+            {
                 WithExistingFolder(dir);
+            }
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FileExists(path))
@@ -951,7 +961,6 @@ namespace NzbDrone.Common.Test.DiskTests
                     WithExistingFile(v, false);
                 });
 
-
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FolderExists(It.IsAny<string>()))
                 .Returns(false);
@@ -969,6 +978,7 @@ namespace NzbDrone.Common.Test.DiskTests
                {
                    WithExistingFolder(s, false);
                    WithExistingFolder(d);
+
                    // Note: Should also deal with the files.
                });
 
@@ -977,6 +987,7 @@ namespace NzbDrone.Common.Test.DiskTests
                .Callback<string, bool>((f, r) =>
                {
                    WithExistingFolder(f, false);
+
                    // Note: Should also deal with the files.
                });
 
@@ -996,39 +1007,39 @@ namespace NzbDrone.Common.Test.DiskTests
 
         private void WithRealDiskProvider()
         {
-            IFileSystem _fileSystem = new FileSystem();
+            IFileSystem fileSystem = new FileSystem();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FolderExists(It.IsAny<string>()))
-                .Returns<string>(v => _fileSystem.Directory.Exists(v));
+                .Returns<string>(v => fileSystem.Directory.Exists(v));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FileExists(It.IsAny<string>()))
-                .Returns<string>(v => _fileSystem.File.Exists(v));
+                .Returns<string>(v => fileSystem.File.Exists(v));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.CreateFolder(It.IsAny<string>()))
-                .Callback<string>(v => _fileSystem.Directory.CreateDirectory(v));
+                .Callback<string>(v => fileSystem.Directory.CreateDirectory(v));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.DeleteFolder(It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback<string, bool>((v, r) => _fileSystem.Directory.Delete(v, r));
+                .Callback<string, bool>((v, r) => fileSystem.Directory.Delete(v, r));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.DeleteFile(It.IsAny<string>()))
-                .Callback<string>(v => _fileSystem.File.Delete(v));
+                .Callback<string>(v => fileSystem.File.Delete(v));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.GetDirectoryInfos(It.IsAny<string>()))
-                .Returns<string>(v => _fileSystem.DirectoryInfo.FromDirectoryName(v).GetDirectories().ToList());
+                .Returns<string>(v => fileSystem.DirectoryInfo.FromDirectoryName(v).GetDirectories().ToList());
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.GetFileInfos(It.IsAny<string>(), It.IsAny<SearchOption>()))
-                .Returns((string v, SearchOption option) => _fileSystem.DirectoryInfo.FromDirectoryName(v).GetFiles("*", option).ToList());
+                .Returns((string v, SearchOption option) => fileSystem.DirectoryInfo.FromDirectoryName(v).GetFiles("*", option).ToList());
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.GetFileSize(It.IsAny<string>()))
-                .Returns<string>(v => _fileSystem.FileInfo.FromFileName(v).Length);
+                .Returns<string>(v => fileSystem.FileInfo.FromFileName(v).Length);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.TryCreateHardLink(It.IsAny<string>(), It.IsAny<string>()))
@@ -1036,13 +1047,18 @@ namespace NzbDrone.Common.Test.DiskTests
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.CopyFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback<string, string, bool>((s, d, o) => _fileSystem.File.Copy(s, d, o));
+                .Callback<string, string, bool>((s, d, o) => fileSystem.File.Copy(s, d, o));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.MoveFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback<string, string, bool>((s, d, o) => {
-                    if (_fileSystem.File.Exists(d) && o) _fileSystem.File.Delete(d);
-                    _fileSystem.File.Move(s, d);
+                .Callback<string, string, bool>((s, d, o) =>
+                {
+                    if (fileSystem.File.Exists(d) && o)
+                    {
+                        fileSystem.File.Delete(d);
+                    }
+
+                    fileSystem.File.Move(s, d);
                 });
 
             Mocker.GetMock<IDiskProvider>()

@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using Moq;
-using NzbDrone.Core.Profiles.Metadata;
-using NzbDrone.Core.Music;
-using System.Collections.Generic;
-using System;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             UseRealHttp();
 
-            var _metadataProfile = new MetadataProfile
+            var metadataProfile = new MetadataProfile
             {
                 Id = 1,
                 PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
@@ -28,7 +28,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                     {
                         PrimaryAlbumType = PrimaryAlbumType.Album,
                         Allowed = true
-
                     }
                 },
                 SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>
@@ -51,11 +50,11 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.All())
-                .Returns(new List<MetadataProfile>{_metadataProfile});
+                .Returns(new List<MetadataProfile> { metadataProfile });
 
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.Get(It.IsAny<int>()))
-                .Returns(_metadataProfile);
+                .Returns(metadataProfile);
         }
 
         [TestCase("Coldplay", "Coldplay")]
@@ -75,7 +74,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 
             ExceptionVerification.IgnoreWarns();
         }
-
 
         [TestCase("Evolve", "Imagine Dragons", "Evolve")]
         [TestCase("Hysteria", null, "Hysteria")]
@@ -103,7 +101,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             var result = Subject.SearchForNewArtist(term);
             result.Should().BeEmpty();
-            
+
             ExceptionVerification.IgnoreWarns();
         }
 

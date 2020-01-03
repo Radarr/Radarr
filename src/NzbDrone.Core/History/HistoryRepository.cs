@@ -4,8 +4,8 @@ using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
@@ -19,17 +19,14 @@ namespace NzbDrone.Core.History
         List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
         void DeleteForArtist(int artistId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
-
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
     {
-
         public HistoryRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }
-
 
         public History MostRecentForAlbum(int albumId)
         {
@@ -88,8 +85,8 @@ namespace NzbDrone.Core.History
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.TrackFileImported)
-                 ).ToList();
+                 h.EventType == HistoryEventType.TrackFileImported))
+                 .ToList();
         }
 
         public void DeleteForArtist(int artistId)

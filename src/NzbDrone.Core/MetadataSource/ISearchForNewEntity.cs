@@ -5,6 +5,6 @@ namespace NzbDrone.Core.MetadataSource
 {
     public interface ISearchForNewEntity
     {
-        List<Object> SearchForNewEntity(string title);
+        List<object> SearchForNewEntity(string title);
     }
 }

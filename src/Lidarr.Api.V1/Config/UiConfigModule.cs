@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using NzbDrone.Core.Configuration;
-using Lidarr.Http;
+﻿using NzbDrone.Core.Configuration;
 
 namespace Lidarr.Api.V1.Config
 {
@@ -10,7 +7,6 @@ namespace Lidarr.Api.V1.Config
         public UiConfigModule(IConfigService configService)
             : base(configService)
         {
-
         }
 
         protected override UiConfigResource ToResource(IConfigService model)

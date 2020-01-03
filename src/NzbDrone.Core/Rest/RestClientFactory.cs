@@ -1,5 +1,5 @@
-﻿using RestSharp;
-using NzbDrone.Common.EnvironmentInfo;
+﻿using NzbDrone.Common.EnvironmentInfo;
+using RestSharp;
 
 namespace NzbDrone.Core.Rest
 {
@@ -11,7 +11,6 @@ namespace NzbDrone.Core.Rest
             {
                 UserAgent = $"{BuildInfo.AppName}/{BuildInfo.Version} ({OsInfo.Os})"
             };
-
 
             return restClient;
         }

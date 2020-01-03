@@ -31,18 +31,18 @@ namespace ServiceUninstall
             }
 
             var startInfo = new ProcessStartInfo
-                                {
-                                    FileName = LidarrExe,
-                                    Arguments = arg,
-                                    UseShellExecute = false,
-                                    RedirectStandardOutput = true,
-                                    RedirectStandardError = true,
-                                    CreateNoWindow = true
-                                };
+            {
+                FileName = LidarrExe,
+                Arguments = arg,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
 
             var process = new Process { StartInfo = startInfo };
-            process.OutputDataReceived += (OnDataReceived);
-            process.ErrorDataReceived += (OnDataReceived);
+            process.OutputDataReceived += OnDataReceived;
+            process.ErrorDataReceived += OnDataReceived;
 
             process.Start();
 

@@ -13,7 +13,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
     {
         private readonly Logger _logger;
 
-        private static readonly List<Tuple<string, string>> charsAndSeps = new List<Tuple<string, string>> {
+        private static readonly List<Tuple<string, string>> CharsAndSeps = new List<Tuple<string, string>>
+        {
             Tuple.Create(@"a-z0-9,\(\)\.&'’\s", @"\s_-"),
             Tuple.Create(@"a-z0-9,\(\)\.\&'’_", @"\s-")
         };
@@ -26,16 +27,17 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
             var track = $@"(?<track>\d+)";
             var title = $@"(?<title>[{chars}]+)";
             var tag = $@"(?<tag>[{chars}]+)";
-            
-            return new [] {
+
+            return new[]
+            {
                 new Regex($@"^{track}{sep1}{artist}{sepn}{title}{sepn}{tag}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{track}{sep1}{artist}{sepn}{tag}{sepn}{title}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{track}{sep1}{artist}{sepn}{title}$", RegexOptions.IgnoreCase),
-                
+
                 new Regex($@"^{artist}{sep1}{tag}{sepn}{track}{sepn}{title}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{artist}{sep1}{track}{sepn}{title}{sepn}{tag}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{artist}{sep1}{track}{sepn}{title}$", RegexOptions.IgnoreCase),
-                
+
                 new Regex($@"^{artist}{sep1}{title}{sepn}{tag}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{artist}{sep1}{tag}{sepn}{title}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{artist}{sep1}{title}$", RegexOptions.IgnoreCase),
@@ -43,7 +45,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
                 new Regex($@"^{track}{sep1}{title}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{track}{sep1}{tag}{sepn}{title}$", RegexOptions.IgnoreCase),
                 new Regex($@"^{track}{sep1}{title}{sepn}{tag}$", RegexOptions.IgnoreCase),
-                
+
                 new Regex($@"^{title}$", RegexOptions.IgnoreCase),
             };
         }
@@ -52,7 +54,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
         {
             _logger = logger;
         }
-        
+
         public LocalAlbumRelease Aggregate(LocalAlbumRelease release, bool others)
         {
             var tracks = release.LocalTracks;
@@ -61,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
                 || tracks.Count(x => x.FileTrackInfo.DiscNumber == 0) > 0)
             {
                 _logger.Debug("Missing data in tags, trying filename augmentation");
-                foreach (var charSep in charsAndSeps)
+                foreach (var charSep in CharsAndSeps)
                 {
                     foreach (var pattern in Patterns(charSep.Item1, charSep.Item2))
                     {
@@ -94,6 +96,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
                     return null;
                 }
             }
+
             return matches;
         }
 
@@ -105,7 +108,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
         private void ApplyMatches(Dictionary<LocalTrack, Match> matches, Regex pattern)
         {
             _logger.Debug("Got filename match with regex {0}", pattern);
-            
+
             var keys = pattern.GetGroupNames();
             var someMatch = matches.First().Value;
 
@@ -136,6 +139,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
                 else
                 {
                     _logger.Trace("Abort - both artist and title vary between matches");
+
                     // both vary, abort
                     return;
                 }
@@ -176,8 +180,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators
                         _logger.Debug("Got disc number from filename: {0}", tracknum / 100);
                         tracknum = tracknum % 100;
                     }
+
                     _logger.Debug("Got track number from filename: {0}", tracknum);
-                    track.FileTrackInfo.TrackNumbers = new [] { tracknum };
+                    track.FileTrackInfo.TrackNumbers = new[] { tracknum };
                 }
             }
         }

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
@@ -83,7 +81,6 @@ namespace NzbDrone.Core.MediaFiles
 
                                 return true;
                             }
-
                             catch (Exception ex)
                             {
                                 _logger.Warn(ex, "Unable to set date of file [" + trackFilePath + "]");
@@ -126,7 +123,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, trackFiles.Count, message.Artist.Name);
             }
-
             else
             {
                 _logger.ProgressDebug("No file dates changed for {0}", message.Artist.Name);

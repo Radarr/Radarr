@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Profiles.Qualities
 {
@@ -20,7 +18,6 @@ namespace NzbDrone.Core.Profiles.Qualities
         QualityProfile Get(int id);
         bool Exists(int id);
         QualityProfile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
-
     }
 
     public class QualityProfileService : IProfileService, IHandle<ApplicationStartedEvent>
@@ -76,11 +73,15 @@ namespace NzbDrone.Core.Profiles.Qualities
 
         public void Handle(ApplicationStartedEvent message)
         {
-            if (All().Any()) return;
+            if (All().Any())
+            {
+                return;
+            }
 
             _logger.Info("Setting up default quality profiles");
 
-            AddDefaultProfile("Any", Quality.Unknown,
+            AddDefaultProfile("Any",
+                Quality.Unknown,
                 Quality.Unknown,
                 Quality.MP3_008,
                 Quality.MP3_016,
@@ -116,12 +117,14 @@ namespace NzbDrone.Core.Profiles.Qualities
                 Quality.FLAC,
                 Quality.FLAC_24);
 
-            AddDefaultProfile("Lossless", Quality.FLAC,
+            AddDefaultProfile("Lossless",
+                Quality.FLAC,
                 Quality.FLAC,
                 Quality.ALAC,
                 Quality.FLAC_24);
 
-            AddDefaultProfile("Standard", Quality.MP3_192,
+            AddDefaultProfile("Standard",
+                Quality.MP3_192,
                 Quality.MP3_192,
                 Quality.MP3_256,
                 Quality.MP3_320);

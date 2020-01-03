@@ -2,8 +2,8 @@ using System;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
-using RestSharp;
 using NzbDrone.Core.Rest;
+using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Pushover
 {
@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Notifications.Pushover
 
     public class PushoverProxy : IPushoverProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://api.pushover.net/1/messages.json";
+        private readonly Logger _logger;
 
         public PushoverProxy(Logger logger)
         {
@@ -44,7 +44,6 @@ namespace NzbDrone.Core.Notifications.Pushover
             {
                 request.AddParameter("sound", settings.Sound);
             }
-
 
             client.ExecuteAndValidate(request);
         }

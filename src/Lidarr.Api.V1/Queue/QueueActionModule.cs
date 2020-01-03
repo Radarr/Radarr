@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
+using Lidarr.Http;
+using Lidarr.Http.Extensions;
+using Lidarr.Http.REST;
 using Nancy;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Queue;
-using Lidarr.Http;
-using Lidarr.Http.Extensions;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Queue
 {
@@ -34,11 +33,11 @@ namespace Lidarr.Api.V1.Queue
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
 
-            Post(@"/grab/(?<id>[\d]{1,10})",  x => Grab((int)x.Id));
-            Post("/grab/bulk",  x => Grab());
+            Post(@"/grab/(?<id>[\d]{1,10})", x => Grab((int)x.Id));
+            Post("/grab/bulk", x => Grab());
 
-            Delete(@"/(?<id>[\d]{1,10})",  x => Remove((int)x.Id));
-            Delete("/bulk",  x => Remove());
+            Delete(@"/(?<id>[\d]{1,10})", x => Remove((int)x.Id));
+            Delete("/bulk", x => Remove());
         }
 
         private object Grab(int id)

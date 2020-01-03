@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Parser
         // see https://wiki.musicbrainz.org/Release_Country
         private static readonly HashSet<IsoCountry> All = new HashSet<IsoCountry>
         {
-            new IsoCountry("AF", "Afghanistan" ),
+            new IsoCountry("AF", "Afghanistan"),
             new IsoCountry("AX", "Åland Islands"),
             new IsoCountry("AL", "Albania"),
             new IsoCountry("DZ", "Algeria"),

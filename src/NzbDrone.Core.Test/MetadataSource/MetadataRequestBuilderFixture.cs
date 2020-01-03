@@ -1,10 +1,10 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MetadataSource
 {

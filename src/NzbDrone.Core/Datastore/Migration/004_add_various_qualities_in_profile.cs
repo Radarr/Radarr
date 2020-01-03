@@ -25,45 +25,62 @@ namespace NzbDrone.Core.Datastore.Migration
 
             updater.MoveQuality(Qualities4.MP3_160, Qualities4.Unknown);
 
-            updater.CreateNewGroup(Qualities4.Unknown, 1000, "Trash Quality Lossy", new[] { Qualities4.MP3_080,
-                                                                                            Qualities4.MP3_064,
-                                                                                            Qualities4.MP3_056,
-                                                                                            Qualities4.MP3_048,
-                                                                                            Qualities4.MP3_040,
-                                                                                            Qualities4.MP3_032,
-                                                                                            Qualities4.MP3_024,
-                                                                                            Qualities4.MP3_016,
-                                                                                            Qualities4.MP3_008 });
+            updater.CreateNewGroup(Qualities4.Unknown, 1000, "Trash Quality Lossy", new[]
+            {
+                Qualities4.MP3_080,
+                Qualities4.MP3_064,
+                Qualities4.MP3_056,
+                Qualities4.MP3_048,
+                Qualities4.MP3_040,
+                Qualities4.MP3_032,
+                Qualities4.MP3_024,
+                Qualities4.MP3_016,
+                Qualities4.MP3_008
+            });
 
-            updater.CreateGroupAt(Qualities4.MP3_160, 1001, "Poor Quality Lossy", new[] { Qualities4.MP3_160,
-                                                                                          Qualities4.VORBIS_Q5,
-                                                                                          Qualities4.MP3_128,
-                                                                                          Qualities4.MP3_096,
-                                                                                          Qualities4.MP3_112 }); // Group Vorbis-Q5 with MP3-160
+            updater.CreateGroupAt(Qualities4.MP3_160, 1001, "Poor Quality Lossy", new[]
+            {
+                Qualities4.MP3_160,
+                Qualities4.VORBIS_Q5,
+                Qualities4.MP3_128,
+                Qualities4.MP3_096,
+                Qualities4.MP3_112
+            }); // Group Vorbis-Q5 with MP3-160
 
-            updater.CreateGroupAt(Qualities4.MP3_192, 1002, "Low Quality Lossy", new[] { Qualities4.MP3_192,
-                                                                                         Qualities4.AAC_192,
-                                                                                         Qualities4.VORBIS_Q6,
-                                                                                         Qualities4.WMA,
-                                                                                         Qualities4.MP3_224 }); // Group Vorbis-Q6, AAC 192, WMA with MP3-190
+            updater.CreateGroupAt(Qualities4.MP3_192, 1002, "Low Quality Lossy", new[]
+            {
+                Qualities4.MP3_192,
+                Qualities4.AAC_192,
+                Qualities4.VORBIS_Q6,
+                Qualities4.WMA,
+                Qualities4.MP3_224
+            }); // Group Vorbis-Q6, AAC 192, WMA with MP3-190
 
-            updater.CreateGroupAt(Qualities4.MP3_256, 1003, "Mid Quality Lossy", new[] { Qualities4.MP3_256,
-                                                                                         Qualities4.MP3_VBR_V2,
-                                                                                         Qualities4.VORBIS_Q8,
-                                                                                         Qualities4.VORBIS_Q7,
-                                                                                         Qualities4.AAC_256 }); // Group Mp3-VBR-V2, Vorbis-Q7, Q8, AAC-256 with MP3-256
+            updater.CreateGroupAt(Qualities4.MP3_256, 1003, "Mid Quality Lossy", new[]
+            {
+                Qualities4.MP3_256,
+                Qualities4.MP3_VBR_V2,
+                Qualities4.VORBIS_Q8,
+                Qualities4.VORBIS_Q7,
+                Qualities4.AAC_256
+            }); // Group Mp3-VBR-V2, Vorbis-Q7, Q8, AAC-256 with MP3-256
 
-            updater.CreateGroupAt(Qualities4.MP3_320, 1004, "High Quality Lossy", new[] { Qualities4.MP3_VBR,
-                                                                                          Qualities4.MP3_320,
-                                                                                          Qualities4.AAC_320,
-                                                                                          Qualities4.AAC_VBR,
-                                                                                          Qualities4.VORBIS_Q10,
-                                                                                          Qualities4.VORBIS_Q9 }); // Group MP3-VBR-V0, AAC-VBR, Vorbis-Q10, Q9, AAC-320 with MP3-320
+            updater.CreateGroupAt(Qualities4.MP3_320, 1004, "High Quality Lossy", new[]
+            {
+                Qualities4.MP3_VBR,
+                Qualities4.MP3_320,
+                Qualities4.AAC_320,
+                Qualities4.AAC_VBR,
+                Qualities4.VORBIS_Q10,
+                Qualities4.VORBIS_Q9
+            }); // Group MP3-VBR-V0, AAC-VBR, Vorbis-Q10, Q9, AAC-320 with MP3-320
 
-            updater.CreateGroupAt(Qualities4.FLAC, 1005, "Lossless", new[] { Qualities4.FLAC,
-                                                                             Qualities4.ALAC,
-                                                                             Qualities4.FLAC_24 }); // Group ALAC with FLAC
-
+            updater.CreateGroupAt(Qualities4.FLAC, 1005, "Lossless", new[]
+            {
+                Qualities4.FLAC,
+                Qualities4.ALAC,
+                Qualities4.FLAC_24
+            }); // Group ALAC with FLAC
 
             updater.Commit();
         }
@@ -179,7 +196,6 @@ namespace NzbDrone.Core.Datastore.Migration
                     Allowed = false
                 });
             }
-
         }
 
         public void CreateGroupAt(Qualities4 find, int groupId, string name, Qualities4[] qualities)
@@ -208,7 +224,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 else
                 {
                     // If the ID isn't found for some reason (mangled migration 71?)
-
                     profile.Items.Add(new ProfileItem4
                     {
                         Id = groupId,
@@ -250,7 +265,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 if (findIndex > -1)
                 {
-
                     profile.Items.Insert(findIndex, new ProfileItem4
                     {
                         Id = groupId,
@@ -266,7 +280,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
                 else
                 {
-
                     profile.Items.Add(new ProfileItem4
                     {
                         Id = groupId,
@@ -300,8 +313,6 @@ namespace NzbDrone.Core.Datastore.Migration
                         Allowed = allowed
                     });
                 }
-
-
             }
         }
 

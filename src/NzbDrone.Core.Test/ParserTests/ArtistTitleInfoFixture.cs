@@ -7,8 +7,7 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class ArtistTitleInfoFixture : CoreTest
     {
-
-        // TODO: Redo this test and parsed info for Albums which do have a year association 
+        // TODO: Redo this test and parsed info for Albums which do have a year association
         [Test]
         [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_year_zero_when_title_doesnt_have_a_year()

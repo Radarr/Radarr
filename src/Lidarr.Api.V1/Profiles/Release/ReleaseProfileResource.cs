@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Profiles.Releases;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace Lidarr.Api.V1.Profiles.Release
 {
@@ -23,7 +23,10 @@ namespace Lidarr.Api.V1.Profiles.Release
     {
         public static ReleaseProfileResource ToResource(this ReleaseProfile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ReleaseProfileResource
             {
@@ -39,7 +42,10 @@ namespace Lidarr.Api.V1.Profiles.Release
 
         public static ReleaseProfile ToModel(this ReleaseProfileResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ReleaseProfile
             {

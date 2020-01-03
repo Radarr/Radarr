@@ -1,12 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using FizzWare.NBuilder;
+using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Common.Serializer;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Datastore.Migration
 {
@@ -16,38 +16,38 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         private void GivenArtist(add_release_groups_etc c, int id, string name)
         {
             c.Insert.IntoTable("Artists").Row(new
-                {
-                    Id = id,
-                    ForeignArtistId = id.ToString(),
-                    Name = name,
-                    CleanName = name,
-                    Status = 1,
-                    Images = "",
-                    Path = $"/mnt/data/path/{name}",
-                    Monitored = 1,
-                    AlbumFolder = 1,
-                    LanguageProfileId = 1,
-                    MetadataProfileId = 1
-                });
+            {
+                Id = id,
+                ForeignArtistId = id.ToString(),
+                Name = name,
+                CleanName = name,
+                Status = 1,
+                Images = "",
+                Path = $"/mnt/data/path/{name}",
+                Monitored = 1,
+                AlbumFolder = 1,
+                LanguageProfileId = 1,
+                MetadataProfileId = 1
+            });
         }
 
         private void GivenAlbum(add_release_groups_etc c, int id, int artistId, string title, string currentRelease)
         {
             c.Insert.IntoTable("Albums").Row(new
-                {
-                    Id = id,
-                    ForeignAlbumId = id.ToString(),
-                    ArtistId = artistId,
-                    Title = title,
-                    CleanTitle = title,
-                    Images = "",
-                    Monitored = 1,
-                    AlbumType = "Studio",
-                    Duration = 100,
-                    Media = "",
-                    Releases = "",
-                    CurrentRelease = currentRelease
-                });
+            {
+                Id = id,
+                ForeignAlbumId = id.ToString(),
+                ArtistId = artistId,
+                Title = title,
+                CleanTitle = title,
+                Images = "",
+                Monitored = 1,
+                AlbumType = "Studio",
+                Duration = 100,
+                Media = "",
+                Releases = "",
+                CurrentRelease = currentRelease
+            });
         }
 
         private void GivenTracks(add_release_groups_etc c, int artistid, int albumid, int firstId, int count)
@@ -56,19 +56,19 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 var id = firstId + i;
                 c.Insert.IntoTable("Tracks").Row(new
-                    {
-                        Id = id,
-                        ForeignTrackId = id.ToString(),
-                        ArtistId = artistid,
-                        AlbumId = albumid,
-                        Explicit = 0,
-                        Compilation = 0,
-                        Monitored = 0,
-                        Duration = 100,
-                        MediumNumber = 1,
-                        AbsoluteTrackNumber = i,
-                        TrackNumber = i.ToString()
-                    });
+                {
+                    Id = id,
+                    ForeignTrackId = id.ToString(),
+                    ArtistId = artistid,
+                    AlbumId = albumid,
+                    Explicit = 0,
+                    Compilation = 0,
+                    Monitored = 0,
+                    Duration = 100,
+                    MediumNumber = 1,
+                    AbsoluteTrackNumber = i,
+                    TrackNumber = i.ToString()
+                });
             }
         }
 
@@ -102,14 +102,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             tracks.First().AlbumReleaseId.Should().Be(albumReleaseId);
             tracks.All(t => t.ArtistMetadataId == album.ArtistMetadataId).Should().BeTrue();
         }
-        
+
         [Test]
         public void migration_023_simple_case()
         {
             var release = Builder<add_release_groups_etc.LegacyAlbumRelease>
                 .CreateNew()
                 .Build();
-            
+
             var db = WithMigrationTestDb(c =>
                 {
                     GivenArtist(c, 1, "TestArtist");
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 .CreateNew()
                 .With(e => e.MediaCount = 2)
                 .Build();
-            
+
             var db = WithMigrationTestDb(c =>
                 {
                     GivenArtist(c, 1, "TestArtist");
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var migrated = VerifyAlbumReleases(db);
             migrated.First().Media.Count.Should().Be(2);
-            
+
             VerifyTracks(db, 1, 1, 10);
         }
 
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             var release = Builder<add_release_groups_etc.LegacyAlbumRelease>
                 .CreateNew()
                 .Build();
-            
+
             var db = WithMigrationTestDb(c =>
                 {
                     GivenArtist(c, 1, "TestArtist");
@@ -205,7 +205,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     GivenTracks(c, 1, 1, 1, 10);
                     GivenAlbum(c, 2, 1, "TestAlbum2", release.ToJson());
                     GivenTracks(c, 1, 2, 100, 10);
-
                 });
 
             VerifyAlbumReleases(db);
@@ -221,7 +220,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 .All()
                 .With(e => e.Id = "TestForeignId")
                 .Build();
-            
+
             var db = WithMigrationTestDb(c =>
                 {
                     GivenArtist(c, 1, "TestArtist");
@@ -229,7 +228,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     GivenTracks(c, 1, 1, 1, 10);
                     GivenAlbum(c, 2, 1, "TestAlbum2", releases[1].ToJson());
                     GivenTracks(c, 1, 2, 100, 10);
-
                 });
 
             VerifyAlbumReleases(db);

@@ -1,17 +1,15 @@
-using TinyIoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Nancy;
-using Nancy.Diagnostics;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
+using Nancy.Diagnostics;
+using TinyIoC;
 
 namespace Lidarr.Http
 {
-
-
     /// <summary>
     /// TinyIoC bootstrapper - registers default route resolver and registers itself as
     /// INancyModuleCatalog for resolving modules but behaviour can be overridden if required.
@@ -41,7 +39,7 @@ namespace Lidarr.Http
         /// <param name="container">Container instance</param>
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
-            AutoRegister(container, this.AutoRegisterIgnoredAssemblies);
+            AutoRegister(container, AutoRegisterIgnoredAssemblies);
         }
 
         /// <summary>
@@ -50,43 +48,35 @@ namespace Lidarr.Http
         /// <returns>INancyEngine implementation</returns>
         protected override sealed INancyEngine GetEngineInternal()
         {
-            return this.ApplicationContainer.Resolve<INancyEngine>();
+            return ApplicationContainer.Resolve<INancyEngine>();
         }
 
-        //
         // Summary:
         //     Gets the Nancy.Configuration.INancyEnvironmentConfigurator used by th.
-        //
         // Returns:
         //     An Nancy.Configuration.INancyEnvironmentConfigurator instance.
         protected override INancyEnvironmentConfigurator GetEnvironmentConfigurator()
         {
-            return this.ApplicationContainer.Resolve<INancyEnvironmentConfigurator>();
+            return ApplicationContainer.Resolve<INancyEnvironmentConfigurator>();
         }
 
-        //
         // Summary:
         //     Get the Nancy.Configuration.INancyEnvironment instance.
-        //
         // Returns:
         //     An configured Nancy.Configuration.INancyEnvironment instance.
-        //
         // Remarks:
         //     The boostrapper must be initialised (Nancy.Bootstrapper.INancyBootstrapper.Initialise)
         //     prior to calling this.
         public override INancyEnvironment GetEnvironment()
         {
-            return this.ApplicationContainer.Resolve<INancyEnvironment>();
+            return ApplicationContainer.Resolve<INancyEnvironment>();
         }
 
-        //
         // Summary:
         //     Registers an Nancy.Configuration.INancyEnvironment instance in the container.
-        //
         // Parameters:
         //   container:
         //     The container to register into.
-        //
         //   environment:
         //     The Nancy.Configuration.INancyEnvironment instance to register.
         protected override void RegisterNancyEnvironment(TinyIoCContainer container, INancyEnvironment environment)
@@ -204,7 +194,7 @@ namespace Lidarr.Http
         /// <returns>Request container instance</returns>
         protected override TinyIoCContainer CreateRequestContainer(NancyContext context)
         {
-            return this.ApplicationContainer.GetChildContainer();
+            return ApplicationContainer.GetChildContainer();
         }
 
         /// <summary>
@@ -213,7 +203,7 @@ namespace Lidarr.Http
         /// <returns>IDiagnostics implementation</returns>
         protected override IDiagnostics GetDiagnostics()
         {
-            return this.ApplicationContainer.Resolve<IDiagnostics>();
+            return ApplicationContainer.Resolve<IDiagnostics>();
         }
 
         /// <summary>
@@ -222,7 +212,7 @@ namespace Lidarr.Http
         /// <returns>An <see cref="IEnumerable{T}"/> instance containing <see cref="IApplicationStartup"/> instances. </returns>
         protected override IEnumerable<IApplicationStartup> GetApplicationStartupTasks()
         {
-            return this.ApplicationContainer.ResolveAll<IApplicationStartup>(false);
+            return ApplicationContainer.ResolveAll<IApplicationStartup>(false);
         }
 
         /// <summary>
@@ -242,7 +232,7 @@ namespace Lidarr.Http
         /// <returns>An <see cref="IEnumerable{T}"/> instance containing <see cref="IRegistrations"/> instances.</returns>
         protected override IEnumerable<IRegistrations> GetRegistrationTasks()
         {
-            return this.ApplicationContainer.ResolveAll<IRegistrations>(false);
+            return ApplicationContainer.ResolveAll<IRegistrations>(false);
         }
 
         /// <summary>

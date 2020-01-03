@@ -21,7 +21,8 @@ namespace NzbDrone.Common.Test.Http
 {
     [IntegrationTest]
     [TestFixture(typeof(ManagedHttpDispatcher))]
-    public class HttpClientFixture<TDispatcher> : TestBase<HttpClient> where TDispatcher : IHttpDispatcher
+    public class HttpClientFixture<TDispatcher> : TestBase<HttpClient>
+        where TDispatcher : IHttpDispatcher
     {
         private static string[] _httpBinHosts = new[] { "eu.httpbin.org", "httpbin.org" };
         private static int _httpBinRandom;
@@ -557,7 +558,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_call_interceptor()
         {
-            Mocker.SetConstant<IEnumerable<IHttpRequestInterceptor>>(new [] { Mocker.GetMock<IHttpRequestInterceptor>().Object });
+            Mocker.SetConstant<IEnumerable<IHttpRequestInterceptor>>(new[] { Mocker.GetMock<IHttpRequestInterceptor>().Object });
 
             Mocker.GetMock<IHttpRequestInterceptor>()
                 .Setup(v => v.PreRequest(It.IsAny<HttpRequest>()))

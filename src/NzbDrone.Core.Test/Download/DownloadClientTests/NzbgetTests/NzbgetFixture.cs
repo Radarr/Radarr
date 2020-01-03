@@ -1,15 +1,15 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Nzbget;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
 {
@@ -26,53 +26,53 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new NzbgetSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              Username = "admin",
-                                              Password = "pass",
-                                              MusicCategory = "music",
-                                              RecentTvPriority = (int)NzbgetPriority.High
-                                          };
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                Username = "admin",
+                Password = "pass",
+                MusicCategory = "music",
+                RecentTvPriority = (int)NzbgetPriority.High
+            };
 
             _queued = new NzbgetQueueItem
-                {
-                    FileSizeLo = 1000,
-                    RemainingSizeLo = 10,
-                    Category = "music",
-                    NzbName = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } }
-                };
+            {
+                FileSizeLo = 1000,
+                RemainingSizeLo = 10,
+                Category = "music",
+                NzbName = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } }
+            };
 
             _failed = new NzbgetHistoryItem
-                {
-                    FileSizeLo = 1000,
-                    Category = "music",
-                    Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    DestDir = "somedirectory",
-                    Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
-                    ParStatus = "Some Error",
-                    UnpackStatus = "NONE",
-                    MoveStatus = "NONE",
-                    ScriptStatus = "NONE",
-                    DeleteStatus = "NONE",
-                    MarkStatus = "NONE"
-                };
+            {
+                FileSizeLo = 1000,
+                Category = "music",
+                Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                DestDir = "somedirectory",
+                Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
+                ParStatus = "Some Error",
+                UnpackStatus = "NONE",
+                MoveStatus = "NONE",
+                ScriptStatus = "NONE",
+                DeleteStatus = "NONE",
+                MarkStatus = "NONE"
+            };
 
             _completed = new NzbgetHistoryItem
-                {
-                    FileSizeLo = 1000,
-                    Category = "music",
-                    Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    DestDir = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
-                    ParStatus = "SUCCESS",
-                    UnpackStatus = "NONE",
-                    MoveStatus = "SUCCESS",
-                    ScriptStatus = "NONE",
-                    DeleteStatus = "NONE",
-                    MarkStatus = "NONE"
-                };
+            {
+                FileSizeLo = 1000,
+                Category = "music",
+                Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                DestDir = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
+                ParStatus = "SUCCESS",
+                UnpackStatus = "NONE",
+                MoveStatus = "SUCCESS",
+                ScriptStatus = "NONE",
+                DeleteStatus = "NONE",
+                MarkStatus = "NONE"
+            };
 
             Mocker.GetMock<INzbgetProxy>()
                 .Setup(s => s.GetGlobalStatus(It.IsAny<NzbgetSettings>()))
@@ -168,7 +168,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
 
             GivenQueue(_queued);
             GivenHistory(null);
-            
+
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);
@@ -320,7 +320,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         {
             // TODO: We would love to have a way to distinguish between scripts reporting video corruption, or some internal script error.
             // That way we could return Warning instead of Failed to notify the user to take action.
-
             _completed.ScriptStatus = "FAILURE";
 
             GivenQueue(null);

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
@@ -214,5 +212,4 @@ namespace NzbDrone.Core.Test.Messaging.Commands
     {
         public override string CompletionMessage => null;
     }
-
 }

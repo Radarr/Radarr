@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.OrganizerTests
 {
@@ -10,15 +10,15 @@ namespace NzbDrone.Core.Test.OrganizerTests
 
     public class GetArtistFolderFixture : CoreTest<FileNameBuilder>
     {
-        private NamingConfig namingConfig;
+        private NamingConfig _namingConfig;
 
         [SetUp]
         public void Setup()
         {
-            namingConfig = NamingConfig.Default;
+            _namingConfig = NamingConfig.Default;
 
             Mocker.GetMock<INamingConfigService>()
-                  .Setup(c => c.GetConfig()).Returns(namingConfig);
+                  .Setup(c => c.GetConfig()).Returns(_namingConfig);
         }
 
         [TestCase("Avenged Sevenfold", "{Artist Name}", "Avenged Sevenfold")]
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
         [TestCase("Avenged Sevenfold", ".{Artist.Name}.", "Avenged.Sevenfold")]
         public void should_use_artistFolderFormat_to_build_folder_name(string artistName, string format, string expected)
         {
-            namingConfig.ArtistFolderFormat = format;
+            _namingConfig.ArtistFolderFormat = format;
 
             var artist = new Artist { Name = artistName };
 

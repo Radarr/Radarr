@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.UTorrent;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
@@ -25,65 +25,65 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new UTorrentSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              Username = "admin",
-                                              Password = "pass",
-                                              MusicCategory = "lidarr"
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                Username = "admin",
+                Password = "pass",
+                MusicCategory = "lidarr"
             };
 
             _queued = new UTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        Status = UTorrentTorrentStatus.Queued | UTorrentTorrentStatus.Loaded,
-                        Name = _title,
-                        Size = 1000,
-                        Remaining = 1000,
-                        Progress = 0,
-                        Label = "lidarr",
-                        DownloadUrl = _downloadUrl,
-                        RootDownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                Status = UTorrentTorrentStatus.Queued | UTorrentTorrentStatus.Loaded,
+                Name = _title,
+                Size = 1000,
+                Remaining = 1000,
+                Progress = 0,
+                Label = "lidarr",
+                DownloadUrl = _downloadUrl,
+                RootDownloadPath = "somepath"
+            };
 
             _downloading = new UTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        Status = UTorrentTorrentStatus.Started | UTorrentTorrentStatus.Loaded,
-                        Name = _title,
-                        Size = 1000,
-                        Remaining = 100,
-                        Progress = 0.9,
-                        Label = "lidarr",
-                        DownloadUrl = _downloadUrl,
-                        RootDownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                Status = UTorrentTorrentStatus.Started | UTorrentTorrentStatus.Loaded,
+                Name = _title,
+                Size = 1000,
+                Remaining = 100,
+                Progress = 0.9,
+                Label = "lidarr",
+                DownloadUrl = _downloadUrl,
+                RootDownloadPath = "somepath"
+            };
 
             _failed = new UTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        Status = UTorrentTorrentStatus.Error,
-                        Name = _title,
-                        Size = 1000,
-                        Remaining = 100,
-                        Progress = 0.9,
-                        Label = "lidarr",
-                        DownloadUrl = _downloadUrl,
-                        RootDownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                Status = UTorrentTorrentStatus.Error,
+                Name = _title,
+                Size = 1000,
+                Remaining = 100,
+                Progress = 0.9,
+                Label = "lidarr",
+                DownloadUrl = _downloadUrl,
+                RootDownloadPath = "somepath"
+            };
 
             _completed = new UTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        Status = UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Loaded,
-                        Name = _title,
-                        Size = 1000,
-                        Remaining = 0,
-                        Progress = 1.0,
-                        Label = "lidarr",
-                        DownloadUrl = _downloadUrl,
-                        RootDownloadPath = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                Status = UTorrentTorrentStatus.Checked | UTorrentTorrentStatus.Loaded,
+                Name = _title,
+                Size = 1000,
+                Remaining = 0,
+                Progress = 1.0,
+                Label = "lidarr",
+                DownloadUrl = _downloadUrl,
+                RootDownloadPath = "somepath"
+            };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
                   .Setup(s => s.GetHashFromTorrentFile(It.IsAny<byte[]>()))

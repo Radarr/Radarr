@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.REST;
 using Newtonsoft.Json;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Indexers
 {
@@ -49,12 +49,13 @@ namespace Lidarr.Api.V1.Indexers
         public DownloadProtocol Protocol { get; set; }
 
         // Sent when queuing an unknown release
-
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+
         //        [JsonIgnore]
         public int? ArtistId { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+
         //        [JsonIgnore]
         public int? AlbumId { get; set; }
     }
@@ -73,6 +74,7 @@ namespace Lidarr.Api.V1.Indexers
             {
                 Guid = releaseInfo.Guid,
                 Quality = parsedAlbumInfo.Quality,
+
                 //QualityWeight
                 Age = releaseInfo.Age,
                 AgeHours = releaseInfo.AgeHours,
@@ -95,17 +97,16 @@ namespace Lidarr.Api.V1.Indexers
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
                 DownloadAllowed = remoteAlbum.DownloadAllowed,
+
                 //ReleaseWeight
                 PreferredWordScore = remoteAlbum.PreferredWordScore,
-
 
                 MagnetUrl = torrentInfo.MagnetUrl,
                 InfoHash = torrentInfo.InfoHash,
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                 Protocol = releaseInfo.DownloadProtocol,
-        };
-
+            };
         }
 
         public static ReleaseInfo ToModel(this ReleaseResource resource)

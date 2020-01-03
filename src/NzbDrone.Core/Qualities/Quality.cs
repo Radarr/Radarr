@@ -32,15 +32,30 @@ namespace NzbDrone.Core.Qualities
 
         public bool Equals(Quality other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return Id.Equals(other.Id);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
             return Equals(obj as Quality);
         }
@@ -55,7 +70,7 @@ namespace NzbDrone.Core.Qualities
             return !Equals(left, right);
         }
 
-        public static Quality Unknown => new Quality(0,  "Unknown");
+        public static Quality Unknown => new Quality(0, "Unknown");
         public static Quality MP3_192 => new Quality(1, "MP3-192");
         public static Quality MP3_VBR => new Quality(2, "MP3-VBR-V0");
         public static Quality MP3_256 => new Quality(3, "MP3-256");
@@ -144,7 +159,7 @@ namespace NzbDrone.Core.Qualities
 
             DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
-                new QualityDefinition(Quality.Unknown)     { Weight = 1, MinSize = 0, MaxSize = 350, GroupWeight = 1},
+                new QualityDefinition(Quality.Unknown)     { Weight = 1, MinSize = 0, MaxSize = 350, GroupWeight = 1 },
                 new QualityDefinition(Quality.MP3_008)     { Weight = 2, MinSize = 0, MaxSize = 10, GroupName = "Trash Quality Lossy", GroupWeight = 2 },
                 new QualityDefinition(Quality.MP3_016)     { Weight = 3, MinSize = 0, MaxSize = 20, GroupName = "Trash Quality Lossy", GroupWeight = 2 },
                 new QualityDefinition(Quality.MP3_024)     { Weight = 4, MinSize = 0, MaxSize = 30, GroupName = "Trash Quality Lossy", GroupWeight = 2 },
@@ -180,7 +195,7 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.APE)         { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
                 new QualityDefinition(Quality.WAVPACK)     { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
                 new QualityDefinition(Quality.FLAC_24)     { Weight = 23, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
-                new QualityDefinition(Quality.WAV)         { Weight = 24, MinSize = 0, MaxSize = null, GroupWeight = 8}
+                new QualityDefinition(Quality.WAV)         { Weight = 24, MinSize = 0, MaxSize = null, GroupWeight = 8 }
             };
         }
 
@@ -192,7 +207,10 @@ namespace NzbDrone.Core.Qualities
 
         public static Quality FindById(int id)
         {
-            if (id == 0) return Unknown;
+            if (id == 0)
+            {
+                return Unknown;
+            }
             else if (id > AllLookup.Length)
             {
                 throw new ArgumentException("ID does not match a known quality", nameof(id));

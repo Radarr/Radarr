@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
-using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -95,7 +95,6 @@ namespace NzbDrone.Core.Music
             var currentTime = DateTime.UtcNow;
 
             //pagingSpec.TotalRecords = GetMissingAlbumsQuery(pagingSpec, currentTime).GetRowCount(); Cant Use GetRowCount with a Manual Query
-
             pagingSpec.TotalRecords = GetMissingAlbumsQueryCount(pagingSpec, currentTime);
             pagingSpec.Records = GetMissingAlbumsQuery(pagingSpec, currentTime).ToList();
 
@@ -104,7 +103,6 @@ namespace NzbDrone.Core.Music
 
         public PagingSpec<Album> AlbumsWhereCutoffUnmet(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-
             pagingSpec.TotalRecords = GetCutOffAlbumsQueryCount(pagingSpec, qualitiesBelowCutoff);
             pagingSpec.Records = GetCutOffAlbumsQuery(pagingSpec, qualitiesBelowCutoff).ToList();
 
@@ -116,7 +114,6 @@ namespace NzbDrone.Core.Music
             var query = Query.Join<Album, Artist>(JoinType.Inner, rg => rg.Artist, (rg, a) => rg.ArtistMetadataId == a.ArtistMetadataId)
                              .Where<Album>(rg => rg.ReleaseDate >= startDate)
                              .AndWhere(rg => rg.ReleaseDate <= endDate);
-
 
             if (!includeUnmonitored)
             {
@@ -133,7 +130,6 @@ namespace NzbDrone.Core.Music
                 .Where<Album>(e => e.ReleaseDate >= startDate)
                 .AndWhere(e => e.ReleaseDate <= endDate)
                 .AndWhere(e => e.ArtistMetadataId == artist.ArtistMetadataId);
-
 
             if (!includeUnmonitored)
             {
@@ -269,7 +265,6 @@ namespace NzbDrone.Core.Music
                                          pagingSpec.PagingOffset());
 
             return Query.QueryText(query);
-
         }
 
         private int GetCutOffAlbumsQueryCount(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
@@ -334,10 +329,12 @@ namespace NzbDrone.Core.Music
         public Album FindByTitle(int artistMetadataId, string title)
         {
             var cleanTitle = Parser.Parser.CleanArtistName(title);
-            
+
             if (string.IsNullOrEmpty(cleanTitle))
+            {
                 cleanTitle = title;
-            
+            }
+
             return Query.Where(s => s.CleanTitle == cleanTitle || s.Title == title)
                         .AndWhere(s => s.ArtistMetadataId == artistMetadataId)
                         .ExclusiveOrDefault();

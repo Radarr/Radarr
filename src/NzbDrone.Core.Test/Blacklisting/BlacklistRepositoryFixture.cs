@@ -18,13 +18,13 @@ namespace NzbDrone.Core.Test.Blacklisting
         public void Setup()
         {
             _blacklist = new Blacklist
-                     {
-                         ArtistId = 12345,
-                         AlbumIds = new List<int> { 1 },
-                         Quality = new QualityModel(Quality.FLAC),
-                         SourceTitle = "artist.name.album.title",
-                         Date = DateTime.UtcNow
-                     };
+            {
+                ArtistId = 12345,
+                AlbumIds = new List<int> { 1 },
+                Quality = new QualityModel(Quality.FLAC),
+                SourceTitle = "artist.name.album.title",
+                Date = DateTime.UtcNow
+            };
         }
 
         [Test]

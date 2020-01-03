@@ -5,8 +5,8 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 {
@@ -61,6 +61,5 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 
             VerifyEventPublished<TrackFileAddedEvent>(Times.Once());
         }
-
     }
 }

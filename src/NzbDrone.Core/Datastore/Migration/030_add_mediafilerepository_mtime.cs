@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Datastore.Migration
                                       FROM Artists
                                       JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId
                                       WHERE TrackFiles.AlbumId = Albums.Id)");
-            
+
             // Belt and braces to ensure uniqueness
             Execute.Sql(@"DELETE FROM TrackFiles 
                           WHERE rowid NOT IN (
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Datastore.Migration
                             FROM TrackFiles
                             GROUP BY Path
                           )");
-            
+
             // Now enforce the uniqueness constraint
             Alter.Table("TrackFiles").AlterColumn("Path").AsString().NotNullable().Unique();
 

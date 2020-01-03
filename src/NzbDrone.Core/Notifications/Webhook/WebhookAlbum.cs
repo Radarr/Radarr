@@ -1,11 +1,13 @@
-using NzbDrone.Core.Music;
 using System;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
     public class WebhookAlbum
     {
-        public WebhookAlbum() { }
+        public WebhookAlbum()
+        {
+        }
 
         public WebhookAlbum(Album album)
         {

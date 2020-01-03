@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Qualities;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Qualities
 {
@@ -21,7 +21,10 @@ namespace Lidarr.Api.V1.Qualities
     {
         public static QualityDefinitionResource ToResource(this QualityDefinition model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QualityDefinitionResource
             {
@@ -36,7 +39,10 @@ namespace Lidarr.Api.V1.Qualities
 
         public static QualityDefinition ToModel(this QualityDefinitionResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new QualityDefinition
             {

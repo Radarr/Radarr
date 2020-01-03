@@ -1,13 +1,11 @@
+using System.Collections.Generic;
+using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using System.Collections.Generic;
-using System.Linq;
-using FluentValidation.Results;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.Gazelle
 {
@@ -21,8 +19,12 @@ namespace NzbDrone.Core.Indexers.Gazelle
 
         private readonly ICached<Dictionary<string, string>> _authCookieCache;
 
-        public Gazelle(IHttpClient httpClient, ICacheManager cacheManager, IIndexerStatusService indexerStatusService,
-            IConfigService configService, IParsingService parsingService, Logger logger)
+        public Gazelle(IHttpClient httpClient,
+                       ICacheManager cacheManager,
+                       IIndexerStatusService indexerStatusService,
+                       IConfigService configService,
+                       IParsingService parsingService,
+                       Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
             _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
@@ -51,7 +53,6 @@ namespace NzbDrone.Core.Indexers.Gazelle
                 yield return GetDefinition("Orpheus Network", GetSettings("https://orpheus.network"));
                 yield return GetDefinition("REDacted", GetSettings("https://redacted.ch"));
                 yield return GetDefinition("Not What CD", GetSettings("https://notwhat.cd"));
-
             }
         }
 

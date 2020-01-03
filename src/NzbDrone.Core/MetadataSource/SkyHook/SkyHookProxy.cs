@@ -5,11 +5,11 @@ using System.Net;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
@@ -24,8 +24,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IConfigService _configService;
         private readonly IMetadataProfileService _metadataProfileService;
 
-        private static readonly List<string> nonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
-        private static readonly List<string> skippedTracks = new List<string> { "[data track]" };
+        private static readonly List<string> NonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
+        private static readonly List<string> SkippedTracks = new List<string> { "[data track]" };
 
         public SkyHookProxy(IHttpClient httpClient,
                             IMetadataRequestBuilder requestBuilder,
@@ -46,7 +46,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Artist GetArtistInfo(string foreignArtistId, int metadataProfileId)
         {
-
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
             var httpRequest = _requestBuilder.GetRequestBuilder().Create()
@@ -57,7 +56,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
-
 
             if (httpResponse.HasHttpError)
             {
@@ -93,9 +91,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var secondaryTypes = new HashSet<string>(metadataProfile.SecondaryAlbumTypes.Where(s => s.Allowed).Select(s => s.SecondaryAlbumType.Name));
             var releaseStatuses = new HashSet<string>(metadataProfile.ReleaseStatuses.Where(s => s.Allowed).Select(s => s.ReleaseStatus.Name));
 
-
             return albums.Where(album => primaryTypes.Contains(album.Type) &&
-                                (!album.SecondaryTypes.Any() && secondaryTypes.Contains("Studio") ||
+                                ((!album.SecondaryTypes.Any() && secondaryTypes.Contains("Studio")) ||
                                  album.SecondaryTypes.Any(x => secondaryTypes.Contains(x))) &&
                                 album.ReleaseStatuses.Any(x => releaseStatuses.Contains(x)));
         }
@@ -103,7 +100,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public Tuple<string, Album, List<ArtistMetadata>> GetAlbumInfo(string foreignAlbumId)
         {
             _logger.Debug("Getting Album with LidarrAPI.MetadataID of {0}", foreignAlbumId);
-            
+
             var httpRequest = _requestBuilder.GetRequestBuilder().Create()
                 .SetSegment("route", "album/" + foreignAlbumId)
                 .Build();
@@ -180,8 +177,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                     .AddQueryParam("query", title.ToLower().Trim())
                                     .Build();
 
-
-
                 var httpResponse = _httpClient.Get<List<ArtistResource>>(httpRequest);
 
                 return httpResponse.Resource.SelectList(MapSearchResult);
@@ -224,7 +219,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         {
                             var data = GetAlbumInfo(searchGuid.ToString());
                             var album = data.Item2;
-                            album.Artist = _artistService.FindById(data.Item1) ?? new Artist {
+                            album.Artist = _artistService.FindById(data.Item1) ?? new Artist
+                            {
                                 Metadata = data.Item3.Single(x => x.ForeignArtistId == data.Item1)
                             };
 
@@ -232,8 +228,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         }
 
                         existingAlbum.Artist = _artistService.GetArtist(existingAlbum.ArtistId);
-                        return new List<Album>{existingAlbum};
-
+                        return new List<Album> { existingAlbum };
                     }
                     catch (ArtistNotFoundException)
                     {
@@ -248,8 +243,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                     .AddQueryParam("artist", artist.IsNotNullOrWhiteSpace() ? artist.ToLower().Trim() : string.Empty)
                                     .AddQueryParam("includeTracks", "1")
                                     .Build();
-
-
 
                 var httpResponse = _httpClient.Get<List<AlbumResource>>(httpRequest);
 
@@ -266,7 +259,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        public List<Object> SearchForNewEntity(string title)
+        public List<object> SearchForNewEntity(string title)
         {
             try
             {
@@ -321,7 +314,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return album;
         }
 
-        private Object MapSearchResult(EntityResource resource)
+        private object MapSearchResult(EntityResource resource)
         {
             if (resource.Artist != null)
             {
@@ -382,23 +375,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var allTracks = resource.Tracks.Select(x => MapTrack(x, artistDict));
             if (!allMedia.Any())
             {
-                foreach(int n in allTracks.Select(x => x.MediumNumber).Distinct())
+                foreach (int n in allTracks.Select(x => x.MediumNumber).Distinct())
                 {
                     allMedia.Add(new Medium { Name = "Unknown", Number = n, Format = "Unknown" });
                 }
             }
 
             // Skip non-audio media
-            var audioMediaNumbers = allMedia.Where(x => !nonAudioMedia.Contains(x.Format)).Select(x => x.Number);
+            var audioMediaNumbers = allMedia.Where(x => !NonAudioMedia.Contains(x.Format)).Select(x => x.Number);
 
             // Get tracks on the audio media and omit any that are skipped
-            release.Tracks = allTracks.Where(x => audioMediaNumbers.Contains(x.MediumNumber) && !skippedTracks.Contains(x.Title)).ToList();
+            release.Tracks = allTracks.Where(x => audioMediaNumbers.Contains(x.MediumNumber) && !SkippedTracks.Contains(x.Title)).ToList();
             release.TrackCount = release.Tracks.Value.Count;
 
             // Only include the media that contain the tracks we have selected
             var usedMediaNumbers = release.Tracks.Value.Select(track => track.MediumNumber);
             release.Media = allMedia.Where(medium => usedMediaNumbers.Contains(medium.Number)).ToList();
-            
+
             release.Duration = release.Tracks.Value.Sum(x => x.Duration);
 
             return release;
@@ -437,7 +430,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private static ArtistMetadata MapArtistMetadata(ArtistResource resource)
         {
-
             ArtistMetadata artist = new ArtistMetadata();
 
             artist.Name = resource.ArtistName;

@@ -52,15 +52,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
         {
             var filename = Path.GetFileName(path);
 
-            if (filename == null) return null;
+            if (filename == null)
+            {
+                return null;
+            }
+
             var parentdir = Directory.GetParent(path);
 
             var metadata = new MetadataFile
-                           {
-                               ArtistId = artist.Id,
-                               Consumer = GetType().Name,
-                               RelativePath = artist.Path.GetRelativePath(path)
-                           };
+            {
+                ArtistId = artist.Id,
+                Consumer = GetType().Name,
+                RelativePath = artist.Path.GetRelativePath(path)
+            };
 
             //Series and season images are both named folder.jpg, only season ones sit in season folders
             if (Path.GetFileNameWithoutExtension(filename).Equals(parentdir.Name, StringComparison.InvariantCultureIgnoreCase))
@@ -75,7 +79,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                     {
                         metadata.AlbumId = 0;
                     }
-
                     else
                     {
                         metadata.AlbumId = Convert.ToInt32(seasonMatch.Groups["season"].Value);
@@ -98,7 +101,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 {
                     metadata.Type = MetadataType.TrackMetadata;
                     return metadata;
-                }             
+                }
             }
 
             return null;
@@ -121,7 +124,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             {
                 return null;
             }
-            
+
             _logger.Debug("Generating Track Metadata for: {0}", trackFile.Path);
 
             var xmlResult = string.Empty;
@@ -162,13 +165,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             if (image == null)
             {
                 _logger.Trace("Failed to find suitable Artist image for artist {0}.", artist.Name);
-                return new List<ImageFileResult>(); ;
+                return new List<ImageFileResult>();
             }
 
             var source = _mediaCoverService.GetCoverPath(artist.Id, MediaCoverEntity.Artist, image.CoverType, image.Extension);
             var destination = Path.GetFileName(artist.Path) + Path.GetExtension(source);
 
-            return new List<ImageFileResult>{ new ImageFileResult(destination, source) };
+            return new List<ImageFileResult> { new ImageFileResult(destination, source) };
         }
 
         public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumFolder)

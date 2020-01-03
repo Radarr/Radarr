@@ -38,7 +38,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                                                  q.RemoteAlbum.Albums.Select(e => e.Id).Intersect(subject.Albums.Select(e => e.Id)).Any())
                            .ToList();
 
-
             foreach (var queueItem in matchingAlbum)
             {
                 var remoteAlbum = queueItem.RemoteAlbum;
@@ -52,7 +51,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedAlbumInfo.Quality,
                                                            subject.PreferredWordScore))
-
                 {
                     return Decision.Reject("Release in queue already meets cutoff: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
                 }
@@ -79,7 +77,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return Decision.Accept();
-
         }
     }
 }

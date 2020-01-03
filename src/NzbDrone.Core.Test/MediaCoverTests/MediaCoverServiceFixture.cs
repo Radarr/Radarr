@@ -9,17 +9,17 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
 {
     [TestFixture]
     public class MediaCoverServiceFixture : CoreTest<MediaCoverService>
     {
-        Artist _artist;
-        Album _album;
+        private Artist _artist;
+        private Album _album;
         private HttpResponse _httpResponse;
 
         [SetUp]
@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Returns(true);
 
             Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
-
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner" + extension + "?lastWrite=1234");
         }
@@ -111,7 +110,6 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Subject.ConvertToLocalUrls(6, MediaCoverEntity.Album, covers);
 
-
             covers.Single().Url.Should().Be("/MediaCover/Albums/6/disc" + extension + "?lastWrite=1234");
         }
 
@@ -128,9 +126,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                     }
                 };
 
-
             Subject.ConvertToLocalUrls(12, MediaCoverEntity.Artist, covers);
-
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner" + extension);
         }

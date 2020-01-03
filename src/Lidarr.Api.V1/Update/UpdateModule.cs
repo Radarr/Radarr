@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Update;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Update
 {

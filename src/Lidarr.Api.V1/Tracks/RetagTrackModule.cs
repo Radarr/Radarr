@@ -34,7 +34,6 @@ namespace Lidarr.Api.V1.Tracks
             {
                 throw new BadRequestException("One of artistId or albumId must be specified");
             }
-
         }
     }
 }

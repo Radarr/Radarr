@@ -8,72 +8,72 @@ namespace NzbDrone.Automation.Test
     [TestFixture]
     public class MainPagesTest : AutomationTest
     {
-        private PageBase page;
+        private PageBase _page;
 
         [SetUp]
         public void Setup()
         {
-            page = new PageBase(driver);
+            _page = new PageBase(driver);
         }
 
         [Test]
         public void artist_page()
         {
-            page.LibraryNavIcon.Click();
-            page.WaitForNoSpinner();
-            page.Find(By.CssSelector("div[class*='ArtistIndex']")).Should().NotBeNull();
+            _page.LibraryNavIcon.Click();
+            _page.WaitForNoSpinner();
+            _page.Find(By.CssSelector("div[class*='ArtistIndex']")).Should().NotBeNull();
         }
 
         [Test]
         public void calendar_page()
         {
-            page.CalendarNavIcon.Click();
-            page.WaitForNoSpinner();
+            _page.CalendarNavIcon.Click();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.CssSelector("div[class*='CalendarPage']")).Should().NotBeNull();
+            _page.Find(By.CssSelector("div[class*='CalendarPage']")).Should().NotBeNull();
         }
 
         [Test]
         public void activity_page()
         {
-            page.ActivityNavIcon.Click();
-            page.WaitForNoSpinner();
+            _page.ActivityNavIcon.Click();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Queue")).Should().NotBeNull();
-            page.Find(By.LinkText("History")).Should().NotBeNull();
-            page.Find(By.LinkText("Blacklist")).Should().NotBeNull();
+            _page.Find(By.LinkText("Queue")).Should().NotBeNull();
+            _page.Find(By.LinkText("History")).Should().NotBeNull();
+            _page.Find(By.LinkText("Blacklist")).Should().NotBeNull();
         }
 
         [Test]
         public void wanted_page()
         {
-            page.WantedNavIcon.Click();
-            page.WaitForNoSpinner();
+            _page.WantedNavIcon.Click();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Missing")).Should().NotBeNull();
-            page.Find(By.LinkText("Cutoff Unmet")).Should().NotBeNull();
+            _page.Find(By.LinkText("Missing")).Should().NotBeNull();
+            _page.Find(By.LinkText("Cutoff Unmet")).Should().NotBeNull();
         }
 
         [Test]
         public void system_page()
         {
-            page.SystemNavIcon.Click();
-            page.WaitForNoSpinner();
+            _page.SystemNavIcon.Click();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.CssSelector("div[class*='Health']")).Should().NotBeNull();
+            _page.Find(By.CssSelector("div[class*='Health']")).Should().NotBeNull();
         }
 
         [Test]
         public void add_artist_page()
         {
-            page.LibraryNavIcon.Click();
-            page.WaitForNoSpinner();
+            _page.LibraryNavIcon.Click();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Add New")).Click();
+            _page.Find(By.LinkText("Add New")).Click();
 
-            page.WaitForNoSpinner();
+            _page.WaitForNoSpinner();
 
-            page.Find(By.CssSelector("input[class*='AddNewItem-searchInput']")).Should().NotBeNull();
+            _page.Find(By.CssSelector("input[class*='AddNewItem-searchInput']")).Should().NotBeNull();
         }
     }
 }

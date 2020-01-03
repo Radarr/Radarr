@@ -4,7 +4,9 @@ namespace NzbDrone.Core.Notifications.Webhook
 {
     public class WebhookTrackFile
     {
-        public WebhookTrackFile() { }
+        public WebhookTrackFile()
+        {
+        }
 
         public WebhookTrackFile(TrackFile trackFile)
         {

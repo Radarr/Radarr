@@ -1,4 +1,3 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
@@ -27,7 +26,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                 _logger.Debug("This release is missing tracks. Skipping {0}", localAlbumRelease);
                 return Decision.Reject("Has missing tracks");
             }
-            
+
             return Decision.Accept();
         }
     }

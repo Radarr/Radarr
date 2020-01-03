@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -65,7 +64,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                    .ThenByDescending(c => c.Item.Size))
                .SelectMany(c => c)
                .ToList();
-            
+
             _logger.Debug($"Importing {qualifiedImports.Count} files. replaceExisting: {replaceExisting}");
 
             var importResults = new List<ImportResult>();
@@ -87,7 +86,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     var previousFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
                     _logger.Debug($"Deleting {previousFiles.Count} existing files for {album}");
-                    
+
                     foreach (var previousFile in previousFiles)
                     {
                         var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(previousFile.Path));
@@ -96,6 +95,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                             _logger.Debug("Removing existing track file: {0}", previousFile);
                             _recycleBinProvider.DeleteFile(previousFile.Path, subfolder);
                         }
+
                         _mediaFileService.Delete(previousFile, DeleteMediaFileReason.Upgrade);
                     }
                 }
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             var filesToAdd = new List<TrackFile>(qualifiedImports.Count);
             var albumReleasesDict = new Dictionary<int, List<AlbumRelease>>(albumDecisions.Count);
             var trackImportedEvents = new List<TrackImportedEvent>(qualifiedImports.Count);
-            
+
             foreach (var importDecision in qualifiedImports.OrderBy(e => e.Item.Tracks.Select(track => track.AbsoluteTrackNumber).MinOrDefault())
                                                            .ThenByDescending(e => e.Item.Size))
             {
@@ -137,10 +137,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     {
                         albumReleasesDict.Add(localTrack.Album.Id, localTrack.Album.AlbumReleases.Value);
                     }
+
                     if (!localTrack.Album.AlbumReleases.IsLoaded)
                     {
                         localTrack.Album.AlbumReleases = albumReleasesDict[localTrack.Album.Id];
                     }
+
                     localTrack.Album.Artist = localTrack.Artist;
 
                     foreach (var track in localTrack.Tracks)
@@ -149,8 +151,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         track.AlbumRelease = localTrack.Release;
                         track.Album = localTrack.Album;
                     }
-                    
-                    var trackFile = new TrackFile {
+
+                    var trackFile = new TrackFile
+                    {
                         Path = localTrack.Path.CleanFilePath(),
                         Size = localTrack.Size,
                         Modified = localTrack.Modified,
@@ -230,7 +233,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 {
                     _logger.Warn(e, "Couldn't import track " + localTrack);
                     _eventAggregator.PublishEvent(new TrackImportFailedEvent(e, localTrack, !localTrack.ExistingFile, downloadClientItem));
-                    
+
                     importResults.Add(new ImportResult(importDecision, "Failed to import track, Permissions error"));
                 }
                 catch (Exception e)
@@ -270,10 +273,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         album,
                         release,
                         allImportedTrackFiles.Where(s => s.AlbumId == album.Id).ToList(),
-                        allOldTrackFiles.Where(s => s.AlbumId == album.Id).ToList(), replaceExisting,
+                        allOldTrackFiles.Where(s => s.AlbumId == album.Id).ToList(),
+                        replaceExisting,
                         downloadClientItem));
                 }
-
             }
 
             //Adding all the rejected decisions
@@ -299,6 +302,5 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             return null;
         }
-
     }
 }

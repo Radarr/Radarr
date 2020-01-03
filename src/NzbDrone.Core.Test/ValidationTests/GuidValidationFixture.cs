@@ -1,10 +1,10 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Validation;
 using NzbDrone.Test.Common;
-using NzbDrone.Core.ImportLists.Exclusions;
 
 namespace NzbDrone.Core.Test.ValidationTests
 {

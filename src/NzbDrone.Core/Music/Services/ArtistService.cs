@@ -1,11 +1,11 @@
-using NLog;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Common.Extensions;
+using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Music
@@ -94,8 +94,9 @@ namespace NzbDrone.Core.Music
 
         public List<Tuple<Func<Artist, string, double>, string>> ArtistScoringFunctions(string title, string cleanTitle)
         {
-            Func< Func<Artist, string, double>, string, Tuple<Func<Artist, string, double>, string>> tc = Tuple.Create;
-            var scoringFunctions = new List<Tuple<Func<Artist, string, double>, string>> {
+            Func<Func<Artist, string, double>, string, Tuple<Func<Artist, string, double>, string>> tc = Tuple.Create;
+            var scoringFunctions = new List<Tuple<Func<Artist, string, double>, string>>
+            {
                 tc((a, t) => a.CleanName.FuzzyMatch(t), cleanTitle),
                 tc((a, t) => a.Name.FuzzyMatch(t), title),
             };
@@ -147,10 +148,10 @@ namespace NzbDrone.Core.Music
             const double fuzzGap = 0.2;
 
             var sortedArtists = artists.Select(s => new
-                {
-                    MatchProb = scoreFunction(s, title),
-                    Artist = s
-                })
+            {
+                MatchProb = scoreFunction(s, title),
+                Artist = s
+            })
                 .ToList()
                 .OrderByDescending(s => s.MatchProb)
                 .ToList();

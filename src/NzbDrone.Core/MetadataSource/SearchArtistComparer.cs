@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MetadataSource
         public SearchArtistComparer(string searchQuery)
         {
             SearchQuery = searchQuery;
-            
+
             var match = Regex.Match(SearchQuery, @"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$");
             if (match.Success)
             {
@@ -39,19 +39,28 @@ namespace NzbDrone.Core.MetadataSource
 
             // Prefer exact matches
             result = Compare(x, y, s => CleanPunctuation(s.Name).Equals(CleanPunctuation(SearchQuery)));
-            if (result != 0) return -result;
+            if (result != 0)
+            {
+                return -result;
+            }
 
             // Remove Articles (a/an/the)
             result = Compare(x, y, s => CleanArticles(s.Name).Equals(CleanArticles(SearchQuery)));
-            if (result != 0) return -result;
+            if (result != 0)
+            {
+                return -result;
+            }
 
             // Prefer close matches
             result = Compare(x, y, s => CleanPunctuation(s.Name).LevenshteinDistance(CleanPunctuation(SearchQuery)) <= 1);
-            if (result != 0) return -result;
-         
+            if (result != 0)
+            {
+                return -result;
+            }
+
             return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Name));
         }
-        
+
         public int Compare<T>(Artist x, Artist y, Func<Artist, T> keySelector)
             where T : IComparable<T>
         {
@@ -82,6 +91,5 @@ namespace NzbDrone.Core.MetadataSource
 
             return title.Trim().ToLowerInvariant();
         }
-
     }
 }

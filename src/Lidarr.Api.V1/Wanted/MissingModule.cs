@@ -1,13 +1,13 @@
 using System.Linq;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.ArtistStats;
-using NzbDrone.SignalR;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
+using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Music;
+using NzbDrone.SignalR;
 
 namespace Lidarr.Api.V1.Wanted
 {

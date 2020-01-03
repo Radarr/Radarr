@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
-using NzbDrone.Common.Cache;
-using NzbDrone.Core.Profiles.Releases;
-using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -41,7 +40,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var album in subject.Albums)
             {
-                var tracksMissing = _missingFilesCache.Get(album.Id.ToString(), () => _trackService.TracksWithoutFiles(album.Id).Any(),
+                var tracksMissing = _missingFilesCache.Get(album.Id.ToString(),
+                                                           () => _trackService.TracksWithoutFiles(album.Id).Any(),
                                                            TimeSpan.FromSeconds(30));
 
                 var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
@@ -61,7 +61,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                         return Decision.Reject("Existing files and the Quality profile does not allow upgrades");
                     }
-
                 }
             }
 

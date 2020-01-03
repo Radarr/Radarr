@@ -3,42 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using Marr.Data;
 using Marr.Data.Mapping;
+using Marr.Data.QGen;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Reflection;
+using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.ImportLists;
-using NzbDrone.Core.ImportLists.Exclusions;
-using NzbDrone.Core.Instrumentation;
-using NzbDrone.Core.Jobs;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Core.Notifications;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles.Metadata;
-using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.ArtistStats;
-using NzbDrone.Core.Tags;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Common.Disk;
-using NzbDrone.Core.Authentication;
-using NzbDrone.Core.CustomFilters;
+using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
-using NzbDrone.Core.Extras.Lyrics;
+using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.ImportLists.Exclusions;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Instrumentation;
+using NzbDrone.Core.Jobs;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
-using Marr.Data.QGen;
+using NzbDrone.Core.Notifications;
+using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Profiles.Releases;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Tags;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsOnDownloadFailure)
                   .Ignore(i => i.SupportsOnImportFailure)
                   .Ignore(i => i.SupportsOnTrackRetag);
-            
+
             Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata")
                   .Ignore(d => d.Tags);
 

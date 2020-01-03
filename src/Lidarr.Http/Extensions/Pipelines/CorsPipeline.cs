@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Nancy;
 using Nancy.Bootstrapper;

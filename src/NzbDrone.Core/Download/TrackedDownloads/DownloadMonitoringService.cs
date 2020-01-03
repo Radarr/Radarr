@@ -15,7 +15,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                                              IHandle<AlbumGrabbedEvent>,
                                              IHandle<TrackImportedEvent>,
                                              IHandle<TrackedDownloadsRemovedEvent>
-
     {
         private readonly IDownloadClientStatusService _downloadClientStatusService;
         private readonly IDownloadClientFactory _downloadClientFactory;
@@ -110,7 +109,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
 
             return trackedDownloads;
-
         }
 
         private void RemoveCompletedDownloads(List<TrackedDownload> trackedDownloads)
@@ -135,11 +133,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     {
                         _completedDownloadService.Process(trackedDownload);
                     }
-
                 }
 
                 trackedDownloads.AddIfNotNull(trackedDownload);
-
             }
             catch (Exception e)
             {

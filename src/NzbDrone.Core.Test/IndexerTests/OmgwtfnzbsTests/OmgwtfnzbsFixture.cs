@@ -17,14 +17,14 @@ namespace NzbDrone.Core.Test.IndexerTests.OmgwtfnzbsTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Name = "Omgwtfnzbs",
+                Settings = new OmgwtfnzbsSettings()
                 {
-                    Name = "Omgwtfnzbs",
-                    Settings = new OmgwtfnzbsSettings()
-                        {
-                            ApiKey = "xxx",
-                            Username = "me@my.domain"
-                        }
-                };
+                    ApiKey = "xxx",
+                    Username = "me@my.domain"
+                }
+            };
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.IndexerTests.OmgwtfnzbsTests
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
                 .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
-            
+
             var releases = Subject.FetchRecent();
 
             releases.Should().HaveCount(100);

@@ -13,7 +13,11 @@ namespace Lidarr.Api.V1.Indexers
 
         protected override void Validate(IndexerDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }

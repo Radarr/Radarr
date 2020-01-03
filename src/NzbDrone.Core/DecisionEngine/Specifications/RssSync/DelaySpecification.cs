@@ -2,11 +2,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Profiles.Releases;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {

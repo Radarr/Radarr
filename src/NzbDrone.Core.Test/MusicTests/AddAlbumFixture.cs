@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -6,11 +7,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using System;
 
 namespace NzbDrone.Core.Test.MusicTests
 {

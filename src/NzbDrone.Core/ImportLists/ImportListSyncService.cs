@@ -51,7 +51,6 @@ namespace NzbDrone.Core.ImportLists
             _logger = logger;
         }
 
-
         private List<Album> SyncAll()
         {
             _logger.ProgressInfo("Starting Import List Sync");
@@ -61,7 +60,6 @@ namespace NzbDrone.Core.ImportLists
             var reports = rssReleases.ToList();
 
             return ProcessReports(reports);
-
         }
 
         private List<Album> SyncList(ImportListDefinition definition)
@@ -73,7 +71,6 @@ namespace NzbDrone.Core.ImportLists
             var reports = rssReleases.ToList();
 
             return ProcessReports(reports);
-
         }
 
         private List<Album> ProcessReports(List<ImportListItemInfo> reports)
@@ -184,26 +181,25 @@ namespace NzbDrone.Core.ImportLists
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 
                 albumsToAdd.Add(new Album
+                {
+                    ForeignAlbumId = report.AlbumMusicBrainzId,
+                    Monitored = monitored,
+                    Artist = new Artist
                     {
-                        ForeignAlbumId = report.AlbumMusicBrainzId,
                         Monitored = monitored,
-                        Artist = new Artist
+                        RootFolderPath = importList.RootFolderPath,
+                        QualityProfileId = importList.ProfileId,
+                        MetadataProfileId = importList.MetadataProfileId,
+                        Tags = importList.Tags,
+                        AlbumFolder = true,
+                        AddOptions = new AddArtistOptions
                         {
+                            SearchForMissingAlbums = monitored,
                             Monitored = monitored,
-                            RootFolderPath = importList.RootFolderPath,
-                            QualityProfileId = importList.ProfileId,
-                            MetadataProfileId = importList.MetadataProfileId,
-                            Tags = importList.Tags,
-                            AlbumFolder = true,
-                            AddOptions = new AddArtistOptions
-                            {
-                                SearchForMissingAlbums = monitored,
-                                Monitored = monitored,
-                                Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
-                            }
-                        },
-
-                    });
+                            Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
+                        }
+                    },
+                });
             }
         }
 
@@ -246,25 +242,25 @@ namespace NzbDrone.Core.ImportLists
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 
                 artistsToAdd.Add(new Artist
+                {
+                    Metadata = new ArtistMetadata
                     {
-                        Metadata = new ArtistMetadata
-                        {
-                            ForeignArtistId = report.ArtistMusicBrainzId,
-                            Name = report.Artist
-                        },
+                        ForeignArtistId = report.ArtistMusicBrainzId,
+                        Name = report.Artist
+                    },
+                    Monitored = monitored,
+                    RootFolderPath = importList.RootFolderPath,
+                    QualityProfileId = importList.ProfileId,
+                    MetadataProfileId = importList.MetadataProfileId,
+                    Tags = importList.Tags,
+                    AlbumFolder = true,
+                    AddOptions = new AddArtistOptions
+                    {
+                        SearchForMissingAlbums = monitored,
                         Monitored = monitored,
-                        RootFolderPath = importList.RootFolderPath,
-                        QualityProfileId = importList.ProfileId,
-                        MetadataProfileId = importList.MetadataProfileId,
-                        Tags = importList.Tags,
-                        AlbumFolder = true,
-                        AddOptions = new AddArtistOptions
-                        {
-                            SearchForMissingAlbums = monitored,
-                            Monitored = monitored,
-                            Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
-                        }
-                    });
+                        Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
+                    }
+                });
             }
         }
 

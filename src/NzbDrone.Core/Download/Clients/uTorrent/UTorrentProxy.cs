@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
             ProcessRequest(requestBuilder, settings);
         }
- 
+
         private HttpRequestBuilder BuildRequest(UTorrentSettings settings)
         {
             var requestBuilder = new HttpRequestBuilder(false, settings.Host, settings.Port, settings.UrlBase)

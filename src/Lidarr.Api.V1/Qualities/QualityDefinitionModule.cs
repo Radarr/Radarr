@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Nancy;
-using NzbDrone.Core.Qualities;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
+using Nancy;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Qualities
 {
@@ -18,7 +18,7 @@ namespace Lidarr.Api.V1.Qualities
             GetResourceAll = GetAll;
             GetResourceById = GetById;
             UpdateResource = Update;
-            Put("/update",  d => UpdateMany());
+            Put("/update", d => UpdateMany());
         }
 
         private void Update(QualityDefinitionResource resource)
@@ -47,8 +47,8 @@ namespace Lidarr.Api.V1.Qualities
             _qualityDefinitionService.UpdateMany(qualityDefinitions);
 
             return ResponseWithCode(_qualityDefinitionService.All()
-                                            .ToResource()
-                                            , HttpStatusCode.Accepted);
+                                            .ToResource(),
+                                            HttpStatusCode.Accepted);
         }
     }
 }

@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
+using NUnit.Framework;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.DecisionEngine;
-using NUnit.Framework;
-using FluentAssertions;
-using FizzWare.NBuilder;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -120,7 +120,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), age: 10);
             var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), age: 5);
-
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -262,7 +261,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             torrentInfo1.Seeders = 10;
             torrentInfo1.Peers = 10;
 
-
             var torrentInfo2 = torrentInfo1.JsonClone();
             torrentInfo2.Peers = 100;
 
@@ -289,7 +287,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             torrentInfo1.DownloadProtocol = DownloadProtocol.Torrent;
             torrentInfo1.Seeders = 0;
             torrentInfo1.Peers = 10;
-
 
             var torrentInfo2 = torrentInfo1.JsonClone();
             torrentInfo2.Seeders = 0;
@@ -397,7 +394,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
             qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.MP3_320);
         }
-
 
         [Test]
         public void should_prefer_higher_score_over_lower_score()

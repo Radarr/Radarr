@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using FluentMigrator;
-using Newtonsoft.Json;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -45,7 +43,7 @@ namespace NzbDrone.Core.Datastore.Migration
         Bootleg = 2,
         Pseudo = 3
     }
-    
+
     public class ProfileUpdater11
     {
         private readonly IDbConnection _connection;

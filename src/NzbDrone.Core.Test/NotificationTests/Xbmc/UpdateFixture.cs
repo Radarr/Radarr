@@ -3,10 +3,10 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             _xbmcArtist = Builder<KodiArtist>.CreateListOfSize(3)
                 .TheFirst(1)
-                .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString()})
+                .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString() })
                 .TheNext(2)
                 .With(s => s.MusicbrainzArtistId = new List<string>())
                 .Build()
@@ -61,10 +61,10 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                                             .With(s => s.Name = "Not Shawn Desman")
                                             .Build();
 
-             Subject.Update(_settings, fakeArtist);
+            Subject.Update(_settings, fakeArtist);
 
-             Mocker.GetMock<IXbmcJsonApiProxy>()
-                   .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());
         }
     }
 }

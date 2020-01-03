@@ -69,7 +69,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (SupportsAudioSearch)
             {
-                AddAudioPageableRequests(pageableRequests, searchCriteria,
+                AddAudioPageableRequests(pageableRequests,
+                    searchCriteria,
                     NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}&album={searchCriteria.AlbumQuery}"));
             }
 
@@ -77,7 +78,9 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 pageableRequests.AddTier();
 
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
+                pageableRequests.Add(GetPagedRequests(MaxPages,
+                    Settings.Categories,
+                    "search",
                     NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
             }
 
@@ -90,7 +93,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (SupportsAudioSearch)
             {
-                AddAudioPageableRequests(pageableRequests, searchCriteria,
+                AddAudioPageableRequests(pageableRequests,
+                    searchCriteria,
                     NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}"));
             }
 
@@ -98,7 +102,9 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 pageableRequests.AddTier();
 
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
+                pageableRequests.Add(GetPagedRequests(MaxPages,
+                    Settings.Categories,
+                    "search",
                     NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}")));
             }
 

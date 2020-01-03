@@ -18,14 +18,14 @@ namespace NzbDrone.Core.Test.Blacklisting
         public void Setup()
         {
             _event = new DownloadFailedEvent
-                     {
-                         ArtistId = 12345,
-                         AlbumIds = new List<int> {1},
-                         Quality = new QualityModel(Quality.MP3_320),
-                         SourceTitle = "artist.name.album.title",
-                         DownloadClient = "SabnzbdClient",
-                         DownloadId = "Sabnzbd_nzo_2dfh73k"
-                     };
+            {
+                ArtistId = 12345,
+                AlbumIds = new List<int> { 1 },
+                Quality = new QualityModel(Quality.MP3_320),
+                SourceTitle = "artist.name.album.title",
+                DownloadClient = "SabnzbdClient",
+                DownloadId = "Sabnzbd_nzo_2dfh73k"
+            };
 
             _event.Data.Add("publishedDate", DateTime.UtcNow.ToString("s") + "Z");
             _event.Data.Add("size", "1000");

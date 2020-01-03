@@ -1,14 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using NLog;
+using NzbDrone.Common;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Common;
 using NzbDrone.Core.Music;
-using System;
 using NzbDrone.Core.Music.Events;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -71,10 +71,10 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.UpdateMany(trackFiles);
         }
 
-
         public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
             _mediaFileRepository.Delete(trackFile);
+
             // If the trackfile wasn't mapped to a track, don't publish an event
             if (trackFile.AlbumId > 0)
             {
@@ -100,13 +100,16 @@ namespace NzbDrone.Core.MediaFiles
             var knownFiles = GetFilesWithBasePath(artist.Path);
             _logger.Trace($"Got {knownFiles.Count} existing files");
 
-            if (!knownFiles.Any()) return files;
+            if (!knownFiles.Any())
+            {
+                return files;
+            }
 
             var combined = files
                 .Join(knownFiles,
                       f => f.FullName,
                       af => af.Path,
-                      (f, af) => new { DiskFile = f, DbFile = af},
+                      (f, af) => new { DiskFile = f, DbFile = af },
                       PathEqualityComparer.Instance)
                 .ToList();
 

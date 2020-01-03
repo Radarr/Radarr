@@ -12,19 +12,19 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         public static object[] SelfQualityParserCases =
         {
-            new object[] {Quality.MP3_192},
-            new object[] {Quality.MP3_VBR},
-            new object[] {Quality.MP3_256},
-            new object[] {Quality.MP3_320},
-            new object[] {Quality.MP3_VBR_V2},
-            new object[] {Quality.WAV},
-            new object[] {Quality.WMA},
-            new object[] {Quality.AAC_192},
-            new object[] {Quality.AAC_256},
-            new object[] {Quality.AAC_320},
-            new object[] {Quality.AAC_VBR},
-            new object[] {Quality.ALAC},
-            new object[] {Quality.FLAC},
+            new object[] { Quality.MP3_192 },
+            new object[] { Quality.MP3_VBR },
+            new object[] { Quality.MP3_256 },
+            new object[] { Quality.MP3_320 },
+            new object[] { Quality.MP3_VBR_V2 },
+            new object[] { Quality.WAV },
+            new object[] { Quality.WMA },
+            new object[] { Quality.AAC_192 },
+            new object[] { Quality.AAC_256 },
+            new object[] { Quality.AAC_320 },
+            new object[] { Quality.AAC_VBR },
+            new object[] { Quality.ALAC },
+            new object[] { Quality.FLAC },
         };
 
         [TestCase("", "MPEG Version 1 Audio, Layer 3", 96)]
@@ -136,7 +136,6 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, desc, bitrate, Quality.WAV);
         }
 
-        
         [TestCase("Chuck Berry Discography ALAC", null, 0)]
         [TestCase("A$AP Rocky - LONG LIVE A$AP Deluxe asap[ALAC]", null, 0)]
         [TestCase("", "MPEG-4 Audio (alac)", 0)]
@@ -144,7 +143,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.ALAC);
         }
-        
+
         [TestCase("Stevie Ray Vaughan Discography (1981-1987) [APE]", null, 0)]
         [TestCase("Brain Ape - Rig it [2014][ape]", null, 0)]
         [TestCase("", "Monkey's Audio", 0)]
@@ -258,6 +257,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("The Chainsmokers & Coldplay - Something Just Like This")]
         [TestCase("Frank Ocean Blonde 2016")]
+
         //TODO: This should be parsed as Unknown and not MP3-96
         //[TestCase("A - NOW Thats What I Call Music 96 (2017) [Mp3~Kbps]")]
         [TestCase("Queen - The Ultimate Best Of Queen(2011)[mp3]")]
@@ -267,7 +267,8 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, null, 0, Quality.Unknown);
         }
 
-        [Test, TestCaseSource(nameof(SelfQualityParserCases))]
+        [Test]
+        [TestCaseSource(nameof(SelfQualityParserCases))]
         public void parsing_our_own_quality_enum_name(Quality quality)
         {
             var fileName = string.Format("Some album [{0}]", quality.Name);
@@ -283,8 +284,9 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("01. Kanye West - Ultralight Beam.mp3")]
         [TestCase("01. Kanye West - Ultralight Beam.ogg")]
+
         //These get detected by name as we are looking for the extensions as identifiers for release names
-        //[TestCase("01. Kanye West - Ultralight Beam.m4a")] 
+        //[TestCase("01. Kanye West - Ultralight Beam.m4a")]
         //[TestCase("01. Kanye West - Ultralight Beam.wma")]
         //[TestCase("01. Kanye West - Ultralight Beam.wav")]
         public void should_parse_quality_from_extension(string title)
@@ -313,6 +315,5 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = QualityParser.ParseQuality(name, desc, bitrate, sampleSize);
             result.Quality.Should().Be(quality);
         }
-
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentValidation;
-using FluentValidation.Results;
-using Nancy;
-using NzbDrone.Core.Profiles.Delay;
 using Lidarr.Http;
-using Lidarr.Http.Extensions;
 using Lidarr.Http.REST;
 using Lidarr.Http.Validation;
+using Nancy;
+using NzbDrone.Core.Profiles.Delay;
 
 namespace Lidarr.Api.V1.Profiles.Delay
 {
@@ -24,7 +22,7 @@ namespace Lidarr.Api.V1.Profiles.Delay
             UpdateResource = Update;
             CreateResource = Create;
             DeleteResource = DeleteProfile;
-            Put(@"/reorder/(?<id>[\d]{1,10})",  options => Reorder(options.Id));
+            Put(@"/reorder/(?<id>[\d]{1,10})", options => Reorder(options.Id));
 
             SharedValidator.RuleFor(d => d.Tags).NotEmpty().When(d => d.Id != 1);
             SharedValidator.RuleFor(d => d.Tags).EmptyCollection<DelayProfileResource, int>().When(d => d.Id == 1);

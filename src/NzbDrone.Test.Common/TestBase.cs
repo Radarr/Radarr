@@ -14,16 +14,15 @@ using NzbDrone.Test.Common.AutoMoq;
 
 namespace NzbDrone.Test.Common
 {
-    public abstract class TestBase<TSubject> : TestBase where TSubject : class
+    public abstract class TestBase<TSubject> : TestBase
+        where TSubject : class
     {
-
         private TSubject _subject;
 
         [SetUp]
         public virtual void CoreTestSetup()
         {
             _subject = null;
-
         }
 
         protected TSubject Subject
@@ -37,9 +36,7 @@ namespace NzbDrone.Test.Common
 
                 return _subject;
             }
-
         }
-
     }
 
     public abstract class TestBase : LoggingTest
@@ -64,7 +61,6 @@ namespace NzbDrone.Test.Common
             }
         }
 
-
         protected int RandomNumber
         {
             get
@@ -79,7 +75,10 @@ namespace NzbDrone.Test.Common
             get
             {
                 var virtualPath = Path.Combine(TempFolder, "VirtualNzbDrone");
-                if (!Directory.Exists(virtualPath)) Directory.CreateDirectory(virtualPath);
+                if (!Directory.Exists(virtualPath))
+                {
+                    Directory.CreateDirectory(virtualPath);
+                }
 
                 return virtualPath;
             }
@@ -118,7 +117,6 @@ namespace NzbDrone.Test.Common
 
             DeleteTempFolder(_tempFolder);
         }
-
 
         public static string GetUID()
         {
@@ -200,17 +198,20 @@ namespace NzbDrone.Test.Common
             return Path.Combine(TempFolder, Path.GetRandomFileName());
         }
 
-        protected void VerifyEventPublished<TEvent>() where TEvent : class, IEvent
+        protected void VerifyEventPublished<TEvent>()
+            where TEvent : class, IEvent
         {
             VerifyEventPublished<TEvent>(Times.Once());
         }
 
-        protected void VerifyEventPublished<TEvent>(Times times) where TEvent : class, IEvent
+        protected void VerifyEventPublished<TEvent>(Times times)
+            where TEvent : class, IEvent
         {
             Mocker.GetMock<IEventAggregator>().Verify(c => c.PublishEvent(It.IsAny<TEvent>()), times);
         }
 
-        protected void VerifyEventNotPublished<TEvent>() where TEvent : class, IEvent
+        protected void VerifyEventNotPublished<TEvent>()
+            where TEvent : class, IEvent
         {
             Mocker.GetMock<IEventAggregator>().Verify(c => c.PublishEvent(It.IsAny<TEvent>()), Times.Never());
         }

@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using System.IO.Abstractions;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 catch (Exception e)
                 {
                     _logger.Error(e, "Couldn't import file. {0}", localTrack.Path);
-                    
+
                     decisions.Add(new ImportDecision<LocalTrack>(localTrack, new Rejection("Unexpected error processing file")));
                 }
             }

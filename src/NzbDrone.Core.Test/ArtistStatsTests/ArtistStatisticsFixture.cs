@@ -3,11 +3,11 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ArtistStats;
-using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ArtistStatsTests
 {
@@ -27,13 +27,13 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
                 .With(a => a.ArtistMetadataId = 10)
                 .BuildNew();
             Db.Insert(_artist);
-            
+
             _album = Builder<Album>.CreateNew()
                 .With(e => e.ReleaseDate = DateTime.Today.AddDays(-5))
                 .With(e => e.ArtistMetadataId = 10)
                 .BuildNew();
             Db.Insert(_album);
-            
+
             _release = Builder<AlbumRelease>.CreateNew()
                 .With(e => e.AlbumId = _album.Id)
                 .With(e => e.Monitored = true)
@@ -51,7 +51,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
                                            .With(e => e.Album = _album)
                                            .With(e => e.Quality = new QualityModel(Quality.MP3_256))
                                            .BuildNew();
-
         }
 
         private void GivenTrackWithFile()
@@ -125,6 +124,5 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
             stats.Should().HaveCount(1);
             stats.First().SizeOnDisk.Should().Be(_trackFile.Size);
         }
-
     }
 }

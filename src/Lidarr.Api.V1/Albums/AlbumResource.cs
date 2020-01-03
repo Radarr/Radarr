@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-using NzbDrone.Core.Music;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http.REST;
+using Newtonsoft.Json;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Music;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -34,6 +34,7 @@ namespace Lidarr.Api.V1.Albums
                 return Media.Where(s => s.MediumNumber > 0).Count();
             }
         }
+
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<AlbumReleaseResource> Releases { get; set; }
@@ -55,7 +56,10 @@ namespace Lidarr.Api.V1.Albums
     {
         public static AlbumResource ToResource(this Album model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             var selectedRelease = model.AlbumReleases?.Value.Where(x => x.Monitored).SingleOrDefault();
 
@@ -86,7 +90,10 @@ namespace Lidarr.Api.V1.Albums
 
         public static Album ToModel(this AlbumResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             var artist = resource.Artist?.ToModel() ?? new NzbDrone.Core.Music.Artist();
 

@@ -1,9 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -47,7 +47,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 }
 
                 // Not upgradable if new quality is equal to all current qualities
-                if (totalCompare == 0) {
+                if (totalCompare == 0)
+                {
                     return ProfileComparisonResult.Equal;
                 }
 
@@ -71,7 +72,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public bool IsUpgradable(QualityProfile qualityProfile, List<QualityModel> currentQualities, int currentScore, QualityModel newQuality, int newScore)
         {
-
             var qualityUpgrade = IsQualityUpgradable(qualityProfile, currentQualities, newQuality);
 
             if (qualityUpgrade == ProfileComparisonResult.Upgrade)
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return CheckUpgradeAllowed(qualityProfile, isQualityUpgrade);
         }
 
-        private bool CheckUpgradeAllowed (QualityProfile qualityProfile, ProfileComparisonResult isQualityUpgrade)
+        private bool CheckUpgradeAllowed(QualityProfile qualityProfile, ProfileComparisonResult isQualityUpgrade)
         {
             if (isQualityUpgrade == ProfileComparisonResult.Upgrade && !qualityProfile.UpgradeAllowed)
             {

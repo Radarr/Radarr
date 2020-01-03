@@ -5,8 +5,8 @@ using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Queue
 {
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Queue
             {
                 downloadForced = bool.Parse(history.Data["downloadForced"]);
             }
-            
+
             var queue = new Queue
             {
                 Artist = trackedDownload.RemoteAlbum?.Artist,

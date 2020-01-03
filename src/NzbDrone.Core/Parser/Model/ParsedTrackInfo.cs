@@ -1,6 +1,6 @@
-using NzbDrone.Core.Qualities;
 using System;
 using System.Linq;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -40,7 +40,6 @@ namespace NzbDrone.Core.Parser.Model
         {
             string trackString = "[Unknown Track]";
 
-            
             if (TrackNumbers != null && TrackNumbers.Any())
             {
                 trackString = string.Format("{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));

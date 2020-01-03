@@ -3,14 +3,14 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 {
@@ -158,7 +158,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 
             Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
         }
-
 
         [Test]
         public void should_return_false_if_not_a_revision_upgrade_and_prefers_propers()

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
@@ -32,8 +31,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             Mocker.GetMock<IProcessDownloadDecisions>()
                 .Setup(s => s.ProcessDecisions(It.IsAny<List<DownloadDecision>>()))
-                .Returns(new ProcessedDecisions(new List<DownloadDecision>(), new List<DownloadDecision>(),
-                    new List<DownloadDecision>()));
+                .Returns(new ProcessedDecisions(new List<DownloadDecision>(), new List<DownloadDecision>(), new List<DownloadDecision>()));
         }
 
         [Test]
@@ -41,11 +39,11 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         {
             _artist.Albums = new List<Album>
             {
-                new Album {Monitored = false},
-                new Album {Monitored = true}
+                new Album { Monitored = false },
+                new Album { Monitored = true }
             };
 
-            Subject.Execute(new ArtistSearchCommand {ArtistId = _artist.Id, Trigger = CommandTrigger.Manual});
+            Subject.Execute(new ArtistSearchCommand { ArtistId = _artist.Id, Trigger = CommandTrigger.Manual });
 
             Mocker.GetMock<ISearchForNzb>()
                 .Verify(v => v.ArtistSearch(_artist.Id, false, true, false),

@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
     {
         protected readonly string _title = "Radiohead - Scotch Mist [2008-FLAC-Lossless]";
         protected string _completedDownloadFolder = @"c:\blackhole\completed".AsOsAgnostic();
-        
+
         protected void GivenCompletedItem()
         {
             var targetDir = Path.Combine(_completedDownloadFolder, _title);
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
             Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
                 .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
-            
+
             Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<IFileInfo>>()))
                 .Returns<string, IEnumerable<IFileInfo>>((b, s) => s.ToList());
         }
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
                 .Setup(c => c.GetFileSize(It.IsAny<string>()))
                 .Returns(currentSize + 1);
         }
-        
+
         private void VerifySingleItem(DownloadItemStatus status)
         {
             var items = Subject.GetItems(_completedDownloadFolder, TimeSpan.FromMilliseconds(50)).ToList();

@@ -7,10 +7,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 {
     public class Distance
     {
-        private Dictionary<string, List<double>> penalties;
-
         // from beets default config
-        private static readonly Dictionary<string, double> weights = new Dictionary<string, double>
+        private static readonly Dictionary<string, double> Weights = new Dictionary<string, double>
         {
             { "source", 2.0 },
             { "artist", 3.0 },
@@ -33,32 +31,34 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             { "recording_id", 10.0 },
         };
 
+        private Dictionary<string, List<double>> _penalties;
+
         public Distance()
         {
-            penalties = new Dictionary<string, List<double>>(15);
+            _penalties = new Dictionary<string, List<double>>(15);
         }
 
-        public Dictionary<string, List<double>> Penalties => penalties;
-        public string Reasons => penalties.Count(x => x.Value.Max() > 0.0) > 0 ? "[" + string.Join(", ", Penalties.Where(x => x.Value.Max() > 0.0).Select(x => x.Key.Replace('_', ' '))) + "]" : string.Empty;
+        public Dictionary<string, List<double>> Penalties => _penalties;
+        public string Reasons => _penalties.Count(x => x.Value.Max() > 0.0) > 0 ? "[" + string.Join(", ", Penalties.Where(x => x.Value.Max() > 0.0).Select(x => x.Key.Replace('_', ' '))) + "]" : string.Empty;
 
         private double MaxDistance(Dictionary<string, List<double>> penalties)
         {
-            return penalties.Select(x => x.Value.Count * weights[x.Key]).Sum();
+            return penalties.Select(x => x.Value.Count * Weights[x.Key]).Sum();
         }
 
         public double MaxDistance()
         {
-            return MaxDistance(penalties);
+            return MaxDistance(_penalties);
         }
 
         private double RawDistance(Dictionary<string, List<double>> penalties)
         {
-            return penalties.Select(x => x.Value.Sum() * weights[x.Key]).Sum();
+            return penalties.Select(x => x.Value.Sum() * Weights[x.Key]).Sum();
         }
-        
+
         public double RawDistance()
         {
-            return RawDistance(penalties);
+            return RawDistance(_penalties);
         }
 
         private double NormalizedDistance(Dictionary<string, List<double>> penalties)
@@ -69,23 +69,23 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
         public double NormalizedDistance()
         {
-            return NormalizedDistance(penalties);
+            return NormalizedDistance(_penalties);
         }
 
         public double NormalizedDistanceExcluding(List<string> keys)
         {
-            return NormalizedDistance(penalties.Where(x => !keys.Contains(x.Key)).ToDictionary(y => y.Key, y => y.Value));
+            return NormalizedDistance(_penalties.Where(x => !keys.Contains(x.Key)).ToDictionary(y => y.Key, y => y.Value));
         }
 
         public void Add(string key, double dist)
         {
-            if (penalties.ContainsKey(key))
+            if (_penalties.ContainsKey(key))
             {
-                penalties[key].Add(dist);                    
+                _penalties[key].Add(dist);
             }
             else
             {
-                penalties[key] = new List<double> { dist };
+                _penalties[key] = new List<double> { dist };
             }
         }
 
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         {
             char[] arr = input.ToLower().RemoveAccent().ToCharArray();
 
-            arr = Array.FindAll<char>(arr, c => (char.IsLetterOrDigit(c)));
+            arr = Array.FindAll<char>(arr, c => char.IsLetterOrDigit(c));
 
             return new string(arr);
         }
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             // Adds a penaltly based on the distance between value and target
             var cleanValue = Clean(value);
             var cleanTarget = Clean(target);
-            
+
             if (cleanValue.IsNullOrWhiteSpace() && cleanTarget.IsNotNullOrWhiteSpace())
             {
                 Add(key, 1.0);
@@ -147,14 +147,16 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             Add(key, expr ? 1.0 : 0.0);
         }
 
-        public void AddEquality<T>(string key, T value, List<T> options) where T : IEquatable<T>
+        public void AddEquality<T>(string key, T value, List<T> options)
+            where T : IEquatable<T>
         {
             Add(key, options.Contains(value) ? 0.0 : 1.0);
         }
 
-        public void AddPriority<T>(string key, T value, List<T> options) where T : IEquatable<T>
+        public void AddPriority<T>(string key, T value, List<T> options)
+            where T : IEquatable<T>
         {
-            var unit = 1.0 / (options.Count > 0 ? (double) options.Count : 1.0);
+            var unit = 1.0 / (options.Count > 0 ? options.Count : 1.0);
             var index = options.IndexOf(value);
             if (index == -1)
             {
@@ -166,9 +168,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             }
         }
 
-        public void AddPriority<T>(string key, List<T> values, List<T> options) where T : IEquatable<T>
+        public void AddPriority<T>(string key, List<T> values, List<T> options)
+            where T : IEquatable<T>
         {
-            for(int i = 0; i < options.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 if (values.Contains(options[i]))
                 {

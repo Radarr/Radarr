@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Qualities;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Queue
 {
@@ -38,7 +38,10 @@ namespace Lidarr.Api.V1.Queue
     {
         public static QueueResource ToResource(this NzbDrone.Core.Queue.Queue model, bool includeArtist, bool includeAlbum)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QueueResource
             {

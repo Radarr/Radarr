@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -32,12 +32,15 @@ namespace NzbDrone.Core.Download
 
         public ProviderDefinition Definition { get; set; }
 
-        public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
+        public virtual object RequestAction(string action, IDictionary<string, string> query)
+        {
+            return null;
+        }
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
-        protected DownloadClientBase(IConfigService configService, 
-            IDiskProvider diskProvider, 
+        protected DownloadClientBase(IConfigService configService,
+            IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
         {
@@ -150,7 +153,7 @@ namespace NzbDrone.Core.Download
 
         public virtual void MarkItemAsImported(DownloadClientItem downloadClientItem)
         {
-            throw new NotSupportedException(this.Name + " does not support marking items as imported");
+            throw new NotSupportedException(Name + " does not support marking items as imported");
         }
     }
 }

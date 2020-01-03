@@ -20,7 +20,6 @@ namespace NzbDrone.Core.MediaFiles
         void UnlinkFilesByAlbum(int albumId);
     }
 
-
     public class MediaFileRepository : BasicRepository<TrackFile>, IMediaFileRepository
     {
         public MediaFileRepository(IMainDatabase database, IEventAggregator eventAggregator)
@@ -84,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles
                 .Where<Track>(x => x.AlbumReleaseId == releaseId)
                 .ToList();
         }
-        
+
         public List<TrackFile> GetFilesWithBasePath(string path)
         {
             // ensure path ends with a single trailing path separator to avoid matching partial paths
@@ -93,7 +92,7 @@ namespace NzbDrone.Core.MediaFiles
                 .Where(x => x.Path.StartsWith(safePath))
                 .ToList();
         }
-        
+
         public TrackFile GetFileWithPath(string path)
         {
             return Query.Where(x => x.Path == path).SingleOrDefault();

@@ -4,15 +4,15 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.History;
+using NzbDrone.Core.ImportLists.Exclusions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.History;
 using NzbDrone.Core.Music.Events;
-using NzbDrone.Core.ImportLists.Exclusions;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .With(s => s.ForeignAlbumId = "2")
                 .Build();
 
-            _albums = new List<Album> {_album1, _album2};
+            _albums = new List<Album> { _album1, _album2 };
 
             _remoteAlbums = _albums.JsonClone();
             _remoteAlbums.ForEach(x => x.Id = 0);
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Setup(s => s.GetArtistInfo(_artist.ForeignArtistId, _artist.MetadataProfileId))
                   .Returns(artist);
         }
-        
+
         private void GivenArtistFiles()
         {
             Mocker.GetMock<IMediaFileService>()
@@ -121,7 +121,8 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Metadata.Value.Images = new List<MediaCover.MediaCover> {
+            newArtistInfo.Metadata.Value.Images = new List<MediaCover.MediaCover>
+            {
                 new MediaCover.MediaCover(MediaCover.MediaCoverTypes.Logo, "dummy")
             };
             newArtistInfo.Albums = _remoteAlbums;
@@ -146,25 +147,25 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
-            
+
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.DeleteArtist(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
 
             ExceptionVerification.ExpectedErrors(1);
             ExceptionVerification.ExpectedWarns(1);
         }
-        
+
         [Test]
         public void should_log_error_but_not_delete_if_musicbrainz_id_not_found_and_artist_has_files()
         {
             GivenArtistFiles();
             GivenAlbumsForRefresh(new List<Album>());
-            
+
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
-            
+
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.DeleteArtist(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
 
@@ -248,7 +249,7 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
                 .Setup(x => x.DeleteArtist(existing.Id, It.IsAny<bool>(), false));
-            
+
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
                 .Setup(x => x.UpdateArtist(It.Is<Artist>(a => a.Id == clash.Id)))

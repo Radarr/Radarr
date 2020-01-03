@@ -1,12 +1,12 @@
-﻿using FizzWare.NBuilder;
+﻿using System.Collections.Generic;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Housekeeping.Housekeepers;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {

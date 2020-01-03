@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
+using Lidarr.Http;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation.Paths;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.RemotePathMappings
 {

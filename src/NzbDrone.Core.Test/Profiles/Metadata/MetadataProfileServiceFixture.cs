@@ -1,14 +1,14 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Metadata;
-using System.Collections.Generic;
-using System;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Profiles.Metadata
 {
@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
         }
 
         [Test]
+
         //This confirms that new profiles are added only if no other profiles exists.
         //We don't want to keep adding them back if a user deleted them on purpose.
         public void Init_should_skip_if_any_profiles_already_exist()
@@ -128,7 +129,6 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
             Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
 
             Mocker.GetMock<IMetadataProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
-
         }
 
         [Test]
@@ -155,7 +155,6 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
             Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
 
             Mocker.GetMock<IMetadataProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
-
         }
 
         [Test]

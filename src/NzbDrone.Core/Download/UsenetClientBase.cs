@@ -1,15 +1,15 @@
 using System.Net;
+using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Configuration;
-using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Download
 {
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Download
             _httpClient = httpClient;
             _nzbValidationService = nzbValidationService;
         }
-        
+
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
         protected abstract string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent);
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download
         public override string Download(RemoteAlbum remoteAlbum)
         {
             var url = remoteAlbum.Release.DownloadUrl;
-            var filename =  FileNameBuilder.CleanFileName(remoteAlbum.Release.Title) + ".nzb";
+            var filename = FileNameBuilder.CleanFileName(remoteAlbum.Release.Title) + ".nzb";
 
             byte[] nzbData;
 
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Download
                 {
                     nzbDataRequest.Headers.Set("Authorization", "Basic " + remoteAlbum.Release.BasicAuthString);
                 }
-                
+
                 nzbData = _httpClient.Get(nzbDataRequest).ResponseData;
 
                 _logger.Debug("Downloaded nzb for release '{0}' finished ({1} bytes from {2})", remoteAlbum.Release.Title, nzbData.Length, url);

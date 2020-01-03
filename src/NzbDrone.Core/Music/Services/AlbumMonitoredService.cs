@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Music
                             break;
                         case MonitorTypes.Latest:
                             ToggleAlbumsMonitoredState(albums, false);
-                            ToggleAlbumsMonitoredState(albums.OrderByDescending(e=>e.ReleaseDate).Take(1),true);
+                            ToggleAlbumsMonitoredState(albums.OrderByDescending(e => e.ReleaseDate).Take(1), true);
                             break;
                         case MonitorTypes.First:
                             ToggleAlbumsMonitoredState(albums, false);

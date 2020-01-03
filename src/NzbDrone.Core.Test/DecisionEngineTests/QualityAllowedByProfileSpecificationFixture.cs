@@ -3,10 +3,10 @@ using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class QualityAllowedByProfileSpecificationFixture : CoreTest<QualityAllowedByProfileSpecification>
     {
-        private RemoteAlbum remoteAlbum;
+        private RemoteAlbum _remoteAlbum;
 
         public static object[] AllowedTestCases =
         {
@@ -35,32 +35,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void Setup()
         {
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.QualityProfile = (LazyLoaded<QualityProfile>)new QualityProfile { Cutoff = Quality.MP3_320.Id })
+                         .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id })
                          .Build();
 
-            remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteAlbum
             {
                 Artist = fakeArtist,
                 ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
             };
         }
 
-        [Test, TestCaseSource(nameof(AllowedTestCases))]
+        [Test]
+        [TestCaseSource(nameof(AllowedTestCases))]
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
-            remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
+            _remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
+            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
 
-            Subject.IsSatisfiedBy(remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
-        [Test, TestCaseSource(nameof(DeniedTestCases))]
+        [Test]
+        [TestCaseSource(nameof(DeniedTestCases))]
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
-            remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
+            _remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
+            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
 
-            Subject.IsSatisfiedBy(remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
     }
 }

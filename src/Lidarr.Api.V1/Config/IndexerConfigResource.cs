@@ -1,5 +1,5 @@
-using NzbDrone.Core.Configuration;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Configuration;
 
 namespace Lidarr.Api.V1.Config
 {

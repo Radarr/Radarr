@@ -1,9 +1,7 @@
-﻿using NzbDrone.Common.EnsureThat;
-using NzbDrone.Core.Parser.Model;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using NzbDrone.Common.EnsureThat;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {

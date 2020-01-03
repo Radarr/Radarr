@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Music
                                          "WHERE Artists.Id = {0} " +
                                          "AND AlbumReleases.Monitored = 1",
                                          artistId);
-            
+
             return Query.QueryText(query).ToList();
         }
 

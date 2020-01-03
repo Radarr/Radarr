@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
@@ -9,12 +10,11 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
-using System.IO;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 {

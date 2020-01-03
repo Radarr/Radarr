@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.REST;
 using Nancy;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
-using Lidarr.Http.Extensions;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Tracks
 {

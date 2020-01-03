@@ -1,7 +1,6 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications

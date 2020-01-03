@@ -7,8 +7,8 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private Artist _artist;
         private List<TrackFile> _trackFiles;
-            
+
         [SetUp]
         public void Setup()
         {
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenNoTrackFiles();
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int>{1}));
+            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<ArtistRenamedEvent>()), Times.Never());

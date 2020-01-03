@@ -7,13 +7,11 @@ namespace NzbDrone.Common.Exceptions
         public ServiceProviderException(string message, params object[] args)
             : base(string.Format(message, args))
         {
-
         }
 
         public ServiceProviderException(string message)
             : base(message)
         {
-
         }
 
         public ServiceProviderException(Exception innerException, string message, params object[] args)

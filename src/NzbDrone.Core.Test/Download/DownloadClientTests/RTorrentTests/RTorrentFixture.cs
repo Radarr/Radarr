@@ -1,11 +1,11 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.RTorrent;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
 {
@@ -25,26 +25,26 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
             };
 
             _downloading = new RTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = false,
-                        IsOpen = true,
-                        IsActive = true,
-                        Name = _title,
-                        TotalSize = 1000,
-                        RemainingSize = 500,
-                        Path = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = false,
+                IsOpen = true,
+                IsActive = true,
+                Name = _title,
+                TotalSize = 1000,
+                RemainingSize = 500,
+                Path = "somepath"
+            };
 
             _completed = new RTorrentTorrent
-                    {
-                        Hash = "HASH",
-                        IsFinished = true,
-                        Name = _title,
-                        TotalSize = 1000,
-                        RemainingSize = 0,
-                        Path = "somepath"
-                    };
+            {
+                Hash = "HASH",
+                IsFinished = true,
+                Name = _title,
+                TotalSize = 1000,
+                RemainingSize = 0,
+                Path = "somepath"
+            };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
                   .Setup(s => s.GetHashFromTorrentFile(It.IsAny<byte[]>()))
@@ -60,7 +60,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
             Mocker.GetMock<IRTorrentProxy>()
                   .Setup(s => s.AddTorrentFromFile(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<RTorrentPriority>(), It.IsAny<string>(), It.IsAny<RTorrentSettings>()))
                   .Callback(PrepareClientToReturnCompletedItem);
-
 
             Mocker.GetMock<IRTorrentProxy>()
                   .Setup(s => s.HasHashTorrent(It.IsAny<string>(), It.IsAny<RTorrentSettings>()))

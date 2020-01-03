@@ -34,7 +34,6 @@ namespace NzbDrone.Core.Update
         private readonly IBackupService _backupService;
         private readonly IOsInfo _osInfo;
 
-
         public InstallUpdateService(ICheckUpdateService checkUpdateService,
                                     IAppFolderInfo appFolderInfo,
                                     IDiskProvider diskProvider,
@@ -54,6 +53,7 @@ namespace NzbDrone.Core.Update
             {
                 throw new ArgumentNullException(nameof(configFileProvider));
             }
+
             _checkUpdateService = checkUpdateService;
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;

@@ -1,4 +1,3 @@
-using System;
 using NzbDrone.Core.ArtistStats;
 
 namespace Lidarr.Api.V1.Artist
@@ -15,9 +14,12 @@ namespace Lidarr.Api.V1.Artist
         {
             get
             {
-                if (TrackCount == 0) return 0;
+                if (TrackCount == 0)
+                {
+                    return 0;
+                }
 
-                return (decimal)TrackFileCount / (decimal)TrackCount * 100;
+                return TrackFileCount / (decimal)TrackCount * 100;
             }
         }
     }
@@ -26,7 +28,10 @@ namespace Lidarr.Api.V1.Artist
     {
         public static ArtistStatisticsResource ToResource(this ArtistStatistics model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ArtistStatisticsResource
             {

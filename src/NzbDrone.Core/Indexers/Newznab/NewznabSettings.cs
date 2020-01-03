@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
-using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
@@ -82,7 +81,6 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         // Field 6 is used by TorznabSettings MinimumSeeders
         // If you need to add another field here, update TorznabSettings as well and this comment
-
         public virtual NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

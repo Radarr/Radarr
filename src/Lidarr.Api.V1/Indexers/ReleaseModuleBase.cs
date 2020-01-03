@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NzbDrone.Core.DecisionEngine;
 using Lidarr.Http;
+using NzbDrone.Core.DecisionEngine;
 
 namespace Lidarr.Api.V1.Indexers
 {

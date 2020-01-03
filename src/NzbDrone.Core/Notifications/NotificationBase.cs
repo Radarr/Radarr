@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
 {
-    public abstract class NotificationBase<TSettings> : INotification where TSettings : IProviderConfig, new()
+    public abstract class NotificationBase<TSettings> : INotification
+        where TSettings : IProviderConfig, new()
     {
         protected const string ALBUM_GRABBED_TITLE = "Album Grabbed";
         protected const string ALBUM_DOWNLOADED_TITLE = "Album Downloaded";
@@ -37,37 +38,30 @@ namespace NzbDrone.Core.Notifications
 
         public virtual void OnGrab(GrabMessage grabMessage)
         {
-
         }
 
         public virtual void OnReleaseImport(AlbumDownloadMessage message)
         {
-
         }
 
         public virtual void OnRename(Artist artist)
         {
-
         }
 
         public virtual void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
-
         }
 
         public virtual void OnDownloadFailure(DownloadFailedMessage message)
         {
-
         }
 
         public virtual void OnImportFailure(AlbumDownloadMessage message)
         {
-
         }
 
         public virtual void OnTrackRetag(TrackRetagMessage message)
         {
-
         }
 
         public bool SupportsOnGrab => HasConcreteImplementation("OnGrab");
@@ -86,8 +80,10 @@ namespace NzbDrone.Core.Notifications
             return GetType().Name;
         }
 
-        public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
-
+        public virtual object RequestAction(string action, IDictionary<string, string> query)
+        {
+            return null;
+        }
 
         private bool HasConcreteImplementation(string methodName)
         {
@@ -100,6 +96,5 @@ namespace NzbDrone.Core.Notifications
 
             return !method.DeclaringType.IsAbstract;
         }
-
     }
 }

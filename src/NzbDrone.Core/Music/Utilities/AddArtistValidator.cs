@@ -1,7 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
-using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Validation.Paths;
 
 namespace NzbDrone.Core.Music
 {
@@ -27,7 +27,6 @@ namespace NzbDrone.Core.Music
             RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
 
             RuleFor(c => c.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
-
         }
     }
 }

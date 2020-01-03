@@ -4,9 +4,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
 {
@@ -21,26 +21,25 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         public void Setup()
         {
             _artist = Builder<Artist>.CreateNew()
-                                     .With(s => s.Tags = new HashSet<int>(new[] {1, 2}))
+                                     .With(s => s.Tags = new HashSet<int>(new[] { 1, 2 }))
                                      .Build();
 
             _releaseProfiles = new List<ReleaseProfile>();
 
             _releaseProfiles.Add(new ReleaseProfile
-                                 {
-                                     Preferred = new List<KeyValuePair<string, int>>
+            {
+                Preferred = new List<KeyValuePair<string, int>>
                                                  {
                                                      new KeyValuePair<string, int>("24bit", 5),
                                                      new KeyValuePair<string, int>("16bit", -10)
                                                  }
-                                 });
+            });
 
             Mocker.GetMock<IReleaseProfileService>()
                   .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
                   .Returns(_releaseProfiles);
         }
 
-            
         private void GivenMatchingTerms(params string[] terms)
         {
             Mocker.GetMock<ITermMatcherService>()

@@ -1,12 +1,9 @@
-using System;
-using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
+using Lidarr.Http.Extensions;
 using Nancy;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.FileSystem
 {
@@ -24,9 +21,9 @@ namespace Lidarr.Api.V1.FileSystem
             _fileSystemLookupService = fileSystemLookupService;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
-            Get("/",  x => GetContents());
-            Get("/type",  x => GetEntityType());
-            Get("/mediafiles",  x => GetMediaFiles());
+            Get("/", x => GetContents());
+            Get("/type", x => GetEntityType());
+            Get("/mediafiles", x => GetMediaFiles());
         }
 
         private object GetContents()
@@ -62,7 +59,8 @@ namespace Lidarr.Api.V1.FileSystem
                 return new string[0];
             }
 
-            return _diskScanService.GetAudioFiles(path).Select(f => new {
+            return _diskScanService.GetAudioFiles(path).Select(f => new
+            {
                 Path = f.FullName,
                 RelativePath = path.GetRelativePath(f.FullName),
                 Name = f.Name

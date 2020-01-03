@@ -8,14 +8,14 @@ using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -59,8 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             foreach (var track in tracks)
             {
-                _approvedDecisions.Add(new ImportDecision<LocalTrack>
-                                           (
+                _approvedDecisions.Add(new ImportDecision<LocalTrack>(
                                            new LocalTrack
                                            {
                                                Artist = artist,
@@ -85,7 +84,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
                 .Returns(new List<TrackFile>());
-
         }
 
         [Test]
@@ -164,8 +162,8 @@ namespace NzbDrone.Core.Test.MediaFiles
             var fileDecision = _approvedDecisions.First();
             fileDecision.Item.Size = 1.Gigabytes();
 
-            var sampleDecision = new ImportDecision<LocalTrack>
-                (new LocalTrack
+            var sampleDecision = new ImportDecision<LocalTrack>(
+                new LocalTrack
                 {
                     Artist = fileDecision.Item.Artist,
                     Album = fileDecision.Item.Album,
@@ -174,7 +172,6 @@ namespace NzbDrone.Core.Test.MediaFiles
                     Quality = new QualityModel(Quality.MP3_256),
                     Size = 80.Megabytes()
                 });
-
 
             var all = new List<ImportDecision<LocalTrack>>();
             all.Add(fileDecision);
@@ -219,6 +216,5 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IMediaFileService>()
                 .Verify(v => v.Delete(It.IsAny<TrackFile>(), DeleteMediaFileReason.ManualOverride), Times.Once());
         }
-
     }
 }

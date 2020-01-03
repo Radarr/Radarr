@@ -9,7 +9,9 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string Path { get; set; }
         public string MBId { get; set; }
 
-        public WebhookArtist() { }
+        public WebhookArtist()
+        {
+        }
 
         public WebhookArtist(Artist artist)
         {

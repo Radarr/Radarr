@@ -1,8 +1,8 @@
 using System.Linq;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Messaging.Events;
 using Marr.Data.QGen;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Music
 {

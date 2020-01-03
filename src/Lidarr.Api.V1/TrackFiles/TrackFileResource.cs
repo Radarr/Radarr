@@ -1,11 +1,11 @@
 using System;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Qualities;
+using System.Linq;
 using Lidarr.Http.REST;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.TrackFiles
 {
@@ -42,7 +42,10 @@ namespace Lidarr.Api.V1.TrackFiles
 
         public static TrackFileResource ToResource(this TrackFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new TrackFileResource
             {
@@ -59,7 +62,10 @@ namespace Lidarr.Api.V1.TrackFiles
 
         public static TrackFileResource ToResource(this TrackFile model, NzbDrone.Core.Music.Artist artist, IUpgradableSpecification upgradableSpecification)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new TrackFileResource
             {

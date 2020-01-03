@@ -4,7 +4,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -21,7 +20,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
-        
+
         public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Beginning size check for: {0}", subject);
@@ -53,6 +52,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     return Decision.Reject("{0} is smaller than minimum allowed {1}", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix());
                 }
             }
+
             if (!qualityDefinition.MaxSize.HasValue || qualityDefinition.MaxSize.Value == 0)
             {
                 _logger.Debug("Max size is unlimited - skipping check.");
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var maxSize = qualityDefinition.MaxSize.Value.Kilobits();
                 var maxReleaseDuration = subject.Albums.Select(a => a.AlbumReleases.Value.Where(r => r.Monitored || a.AnyReleaseOk).Select(r => r.Duration).Max()).Sum() / 1000;
-                
+
                 //Multiply maxSize by Album.Duration
                 maxSize = maxSize * maxReleaseDuration;
 

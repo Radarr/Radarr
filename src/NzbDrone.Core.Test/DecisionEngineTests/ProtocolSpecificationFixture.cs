@@ -4,10 +4,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteAlbum = new RemoteAlbum();
             _remoteAlbum.Release = new ReleaseInfo();
             _remoteAlbum.Artist = new Artist();
-            
+
             _delayProfile = new DelayProfile();
 
             Mocker.GetMock<IDelayProfileService>()

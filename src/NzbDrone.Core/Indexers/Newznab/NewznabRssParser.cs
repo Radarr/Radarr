@@ -23,7 +23,10 @@ namespace NzbDrone.Core.Indexers.Newznab
             var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
-            if (error == null) return true;
+            if (error == null)
+            {
+                return true;
+            }
 
             var code = Convert.ToInt32(error.Attribute("code").Value);
             var errorMessage = error.Attribute("description").Value;
@@ -68,10 +71,10 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
- 
+
             releaseInfo.Artist = GetArtist(item);
             releaseInfo.Album = GetAlbum(item);
- 
+
             return releaseInfo;
         }
 
@@ -122,7 +125,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             return "";
         }
- 
+
         protected virtual string GetAlbum(XElement item)
         {
             var albumString = TryGetNewznabAttribute(item, "album");

@@ -73,7 +73,8 @@ namespace NzbDrone.Core.DecisionEngine
                     if (parsedAlbumInfo == null && searchCriteria != null)
                     {
                         parsedAlbumInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
-                            searchCriteria.Artist, searchCriteria.Albums);
+                            searchCriteria.Artist,
+                            searchCriteria.Albums);
                     }
 
                     if (parsedAlbumInfo != null)
@@ -92,7 +93,6 @@ namespace NzbDrone.Core.DecisionEngine
                         //{
                         //    parsedAlbumInfo.AlbumTitle = report.Album;
                         //}
-
                         if (!parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
                         {
                             var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
@@ -116,6 +116,7 @@ namespace NzbDrone.Core.DecisionEngine
                             if (remoteAlbum.Artist == null)
                             {
                                 decision = new DownloadDecision(remoteAlbum, new Rejection("Unknown Artist"));
+
                                 // shove in the searched artist in case of forced download in interactive search
                                 if (searchCriteria != null)
                                 {
@@ -156,7 +157,6 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         _logger.Debug("Release rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
                     }
-
                     else
                     {
                         _logger.Debug("Release accepted");
@@ -177,8 +177,12 @@ namespace NzbDrone.Core.DecisionEngine
                                                         .Where(c => c != null)
                                                         .ToArray();
 
-                if (reasons.Any()) break;
+                if (reasons.Any())
+                {
+                    break;
+                }
             }
+
             return new DownloadDecision(remoteAlbum, reasons.ToArray());
         }
 

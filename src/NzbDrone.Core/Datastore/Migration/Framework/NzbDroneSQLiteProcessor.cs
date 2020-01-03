@@ -79,6 +79,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             {
                 throw new ApplicationException(string.Format("Column {0} does not exist on table {1}.", expression.OldName, expression.TableName));
             }
+
             if (columnDefinitions.Any(c => c.Name == expression.NewName))
             {
                 throw new ApplicationException(string.Format("Column {0} already exists on table {1}.", expression.NewName, expression.TableName));
@@ -106,7 +107,6 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             ProcessAlterTable(tableDefinition, oldColumnDefinitions);
         }
 
-
         protected virtual TableDefinition GetTableSchema(string tableName)
         {
             var schemaDumper = new SqliteSchemaDumper(this);
@@ -130,7 +130,6 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             var quoter = new SQLiteQuoter();
             var columnsToInsert = string.Join(", ", tableDefinition.Columns.Select(c => quoter.QuoteColumnName(c.Name)));
             var columnsToFetch = string.Join(", ", (oldColumnDefinitions ?? tableDefinition.Columns).Select(c => quoter.QuoteColumnName(c.Name)));
-
 
             Process(new CreateTableExpression() { TableName = tempTableName, Columns = tableDefinition.Columns.ToList() });
 

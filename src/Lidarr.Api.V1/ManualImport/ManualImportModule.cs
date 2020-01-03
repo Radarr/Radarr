@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
-using NzbDrone.Core.Qualities;
-using Lidarr.Http.Extensions;
-using NzbDrone.Core.Music;
-using NLog;
-using Nancy;
 using Lidarr.Http;
+using Lidarr.Http.Extensions;
+using Nancy;
+using NLog;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.TrackImport.Manual;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.ManualImport
 {
@@ -32,7 +32,7 @@ namespace Lidarr.Api.V1.ManualImport
             _logger = logger;
 
             GetResourceAll = GetMediaFiles;
-            
+
             Put("/", options =>
                 {
                     var resource = Request.Body.FromJson<List<ManualImportResource>>();
@@ -58,7 +58,7 @@ namespace Lidarr.Api.V1.ManualImport
                 item.QualityWeight += item.Quality.Revision.Real * 10;
                 item.QualityWeight += item.Quality.Revision.Version;
             }
-           
+
             return item;
         }
 
@@ -67,23 +67,24 @@ namespace Lidarr.Api.V1.ManualImport
             var items = new List<ManualImportItem>();
             foreach (var resource in resources)
             {
-                items.Add(new ManualImportItem {
-                        Id = resource.Id,
-                        Path = resource.Path,
-                        RelativePath = resource.RelativePath,
-                        Name = resource.Name,
-                        Size = resource.Size,
-                        Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
-                        Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
-                        Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
-                        Quality = resource.Quality,
-                        DownloadId = resource.DownloadId,
-                        AdditionalFile = resource.AdditionalFile,
-                        ReplaceExistingFiles = resource.ReplaceExistingFiles,
-                        DisableReleaseSwitching = resource.DisableReleaseSwitching
-                    });
+                items.Add(new ManualImportItem
+                {
+                    Id = resource.Id,
+                    Path = resource.Path,
+                    RelativePath = resource.RelativePath,
+                    Name = resource.Name,
+                    Size = resource.Size,
+                    Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
+                    Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
+                    Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
+                    Quality = resource.Quality,
+                    DownloadId = resource.DownloadId,
+                    AdditionalFile = resource.AdditionalFile,
+                    ReplaceExistingFiles = resource.ReplaceExistingFiles,
+                    DisableReleaseSwitching = resource.DisableReleaseSwitching
+                });
             }
-            
+
             return _manualImportService.UpdateItems(items).Select(x => x.ToResource()).ToList();
         }
     }

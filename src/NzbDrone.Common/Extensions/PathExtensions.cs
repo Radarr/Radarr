@@ -33,7 +33,8 @@ namespace NzbDrone.Common.Extensions
 
             var info = new FileInfo(path.Trim());
 
-            if (OsInfo.IsWindows && info.FullName.StartsWith(@"\\")) //UNC
+            //UNC
+            if (OsInfo.IsWindows && info.FullName.StartsWith(@"\\"))
             {
                 return info.FullName.TrimEnd('/', '\\', ' ');
             }
@@ -58,7 +59,11 @@ namespace NzbDrone.Common.Extensions
                 comparison = DiskProviderBase.PathStringComparison;
             }
 
-            if (firstPath.Equals(secondPath, comparison.Value)) return true;
+            if (firstPath.Equals(secondPath, comparison.Value))
+            {
+                return true;
+            }
+
             return string.Equals(firstPath.CleanFilePath(), secondPath.CleanFilePath(), comparison.Value);
         }
 
@@ -92,6 +97,7 @@ namespace NzbDrone.Common.Extensions
             {
                 parentPath = parentPath.TrimEnd(Path.DirectorySeparatorChar);
             }
+
             if (childPath != "/" && !parentPath.EndsWith(":\\"))
             {
                 childPath = childPath.TrimEnd(Path.DirectorySeparatorChar);

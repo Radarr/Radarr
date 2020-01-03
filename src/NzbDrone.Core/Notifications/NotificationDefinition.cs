@@ -4,7 +4,6 @@ namespace NzbDrone.Core.Notifications
 {
     public class NotificationDefinition : ProviderDefinition
     {
-
         public bool OnGrab { get; set; }
         public bool OnReleaseImport { get; set; }
         public bool OnUpgrade { get; set; }

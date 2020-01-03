@@ -5,10 +5,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
-                  .Returns( _pending);
+                  .Returns(_pending);
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(It.IsAny<int>()))
@@ -44,22 +44,22 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), It.IsAny<Artist>(), null))
-                  .Returns(new List<Album>{ _album });
+                  .Returns(new List<Album> { _album });
         }
 
         private void AddPending(int id, string album)
         {
             _pending.Add(new PendingRelease
-             {
-                 Id = id,
-                 ParsedAlbumInfo = new ParsedAlbumInfo { AlbumTitle = album}
-             });
+            {
+                Id = id,
+                ParsedAlbumInfo = new ParsedAlbumInfo { AlbumTitle = album }
+            });
         }
 
         [Test]
         public void should_remove_same_release()
         {
-            AddPending(id: 1, album: "Album" );
+            AddPending(id: 1, album: "Album");
 
             var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", 1, _album.Id));
 
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             AssertRemoved(1);
         }
-        
+
         [Test]
         public void should_remove_multiple_releases_release()
         {
@@ -97,11 +97,10 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             AssertRemoved(1, 2);
         }
-        
+
         private void AssertRemoved(params int[] ids)
         {
             Mocker.GetMock<IPendingReleaseRepository>().Verify(c => c.DeleteMany(It.Is<IEnumerable<int>>(s => s.SequenceEqual(ids))));
         }
     }
-
 }

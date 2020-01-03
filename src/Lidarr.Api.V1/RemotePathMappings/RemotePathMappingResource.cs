@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.RemotePathMappings;
 using Lidarr.Http.REST;
+using NzbDrone.Core.RemotePathMappings;
 
 namespace Lidarr.Api.V1.RemotePathMappings
 {
@@ -16,7 +16,10 @@ namespace Lidarr.Api.V1.RemotePathMappings
     {
         public static RemotePathMappingResource ToResource(this RemotePathMapping model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RemotePathMappingResource
             {
@@ -30,7 +33,10 @@ namespace Lidarr.Api.V1.RemotePathMappings
 
         public static RemotePathMapping ToModel(this RemotePathMappingResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new RemotePathMapping
             {

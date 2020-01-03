@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Music
         private readonly ITrackService _trackService;
 
         public AlbumEditedService(IManageCommandQueue commandQueueManager,
-            ITrackService  trackService)
+            ITrackService trackService)
         {
             _commandQueueManager = commandQueueManager;
             _trackService = trackService;

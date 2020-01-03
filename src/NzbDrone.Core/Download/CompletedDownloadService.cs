@@ -8,11 +8,11 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download
 {

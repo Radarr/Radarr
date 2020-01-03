@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
@@ -9,11 +12,6 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -62,7 +60,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public TrackFile MoveTrackFile(TrackFile trackFile, Artist artist)
         {
-
             var tracks = _trackService.GetTracksByFileId(trackFile.Id);
             var album = _albumService.GetAlbum(trackFile.AlbumId);
             var newFileName = _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile);
@@ -77,7 +74,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public TrackFile MoveTrackFile(TrackFile trackFile, LocalTrack localTrack)
         {
-
             var newFileName = _buildFileNames.BuildTrackFileName(localTrack.Tracks, localTrack.Artist, localTrack.Album, trackFile);
             var filePath = _buildFileNames.BuildTrackFilePath(localTrack.Artist, localTrack.Album, newFileName, Path.GetExtension(localTrack.Path));
 
@@ -107,7 +103,6 @@ namespace NzbDrone.Core.MediaFiles
 
         private TrackFile TransferFile(TrackFile trackFile, Artist artist, List<Track> tracks, string destinationFilePath, TransferMode mode)
         {
-
             Ensure.That(trackFile, () => trackFile).IsNotNull();
             Ensure.That(artist, () => artist).IsNotNull();
             Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
@@ -141,7 +136,6 @@ namespace NzbDrone.Core.MediaFiles
                     _mediaFileAttributeService.SetFolderLastWriteTime(albumFolder, trackFile.DateAdded);
                 }
             }
-
             catch (Exception ex)
             {
                 _logger.Warn(ex, "Unable to set last write time");

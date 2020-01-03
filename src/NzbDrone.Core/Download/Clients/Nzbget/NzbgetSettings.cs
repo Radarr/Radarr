@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         [FieldDefinition(9, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
-        
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

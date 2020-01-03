@@ -79,9 +79,8 @@ namespace NzbDrone.Core.ImportLists.Spotify
             {
                 _logger.Warn($"Error refreshing spotify access token");
             }
-
         }
-        
+
         public SpotifyWebAPI GetApi()
         {
             Settings.Validate().Filter("AccessToken", "RefreshToken").ThrowOnError();
@@ -122,10 +121,11 @@ namespace NzbDrone.Core.ImportLists.Spotify
             {
                 return default(DateTime);
             }
-            
+
             string format;
-            
-            switch (precision) {
+
+            switch (precision)
+            {
                 case "year":
                     format = "yyyy";
                     break;
@@ -333,13 +333,15 @@ namespace NzbDrone.Core.ImportLists.Spotify
                     .AddQueryParam("show_dialog", true)
                     .Build();
 
-                return new {
+                return new
+                {
                     OauthUrl = request.Url.ToString()
                 };
             }
             else if (action == "getOAuthToken")
             {
-                return new {
+                return new
+                {
                     accessToken = query["access_token"],
                     expires = DateTime.UtcNow.AddSeconds(int.Parse(query["expires_in"])),
                     refreshToken = query["refresh_token"],

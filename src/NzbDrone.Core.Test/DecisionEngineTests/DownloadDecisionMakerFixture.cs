@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
+using FizzWare.NBuilder;
 using FluentAssertions;
+using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
-using FizzWare.NBuilder;
-using Marr.Data;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
             _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
             _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
-            
+
             _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail1"));
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail3"));
@@ -57,7 +57,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _failDelayed1.SetupGet(c => c.Priority).Returns(SpecificationPriority.Disk);
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" } };
-            _remoteAlbum = new RemoteAlbum {
+            _remoteAlbum = new RemoteAlbum
+            {
                 Artist = new Artist(),
                 Albums = new List<Album> { new Album() }
             };
@@ -203,9 +204,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _reports = new List<ReleaseInfo>
                 {
-                    new ReleaseInfo{Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT"},
-                    new ReleaseInfo{Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT"},
-                    new ReleaseInfo{Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT"}
+                    new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" },
+                    new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" },
+                    new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" }
                 };
 
             Subject.GetRssDecision(_reports);
@@ -238,17 +239,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(v => v.Artist, new LazyLoaded<Artist>(artist))
                 .BuildList();
 
-            var criteria = new ArtistSearchCriteria { Albums = albums.Take(1).ToList()};
+            var criteria = new ArtistSearchCriteria { Albums = albums.Take(1).ToList() };
 
-            var reports = albums.Select(v => 
-                new ReleaseInfo() 
-                { 
-                    Title = string.Format("{0}-{1}[FLAC][2017][DRONE]", artist.Name, v.Title) 
+            var reports = albums.Select(v =>
+                new ReleaseInfo()
+                {
+                    Title = string.Format("{0}-{1}[FLAC][2017][DRONE]", artist.Name, v.Title)
                 }).ToList();
 
             Mocker.GetMock<IParsingService>()
                 .Setup(v => v.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()))
-                .Returns<ParsedAlbumInfo, SearchCriteriaBase>((p,c) =>
+                .Returns<ParsedAlbumInfo, SearchCriteriaBase>((p, c) =>
                     new RemoteAlbum
                     {
                         DownloadAllowed = true,
@@ -307,7 +308,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _reports = new List<ReleaseInfo>
                 {
-                    new ReleaseInfo{Title = "Alien Ant Farm - TruAnt (FLAC) DRONE"},
+                    new ReleaseInfo { Title = "Alien Ant Farm - TruAnt (FLAC) DRONE" },
                 };
 
             Subject.GetRssDecision(_reports).Should().HaveCount(1);

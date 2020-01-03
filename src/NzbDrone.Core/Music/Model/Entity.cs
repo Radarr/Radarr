@@ -1,6 +1,6 @@
-using NzbDrone.Core.Datastore;
 using System;
 using Equ;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Music
 {
@@ -15,9 +15,13 @@ namespace NzbDrone.Core.Music
             Id = other.Id;
         }
 
-        public virtual void UseMetadataFrom(T other) { }
+        public virtual void UseMetadataFrom(T other)
+        {
+        }
 
-        public virtual void ApplyChanges(T other) { }
+        public virtual void ApplyChanges(T other)
+        {
+        }
 
         public bool Equals(T other)
         {

@@ -11,7 +11,7 @@ namespace Marr.Data.QGen.Dialects
                 return string.Empty;
             }
 
-            return token.Replace('[', new Char()).Replace(']', new Char());
+            return token.Replace('[', new char()).Replace(']', new char());
         }
     }
 }

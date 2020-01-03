@@ -36,10 +36,12 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return Id.Equals(other.Id);
         }
 
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             return ReferenceEquals(this, obj) || Equals(obj as ReleaseStatus);
         }
 
@@ -67,7 +70,6 @@ namespace NzbDrone.Core.Music
         public static ReleaseStatus Bootleg => new ReleaseStatus(2, "Bootleg");
         public static ReleaseStatus Pseudo => new ReleaseStatus(3, "Pseudo-Release");
 
-
         public static readonly List<ReleaseStatus> All = new List<ReleaseStatus>
         {
             Official,
@@ -75,7 +77,6 @@ namespace NzbDrone.Core.Music
             Bootleg,
             Pseudo
         };
-
 
         public static ReleaseStatus FindById(int id)
         {

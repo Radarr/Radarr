@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.Extensions;
 using Nancy;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.Artist
 {
@@ -19,8 +19,8 @@ namespace Lidarr.Api.V1.Artist
         {
             _artistService = artistService;
             _commandQueueManager = commandQueueManager;
-            Put("/",  artist => SaveAll());
-            Delete("/",  artist => DeleteArtist());
+            Put("/", artist => SaveAll());
+            Delete("/", artist => DeleteArtist());
         }
 
         private object SaveAll()
@@ -59,7 +59,6 @@ namespace Lidarr.Api.V1.Artist
                         ArtistId = artist.Id,
                         SourcePath = artist.Path
                     });
-
                 }
 
                 if (resource.Tags != null)
@@ -92,8 +91,8 @@ namespace Lidarr.Api.V1.Artist
             }
 
             return ResponseWithCode(_artistService.UpdateArtists(artistToUpdate, !resource.MoveFiles)
-                                 .ToResource()
-                                 , HttpStatusCode.Accepted);
+                                 .ToResource(),
+                                 HttpStatusCode.Accepted);
         }
 
         private object DeleteArtist()

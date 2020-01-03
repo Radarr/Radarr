@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Notifications.Slack.Payloads;
-using NzbDrone.Core.Rest;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Validation;
-
 
 namespace NzbDrone.Core.Notifications.Slack
 {
@@ -154,7 +152,6 @@ namespace NzbDrone.Core.Notifications.Slack
                 var payload = CreatePayload(message);
 
                 _proxy.SendPayload(payload, Settings);
-
             }
             catch (SlackExeption ex)
             {

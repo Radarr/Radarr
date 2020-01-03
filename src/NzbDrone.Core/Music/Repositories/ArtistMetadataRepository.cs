@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NLog;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NLog;
 
 namespace NzbDrone.Core.Music
 {
@@ -54,12 +54,12 @@ namespace NzbDrone.Core.Music
                     addMetadataList.Add(meta);
                 }
             }
-            
+
             UpdateMany(updateMetadataList);
             InsertMany(addMetadataList);
-            
+
             _logger.Debug($"{upToDateMetadataCount} artist metadata up to date; Updating {updateMetadataList.Count}, Adding {addMetadataList.Count} artist metadata entries.");
-            
+
             return updateMetadataList.Count > 0 || addMetadataList.Count > 0;
         }
     }

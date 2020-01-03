@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Common.Extensions;
 using Lidarr.Api.V1.Artist;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.ArtistStats;
-using NzbDrone.SignalR;
 using Lidarr.Http;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Music;
+using NzbDrone.SignalR;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -90,7 +90,7 @@ namespace Lidarr.Api.V1.Albums
                     resource.Artist = artist.ToResource();
                 }
             }
-            
+
             var artistStats = _artistStatisticsService.ArtistStatistics();
             LinkArtistStatistics(result, artistStats);
             MapCoversToLocal(result.ToArray());
@@ -119,7 +119,6 @@ namespace Lidarr.Api.V1.Albums
                 var dictAlbumStats = artistStatistics.AlbumStatistics.ToDictionary(v => v.AlbumId);
 
                 resource.Statistics = dictAlbumStats.GetValueOrDefault(resource.Id).ToResource();
-
             }
         }
 

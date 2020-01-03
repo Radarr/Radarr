@@ -197,7 +197,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestOutputPath());
             failures.AddIfNotNull(TestGetTorrents());
         }
@@ -209,10 +213,10 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         protected bool IsCompleted(DownloadStationTask torrent)
         {
-            return torrent.Status == DownloadStationTaskStatus.Seeding || IsFinished(torrent) ||  (torrent.Status == DownloadStationTaskStatus.Waiting && torrent.Size != 0 && GetRemainingSize(torrent) <= 0);
+            return torrent.Status == DownloadStationTaskStatus.Seeding || IsFinished(torrent) || (torrent.Status == DownloadStationTaskStatus.Waiting && torrent.Size != 0 && GetRemainingSize(torrent) <= 0);
         }
 
-    protected string GetMessage(DownloadStationTask torrent)
+        protected string GetMessage(DownloadStationTask torrent)
         {
             if (torrent.StatusExtra != null)
             {
@@ -340,8 +344,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 return null;
             }
-            catch (DownloadClientAuthenticationException ex) // User could not have permission to access to downloadstation
+            catch (DownloadClientAuthenticationException ex)
             {
+                // User could not have permission to access to downloadstation
                 _logger.Error(ex, "Unable to authenticate");
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
             }
@@ -377,6 +382,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                         DetailedDescription = "Please verify the hostname and port."
                     };
                 }
+
                 return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
             }
             catch (Exception ex)

@@ -5,7 +5,6 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
@@ -29,9 +28,11 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
                                         .All()
                                         .With(e => e.Monitored = true)
                                         .With(e => e.ReleaseDate = DateTime.UtcNow.AddDays(-7))
+
                                         //Future
                                         .TheFirst(1)
                                         .With(e => e.ReleaseDate = DateTime.UtcNow.AddDays(7))
+
                                         //Future/TBA
                                         .TheNext(1)
                                         .With(e => e.ReleaseDate = null)
@@ -66,7 +67,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         [Test]
         public void should_be_able_to_monitor_albums_when_passed_in_artist()
         {
-            var albumsToMonitor = new List<string>{_albums.First().ForeignAlbumId};
+            var albumsToMonitor = new List<string> { _albums.First().ForeignAlbumId };
 
             Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions { Monitored = true, AlbumsToMonitor = albumsToMonitor });
 
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         [Test]
         public void should_be_able_to_monitor_all_albums()
         {
-            Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions{Monitor = MonitorTypes.All});
+            Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions { Monitor = MonitorTypes.All });
 
             Mocker.GetMock<IAlbumService>()
                   .Verify(v => v.UpdateMany(It.Is<List<Album>>(l => l.All(e => e.Monitored))));

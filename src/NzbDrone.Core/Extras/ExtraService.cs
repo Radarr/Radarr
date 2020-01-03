@@ -11,8 +11,8 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras
 {
@@ -81,7 +81,6 @@ namespace NzbDrone.Core.Extras
             foreach (var matchingFilename in matchingFilenames)
             {
                 // Filter out duplicate NFO files
-
                 if (matchingFilename.EndsWith(".nfo", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (hasNfo)

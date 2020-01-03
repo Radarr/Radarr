@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // The index exists but will be recreated as part of unique constraint
             Delete.Index().OnTable("Artists").OnColumn("ArtistMetadataId");
-            
+
             // Add a constraint to prevent any more duplicates
             Alter.Column("ArtistMetadataId").OnTable("Artists").AsInt32().Unique();
         }

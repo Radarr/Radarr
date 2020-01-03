@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
-using NzbDrone.Common.Cache;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Releases;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         private readonly IPreferredWordService _preferredWordServiceCalculator;
         private readonly Logger _logger;
         private readonly ICached<bool> _missingFilesCache;
-        
+
         public UpgradeDiskSpecification(UpgradableSpecification qualityUpgradableSpecification,
                                         IMediaFileService mediaFileService,
                                         ITrackService trackService,
@@ -40,10 +40,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
-
             foreach (var album in subject.Albums)
             {
-                var tracksMissing = _missingFilesCache.Get(album.Id.ToString(), () => _trackService.TracksWithoutFiles(album.Id).Any(),
+                var tracksMissing = _missingFilesCache.Get(album.Id.ToString(),
+                                                           () => _trackService.TracksWithoutFiles(album.Id).Any(),
                                                            TimeSpan.FromSeconds(30));
                 var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
@@ -60,7 +60,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                         return Decision.Reject("Existing files on disk is of equal or higher preference: {0}", currentQualities.ConcatToString());
                     }
                 }
-
             }
 
             return Decision.Accept();

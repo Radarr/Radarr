@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using NzbDrone.Core.MediaFiles;
 using Lidarr.Http;
 using Lidarr.Http.REST;
+using NzbDrone.Core.MediaFiles;
 
 namespace Lidarr.Api.V1.Tracks
 {
@@ -25,7 +25,6 @@ namespace Lidarr.Api.V1.Tracks
             {
                 artistId = (int)Request.Query.ArtistId;
             }
-
             else
             {
                 throw new BadRequestException("artistId is missing");

@@ -8,8 +8,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.TorrentRss;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteAlbum = new RemoteAlbum
             {
                 Artist = _artist,
-                Albums = new List<Album>{_album1},
+                Albums = new List<Album> { _album1 },
                 Release = new TorrentInfo
                 {
                     IndexerId = 1,
@@ -50,12 +50,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.GetMock<IIndexerFactory>()
                   .Setup(v => v.Get(1))
                   .Returns(_indexerDefinition);
-
         }
 
         private void GivenPublishDateFromToday(int days)
         {
-            (_remoteAlbum.Release).PublishDate = DateTime.Today.AddDays(days);
+            _remoteAlbum.Release.PublishDate = DateTime.Today.AddDays(days);
         }
 
         [Test]
@@ -108,7 +107,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPublishDateFromToday(days);
 
-            _indexerDefinition.Settings = new TorrentRssIndexerSettings{EarlyReleaseLimit = null};
+            _indexerDefinition.Settings = new TorrentRssIndexerSettings { EarlyReleaseLimit = null };
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }

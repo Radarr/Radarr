@@ -18,7 +18,11 @@ namespace NzbDrone.Common.Extensions
 
         public static object NullSafe(this object target)
         {
-            if (target != null) return target;
+            if (target != null)
+            {
+                return target;
+            }
+
             return "[NULL]";
         }
 
@@ -76,7 +80,9 @@ namespace NzbDrone.Common.Extensions
         public static string TrimEnd(this string text, string postfix)
         {
             if (text.EndsWith(postfix))
+            {
                 text = text.Substring(0, text.Length - postfix.Length);
+            }
 
             return text;
         }
@@ -105,12 +111,12 @@ namespace NzbDrone.Common.Extensions
         {
             return text.StartsWith(startsWith, StringComparison.InvariantCultureIgnoreCase);
         }
- 
+
         public static bool EqualsIgnoreCase(this string text, string equals)
         {
             return text.Equals(equals, StringComparison.InvariantCultureIgnoreCase);
         }
- 
+
         public static bool ContainsIgnoreCase(this string text, string contains)
         {
             return text.IndexOf(contains, StringComparison.InvariantCultureIgnoreCase) > -1;
@@ -129,7 +135,7 @@ namespace NzbDrone.Common.Extensions
         public static byte[] HexToByteArray(this string input)
         {
             return Enumerable.Range(0, input.Length)
-                             .Where(x => x%2 == 0)
+                             .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(input.Substring(x, 2), 16))
                              .ToArray();
         }
@@ -146,9 +152,9 @@ namespace NzbDrone.Common.Extensions
             var first = int.Parse(octalValue.Substring(0, 1));
             var second = int.Parse(octalValue.Substring(1, 1));
             var third = int.Parse(octalValue.Substring(2, 1));
-            var byteResult = (byte)((first << 6) | (second << 3) | (third));
+            var byteResult = (byte)((first << 6) | (second << 3) | third);
 
-            return Encoding.ASCII.GetString(new [] { byteResult });
+            return Encoding.ASCII.GetString(new[] { byteResult });
         }
 
         public static string SplitCamelCase(this string input)
@@ -193,15 +199,16 @@ namespace NzbDrone.Common.Extensions
                         indexDistance = Math.Abs(i - x);
                     }
                 }
-                sum += (1.0 - (double)indexDistance / weightDenom) * high;
+
+                sum += (1.0 - (indexDistance / weightDenom)) * high;
             }
+
             return sum;
         }
 
         public static double LevenshteinCoefficient(this string a, string b)
         {
-            return 1.0 - (double)a.LevenshteinDistance(b) / Math.Max(a.Length, b.Length);
+            return 1.0 - ((double)a.LevenshteinDistance(b) / Math.Max(a.Length, b.Length));
         }
-
     }
 }

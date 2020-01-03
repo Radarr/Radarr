@@ -7,7 +7,7 @@ using NzbDrone.Common.TPL;
 namespace NzbDrone.Common.Test.TPLTests
 {
     [TestFixture]
-    [Platform(Exclude="MacOsX")]
+    [Platform(Exclude = "MacOsX")]
     public class DebouncerFixture
     {
         public class Counter
@@ -19,7 +19,6 @@ namespace NzbDrone.Common.Test.TPLTests
                 Count++;
             }
         }
-
 
         [Test]
         [Retry(3)]
@@ -34,11 +33,9 @@ namespace NzbDrone.Common.Test.TPLTests
 
             counter.Count.Should().Be(0);
 
-
             Thread.Sleep(100);
 
             counter.Count.Should().Be(1);
-
         }
 
         [Test]
@@ -54,7 +51,6 @@ namespace NzbDrone.Common.Test.TPLTests
 
             counter.Count.Should().Be(0);
 
-
             Thread.Sleep(200);
 
             debounceFunction.Execute();
@@ -64,7 +60,6 @@ namespace NzbDrone.Common.Test.TPLTests
             Thread.Sleep(200);
 
             counter.Count.Should().Be(2);
-
         }
 
         [Test]

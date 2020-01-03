@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
@@ -31,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                 // min quality of all new tracks
                 var newMinQuality = localAlbumRelease.LocalTracks.Select(x => x.Quality).OrderBy(x => x, qualityComparer).First();
                 _logger.Debug("Min quality of new files: {0}", newMinQuality);
-                
+
                 // get minimum quality of existing release
                 var existingQualities = currentRelease.Tracks.Value.Where(x => x.TrackFileId != 0).Select(x => x.TrackFile.Value.Quality);
                 if (existingQualities.Any())

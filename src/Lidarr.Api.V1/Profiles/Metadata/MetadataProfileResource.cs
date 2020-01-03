@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Profiles.Metadata;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace Lidarr.Api.V1.Profiles.Metadata
 {
@@ -35,7 +35,10 @@ namespace Lidarr.Api.V1.Profiles.Metadata
     {
         public static MetadataProfileResource ToResource(this MetadataProfile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new MetadataProfileResource
             {
@@ -49,7 +52,10 @@ namespace Lidarr.Api.V1.Profiles.Metadata
 
         public static ProfilePrimaryAlbumTypeItemResource ToResource(this ProfilePrimaryAlbumTypeItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ProfilePrimaryAlbumTypeItemResource
             {
@@ -105,7 +111,10 @@ namespace Lidarr.Api.V1.Profiles.Metadata
 
         public static ProfilePrimaryAlbumTypeItem ToModel(this ProfilePrimaryAlbumTypeItemResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ProfilePrimaryAlbumTypeItem
             {
@@ -116,10 +125,13 @@ namespace Lidarr.Api.V1.Profiles.Metadata
 
         public static ProfileSecondaryAlbumTypeItem ToModel(this ProfileSecondaryAlbumTypeItemResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ProfileSecondaryAlbumTypeItem
-            { 
+            {
                 SecondaryAlbumType = (NzbDrone.Core.Music.SecondaryAlbumType)resource.AlbumType.Id,
                 Allowed = resource.Allowed
             };
@@ -127,7 +139,10 @@ namespace Lidarr.Api.V1.Profiles.Metadata
 
         public static ProfileReleaseStatusItem ToModel(this ProfileReleaseStatusItemResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new ProfileReleaseStatusItem
             {
@@ -136,7 +151,7 @@ namespace Lidarr.Api.V1.Profiles.Metadata
             };
         }
 
-    public static List<MetadataProfileResource> ToResource(this IEnumerable<MetadataProfile> models)
+        public static List<MetadataProfileResource> ToResource(this IEnumerable<MetadataProfile> models)
         {
             return models.Select(ToResource).ToList();
         }

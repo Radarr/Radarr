@@ -53,7 +53,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
                 {
                     result.AddIfNotNull(ParsePlaylistTrack(playlistTrack));
                 }
-                        
+
                 if (!playlistTracks.HasNextPage())
                 {
                     break;
@@ -97,9 +97,9 @@ namespace NzbDrone.Core.ImportLists.Spotify
                 if (Settings.AccessToken.IsNullOrWhiteSpace())
                 {
                     return new
-                        {
-                            playlists = new List<object>()
-                        };
+                    {
+                        playlists = new List<object>()
+                    };
                 }
 
                 Settings.Validate().Filter("AccessToken").ThrowOnError();
@@ -131,17 +131,18 @@ namespace NzbDrone.Core.ImportLists.Spotify
                         }
 
                         return new
+                        {
+                            options = new
                             {
-                                options = new {
-                                    user = profile.DisplayName,
-                                    playlists = playlists.OrderBy(p => p.Name)
+                                user = profile.DisplayName,
+                                playlists = playlists.OrderBy(p => p.Name)
                                     .Select(p => new
-                                        {
-                                            id = p.Id,
-                                            name = p.Name
-                                        })
-                                }
-                            };
+                                    {
+                                        id = p.Id,
+                                        name = p.Name
+                                    })
+                            }
+                        };
                     }
                     catch (Exception ex)
                     {

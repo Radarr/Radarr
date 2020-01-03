@@ -19,7 +19,6 @@ namespace NzbDrone.Common.Test
     [TestFixture]
     public class ProcessProviderFixture : TestBase<ProcessProvider>
     {
-
         [SetUp]
         public void Setup()
         {
@@ -45,7 +44,6 @@ namespace NzbDrone.Common.Test
                 {
                     TestLogger.Warn(ex, "{0} when killing process", ex.Message);
                 }
-                
             });
         }
 
@@ -87,7 +85,7 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        [Platform(Exclude="MacOsX")]
+        [Platform(Exclude = "MacOsX")]
         [Retry(3)]
         public void exists_should_find_running_process()
         {
@@ -105,7 +103,7 @@ namespace NzbDrone.Common.Test
         }
 
         [Test]
-        [Platform(Exclude="MacOsX")]
+        [Platform(Exclude = "MacOsX")]
         [Retry(3)]
         public void kill_all_should_kill_all_process_with_name()
         {
@@ -135,12 +133,13 @@ namespace NzbDrone.Common.Test
             }
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, DummyApp.DUMMY_PROCCESS_NAME + suffix);
-            var process = Subject.Start(path, onOutputDataReceived: (string data) => {
-                    if (data.StartsWith("Dummy process. ID:"))
-                    {
-                        processStarted.Set();
-                    }
-                });
+            var process = Subject.Start(path, onOutputDataReceived: (string data) =>
+            {
+                if (data.StartsWith("Dummy process. ID:"))
+                {
+                    processStarted.Set();
+                }
+            });
 
             if (!processStarted.Wait(5000))
             {

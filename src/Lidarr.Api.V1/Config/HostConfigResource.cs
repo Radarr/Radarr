@@ -1,9 +1,9 @@
+using Lidarr.Http.REST;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Security;
 using NzbDrone.Core.Update;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Config
 {
@@ -56,6 +56,7 @@ namespace Lidarr.Api.V1.Config
                 LaunchBrowser = model.LaunchBrowser,
                 AuthenticationMethod = model.AuthenticationMethod,
                 AnalyticsEnabled = model.AnalyticsEnabled,
+
                 //Username
                 //Password
                 LogLevel = model.LogLevel,

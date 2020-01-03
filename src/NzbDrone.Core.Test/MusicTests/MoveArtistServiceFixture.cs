@@ -5,10 +5,10 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
+using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
@@ -89,13 +89,15 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_use_destination_path()
         {
-
             Subject.Execute(_command);
 
             Mocker.GetMock<IDiskTransferService>()
                 .Verify(
-                    v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move,
-                        It.IsAny<bool>()), Times.Once());
+                    v => v.TransferFolder(_command.SourcePath,
+                                          _command.DestinationPath,
+                                          TransferMode.Move,
+                                          It.IsAny<bool>()),
+                    Times.Once());
 
             Mocker.GetMock<IBuildFileNames>()
                 .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
@@ -107,7 +109,6 @@ namespace NzbDrone.Core.Test.MusicTests
             var artistFolder = "Artist";
             var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, artistFolder);
 
-
             Mocker.GetMock<IBuildFileNames>()
                 .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
                 .Returns(artistFolder);
@@ -116,8 +117,11 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IDiskTransferService>()
                 .Verify(
-                    v => v.TransferFolder(_bulkCommand.Artist.First().SourcePath, expectedPath, TransferMode.Move,
-                        It.IsAny<bool>()), Times.Once());
+                    v => v.TransferFolder(_bulkCommand.Artist.First().SourcePath,
+                                          expectedPath,
+                                          TransferMode.Move,
+                                          It.IsAny<bool>()),
+                    Times.Once());
         }
 
         [Test]
@@ -127,17 +131,17 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Setup(s => s.FolderExists(It.IsAny<string>()))
                 .Returns(false);
 
-
             Subject.Execute(_command);
 
             Mocker.GetMock<IDiskTransferService>()
                 .Verify(
-                    v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move,
+                    v => v.TransferFolder(_command.SourcePath,
+                        _command.DestinationPath,
+                        TransferMode.Move,
                         It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IBuildFileNames>()
                 .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
-
         }
     }
 }

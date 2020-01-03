@@ -104,7 +104,7 @@ namespace NzbDrone.Core.MediaFiles
 
             LogInaccessiblePathError(path);
             _eventAggregator.PublishEvent(new TrackImportFailedEvent(null, null, true, downloadClientItem));
-            
+
             return new List<ImportResult>();
         }
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
@@ -142,7 +141,6 @@ namespace NzbDrone.Core.Indexers.Headphones
                             Id = int.Parse(xmlSubcat.Attribute("id").Value),
                             Name = xmlSubcat.Attribute("name").Value,
                             Description = xmlSubcat.Attribute("description") != null ? xmlSubcat.Attribute("description").Value : string.Empty
-
                         });
                     }
 

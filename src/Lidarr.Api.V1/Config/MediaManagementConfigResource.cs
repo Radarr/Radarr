@@ -1,6 +1,6 @@
+using Lidarr.Http.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
-using Lidarr.Http.REST;
 using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Config

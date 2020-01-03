@@ -4,12 +4,12 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Parser;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
@@ -51,7 +51,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public void UpdateAlbumCache(int albumId)
         {
-
             var updateCacheItems = _cache.Values.Where(x => x.RemoteAlbum != null && x.RemoteAlbum.Albums.Any(a => a.Id == albumId)).ToList();
 
             foreach (var item in updateCacheItems)
@@ -135,7 +134,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var grabbedEvent = historyItems.FirstOrDefault(v => v.EventType == HistoryEventType.Grabbed);
                     trackedDownload.Indexer = grabbedEvent?.Data["indexer"];
 
-
                     if (parsedAlbumInfo == null ||
                         trackedDownload.RemoteAlbum == null ||
                         trackedDownload.RemoteAlbum.Artist == null ||
@@ -159,7 +157,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         {
                             parsedAlbumInfo =
                                 Parser.Parser.ParseAlbumTitleWithSearchCriteria(firstHistoryItem.SourceTitle,
-                                    historyArtist, historyAlbums);
+                                    historyArtist,
+                                    historyAlbums);
 
                             if (parsedAlbumInfo != null)
                             {
@@ -214,15 +213,15 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
                 _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} LidarrStage={4} Album='{5}' OutputPath={6}.",
-                    downloadItem.DownloadClient, downloadItem.Title,
-                    downloadItem.Status, downloadItem.CanBeRemoved ? "" :
-                                         downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
+                    downloadItem.DownloadClient,
+                    downloadItem.Title,
+                    downloadItem.Status,
+                    downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
                     trackedDownload.State,
                     trackedDownload.RemoteAlbum?.ParsedAlbumInfo,
                     downloadItem.OutputPath);
             }
         }
-
 
         private static TrackedDownloadStage GetStateFromHistory(NzbDrone.Core.History.History history)
         {
@@ -251,4 +250,3 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         }
     }
 }
-

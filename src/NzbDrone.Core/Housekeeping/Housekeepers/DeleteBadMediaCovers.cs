@@ -33,7 +33,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            if (!_configService.CleanupMetadataImages) return;
+            if (!_configService.CleanupMetadataImages)
+            {
+                return;
+            }
 
             var artists = _artistService.GetAllArtists();
             var imageExtensions = new List<string> { ".jpg", ".png", ".gif" };
@@ -61,7 +64,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 }
             }
 
-
             _configService.CleanupMetadataImages = false;
         }
 
@@ -77,7 +79,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
             using (var imageStream = _diskProvider.OpenReadStream(path))
             {
-                if (imageStream.Length < buffer.Length) return false;
+                if (imageStream.Length < buffer.Length)
+                {
+                    return false;
+                }
+
                 imageStream.Read(buffer, 0, buffer.Length);
             }
 

@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -5,9 +8,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.IPTorrents;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using System;
-using System.Linq;
-using FluentAssertions;
 
 namespace NzbDrone.Core.Test.IndexerTests.IPTorrentsTests
 {
@@ -18,10 +18,10 @@ namespace NzbDrone.Core.Test.IndexerTests.IPTorrentsTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
-                                    {
-                                        Name = "IPTorrents",
-                                        Settings = new IPTorrentsSettings() {  BaseUrl = "http://fake.com/" }
-                                    };
+            {
+                Name = "IPTorrents",
+                Settings = new IPTorrentsSettings() { BaseUrl = "http://fake.com/" }
+            };
         }
 
         private void GivenOldFeedFormat()
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.IndexerTests.IPTorrentsTests
             Subject.Definition = new IndexerDefinition()
             {
                 Name = "IPTorrents",
-                Settings = new IPTorrentsSettings() {  BaseUrl = "https://iptorrents.com/torrents/rss?u=snip;tp=snip;3;80;93;37;download" }
+                Settings = new IPTorrentsSettings() { BaseUrl = "https://iptorrents.com/torrents/rss?u=snip;tp=snip;3;80;93;37;download" }
             };
         }
 
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.IndexerTests.IPTorrentsTests
             Subject.Definition = new IndexerDefinition()
             {
                 Name = "IPTorrents",
-                Settings = new IPTorrentsSettings() {  BaseUrl = "https://iptorrents.com/t.rss?u=USERID;tp=APIKEY;3;80;93;37;download" }
+                Settings = new IPTorrentsSettings() { BaseUrl = "https://iptorrents.com/t.rss?u=USERID;tp=APIKEY;3;80;93;37;download" }
             };
         }
 
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.IndexerTests.IPTorrentsTests
             Subject.Definition = new IndexerDefinition()
             {
                 Name = "IPTorrents",
-                Settings = new IPTorrentsSettings() {  BaseUrl = "https://iptorrents.com/t.rss?u=USERID;tp=APIKEY;3;80;93;37" }
+                Settings = new IPTorrentsSettings() { BaseUrl = "https://iptorrents.com/t.rss?u=USERID;tp=APIKEY;3;80;93;37" }
             };
         }
 

@@ -34,7 +34,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         [JsonProperty(PropertyName = "seeding_time_limit")] // Per torrent seeding time limit (-2 = use global, -1 = unlimited)
         public long SeedingTimeLimit { get; set; } = -2;
-
     }
 
     public class QBittorrentTorrentProperties

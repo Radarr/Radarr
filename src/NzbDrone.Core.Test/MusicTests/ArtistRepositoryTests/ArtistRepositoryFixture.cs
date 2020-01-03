@@ -1,15 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Profiles.Metadata;
-using NzbDrone.Common.Extensions;
-using System;
-using System.Data.SQLite;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
@@ -37,9 +37,9 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             var metadata = Builder<ArtistMetadata>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Name = name)
-                .With(a=> a.OldForeignArtistIds = oldIds)
+                .With(a => a.OldForeignArtistIds = oldIds)
                 .BuildNew();
-            
+
             var artist = Builder<Artist>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
@@ -77,7 +77,6 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 ReleaseStatuses = new List<ProfileReleaseStatusItem>()
             };
 
-
             Mocker.Resolve<QualityProfileRepository>().Insert(profile);
             Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
@@ -87,10 +86,8 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
             Subject.Insert(artist);
 
-
             StoredModel.QualityProfile.Should().NotBeNull();
             StoredModel.MetadataProfile.Should().NotBeNull();
-
         }
 
         [TestCase("The Black Eyed Peas")]
@@ -135,11 +132,11 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             AddArtist(name, "4d7928cd-7ed2-4282-8c29-c0c9f966f1bd");
 
             _artistRepo.All().Should().HaveCount(4);
-            
+
             var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
             artist.Should().BeNull();
         }
-        
+
         [Test]
         public void should_throw_sql_exception_adding_duplicate_artist()
         {
@@ -148,7 +145,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 .With(a => a.Id = 0)
                 .With(a => a.Name = name)
                 .BuildNew();
-            
+
             var artist1 = Builder<Artist>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)

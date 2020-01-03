@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using NzbDrone.Core.ImportLists.Exclusions;
-using Lidarr.Http;
 using FluentValidation;
+using Lidarr.Http;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.Validation;
 
 namespace Lidarr.Api.V1.ImportLists

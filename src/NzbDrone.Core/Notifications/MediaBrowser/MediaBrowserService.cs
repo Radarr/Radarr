@@ -3,8 +3,8 @@ using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Core.Rest;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Rest;
 
 namespace NzbDrone.Core.Notifications.Emby
 {

@@ -95,6 +95,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
                 }
             }
+
             return new HealthCheck(GetType());
         }
 
@@ -102,7 +103,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
         {
             if (typeof(TrackImportFailedEvent).IsAssignableFrom(message.GetType()))
             {
-                var failureMessage = (TrackImportFailedEvent) message;
+                var failureMessage = (TrackImportFailedEvent)message;
 
                 // if we can see the file exists but the import failed then likely a permissions issue
                 if (failureMessage.TrackInfo != null)
@@ -155,7 +156,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     {
                         return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions-error");
                     }
-                
+
                     // if it's a remote client/docker, likely missing path mappings
                     if (_osInfo.IsDocker)
                     {

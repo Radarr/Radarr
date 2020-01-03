@@ -2,17 +2,12 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
     [TestFixture]
     public class MusicParserFixture : CoreTest
     {
-
         //[TestCase("___▲▲▲___")]
         //[TestCase("Add N to (X)")]
         //[TestCase("Animal Collective")]

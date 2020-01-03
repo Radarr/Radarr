@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.MusicTests
     public class ShouldRefreshArtistFixture : TestBase<ShouldRefreshArtist>
     {
         private Artist _artist;
-        
+
         [SetUp]
         public void Setup()
         {

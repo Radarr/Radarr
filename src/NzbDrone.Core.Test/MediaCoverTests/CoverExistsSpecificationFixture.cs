@@ -1,10 +1,10 @@
+using System;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Test.Framework;
-using System;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
 {
@@ -54,7 +54,6 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.AlreadyExists(givenDate, 999, "c:\\file.exe").Should().BeFalse();
         }
 
-
         [Test]
         public void should_return_true_if_file_exists_and_date_header_is_null_but_has_length_header()
         {
@@ -70,6 +69,5 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Subject.AlreadyExists(DateTime.Now, 1000, "c:\\file.exe").Should().BeTrue();
         }
-
     }
 }

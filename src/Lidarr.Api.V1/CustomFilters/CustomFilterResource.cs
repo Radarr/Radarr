@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.REST;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.CustomFilters;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.CustomFilters
 {
@@ -17,28 +17,34 @@ namespace Lidarr.Api.V1.CustomFilters
     {
         public static CustomFilterResource ToResource(this CustomFilter model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new CustomFilterResource
-                   {
-                       Id = model.Id,
-                       Type = model.Type,
-                       Label = model.Label,
-                       Filters = Json.Deserialize<List<dynamic>>(model.Filters)
-                   };
+            {
+                Id = model.Id,
+                Type = model.Type,
+                Label = model.Label,
+                Filters = Json.Deserialize<List<dynamic>>(model.Filters)
+            };
         }
 
         public static CustomFilter ToModel(this CustomFilterResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new CustomFilter
-                   {
-                       Id = resource.Id,
-                       Type = resource.Type,
-                       Label = resource.Label,
-                       Filters = Json.ToJson(resource.Filters)
-                   };
+            {
+                Id = resource.Id,
+                Type = resource.Type,
+                Label = resource.Label,
+                Filters = Json.ToJson(resource.Filters)
+            };
         }
 
         public static List<CustomFilterResource> ToResource(this IEnumerable<CustomFilter> filters)

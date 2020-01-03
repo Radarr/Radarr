@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
     public class TorrentRssIndexerRequestGenerator : IIndexerRequestGenerator
     {
         public TorrentRssIndexerSettings Settings { get; set; }
-        
+
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();

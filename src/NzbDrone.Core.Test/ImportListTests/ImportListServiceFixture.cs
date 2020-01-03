@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.SetConstant<IImportListRepository>(repo);
 
             var existingImportLists = Builder<ImportListDefinition>.CreateNew().BuildNew();
-            existingImportLists.ConfigContract = typeof (LidarrListsSettings).Name;
+            existingImportLists.ConfigContract = typeof(LidarrListsSettings).Name;
 
             repo.Insert(existingImportLists);
 

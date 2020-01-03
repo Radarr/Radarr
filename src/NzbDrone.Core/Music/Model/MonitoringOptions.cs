@@ -1,5 +1,5 @@
-using NzbDrone.Core.Datastore;
 using System.Collections.Generic;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Music
 {
@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Music
         {
             AlbumsToMonitor = new List<string>();
         }
-        
+
         public MonitorTypes Monitor { get; set; }
         public List<string> AlbumsToMonitor { get; set; }
         public bool Monitored { get; set; }

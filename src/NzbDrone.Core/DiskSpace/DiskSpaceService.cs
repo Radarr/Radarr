@@ -73,11 +73,11 @@ namespace NzbDrone.Core.DiskSpace
                     }
 
                     diskSpace = new DiskSpace
-                                {
-                                    Path = path,
-                                    FreeSpace = freeSpace.Value,
-                                    TotalSpace = totalSpace.Value
-                                };
+                    {
+                        Path = path,
+                        FreeSpace = freeSpace.Value,
+                        TotalSpace = totalSpace.Value
+                    };
 
                     diskSpace.Label = _diskProvider.GetVolumeLabel(path);
                 }

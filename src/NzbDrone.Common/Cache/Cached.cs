@@ -6,7 +6,6 @@ using NzbDrone.Common.EnsureThat;
 
 namespace NzbDrone.Common.Cache
 {
-
     public class Cached<T> : ICached<T>
     {
         private class CacheItem
@@ -114,6 +113,5 @@ namespace NzbDrone.Common.Cache
                 return _store.Values.Select(c => c.Object).ToList();
             }
         }
-
     }
 }

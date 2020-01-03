@@ -26,11 +26,11 @@ namespace NzbDrone.Core.Test.Datastore.PagingSpecExtensionsTests
         public void should_convert_ascending_to_asc()
         {
             var pagingSpec = new PagingSpec<Album>
-                {
-                    Page = 1,
-                    PageSize = 10,
-                    SortDirection = SortDirection.Ascending,
-                    SortKey = "ReleaseDate"
+            {
+                Page = 1,
+                PageSize = 10,
+                SortDirection = SortDirection.Ascending,
+                SortKey = "ReleaseDate"
             };
 
             pagingSpec.ToSortDirection().Should().Be(Marr.Data.QGen.SortDirection.Asc);

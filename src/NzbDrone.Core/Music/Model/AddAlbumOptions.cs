@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Music
         }
 
         public AlbumAddType AddType { get; set; }
-        public bool SearchForNewAlbum { get; set;  }
+        public bool SearchForNewAlbum { get; set; }
     }
 
     public enum AlbumAddType

@@ -8,9 +8,9 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download
@@ -44,11 +44,9 @@ namespace NzbDrone.Core.Test.Download
                     .With(c => c.RemoteAlbum = remoteAlbum)
                     .Build();
 
-
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.Find(_trackedDownload.DownloadItem.DownloadId, HistoryEventType.Grabbed))
                   .Returns(_grabHistory);
-
         }
 
         private void GivenNoGrabbedHistory()
@@ -130,7 +128,6 @@ namespace NzbDrone.Core.Test.Download
 
             _trackedDownload.State.Should().NotBe(TrackedDownloadStage.DownloadFailed);
         }
-
 
         private void AssertDownloadFailed()
         {

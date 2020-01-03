@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Queue
 {

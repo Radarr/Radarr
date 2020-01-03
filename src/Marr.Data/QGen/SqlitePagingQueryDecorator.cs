@@ -45,7 +45,7 @@ namespace Marr.Data.QGen
             _innerQuery.BuildJoinClauses(sql);
             _innerQuery.BuildWhereClause(sql);
             _innerQuery.BuildOrderClause(sql);
-            sql.AppendLine(String.Format(" LIMIT {0},{1}", _skip, _take));
+            sql.AppendLine(string.Format(" LIMIT {0},{1}", _skip, _take));
 
             return sql.ToString();
         }

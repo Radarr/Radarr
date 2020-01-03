@@ -6,8 +6,8 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.ImportLists;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {

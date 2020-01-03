@@ -4,10 +4,10 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
     public class OnReleaseImportFixture : CoreTest<Notifications.Xbmc.Xbmc>
     {
         private AlbumDownloadMessage _albumDownloadMessage;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -33,9 +33,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             Subject.Definition = new NotificationDefinition();
             Subject.Definition.Settings = new XbmcSettings
-                                          {
-                                              UpdateLibrary = true
-                                          };
+            {
+                UpdateLibrary = true
+            };
         }
 
         private void GivenOldFiles()
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                                                             .ToList();
 
             Subject.Definition.Settings = new XbmcSettings
-                                          {
-                                              UpdateLibrary = true,
-                                              CleanLibrary = true
-                                          };
+            {
+                UpdateLibrary = true,
+                CleanLibrary = true
+            };
         }
 
         [Test]

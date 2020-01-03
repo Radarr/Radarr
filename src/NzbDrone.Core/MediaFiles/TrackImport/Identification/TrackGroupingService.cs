@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
-using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
@@ -21,8 +20,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
     {
         private static readonly Logger _logger = NzbDroneLogger.GetLogger(typeof(TrackGroupingService));
 
-        private static readonly List<string> multiDiscMarkers = new List<string> { @"dis[ck]", @"cd" };
-        private static readonly string multiDiscPatternFormat = @"^(?<root>.*%s[\W_]*)\d";
+        private static readonly List<string> MultiDiscMarkers = new List<string> { @"dis[ck]", @"cd" };
+        private static readonly string MultiDiscPatternFormat = @"^(?<root>.*%s[\W_]*)\d";
         private static readonly List<string> VariousArtistTitles = new List<string> { "", "various artists", "various", "va", "unknown" };
 
         public List<LocalAlbumRelease> GroupTracks(List<LocalTrack> localTracks)
@@ -61,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             }
 
             // Finally fall back to grouping by Album/Artist pair
-            foreach (var group in unprocessed2.GroupBy(x => new { x.FileTrackInfo.ArtistTitle, x.FileTrackInfo.AlbumTitle} ))
+            foreach (var group in unprocessed2.GroupBy(x => new { x.FileTrackInfo.ArtistTitle, x.FileTrackInfo.AlbumTitle }))
             {
                 _logger.Debug("Falling back to grouping by album+artist tag");
                 releases.Add(new LocalAlbumRelease(group.ToList()));
@@ -79,7 +78,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             var totalCount = values.Count();
 
             // merge groups that are close to the most common value
-            foreach(var group in groups.Skip(1))
+            foreach (var group in groups.Skip(1))
             {
                 if (mostCommonEntry.IsNotNullOrWhiteSpace() &&
                     group.Key.IsNotNullOrWhiteSpace() &&
@@ -94,7 +93,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             if (distinctCount > 1 &&
                 (distinctCount / (double)totalCount > threshold ||
-                 mostCommonCount / (double) totalCount < 1 - threshold))
+                 mostCommonCount / (double)totalCount < 1 - threshold))
             {
                 return false;
             }
@@ -108,11 +107,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             // artist/album tags must be the same for 75% of tracks, with no more than 25% having different values
             // (except in the case of various artists)
-            
             const double albumTagThreshold = 0.25;
             const double artistTagThreshold = 0.25;
             const double tagFuzz = 0.9;
-            
+
             // check that any Album/Release MBID is unique
             if (tracks.Select(x => x.FileTrackInfo.AlbumMBId).Distinct().Where(x => x.IsNotNullOrWhiteSpace()).Count() > 1 ||
                 tracks.Select(x => x.FileTrackInfo.ReleaseMBId).Distinct().Where(x => x.IsNotNullOrWhiteSpace()).Count() > 1)
@@ -120,7 +118,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 _logger.Trace("LooksLikeSingleRelease: MBIDs are not unique");
                 return false;
             }
-            
+
             // check that there's a common album tag.
             var albumTags = tracks.Select(x => x.FileTrackInfo.AlbumTitle);
             if (!HasCommonEntry(albumTags, albumTagThreshold, tagFuzz))
@@ -178,7 +176,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             // we only bother doing this for the immediate parent directory.
             var trackFolders = tracks.Select(x => Tuple.Create(x, Path.GetDirectoryName(x.Path)));
-            
+
             var distinctFolders = trackFolders.Select(x => x.Item2).Distinct().ToList();
             distinctFolders.Sort();
 
@@ -215,10 +213,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 output.AddRange(currentTracks);
 
                 // check if the start of another multi disc match
-                foreach (var marker in multiDiscMarkers)
+                foreach (var marker in MultiDiscMarkers)
                 {
                     // check if this is the first of a multi-disc set of folders
-                    var pattern = multiDiscPatternFormat.Replace("%s", marker);
+                    var pattern = MultiDiscPatternFormat.Replace("%s", marker);
                     var multiStartRegex = new Regex(pattern, RegexOptions.IgnoreCase);
 
                     var match = multiStartRegex.Match(folder);

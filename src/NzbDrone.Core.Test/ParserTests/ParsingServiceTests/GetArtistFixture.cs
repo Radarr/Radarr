@@ -1,8 +1,8 @@
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 {

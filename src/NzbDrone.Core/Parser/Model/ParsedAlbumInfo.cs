@@ -1,9 +1,4 @@
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -25,12 +20,10 @@ namespace NzbDrone.Core.Parser.Model
         {
             string albumString = "[Unknown Album]";
 
-            
-            if (AlbumTitle != null )
+            if (AlbumTitle != null)
             {
                 albumString = string.Format("{0}", AlbumTitle);
             }
-            
 
             return string.Format("{0} - {1} {2}", ArtistName, albumString, Quality);
         }

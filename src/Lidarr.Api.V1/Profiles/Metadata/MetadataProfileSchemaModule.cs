@@ -1,12 +1,11 @@
 using System.Linq;
-using NzbDrone.Core.Profiles.Metadata;
 using Lidarr.Http;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace Lidarr.Api.V1.Profiles.Metadata
 {
     public class MetadataProfileSchemaModule : LidarrRestModule<MetadataProfileResource>
     {
-
         public MetadataProfileSchemaModule()
             : base("/metadataprofile/schema")
         {
@@ -28,23 +27,23 @@ namespace Lidarr.Api.V1.Profiles.Metadata
                 .ToList();
 
             var primTypes = orderedPrimTypes
-                .Select(v => new ProfilePrimaryAlbumTypeItem {PrimaryAlbumType = v, Allowed = false})
+                .Select(v => new ProfilePrimaryAlbumTypeItem { PrimaryAlbumType = v, Allowed = false })
                 .ToList();
 
             var secTypes = orderedSecTypes
-                .Select(v => new ProfileSecondaryAlbumTypeItem {SecondaryAlbumType = v, Allowed = false})
+                .Select(v => new ProfileSecondaryAlbumTypeItem { SecondaryAlbumType = v, Allowed = false })
                 .ToList();
 
             var relStatuses = orderedRelStatuses
-                .Select(v => new ProfileReleaseStatusItem {ReleaseStatus = v, Allowed = false})
+                .Select(v => new ProfileReleaseStatusItem { ReleaseStatus = v, Allowed = false })
                 .ToList();
 
             var profile = new MetadataProfile
-                          {
-                              PrimaryAlbumTypes = primTypes,
-                              SecondaryAlbumTypes = secTypes,
-                              ReleaseStatuses = relStatuses
-                          };
+            {
+                PrimaryAlbumTypes = primTypes,
+                SecondaryAlbumTypes = secTypes,
+                ReleaseStatuses = relStatuses
+            };
 
             return profile.ToResource();
         }

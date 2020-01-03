@@ -8,7 +8,8 @@ namespace NzbDrone.Core.Notifications.Gotify
         {
         }
 
-        public InvalidResponseException(string message) : base(message)
+        public InvalidResponseException(string message)
+            : base(message)
         {
         }
     }

@@ -91,7 +91,8 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareAlbumCount(DownloadDecision x, DownloadDecision y)
         {
-            var discographyCompare = CompareBy(x.RemoteAlbum, y.RemoteAlbum,
+            var discographyCompare = CompareBy(x.RemoteAlbum,
+                y.RemoteAlbum,
                 remoteAlbum => remoteAlbum.ParsedAlbumInfo.Discography);
 
             if (discographyCompare != 0)
@@ -162,7 +163,6 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareSize(DownloadDecision x, DownloadDecision y)
         {
             // TODO: Is smaller better? Smaller for usenet could mean no par2 files.
-
             return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Release.Size.Round(200.Megabytes()));
         }
     }

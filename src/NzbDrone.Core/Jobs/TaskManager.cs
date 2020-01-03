@@ -8,13 +8,13 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Update.Commands;
 using NzbDrone.Core.Music.Commands;
+using NzbDrone.Core.Update.Commands;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -60,12 +60,12 @@ namespace NzbDrone.Core.Jobs
         {
             var defaultTasks = new[]
                 {
-                    new ScheduledTask{ Interval = 1, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
-                    new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
-                    new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshArtistCommand).FullName},
-                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
+                    new ScheduledTask { Interval = 1, TypeName = typeof(CheckForFinishedDownloadCommand).FullName },
+                    new ScheduledTask { Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName },
+                    new ScheduledTask { Interval = 6 * 60, TypeName = typeof(ApplicationUpdateCommand).FullName },
+                    new ScheduledTask { Interval = 6 * 60, TypeName = typeof(CheckHealthCommand).FullName },
+                    new ScheduledTask { Interval = 24 * 60, TypeName = typeof(RefreshArtistCommand).FullName },
+                    new ScheduledTask { Interval = 24 * 60, TypeName = typeof(HousekeepingCommand).FullName },
 
                     new ScheduledTask
                     {
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Jobs
                     },
 
                     new ScheduledTask
-                    { 
+                    {
                         Interval = GetRssSyncInterval(),
                         TypeName = typeof(RssSyncCommand).FullName
                     }

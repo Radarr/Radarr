@@ -35,12 +35,12 @@ namespace NzbDrone.Core.Datastore
             var connectionBuilder = new SQLiteConnectionStringBuilder();
 
             connectionBuilder.DataSource = dbPath;
-            connectionBuilder.CacheSize = (int)-10000;
+            connectionBuilder.CacheSize = -10000;
             connectionBuilder.DateTimeKind = DateTimeKind.Utc;
             connectionBuilder.JournalMode = OsInfo.IsOsx ? SQLiteJournalModeEnum.Truncate : SQLiteJournalModeEnum.Wal;
             connectionBuilder.Pooling = true;
             connectionBuilder.Version = 3;
-            
+
             if (OsInfo.IsOsx)
             {
                 connectionBuilder.Add("Full FSync", true);

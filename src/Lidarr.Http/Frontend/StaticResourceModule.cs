@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.Frontend.Mappers;
 using Nancy;
 using NLog;
-using Lidarr.Http.Frontend.Mappers;
 
 namespace Lidarr.Http.Frontend
 {
@@ -11,7 +11,6 @@ namespace Lidarr.Http.Frontend
     {
         private readonly IEnumerable<IMapHttpRequestsToDisk> _requestMappers;
         private readonly Logger _logger;
-
 
         public StaticResourceModule(IEnumerable<IMapHttpRequestsToDisk> requestMappers, Logger logger)
         {

@@ -1,11 +1,11 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -32,7 +32,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(type);
         }
 
-        [Test, TestCaseSource(nameof(IsUpgradeTestCases))]
+        [Test]
+        [TestCaseSource(nameof(IsUpgradeTestCases))]
         public void IsUpgradeTest(Quality current, int currentVersion, Quality newQuality, int newVersion, Quality cutoff, bool expected)
         {
             GivenAutoDownloadPropers(ProperDownloadTypes.PreferAndUpgrade);

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Indexers;
-using System.Linq;
-using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.Test.Download.TrackedDownloads
 {
@@ -22,13 +22,15 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             Mocker.GetMock<IHistoryService>()
                 .Setup(s => s.FindByDownloadId(It.Is<string>(sr => sr == "35238")))
-                .Returns(new List<History.History>(){
-                 new History.History(){
+                .Returns(new List<History.History>()
+                {
+                 new History.History()
+                {
                      DownloadId = "35238",
                      SourceTitle = "Audio Artist - Audio Album [2018 - FLAC]",
                      ArtistId = 5,
                      AlbumId = 4,
-                 }
+                }
                 });
         }
 

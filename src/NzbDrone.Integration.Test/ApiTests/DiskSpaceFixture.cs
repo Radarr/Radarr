@@ -1,7 +1,7 @@
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
 using Lidarr.Api.V1.DiskSpace;
+using NUnit.Framework;
 using NzbDrone.Integration.Test.Client;
 
 namespace NzbDrone.Integration.Test.ApiTests

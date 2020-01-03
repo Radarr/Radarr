@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http;
+using Lidarr.Http.Extensions;
+using Lidarr.Http.Validation;
 using NzbDrone.Common;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
@@ -8,9 +11,6 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.ProgressMessaging;
 using NzbDrone.SignalR;
-using Lidarr.Http;
-using Lidarr.Http.Extensions;
-using Lidarr.Http.Validation;
 
 namespace Lidarr.Api.V1.Commands
 {
@@ -48,7 +48,7 @@ namespace Lidarr.Api.V1.Commands
         private int StartCommand(CommandResource commandResource)
         {
             var commandType =
-                _serviceFactory.GetImplementations(typeof (Command))
+                _serviceFactory.GetImplementations(typeof(Command))
                                .Single(c => c.Name.Replace("Command", "")
                                              .Equals(commandResource.Name, StringComparison.InvariantCultureIgnoreCase));
 

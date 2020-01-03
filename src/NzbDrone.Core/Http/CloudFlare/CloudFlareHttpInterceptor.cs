@@ -7,10 +7,9 @@ namespace NzbDrone.Core.Http.CloudFlare
 {
     public class CloudFlareHttpInterceptor : IHttpRequestInterceptor
     {
-        private readonly Logger _logger;
-
         private const string _cloudFlareChallengeScript = "cdn-cgi/scripts/cf.challenge.js";
         private static readonly Regex _cloudFlareRegex = new Regex(@"data-ray=""(?<Ray>[\w-_]+)"".*?data-sitekey=""(?<SiteKey>[\w-_]+)"".*?data-stoken=""(?<SecretToken>[\w-_]+)""", RegexOptions.Compiled);
+        private readonly Logger _logger;
 
         public CloudFlareHttpInterceptor(Logger logger)
         {

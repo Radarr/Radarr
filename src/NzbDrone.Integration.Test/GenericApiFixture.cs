@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Integration.Test.Client;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test
@@ -18,7 +16,6 @@ namespace NzbDrone.Integration.Test
         [TestCase("")]
         public void should_get_json_with_accept_header(string header)
         {
-
             var request = new RestRequest("system/status")
             {
                 RequestFormat = DataFormat.None

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Music;
 
 namespace Lidarr.Api.V1.Artist
 {

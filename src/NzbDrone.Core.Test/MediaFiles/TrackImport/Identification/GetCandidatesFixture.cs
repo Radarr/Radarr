@@ -1,42 +1,39 @@
-using NUnit.Framework;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using FluentAssertions;
-using NzbDrone.Core.Test.Framework;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Music;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using NzbDrone.Core.Parser;
-using NzbDrone.Common.Serializer;
+using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
+using NUnit.Framework;
+using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
     [TestFixture]
     public class GetCandidatesFixture : CoreTest<IdentificationService>
     {
-
-        private ArtistMetadata artist;
+        private ArtistMetadata _artist;
 
         [SetUp]
         public void Setup()
         {
-            artist = Builder<ArtistMetadata>
+            _artist = Builder<ArtistMetadata>
                 .CreateNew()
                 .With(x => x.Name = "artist")
                 .Build();
         }
-        
+
         private List<Track> GivenTracks(int count)
         {
-             return Builder<Track>
-                .CreateListOfSize(count)
-                .All()
-                .With(x => x.ArtistMetadata = artist)
-                .Build()
-                .ToList();
+            return Builder<Track>
+               .CreateListOfSize(count)
+               .All()
+               .With(x => x.ArtistMetadata = _artist)
+               .Build()
+               .ToList();
         }
 
         private ParsedTrackInfo GivenParsedTrackInfo(Track track, AlbumRelease release)
@@ -76,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var album = Builder<Album>
                 .CreateNew()
                 .With(x => x.Title = title)
-                .With(x => x.ArtistMetadata = artist)
+                .With(x => x.ArtistMetadata = _artist)
                 .Build();
 
             var media = Builder<Medium>
@@ -110,11 +107,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         {
             Mocker.GetMock<IFingerprintingService>()
                 .Setup(x => x.Lookup(It.IsAny<List<LocalTrack>>(), It.IsAny<double>()))
-                .Callback((List<LocalTrack> x, double thres) => {
-                        foreach(var track in x) {
-                            track.AcoustIdResults = null;
-                        }
-                    });
+                .Callback((List<LocalTrack> x, double thres) =>
+                {
+                    foreach (var track in x)
+                    {
+                        track.AcoustIdResults = null;
+                    }
+                });
 
             Mocker.GetMock<IReleaseService>()
                 .Setup(x => x.GetReleasesByRecordingIds(It.IsAny<List<string>>()))
@@ -134,8 +133,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localAlbumRelease = new LocalAlbumRelease(localTracks);
 
             Subject.GetCandidatesFromTags(localAlbumRelease, null, null, release, false).Should().BeEquivalentTo(
-                new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) }
-                );
+                new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) });
         }
 
         [Test]
@@ -152,8 +150,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                   .Returns(release);
 
             Subject.GetCandidatesFromTags(localAlbumRelease, null, null, null, false).Should().BeEquivalentTo(
-                new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) }
-                );
+                new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) });
         }
     }
 }

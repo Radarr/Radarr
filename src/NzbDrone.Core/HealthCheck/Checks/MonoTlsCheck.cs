@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using NLog;
 using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;

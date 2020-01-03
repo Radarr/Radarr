@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("da", "dan"),
                                                                new IsoLanguage("nl", "nld"),
                                                                new IsoLanguage("ja", "jpn"),
+
 //                                                             new IsoLanguage("", ""),
 //                                                             new IsoLanguage("", ""),
                                                                new IsoLanguage("ru", "rus"),
@@ -25,6 +26,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("fi", "fin"),
                                                                new IsoLanguage("tr", "tur"),
                                                                new IsoLanguage("pt", "por"),
+
 //                                                             new IsoLanguage("nl", "nld"),
                                                                new IsoLanguage("el", "ell"),
                                                                new IsoLanguage("ko", "kor"),

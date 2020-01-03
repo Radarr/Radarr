@@ -4,6 +4,8 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using NLog;
+using NzbDrone.Common;
+using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -11,11 +13,9 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Music;
-using NzbDrone.Common.Crypto;
-using NzbDrone.Common;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             var result = new List<ManualImportItem>();
 
-            foreach(var group in groupedItems)
+            foreach (var group in groupedItems)
             {
                 _logger.Debug("UpdateItems, group key: {0}", group.Key);
 

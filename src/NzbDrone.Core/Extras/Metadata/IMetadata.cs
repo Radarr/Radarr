@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Extras.Metadata
 {

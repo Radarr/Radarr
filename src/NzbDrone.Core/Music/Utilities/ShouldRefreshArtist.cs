@@ -1,6 +1,6 @@
-using NLog;
 using System;
 using System.Linq;
+using NLog;
 
 namespace NzbDrone.Core.Music
 {

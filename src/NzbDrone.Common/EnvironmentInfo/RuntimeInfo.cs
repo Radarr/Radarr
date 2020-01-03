@@ -21,7 +21,6 @@ namespace NzbDrone.Common.EnvironmentInfo
         public RuntimeInfo(IServiceProvider serviceProvider, Logger logger)
         {
             _logger = logger;
-            
 
             IsWindowsService = !IsUserInteractive &&
                                OsInfo.IsWindows &&
@@ -35,7 +34,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             {
                 ExecutingApplication = entry.Location;
                 IsWindowsTray = OsInfo.IsWindows && entry.ManifestModule.Name == $"{ProcessProvider.LIDARR_PROCESS_NAME}.exe";
-
             }
         }
 
@@ -48,7 +46,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             // An official build running outside of the testing environment. (Analytics configurable)
             IsProduction = !IsTesting && officialBuild;
-            
+
             // An unofficial build running outside of the testing environment. (Analytics enabled)
             IsDevelopment = !IsTesting && !officialBuild && !InternalIsDebug();
         }
@@ -127,7 +125,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
-
         public bool RestartPending { get; set; }
         public string ExecutingApplication { get; }
 
@@ -135,46 +132,83 @@ namespace NzbDrone.Common.EnvironmentInfo
         public static bool IsProduction { get; }
         public static bool IsDevelopment { get; }
 
-
         private static bool InternalIsTesting()
         {
             try
             {
                 var lowerProcessName = Process.GetCurrentProcess().ProcessName.ToLower();
 
-                if (lowerProcessName.Contains("vshost")) return true;
-                if (lowerProcessName.Contains("nunit")) return true;
-                if (lowerProcessName.Contains("jetbrain")) return true;
-                if (lowerProcessName.Contains("resharper")) return true;
+                if (lowerProcessName.Contains("vshost"))
+                {
+                    return true;
+                }
+
+                if (lowerProcessName.Contains("nunit"))
+                {
+                    return true;
+                }
+
+                if (lowerProcessName.Contains("jetbrain"))
+                {
+                    return true;
+                }
+
+                if (lowerProcessName.Contains("resharper"))
+                {
+                    return true;
+                }
             }
             catch
             {
-
             }
 
             try
             {
                 var currentAssemblyLocation = typeof(RuntimeInfo).Assembly.Location;
-                if (currentAssemblyLocation.ToLower().Contains("_output")) return true;
-                if (currentAssemblyLocation.ToLower().Contains("_tests")) return true;
+                if (currentAssemblyLocation.ToLower().Contains("_output"))
+                {
+                    return true;
+                }
+
+                if (currentAssemblyLocation.ToLower().Contains("_tests"))
+                {
+                    return true;
+                }
             }
             catch
             {
-
             }
 
             var lowerCurrentDir = Directory.GetCurrentDirectory().ToLower();
-            if (lowerCurrentDir.Contains("vsts")) return true;
-            if (lowerCurrentDir.Contains("buildagent")) return true;
-            if (lowerCurrentDir.Contains("_output")) return true;
-            if (lowerCurrentDir.Contains("_tests")) return true;
+            if (lowerCurrentDir.Contains("vsts"))
+            {
+                return true;
+            }
+
+            if (lowerCurrentDir.Contains("buildagent"))
+            {
+                return true;
+            }
+
+            if (lowerCurrentDir.Contains("_output"))
+            {
+                return true;
+            }
+
+            if (lowerCurrentDir.Contains("_tests"))
+            {
+                return true;
+            }
 
             return false;
         }
 
         private static bool InternalIsDebug()
         {
-            if (BuildInfo.IsDebug || Debugger.IsAttached) return true;
+            if (BuildInfo.IsDebug || Debugger.IsAttached)
+            {
+                return true;
+            }
 
             return false;
         }
@@ -182,7 +216,10 @@ namespace NzbDrone.Common.EnvironmentInfo
         private static bool InternalIsOfficialBuild()
         {
             //Official builds will never have such a high revision
-            if (BuildInfo.Version.Major >= 10 || BuildInfo.Version.Revision > 10000) return false;
+            if (BuildInfo.Version.Major >= 10 || BuildInfo.Version.Revision > 10000)
+            {
+                return false;
+            }
 
             return true;
         }

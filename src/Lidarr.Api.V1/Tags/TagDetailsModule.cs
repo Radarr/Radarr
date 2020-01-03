@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Tags;
 using Lidarr.Http;
+using NzbDrone.Core.Tags;
 
 namespace Lidarr.Api.V1.Tags
 {
@@ -24,7 +24,7 @@ namespace Lidarr.Api.V1.Tags
 
         private List<TagDetailsResource> GetAll()
         {
-            var tags =  _tagService.Details().ToResource();
+            var tags = _tagService.Details().ToResource();
 
             return tags;
         }

@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Music
                                                          .Concat(remoteChildren.SelectMany(x => x.OldForeignTrackIds)));
         }
 
-        protected override Tuple<Track, List<Track> > GetMatchingExistingChildren(List<Track> existingChildren, Track remote)
+        protected override Tuple<Track, List<Track>> GetMatchingExistingChildren(List<Track> existingChildren, Track remote)
         {
             var existingChild = existingChildren.SingleOrDefault(x => x.ForeignTrackId == remote.ForeignTrackId);
             var mergeChildren = existingChildren.Where(x => remote.OldForeignTrackIds.Contains(x.ForeignTrackId)).ToList();
@@ -120,4 +120,3 @@ namespace NzbDrone.Core.Music
         }
     }
 }
-

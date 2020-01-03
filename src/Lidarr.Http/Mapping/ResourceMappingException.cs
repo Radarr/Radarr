@@ -9,7 +9,6 @@ namespace Lidarr.Http.Mapping
         public ResourceMappingException(IEnumerable<string> error)
             : base(Environment.NewLine + string.Join(Environment.NewLine, error.OrderBy(c => c)))
         {
-
         }
     }
 }

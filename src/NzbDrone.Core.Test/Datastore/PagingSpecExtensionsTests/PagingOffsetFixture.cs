@@ -15,15 +15,14 @@ namespace NzbDrone.Core.Test.Datastore.PagingSpecExtensionsTests
         public void should_calcuate_expected_offset(int page, int pageSize, int expected)
         {
             var pagingSpec = new PagingSpec<Album>
-                {
-                    Page = page,
-                    PageSize = pageSize,
-                    SortDirection = SortDirection.Ascending,
-                    SortKey = "ReleaseDate"
-                };
+            {
+                Page = page,
+                PageSize = pageSize,
+                SortDirection = SortDirection.Ascending,
+                SortKey = "ReleaseDate"
+            };
 
             pagingSpec.PagingOffset().Should().Be(expected);
         }
-
     }
 }

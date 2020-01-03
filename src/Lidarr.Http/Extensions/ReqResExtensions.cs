@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Nancy;
-using Nancy.Configuration;
 using Nancy.Responses;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
@@ -15,7 +14,8 @@ namespace Lidarr.Http.Extensions
 
         public static readonly string LastModified = BuildInfo.BuildDateTime.ToString("r");
 
-        public static T FromJson<T>(this Stream body) where T : class, new()
+        public static T FromJson<T>(this Stream body)
+            where T : class, new()
         {
             return FromJson<T>(body, typeof(T));
         }

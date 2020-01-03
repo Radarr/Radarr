@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
@@ -6,16 +9,12 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Marr.Data;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -66,7 +65,6 @@ namespace NzbDrone.Core.Download.Pending
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
-
 
         public void Add(DownloadDecision decision, PendingReleaseReason reason)
         {
@@ -288,7 +286,10 @@ namespace NzbDrone.Core.Download.Pending
                 var artist = artistMap.GetValueOrDefault(release.ArtistId);
 
                 // Just in case the artist was removed, but wasn't cleaned up yet (housekeeper will clean it up)
-                if (artist == null) return null;
+                if (artist == null)
+                {
+                    return null;
+                }
 
                 List<Album> albums;
 

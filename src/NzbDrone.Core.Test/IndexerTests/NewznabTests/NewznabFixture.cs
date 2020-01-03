@@ -21,15 +21,15 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Id = 5,
+                Name = "Newznab",
+                Settings = new NewznabSettings()
                 {
-                    Id = 5,
-                    Name = "Newznab",
-                    Settings = new NewznabSettings()
-                        {
-                            BaseUrl = "http://indexer.local/",
-                            Categories = new int[] { 1 }
-                        }
-                };
+                    BaseUrl = "http://indexer.local/",
+                    Categories = new int[] { 1 }
+                }
+            };
 
             _caps = new NewznabCapabilities();
             Mocker.GetMock<INewznabCapabilitiesProvider>()
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             Mocker.GetMock<IHttpClient>()
                 .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
                 .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
-            
+
             var releases = Subject.FetchRecent();
 
             releases.Should().HaveCount(100);
@@ -93,5 +93,5 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             ExceptionVerification.ExpectedWarns(1);
         }
-}
+    }
 }

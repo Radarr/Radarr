@@ -10,7 +10,6 @@ using NzbDrone.Common.Serializer;
 namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     // API https://github.com/qbittorrent/qBittorrent/wiki/Web-API-Documentation
-
     public class QBittorrentProxyV2 : IQBittorrentProxy
     {
         private readonly IHttpClient _httpClient;
@@ -91,6 +90,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 request.AddQueryParam("category", settings.MusicCategory);
             }
+
             var response = ProcessRequest<List<QBittorrentTorrent>>(request, settings);
 
             return response;
@@ -238,7 +238,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
                 throw;
             }
-
         }
 
         public void PauseTorrent(string hash, QBittorrentSettings settings)
@@ -329,6 +328,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 {
                     throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.");
                 }
+
                 return;
             }
 
@@ -366,7 +366,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     throw new DownloadClientUnavailableException("Failed to connect to qBittorrent, please check your settings.", ex);
                 }
 
-                if (response.Content != "Ok.") // returns "Fails." on bad login
+                // returns "Fails." on bad login
+                if (response.Content != "Ok.")
                 {
                     _logger.Debug("qbitTorrent authentication failed.");
                     throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.");

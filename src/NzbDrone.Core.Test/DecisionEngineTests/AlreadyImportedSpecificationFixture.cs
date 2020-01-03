@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {

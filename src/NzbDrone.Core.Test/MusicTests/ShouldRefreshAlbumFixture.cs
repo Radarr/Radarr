@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -12,12 +11,12 @@ namespace NzbDrone.Core.Test.MusicTests
     public class ShouldRefreshAlbumFixture : TestBase<ShouldRefreshAlbum>
     {
         private Album _album;
-        
+
         [SetUp]
         public void Setup()
         {
             _album = Builder<Album>.CreateNew()
-                                   .With(e=>e.ReleaseDate = DateTime.Today.AddDays(-100))
+                                   .With(e => e.ReleaseDate = DateTime.Today.AddDays(-100))
                                    .Build();
         }
 

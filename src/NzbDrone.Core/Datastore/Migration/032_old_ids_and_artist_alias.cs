@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Alter.Table("ArtistMetadata").AddColumn("Aliases").AsString().WithDefaultValue("[]");
-            
+
             Alter.Table("ArtistMetadata").AddColumn("OldForeignArtistIds").AsString().WithDefaultValue("[]");
             Alter.Table("Albums").AddColumn("OldForeignAlbumIds").AsString().WithDefaultValue("[]");
             Alter.Table("AlbumReleases").AddColumn("OldForeignReleaseIds").AsString().WithDefaultValue("[]");

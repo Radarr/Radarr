@@ -1,15 +1,15 @@
+using System;
 using System.Linq;
+using Lidarr.Http.Extensions.Pipelines;
+using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Diagnostics;
+using Nancy.Responses.Negotiation;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Instrumentation;
-using Lidarr.Http.Extensions.Pipelines;
 using TinyIoC;
-using Nancy;
-using System;
-using Nancy.Responses.Negotiation;
 
 namespace Lidarr.Http
 {
@@ -57,7 +57,8 @@ namespace Lidarr.Http
             get
             {
                 // We don't support Xml Serialization atm
-                return NancyInternalConfiguration.WithOverrides(x => {
+                return NancyInternalConfiguration.WithOverrides(x =>
+                {
                     x.ResponseProcessors.Remove(typeof(ViewProcessor));
                     x.ResponseProcessors.Remove(typeof(XmlProcessor));
                 });

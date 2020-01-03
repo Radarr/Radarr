@@ -18,10 +18,12 @@ namespace NzbDrone.Common.Http
         HttpResponse Execute(HttpRequest request);
         void DownloadFile(string url, string fileName);
         HttpResponse Get(HttpRequest request);
-        HttpResponse<T> Get<T>(HttpRequest request) where T : new();
+        HttpResponse<T> Get<T>(HttpRequest request)
+            where T : new();
         HttpResponse Head(HttpRequest request);
         HttpResponse Post(HttpRequest request);
-        HttpResponse<T> Post<T>(HttpRequest request) where T : new();
+        HttpResponse<T> Post<T>(HttpRequest request)
+            where T : new();
     }
 
     public class HttpClient : IHttpClient
@@ -264,7 +266,8 @@ namespace NzbDrone.Common.Http
             return Execute(request);
         }
 
-        public HttpResponse<T> Get<T>(HttpRequest request) where T : new()
+        public HttpResponse<T> Get<T>(HttpRequest request)
+            where T : new()
         {
             var response = Get(request);
             CheckResponseContentType(response);
@@ -283,7 +286,8 @@ namespace NzbDrone.Common.Http
             return Execute(request);
         }
 
-        public HttpResponse<T> Post<T>(HttpRequest request) where T : new()
+        public HttpResponse<T> Post<T>(HttpRequest request)
+            where T : new()
         {
             var response = Post(request);
             CheckResponseContentType(response);

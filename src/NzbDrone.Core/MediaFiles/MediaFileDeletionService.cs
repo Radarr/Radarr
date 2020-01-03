@@ -108,7 +108,10 @@ namespace NzbDrone.Core.MediaFiles
 
                 foreach (var s in allArtists)
                 {
-                    if (s.Id == artist.Id) continue;
+                    if (s.Id == artist.Id)
+                    {
+                        continue;
+                    }
 
                     if (artist.Path.IsParentPath(s.Path))
                     {
@@ -122,6 +125,7 @@ namespace NzbDrone.Core.MediaFiles
                         return;
                     }
                 }
+
                 if (_diskProvider.FolderExists(message.Artist.Path))
                 {
                     _recycleBinProvider.DeleteFolder(message.Artist.Path);

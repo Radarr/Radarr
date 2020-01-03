@@ -7,9 +7,9 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -18,21 +18,20 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private TrackFile _trackFile;
         private LocalTrack _localTrack;
-        private string rootPath = @"C:\Test\Music\Artist".AsOsAgnostic();
+        private string _rootPath = @"C:\Test\Music\Artist".AsOsAgnostic();
 
         [SetUp]
         public void Setup()
         {
             _localTrack = new LocalTrack();
             _localTrack.Artist = new Artist
-                                   {
-                                       Path = rootPath
-                                   };
+            {
+                Path = _rootPath
+            };
 
             _trackFile = Builder<TrackFile>
                 .CreateNew()
                 .Build();
-
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
@@ -56,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                                                                 new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
+                                                                                    Path = Path.Combine(_rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();
@@ -71,7 +70,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                                                                 new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
+                                                                                    Path = Path.Combine(_rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();
@@ -85,14 +84,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                                                                                 new TrackFile
                                                                                 {
                                                                                     Id = 1,
-                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e01.avi"),
+                                                                                    Path = Path.Combine(_rootPath, @"Season 01\30.rock.s01e01.avi"),
                                                                                 }))
                                                      .TheNext(1)
                                                      .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
                                                                                 new TrackFile
                                                                                 {
                                                                                     Id = 2,
-                                                                                    Path = Path.Combine(rootPath, @"Season 01\30.rock.s01e02.avi"),
+                                                                                    Path = Path.Combine(_rootPath, @"Season 01\30.rock.s01e02.avi"),
                                                                                 }))
                                                      .Build()
                                                      .ToList();

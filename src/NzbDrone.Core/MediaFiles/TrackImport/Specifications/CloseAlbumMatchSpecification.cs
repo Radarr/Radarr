@@ -8,9 +8,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
     public class CloseAlbumMatchSpecification : IImportDecisionEngineSpecification<LocalAlbumRelease>
     {
-        private readonly Logger _logger;
         private const double _albumThreshold = 0.20;
         private const double _trackThreshold = 0.40;
+        private readonly Logger _logger;
 
         public CloseAlbumMatchSpecification(Logger logger)
         {
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         {
             double dist;
             string reasons;
-            
+
             // strict when a new download
             if (localAlbumRelease.NewDownload)
             {
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                 if (dist > _albumThreshold)
                 {
                     _logger.Debug($"Album match is not close enough: {dist} vs {_albumThreshold} {reasons}. Skipping {localAlbumRelease}");
-                    return Decision.Reject($"Album match is not close enough: {1-dist:P1} vs {1-_albumThreshold:P0} {reasons}");
+                    return Decision.Reject($"Album match is not close enough: {1 - dist:P1} vs {1 - _albumThreshold:P0} {reasons}");
                 }
 
                 var worstTrackMatch = localAlbumRelease.LocalTracks.Where(x => x.Distance != null).OrderByDescending(x => x.Distance.NormalizedDistance()).FirstOrDefault();
@@ -46,10 +46,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                     if (maxTrackDist > _trackThreshold)
                     {
                         _logger.Debug($"Worst track match: {maxTrackDist} vs {_trackThreshold} {trackReasons}. Skipping {localAlbumRelease}");
-                        return Decision.Reject($"Worst track match: {1-maxTrackDist:P1} vs {1-_trackThreshold:P0} {trackReasons}");
+                        return Decision.Reject($"Worst track match: {1 - maxTrackDist:P1} vs {1 - _trackThreshold:P0} {trackReasons}");
                     }
                 }
             }
+
             // otherwise importing existing files in library
             else
             {
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                 if (dist > _albumThreshold)
                 {
                     _logger.Debug($"Album match is not close enough: {dist} vs {_albumThreshold} {reasons}. Skipping {localAlbumRelease}");
-                    return Decision.Reject($"Album match is not close enough: {1-dist:P1} vs {1-_albumThreshold:P0} {reasons}");
+                    return Decision.Reject($"Album match is not close enough: {1 - dist:P1} vs {1 - _albumThreshold:P0} {reasons}");
                 }
             }
 

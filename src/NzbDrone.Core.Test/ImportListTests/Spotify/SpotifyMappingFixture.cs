@@ -16,6 +16,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.ImportListTests
 {
     [TestFixture]
+
     // the base import list class is abstract so use the followed artists one
     public class SpotifyMappingFixture : CoreTest<SpotifyFollowedArtists>
     {
@@ -145,7 +146,6 @@ namespace NzbDrone.Core.Test.ImportListTests
                 AlbumSpotifyId = "id",
                 Artist = "Adele"
             };
-
 
             Subject.MapAlbumItem(data);
             data.Should().NotBeNull();
@@ -298,7 +298,6 @@ namespace NzbDrone.Core.Test.ImportListTests
             Mocker.GetMock<IHttpClient>()
                 .Setup(x => x.Get<AlbumResource>(It.IsAny<HttpRequest>()))
                 .Throws(new Exception("Dummy exception"));
-
 
             var result = Subject.MapSpotifyReleases(data);
             result.Should().NotBeNull();

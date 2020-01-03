@@ -1,15 +1,9 @@
-using FizzWare.NBuilder;
+using System.Collections.Generic;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
-using Moq;
 
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
@@ -23,16 +17,16 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         {
             _albums = new List<Album>();
             _albums.Add(new Album
-                {
-                    Title = "ANThology",
-                    CleanTitle = "anthology",
-                });
+            {
+                Title = "ANThology",
+                CleanTitle = "anthology",
+            });
 
             _albums.Add(new Album
-                {
-                    Title = "+",
-                    CleanTitle = "",
-                });
+            {
+                Title = "+",
+                CleanTitle = "",
+            });
 
             Mocker.GetMock<IAlbumRepository>()
                 .Setup(s => s.GetAlbumsByArtistMetadataId(It.IsAny<int>()))
@@ -42,10 +36,10 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         private void GivenSimilarAlbum()
         {
             _albums.Add(new Album
-                {
-                    Title = "ANThology2",
-                    CleanTitle = "anthology2",
-                });
+            {
+                Title = "ANThology2",
+                CleanTitle = "anthology2",
+            });
         }
 
         [TestCase("ANTholog", "ANThology")]

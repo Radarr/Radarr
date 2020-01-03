@@ -1,15 +1,12 @@
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Test.Framework;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using FizzWare.NBuilder;
 using NzbDrone.Core.ImportLists;
-using NzbDrone.Core.Update.Commands;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music.Commands;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Update.Commands;
 
 namespace NzbDrone.Core.Test.Messaging.Commands
 {

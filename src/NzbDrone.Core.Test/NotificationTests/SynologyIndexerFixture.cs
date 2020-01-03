@@ -1,13 +1,13 @@
 using System.Collections.Generic;
+using System.IO;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Synology;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
-using System.IO;
 
 namespace NzbDrone.Core.Test.NotificationTests
 {
@@ -16,14 +16,14 @@ namespace NzbDrone.Core.Test.NotificationTests
     {
         private Artist _artist;
         private AlbumDownloadMessage _upgrade;
-        private string rootPath = @"C:\Test\".AsOsAgnostic();
+        private string _rootPath = @"C:\Test\".AsOsAgnostic();
 
         [SetUp]
         public void SetUp()
         {
             _artist = new Artist()
             {
-                Path = rootPath,
+                Path = _rootPath,
             };
 
             _upgrade = new AlbumDownloadMessage()
@@ -34,20 +34,19 @@ namespace NzbDrone.Core.Test.NotificationTests
                 {
                     new TrackFile
                     {
-                        Path = Path.Combine(rootPath, "file1.S01E01E02.mkv")
+                        Path = Path.Combine(_rootPath, "file1.S01E01E02.mkv")
                     }
-                    
                 },
 
                 OldFiles = new List<TrackFile>
                 {
                     new TrackFile
                     {
-                        Path = Path.Combine(rootPath, "file1.S01E01.mkv")
+                        Path = Path.Combine(_rootPath, "file1.S01E01.mkv")
                     },
                     new TrackFile
                     {
-                        Path = Path.Combine(rootPath, "file1.S01E02.mkv")
+                        Path = Path.Combine(_rootPath, "file1.S01E02.mkv")
                     }
                 }
             };
@@ -56,7 +55,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             {
                 Settings = new SynologyIndexerSettings
                 {
-                   UpdateLibrary = true
+                    UpdateLibrary = true
                 }
             };
         }

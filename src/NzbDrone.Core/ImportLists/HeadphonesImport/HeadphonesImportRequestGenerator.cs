@@ -29,6 +29,5 @@ namespace NzbDrone.Core.ImportLists.HeadphonesImport
         {
             yield return new ImportListRequest(string.Format("{0}/api?cmd=getIndex&apikey={1}", Settings.BaseUrl.TrimEnd('/'), Settings.ApiKey), HttpAccept.Json);
         }
-
     }
 }

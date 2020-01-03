@@ -8,7 +8,8 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class WantedFixture : IntegrationTest
     {
-        [Test, Order(0)]
+        [Test]
+        [Order(0)]
         public void missing_should_be_empty()
         {
             EnsureNoArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
@@ -18,7 +19,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().BeEmpty();
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void missing_should_have_monitored_items()
         {
             EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm", true);
@@ -28,7 +30,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().NotBeEmpty();
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void missing_should_have_artist()
         {
             EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm", true);
@@ -39,7 +42,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.First().Artist.ArtistName.Should().Be("Alien Ant Farm");
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void cutoff_should_have_monitored_items()
         {
             EnsureProfileCutoff(1, "Lossless");
@@ -51,7 +55,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().NotBeEmpty();
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void missing_should_not_have_unmonitored_items()
         {
             EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm", false);
@@ -61,7 +66,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().BeEmpty();
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void cutoff_should_not_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, "Lossless");
@@ -73,7 +79,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().BeEmpty();
         }
 
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public void cutoff_should_have_artist()
         {
             EnsureProfileCutoff(1, "Lossless");
@@ -86,7 +93,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.First().Artist.ArtistName.Should().Be("Alien Ant Farm");
         }
 
-        [Test, Order(2)]
+        [Test]
+        [Order(2)]
         public void missing_should_have_unmonitored_items()
         {
             EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm", false);
@@ -96,7 +104,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Records.Should().NotBeEmpty();
         }
 
-        [Test, Order(2)]
+        [Test]
+        [Order(2)]
         public void cutoff_should_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, "Lossless");

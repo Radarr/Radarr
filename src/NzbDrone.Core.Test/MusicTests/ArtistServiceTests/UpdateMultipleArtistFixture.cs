@@ -5,7 +5,6 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
@@ -51,7 +50,6 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
             Mocker.GetMock<IBuildArtistPaths>()
                 .Setup(s => s.BuildPath(It.IsAny<Artist>(), false))
                 .Returns<Artist, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Name));
-
 
             Subject.UpdateArtists(_artists, false).ForEach(s => s.Path.Should().StartWith(newRoot));
         }

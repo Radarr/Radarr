@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Nancy.Bootstrapper;
 using Lidarr.Http;
+using Nancy.Bootstrapper;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Host

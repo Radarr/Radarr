@@ -97,6 +97,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                       .MediaContainer
                       .Version;
         }
+
         public List<PlexPreference> Preferences(PlexServerSettings settings)
         {
             var request = BuildRequest(":/prefs", HttpMethod.GET, settings);
@@ -187,6 +188,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 {
                     throw new PlexAuthenticationException("Unauthorized - AuthToken is invalid");
                 }
+
                 throw new PlexException("Unable to connect to Plex Media Server. Status Code: {0}", ex.Response.StatusCode);
             }
             catch (WebException ex)

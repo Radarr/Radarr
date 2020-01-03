@@ -84,7 +84,7 @@ namespace NzbDrone.Common.Test.Http
         public void should_combine_relative_path(string basePath, string relativePath, string expected)
         {
             var newUri = new HttpUri(basePath).CombinePath(relativePath);
-            
+
             newUri.FullUri.Should().Be(expected);
         }
     }

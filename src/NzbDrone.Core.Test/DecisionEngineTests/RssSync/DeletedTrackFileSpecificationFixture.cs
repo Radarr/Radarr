@@ -2,21 +2,19 @@ using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Common.Disk;
-using Moq;
 using NzbDrone.Test.Common;
-using System.IO;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -31,27 +29,28 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [SetUp]
         public void Setup()
         {
-            _firstFile = 
-                new TrackFile{
-                Id = 1,
-                Path = "/My.Artist.S01E01.mp3",
-                Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
-                DateAdded = DateTime.Now,
-                AlbumId = 1
-                
-            };
-            _secondFile = 
-                new TrackFile{
-                Id = 2,
-                Path = "/My.Artist.S01E02.mp3",
-                Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
-                DateAdded = DateTime.Now,
-                AlbumId = 2
-               
-            };
+            _firstFile =
+                new TrackFile
+                {
+                    Id = 1,
+                    Path = "/My.Artist.S01E01.mp3",
+                    Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
+                    DateAdded = DateTime.Now,
+                    AlbumId = 1
+                };
+            _secondFile =
+                new TrackFile
+                {
+                    Id = 2,
+                    Path = "/My.Artist.S01E02.mp3",
+                    Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
+                    DateAdded = DateTime.Now,
+                    AlbumId = 2
+                };
 
             var singleAlbumList = new List<Album> { new Album { Id = 1 } };
-            var doubleAlbumList = new List<Album> {
+            var doubleAlbumList = new List<Album>
+            {
                 new Album { Id = 1 },
                 new Album { Id = 2 }
             };

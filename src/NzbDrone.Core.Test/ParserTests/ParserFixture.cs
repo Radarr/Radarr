@@ -9,11 +9,10 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
-
     [TestFixture]
     public class ParserFixture : CoreTest
     {
-        Artist _artist = new Artist();
+        private Artist _artist = new Artist();
         private List<Album> _albums = new List<Album> { new Album() };
 
         [SetUp]
@@ -101,14 +100,18 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "VA", "The Best 101 Love Ballads")]
         [TestCase("ATCQ - The Love Movement 1998 2CD 192kbps  RIP", "ATCQ", "The Love Movement")]
+
         //[TestCase("A Tribe Called Quest - The Love Movement 1998 2CD [192kbps] RIP", "A Tribe Called Quest", "The Love Movement")]
         [TestCase("Maula - Jism 2 [2012] Mp3 - 192Kbps [Extended]- TK", "Maula", "Jism 2")]
         [TestCase("VA - Complete Clubland - The Ultimate Ride Of Your Lfe [2014][MP3][192 kbps]", "VA", "Complete Clubland - The Ultimate Ride Of Your Lfe")]
         [TestCase("Complete Clubland - The Ultimate Ride Of Your Lfe [2014][MP3](192kbps)", "Complete Clubland", "The Ultimate Ride Of Your Lfe")]
+
         //[TestCase("The Ultimate Ride Of Your Lfe [192 KBPS][2014][MP3]", "", "The Ultimate Ride Of Your Lfe")]
         [TestCase("Gary Clark Jr - Live North America 2016 (2017) MP3 192kbps", "Gary Clark Jr", "Live North America 2016")]
+
         //[TestCase("Beyoncé Lemonade [320] 2016 Beyonce Lemonade [320] 2016", "Beyoncé", "Lemonade")]
         [TestCase("Childish Gambino - Awaken, My Love Album 2016 mp3 320 Kbps", "Childish Gambino", "Awaken, My Love Album")]
+
         //[TestCase("Maluma – Felices Los 4 MP3 320 Kbps 2017 Download", "Maluma", "Felices Los 4")]
         [TestCase("Ricardo Arjona - APNEA (Single 2014) (320 kbps)", "Ricardo Arjona", "APNEA")]
         [TestCase("Kehlani - SweetSexySavage (Deluxe Edition) (2017) 320", "Kehlani", "SweetSexySavage")]
@@ -121,6 +124,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Clean Bandit - New Eyes [2014] [Mp3-256]-V3nom [GLT]", "Clean Bandit", "New Eyes")]
         [TestCase("Armin van Buuren - A State Of Trance 810 (20.04.2017) 256 kbps", "Armin van Buuren", "A State Of Trance 810")]
         [TestCase("PJ Harvey - Let England Shake [mp3-256-2011][trfkad]", "PJ Harvey", "Let England Shake")]
+
         //[TestCase("X-Men Soundtracks (2006-2014) AAC, 256 kbps", "", "")]
         //[TestCase("Walk the Line Soundtrack (2005) [AAC, 256 kbps]", "", "Walk the Line Soundtrack")]
         //[TestCase("Emeli Sande Next To Me (512 Kbps)", "Emeli", "Next To Me")]
@@ -133,9 +137,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("John Coltrane - Kulu Se Mama (1965) [EAC-FLAC]", "John Coltrane", "Kulu Se Mama")]
         [TestCase("The Rolling Stones - The Very Best Of '75-'94 (1995) {FLAC}", "The Rolling Stones", "The Very Best Of '75-'94")]
         [TestCase("Migos-No_Label_II-CD-FLAC-2014-FORSAKEN", "Migos", "No Label II")]
+
         //[TestCase("ADELE 25 CD FLAC 2015 PERFECT", "Adele", "25")]
         [TestCase("A.I. - Sex & Robots [2007/MP3/V0(VBR)]", "A I", "Sex & Robots")]
         [TestCase("Jay-Z - 4:44 (Deluxe Edition) (2017) 320", "Jay-Z", "444")]
+
         //[TestCase("Roberta Flack 2006 - The Very Best of", "Roberta Flack", "The Very Best of")]
         [TestCase("VA - NOW Thats What I Call Music 96 (2017) [Mp3~Kbps]", "VA", "NOW Thats What I Call Music 96")]
         [TestCase("Queen - The Ultimate Best Of Queen(2011)[mp3]", "Queen", "The Ultimate Best Of Queen")]
@@ -154,12 +160,14 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Brother Ali-The Undisputed Truth-2007-FTD", "Brother Ali", "The Undisputed Truth")]
 
         // ruTracker
-        [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill","From The Trees")]
+        [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill", "From The Trees")]
         [TestCase("(Folk Rock / Pop) Aztec Two-Step - Naked - 2017, MP3, 320 kbps", "Aztec Two-Step", "Naked")]
         [TestCase("(Zeuhl / Progressive Rock) [WEB] Dai Kaht - Dai Kaht - 2017, FLAC (tracks), lossless", "Dai Kaht", "Dai Kaht")]
+
         //[TestCase("(Industrial Folk) Bumblebee(Shmely, AntiVirus) - Discography, 23 albums - 1998-2011, FLAC(image + .cue), lossless")]
         //[TestCase("(Heavy Metal) Sergey Mavrin(Mavrik) - Discography(14 CD) [1998-2010], FLAC(image + .cue), lossless")]
         [TestCase("(Heavy Metal) [CD] Black Obelisk - Discography - 1991-2015 (36 releases, 32 CDs), FLAC(image + .cue), lossless", "Black Obelisk", "Discography", true)]
+
         //[TestCase("(R'n'B / Soul) Moyton - One of the Sta(2014) + Ocean(2014), MP3, 320 kbps", "Moyton", "")]
         [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "Discography", true)]
         [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "Discography", true)]
@@ -194,8 +202,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Led Zeppelin - Studio Discography 1969-1982 (10 albums)(flac)", 1969, 1982)]
         [TestCase("Minor Threat - Complete Discography [1989] [Anthology]", 0, 1989)]
         [TestCase("Caetano Veloso Discografia Completa MP3 @256", 0, 0)]
-        public void should_parse_year_or_year_range_from_discography(string releaseTitle, int startyear,
-            int endyear)
+        public void should_parse_year_or_year_range_from_discography(string releaseTitle, int startyear, int endyear)
         {
             var parseResult = Parser.Parser.ParseAlbumTitle(releaseTitle);
             parseResult.Discography.Should().BeTrue();
@@ -214,6 +221,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Ed Sheeran", "I See Fire", "Ed Sheeran I See Fire[Mimp3.eu].mp3 FLAC")]
         [TestCase("Ed Sheeran", "Divide", "Ed Sheeran   ? Divide FLAC")]
         [TestCase("Ed Sheeran", "+", "Ed Sheeran + FLAC")]
+
         //[TestCase("Glasvegas", @"EUPHORIC /// HEARTBREAK \\\", @"EUPHORIC /// HEARTBREAK \\\ FLAC")] // slashes not being escaped properly
         [TestCase("XXXTENTACION", "?", "XXXTENTACION ? FLAC")]
         [TestCase("Hey", "BŁYSK", "Hey - BŁYSK FLAC")]

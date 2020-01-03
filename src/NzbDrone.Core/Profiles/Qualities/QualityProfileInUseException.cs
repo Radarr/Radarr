@@ -8,7 +8,6 @@ namespace NzbDrone.Core.Profiles.Qualities
         public QualityProfileInUseException(string name)
             : base(HttpStatusCode.BadRequest, "Profile [{0}] is in use.", name)
         {
-
         }
     }
 }

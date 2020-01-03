@@ -1,20 +1,19 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     public class MediaFileTableCleanupServiceFixture : CoreTest<MediaFileTableCleanupService>
     {
-        private readonly string DELETED_PATH = @"c:\ANY FILE STARTING WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
+        private readonly string _deletedPath = @"c:\ANY FILE STARTING WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
         private List<Track> _tracks;
         private Artist _artist;
 
@@ -76,15 +75,15 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .All()
                 .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Random(2)
-                .With(c => c.Path = Path.Combine(DELETED_PATH, Path.GetRandomFileName()))
+                .With(c => c.Path = Path.Combine(_deletedPath, Path.GetRandomFileName()))
                 .Build();
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(DELETED_PATH))));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(_deletedPath))));
 
             Mocker.GetMock<IMediaFileService>()
-                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(DELETED_PATH))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
+                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(_deletedPath))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
         }
 
         [Test]

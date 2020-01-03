@@ -2,8 +2,8 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_not_delete_unorphaned_albums()
         {
             var artist = Builder<Artist>.CreateNew()
-                .With(e => e.Metadata = new ArtistMetadata {Id = 1})
+                .With(e => e.Metadata = new ArtistMetadata { Id = 1 })
                 .BuildNew();
 
             Db.Insert(artist);

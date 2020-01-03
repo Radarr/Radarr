@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
@@ -28,7 +28,6 @@ namespace NzbDrone.Core.History
         public Dictionary<string, string> Data { get; set; }
 
         public string DownloadId { get; set; }
-
     }
 
     public enum HistoryEventType

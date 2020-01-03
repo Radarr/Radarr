@@ -113,7 +113,6 @@ namespace NzbDrone.Test.Common
 
             var args = "-nobrowser -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
-
         }
 
         private void OnOutputDataReceived(string data)
@@ -134,12 +133,10 @@ namespace NzbDrone.Test.Common
             var apiKey = Guid.NewGuid().ToString().Replace("-", "");
 
             var xDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"), 
+                new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
                              new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
-                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)
-                    )
-                );
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)));
 
             var data = xDoc.ToString();
 

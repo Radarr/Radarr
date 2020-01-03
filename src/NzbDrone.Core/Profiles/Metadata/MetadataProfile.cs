@@ -9,6 +9,5 @@ namespace NzbDrone.Core.Profiles.Metadata
         public List<ProfilePrimaryAlbumTypeItem> PrimaryAlbumTypes { get; set; }
         public List<ProfileSecondaryAlbumTypeItem> SecondaryAlbumTypes { get; set; }
         public List<ProfileReleaseStatusItem> ReleaseStatuses { get; set; }
-
     }
 }

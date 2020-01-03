@@ -1,7 +1,7 @@
+using Lidarr.Http.ClientSchema;
 using NLog;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Test.Common;
-using Lidarr.Http.ClientSchema;
 
 namespace NzbDrone.Integration.Test
 {

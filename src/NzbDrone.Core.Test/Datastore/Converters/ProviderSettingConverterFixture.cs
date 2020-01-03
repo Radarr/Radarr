@@ -15,10 +15,9 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         public void should_return_null_config_if_config_is_null()
         {
             var result = Subject.FromDB(new ConverterContext()
-             {
-                 DbValue = DBNull.Value
-             });
-
+            {
+                DbValue = DBNull.Value
+            });
 
             result.Should().Be(NullConfig.Instance);
         }
@@ -31,7 +30,6 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             {
                 DbValue = dbValue
             });
-
 
             result.Should().Be(NullConfig.Instance);
         }

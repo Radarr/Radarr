@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Profiles.Releases;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Tags
 {
@@ -102,16 +101,15 @@ namespace NzbDrone.Core.Tags
             foreach (var tag in tags)
             {
                 details.Add(new TagDetails
-                    {
-                        Id = tag.Id,
-                        Label = tag.Label,
-                        DelayProfileIds = delayProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                        ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                        NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                        RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                        ArtistIds = artists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
-                    }
-                );
+                {
+                    Id = tag.Id,
+                    Label = tag.Label,
+                    DelayProfileIds = delayProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    ArtistIds = artists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
+                });
             }
 
             return details;

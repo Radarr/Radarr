@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         public string Path { get; set; }
         public List<string> AcoustIdResults { get; set; }
     }
-    
+
     public class IdTestCase
     {
         public List<string> ExpectedMusicBrainzReleaseIds { get; set; }
@@ -35,4 +35,3 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         public List<AcoustIdTestCase> Fingerprints { get; set; }
     }
 }
-

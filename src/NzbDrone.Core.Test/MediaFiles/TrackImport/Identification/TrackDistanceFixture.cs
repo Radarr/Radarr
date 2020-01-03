@@ -1,11 +1,11 @@
+using FizzWare.NBuilder;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using FluentAssertions;
-using NzbDrone.Core.Test.Framework;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .CreateNew()
                 .With(x => x.Name = "artist")
                 .Build();
-                
+
             var mbTrack = Builder<Track>
                 .CreateNew()
                 .With(x => x.Title = title)
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .With(x => x.TrackNumbers = new[] { 1 })
                 .With(x => x.RecordingMBId = track.ForeignRecordingId)
                 .Build();
-            
+
             var localTrack = Builder<LocalTrack>
                 .CreateNew()
                 .With(x => x.FileTrackInfo = fileInfo)
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             return localTrack;
         }
-        
+
         [Test]
         public void test_identical_tracks()
         {
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
         }
-        
+
         [Test]
         public void test_feat_removed_from_localtrack()
         {

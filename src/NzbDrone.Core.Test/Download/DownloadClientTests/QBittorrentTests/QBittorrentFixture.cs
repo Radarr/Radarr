@@ -7,9 +7,9 @@ using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.QBittorrent;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Test.Common;
-using NzbDrone.Core.Exceptions;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 {
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.Is<HttpRequest>(h => h.Url.FullUri == _downloadUrl)))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new Byte[0], System.Net.HttpStatusCode.Found));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new byte[0], System.Net.HttpStatusCode.Found));
         }
 
         protected void GivenFailedDownload()
@@ -299,7 +299,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         [Test]
         public void Download_should_accept_magnet_if_trackers_provided_and_dht_is_disabled()
         {
-
             Mocker.GetMock<IQBittorrentProxy>()
                   .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
                   .Returns(new QBittorrentPreferences { DhtEnabled = false });
@@ -308,7 +307,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             remoteAlbum.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
 
             Assert.DoesNotThrow(() => Subject.Download(remoteAlbum));
-            
+
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
         }
@@ -417,8 +416,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         protected virtual QBittorrentTorrent GivenCompletedTorrent(
             string state = "pausedUP",
-            float ratio = 0.1f, float ratioLimit = -2,
-            int seedingTime = 1, int seedingTimeLimit = -2)
+            float ratio = 0.1f,
+            float ratioLimit = -2,
+            int seedingTime = 1,
+            int seedingTimeLimit = -2)
         {
             var torrent = new QBittorrentTorrent
             {
@@ -502,7 +503,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             item.CanMoveFiles.Should().BeFalse();
         }
 
-
         [Test]
         public void should_not_be_removable_and_should_not_allow_move_files_if_max_seedingtime_reached_and_not_paused()
         {
@@ -567,7 +567,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var item = Subject.GetItems().Single();
             item.CanBeRemoved.Should().BeFalse();
             item.CanMoveFiles.Should().BeFalse();
-            
+
             var item2 = Subject.GetItems().Single();
 
             Mocker.GetMock<IQBittorrentProxy>()

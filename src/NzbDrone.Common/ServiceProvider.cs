@@ -61,7 +61,6 @@ namespace NzbDrone.Common
 
         public virtual void Install(string serviceName)
         {
-
             _logger.Info("Installing service '{0}'", serviceName);
 
             var args = $"create {serviceName} " +
@@ -152,7 +151,7 @@ namespace NzbDrone.Common
 
         public ServiceControllerStatus GetStatus(string serviceName)
         {
-          return  GetService(serviceName).Status;
+            return GetService(serviceName).Status;
         }
 
         public void Start(string serviceName)

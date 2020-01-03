@@ -36,10 +36,12 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return Id.Equals(other.Id);
         }
 
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             return ReferenceEquals(this, obj) || Equals(obj as PrimaryAlbumType);
         }
 
@@ -68,7 +71,6 @@ namespace NzbDrone.Core.Music
         public static PrimaryAlbumType Broadcast => new PrimaryAlbumType(3, "Broadcast");
         public static PrimaryAlbumType Other => new PrimaryAlbumType(4, "Other");
 
-
         public static readonly List<PrimaryAlbumType> All = new List<PrimaryAlbumType>
         {
             Album,
@@ -77,7 +79,6 @@ namespace NzbDrone.Core.Music
             Broadcast,
             Other
         };
-
 
         public static PrimaryAlbumType FindById(int id)
         {

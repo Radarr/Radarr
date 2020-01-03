@@ -1,12 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Api.V1.Albums;
+using Lidarr.Api.V1.Artist;
+using Lidarr.Http;
 using Nancy;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using Lidarr.Http;
-using Lidarr.Api.V1.Artist;
-using Lidarr.Api.V1.Albums;
-using System;
 
 namespace Lidarr.Api.V1.Search
 {
@@ -27,7 +27,7 @@ namespace Lidarr.Api.V1.Search
             return MapToResource(searchResults).ToList();
         }
 
-        private static IEnumerable<SearchResource> MapToResource(IEnumerable<Object> results)
+        private static IEnumerable<SearchResource> MapToResource(IEnumerable<object> results)
         {
             int id = 1;
             foreach (var result in results)
@@ -37,7 +37,7 @@ namespace Lidarr.Api.V1.Search
 
                 if (result is NzbDrone.Core.Music.Artist)
                 {
-                    var artist = (NzbDrone.Core.Music.Artist) result;
+                    var artist = (NzbDrone.Core.Music.Artist)result;
                     resource.Artist = artist.ToResource();
                     resource.ForeignId = artist.ForeignArtistId;
 
@@ -49,7 +49,7 @@ namespace Lidarr.Api.V1.Search
                 }
                 else if (result is NzbDrone.Core.Music.Album)
                 {
-                    var album = (NzbDrone.Core.Music.Album) result;
+                    var album = (NzbDrone.Core.Music.Album)result;
                     resource.Album = album.ToResource();
                     resource.ForeignId = album.ForeignAlbumId;
 

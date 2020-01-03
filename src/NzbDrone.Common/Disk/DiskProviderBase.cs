@@ -122,6 +122,7 @@ namespace NzbDrone.Common.Disk
                     {
                         return _fileSystem.File.Exists(path) && path == path.GetActualCasing();
                     }
+
                 default:
                     {
                         return _fileSystem.File.Exists(path);
@@ -347,9 +348,11 @@ namespace NzbDrone.Common.Disk
                     return;
                 }
 
-                var accessRule = new FileSystemAccessRule(sid, rights,
+                var accessRule = new FileSystemAccessRule(sid,
+                                                          rights,
                                                           InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                                                          PropagationFlags.InheritOnly, controlType);
+                                                          PropagationFlags.InheritOnly,
+                                                          controlType);
 
                 bool modified;
                 directorySecurity.ModifyAccessRule(AccessControlModification.Add, accessRule, out modified);
@@ -364,7 +367,6 @@ namespace NzbDrone.Common.Disk
                 Logger.Warn(e, "Couldn't set permission for {0}. account:{1} rights:{2} accessControlType:{3}", filename, accountSid, rights, controlType);
                 throw;
             }
-
         }
 
         private static void RemoveReadOnly(string path)
@@ -375,7 +377,7 @@ namespace NzbDrone.Common.Disk
 
                 if (attributes.HasFlag(FileAttributes.ReadOnly))
                 {
-                    var newAttributes = attributes & ~(FileAttributes.ReadOnly);
+                    var newAttributes = attributes & ~FileAttributes.ReadOnly;
                     File.SetAttributes(path, newAttributes);
                 }
             }
@@ -425,12 +427,12 @@ namespace NzbDrone.Common.Disk
                 throw new FileNotFoundException("Unable to find file: " + path, path);
             }
 
-            return (FileStream) _fileSystem.FileStream.Create(path, FileMode.Open, FileAccess.Read);
+            return (FileStream)_fileSystem.FileStream.Create(path, FileMode.Open, FileAccess.Read);
         }
 
         public FileStream OpenWriteStream(string path)
         {
-            return (FileStream) _fileSystem.FileStream.Create(path, FileMode.Create);
+            return (FileStream)_fileSystem.FileStream.Create(path, FileMode.Create);
         }
 
         public List<IMount> GetMounts()

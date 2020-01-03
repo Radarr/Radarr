@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
+using Lidarr.Http;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Queue
 {
@@ -17,7 +17,6 @@ namespace Lidarr.Api.V1.Queue
         private readonly IPendingReleaseService _pendingReleaseService;
         private readonly Debouncer _broadcastDebounce;
 
-
         public QueueStatusModule(IBroadcastSignalRMessage broadcastSignalRMessage, IQueueService queueService, IPendingReleaseService pendingReleaseService)
             : base(broadcastSignalRMessage, "queue/status")
         {
@@ -26,8 +25,7 @@ namespace Lidarr.Api.V1.Queue
 
             _broadcastDebounce = new Debouncer(BroadcastChange, TimeSpan.FromSeconds(5));
 
-
-            Get("/",  x => GetQueueStatusResponse());
+            Get("/", x => GetQueueStatusResponse());
         }
 
         private object GetQueueStatusResponse()
@@ -67,12 +65,10 @@ namespace Lidarr.Api.V1.Queue
         {
             _broadcastDebounce.Execute();
         }
-        
+
         public void Handle(PendingReleasesUpdatedEvent message)
         {
             _broadcastDebounce.Execute();
         }
-
-
     }
 }

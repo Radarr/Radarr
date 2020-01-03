@@ -64,17 +64,17 @@ namespace NzbDrone.Core.Indexers.Newznab
         private IndexerDefinition GetDefinition(string name, NewznabSettings settings)
         {
             return new IndexerDefinition
-                   {
-                       EnableRss = false,
-                       EnableAutomaticSearch = false,
-                       EnableInteractiveSearch = false,
-                       Name = name,
-                       Implementation = GetType().Name,
-                       Settings = settings,
-                       Protocol = DownloadProtocol.Usenet,
-                       SupportsRss = SupportsRss,
-                       SupportsSearch = SupportsSearch
-                   };
+            {
+                EnableRss = false,
+                EnableAutomaticSearch = false,
+                EnableInteractiveSearch = false,
+                Name = name,
+                Implementation = GetType().Name,
+                Settings = settings,
+                Protocol = DownloadProtocol.Usenet,
+                SupportsRss = SupportsRss,
+                SupportsSearch = SupportsSearch
+            };
         }
 
         private NewznabSettings GetSettings(string url, params int[] categories)
@@ -92,7 +92,11 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override void Test(List<ValidationFailure> failures)
         {
             base.Test(failures);
-            if (failures.HasErrors()) return;
+            if (failures.HasErrors())
+            {
+                return;
+            }
+
             failures.AddIfNotNull(TestCapabilities());
         }
 

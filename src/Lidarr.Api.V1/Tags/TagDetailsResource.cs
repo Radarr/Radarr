@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Tags;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Tags;
 
 namespace Lidarr.Api.V1.Tags
 {
@@ -19,7 +19,10 @@ namespace Lidarr.Api.V1.Tags
     {
         public static TagDetailsResource ToResource(this TagDetails model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new TagDetailsResource
             {

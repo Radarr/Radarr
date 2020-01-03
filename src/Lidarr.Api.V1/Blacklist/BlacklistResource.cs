@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Qualities;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.Blacklist
 {
@@ -25,7 +25,10 @@ namespace Lidarr.Api.V1.Blacklist
     {
         public static BlacklistResource MapToResource(this NzbDrone.Core.Blacklisting.Blacklist model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new BlacklistResource
             {

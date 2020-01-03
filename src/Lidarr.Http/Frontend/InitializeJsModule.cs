@@ -18,7 +18,6 @@ namespace Lidarr.Http.Frontend
         private static string _urlBase;
         private string _generatedContent;
 
-
         public InitializeJsModule(IConfigFileProvider configFileProvider,
                                   IAnalyticsService analyticsService)
         {
@@ -43,7 +42,6 @@ namespace Lidarr.Http.Frontend
 
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
-
 
             writer.Write(text);
             writer.Flush();

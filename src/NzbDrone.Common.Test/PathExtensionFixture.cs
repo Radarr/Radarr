@@ -87,7 +87,7 @@ namespace NzbDrone.Common.Test
         {
             first.AsOsAgnostic().PathEquals(second.AsOsAgnostic()).Should().BeFalse();
         }
-        
+
         [Test]
         public void should_return_false_when_not_a_child()
         {
@@ -111,6 +111,7 @@ namespace NzbDrone.Common.Test
 
             _parent.IsParentPath(path).Should().BeTrue();
         }
+
         [TestCase(@"C:\Test\", @"C:\Test\mydir")]
         [TestCase(@"C:\Test\", @"C:\Test\mydir\")]
         [TestCase(@"C:\Test", @"C:\Test\30.Rock.S01E01.Pilot.avi")]
@@ -164,7 +165,6 @@ namespace NzbDrone.Common.Test
 
             // This test will fail on Windows if long path support is not enabled: https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/
             // It will also fail if the app isn't configured to use long path (such as resharper): https://blogs.msdn.microsoft.com/jeremykuhne/2016/07/30/net-4-6-2-and-long-paths-on-windows-10/
-
             var path = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\lidarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories".AsOsAgnostic();
             var parentPath = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\lidarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing".AsOsAgnostic();
 
@@ -199,9 +199,8 @@ namespace NzbDrone.Common.Test
         public void get_actual_casing_for_none_existing_file_return_partially_fixed_result()
         {
             WindowsOnly();
-           "C:\\WINDOWS\\invalidfile.exe".GetActualCasing().Should().Be("C:\\Windows\\invalidfile.exe");
+            "C:\\WINDOWS\\invalidfile.exe".GetActualCasing().Should().Be("C:\\Windows\\invalidfile.exe");
         }
-
 
         [Test]
         public void get_actual_casing_for_none_existing_folder_return_partially_fixed_result()
@@ -219,12 +218,11 @@ namespace NzbDrone.Common.Test
             path.ToLower().GetActualCasing().Should().Be(path);
         }
 
-
         [Test]
         public void get_actual_casing_should_return_actual_casing_for_local_dir_in_windows()
         {
             WindowsOnly();
-            var path = Directory.GetCurrentDirectory().Replace("c:\\","C:\\").Replace("d:\\","D:\\").Replace("system32", "System32");
+            var path = Directory.GetCurrentDirectory().Replace("c:\\", "C:\\").Replace("d:\\", "D:\\").Replace("system32", "System32");
 
             path.ToUpper().GetActualCasing().Should().Be(path);
             path.ToLower().GetActualCasing().Should().Be(path);

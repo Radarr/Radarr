@@ -40,7 +40,6 @@ namespace NzbDrone.Core.Test.UpdateTests
                     Version = new Version("0.6.2.883")
                 };
             }
-
             else
             {
                 _updatePackage = new UpdatePackage
@@ -115,7 +114,6 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Subject.Execute(new ApplicationUpdateCommand());
 
-
             Mocker.GetMock<IDiskProvider>().Verify(c => c.DeleteFolder(_sandboxFolder, true), Times.Never());
         }
 
@@ -166,7 +164,6 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Subject.Execute(new ApplicationUpdateCommand());
 
-
             ExceptionVerification.AssertNoUnexpectedLogs();
         }
 
@@ -181,7 +178,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude="Win")]
+        [Platform(Exclude = "Win")]
         public void should_run_script_if_configured()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -194,7 +191,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude="Win")]
+        [Platform(Exclude = "Win")]
         public void should_throw_if_script_is_not_set()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -208,7 +205,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude="Win")]
+        [Platform(Exclude = "Win")]
         public void should_throw_if_script_is_null()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";
@@ -222,7 +219,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude="Win")]
+        [Platform(Exclude = "Win")]
         public void should_throw_if_script_path_does_not_exist()
         {
             const string scriptPath = "/tmp/lidarr/update.sh";

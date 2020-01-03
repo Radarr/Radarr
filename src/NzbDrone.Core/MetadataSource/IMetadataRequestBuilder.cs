@@ -5,11 +5,11 @@ using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MetadataSource
 {
-
     public interface IMetadataRequestBuilder
     {
         IHttpRequestBuilderFactory GetRequestBuilder();
     }
+
     public class MetadataRequestBuilder : IMetadataRequestBuilder
     {
         private readonly IConfigService _configService;

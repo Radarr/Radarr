@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Music
 {
@@ -84,6 +84,5 @@ namespace NzbDrone.Core.Music
             var releases = GetReleasesByAlbum(message.Album.Id);
             DeleteMany(releases);
         }
-
     }
 }

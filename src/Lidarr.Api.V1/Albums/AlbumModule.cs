@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
+using Lidarr.Http.Extensions;
 using Nancy;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Music;
-using NzbDrone.SignalR;
-using Lidarr.Http.Extensions;
-using NzbDrone.Core.ArtistStats;
-using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.Music.Events;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Validation.Paths;
-using FluentValidation;
-using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Validation.Paths;
+using NzbDrone.SignalR;
 
 namespace Lidarr.Api.V1.Albums
 {
@@ -28,7 +28,6 @@ namespace Lidarr.Api.V1.Albums
         IHandle<AlbumImportedEvent>,
         IHandle<TrackImportedEvent>,
         IHandle<TrackFileDeletedEvent>
-
     {
         protected readonly IReleaseService _releaseService;
         protected readonly IAddAlbumService _addAlbumService;
@@ -52,7 +51,7 @@ namespace Lidarr.Api.V1.Albums
             CreateResource = AddAlbum;
             UpdateResource = UpdateAlbum;
             DeleteResource = DeleteAlbum;
-            Put("/monitor",  x => SetAlbumsMonitored());
+            Put("/monitor", x => SetAlbumsMonitored());
 
             PostValidator.RuleFor(s => s.ForeignAlbumId).NotEmpty();
             PostValidator.RuleFor(s => s.Artist.QualityProfileId).SetValidator(profileExistsValidator);
@@ -156,7 +155,7 @@ namespace Lidarr.Api.V1.Albums
                 BroadcastResourceChange(ModelAction.Updated, resource);
             }
         }
-        
+
         public void Handle(AlbumEditedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, MapToResource(message.Album, true));
@@ -184,7 +183,10 @@ namespace Lidarr.Api.V1.Albums
 
         public void Handle(TrackFileDeletedEvent message)
         {
-            if (message.Reason == DeleteMediaFileReason.Upgrade) return;
+            if (message.Reason == DeleteMediaFileReason.Upgrade)
+            {
+                return;
+            }
 
             BroadcastResourceChange(ModelAction.Updated, MapToResource(message.TrackFile.Album.Value, true));
         }

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Music
                 release = Query.Where(x => x.OldForeignReleaseIds.Contains(id))
                                .SingleOrDefault();
             }
-            
+
             return release;
         }
 

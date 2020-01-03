@@ -1,8 +1,8 @@
-using NzbDrone.Core.MediaFiles;
-using Marr.Data;
-using NzbDrone.Common.Extensions;
 using System.Collections.Generic;
 using Equ;
+using Marr.Data;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Music
 {
@@ -47,7 +47,11 @@ namespace NzbDrone.Core.Music
         // These are retained for compatibility
         // TODO: Remove set, bodged in because tests expect this to be writable
         [MemberwiseEqualityIgnore]
-        public int AlbumId { get { return AlbumRelease?.Value?.Album?.Value?.Id ?? 0; } set { /* empty */ } }
+        public int AlbumId
+        {
+            get { return AlbumRelease?.Value?.Album?.Value?.Id ?? 0; } set { /* empty */ }
+        }
+
         [MemberwiseEqualityIgnore]
         public Album Album { get; set; }
 

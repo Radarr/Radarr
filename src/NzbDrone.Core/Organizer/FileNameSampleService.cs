@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -37,7 +37,6 @@ namespace NzbDrone.Core.Organizer
                 {
                     Name = "The Artist Name",
                     Disambiguation = "US Rock Band"
-                    
                 }
             };
 
@@ -90,9 +89,8 @@ namespace NzbDrone.Core.Organizer
                 AlbumRelease = _singleRelease,
                 AbsoluteTrackNumber = 3,
                 MediumNumber = 1,
-                
+
                 Title = "Track Title (1)",
-                
             };
 
             _singleTrack = new List<Track> { _track1 };
@@ -119,8 +117,6 @@ namespace NzbDrone.Core.Organizer
             {
                 "iNTERNAL"
             };
-
-
         }
 
         public SampleResult GetStandardTrackSample(NamingConfig nameSpec)

@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Datastore.Migration
             Delete.Column("SecondaryAlbumTypes").FromTable("Artists");
 
             Alter.Table("Albums").AddColumn("SecondaryTypes").AsString().Nullable();
-
         }
     }
 }

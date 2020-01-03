@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Core.History;
-using NzbDrone.Core.Qualities;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Tracks;
 using Lidarr.Http.REST;
+using NzbDrone.Core.History;
+using NzbDrone.Core.Qualities;
 
 namespace Lidarr.Api.V1.History
 {
@@ -33,7 +33,10 @@ namespace Lidarr.Api.V1.History
     {
         public static HistoryResource ToResource(this NzbDrone.Core.History.History model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new HistoryResource
             {
@@ -44,6 +47,7 @@ namespace Lidarr.Api.V1.History
                 TrackId = model.TrackId,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
+
                 //QualityCutoffNotMet
                 Date = model.Date,
                 DownloadId = model.DownloadId,
@@ -51,6 +55,7 @@ namespace Lidarr.Api.V1.History
                 EventType = model.EventType,
 
                 Data = model.Data
+
                 //Episode
                 //Series
             };

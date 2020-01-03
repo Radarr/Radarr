@@ -4,9 +4,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
 {
@@ -35,12 +35,10 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
                                                  }
             });
 
-
             Mocker.GetMock<ITermMatcherService>()
                   .Setup(s => s.MatchingTerm(It.IsAny<string>(), _title))
                   .Returns<string, string>((term, title) => title.Contains(term) ? term : null);
         }
-
 
         private void GivenReleaseProfile()
         {

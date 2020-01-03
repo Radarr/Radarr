@@ -5,6 +5,5 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public int Score { get; set; }
         public ArtistResource Artist { get; set; }
         public AlbumResource Album { get; set; }
-
     }
 }

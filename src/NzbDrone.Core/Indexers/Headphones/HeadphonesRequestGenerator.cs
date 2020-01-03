@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
@@ -35,10 +34,12 @@ namespace NzbDrone.Core.Indexers.Headphones
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-                pageableRequests.AddTier();
+            pageableRequests.AddTier();
 
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
+            pageableRequests.Add(GetPagedRequests(MaxPages,
+                Settings.Categories,
+                "search",
+                NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
 
             return pageableRequests;
         }
@@ -49,7 +50,9 @@ namespace NzbDrone.Core.Indexers.Headphones
 
             pageableRequests.AddTier();
 
-            pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
+            pageableRequests.Add(GetPagedRequests(MaxPages,
+                Settings.Categories,
+                "search",
                 NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}")));
 
             return pageableRequests;

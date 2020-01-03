@@ -1,6 +1,6 @@
 using FluentAssertions;
-using NUnit.Framework;
 using Lidarr.Http.Extensions;
+using NUnit.Framework;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test
@@ -23,12 +23,12 @@ namespace NzbDrone.Integration.Test
             return request;
         }
 
-    [Test]
+        [Test]
         public void should_not_have_allow_headers_in_response_when_not_included_in_the_request()
         {
             var request = BuildOptions();
             var response = RestClient.Execute(request);
-            
+
             response.Headers.Should().NotContain(h => h.Name == AccessControlHeaders.AllowHeaders);
         }
 

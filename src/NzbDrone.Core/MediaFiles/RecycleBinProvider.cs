@@ -7,8 +7,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -26,7 +24,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
-
 
         public RecycleBinProvider(IDiskTransferService diskTransferService,
                                   IDiskProvider diskProvider,
@@ -50,7 +47,6 @@ namespace NzbDrone.Core.MediaFiles
                 _diskProvider.DeleteFolder(path, true);
                 _logger.Debug("Folder has been permanently deleted: {0}", path);
             }
-
             else
             {
                 var destination = Path.Combine(recyclingBin, new DirectoryInfo(path).Name);
@@ -86,7 +82,6 @@ namespace NzbDrone.Core.MediaFiles
                 _diskProvider.DeleteFile(path);
                 _logger.Debug("File has been permanently deleted: {0}", path);
             }
-
             else
             {
                 var fileInfo = new FileInfo(path);

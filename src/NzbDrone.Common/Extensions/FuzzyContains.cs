@@ -1,6 +1,6 @@
 ﻿/*
- * This file incorporates work covered by the following copyright and  
- * permission notice:  
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
  *
  * Diff Match and Patch
  * Copyright 2018 The diff-match-patch Authors.
@@ -25,9 +25,8 @@ using System.Numerics;
 
 namespace NzbDrone.Common.Extensions
 {
-
-    public static class FuzzyContainsExtension {
-
+    public static class FuzzyContainsExtension
+    {
         public static int FuzzyFind(this string text, string pattern, double matchProb)
         {
             return match(text, pattern, matchProb).Item1;
@@ -38,7 +37,7 @@ namespace NzbDrone.Common.Extensions
         {
             return match(text, pattern, 0.25).Item2;
         }
-        
+
         /**
          * Locate the best instance of 'pattern' in 'text'.
          * Returns (-1, 1) if no match found.
@@ -46,11 +45,13 @@ namespace NzbDrone.Common.Extensions
          * @param pattern The pattern to search for.
          * @return Best match index or -1.
          */
-        private static Tuple<int, double> match(string text, string pattern, double matchThreshold = 0.5) {
+        private static Tuple<int, double> match(string text, string pattern, double matchThreshold = 0.5)
+        {
             // Check for null inputs not needed since null can't be passed in C#.
-            if (text.Length == 0 || pattern.Length == 0) {
+            if (text.Length == 0 || pattern.Length == 0)
+            {
                 // Nothing to match.
-                return new Tuple<int, double> (-1, 0);
+                return new Tuple<int, double>(-1, 0);
             }
 
             if (pattern.Length <= text.Length)
@@ -59,7 +60,7 @@ namespace NzbDrone.Common.Extensions
                 if (loc != -1)
                 {
                     // Perfect match!
-                    return new Tuple<int, double> (loc, 1);
+                    return new Tuple<int, double>(loc, 1);
                 }
             }
 
@@ -74,63 +75,81 @@ namespace NzbDrone.Common.Extensions
          * @param pattern The pattern to search for.
          * @return Best match index or -1.
          */
-        private static Tuple<int, double> match_bitap(string text, string pattern, double matchThreshold) {
-
+        private static Tuple<int, double> match_bitap(string text, string pattern, double matchThreshold)
+        {
             // Initialise the alphabet.
             Dictionary<char, BigInteger> s = alphabet(pattern);
+
             // don't keep creating new BigInteger(1)
             var big1 = new BigInteger(1);
 
             // Lowest score belowe which we give up.
             var score_threshold = matchThreshold;
-           
+
             // Initialise the bit arrays.
             var matchmask = big1 << (pattern.Length - 1);
             int best_loc = -1;
 
             // Empty initialization added to appease C# compiler.
             var last_rd = new BigInteger[0];
-            for (int d = 0; d < pattern.Length; d++) {
+            for (int d = 0; d < pattern.Length; d++)
+            {
                 // Scan for the best match; each iteration allows for one more error.
                 int start = 1;
                 int finish = text.Length + pattern.Length;
 
                 var rd = new BigInteger[finish + 2];
                 rd[finish + 1] = (big1 << d) - big1;
-                for (int j = finish; j >= start; j--) {
+                for (int j = finish; j >= start; j--)
+                {
                     BigInteger charMatch;
-                    if (text.Length <= j - 1 || !s.ContainsKey(text[j - 1])) {
+                    if (text.Length <= j - 1 || !s.ContainsKey(text[j - 1]))
+                    {
                         // Out of range.
                         charMatch = 0;
-                    } else {
+                    }
+                    else
+                    {
                         charMatch = s[text[j - 1]];
                     }
-                    if (d == 0) {
+
+                    if (d == 0)
+                    {
                         // First pass: exact match.
                         rd[j] = ((rd[j + 1] << 1) | big1) & charMatch;
-                    } else {
+                    }
+                    else
+                    {
                         // Subsequent passes: fuzzy match.
                         rd[j] = ((rd[j + 1] << 1) | big1) & charMatch
                             | (((last_rd[j + 1] | last_rd[j]) << 1) | big1) | last_rd[j + 1];
                     }
-                    if ((rd[j] & matchmask) != 0) {
+
+                    if ((rd[j] & matchmask) != 0)
+                    {
                         var score = bitapScore(d, pattern);
+
                         // This match will almost certainly be better than any existing
                         // match.  But check anyway.
-                        if (score >= score_threshold) {
+                        if (score >= score_threshold)
+                        {
                             // Told you so.
                             score_threshold = score;
                             best_loc = j - 1;
                         }
                     }
                 }
-                if (bitapScore(d + 1, pattern) < score_threshold) {
+
+                if (bitapScore(d + 1, pattern) < score_threshold)
+                {
                     // No hope for a (better) match at greater error levels.
                     break;
                 }
+
                 last_rd = rd;
             }
-            return new Tuple<int, double> (best_loc, score_threshold);
+
+            return new Tuple<int, double>(best_loc, score_threshold);
         }
 
         /**
@@ -139,8 +158,9 @@ namespace NzbDrone.Common.Extensions
          * @param pattern Pattern being sought.
          * @return Overall score for match (1.0 = good, 0.0 = bad).
          */
-        private static double bitapScore(int e, string pattern) {
-            return 1.0 - (double)e / pattern.Length;
+        private static double bitapScore(int e, string pattern)
+        {
+            return 1.0 - ((double)e / pattern.Length);
         }
 
         /**
@@ -148,19 +168,25 @@ namespace NzbDrone.Common.Extensions
          * @param pattern The text to encode.
          * @return Hash of character locations.
          */
-        private static Dictionary<char, BigInteger> alphabet(string pattern) {
+        private static Dictionary<char, BigInteger> alphabet(string pattern)
+        {
             var s = new Dictionary<char, BigInteger>();
             char[] char_pattern = pattern.ToCharArray();
-            foreach (char c in char_pattern) {
-                if (!s.ContainsKey(c)) {
+            foreach (char c in char_pattern)
+            {
+                if (!s.ContainsKey(c))
+                {
                     s.Add(c, 0);
                 }
             }
+
             int i = 0;
-            foreach (char c in char_pattern) {
+            foreach (char c in char_pattern)
+            {
                 s[c] = s[c] | (new BigInteger(1) << (pattern.Length - i - 1));
                 i++;
             }
+
             return s;
         }
     }

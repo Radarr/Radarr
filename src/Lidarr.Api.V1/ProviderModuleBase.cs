@@ -2,13 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Lidarr.Http;
 using Nancy;
-using Newtonsoft.Json;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
-using Lidarr.Http;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1
 {
@@ -26,10 +24,10 @@ namespace Lidarr.Api.V1
             _providerFactory = providerFactory;
             _resourceMapper = resourceMapper;
 
-            Get("schema",  x => GetTemplates());
-            Post("test",  x => Test(ReadResourceFromRequest(true)));
-            Post("testall",  x => TestAll());
-            Post("action/{action}",  x => RequestAction(x.action, ReadResourceFromRequest(true)));
+            Get("schema", x => GetTemplates());
+            Post("test", x => Test(ReadResourceFromRequest(true)));
+            Post("testall", x => TestAll());
+            Post("action/{action}", x => RequestAction(x.action, ReadResourceFromRequest(true)));
 
             GetResourceAll = GetAll;
             GetResourceById = GetProviderById;
@@ -38,7 +36,7 @@ namespace Lidarr.Api.V1
             DeleteResource = DeleteProvider;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Name).Must((v,c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
+            SharedValidator.RuleFor(c => c.Name).Must((v, c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
             SharedValidator.RuleFor(c => c.Implementation).NotEmpty();
             SharedValidator.RuleFor(c => c.ConfigContract).NotEmpty();
 

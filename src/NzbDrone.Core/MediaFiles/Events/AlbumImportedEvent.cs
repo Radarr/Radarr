@@ -30,7 +30,6 @@ namespace NzbDrone.Core.MediaFiles.Events
                 DownloadClient = downloadClientItem.DownloadClient;
                 DownloadId = downloadClientItem.DownloadId;
             }
-
         }
     }
 }

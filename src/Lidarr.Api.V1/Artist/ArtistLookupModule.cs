@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http;
 using Nancy;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using Lidarr.Http;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.Artist
 {
@@ -16,7 +15,7 @@ namespace Lidarr.Api.V1.Artist
             : base("/artist/lookup")
         {
             _searchProxy = searchProxy;
-            Get("/",  x => Search());
+            Get("/", x => Search());
         }
 
         private object Search()

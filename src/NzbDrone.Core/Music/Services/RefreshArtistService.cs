@@ -1,21 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using NLog;
+using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.History;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using NzbDrone.Core.ImportLists.Exclusions;
-using NzbDrone.Common.EnsureThat;
-using NzbDrone.Core.History;
 
 namespace NzbDrone.Core.Music
 {
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Music
             _importListExclusionService = importListExclusionService;
             _logger = logger;
         }
-        
+
         protected override RemoteData GetRemoteData(Artist local, List<Artist> remote)
         {
             var result = new RemoteData();
@@ -78,17 +78,17 @@ namespace NzbDrone.Core.Music
 
             return result;
         }
-                  
+
         protected override bool ShouldDelete(Artist local)
         {
             return !_mediaFileService.GetFilesByArtist(local.Id).Any();
         }
-        
+
         protected override void LogProgress(Artist local)
         {
-            _logger.ProgressInfo("Updating Info for {0}", local.Name);            
+            _logger.ProgressInfo("Updating Info for {0}", local.Name);
         }
-            
+
         protected override bool IsMerge(Artist local, Artist remote)
         {
             return local.ArtistMetadataId != remote.Metadata.Value.Id;
@@ -97,8 +97,8 @@ namespace NzbDrone.Core.Music
         protected override UpdateResult UpdateEntity(Artist local, Artist remote)
         {
             UpdateResult result = UpdateResult.None;
-            
-            if(!local.Metadata.Value.Equals(remote.Metadata.Value))
+
+            if (!local.Metadata.Value.Equals(remote.Metadata.Value))
             {
                 result = UpdateResult.UpdateTags;
             }
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Music
 
             return result;
         }
-        
+
         protected override UpdateResult MoveEntity(Artist local, Artist remote)
         {
             _logger.Debug($"Updating MusicBrainz id for {local} to {remote}");
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Music
 
             // Do the standard update
             UpdateEntity(local, remote);
-            
+
             // We know we need to update tags as artist id has changed
             return UpdateResult.UpdateTags;
         }
@@ -205,14 +205,14 @@ namespace NzbDrone.Core.Music
                                                      remoteChildren.Select(x => x.ForeignAlbumId)
                                                      .Concat(remoteChildren.SelectMany(x => x.OldForeignAlbumIds)));
         }
-        
-        protected override Tuple<Album, List<Album> > GetMatchingExistingChildren(List<Album> existingChildren, Album remote)
+
+        protected override Tuple<Album, List<Album>> GetMatchingExistingChildren(List<Album> existingChildren, Album remote)
         {
             var existingChild = existingChildren.SingleOrDefault(x => x.ForeignAlbumId == remote.ForeignAlbumId);
             var mergeChildren = existingChildren.Where(x => remote.OldForeignAlbumIds.Contains(x.ForeignAlbumId)).ToList();
             return Tuple.Create(existingChild, mergeChildren);
         }
-        
+
         protected override void PrepareNewChild(Album child, Artist entity)
         {
             child.Artist = entity;
@@ -223,14 +223,14 @@ namespace NzbDrone.Core.Music
             child.ProfileId = entity.QualityProfileId;
             child.Monitored = entity.Monitored;
         }
-        
+
         protected override void PrepareExistingChild(Album local, Album remote, Artist entity)
         {
             local.Artist = entity;
             local.ArtistMetadata = entity.Metadata.Value;
             local.ArtistMetadataId = entity.Metadata.Value.Id;
         }
-        
+
         protected override void AddChildren(List<Album> children)
         {
             _albumService.InsertMany(children);
@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Music
             Ensure.That(localChildren.UpToDate.Count, () => localChildren.UpToDate.Count).IsLessThanOrEqualTo(0);
             return _refreshAlbumService.RefreshAlbumInfo(localChildren.All, remoteChildren, forceChildRefresh, forceUpdateFileTags);
         }
-            
+
         protected override void PublishEntityUpdatedEvent(Artist entity)
         {
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(entity));
@@ -268,13 +268,11 @@ namespace NzbDrone.Core.Music
                 _logger.Trace("Forcing rescan of {0}. Reason: New artist", artist);
                 shouldRescan = true;
             }
-
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
                 _logger.Trace("Skipping rescan of {0}. Reason: never recan after refresh", artist);
                 shouldRescan = false;
             }
-
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
             {
                 _logger.Trace("Skipping rescan of {0}. Reason: not after automatic scans", artist);

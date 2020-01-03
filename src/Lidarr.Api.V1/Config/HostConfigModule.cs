@@ -2,13 +2,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
+using Lidarr.Http;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Update;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Config
 {
@@ -51,7 +51,6 @@ namespace Lidarr.Api.V1.Config
             SharedValidator.RuleFor(c => c.BackupFolder).IsValidPath().When(c => Path.IsPathRooted(c.BackupFolder));
             SharedValidator.RuleFor(c => c.BackupInterval).InclusiveBetween(1, 7);
             SharedValidator.RuleFor(c => c.BackupRetention).InclusiveBetween(1, 90);
-
         }
 
         private HostConfigResource GetHostConfig()

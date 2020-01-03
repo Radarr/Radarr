@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Download
             else
             {
                 MarkItemAsImported(message.TrackedDownload);
-            }           
+            }
         }
 
         public void Handle(DownloadFailedEvent message)
@@ -59,7 +59,6 @@ namespace NzbDrone.Core.Download
 
             RemoveFromDownloadClient(trackedDownload);
         }
-
 
         private void RemoveFromDownloadClient(TrackedDownload trackedDownload)
         {

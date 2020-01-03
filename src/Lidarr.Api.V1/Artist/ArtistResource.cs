@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidarr.Http.REST;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Music;
-using Lidarr.Http.REST;
-using Newtonsoft.Json;
 
 namespace Lidarr.Api.V1.Artist
 {
@@ -14,7 +14,6 @@ namespace Lidarr.Api.V1.Artist
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
         [JsonIgnore]
         public int ArtistMetadataId { get; set; }
         public ArtistStatusType Status { get; set; }
@@ -33,7 +32,7 @@ namespace Lidarr.Api.V1.Artist
         public string ArtistType { get; set; }
         public string Disambiguation { get; set; }
         public List<Links> Links { get; set; }
-        
+
         public Album NextAlbum { get; set; }
         public Album LastAlbum { get; set; }
 
@@ -41,7 +40,6 @@ namespace Lidarr.Api.V1.Artist
         public List<Member> Members { get; set; }
 
         public string RemotePoster { get; set; }
-
 
         //View & Edit
         public string Path { get; set; }
@@ -68,7 +66,10 @@ namespace Lidarr.Api.V1.Artist
     {
         public static ArtistResource ToResource(this NzbDrone.Core.Music.Artist model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ArtistResource
             {
@@ -76,6 +77,7 @@ namespace Lidarr.Api.V1.Artist
                 ArtistMetadataId = model.ArtistMetadataId,
 
                 ArtistName = model.Name,
+
                 //AlternateTitles
                 SortName = model.SortName,
 
@@ -98,6 +100,7 @@ namespace Lidarr.Api.V1.Artist
 
                 CleanName = model.CleanName,
                 ForeignArtistId = model.Metadata.Value.ForeignArtistId,
+
                 // Root folder path is now calculated from the artist path
                 // RootFolderPath = model.RootFolderPath,
                 Genres = model.Metadata.Value.Genres,
@@ -112,7 +115,10 @@ namespace Lidarr.Api.V1.Artist
 
         public static NzbDrone.Core.Music.Artist ToModel(this ArtistResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new NzbDrone.Core.Music.Artist
             {
@@ -130,13 +136,12 @@ namespace Lidarr.Api.V1.Artist
                     Ratings = resource.Ratings,
                     Type = resource.ArtistType
                 },
-                    
+
                 //AlternateTitles
                 SortName = resource.SortName,
                 Path = resource.Path,
                 QualityProfileId = resource.QualityProfileId,
                 MetadataProfileId = resource.MetadataProfileId,
-
 
                 AlbumFolder = resource.AlbumFolder,
                 Monitored = resource.Monitored,
@@ -148,7 +153,6 @@ namespace Lidarr.Api.V1.Artist
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
-
             };
         }
 

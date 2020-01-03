@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Notifications.Discord.Payloads;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Notifications.Discord.Payloads;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Discord
@@ -153,7 +153,6 @@ namespace NzbDrone.Core.Notifications.Discord
                 var payload = CreatePayload(message);
 
                 _proxy.SendPayload(payload, Settings);
-
             }
             catch (DiscordException ex)
             {

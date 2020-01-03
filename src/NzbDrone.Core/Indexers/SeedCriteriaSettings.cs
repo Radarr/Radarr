@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
@@ -39,7 +35,7 @@ namespace NzbDrone.Core.Indexers
                     .AsWarning()
                     .WithMessage($"Under {seedTimeMinimum} leads to H&R");
             }
-            
+
             if (discographySeedTimeMinimum != 0)
             {
                 RuleFor(c => c.DiscographySeedTime).GreaterThanOrEqualTo(discographySeedTimeMinimum)

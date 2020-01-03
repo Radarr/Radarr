@@ -1,5 +1,5 @@
-using NLog;
 using System;
+using NLog;
 
 namespace NzbDrone.Core.Music
 {

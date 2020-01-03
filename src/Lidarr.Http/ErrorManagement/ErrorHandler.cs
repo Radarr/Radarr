@@ -1,6 +1,6 @@
-﻿using Nancy;
+﻿using Lidarr.Http.Extensions;
+using Nancy;
 using Nancy.ErrorHandling;
-using Lidarr.Http.Extensions;
 
 namespace Lidarr.Http.ErrorManagement
 {

@@ -3,10 +3,10 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -26,9 +26,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             _xbmcArtist = Builder<KodiArtist>.CreateListOfSize(3)
                                          .All()
-                                         .With(s => s.MusicbrainzArtistId = new List<string>{"0"})
+                                         .With(s => s.MusicbrainzArtistId = new List<string> { "0" })
                                          .TheFirst(1)
-                                         .With(s => s.MusicbrainzArtistId = new List<string> {MB_ID.ToString()})
+                                         .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString() })
                                          .Build()
                                          .ToList();
 
@@ -41,9 +41,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         {
             _artist = new Artist
             {
-                              ForeignArtistId = MB_ID,
-                              Name = "Artist"
-                          };
+                ForeignArtistId = MB_ID,
+                Name = "Artist"
+            };
         }
 
         private void GivenMatchingTitle()
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             {
                 ForeignArtistId = "1000",
                 Name = "Does not exist"
-            }; 
+            };
         }
 
         [Test]

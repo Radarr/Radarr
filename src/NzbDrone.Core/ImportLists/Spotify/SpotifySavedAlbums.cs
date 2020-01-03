@@ -6,7 +6,6 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 

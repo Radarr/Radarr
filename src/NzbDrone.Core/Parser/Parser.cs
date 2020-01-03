@@ -126,7 +126,6 @@ namespace NzbDrone.Core.Parser
             // Hypen with no or more spaces between artist/album/year
             new Regex(@"^(?:(?<artist>.+?)(?:-))(?<releaseyear>\d{4})(?:-)(?<album>[^-]+)",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
-            
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -170,7 +169,7 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net)[ -]*",
-                                                                string.Empty,   
+                                                                string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AirDateRegex = new Regex(@"^(.*?)(?<!\d)((?<airyear>\d{4})[_.-](?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])|(?<airmonth>[0-1][0-9])[_.-](?<airday>[0-3][0-9])[_.-](?<airyear>\d{4}))(?!\d)",
@@ -206,7 +205,8 @@ namespace NzbDrone.Core.Parser
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-        private static readonly Regex[] CommonTagRegex = new Regex[] {
+        private static readonly Regex[] CommonTagRegex = new Regex[]
+        {
             new Regex(@"(\[|\()*\b((featuring|feat.|feat|ft|ft.)\s{1}){1}\s*.*(\]|\))*", RegexOptions.IgnoreCase | RegexOptions.Compiled),
             new Regex(@"(?:\(|\[)(?:[^\(\[]*)(?:version|limited|deluxe|single|clean|album|special|bonus|promo|remastered)(?:[^\)\]]*)(?:\)|\])", RegexOptions.IgnoreCase | RegexOptions.Compiled)
         };
@@ -218,7 +218,7 @@ namespace NzbDrone.Core.Parser
         };
 
         private static readonly Regex AfterDashRegex = new Regex(@"[-:].*", RegexOptions.Compiled);
-        
+
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
             var fileInfo = new FileInfo(path);
@@ -241,7 +241,10 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-                if (!ValidateBeforeParsing(title)) return null;
+                if (!ValidateBeforeParsing(title))
+                {
+                    return null;
+                }
 
                 Logger.Debug("Parsing string '{0}'", title);
 
@@ -305,7 +308,9 @@ namespace NzbDrone.Core.Parser
             catch (Exception e)
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                {
                     Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                }
             }
 
             Logger.Debug("Unable to parse {0}", title);
@@ -316,10 +321,15 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-                if (!ValidateBeforeParsing(title)) return null;
+                if (!ValidateBeforeParsing(title))
+                {
+                    return null;
+                }
 
                 Logger.Debug("Parsing string '{0}' using search criteria artist: '{1}' album: '{2}'",
-                             title, artist.Name.RemoveAccent(), string.Join(", ", album.Select(a => a.Title.RemoveAccent())));
+                             title,
+                             artist.Name.RemoveAccent(),
+                             string.Join(", ", album.Select(a => a.Title.RemoveAccent())));
 
                 var releaseTitle = RemoveFileExtension(title);
 
@@ -375,7 +385,9 @@ namespace NzbDrone.Core.Parser
             catch (Exception e)
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                {
                     Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                }
             }
 
             Logger.Debug("Unable to parse {0}", title);
@@ -386,7 +398,10 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-                if (!ValidateBeforeParsing(title)) return null;
+                if (!ValidateBeforeParsing(title))
+                {
+                    return null;
+                }
 
                 Logger.Debug("Parsing string '{0}'", title);
 
@@ -466,7 +481,9 @@ namespace NzbDrone.Core.Parser
             catch (Exception e)
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                {
                     Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                }
             }
 
             Logger.Debug("Unable to parse {0}", title);
@@ -479,7 +496,9 @@ namespace NzbDrone.Core.Parser
 
             //If Title only contains numbers return it as is.
             if (long.TryParse(name, out number))
+            {
                 return name;
+            }
 
             name = PercentRegex.Replace(name, "percent");
 
@@ -547,6 +566,7 @@ namespace NzbDrone.Core.Parser
                     {
                         return string.Empty;
                     }
+
                     return m.Value;
                 });
 
@@ -565,7 +585,7 @@ namespace NzbDrone.Core.Parser
             {
                 intermediate = regex.Replace(intermediate, string.Empty).Trim();
             }
-            
+
             return intermediate;
         }
 
@@ -591,7 +611,7 @@ namespace NzbDrone.Core.Parser
             artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
 
             // Coppied from Radarr (https://github.com/Radarr/Radarr/blob/develop/src/NzbDrone.Core/Parser/Parser.cs)
-            // TODO: Split into separate method and write unit tests for. 
+            // TODO: Split into separate method and write unit tests for.
             var parts = artistName.Split('.');
             artistName = "";
             int n = 0;
@@ -603,6 +623,7 @@ namespace NzbDrone.Core.Parser
                 {
                     nextPart = parts[n + 1];
                 }
+
                 if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
                 {
                     artistName += part + ".";
@@ -620,8 +641,10 @@ namespace NzbDrone.Core.Parser
                         artistName += " ";
                         previousAcronym = false;
                     }
+
                     artistName += part + " ";
                 }
+
                 n++;
             }
 

@@ -12,7 +12,6 @@ using NzbDrone.Core.ImportLists.Exceptions;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.ImportLists
 {
@@ -22,7 +21,7 @@ namespace NzbDrone.Core.ImportLists
         protected const int MaxNumResultsPerQuery = 1000;
 
         protected readonly IHttpClient _httpClient;
-        
+
         public bool SupportsPaging => PageSize > 0;
 
         public virtual int PageSize => 0;
@@ -124,6 +123,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     _importListStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
                 }
+
                 _logger.Warn("API Request Limit reached for {0}", this);
             }
             catch (HttpException ex)
@@ -242,5 +242,4 @@ namespace NzbDrone.Core.ImportLists
             return null;
         }
     }
-
 }

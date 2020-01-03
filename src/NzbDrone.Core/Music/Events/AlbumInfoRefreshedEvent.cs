@@ -1,9 +1,6 @@
-﻿using NzbDrone.Common.Messaging;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using NzbDrone.Common.Messaging;
 
 namespace NzbDrone.Core.Music.Events
 {

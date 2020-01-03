@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Data.SQLite;
 using FluentValidation;
+using Lidarr.Http.Exceptions;
+using Lidarr.Http.Extensions;
 using Nancy;
 using NLog;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Exceptions;
-using Lidarr.Http.Exceptions;
-using Lidarr.Http.Extensions;
 using HttpStatusCode = Nancy.HttpStatusCode;
 
 namespace Lidarr.Http.ErrorManagement
@@ -69,10 +69,12 @@ namespace Lidarr.Http.ErrorManagement
                 if (context.Request.Method == "PUT" || context.Request.Method == "POST")
                 {
                     if (sqLiteException.Message.Contains("constraint failed"))
+                    {
                         return new ErrorModel
                         {
                             Message = exception.Message,
                         }.AsResponse(context, HttpStatusCode.Conflict);
+                    }
                 }
 
                 _logger.Error(sqLiteException, "[{0} {1}]", context.Request.Method, context.Request.Path);

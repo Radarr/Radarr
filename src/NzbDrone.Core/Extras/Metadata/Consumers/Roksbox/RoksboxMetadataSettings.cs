@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, HelpText = "Album Title.jpg")]
         public bool AlbumImages { get; set; }
-        
+
         public bool IsValid => true;
 
         public NzbDroneValidationResult Validate()

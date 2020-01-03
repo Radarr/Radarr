@@ -47,6 +47,5 @@ namespace Lidarr.Http.Frontend.Mappers
         {
             return File.OpenRead(filePath);
         }
-
     }
 }

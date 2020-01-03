@@ -1,8 +1,8 @@
-using FluentAssertions;
-using NUnit.Framework;
-using Lidarr.Api.V1.Indexers;
 using System.Linq;
 using System.Net;
+using FluentAssertions;
+using Lidarr.Api.V1.Indexers;
+using NUnit.Framework;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -38,7 +38,6 @@ namespace NzbDrone.Integration.Test.ApiTests
             // TODO: Maybe we should create a full mock Newznab server endpoint.
             //var result = Releases.Post(new ReleaseResource { Guid = releases.First().Guid });
             //result.Guid.Should().Be(releases.First().Guid);
-
             var result = Releases.Post(new ReleaseResource { Guid = releases.First().Guid }, HttpStatusCode.InternalServerError);
         }
 
@@ -49,10 +48,10 @@ namespace NzbDrone.Integration.Test.ApiTests
             releaseResource.Title.Should().NotBeNullOrWhiteSpace();
             releaseResource.DownloadUrl.Should().NotBeNullOrWhiteSpace();
             releaseResource.ArtistName.Should().NotBeNullOrWhiteSpace();
+
             //TODO: uncomment these after moving to restsharp for rss
             //releaseResource.NzbInfoUrl.Should().NotBeNullOrWhiteSpace();
             //releaseResource.Size.Should().BeGreaterThan(0);
-
             return true;
         }
     }

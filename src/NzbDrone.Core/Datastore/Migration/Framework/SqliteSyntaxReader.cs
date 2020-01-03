@@ -5,7 +5,6 @@ using System.Text;
 
 namespace NzbDrone.Core.Datastore.Migration.Framework
 {
-
     public class SqliteSyntaxReader
     {
         public string Buffer { get; private set; }
@@ -48,18 +47,25 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
         public void SkipWhitespace()
         {
-            while (!IsEndOfFile && char.IsWhiteSpace(Buffer[Index])) Index++;
+            while (!IsEndOfFile && char.IsWhiteSpace(Buffer[Index]))
+            {
+                Index++;
+            }
         }
 
         public void SkipTillToken(TokenType tokenType)
         {
             if (IsEndOfFile)
+            {
                 return;
+            }
 
             while (Read() != tokenType)
             {
                 if (Type == TokenType.ListStart)
+                {
                     SkipTillToken(TokenType.ListEnd);
+                }
             }
         }
 
@@ -148,7 +154,10 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             {
                 var start = Index;
                 var end = start + 1;
-                while (end < Buffer.Length && (char.IsLetter(Buffer[end]) || char.IsNumber(Buffer[end]) || Buffer[end] == '_' || Buffer[end] == '(')) end++;
+                while (end < Buffer.Length && (char.IsLetter(Buffer[end]) || char.IsNumber(Buffer[end]) || Buffer[end] == '_' || Buffer[end] == '('))
+                {
+                    end++;
+                }
 
                 if (end >= Buffer.Length || Buffer[end] == ',' || Buffer[end] == ')' || char.IsWhiteSpace(Buffer[end]))
                 {
@@ -164,6 +173,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 {
                     throw CreateSyntaxException("Unexpected sequence.");
                 }
+
                 Type = TokenType.StringToken;
                 Value = Buffer.Substring(start, end - start);
                 return Type;
@@ -191,6 +201,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 {
                     throw CreateSyntaxException("Expected ListEnd first");
                 }
+
                 if (Type == TokenType.ListStart)
                 {
                     SkipTillToken(TokenType.ListEnd);
@@ -215,7 +226,10 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             var start = Index + 1;
             var end = Buffer.IndexOf(terminator, Index);
 
-            if (end == -1) throw new SyntaxErrorException();
+            if (end == -1)
+            {
+                throw new SyntaxErrorException();
+            }
 
             Index = end + 1;
             return Buffer.Substring(start, end - start);
@@ -230,12 +244,18 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 var start = Index + 1;
                 var end = Buffer.IndexOf(escape, start);
 
-                if (end == -1) throw new SyntaxErrorException();
+                if (end == -1)
+                {
+                    throw new SyntaxErrorException();
+                }
 
                 Index = end + 1;
                 identifier.Append(Buffer.Substring(start, end - start));
 
-                if (Buffer[Index] != escape) break;
+                if (Buffer[Index] != escape)
+                {
+                    break;
+                }
 
                 identifier.Append(escape);
             }

@@ -1,10 +1,9 @@
-using NzbDrone.Core.ImportLists.Exceptions;
-using NzbDrone.Core.Parser.Model;
 using System.Collections.Generic;
 using System.Net;
-using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.ImportLists.Exceptions;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.ImportLists.LastFm
 {
@@ -57,6 +56,5 @@ namespace NzbDrone.Core.ImportLists.LastFm
 
             return true;
         }
-
     }
 }

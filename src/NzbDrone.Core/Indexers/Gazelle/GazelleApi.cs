@@ -72,7 +72,6 @@ namespace NzbDrone.Core.Indexers.Gazelle
     {
         public string Status { get; set; }
         public GazelleIndexResponse Response { get; set; }
-
     }
 
     public class GazelleIndexResponse
@@ -81,7 +80,5 @@ namespace NzbDrone.Core.Indexers.Gazelle
         public string Id { get; set; }
         public string Authkey { get; set; }
         public string Passkey { get; set; }
-
     }
-
 }

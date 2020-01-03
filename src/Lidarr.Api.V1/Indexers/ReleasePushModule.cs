@@ -2,19 +2,17 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
-using Nancy;
 using NLog;
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Parser.Model;
-using Lidarr.Http.Extensions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Parser.Model;
 
 namespace Lidarr.Api.V1.Indexers
 {
-    class ReleasePushModule : ReleaseModuleBase
+    internal class ReleasePushModule : ReleaseModuleBase
     {
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IProcessDownloadDecisions _downloadDecisionProcessor;
@@ -31,7 +29,7 @@ namespace Lidarr.Api.V1.Indexers
             _indexerFactory = indexerFactory;
             _logger = logger;
 
-            Post("/push",  x => ProcessRelease(ReadResourceFromRequest()));
+            Post("/push", x => ProcessRelease(ReadResourceFromRequest()));
 
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.DownloadUrl).NotEmpty();

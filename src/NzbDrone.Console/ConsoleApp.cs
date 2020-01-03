@@ -35,6 +35,7 @@ namespace NzbDrone.Console
                     System.Console.WriteLine("NLog Exception: " + ex.ToString());
                     throw;
                 }
+
                 Bootstrap.Start(startupArgs, new ConsoleAlerts());
             }
             catch (LidarrStartupException ex)
@@ -85,11 +86,14 @@ namespace NzbDrone.Console
                 if (exitCode == ExitCodes.NonRecoverableFailure)
                 {
                     System.Console.WriteLine("Non-recoverable failure, waiting for user intervention...");
-                    for (int i = 0; i< 3600; i++)
+                    for (int i = 0; i < 3600; i++)
                     {
                         System.Threading.Thread.Sleep(1000);
 
-                        if (!System.Console.IsInputRedirected && System.Console.KeyAvailable) break;
+                        if (!System.Console.IsInputRedirected && System.Console.KeyAvailable)
+                        {
+                            break;
+                        }
                     }
                 }
 

@@ -36,10 +36,12 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return Id.Equals(other.Id);
         }
 
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.Music
             {
                 return false;
             }
+
             return ReferenceEquals(this, obj) || Equals(obj as SecondaryAlbumType);
         }
 
@@ -74,7 +77,6 @@ namespace NzbDrone.Core.Music
         public static SecondaryAlbumType Mixtape => new SecondaryAlbumType(9, "Mixtape/Street");
         public static SecondaryAlbumType Demo => new SecondaryAlbumType(10, "Demo");
 
-
         public static readonly List<SecondaryAlbumType> All = new List<SecondaryAlbumType>
         {
             Studio,
@@ -88,7 +90,6 @@ namespace NzbDrone.Core.Music
             Mixtape,
             Demo
         };
-
 
         public static SecondaryAlbumType FindById(int id)
         {

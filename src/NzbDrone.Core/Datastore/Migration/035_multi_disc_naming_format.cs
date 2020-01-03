@@ -1,7 +1,5 @@
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Data;
-using System.IO;
 
 namespace NzbDrone.Core.Datastore.Migration
 {

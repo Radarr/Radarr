@@ -6,7 +6,6 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class NamingConfigFixture : IntegrationTest
     {
-
         [Test]
         public void should_be_able_to_get()
         {
@@ -41,7 +40,6 @@ namespace NzbDrone.Integration.Test.ApiTests
             var config = NamingConfig.GetSingle();
             config.RenameTracks = true;
             config.StandardTrackFormat = "";
-
 
             var errors = NamingConfig.InvalidPut(config);
             errors.Should().NotBeNull();

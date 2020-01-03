@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Datastore.Migration
             var updater = new ProfileUpdater19(conn, tran);
 
             updater.SplitQualityAppend(6, 35);  // APE after Flac
-            updater.SplitQualityAppend(6, 36);  // WavPack after Flac 
+            updater.SplitQualityAppend(6, 36);  // WavPack after Flac
 
             updater.Commit();
         }
@@ -88,7 +88,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             foreach (var profile in _profiles)
             {
-                if (profile.Items.Any(v => v.Quality == quality)) continue;
+                if (profile.Items.Any(v => v.Quality == quality))
+                {
+                    continue;
+                }
 
                 var findIndex = profile.Items.FindIndex(v =>
                 {

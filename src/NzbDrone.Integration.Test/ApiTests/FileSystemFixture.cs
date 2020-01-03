@@ -1,14 +1,14 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Linq;
+using NzbDrone.Common;
+using NzbDrone.Common.Disk;
 using NzbDrone.Integration.Test.Client;
 using RestSharp;
-using System.Net;
-using NzbDrone.Common.Disk;
-using System.Reflection;
-using System.IO;
-using System.Collections.Generic;
-using NzbDrone.Common;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -16,7 +16,7 @@ namespace NzbDrone.Integration.Test.ApiTests
     public class FileSystemFixture : IntegrationTest
     {
         public ClientBase FileSystem;
-        
+
         private string _file;
         private string _folder;
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             _file = Assembly.GetExecutingAssembly().Location;
             _folder = Path.GetDirectoryName(_file) + Path.DirectorySeparatorChar;
         }
-    
+
         [Test]
         public void get_filesystem_content_excluding_files()
         {

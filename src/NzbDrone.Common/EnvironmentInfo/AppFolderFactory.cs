@@ -41,7 +41,6 @@ namespace NzbDrone.Common.EnvironmentInfo
             {
                 throw new LidarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
             }
-            
 
             if (OsInfo.IsWindows)
             {
@@ -70,7 +69,10 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         private void InitializeMonoApplicationData()
         {
-            if (OsInfo.IsWindows) return;
+            if (OsInfo.IsWindows)
+            {
+                return;
+            }
 
             try
             {
@@ -80,7 +82,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                 var configHome = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify);
                 if (configHome.IsNullOrWhiteSpace() ||
                     configHome == "/.config" ||
-                    configHome.EndsWith("/.config") && !_diskProvider.FolderExists(configHome.GetParentPath()) ||
+                    (configHome.EndsWith("/.config") && !_diskProvider.FolderExists(configHome.GetParentPath())) ||
                     !_diskProvider.FolderExists(configHome))
                 {
                     // Tell mono/netcore to use appData/.config as ApplicationData folder.
@@ -90,7 +92,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                 var dataHome = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
                 if (dataHome.IsNullOrWhiteSpace() ||
                     dataHome == "/.local/share" ||
-                    dataHome.EndsWith("/.local/share") && !_diskProvider.FolderExists(dataHome.GetParentPath().GetParentPath()) ||
+                    (dataHome.EndsWith("/.local/share") && !_diskProvider.FolderExists(dataHome.GetParentPath().GetParentPath())) ||
                     !_diskProvider.FolderExists(dataHome))
                 {
                     // Tell mono/netcore to use appData/.config/share as LocalApplicationData folder.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.RootFolders;
 using Lidarr.Http.REST;
+using NzbDrone.Core.RootFolders;
 
 namespace Lidarr.Api.V1.RootFolders
 {
@@ -19,7 +19,10 @@ namespace Lidarr.Api.V1.RootFolders
     {
         public static RootFolderResource ToResource(this RootFolder model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RootFolderResource
             {
@@ -35,13 +38,17 @@ namespace Lidarr.Api.V1.RootFolders
 
         public static RootFolder ToModel(this RootFolderResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new RootFolder
             {
                 Id = resource.Id,
 
                 Path = resource.Path,
+
                 //Accessible
                 //FreeSpace
                 //UnmappedFolders

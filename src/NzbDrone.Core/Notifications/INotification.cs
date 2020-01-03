@@ -1,5 +1,5 @@
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
 {

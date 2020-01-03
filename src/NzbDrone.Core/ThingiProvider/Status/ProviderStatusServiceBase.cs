@@ -21,7 +21,6 @@ namespace NzbDrone.Core.ThingiProvider.Status
         where TProvider : IProvider
         where TModel : ProviderStatusBase, new()
     {
-
         protected readonly object _syncRoot = new object();
 
         protected readonly IProviderStatusRepository<TModel> _providerStatusRepository;

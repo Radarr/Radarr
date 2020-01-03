@@ -5,13 +5,8 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.History;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
@@ -25,7 +20,6 @@ namespace NzbDrone.Core.Test.MusicTests
         [SetUp]
         public void Setup()
         {
-
             _release = Builder<AlbumRelease>
                 .CreateNew()
                 .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
@@ -47,7 +41,6 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<ITrackService>()
                 .Setup(s => s.GetTracksForRefresh(_release.Id, It.IsAny<IEnumerable<string>>()))
                 .Returns(_tracks);
-
         }
 
         [Test]
@@ -72,18 +65,18 @@ namespace NzbDrone.Core.Test.MusicTests
             var clash = existing.JsonClone();
             clash.Id = 100;
             clash.ForeignReleaseId = clash.ForeignReleaseId + 1;
-            
+
             clash.Tracks = Builder<Track>.CreateListOfSize(10)
                 .All()
                 .With(x => x.AlbumReleaseId = clash.Id)
                 .With(x => x.ArtistMetadata = _metadata)
                 .With(x => x.ArtistMetadataId = _metadata.Id)
                 .BuildList();
-            
+
             Mocker.GetMock<IReleaseService>()
                 .Setup(x => x.GetReleaseByForeignReleaseId(clash.ForeignReleaseId, false))
                 .Returns(clash);
-            
+
             Mocker.GetMock<ITrackService>()
                 .Setup(x => x.GetTracksForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
                 .Returns(_tracks);
@@ -102,7 +95,6 @@ namespace NzbDrone.Core.Test.MusicTests
             // check that clash gets updated
             Mocker.GetMock<IReleaseService>()
                 .Verify(v => v.UpdateMany(It.Is<List<AlbumRelease>>(s => s.First().ForeignReleaseId == newInfo.ForeignReleaseId)));
-
         }
 
         [Test]
@@ -141,7 +133,6 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IReleaseService>()
                 .Verify(v => v.UpdateMany(It.Is<List<AlbumRelease>>(s => s.First().ForeignReleaseId == newInfo.ForeignReleaseId)));
-
         }
     }
 }

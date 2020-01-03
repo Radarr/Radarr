@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         private readonly Logger _logger;
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
-        private readonly ICached<Dictionary<string, WatchFolderItem>>  _watchFolderItemCache;
+        private readonly ICached<Dictionary<string, WatchFolderItem>> _watchFolderItemCache;
 
         public ScanWatchFolder(ICacheManager cacheManager, IDiskScanService diskScanService, IDiskProvider diskProvider, Logger logger)
         {
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             var newWatchItems = new Dictionary<string, WatchFolderItem>();
             var lastWatchItems = _watchFolderItemCache.Get(watchFolder, () => newWatchItems);
-            
+
             foreach (var newWatchItem in GetDownloadItems(watchFolder, lastWatchItems, waitPeriod))
             {
                 newWatchItems[newWatchItem.DownloadId] = newWatchItem;

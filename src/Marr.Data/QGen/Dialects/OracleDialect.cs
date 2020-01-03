@@ -13,7 +13,7 @@ namespace Marr.Data.QGen.Dialects
                 return string.Empty;
             }
 
-            string[] parts = token.Replace('[', new Char()).Replace(']', new Char()).Split('.');
+            string[] parts = token.Replace('[', new char()).Replace(']', new char()).Split('.');
 
             StringBuilder sb = new StringBuilder();
             foreach (string part in parts)

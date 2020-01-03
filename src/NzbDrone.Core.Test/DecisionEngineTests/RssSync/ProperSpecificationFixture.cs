@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.DecisionEngine.Specifications;
-
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
@@ -35,9 +34,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
             _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
 
-            var singleAlbumList = new List<Album> { new Album {}, new Album {} };
-            var doubleAlbumList = new List<Album> { new Album {}, new Album {}, new Album {} };
-
+            var singleAlbumList = new List<Album> { new Album { }, new Album { } };
+            var doubleAlbumList = new List<Album> { new Album { }, new Album { }, new Album { } };
 
             var fakeArtist = Builder<Artist>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })

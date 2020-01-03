@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
     public class IPTorrentsRequestGenerator : IIndexerRequestGenerator
     {
         public IPTorrentsSettings Settings { get; set; }
-        
+
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();

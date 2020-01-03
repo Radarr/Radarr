@@ -1,10 +1,9 @@
-using Newtonsoft.Json;
-using NzbDrone.Core.ImportLists.Exceptions;
-using NzbDrone.Core.Parser.Model;
 using System.Collections.Generic;
 using System.Net;
-using NLog;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.ImportLists.Exceptions;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.ImportLists.LidarrLists
 {
@@ -67,6 +66,5 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
 
             return true;
         }
-
     }
 }

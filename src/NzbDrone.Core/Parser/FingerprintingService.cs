@@ -35,12 +35,12 @@ namespace NzbDrone.Core.Parser
         private const string _acoustIdUrl = "https://api.acoustid.org/v2/lookup";
         private const string _acoustIdApiKey = "QANd68ji1L";
         private const int _fingerprintingTimeout = 10000;
-        
+
         private readonly Logger _logger;
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _customerRequestBuilder;
         private readonly ICached<AcoustId> _cache;
-        
+
         private readonly string _fpcalcPath;
         private readonly Version _fpcalcVersion;
         private readonly string _fpcalcArgs;
@@ -108,6 +108,7 @@ namespace NzbDrone.Core.Parser
                 try
                 {
                     p.Start();
+
                     // To avoid deadlocks, always read the output stream first and then wait.
                     string output = p.StandardOutput.ReadToEnd();
                     p.WaitForExit(1000);
@@ -143,6 +144,7 @@ namespace NzbDrone.Core.Parser
             p.StartInfo.RedirectStandardOutput = true;
 
             p.Start();
+
             // To avoid deadlocks, always read the output stream first and then wait.
             string output = p.StandardOutput.ReadToEnd();
             p.WaitForExit(1000);
@@ -178,7 +180,7 @@ namespace NzbDrone.Core.Parser
             {
                 args = "-json";
             }
-            
+
             if (_fpcalcVersion >= new Version("1.4.3"))
             {
                 args += " -ignore-errors";
@@ -189,28 +191,29 @@ namespace NzbDrone.Core.Parser
 
         public AcoustId ParseFpcalcJsonOutput(string output)
         {
-             return Json.Deserialize<AcoustId>(output);
+            return Json.Deserialize<AcoustId>(output);
         }
 
         public AcoustId ParseFpcalcTextOutput(string output)
         {
-                var durationstring = Regex.Match(output, @"(?<=DURATION=)[\d\.]+(?=\s)").Value;
-                double duration;
-                if (durationstring.IsNullOrWhiteSpace() || !double.TryParse(durationstring, out duration))
-                {
-                    return null;
-                }
+            var durationstring = Regex.Match(output, @"(?<=DURATION=)[\d\.]+(?=\s)").Value;
+            double duration;
+            if (durationstring.IsNullOrWhiteSpace() || !double.TryParse(durationstring, out duration))
+            {
+                return null;
+            }
 
-                var fingerprint = Regex.Match(output, @"(?<=FINGERPRINT=)[^\s]+").Value;
-                if (fingerprint.IsNullOrWhiteSpace())
-                {
-                    return null;
-                }
+            var fingerprint = Regex.Match(output, @"(?<=FINGERPRINT=)[^\s]+").Value;
+            if (fingerprint.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
 
-                return new AcoustId {
-                    Duration = duration,
-                    Fingerprint = fingerprint
-                };
+            return new AcoustId
+            {
+                Duration = duration,
+                Fingerprint = fingerprint
+            };
         }
 
         public AcoustId ParseFpcalcOutput(string output)
@@ -219,7 +222,7 @@ namespace NzbDrone.Core.Parser
             {
                 return null;
             }
-            
+
             if (_fpcalcArgs.Contains("-json"))
             {
                 return ParseFpcalcJsonOutput(output);
@@ -255,67 +258,67 @@ namespace NzbDrone.Core.Parser
                 // see https://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why?lq=1
                 // this is most likely overkill...
                 using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
-                 {
-                     using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
-                     {
-                         DataReceivedEventHandler outputHandler = delegate(object sender, DataReceivedEventArgs e)
-                             {
-                                 if (e.Data == null)
-                                 {
-                                     outputWaitHandle.Set();
-                                 }
-                                 else
-                                 {
-                                     output.AppendLine(e.Data);
-                                 }
-                             };
+                {
+                    using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
+                    {
+                        DataReceivedEventHandler outputHandler = (sender, e) =>
+                        {
+                            if (e.Data == null)
+                            {
+                                outputWaitHandle.Set();
+                            }
+                            else
+                            {
+                                output.AppendLine(e.Data);
+                            }
+                        };
 
-                         DataReceivedEventHandler errorHandler = delegate(object sender, DataReceivedEventArgs e)
-                             {
-                                 if (e.Data == null)
-                                 {
-                                     errorWaitHandle.Set();
-                                 }
-                                 else
-                                 {
-                                     error.AppendLine(e.Data);
-                                 }
-                             };
-                         
-                         p.OutputDataReceived += outputHandler;
-                         p.ErrorDataReceived += errorHandler;
+                        DataReceivedEventHandler errorHandler =  (sender, e) =>
+                        {
+                            if (e.Data == null)
+                            {
+                                errorWaitHandle.Set();
+                            }
+                            else
+                            {
+                                error.AppendLine(e.Data);
+                            }
+                        };
 
-                         p.Start();
+                        p.OutputDataReceived += outputHandler;
+                        p.ErrorDataReceived += errorHandler;
 
-                         p.BeginOutputReadLine();
-                         p.BeginErrorReadLine();
+                        p.Start();
 
-                         if (p.WaitForExit(_fingerprintingTimeout) &&
-                             outputWaitHandle.WaitOne(_fingerprintingTimeout) &&
-                             errorWaitHandle.WaitOne(_fingerprintingTimeout))
-                         {
-                             // Process completed.
-                             if (p.ExitCode != 0)
-                             {
-                                 _logger.Warn($"fpcalc error: {error}");
-                                 return null;
-                             }
-                             else
-                             {
-                                 return ParseFpcalcOutput(output.ToString());
-                             }
-                         }
-                         else
-                         {
-                             // Timed out.  Remove handlers to avoid object disposed error
-                             p.OutputDataReceived -= outputHandler;
-                             p.ErrorDataReceived -= errorHandler;
-                             
-                             _logger.Warn($"fpcalc timed out. {error}");
-                             return null;
-                         }
-                     }
-                 }
+                        p.BeginOutputReadLine();
+                        p.BeginErrorReadLine();
+
+                        if (p.WaitForExit(_fingerprintingTimeout) &&
+                            outputWaitHandle.WaitOne(_fingerprintingTimeout) &&
+                            errorWaitHandle.WaitOne(_fingerprintingTimeout))
+                        {
+                            // Process completed.
+                            if (p.ExitCode != 0)
+                            {
+                                _logger.Warn($"fpcalc error: {error}");
+                                return null;
+                            }
+                            else
+                            {
+                                return ParseFpcalcOutput(output.ToString());
+                            }
+                        }
+                        else
+                        {
+                            // Timed out.  Remove handlers to avoid object disposed error
+                            p.OutputDataReceived -= outputHandler;
+                            p.ErrorDataReceived -= errorHandler;
+
+                            _logger.Warn($"fpcalc timed out. {error}");
+                            return null;
+                        }
+                    }
+                }
             }
 
             return null;
@@ -327,7 +330,7 @@ namespace NzbDrone.Core.Parser
             {
                 return;
             }
-            
+
             Lookup(tracks.Select(x => Tuple.Create(x, GetFingerprint(x.Path))).ToList(), threshold);
         }
 
@@ -355,7 +358,7 @@ namespace NzbDrone.Core.Parser
             {
                 sb.Append($"&duration.{i}={toLookup[i].Item2.Duration:F0}&fingerprint.{i}={toLookup[i].Item2.Fingerprint}");
             }
-            
+
             // they prefer a gzipped body
             httpRequest.SetContent(Encoding.UTF8.GetBytes(sb.ToString()).Compress());
             httpRequest.Headers.Add("Content-Encoding", "gzip");
@@ -442,10 +445,10 @@ namespace NzbDrone.Core.Parser
 
             _logger.Debug("Fingerprinting complete.");
 
-            var SerializerSettings = Json.GetSerializerSettings();
-            SerializerSettings.Formatting = Formatting.None;
+            var serializerSettings = Json.GetSerializerSettings();
+            serializerSettings.Formatting = Formatting.None;
             var output = new { Fingerprints = toLookup.Select(x => new { Path = x.Item1.Path, AcoustIdResults = x.Item1.AcoustIdResults }) };
-            _logger.Debug($"*** FingerprintingService TestCaseGenerator ***\n{JsonConvert.SerializeObject(output, SerializerSettings)}");
+            _logger.Debug($"*** FingerprintingService TestCaseGenerator ***\n{JsonConvert.SerializeObject(output, serializerSettings)}");
         }
 
         public class LookupResponse

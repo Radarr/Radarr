@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Parser.Model;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Parser.Model;
 
 namespace Lidarr.Api.V1.Parse
 {

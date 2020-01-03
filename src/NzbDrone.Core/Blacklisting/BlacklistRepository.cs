@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using Marr.Data.QGen;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Blacklisting
@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Blacklisting
 
     public class BlacklistRepository : BasicRepository<Blacklist>, IBlacklistRepository
     {
-        public BlacklistRepository(IMainDatabase database, IEventAggregator eventAggregator) :
-            base(database, eventAggregator)
+        public BlacklistRepository(IMainDatabase database, IEventAggregator eventAggregator)
+            : base(database, eventAggregator)
         {
         }
 

@@ -1,13 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Music;
-using System;
-using System.IO;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Parser
 {
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Parser
             {
                 title = parsedAlbumInfo.ArtistName;
             }
-            
+
             var artistInfo = _artistService.FindByName(title);
 
             if (artistInfo == null)
@@ -134,14 +134,16 @@ namespace NzbDrone.Core.Parser
                 {
                     return _albumService.ArtistAlbumsBetweenDates(artist,
                         new DateTime(parsedAlbumInfo.DiscographyStart, 1, 1),
-                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31), false);
+                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31),
+                        false);
                 }
 
                 if (parsedAlbumInfo.DiscographyEnd > 0)
                 {
                     return _albumService.ArtistAlbumsBetweenDates(artist,
                         new DateTime(1800, 1, 1),
-                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31), false);
+                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31),
+                        false);
                 }
 
                 return _albumService.GetAlbumsByArtist(artist.Id);
@@ -168,15 +170,12 @@ namespace NzbDrone.Core.Parser
             {
                 result.Add(albumInfo);
             }
-
             else
             {
                 _logger.Debug("Unable to find {0}", parsedAlbumInfo);
             }
 
-
             return result;
-
         }
 
         public RemoteAlbum Map(ParsedAlbumInfo parsedAlbumInfo, int artistId, IEnumerable<int> albumIds)

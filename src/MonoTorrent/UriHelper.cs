@@ -93,9 +93,9 @@ namespace MonoTorrent
                 else
                     result.WriteByte ((byte)'%');
 
-                int idx = ((int) c) >> 4;
+                int idx = c >> 4;
                 result.WriteByte ((byte)hexChars [idx]);
-                idx = ((int) c) & 0x0F;
+                idx = c & 0x0F;
                 result.WriteByte ((byte)hexChars [idx]);
             }
             else {

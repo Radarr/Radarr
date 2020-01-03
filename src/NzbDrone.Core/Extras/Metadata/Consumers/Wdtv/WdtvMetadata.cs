@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
@@ -44,21 +42,23 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
             _logger.Debug("Unknown track file metadata: {0}", metadataFile.RelativePath);
             return Path.Combine(artist.Path, metadataFile.RelativePath);
-
         }
 
         public override MetadataFile FindMetadataFile(Artist artist, string path)
         {
             var filename = Path.GetFileName(path);
 
-            if (filename == null) return null;
+            if (filename == null)
+            {
+                return null;
+            }
 
             var metadata = new MetadataFile
-                           {
-                               ArtistId = artist.Id,
-                               Consumer = GetType().Name,
-                               RelativePath = artist.Path.GetRelativePath(path)
-                           };
+            {
+                ArtistId = artist.Id,
+                Consumer = GetType().Name,
+                RelativePath = artist.Path.GetRelativePath(path)
+            };
 
             var parseResult = Parser.Parser.ParseMusicTitle(filename);
 
@@ -70,7 +70,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                         metadata.Type = MetadataType.TrackMetadata;
                         return metadata;
                 }
-                
             }
 
             return null;
@@ -141,7 +140,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
         {
-
             return new List<ImageFileResult>();
         }
 

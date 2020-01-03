@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.ArtistStats;
-using NzbDrone.SignalR;
 using Lidarr.Api.V1.Albums;
 using Lidarr.Http.Extensions;
+using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Music;
+using NzbDrone.SignalR;
 
 namespace Lidarr.Api.V1.Calendar
 {
@@ -36,8 +36,15 @@ namespace Lidarr.Api.V1.Calendar
             var queryStart = Request.Query.Start;
             var queryEnd = Request.Query.End;
 
-            if (queryStart.HasValue) start = DateTime.Parse(queryStart.Value);
-            if (queryEnd.HasValue) end = DateTime.Parse(queryEnd.Value);
+            if (queryStart.HasValue)
+            {
+                start = DateTime.Parse(queryStart.Value);
+            }
+
+            if (queryEnd.HasValue)
+            {
+                end = DateTime.Parse(queryEnd.Value);
+            }
 
             var resources = MapToResource(_albumService.AlbumsBetweenDates(start, end, includeUnmonitored), includeArtist);
 

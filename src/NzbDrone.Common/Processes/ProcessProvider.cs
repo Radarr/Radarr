@@ -136,7 +136,6 @@ namespace NzbDrone.Common.Processes
                         {
                             _logger.Error(e, "Unable to set environment variable '{0}', value is null", environmentVariable.Key);
                         }
-
                         else
                         {
                             _logger.Error(e, "Unable to set environment variable '{0}'", environmentVariable.Key);
@@ -156,7 +155,10 @@ namespace NzbDrone.Common.Processes
 
             process.OutputDataReceived += (sender, eventArgs) =>
             {
-                if (string.IsNullOrWhiteSpace(eventArgs.Data)) return;
+                if (string.IsNullOrWhiteSpace(eventArgs.Data))
+                {
+                    return;
+                }
 
                 logger.Debug(eventArgs.Data);
 
@@ -168,7 +170,10 @@ namespace NzbDrone.Common.Processes
 
             process.ErrorDataReceived += (sender, eventArgs) =>
             {
-                if (string.IsNullOrWhiteSpace(eventArgs.Data)) return;
+                if (string.IsNullOrWhiteSpace(eventArgs.Data))
+                {
+                    return;
+                }
 
                 logger.Error(eventArgs.Data);
 
@@ -209,8 +214,11 @@ namespace NzbDrone.Common.Processes
         public ProcessOutput StartAndCapture(string path, string args = null, StringDictionary environmentVariables = null)
         {
             var output = new ProcessOutput();
-            var process = Start(path, args, environmentVariables, s => output.Lines.Add(new ProcessOutputLine(ProcessOutputLevel.Standard, s)),
-                                                                  error => output.Lines.Add(new ProcessOutputLine(ProcessOutputLevel.Error, error)));
+            var process = Start(path,
+                args,
+                environmentVariables,
+                s => output.Lines.Add(new ProcessOutputLine(ProcessOutputLevel.Standard, s)),
+                error => output.Lines.Add(new ProcessOutputLine(ProcessOutputLevel.Error, error)));
 
             process.WaitForExit();
             output.ExitCode = process.ExitCode;
@@ -283,7 +291,10 @@ namespace NzbDrone.Common.Processes
 
         private ProcessInfo ConvertToProcessInfo(Process process)
         {
-            if (process == null) return null;
+            if (process == null)
+            {
+                return null;
+            }
 
             process.Refresh();
 
@@ -291,7 +302,10 @@ namespace NzbDrone.Common.Processes
 
             try
             {
-                if (process.Id <= 0) return null;
+                if (process.Id <= 0)
+                {
+                    return null;
+                }
 
                 processInfo = new ProcessInfo();
                 processInfo.Id = process.Id;
@@ -309,7 +323,6 @@ namespace NzbDrone.Common.Processes
             }
 
             return processInfo;
-
         }
 
         private static string GetExeFileName(Process process)
@@ -325,7 +338,6 @@ namespace NzbDrone.Common.Processes
         private List<Process> GetProcessesByName(string name)
         {
             //TODO: move this to an OS specific class
-
             var monoProcesses = Process.GetProcessesByName("mono")
                                        .Union(Process.GetProcessesByName("mono-sgen"))
                                        .Union(Process.GetProcessesByName("mono-sgen32"))

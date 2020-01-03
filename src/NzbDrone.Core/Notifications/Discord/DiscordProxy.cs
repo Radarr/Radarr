@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 request.Headers.ContentType = "application/json";
                 request.SetContent(payload.ToJson());
 
-                 _httpClient.Execute(request);
+                _httpClient.Execute(request);
             }
             catch (RestException ex)
             {

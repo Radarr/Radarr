@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using NzbDrone.Common.Reflection;
 using Lidarr.Http.REST;
+using NzbDrone.Common.Reflection;
 
 namespace Lidarr.Http.Mapping
 {
@@ -10,7 +10,7 @@ namespace Lidarr.Http.Mapping
     {
         public static void ValidateMapping(Type modelType, Type resourceType)
         {
-            var errors = modelType.GetSimpleProperties().Where(c=>!c.GetGetMethod().IsStatic).Select(p => GetError(resourceType, p)).Where(c => c != null).ToList();
+            var errors = modelType.GetSimpleProperties().Where(c => !c.GetGetMethod().IsStatic).Select(p => GetError(resourceType, p)).Where(c => c != null).ToList();
 
             if (errors.Any())
             {

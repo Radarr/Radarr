@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
+using Lidarr.Http.ErrorManagement;
+using Lidarr.Http.Extensions;
+using Lidarr.Http.Extensions.Pipelines;
 using Nancy;
 using Nancy.Bootstrapper;
 using NLog;
 using NzbDrone.Common.Extensions;
-using Lidarr.Http.ErrorManagement;
-using Lidarr.Http.Extensions;
-using Lidarr.Http.Extensions.Pipelines;
 
 namespace NzbDrone.Api.Extensions.Pipelines
 {

@@ -1,30 +1,30 @@
-using NUnit.Framework;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Parser.Model;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators;
-using FluentAssertions;
-using System.Text;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 {
     [TestFixture]
     public class AggregateFilenameInfoFixture : CoreTest<AggregateFilenameInfo>
     {
-
         private LocalAlbumRelease GivenTracks(List<string> files, string root)
         {
-            var tracks = files.Select(x => new LocalTrack {
-                    Path = Path.Combine(root, x),
-                    FileTrackInfo = new ParsedTrackInfo {
-                        TrackNumbers = new [] { 0 },
-                    }
-                }).ToList();
+            var tracks = files.Select(x => new LocalTrack
+            {
+                Path = Path.Combine(root, x),
+                FileTrackInfo = new ParsedTrackInfo
+                {
+                    TrackNumbers = new[] { 0 },
+                }
+            }).ToList();
             return new LocalAlbumRelease(tracks);
         }
 
@@ -39,12 +39,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
         [Test]
         public void should_aggregate_filenames_example()
         {
-            var release = GivenTracks(new List<string> {
+            var release = GivenTracks(new List<string>
+            {
                     "Adele - 19 - 101 - Daydreamer.mp3",
                     "Adele - 19 - 102 - Best for Last.mp3",
                     "Adele - 19 - 103 - Chasing Pavements.mp3",
                     "Adele - 19 - 203 - That's It, I Quit, I'm Moving On.mp3"
-                }, @"C:\incoming".AsOsAgnostic());
+            }, @"C:\incoming".AsOsAgnostic());
 
             Subject.Aggregate(release, true);
 
@@ -56,49 +57,51 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 
         public static class TestCaseFactory
         {
-            private static List<string[]> tokenList = new List<string[]> {
+            private static List<string[]> tokenList = new List<string[]>
+            {
+                new[] { "trackNum2", "artist", "title", "tag" },
+                new[] { "trackNum3", "artist", "title", "tag" },
+                new[] { "trackNum2", "artist", "tag", "title" },
+                new[] { "trackNum3", "artist", "tag", "title" },
+                new[] { "trackNum2", "artist", "title" },
+                new[] { "trackNum3", "artist", "title" },
 
-                new [] {"trackNum2", "artist", "title", "tag"},
-                new [] {"trackNum3", "artist", "title", "tag"},
-                new [] {"trackNum2", "artist", "tag", "title"},
-                new [] {"trackNum3", "artist", "tag", "title"},
-                new [] {"trackNum2", "artist", "title"},
-                new [] {"trackNum3", "artist", "title"},
+                new[] { "artist", "tag", "trackNum2", "title" },
+                new[] { "artist", "tag", "trackNum3", "title" },
+                new[] { "artist", "trackNum2", "title", "tag" },
+                new[] { "artist", "trackNum3", "title", "tag" },
+                new[] { "artist", "trackNum2", "title" },
+                new[] { "artist", "trackNum3", "title" },
 
-                new [] {"artist", "tag", "trackNum2", "title"},
-                new [] {"artist", "tag", "trackNum3", "title"},
-                new [] {"artist", "trackNum2", "title", "tag"},
-                new [] {"artist", "trackNum3", "title", "tag"},
-                new [] {"artist", "trackNum2", "title"},
-                new [] {"artist", "trackNum3", "title"},
+                new[] { "artist", "title", "tag" },
+                new[] { "artist", "tag", "title" },
+                new[] { "artist", "title" },
 
-                new [] {"artist", "title", "tag"},
-                new [] {"artist", "tag", "title"},
-                new [] {"artist", "title"},
+                new[] { "trackNum2", "title" },
+                new[] { "trackNum3", "title" },
 
-                new [] {"trackNum2", "title"},
-                new [] {"trackNum3", "title"},
-                
-                new [] {"title"},
+                new[] { "title" },
             };
 
-            private static List<Tuple<string, string>> separators = new List<Tuple<string, string>> {
+            private static List<Tuple<string, string>> separators = new List<Tuple<string, string>>
+            {
                 Tuple.Create(" - ", " "),
                 Tuple.Create("_", " "),
                 Tuple.Create("-", "_")
             };
 
-            private static List<Tuple<string[], string, string>> otherCases = new List<Tuple<string[], string, string>> {
-                Tuple.Create(new [] {"track2", "title"}, " ", " "),
-                Tuple.Create(new [] {"track3", "title"}, " ", " ")
+            private static List<Tuple<string[], string, string>> otherCases = new List<Tuple<string[], string, string>>
+            {
+                Tuple.Create(new[] { "track2", "title" }, " ", " "),
+                Tuple.Create(new[] { "track3", "title" }, " ", " ")
             };
-            
+
             public static IEnumerable TestCases
             {
                 get
                 {
                     int i = 0;
-            
+
                     foreach (var tokens in tokenList)
                     {
                         foreach (var separator in separators)
@@ -130,7 +133,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
                 var components = new List<string>();
                 foreach (var field in fields)
                 {
-                    switch(field)
+                    switch (field)
                     {
                         case "artist":
                             components.Add("artist name".Replace(" ", whitespace));
@@ -139,7 +142,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
                             components.Add("tag string ignore".Replace(" ", whitespace));
                             break;
                         case "title":
-                            components.Add($"{(char)(96+i)} track title {i}".Replace(" ", whitespace));
+                            components.Add($"{(char)(96 + i)} track title {i}".Replace(" ", whitespace));
                             break;
                         case "trackNum2":
                             components.Add(i.ToString("00"));
@@ -149,6 +152,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
                             break;
                     }
                 }
+
                 outp.Add(string.Join(fieldSeparator, components) + ".mp3");
             }
 
@@ -159,7 +163,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
         {
             for (int i = 1; i <= tracks.Count; i++)
             {
-                var info = tracks[i-1].FileTrackInfo;
+                var info = tracks[i - 1].FileTrackInfo;
 
                 if (tokens.Contains("artist"))
                 {
@@ -168,7 +172,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 
                 if (tokens.Contains("title"))
                 {
-                    info.Title.Should().Be($"{(char)(96+i)} track title {i}".Replace(" ", whitespace));
+                    info.Title.Should().Be($"{(char)(96 + i)} track title {i}".Replace(" ", whitespace));
                 }
 
                 if (tokens.Contains("trackNum2") || tokens.Contains("trackNum3"))
@@ -186,8 +190,9 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
                 }
             }
         }
-        
-        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+
+        [Test]
+        [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
         public void should_aggregate_filenames_auto(Tuple<string[], string, string> testcase)
         {
             var files = GivenFilenames(testcase.Item1, testcase.Item2, testcase.Item3);
@@ -197,6 +202,5 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 
             VerifyDataAuto(release.LocalTracks, testcase.Item1, testcase.Item3);
         }
-
     }
 }

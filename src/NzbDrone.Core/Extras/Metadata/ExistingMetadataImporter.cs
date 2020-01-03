@@ -4,11 +4,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Lyrics;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Metadata
@@ -47,7 +47,6 @@ namespace NzbDrone.Core.Extras.Metadata
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
                 // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
-
                 if (LyricFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
                 {
                     continue;
@@ -83,7 +82,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             Artist = artist,
                             Path = possibleMetadataFile
                         };
-                
+
                         try
                         {
                             _augmentingService.Augment(localTrack, false);
@@ -105,7 +104,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             _logger.Debug("Extra file: {0} does not match existing files.", possibleMetadataFile);
                             continue;
                         }
-                        
+
                         metadata.TrackFileId = localTrack.Tracks.First().TrackFileId;
                     }
 
@@ -120,7 +119,6 @@ namespace NzbDrone.Core.Extras.Metadata
 
             // Return files that were just imported along with files that were
             // previously imported so previously imported files aren't imported twice
-
             return metadataFiles.Concat(filterResult.PreviouslyImported);
         }
     }

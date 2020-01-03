@@ -468,7 +468,7 @@ namespace MonoTorrent
                         break;
 
                     case ("publisher-url"):
-                        if ((String.IsNullOrEmpty(this.publisherUrl)) && (keypair.Value.ToString().Length > 0))
+                        if ((string.IsNullOrEmpty(this.publisherUrl)) && (keypair.Value.ToString().Length > 0))
                             this.publisherUrl = keypair.Value.ToString();
                         break;
 
@@ -478,7 +478,7 @@ namespace MonoTorrent
                         break;
 
                     case ("publisher"):
-                        if ((String.IsNullOrEmpty(this.publisher)) && (keypair.Value.ToString().Length > 0))
+                        if ((string.IsNullOrEmpty(this.publisher)) && (keypair.Value.ToString().Length > 0))
                             this.publisher = keypair.Value.ToString();
                         break;
 
@@ -492,7 +492,7 @@ namespace MonoTorrent
                         break;
 
                     case ("name"):
-                        if ((String.IsNullOrEmpty(this.name)) && (keypair.Value.ToString().Length > 0))
+                        if ((string.IsNullOrEmpty(this.name)) && (keypair.Value.ToString().Length > 0))
                             this.name = keypair.Value.ToString();
                         break;
 
@@ -767,7 +767,7 @@ namespace MonoTorrent
                                 if (e is ArgumentOutOfRangeException)
                                     throw new BEncodingException("Argument out of range exception when adding seconds to creation date.", e);
                                 else if (e is FormatException)
-                                    throw new BEncodingException(String.Format("Could not parse {0} into a number", keypair.Value), e);
+                                    throw new BEncodingException(string.Format("Could not parse {0} into a number", keypair.Value), e);
                                 else
                                     throw;
                             }
@@ -784,7 +784,7 @@ namespace MonoTorrent
                             break;                                          // even if there's an existing value
 
                         case ("comment"):
-                            if (String.IsNullOrEmpty(this.comment))
+                            if (string.IsNullOrEmpty(this.comment))
                                 this.comment = keypair.Value.ToString();
                             break;
 
@@ -793,7 +793,7 @@ namespace MonoTorrent
                             break;
 
                         case ("publisher-url"):
-                            if (String.IsNullOrEmpty(this.publisherUrl))
+                            if (string.IsNullOrEmpty(this.publisherUrl))
                                 this.publisherUrl = keypair.Value.ToString();
                             break;
 
@@ -844,7 +844,7 @@ namespace MonoTorrent
                                 }
                                 else
                                 {
-                                    throw new BEncodingException(String.Format("Non-BEncodedList found in announce-list (found {0})",
+                                    throw new BEncodingException(string.Format("Non-BEncodedList found in announce-list (found {0})",
                                       announces[j].GetType()));
                                 }
                             }

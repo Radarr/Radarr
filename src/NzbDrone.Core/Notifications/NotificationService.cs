@@ -4,14 +4,13 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.HealthCheck;
-using System.IO;
 
 namespace NzbDrone.Core.Notifications
 {
@@ -41,7 +40,6 @@ namespace NzbDrone.Core.Notifications
             {
                 qualityString += " Proper";
             }
-
 
             var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
 
@@ -128,10 +126,13 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleArtist(notification.Definition, message.Album.Artist)) continue;
+                    if (!ShouldHandleArtist(notification.Definition, message.Album.Artist))
+                    {
+                        continue;
+                    }
+
                     notification.OnGrab(grabMessage);
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unable to send OnGrab notification to {0}", notification.Definition.Name);
@@ -147,7 +148,6 @@ namespace NzbDrone.Core.Notifications
             }
 
             var downloadMessage = new AlbumDownloadMessage
-
             {
                 Message = GetAlbumDownloadMessage(message.Artist, message.Album, message.ImportedTracks),
                 Artist = message.Artist,
@@ -171,7 +171,6 @@ namespace NzbDrone.Core.Notifications
                         }
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnReleaseImport notification to: " + notification.Definition.Name);
@@ -190,7 +189,6 @@ namespace NzbDrone.Core.Notifications
                         notification.OnRename(message.Artist);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
@@ -209,7 +207,6 @@ namespace NzbDrone.Core.Notifications
                         notification.OnHealthIssue(message.HealthCheck);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);

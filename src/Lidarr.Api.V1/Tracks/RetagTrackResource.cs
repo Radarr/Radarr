@@ -10,7 +10,7 @@ namespace Lidarr.Api.V1.Tracks
         public string OldValue { get; set; }
         public string NewValue { get; set; }
     }
-    
+
     public class RetagTrackResource : RestResource
     {
         public int ArtistId { get; set; }
@@ -37,11 +37,12 @@ namespace Lidarr.Api.V1.Tracks
                 TrackNumbers = model.TrackNumbers.ToList(),
                 TrackFileId = model.TrackFileId,
                 RelativePath = model.RelativePath,
-                Changes = model.Changes.Select(x => new TagDifference {
-                        Field = x.Key,
-                        OldValue = x.Value.Item1,
-                        NewValue = x.Value.Item2
-                    }).ToList()
+                Changes = model.Changes.Select(x => new TagDifference
+                {
+                    Field = x.Key,
+                    OldValue = x.Value.Item1,
+                    NewValue = x.Value.Item2
+                }).ToList()
             };
         }
 

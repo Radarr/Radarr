@@ -1,9 +1,8 @@
 using System;
-using Nancy;
-using Nancy.Responses;
 using Lidarr.Http.ErrorManagement;
 using Lidarr.Http.Extensions;
-using Nancy.Configuration;
+using Nancy;
+using Nancy.Responses;
 
 namespace Lidarr.Http.Exceptions
 {

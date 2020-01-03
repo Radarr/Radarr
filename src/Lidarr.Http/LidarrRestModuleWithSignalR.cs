@@ -1,8 +1,8 @@
+using Lidarr.Http.REST;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.SignalR;
-using Lidarr.Http.REST;
 
 namespace Lidarr.Http
 {
@@ -25,7 +25,10 @@ namespace Lidarr.Http
 
         public void Handle(ModelEvent<TModel> message)
         {
-            if (!_signalRBroadcaster.IsConnected) return;
+            if (!_signalRBroadcaster.IsConnected)
+            {
+                return;
+            }
 
             if (message.Action == ModelAction.Deleted || message.Action == ModelAction.Sync)
             {
@@ -37,7 +40,10 @@ namespace Lidarr.Http
 
         protected void BroadcastResourceChange(ModelAction action, int id)
         {
-            if (!_signalRBroadcaster.IsConnected) return;
+            if (!_signalRBroadcaster.IsConnected)
+            {
+                return;
+            }
 
             if (action == ModelAction.Deleted)
             {
@@ -52,7 +58,10 @@ namespace Lidarr.Http
 
         protected void BroadcastResourceChange(ModelAction action, TResource resource)
         {
-            if (!_signalRBroadcaster.IsConnected) return;
+            if (!_signalRBroadcaster.IsConnected)
+            {
+                return;
+            }
 
             if (GetType().Namespace.Contains("V1"))
             {
@@ -67,10 +76,12 @@ namespace Lidarr.Http
             }
         }
 
-
         protected void BroadcastResourceChange(ModelAction action)
         {
-            if (!_signalRBroadcaster.IsConnected) return;
+            if (!_signalRBroadcaster.IsConnected)
+            {
+                return;
+            }
 
             if (GetType().Namespace.Contains("V1"))
             {

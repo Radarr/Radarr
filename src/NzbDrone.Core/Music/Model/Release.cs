@@ -1,8 +1,8 @@
-using NzbDrone.Common.Extensions;
 using System;
 using System.Collections.Generic;
-using Marr.Data;
 using Equ;
+using Marr.Data;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {

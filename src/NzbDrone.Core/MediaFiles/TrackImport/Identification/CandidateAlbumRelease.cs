@@ -8,15 +8,14 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         public CandidateAlbumRelease()
         {
         }
-        
+
         public CandidateAlbumRelease(AlbumRelease release)
         {
             AlbumRelease = release;
             ExistingTracks = new List<TrackFile>();
         }
-        
+
         public AlbumRelease AlbumRelease { get; set; }
         public List<TrackFile> ExistingTracks { get; set; }
     }
 }
-

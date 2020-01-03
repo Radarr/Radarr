@@ -1,23 +1,23 @@
 using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using System.IO.Abstractions;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
+using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using System.IO.Abstractions.TestingHelpers;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 {
@@ -38,7 +38,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         private Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>> _albumfail2;
         private Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>> _albumfail3;
 
-        
         private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass1;
         private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass2;
         private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass3;
@@ -58,7 +57,6 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             _albumfail2 = new Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>>();
             _albumfail3 = new Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>>();
 
-            
             _pass1 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
             _pass2 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
             _pass3 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
@@ -74,7 +72,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             _albumfail1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>())).Returns(Decision.Reject("_albumfail1"));
             _albumfail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>())).Returns(Decision.Reject("_albumfail2"));
             _albumfail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>())).Returns(Decision.Reject("_albumfail3"));
-            
+
             _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>())).Returns(Decision.Accept());
             _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>())).Returns(Decision.Accept());
             _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>())).Returns(Decision.Accept());
@@ -104,11 +102,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             Mocker.GetMock<IIdentificationService>()
                 .Setup(s => s.Identify(It.IsAny<List<LocalTrack>>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<AlbumRelease>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns((List<LocalTrack> tracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting) => {
-                        var ret = new LocalAlbumRelease(tracks);
-                        ret.AlbumRelease = _albumRelease;
-                        return new List<LocalAlbumRelease> { ret };
-                    });
+                .Returns((List<LocalTrack> tracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting) =>
+                {
+                    var ret = new LocalAlbumRelease(tracks);
+                    ret.AlbumRelease = _albumRelease;
+                    return new List<LocalAlbumRelease> { ret };
+                });
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(c => c.FilterUnchangedFiles(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<FilterFilesType>()))
@@ -269,7 +268,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
                   .Setup(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
-            GivenAudioFiles(new []
+            GivenAudioFiles(new[]
                 {
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
@@ -289,7 +288,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         {
             GivenSpecifications(_pass1);
 
-            GivenAudioFiles(new []
+            GivenAudioFiles(new[]
                 {
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
@@ -298,9 +297,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             Mocker.GetMock<IIdentificationService>()
                 .Setup(s => s.Identify(It.IsAny<List<LocalTrack>>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<AlbumRelease>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns((List<LocalTrack> tracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting) => {
-                        return new List<LocalAlbumRelease> { new LocalAlbumRelease(tracks) };
-                    });
+                .Returns((List<LocalTrack> tracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting) =>
+                {
+                    return new List<LocalAlbumRelease> { new LocalAlbumRelease(tracks) };
+                });
 
             var decisions = Subject.GetImportDecisions(_fileInfos, _artist, FilterFilesType.None, false);
 
@@ -316,7 +316,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         {
             GivenSpecifications(_pass1);
 
-            GivenAudioFiles(new []
+            GivenAudioFiles(new[]
                 {
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic(),
@@ -339,7 +339,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
                   .Setup(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
-            GivenAudioFiles(new []
+            GivenAudioFiles(new[]
                 {
                     @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV".AsOsAgnostic()
                 });

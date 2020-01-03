@@ -1,9 +1,9 @@
-using NzbDrone.Common.Extensions;
 using System;
 using System.Collections.Generic;
-using Marr.Data;
-using Equ;
 using System.Linq;
+using Equ;
+using Marr.Data;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Music
         public List<SecondaryAlbumType> SecondaryTypes { get; set; }
         public Ratings Ratings { get; set; }
 
-        // These are Lidarr generated/config        
+        // These are Lidarr generated/config
         public string CleanTitle { get; set; }
         public int ProfileId { get; set; }
         public bool Monitored { get; set; }
@@ -58,7 +58,10 @@ namespace NzbDrone.Core.Music
 
         //compatibility properties with old version of Album
         [MemberwiseEqualityIgnore]
-        public int ArtistId { get { return Artist?.Value?.Id ?? 0; } set { Artist.Value.Id = value; } }
+        public int ArtistId
+        {
+            get { return Artist?.Value?.Id ?? 0; } set { Artist.Value.Id = value; }
+        }
 
         public override string ToString()
         {

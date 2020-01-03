@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +5,6 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 
@@ -53,7 +51,7 @@ namespace NzbDrone.Core.Extras.Others
                     Artist = artist,
                     Path = possibleExtraFile
                 };
-                
+
                 try
                 {
                     _augmentingService.Augment(localTrack, false);
@@ -93,7 +91,6 @@ namespace NzbDrone.Core.Extras.Others
 
             // Return files that were just imported along with files that were
             // previously imported so previously imported files aren't imported twice
-
             return extraFiles.Concat(filterResult.PreviouslyImported);
         }
     }

@@ -1,6 +1,6 @@
+using Lidarr.Http;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Datastore;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Blacklist
 {

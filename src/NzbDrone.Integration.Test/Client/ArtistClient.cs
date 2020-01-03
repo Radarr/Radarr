@@ -31,7 +31,6 @@ namespace NzbDrone.Integration.Test.Client
             var request = BuildRequest(slug);
             return Get<ArtistResource>(request, statusCode);
         }
-
     }
 
     public class SystemInfoClient : ClientBase<ArtistResource>

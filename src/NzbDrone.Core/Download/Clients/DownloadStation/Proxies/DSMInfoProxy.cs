@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NLog;
+﻿using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Download.Clients.DownloadStation.Responses;
@@ -14,8 +12,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
 
     public class DSMInfoProxy : DiskStationProxyBase, IDSMInfoProxy
     {
-        public DSMInfoProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger) :
-            base(DiskStationApi.DSMInfo, "SYNO.DSM.Info", httpClient, cacheManager, logger)
+        public DSMInfoProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
+            : base(DiskStationApi.DSMInfo, "SYNO.DSM.Info", httpClient, cacheManager, logger)
         {
         }
 

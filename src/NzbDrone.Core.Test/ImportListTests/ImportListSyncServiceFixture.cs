@@ -1,13 +1,13 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.ImportLists.Exclusions;
 
 namespace NzbDrone.Core.Test.ImportListTests
 {
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 Artist = "Linkin Park"
             };
 
-            _importListReports = new List<ImportListItemInfo>{importListItem1};
+            _importListReports = new List<ImportListItemInfo> { importListItem1 };
 
             Mocker.GetMock<IFetchAndParseImportList>()
                 .Setup(v => v.Fetch())
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<IImportListFactory>()
                 .Setup(v => v.Get(It.IsAny<int>()))
-                .Returns(new ImportListDefinition{ ShouldMonitor = ImportListMonitorType.SpecificAlbum });
+                .Returns(new ImportListDefinition { ShouldMonitor = ImportListMonitorType.SpecificAlbum });
 
             Mocker.GetMock<IFetchAndParseImportList>()
                 .Setup(v => v.Fetch())
@@ -69,22 +69,24 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             Mocker.GetMock<IArtistService>()
                 .Setup(v => v.FindById(_importListReports.First().ArtistMusicBrainzId))
-                .Returns(new Artist{ForeignArtistId = _importListReports.First().ArtistMusicBrainzId });
+                .Returns(new Artist { ForeignArtistId = _importListReports.First().ArtistMusicBrainzId });
         }
 
         private void WithExistingAlbum()
         {
             Mocker.GetMock<IAlbumService>()
                 .Setup(v => v.FindById(_importListReports.First().AlbumMusicBrainzId))
-                .Returns(new Album{ForeignAlbumId = _importListReports.First().AlbumMusicBrainzId });
+                .Returns(new Album { ForeignAlbumId = _importListReports.First().AlbumMusicBrainzId });
         }
 
         private void WithExcludedArtist()
         {
             Mocker.GetMock<IImportListExclusionService>()
                 .Setup(v => v.All())
-                .Returns(new List<ImportListExclusion> {
-                    new ImportListExclusion {
+                .Returns(new List<ImportListExclusion>
+                {
+                    new ImportListExclusion
+                    {
                         ForeignId = "f59c5520-5f46-4d2c-b2c4-822eabf53419"
                     }
                 });
@@ -94,8 +96,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             Mocker.GetMock<IImportListExclusionService>()
                 .Setup(v => v.All())
-                .Returns(new List<ImportListExclusion> {
-                    new ImportListExclusion {
+                .Returns(new List<ImportListExclusion>
+                {
+                    new ImportListExclusion
+                    {
                         ForeignId = "09474d62-17dd-3a4f-98fb-04c65f38a479"
                     }
                 });
@@ -105,7 +109,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             Mocker.GetMock<IImportListFactory>()
                 .Setup(v => v.Get(It.IsAny<int>()))
-                .Returns(new ImportListDefinition{ ShouldMonitor = monitor });
+                .Returns(new ImportListDefinition { ShouldMonitor = monitor });
         }
 
         [Test]
@@ -172,7 +176,7 @@ namespace NzbDrone.Core.Test.ImportListTests
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t=>t.Count == 0)));
+                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 0)));
         }
 
         [Test]
@@ -184,7 +188,7 @@ namespace NzbDrone.Core.Test.ImportListTests
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t=>t.Count == 0)));
+                .Verify(v => v.AddArtists(It.Is<List<Artist>>(t => t.Count == 0)));
         }
 
         [Test]
@@ -196,9 +200,8 @@ namespace NzbDrone.Core.Test.ImportListTests
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<IAddAlbumService>()
-                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t=>t.Count == 1)));
+                .Verify(v => v.AddAlbums(It.Is<List<Album>>(t => t.Count == 1)));
         }
-
 
         [TestCase(ImportListMonitorType.None, false)]
         [TestCase(ImportListMonitorType.SpecificAlbum, true)]

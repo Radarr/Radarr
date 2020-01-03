@@ -1,11 +1,10 @@
-using NzbDrone.Core.Music;
-using System.Collections.Generic;
-using System.Linq;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common;
+using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -48,7 +47,7 @@ namespace NzbDrone.Core.Parser.Model
                     localTrack.Release = AlbumRelease;
                     localTrack.Album = AlbumRelease.Album.Value;
                     localTrack.Artist = localTrack.Album.Artist.Value;
-                    
+
                     if (TrackMapping.Mapping.ContainsKey(localTrack))
                     {
                         var track = TrackMapping.Mapping[localTrack].Item1;
@@ -71,7 +70,7 @@ namespace NzbDrone.Core.Parser.Model
         {
             Mapping = new Dictionary<LocalTrack, Tuple<Track, Distance>>();
         }
-        
+
         public Dictionary<LocalTrack, Tuple<Track, Distance>> Mapping { get; set; }
         public List<LocalTrack> LocalExtra { get; set; }
         public List<Track> MBExtra { get; set; }

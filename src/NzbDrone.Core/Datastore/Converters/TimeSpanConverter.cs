@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public object FromDB(ColumnMap map, object dbValue)
         {
-            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue});
+            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
         }
 
         public object ToDB(object clrValue)

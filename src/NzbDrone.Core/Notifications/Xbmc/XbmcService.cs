@@ -83,11 +83,11 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 {
                     _logger.Debug("Updating artist {0} (Path: {1}) on XBMC host: {2}", artist, artistPath, settings.Address);
                 }
-
                 else
                 {
-                    _logger.Debug("Artist {0} doesn't exist on XBMC host: {1}, Updating Entire Library", artist,
-                                 settings.Address);
+                    _logger.Debug("Artist {0} doesn't exist on XBMC host: {1}, Updating Entire Library",
+                        artist,
+                        settings.Address);
                 }
 
                 var response = _proxy.UpdateLibrary(settings, artistPath);
@@ -97,7 +97,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
                     _logger.Debug("Failed to update library for: {0}", settings.Address);
                 }
             }
-
             catch (Exception ex)
             {
                 _logger.Debug(ex, ex.Message);

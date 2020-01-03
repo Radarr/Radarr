@@ -5,8 +5,8 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService

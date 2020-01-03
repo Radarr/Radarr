@@ -66,10 +66,10 @@ namespace NzbDrone.Host.Middleware
                 x.MapHub<MessageHub>("/signalr/messages");
             });
 #endif
+
             // This is a side effect of haing multiple IoC containers, TinyIoC and whatever
             // Kestrel/SignalR is using. Ideally we'd have one IoC container, but that's non-trivial with TinyIoC
             // TODO: Use a single IoC container if supported for TinyIoC or if we switch to another system (ie Autofac).
-
             var hubContext = appBuilder.ApplicationServices.GetService<IHubContext<MessageHub>>();
             _container.Register(hubContext);
         }

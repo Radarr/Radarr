@@ -1,14 +1,14 @@
+using System.Collections.Generic;
+using System.Linq;
+using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using FizzWare.NBuilder;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using FluentAssertions;
-using System.Linq;
-using System.Collections.Generic;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 {
@@ -20,15 +20,17 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             var artist = Builder<Artist>.CreateNew().Build();
             var albums = Builder<Album>.CreateListOfSize(2).All().With(x => x.Title = "IdenticalTitle").Build().ToList();
-            var criteria = new AlbumSearchCriteria {
+            var criteria = new AlbumSearchCriteria
+            {
                 Artist = artist,
                 Albums = albums
             };
 
-            var parsed = new ParsedAlbumInfo {
+            var parsed = new ParsedAlbumInfo
+            {
                 AlbumTitle = "IdenticalTitle"
             };
-            
+
             Subject.GetAlbums(parsed, artist, criteria).Should().BeEquivalentTo(new List<Album>());
 
             Mocker.GetMock<IAlbumService>()

@@ -1,18 +1,18 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Download.Clients.Nzbget;
-using NzbDrone.Test.Common;
-using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
+using NzbDrone.Core.Download.Clients.Nzbget;
 using NzbDrone.Core.Download.Clients.NzbVortex;
 using NzbDrone.Core.Download.Clients.NzbVortex.Responses;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
 {
@@ -28,42 +28,42 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new NzbVortexSettings
-                                          {
-                                              Host = "127.0.0.1",
-                                              Port = 2222,
-                                              ApiKey = "1234-ABCD",
-                                              MusicCategory = "Music",
-                                              RecentTvPriority = (int)NzbgetPriority.High
-                                          };
+            {
+                Host = "127.0.0.1",
+                Port = 2222,
+                ApiKey = "1234-ABCD",
+                MusicCategory = "Music",
+                RecentTvPriority = (int)NzbgetPriority.High
+            };
 
             _queued = new NzbVortexQueueItem
-                {
-                    Id = RandomNumber,
-                    DownloadedSize = 1000,
-                    TotalDownloadSize = 10,
-                    GroupName = "Music",
-                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN"
+            {
+                Id = RandomNumber,
+                DownloadedSize = 1000,
+                TotalDownloadSize = 10,
+                GroupName = "Music",
+                UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN"
             };
 
             _failed = new NzbVortexQueueItem
-                {
-                    DownloadedSize = 1000,
-                    TotalDownloadSize = 1000,
-                    GroupName = "Music",
-                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    DestinationPath = "somedirectory",
-                    State =  NzbVortexStateType.UncompressFailed,
-                };
+            {
+                DownloadedSize = 1000,
+                TotalDownloadSize = 1000,
+                GroupName = "Music",
+                UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                DestinationPath = "somedirectory",
+                State = NzbVortexStateType.UncompressFailed,
+            };
 
             _completed = new NzbVortexQueueItem
-                {
-                    DownloadedSize = 1000,
-                    TotalDownloadSize = 1000,
-                    GroupName = "Music",
-                    UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    DestinationPath = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
-                    State = NzbVortexStateType.Done
-                };
+            {
+                DownloadedSize = 1000,
+                TotalDownloadSize = 1000,
+                GroupName = "Music",
+                UiTitle = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                DestinationPath = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                State = NzbVortexStateType.Done
+            };
         }
 
         protected void GivenFailedDownload()
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         public void queued_item_should_have_required_properties()
         {
             GivenQueue(_queued);
-            
+
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);

@@ -55,7 +55,6 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
-
             _logger.Error("Certificate validation for {0} failed. {1}", request.Address, sslPolicyErrors);
 
             return false;
@@ -65,7 +64,7 @@ namespace NzbDrone.Core.Security
         {
             if (IPAddress.TryParse(host, out var ipAddress))
             {
-                return new []{ ipAddress };
+                return new[] { ipAddress };
             }
 
             return Dns.GetHostEntry(host).AddressList;

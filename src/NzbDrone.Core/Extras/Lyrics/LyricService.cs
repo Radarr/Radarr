@@ -8,7 +8,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Lyrics

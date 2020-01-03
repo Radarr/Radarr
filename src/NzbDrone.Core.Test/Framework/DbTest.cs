@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
-using FluentMigrator.Runner;
 using Marr.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -43,7 +41,6 @@ namespace NzbDrone.Core.Test.Framework
 
                 return _subject;
             }
-
         }
     }
 
@@ -59,7 +56,9 @@ namespace NzbDrone.Core.Test.Framework
             get
             {
                 if (_db == null)
+                {
                     throw new InvalidOperationException("Test object database doesn't exists. Make sure you call WithRealDb() if you intend to use an actual database.");
+                }
 
                 return _db;
             }
@@ -80,6 +79,7 @@ namespace NzbDrone.Core.Test.Framework
                         Mocker.SetConstant<IMainDatabase>(mainDb);
                         break;
                     }
+
                 case MigrationType.Log:
                     {
                         var logDb = new LogDatabase(database);
@@ -87,6 +87,7 @@ namespace NzbDrone.Core.Test.Framework
                         Mocker.SetConstant<ILogDatabase>(logDb);
                         break;
                     }
+
                 default:
                     {
                         throw new ArgumentException("Invalid MigrationType");
@@ -128,7 +129,7 @@ namespace NzbDrone.Core.Test.Framework
             GC.Collect();
             GC.WaitForPendingFinalizers();
             SQLiteConnection.ClearAllPools();
-            
+
             if (TestFolderInfo != null)
             {
                 DeleteTempFolder(TestFolderInfo.AppDataFolder);

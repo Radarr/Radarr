@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Test.ImportListTests
     public class SpotifyFollowedArtistsFixture : CoreTest<SpotifyFollowedArtists>
     {
         // placeholder, we don't use real API
-        private readonly SpotifyWebAPI api = null;
+        private readonly SpotifyWebAPI _api = null;
 
         [Test]
         public void should_not_throw_if_followed_is_null()
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(default(FollowedArtists));
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }
@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_followed_artists_is_null()
         {
-            var followed = new FollowedArtists {
+            var followed = new FollowedArtists
+            {
                 Artists = null
             };
 
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(followed);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }
@@ -48,8 +49,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_followed_artist_items_is_null()
         {
-            var followed = new FollowedArtists {
-                Artists = new CursorPaging<FullArtist> {
+            var followed = new FollowedArtists
+            {
+                Artists = new CursorPaging<FullArtist>
+                {
                     Items = null
                 }
             };
@@ -59,18 +62,21 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(followed);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
-            Subject.Fetch(api);
+            Subject.Fetch(_api);
         }
 
         [Test]
         public void should_not_throw_if_artist_is_null()
         {
-            var followed = new FollowedArtists {
-                Artists = new CursorPaging<FullArtist> {
-                    Items = new List<FullArtist> {
+            var followed = new FollowedArtists
+            {
+                Artists = new CursorPaging<FullArtist>
+                {
+                    Items = new List<FullArtist>
+                    {
                         null
                     }
                 }
@@ -81,19 +87,23 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(followed);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
-            Subject.Fetch(api);
+            Subject.Fetch(_api);
         }
 
         [Test]
         public void should_parse_followed_artist()
         {
-            var followed = new FollowedArtists {
-                Artists = new CursorPaging<FullArtist> {
-                    Items = new List<FullArtist> {
-                        new FullArtist {
+            var followed = new FollowedArtists
+            {
+                Artists = new CursorPaging<FullArtist>
+                {
+                    Items = new List<FullArtist>
+                    {
+                        new FullArtist
+                        {
                             Name = "artist"
                         }
                     }
@@ -105,7 +115,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(followed);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().HaveCount(1);
         }
@@ -113,10 +123,14 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_get_next_page_returns_null()
         {
-            var followed = new FollowedArtists {
-                Artists = new CursorPaging<FullArtist> {
-                    Items = new List<FullArtist> {
-                        new FullArtist {
+            var followed = new FollowedArtists
+            {
+                Artists = new CursorPaging<FullArtist>
+                {
+                    Items = new List<FullArtist>
+                    {
+                        new FullArtist
+                        {
                             Name = "artist"
                         }
                     },
@@ -135,7 +149,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                           It.IsAny<FollowedArtists>()))
                 .Returns(default(FollowedArtists));
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().HaveCount(1);
 
@@ -150,10 +164,14 @@ namespace NzbDrone.Core.Test.ImportListTests
         [TestCase("")]
         public void should_skip_bad_artist_names(string name)
         {
-            var followed = new FollowedArtists {
-                Artists = new CursorPaging<FullArtist> {
-                    Items = new List<FullArtist> {
-                        new FullArtist {
+            var followed = new FollowedArtists
+            {
+                Artists = new CursorPaging<FullArtist>
+                {
+                    Items = new List<FullArtist>
+                    {
+                        new FullArtist
+                        {
                             Name = name
                         }
                     }
@@ -165,7 +183,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(followed);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }

@@ -10,8 +10,8 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -56,7 +56,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<RenameTrackFilePreview> GetRenamePreviews(int artistId)
         {
-
             var artist = _artistService.GetArtist(artistId);
             var tracks = _trackService.GetTracksByArtist(artistId);
             var files = _mediaFileService.GetFilesByArtist(artistId);
@@ -69,7 +68,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<RenameTrackFilePreview> GetRenamePreviews(int artistId, int albumId)
         {
-
             var artist = _artistService.GetArtist(artistId);
             var tracks = _trackService.GetTracksByAlbum(albumId);
             var files = _mediaFileService.GetFilesByAlbum(albumId);
@@ -153,7 +151,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RenameFilesCommand message)
         {
-
             var artist = _artistService.GetArtist(message.ArtistId);
             var trackFiles = _mediaFileService.Get(message.Files);
 
@@ -164,7 +161,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RenameArtistCommand message)
         {
-
             _logger.Debug("Renaming all files for selected artist");
             var artistToRename = _artistService.GetArtists(message.ArtistIds);
 

@@ -8,7 +8,6 @@ namespace NzbDrone.Core.Profiles.Metadata
         public MetadataProfileInUseException(string name)
             : base(HttpStatusCode.BadRequest, "Metadata profile [{0}] is in use.", name)
         {
-
         }
     }
 }

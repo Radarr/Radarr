@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Lidarr.Http;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.SignalR;
-using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Health
 {

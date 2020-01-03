@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Test.ImportListTests
     public class SpotifySavedAlbumsFixture : CoreTest<SpotifySavedAlbums>
     {
         // placeholder, we don't use real API
-        private readonly SpotifyWebAPI api = null;
+        private readonly SpotifyWebAPI _api = null;
 
         [Test]
         public void should_not_throw_if_saved_albums_is_null()
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(default(Paging<SavedAlbum>));
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }
@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_saved_album_items_is_null()
         {
-            var savedAlbums = new Paging<SavedAlbum> {
+            var savedAlbums = new Paging<SavedAlbum>
+            {
                 Items = null
             };
 
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(savedAlbums);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }
@@ -48,8 +49,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_saved_album_is_null()
         {
-            var savedAlbums = new Paging<SavedAlbum> {
-                Items = new List<SavedAlbum> {
+            var savedAlbums = new Paging<SavedAlbum>
+            {
+                Items = new List<SavedAlbum>
+                {
                     null
                 }
             };
@@ -59,7 +62,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(savedAlbums);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }
@@ -67,13 +70,19 @@ namespace NzbDrone.Core.Test.ImportListTests
         [TestCase("Artist", "Album")]
         public void should_parse_saved_album(string artistName, string albumName)
         {
-            var savedAlbums = new Paging<SavedAlbum> {
-                Items = new List<SavedAlbum> {
-                    new SavedAlbum {
-                        Album = new FullAlbum {
+            var savedAlbums = new Paging<SavedAlbum>
+            {
+                Items = new List<SavedAlbum>
+                {
+                    new SavedAlbum
+                    {
+                        Album = new FullAlbum
+                        {
                             Name = albumName,
-                            Artists = new List<SimpleArtist> {
-                                new SimpleArtist {
+                            Artists = new List<SimpleArtist>
+                            {
+                                new SimpleArtist
+                                {
                                     Name = artistName
                                 }
                             }
@@ -87,7 +96,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(savedAlbums);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().HaveCount(1);
         }
@@ -95,13 +104,19 @@ namespace NzbDrone.Core.Test.ImportListTests
         [Test]
         public void should_not_throw_if_get_next_page_returns_null()
         {
-            var savedAlbums = new Paging<SavedAlbum> {
-                Items = new List<SavedAlbum> {
-                    new SavedAlbum {
-                        Album = new FullAlbum {
+            var savedAlbums = new Paging<SavedAlbum>
+            {
+                Items = new List<SavedAlbum>
+                {
+                    new SavedAlbum
+                    {
+                        Album = new FullAlbum
+                        {
                             Name = "Album",
-                            Artists = new List<SimpleArtist> {
-                                new SimpleArtist {
+                            Artists = new List<SimpleArtist>
+                            {
+                                new SimpleArtist
+                                {
                                     Name = "Artist"
                                 }
                             }
@@ -122,7 +137,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                           It.IsAny<Paging<SavedAlbum>>()))
                 .Returns(default(Paging<SavedAlbum>));
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().HaveCount(1);
 
@@ -138,13 +153,19 @@ namespace NzbDrone.Core.Test.ImportListTests
         [TestCase(null, null)]
         public void should_skip_bad_artist_or_album_names(string artistName, string albumName)
         {
-            var savedAlbums = new Paging<SavedAlbum> {
-                Items = new List<SavedAlbum> {
-                    new SavedAlbum {
-                        Album = new FullAlbum {
+            var savedAlbums = new Paging<SavedAlbum>
+            {
+                Items = new List<SavedAlbum>
+                {
+                    new SavedAlbum
+                    {
+                        Album = new FullAlbum
+                        {
                             Name = albumName,
-                            Artists = new List<SimpleArtist> {
-                                new SimpleArtist {
+                            Artists = new List<SimpleArtist>
+                            {
+                                new SimpleArtist
+                                {
                                     Name = artistName
                                 }
                             }
@@ -158,7 +179,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                                                 It.IsAny<SpotifyWebAPI>()))
                 .Returns(savedAlbums);
 
-            var result = Subject.Fetch(api);
+            var result = Subject.Fetch(_api);
 
             result.Should().BeEmpty();
         }

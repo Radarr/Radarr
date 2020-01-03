@@ -91,13 +91,17 @@ namespace NzbDrone.Host
                     .AddSignalR()
 #if !NETCOREAPP
                     .AddJsonProtocol(
-#else
-                    .AddNewtonsoftJsonProtocol(
-#endif
                         options =>
                         {
                             options.PayloadSerializerSettings = Json.GetSerializerSettings();
                         });
+#else
+                    .AddNewtonsoftJsonProtocol(
+                        options =>
+                        {
+                            options.PayloadSerializerSettings = Json.GetSerializerSettings();
+                        });
+#endif
                 })
                 .Configure(app =>
                 {

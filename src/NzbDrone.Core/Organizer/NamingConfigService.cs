@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Organizer
             if (config == null)
             {
                 lock (_repository)
-                    {
+                {
                     config = _repository.SingleOrDefault();
 
                     if (config == null)

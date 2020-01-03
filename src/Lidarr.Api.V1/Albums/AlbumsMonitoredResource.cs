@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Lidarr.Api.V1.Albums

@@ -20,13 +20,12 @@ namespace NzbDrone.Core.ImportLists.LastFm
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {
-            return new LastFmTagRequestGenerator { Settings = Settings};
+            return new LastFmTagRequestGenerator { Settings = Settings };
         }
 
         public override IParseImportListResponse GetParser()
         {
             return new LastFmParser();
         }
-
     }
 }

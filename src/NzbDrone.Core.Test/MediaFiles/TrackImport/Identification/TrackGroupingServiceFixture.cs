@@ -1,16 +1,16 @@
-using NUnit.Framework;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using NzbDrone.Test.Common;
-using FluentAssertions;
-using NzbDrone.Core.Test.Framework;
-using FizzWare.NBuilder;
-using NzbDrone.Core.Parser.Model;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using FizzWare.NBuilder.PropertyNaming;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using FizzWare.NBuilder;
+using FizzWare.NBuilder.PropertyNaming;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
@@ -18,50 +18,51 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
     // but the standard random value namer would give paths that are too long on windows
     public class RandomValueNamerShortStrings : RandomValuePropertyNamer
     {
-        private readonly IRandomGenerator generator;
-        private static readonly List<char> allowedChars;
-        
-        public RandomValueNamerShortStrings(BuilderSettings settings) : base(settings)
+        private static readonly List<char> AllowedChars;
+        private readonly IRandomGenerator _generator;
+
+        public RandomValueNamerShortStrings(BuilderSettings settings)
+            : base(settings)
         {
-            generator = new RandomGenerator();
+            _generator = new RandomGenerator();
         }
 
         static RandomValueNamerShortStrings()
         {
-            allowedChars = new List<char>();
+            AllowedChars = new List<char>();
             for (char c = 'a'; c < 'z'; c++)
             {
-                allowedChars.Add(c);
+                AllowedChars.Add(c);
             }
 
             for (char c = 'A'; c < 'Z'; c++)
             {
-                allowedChars.Add(c);
+                AllowedChars.Add(c);
             }
 
             for (char c = '0'; c < '9'; c++)
             {
-                allowedChars.Add(c);
+                AllowedChars.Add(c);
             }
         }
 
         protected override string GetString(MemberInfo memberInfo)
         {
-            int length = generator.Next(1, 100);
+            int length = _generator.Next(1, 100);
 
             char[] chars = new char[length];
 
             for (int i = 0; i < length; i++)
             {
-                int index = generator.Next(0, allowedChars.Count - 1);
-                chars[i] = allowedChars[index];
+                int index = _generator.Next(0, AllowedChars.Count - 1);
+                chars[i] = AllowedChars[index];
             }
 
             byte[] bytes = Encoding.UTF8.GetBytes(chars);
             return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
         }
     }
-    
+
     [TestFixture]
     public class TrackGroupingServiceFixture : CoreTest<TrackGroupingService>
     {
@@ -117,7 +118,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .With(f => f.AlbumMBId = null)
                 .With(f => f.ReleaseMBId = null)
                 .Build();
-            
+
             var tracks = fileInfos.Select(x => Builder<LocalTrack>
                                           .CreateNew()
                                           .With(y => y.FileTrackInfo = x)
@@ -196,7 +197,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(true);
-                        
+
             output.Count.Should().Be(1);
             output[0].LocalTracks.Count.Should().Be(count);
         }
@@ -206,10 +207,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [TestCase("disk")]
         public void should_group_multi_disc_release(string mediaName)
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album\\{mediaName} 1".AsOsAgnostic(),
-                                    "artist", "album", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album\\{mediaName} 2".AsOsAgnostic(),
-                                        "artist", "album", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album\\{mediaName} 1".AsOsAgnostic(), "artist", "album", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album\\{mediaName} 2".AsOsAgnostic(), "artist", "album", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(true);
@@ -222,14 +221,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_not_group_two_different_albums_by_same_artist()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album1".AsOsAgnostic(),
-                                     "artist", "album1", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album2".AsOsAgnostic(),
-                                        "artist", "album2", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album1".AsOsAgnostic(), "artist", "album1", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album2".AsOsAgnostic(), "artist", "album2", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-            
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
             output[0].LocalTracks.Count.Should().Be(10);
@@ -239,14 +236,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_group_albums_with_typos()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album".AsOsAgnostic(),
-                                     "artist", "Rastaman Vibration (Remastered)", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album".AsOsAgnostic(),
-                                        "artist", "Rastaman Vibration (Remastered", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming\\artist - album".AsOsAgnostic(), "artist", "Rastaman Vibration (Remastered)", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist - album".AsOsAgnostic(), "artist", "Rastaman Vibration (Remastered", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(true);
-            
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
             output[0].LocalTracks.Count.Should().Be(15);
@@ -255,14 +250,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_not_group_two_different_tracks_in_same_directory()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming".AsOsAgnostic(),
-                                     "artist", "album1", 1);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming".AsOsAgnostic(),
-                                        "artist", "album2", 1));
+            var tracks = GivenTracks($"C:\\music\\incoming".AsOsAgnostic(), "artist", "album1", 1);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming".AsOsAgnostic(), "artist", "album2", 1));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-            
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
             output[0].LocalTracks.Count.Should().Be(1);
@@ -272,14 +265,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_separate_two_albums_in_same_directory()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\artist discog".AsOsAgnostic(),
-                                     "artist", "album1", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist disog".AsOsAgnostic(),
-                                        "artist", "album2", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming\\artist discog".AsOsAgnostic(), "artist", "album1", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\artist disog".AsOsAgnostic(), "artist", "album2", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-                        
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
             output[0].LocalTracks.Count.Should().Be(10);
@@ -292,13 +283,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var tracks = new List<LocalTrack>();
             for (int i = 0; i < 100; i++)
             {
-                tracks.AddRange(GivenTracks($"C:\\music".AsOsAgnostic(),
-                                            "artist" + i, "album" + i, 10));
+                tracks.AddRange(GivenTracks($"C:\\music".AsOsAgnostic(), "artist" + i, "album" + i, 10));
             }
 
             // don't test various artists here because it's designed to only work if there's a common album
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-                        
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(100);
             output.Select(x => x.LocalTracks.Count).Distinct().Should().BeEquivalentTo(new List<int> { 10 });
@@ -307,14 +297,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_separate_two_albums_by_different_artists_in_same_directory()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming".AsOsAgnostic(),
-                                     "artist1", "album1", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming".AsOsAgnostic(),
-                                        "artist2", "album2", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming".AsOsAgnostic(), "artist1", "album1", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming".AsOsAgnostic(), "artist2", "album2", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-                        
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
             output[0].LocalTracks.Count.Should().Be(10);
@@ -329,7 +317,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(true);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(true);
-            
+
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
             output[0].LocalTracks.Count.Should().Be(10);
@@ -338,14 +326,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_not_group_two_albums_by_different_artists_with_same_title()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(),
-                                     "artist1", "album", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(),
-                                        "artist2", "album", 5));
+            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(), "artist1", "album", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(), "artist2", "album", 5));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
-            
+
             var output = Subject.GroupTracks(tracks);
 
             output.Count.Should().Be(2);
@@ -369,8 +355,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_not_fail_if_some_tags_null()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(),
-                                     "artist1", "album", 10);
+            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(), "artist1", "album", 10);
             tracks.AddRange(GivenTracksWithNoTags($"C:\\music\\incoming\\album".AsOsAgnostic(), 2));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
@@ -384,17 +369,15 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         [Test]
         public void should_cope_with_one_album_in_subfolder_of_another()
         {
-            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(),
-                                     "artist1", "album", 10);
-            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\album\\anotheralbum".AsOsAgnostic(),
-                                        "artist2", "album2", 10));
+            var tracks = GivenTracks($"C:\\music\\incoming\\album".AsOsAgnostic(), "artist1", "album", 10);
+            tracks.AddRange(GivenTracks($"C:\\music\\incoming\\album\\anotheralbum".AsOsAgnostic(), "artist2", "album2", 10));
 
             TrackGroupingService.IsVariousArtists(tracks).Should().Be(false);
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(false);
 
             var output = Subject.GroupTracks(tracks);
 
-            foreach(var group in output)
+            foreach (var group in output)
             {
                 TestLogger.Debug($"*** group {group} ***");
                 TestLogger.Debug(string.Join("\n", group.LocalTracks.Select(x => x.Path)));

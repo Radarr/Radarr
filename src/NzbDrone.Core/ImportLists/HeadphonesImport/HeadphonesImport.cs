@@ -20,13 +20,12 @@ namespace NzbDrone.Core.ImportLists.HeadphonesImport
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {
-            return new HeadphonesImportRequestGenerator { Settings = Settings};
+            return new HeadphonesImportRequestGenerator { Settings = Settings };
         }
 
         public override IParseImportListResponse GetParser()
         {
             return new HeadphonesImportParser();
         }
-
     }
 }

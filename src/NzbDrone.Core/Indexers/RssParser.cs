@@ -236,6 +236,7 @@ namespace NzbDrone.Core.Indexers
             {
                 return GetEnclosureLength(item);
             }
+
             if (ParseSizeInDescription && item.Element("description") != null)
             {
                 return ParseSize(item.Element("description").Value, true);
@@ -292,7 +293,6 @@ namespace NzbDrone.Core.Indexers
 
         protected virtual RssEnclosure GetEnclosure(RssEnclosure[] enclosures, bool enforceMimeType = true)
         {
-
             if (enclosures.Length == 0)
             {
                 return null;
@@ -399,6 +399,7 @@ namespace NzbDrone.Core.Indexers
                         return (long)value;
                 }
             }
+
             return 0;
         }
 

@@ -108,7 +108,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                     else
                     {
                         throw;
-                    };
+                    }
                 }
             }
 
@@ -121,7 +121,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                     try
                     {
                         data = responseStream.ToBytes();
-                        
+
                         if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
                         {
                             data = data.Decompress();
@@ -211,6 +211,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                     {
                         var responseStreamInfo = currentOperation.GetType().GetField("responseStream", BindingFlags.NonPublic | BindingFlags.Instance);
                         var responseStream = responseStreamInfo.GetValue(currentOperation) as Stream;
+
                         // Note that responseStream will likely be null once mono fixes it.
                         responseStream?.Dispose();
                     }

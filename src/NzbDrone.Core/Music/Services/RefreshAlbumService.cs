@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Music
         protected override RemoteData GetRemoteData(Album local, List<Album> remote)
         {
             var result = new RemoteData();
-            
+
             // remove not in remote list and ShouldDelete is true
             if (remote != null &&
                 !remote.Any(x => x.ForeignAlbumId == local.ForeignAlbumId || x.OldForeignAlbumIds.Contains(local.ForeignAlbumId)) &&
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Music
             {
                 return result;
             }
-                         
+
             Tuple<string, Album, List<ArtistMetadata>> tuple = null;
             try
             {
@@ -93,28 +93,29 @@ namespace NzbDrone.Core.Music
                 _logger.Debug($"{local} has no valid releases, removing.");
                 return result;
             }
-                         
+
             result.Entity = tuple.Item2;
             result.Entity.Id = local.Id;
             result.Metadata = tuple.Item3;
             return result;
         }
-        
+
         protected override void EnsureNewParent(Album local, Album remote)
         {
             // Make sure the appropriate artist exists (it could be that an album changes parent)
             // The artistMetadata entry will be in the db but make sure a corresponding artist is too
             // so that the album doesn't just disappear.
-            
+
             // TODO filter by metadata id before hitting database
             _logger.Trace($"Ensuring parent artist exists [{remote.ArtistMetadata.Value.ForeignArtistId}]");
-            
+
             var newArtist = _artistService.FindById(remote.ArtistMetadata.Value.ForeignArtistId);
-            
+
             if (newArtist == null)
             {
                 var oldArtist = local.Artist.Value;
-                var addArtist = new Artist {
+                var addArtist = new Artist
+                {
                     Metadata = remote.ArtistMetadata.Value,
                     MetadataProfileId = oldArtist.MetadataProfileId,
                     QualityProfileId = oldArtist.QualityProfileId,
@@ -245,13 +246,14 @@ namespace NzbDrone.Core.Music
             {
                 files.AddRange(_mediaFileService.GetFilesByRelease(release.Id));
             }
+
             files.ForEach(x => x.AlbumId = entity.Id);
             _mediaFileService.Update(files);
 
             return children;
         }
 
-        protected override Tuple<AlbumRelease, List<AlbumRelease> > GetMatchingExistingChildren(List<AlbumRelease> existingChildren, AlbumRelease remote)
+        protected override Tuple<AlbumRelease, List<AlbumRelease>> GetMatchingExistingChildren(List<AlbumRelease> existingChildren, AlbumRelease remote)
         {
             var existingChild = existingChildren.SingleOrDefault(x => x.ForeignReleaseId == remote.ForeignReleaseId);
             var mergeChildren = existingChildren.Where(x => remote.OldForeignReleaseIds.Contains(x.ForeignReleaseId)).ToList();
@@ -284,7 +286,7 @@ namespace NzbDrone.Core.Music
             {
                 monitored = releases;
             }
-            
+
             var toMonitor = monitored.OrderByDescending(x => _mediaFileService.GetFilesByRelease(x.Id).Count)
                 .ThenByDescending(x => x.TrackCount)
                 .First();
@@ -296,13 +298,13 @@ namespace NzbDrone.Core.Music
         protected override bool RefreshChildren(SortedChildren localChildren, List<AlbumRelease> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags)
         {
             var refreshList = localChildren.All;
-            
+
             // make sure only one of the releases ends up monitored
             localChildren.Old.ForEach(x => x.Monitored = false);
             MonitorSingleRelease(localChildren.Future);
 
             refreshList.ForEach(x => _logger.Trace($"release: {x} monitored: {x.Monitored}"));
-            
+
             return _refreshAlbumReleaseService.RefreshEntityInfo(refreshList, remoteChildren, forceChildRefresh, forceUpdateFileTags);
         }
 
@@ -322,6 +324,7 @@ namespace NzbDrone.Core.Music
                     updated |= RefreshAlbumInfo(album, remoteAlbums, forceUpdateFileTags);
                 }
             }
+
             return updated;
         }
 
@@ -346,4 +349,3 @@ namespace NzbDrone.Core.Music
         }
     }
 }
-

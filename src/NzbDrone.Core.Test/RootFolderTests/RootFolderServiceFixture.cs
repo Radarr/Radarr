@@ -7,9 +7,9 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.RootFolderTests
@@ -73,8 +73,7 @@ namespace NzbDrone.Core.Test.RootFolderTests
         public void invalid_folder_path_throws_on_add(string path)
         {
             Assert.Throws<ArgumentException>(() =>
-                    Mocker.Resolve<RootFolderService>().Add(new RootFolder { Id = 0, Path = path })
-                );
+                    Mocker.Resolve<RootFolderService>().Add(new RootFolder { Id = 0, Path = path }));
         }
 
         [Test]

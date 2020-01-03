@@ -1,10 +1,10 @@
-using Marr.Data;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Profiles.Metadata;
 using System;
 using System.Collections.Generic;
 using Equ;
+using Marr.Data;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Music
 {
@@ -44,9 +44,16 @@ namespace NzbDrone.Core.Music
 
         //compatibility properties
         [MemberwiseEqualityIgnore]
-        public string Name { get { return Metadata.Value.Name; } set { Metadata.Value.Name = value; } }
+        public string Name
+        {
+            get { return Metadata.Value.Name; } set { Metadata.Value.Name = value; }
+        }
+
         [MemberwiseEqualityIgnore]
-        public string ForeignArtistId { get { return Metadata.Value.ForeignArtistId; } set { Metadata.Value.ForeignArtistId = value; } }
+        public string ForeignArtistId
+        {
+            get { return Metadata.Value.ForeignArtistId; } set { Metadata.Value.ForeignArtistId = value; }
+        }
 
         public override string ToString()
         {

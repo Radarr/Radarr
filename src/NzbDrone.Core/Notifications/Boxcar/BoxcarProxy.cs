@@ -2,9 +2,9 @@
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using RestSharp;
-using NzbDrone.Core.Rest;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Rest;
+using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Boxcar
 {
@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Notifications.Boxcar
 
     public class BoxcarProxy : IBoxcarProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://new.boxcar.io/api/notifications";
+        private readonly Logger _logger;
 
         public BoxcarProxy(Logger logger)
         {

@@ -58,6 +58,7 @@ namespace NzbDrone.Host.AccessControl
             {
                 _logger.Warn(ex, "Failed to check for open port in firewall");
             }
+
             return false;
         }
 
@@ -87,7 +88,10 @@ namespace NzbDrone.Host.AccessControl
 
         private bool IsFirewallEnabled()
         {
-            if (OsInfo.IsNotWindows) return false;
+            if (OsInfo.IsNotWindows)
+            {
+                return false;
+            }
 
             try
             {

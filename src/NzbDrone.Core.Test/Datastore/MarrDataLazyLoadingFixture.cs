@@ -1,18 +1,17 @@
-using FizzWare.NBuilder;
-using NUnit.Framework;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles.Qualities;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.MediaFiles;
-using Marr.Data.QGen;
 using System.Collections.Generic;
 using System.Linq;
+using FizzWare.NBuilder;
+using Marr.Data.QGen;
+using NUnit.Framework;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore
 {
-
     [TestFixture]
     public class MarrDataLazyLoadingFixture : DbTest
     {
@@ -60,6 +59,7 @@ namespace NzbDrone.Core.Test.Datastore
                     .With(v => v.ForeignReleaseId = "test" + album.Id)
                     .Build());
             }
+
             Db.InsertMany(releases);
 
             var trackFiles = Builder<TrackFile>.CreateListOfSize(1)
@@ -85,9 +85,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_join_artist_when_query_for_albums()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var albums = DataMapper.Query<Album>()
+            var albums = dataMapper.Query<Album>()
                 .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
                 .ToList();
 
@@ -101,9 +101,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_profile_if_not_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<Track>()
+            var tracks = dataMapper.Query<Track>()
                 .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
                 .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
                 .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
@@ -123,9 +123,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_explicit_load_trackfile_if_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<Track>()
+            var tracks = dataMapper.Query<Track>()
                 .Join<Track, TrackFile>(JoinType.Inner, v => v.TrackFile, (l, r) => l.TrackFileId == r.Id)
                 .ToList();
 
@@ -140,9 +140,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_artist_for_track()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<Track>()
+            var tracks = dataMapper.Query<Track>()
                 .ToList();
 
             Assert.IsNotEmpty(tracks);
@@ -159,9 +159,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_artist_for_trackfile()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<TrackFile>()
+            var tracks = dataMapper.Query<TrackFile>()
                 .ToList();
 
             Assert.IsNotEmpty(tracks);
@@ -178,9 +178,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_trackfile_if_not_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<Track>()
+            var tracks = dataMapper.Query<Track>()
                 .ToList();
 
             foreach (var track in tracks)
@@ -195,9 +195,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_explicit_load_everything_if_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var files = DataMapper.Query<TrackFile>()
+            var files = dataMapper.Query<TrackFile>()
                 .Join<TrackFile, Track>(JoinType.Inner, f => f.Tracks, (f, t) => f.Id == t.TrackFileId)
                 .Join<TrackFile, Album>(JoinType.Inner, t => t.Album, (t, a) => t.AlbumId == a.Id)
                 .Join<TrackFile, Artist>(JoinType.Inner, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
@@ -219,9 +219,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_tracks_if_not_joined_to_trackfile()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var files = DataMapper.Query<TrackFile>()
+            var files = dataMapper.Query<TrackFile>()
                 .Join<TrackFile, Album>(JoinType.Inner, t => t.Album, (t, a) => t.AlbumId == a.Id)
                 .Join<TrackFile, Artist>(JoinType.Inner, t => t.Artist, (t, a) => t.Album.Value.ArtistMetadataId == a.ArtistMetadataId)
                 .Join<Artist, ArtistMetadata>(JoinType.Inner, a => a.Metadata, (a, m) => a.ArtistMetadataId == m.Id)
@@ -244,9 +244,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_tracks_if_not_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var release = DataMapper.Query<AlbumRelease>().Where(x => x.Id == 1).SingleOrDefault();
+            var release = dataMapper.Query<AlbumRelease>().Where(x => x.Id == 1).SingleOrDefault();
 
             Assert.IsFalse(release.Tracks.IsLoaded);
             Assert.IsNotNull(release.Tracks.Value);
@@ -258,9 +258,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_lazy_load_track_if_not_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<TrackFile>()
+            var tracks = dataMapper.Query<TrackFile>()
                 .ToList();
 
             foreach (var track in tracks)
@@ -275,9 +275,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void should_explicit_load_profile_if_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
-            var DataMapper = db.GetDataMapper();
+            var dataMapper = db.GetDataMapper();
 
-            var tracks = DataMapper.Query<Track>()
+            var tracks = dataMapper.Query<Track>()
                 .Join<Track, AlbumRelease>(JoinType.Inner, v => v.AlbumRelease, (l, r) => l.AlbumReleaseId == r.Id)
                 .Join<AlbumRelease, Album>(JoinType.Inner, v => v.Album, (l, r) => l.AlbumId == r.Id)
                 .Join<Album, Artist>(JoinType.Inner, v => v.Artist, (l, r) => l.ArtistMetadataId == r.ArtistMetadataId)

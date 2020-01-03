@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Test.Framework;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -22,8 +22,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = false
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.FLAC)
-            ).Should().BeFalse();
+                new QualityModel(Quality.FLAC))
+            .Should().BeFalse();
         }
 
         [Test]
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = true
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.FLAC)
-            ).Should().BeTrue();
+                new QualityModel(Quality.FLAC))
+            .Should().BeTrue();
         }
 
         [Test]
@@ -52,8 +52,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = true
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_320)
-            ).Should().BeTrue();
+                new QualityModel(Quality.MP3_320))
+            .Should().BeTrue();
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = false
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_320)
-            ).Should().BeTrue();
+                new QualityModel(Quality.MP3_320))
+            .Should().BeTrue();
         }
 
         [Test]
@@ -82,8 +82,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = true
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_256)
-            ).Should().BeTrue();
+                new QualityModel(Quality.MP3_256))
+            .Should().BeTrue();
         }
 
         [Test]
@@ -96,9 +96,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
                     UpgradeAllowed = false
                 },
-                new List<QualityModel>{ new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_256)
-            ).Should().BeTrue();
+                new List<QualityModel> { new QualityModel(Quality.MP3_320) },
+                new QualityModel(Quality.MP3_256))
+            .Should().BeTrue();
         }
     }
 }

@@ -13,7 +13,11 @@ namespace Lidarr.Api.V1.Metadata
 
         protected override void Validate(MetadataDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }
