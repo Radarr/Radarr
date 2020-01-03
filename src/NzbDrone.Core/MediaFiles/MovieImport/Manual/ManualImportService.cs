@@ -272,6 +272,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;
                 localMovie.Quality = file.Quality;
+                localMovie.Languages = file.Languages;
 
                 //TODO: Cleanup non-tracked downloads
                 var importDecision = new ImportDecision(localMovie);
