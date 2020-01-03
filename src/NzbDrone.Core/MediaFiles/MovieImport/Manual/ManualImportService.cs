@@ -177,7 +177,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 var localMovie = new LocalMovie();
                 localMovie.Path = file;
                 localMovie.Quality = QualityParser.ParseQuality(file);
-                localMovie.Languages = LanguageParser.ParseLanguages(file);
+                localMovie.Languages = LanguageParser.EnhanceLanguages(file, LanguageParser.ParseLanguages(file));
                 localMovie.Size = _diskProvider.GetFileSize(file);
 
                 return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
