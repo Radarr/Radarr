@@ -363,6 +363,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
         }
 
+        /*
         [Test]
         public void should_not_tmdb_map_movie_that_has_tmdbid_from_list()
         {
@@ -400,6 +401,6 @@ namespace NzbDrone.Core.Test.NetImport
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
-        }
+        }*/
     }
 }
