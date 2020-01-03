@@ -135,12 +135,7 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var movie in listedMovies)
             {
-                var mapped = movie;
-
-                if (mapped.TmdbId == 0)
-                {
-                    mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                }
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
                 if (mapped != null && mapped.TmdbId > 0)
                 {
