@@ -68,7 +68,6 @@ class MovieDetails extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
-      isManageEpisodesOpen: false,
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
       isInteractiveImportModalOpen: false,
@@ -93,10 +92,6 @@ class MovieDetails extends Component {
 
   onManageEpisodesPress = () => {
     this.setState({ isManageEpisodesOpen: true });
-  }
-
-  onManageEpisodesModalClose = () => {
-    this.setState({ isManageEpisodesOpen: false });
   }
 
   onInteractiveImportPress = () => {
@@ -228,13 +223,6 @@ class MovieDetails extends Component {
               iconName={icons.ORGANIZE}
               isDisabled={!hasMovieFiles}
               onPress={this.onOrganizePress}
-            />
-
-            <PageToolbarButton
-              label="Manage Files"
-              iconName={icons.MOVIE_FILE}
-              isDisabled={!hasMovieFiles}
-              onPress={this.onManageEpisodesPress}
             />
 
             <PageToolbarButton
