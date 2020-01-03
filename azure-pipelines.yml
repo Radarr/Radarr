@@ -434,7 +434,7 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
-          artifactName: 'is_backend_update'
+          artifactName: 'not_backend_update'
           targetPath: '.'
       - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
         name: setVar
@@ -686,7 +686,7 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
-          artifactName: 'is_backend_update'
+          artifactName: 'not_backend_update'
           targetPath: '.'
       - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
         name: setVar
