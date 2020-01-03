@@ -194,8 +194,15 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         }
                         break;
 
+                    case "forcedDL": //torrent is being downloaded, and was forced started
+                    case "moving": // torrent is being moved from a folder
                     case "downloading": // torrent is being downloaded and data is being transfered
+                        item.Status = DownloadItemStatus.Downloading;
+                        break;
+
                     default: // new status in API? default to downloading
+                        item.Message = "Unknown download state: " + torrent.State;
+                        _logger.Info(item.Message);
                         item.Status = DownloadItemStatus.Downloading;
                         break;
                 }
