@@ -37,12 +37,12 @@ stages:
       - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
         displayName: Set Build Name
       - bash: |
-          git diff origin/aphrodite...HEAD  --name-only | grep -qEv "^(src/|azure-pipelines.yml)"
-          echo $? > is_backend_update
-          cat is_backend_update
+          git diff origin/aphrodite...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
+          echo $? > not_backend_update
+          cat not_backend_update
         displayName: Check for Backend File Changes
-      - publish: is_backend_update
-        artifact: is_backend_update
+      - publish: not_backend_update
+        artifact: not_backend_update
         displayName: Publish update type
   - stage: Build_Backend
     displayName: Build Backend
@@ -285,15 +285,15 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
-          artifactName: 'is_backend_update'
+          artifactName: 'not_backend_update'
           targetPath: '.'
-      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
         name: setVar
 
     - job: Unit
       displayName: Unit Native
       dependsOn: Prepare
-      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
 
       strategy:
         matrix:
@@ -370,7 +370,7 @@ stages:
     - job: Unit_Docker
       displayName: Unit Docker
       dependsOn: Prepare
-      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono510:
@@ -434,15 +434,15 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
-          artifactName: 'is_backend_update'
+          artifactName: 'not_backend_update'
           targetPath: '.'
-      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
         name: setVar
 
     - job: Integration_Native
       displayName: Integration Native
       dependsOn: Prepare
-      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           MacCore:
@@ -517,7 +517,7 @@ stages:
     - job: Integration_Docker
       displayName: Integration Docker
       dependsOn: Prepare
-      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono510:
@@ -686,9 +686,9 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
-          artifactName: 'is_backend_update'
+          artifactName: 'not_backend_update'
           targetPath: '.'
-      - bash: echo "##vso[task.setvariable variable=backendUpdated;isOutput=true]$(cat is_backend_update)"
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
         name: setVar
 
     - job: Lint_Frontend
@@ -740,7 +740,7 @@ stages:
     - job: Analyze_Backend
       displayName: Backend
       dependsOn: Prepare
-      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendUpdated'], '1'))
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
 
       variables:
         disable.coverage.autogenerate: 'true'
