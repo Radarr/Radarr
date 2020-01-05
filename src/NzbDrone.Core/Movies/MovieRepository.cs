@@ -21,7 +21,6 @@ namespace NzbDrone.Core.Movies
         List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitleSlug(string slug);
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
-        List<Movie> MoviesWithFiles(int movieId);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
@@ -162,11 +161,6 @@ namespace NzbDrone.Core.Movies
             }
 
             return Query(builder);
-        }
-
-        public List<Movie> MoviesWithFiles(int movieId)
-        {
-            return Query(x => x.MovieFileId != 0);
         }
 
         public SqlBuilder MoviesWithoutFilesBuilder() => BuilderBase().Where<Movie>(x => x.MovieFileId == 0);
