@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Indexers.Newznab
                 yield return GetDefinition("Nzb-Tortuga", GetSettings("https://www.nzb-tortuga.com"));
                 yield return GetDefinition("Nzb.su", GetSettings("https://api.nzb.su"));
                 yield return GetDefinition("NZBCat", GetSettings("https://nzb.cat"));
-                yield return GetDefinition("NZBFinder.ws", GetSettings("https://nzbfinder.ws"));
+                yield return GetDefinition("NZBFinder.ws", GetSettings("https://nzbfinder.ws", categories: new[] { 2000, 2010, 2030, 2040, 2045, 2050, 2060, 2070 }));
                 yield return GetDefinition("NZBgeek", GetSettings("https://api.nzbgeek.info"));
                 yield return GetDefinition("nzbplanet.net", GetSettings("https://api.nzbplanet.net"));
-                yield return GetDefinition("omgwtfnzbs", GetSettings("https://api.omgwtfnzbs.me"));
+                yield return GetDefinition("omgwtfnzbs", GetSettings("https://api.omgwtfnzbs.me", categories: new[] { 2000, 2020, 2030, 2040, 2045, 2050, 2070 }));
                 yield return GetDefinition("OZnzb.com", GetSettings("https://api.oznzb.com"));
                 yield return GetDefinition("SimplyNZBs", GetSettings("https://simplynzbs.com"));
                 yield return GetDefinition("Usenet Crawler", GetSettings("https://www.usenet-crawler.com"));
