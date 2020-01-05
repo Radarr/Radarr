@@ -37,8 +37,12 @@ stages:
       - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
         displayName: Set Build Name
       - bash: |
+          if [[ $BUILD_REASON == "PullRequest" ]]; then
           git diff origin/aphrodite...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
           echo $? > not_backend_update
+          else
+          echo 0 > not_backend_update
+          fi
           cat not_backend_update
         displayName: Check for Backend File Changes
       - publish: not_backend_update
