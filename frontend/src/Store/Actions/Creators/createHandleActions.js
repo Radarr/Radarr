@@ -16,6 +16,13 @@ const blacklistedProperties = [
   'id'
 ];
 
+function createItemMap(data) {
+  return data.reduce((acc, d, index) => {
+    acc[d.id] = index;
+    return acc;
+  }, {});
+}
+
 export default function createHandleActions(handlers, defaultState, section) {
   return handleActions({
 
@@ -42,7 +49,7 @@ export default function createHandleActions(handlers, defaultState, section) {
 
         if (_.isArray(payload.data)) {
           newState.items = payload.data;
-          newState.itemMap = _.zipObject(_.map(payload.data, 'id'), _.range(payload.data.length));
+          newState.itemMap = createItemMap(payload.data);
         } else {
           newState.item = payload.data;
         }
@@ -67,7 +74,7 @@ export default function createHandleActions(handlers, defaultState, section) {
         const items = newState.items;
 
         if (!newState.itemMap) {
-          newState.itemMap = _.zipObject(_.map(items, 'id'), _.range(items.length));
+          newState.itemMap = createItemMap(payload.data);
         }
 
         const index = payload.id in newState.itemMap ? newState.itemMap[payload.id] : -1;
@@ -87,9 +94,8 @@ export default function createHandleActions(handlers, defaultState, section) {
 
           newState.items.splice(index, 1, newItem);
         } else if (!updateOnly) {
-          const newIndex = newState.items.push({ ...otherProps }) - 1;
-
-          newState.itemMap[payload.id] = newIndex;
+          newState.items.push({ ...otherProps });
+          newState.itemMap = createItemMap(newState.items);
         }
 
         return updateSectionState(state, payloadSection, newState);
@@ -126,7 +132,7 @@ export default function createHandleActions(handlers, defaultState, section) {
         newState.items = [...newState.items];
         _.remove(newState.items, { id: payload.id });
 
-        newState.itemMap = _.zipObject(_.map(newState.items, 'id'), _.range(newState.items.length));
+        newState.itemMap = createItemMap(newState.items);
 
         return updateSectionState(state, payloadSection, newState);
       }
