@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 1,
                     Name = "Deluge",
                     Implementation = "Deluge",
-                    Settings = new DelugeSettings85
+                    Settings = new DelugeSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc",
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 1,
                     Name = "Deluge",
                     Implementation = "Deluge",
-                    Settings = new DelugeSettings85
+                    Settings = new DelugeSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc",
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 1,
                     Name = "Deluge2",
                     Implementation = "Deluge",
-                    Settings = new DelugeSettings85
+                    Settings = new DelugeSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc",
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 1,
                     Name = "sab",
                     Implementation = "Sabnzbd",
-                    Settings = new SabnzbdSettings81
+                    Settings = new SabnzbdSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc"
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 0,
                     Name = "Deluge",
                     Implementation = "Deluge",
-                    Settings = new DelugeSettings85
+                    Settings = new DelugeSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc",
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 0,
                     Name = "Deluge2",
                     Implementation = "Deluge",
-                    Settings = new DelugeSettings85
+                    Settings = new DelugeSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc",
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Enable = 0,
                     Name = "sab",
                     Implementation = "Sabnzbd",
-                    Settings = new SabnzbdSettings81
+                    Settings = new SabnzbdSettings156
                     {
                         Host = "127.0.0.1",
                         TvCategory = "abc"
