@@ -12,6 +12,7 @@ using NzbDrone.Core.Messaging.Events;
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public class DownloadMonitoringService : IExecute<RefreshMonitoredDownloadsCommand>,
+                                             IExecute<CheckForFinishedDownloadCommand>,
                                              IHandle<BookGrabbedEvent>,
                                              IHandle<TrackImportedEvent>,
                                              IHandle<DownloadsProcessedEvent>,
