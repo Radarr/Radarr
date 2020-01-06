@@ -62,9 +62,9 @@ namespace MonoTorrent
             DoCheck(data, "data");
         }
 
-        public static void Destination (object destination)
+        public static void Destination(object destination)
         {
-            DoCheck (destination, "destination");
+            DoCheck(destination, "destination");
         }
 
         public static void Endpoint(object endpoint)
@@ -92,9 +92,9 @@ namespace MonoTorrent
             DoCheck(infoHash, "infoHash");
         }
 
-        public static void Key (object key)
+        public static void Key(object key)
         {
-            DoCheck (key, "key");
+            DoCheck(key, "key");
         }
 
         public static void Limiter(object limiter)
@@ -122,9 +122,9 @@ namespace MonoTorrent
             DoCheck(manager, "manager");
         }
 
-        public static void Mappings (object mappings)
+        public static void Mappings(object mappings)
         {
-            DoCheck (mappings, "mappings");
+            DoCheck(mappings, "mappings");
         }
 
         public static void Metadata(object metadata)
@@ -132,9 +132,9 @@ namespace MonoTorrent
             DoCheck(metadata, "metadata");
         }
 
-        public static void Name (object name)
+        public static void Name(object name)
         {
-            DoCheck (name, "name");
+            DoCheck(name, "name");
         }
 
         public static void Path(object path)
@@ -142,9 +142,9 @@ namespace MonoTorrent
             DoCheck(path, "path");
         }
 
-        public static void Paths (object paths)
+        public static void Paths(object paths)
         {
-            DoCheck (paths, "paths");
+            DoCheck(paths, "paths");
         }
 
         public static void PathNotEmpty(string path)
@@ -152,14 +152,14 @@ namespace MonoTorrent
             IsNullOrEmpty(path, "path");
         }
 
-        public static void Peer (object peer)
+        public static void Peer(object peer)
         {
-            DoCheck (peer, "peer");
+            DoCheck(peer, "peer");
         }
 
-        public static void Peers (object peers)
+        public static void Peers(object peers)
         {
-            DoCheck (peers, "peers");
+            DoCheck(peers, "peers");
         }
 
         public static void Picker(object picker)

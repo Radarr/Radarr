@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
     public class TorrentRssIndexerRequestGenerator : IIndexerRequestGenerator
     {
         public TorrentRssIndexerSettings Settings { get; set; }
-        
+
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
 
             yield return request;
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

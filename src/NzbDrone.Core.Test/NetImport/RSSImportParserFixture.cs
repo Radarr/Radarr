@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
 using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.RSSImport;
 using NzbDrone.Core.Test.Framework;
@@ -20,7 +18,6 @@ namespace NzbDrone.Core.Test.NetImport
 
             return new NetImportResponse(new NetImportRequest(httpRequest), httpResponse);
         }
-
 
         [Test]
         public void should_parse_xml_of_imdb()

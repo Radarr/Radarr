@@ -1,12 +1,12 @@
-﻿using RestSharp;
-using NzbDrone.Core.Messaging.Commands;
-using FluentAssertions;
-using System.Threading;
-using NUnit.Framework;
+﻿using System;
 using System.Linq;
-using System;
-using Radarr.Http.REST;
+using System.Threading;
+using FluentAssertions;
 using Newtonsoft.Json;
+using NUnit.Framework;
+using NzbDrone.Core.Messaging.Commands;
+using Radarr.Http.REST;
+using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
 {
@@ -27,7 +27,10 @@ namespace NzbDrone.Integration.Test.Client
         [JsonIgnore]
         public Command Body { get; set; }
         [JsonProperty("body")]
-        public Command BodyReadOnly { get { return Body; } }
+        public Command BodyReadOnly
+        {
+            get { return Body; }
+        }
     }
 
     public class CommandClient : ClientBase<SimpleCommandResource>
@@ -37,7 +40,8 @@ namespace NzbDrone.Integration.Test.Client
         {
         }
 
-        public SimpleCommandResource PostAndWait<T>(T command) where T : Command, new()
+        public SimpleCommandResource PostAndWait<T>(T command)
+            where T : Command, new()
         {
             var request = BuildRequest();
             request.AddJsonBody(command);
@@ -72,7 +76,7 @@ namespace NzbDrone.Integration.Test.Client
                 Thread.Sleep(500);
                 resources = All();
             }
-            
+
             Assert.Fail("Commands still processing");
         }
     }

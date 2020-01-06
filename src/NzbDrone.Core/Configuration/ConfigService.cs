@@ -4,12 +4,12 @@ using System.Globalization;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Core.Security;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Security;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -57,7 +57,10 @@ namespace NzbDrone.Core.Configuration
             {
                 object currentValue;
                 allWithDefaults.TryGetValue(configValue.Key, out currentValue);
-                if (currentValue == null || configValue.Value == null) continue;
+                if (currentValue == null || configValue.Value == null)
+                {
+                    continue;
+                }
 
                 var equal = configValue.Value.ToString().Equals(currentValue.ToString());
 
@@ -117,45 +120,6 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueInt("NetImportSyncInterval", 60); }
 
             set { SetValue("NetImportSyncInterval", value); }
-        }
-
-        public string TraktAuthToken
-        {
-            get { return GetValue("TraktAuthToken", string.Empty); }
-
-            set { SetValue("TraktAuthToken", value); }
-        }
-
-        public string TraktRefreshToken
-        {
-            get { return GetValue("TraktRefreshToken", string.Empty); }
-
-            set { SetValue("TraktRefreshToken", value); }
-        }
-
-        public int TraktTokenExpiry
-        {
-            get { return GetValueInt("TraktTokenExpiry", 0); }
-
-            set { SetValue("TraktTokenExpiry", value); }
-        }
-
-        public string NewTraktAuthToken
-        {
-            get { return GetValue("NewTraktAuthToken", string.Empty); }
-            set { SetValue("NewTraktAuthToken", value); }
-        }
-
-        public string NewTraktRefreshToken
-        {
-            get { return GetValue("NewTraktRefreshToken", string.Empty); }
-            set { SetValue("NewTraktRefreshToken", value); }
-        }
-
-        public int NewTraktTokenExpiry
-        {
-            get { return GetValueInt("NewTraktTokenExpiry", 0); }
-            set { SetValue("NewTraktTokenExpiry", value); }
         }
 
         public string ListSyncLevel

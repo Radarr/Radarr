@@ -2,7 +2,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Qualities
 {
@@ -40,7 +39,7 @@ namespace NzbDrone.Core.Qualities
                 }
             }
 
-            //Check for Modifier match 
+            //Check for Modifier match
             var matchingModifier = Quality.All.Where(q => q.Modifier == modifer);
 
             var matchingResolution = matchingModifier.Where(q => q.Resolution == resolution)

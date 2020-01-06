@@ -26,6 +26,5 @@ namespace NzbDrone.Core.Parser
             Language = language;
             AltCodes.AddRange(twoLetterCodes);
         }
-
     }
 }

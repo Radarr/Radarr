@@ -2,11 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
+using NzbDrone.Common.TPL;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using Timer = System.Timers.Timer;
-using NzbDrone.Common.TPL;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -39,10 +39,9 @@ namespace NzbDrone.Core.Jobs
 
                 foreach (var task in tasks)
                 {
-                    _commandQueueManager.Push(task.TypeName, task.LastExecution, CommandPriority.Low, CommandTrigger.Scheduled);
+                    _commandQueueManager.Push(task.TypeName, task.LastExecution, task.LastStartTime, CommandPriority.Low, CommandTrigger.Scheduled);
                 }
             }
-
             finally
             {
                 if (!_cancellationTokenSource.IsCancellationRequested)

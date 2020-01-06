@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.NetImport
         public IList<Movie> Movies { get; set; }
         public bool AnyFailure { get; set; }
     }
-    
+
     public abstract class NetImportBase<TSettings> : INetImport
         where TSettings : IProviderConfig, new()
     {
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.NetImport
 
                 yield return new NetImportDefinition
                 {
-                    Name = this.Name,
+                    Name = Name,
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
@@ -60,7 +60,10 @@ namespace NzbDrone.Core.NetImport
 
         public virtual ProviderDefinition Definition { get; set; }
 
-        public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
+        public virtual object RequestAction(string action, IDictionary<string, string> query)
+        {
+            return null;
+        }
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
@@ -87,6 +90,5 @@ namespace NzbDrone.Core.NetImport
         {
             return Definition.Name;
         }
-
     }
 }

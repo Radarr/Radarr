@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Movies;
 
 namespace Radarr.Api.V3.NetImport
 {
@@ -17,7 +15,10 @@ namespace Radarr.Api.V3.NetImport
     {
         public static ImportExclusionsResource ToResource(this NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ImportExclusionsResource
             {

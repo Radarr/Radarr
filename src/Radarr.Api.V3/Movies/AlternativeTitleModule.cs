@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
-using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Events;
 using Radarr.Http;
 

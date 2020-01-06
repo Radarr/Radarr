@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Common.Cache;
-using NzbDrone.Common.Http;
 using NzbDrone.Common.Cloud;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.MetadataSource
@@ -15,7 +12,7 @@ namespace NzbDrone.Core.MetadataSource
         MediaCover.MediaCover GetCoverForURL(string url, MediaCover.MediaCoverTypes type);
     }
 
-    class TmdbConfigService : ITmdbConfigService
+    internal class TmdbConfigService : ITmdbConfigService
     {
         private readonly ICached<ConfigResource> _configurationCache;
         private readonly IHttpClient _httpClient;

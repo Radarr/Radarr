@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -51,10 +51,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         {
             var folderInfo = new ParsedMovieInfo
             {
-                Languages = new List<Language> {Language.French}
+                Languages = new List<Language> { Language.French }
             };
 
-            MovieInfo.Languages = new List<Language>{Language.English};
+            MovieInfo.Languages = new List<Language> { Language.English };
 
             var result = Subject.AugmentMovieInfo(MovieInfo, folderInfo);
 
@@ -69,22 +69,22 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
                 Quality = new QualityModel(Quality.Bluray1080p)
             };
 
-            var format1 = new CustomFormats.CustomFormat("Awesome Format");
+            var format1 = new CustomFormat("Awesome Format");
             format1.Id = 1;
 
-            var format2 = new CustomFormats.CustomFormat("Cool Format");
+            var format2 = new CustomFormat("Cool Format");
             format2.Id = 2;
 
-            folderInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> { format1 };
+            folderInfo.Quality.CustomFormats = new List<CustomFormat> { format1 };
 
-            MovieInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> { format2 };
+            MovieInfo.Quality.CustomFormats = new List<CustomFormat> { format2 };
 
             var result = Subject.AugmentMovieInfo(MovieInfo, folderInfo);
 
             result.Quality.CustomFormats.Count.Should().Be(2);
             result.Quality.CustomFormats.Should().BeEquivalentTo(format2, format1);
 
-            folderInfo.Quality.CustomFormats = new List<CustomFormats.CustomFormat> { format1, format2 };
+            folderInfo.Quality.CustomFormats = new List<CustomFormat> { format1, format2 };
 
             result = Subject.AugmentMovieInfo(MovieInfo, folderInfo);
 

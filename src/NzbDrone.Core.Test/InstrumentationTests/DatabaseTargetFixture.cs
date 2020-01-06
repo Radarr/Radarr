@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using FluentAssertions;
-using Marr.Data;
 using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.Instrumentation;
@@ -10,7 +9,6 @@ using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
-using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.InstrumentationTests
 {
@@ -18,7 +16,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
     public class DatabaseTargetFixture : DbTest<DatabaseTarget, Log>
     {
         private static string _uniqueMessage;
-        Logger _logger;
+        private Logger _logger;
 
         protected override MigrationType MigrationType => MigrationType.Log;
 
@@ -62,23 +60,6 @@ namespace NzbDrone.Core.Test.InstrumentationTests
             StoredModel.Message.Should().HaveLength(message.Length);
             StoredModel.Message.Should().Be(message);
             VerifyLog(StoredModel, LogLevel.Info);
-        }
-
-
-        [Test]
-        [Explicit]
-        [ManualTest]
-        public void perf_test()
-        {
-            MapRepository.Instance.EnableTraceLogging = false;
-            for (int i = 0; i < 1000; i++)
-            {
-                _logger.Info(Guid.NewGuid());
-            }
-
-            Thread.Sleep(1000);
-
-            MapRepository.Instance.EnableTraceLogging = true;
         }
 
         [Test]
@@ -126,7 +107,6 @@ namespace NzbDrone.Core.Test.InstrumentationTests
             epFile.RelativePath.Should().BeNull();
         }
 
-
         [TearDown]
         public void Teardown()
         {
@@ -136,7 +116,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
         private void VerifyLog(Log logItem, LogLevel level)
         {
             logItem.Time.Should().BeWithin(TimeSpan.FromSeconds(2));
-            logItem.Logger.Should().Be(this.GetType().Name);
+            logItem.Logger.Should().Be(GetType().Name);
             logItem.Level.Should().Be(level.Name);
             _logger.Name.Should().EndWith(logItem.Logger);
         }

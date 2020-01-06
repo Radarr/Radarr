@@ -14,8 +14,8 @@ namespace Radarr.Host
 {
     public static class Bootstrap
     {
-        private static IContainer _container;
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Bootstrap));
+        private static IContainer _container;
 
         public static void Start(StartupContext startupContext, IUserAlert userAlert, Action<IContainer> startCallback = null)
         {
@@ -72,7 +72,7 @@ namespace Radarr.Host
 
                 EnsureSingleInstance(applicationModes == ApplicationModes.Service, startupContext);
             }
-            
+
             _container.Resolve<Router>().Route(applicationModes);
         }
 
@@ -120,7 +120,6 @@ namespace Radarr.Host
                 return ApplicationModes.RegisterUrl;
             }
 
-
             if (OsInfo.IsWindows && startupContext.InstallService)
             {
                 return ApplicationModes.InstallService;
@@ -150,6 +149,7 @@ namespace Radarr.Host
                     {
                         return true;
                     }
+
                 default:
                     {
                         return false;

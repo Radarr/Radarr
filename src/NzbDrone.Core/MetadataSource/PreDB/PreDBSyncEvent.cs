@@ -1,8 +1,5 @@
-﻿using NzbDrone.Common.Messaging;
-using NzbDrone.Core.Download;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MetadataSource.PreDB

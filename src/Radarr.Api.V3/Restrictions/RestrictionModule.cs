@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using FluentValidation;
-using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Restrictions;
 using Radarr.Http;
@@ -10,7 +9,6 @@ namespace Radarr.Api.V3.Restrictions
     public class RestrictionModule : RadarrRestModule<RestrictionResource>
     {
         private readonly IRestrictionService _restrictionService;
-
 
         public RestrictionModule(IRestrictionService restrictionService)
         {

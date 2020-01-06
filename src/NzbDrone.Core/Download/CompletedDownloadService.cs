@@ -1,8 +1,6 @@
-using System;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -11,8 +9,8 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download
 {
@@ -124,9 +122,10 @@ namespace NzbDrone.Core.Download
                     .Select(v =>
                     {
                         if (v.ImportDecision.LocalMovie == null)
-	                    {
+                        {
                             return new TrackedDownloadStatusMessage("", v.Errors);
-	                    }
+                        }
+
                         return new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors);
                     })
                     .ToArray();

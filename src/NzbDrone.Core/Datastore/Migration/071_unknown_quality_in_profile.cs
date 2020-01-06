@@ -4,7 +4,6 @@ using System.Linq;
 using FluentMigrator;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -25,6 +24,7 @@ namespace NzbDrone.Core.Datastore.Migration
             updater.Commit();
         }
     }
+
     public class Profile70
     {
         public int Id { get; set; }
@@ -89,7 +89,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             foreach (var profile in _profiles)
             {
-                if (profile.Items.Any(v => v.Quality == quality)) continue;
+                if (profile.Items.Any(v => v.Quality == quality))
+                {
+                    continue;
+                }
 
                 profile.Items.Insert(0, new ProfileItem70
                 {
@@ -105,7 +108,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             foreach (var profile in _profiles)
             {
-                if (profile.Items.Any(v => v.Quality == quality)) continue;
+                if (profile.Items.Any(v => v.Quality == quality))
+                {
+                    continue;
+                }
 
                 profile.Items.Add(new ProfileItem70
                 {
@@ -121,7 +127,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             foreach (var profile in _profiles)
             {
-                if (profile.Items.Any(v => v.Quality == quality)) continue;
+                if (profile.Items.Any(v => v.Quality == quality))
+                {
+                    continue;
+                }
 
                 var findIndex = profile.Items.FindIndex(v => v.Quality == find);
 
@@ -144,7 +153,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             foreach (var profile in _profiles)
             {
-                if (profile.Items.Any(v => v.Quality == quality)) continue;
+                if (profile.Items.Any(v => v.Quality == quality))
+                {
+                    continue;
+                }
 
                 var findIndex = profile.Items.FindIndex(v => v.Quality == find);
 
@@ -172,7 +184,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     {
                         int id = definitionsReader.GetInt32(0);
                         int quality = definitionsReader.GetInt32(1);
-                        definitions.Add(new QualityDefinition70 {Id = id, Quality = quality});
+                        definitions.Add(new QualityDefinition70 { Id = id, Quality = quality });
                     }
                 }
             }

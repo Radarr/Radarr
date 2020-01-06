@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using NzbDrone.Core.ThingiProvider;
 using Radarr.Http.ClientSchema;
 using Radarr.Http.REST;
-using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Api
 {

@@ -1,15 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
-using FizzWare.NBuilder;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Common.Composition;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -40,7 +32,7 @@ namespace NzbDrone.Core.Test.Qualities
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IQualityDefinitionRepository>()
-                .Verify(v => v.InsertMany(It.Is<List<QualityDefinition>>(d => d.Count == Quality.All.Count -1 )), Times.Once());
+                .Verify(v => v.InsertMany(It.Is<List<QualityDefinition>>(d => d.Count == Quality.All.Count - 1)), Times.Once());
         }
 
         [Test]
@@ -67,7 +59,7 @@ namespace NzbDrone.Core.Test.Qualities
                   .Setup(s => s.All())
                   .Returns(new List<QualityDefinition>
                       {
-                              new QualityDefinition(new Quality{ Id = 100, Name = "Test" }) { Weight = 1, MinSize = 0, MaxSize = 100, Id = 20 }
+                              new QualityDefinition(new Quality { Id = 100, Name = "Test" }) { Weight = 1, MinSize = 0, MaxSize = 100, Id = 20 }
                       });
 
             Subject.Handle(new ApplicationStartedEvent());

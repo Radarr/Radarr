@@ -1,14 +1,12 @@
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -23,14 +21,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             _localMovie = new LocalMovie();
             _localMovie.Movie = new Movie
-                                   {
-                                       Path = @"C:\Test\TV\Series".AsOsAgnostic()
-                                   };
+            {
+                Path = @"C:\Test\TV\Series".AsOsAgnostic()
+            };
 
             _movieFile = Builder<MovieFile>
                 .CreateNew()
                 .Build();
-
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
@@ -57,8 +54,6 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
-
-
 
         [Test]
         public void should_delete_episode_file_from_database()

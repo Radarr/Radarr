@@ -40,6 +40,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public bool? via_tmdb { get; set; }
         public string[] actors { get; set; }
         public string[] writers { get; set; }
+
         //public int? runtime { get; set; }
         public string type { get; set; }
         public string released { get; set; }

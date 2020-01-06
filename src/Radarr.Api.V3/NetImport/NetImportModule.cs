@@ -1,5 +1,4 @@
 using FluentValidation;
-using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Validation.Paths;
 
@@ -19,7 +18,11 @@ namespace Radarr.Api.V3.NetImport
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.IO;
- using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
@@ -12,7 +12,9 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string ReleaseDate { get; set; }
         public string FolderPath { get; set; }
 
-        public WebhookMovie() { }
+        public WebhookMovie()
+        {
+        }
 
         public WebhookMovie(Movie movie)
         {
@@ -22,7 +24,8 @@ namespace NzbDrone.Core.Notifications.Webhook
             FolderPath = movie.Path;
         }
 
-        public WebhookMovie(Movie movie, MovieFile movieFile) : this(movie)
+        public WebhookMovie(Movie movie, MovieFile movieFile)
+            : this(movie)
         {
             FilePath = Path.Combine(movie.Path, movieFile.RelativePath);
         }

@@ -6,7 +6,6 @@ using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {
@@ -52,7 +51,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             foreach (var result in queryResults)
             {
                 var id = result.Id;
-                var internalRelease = (result.TypeOrigin == 1 ? true : false);
+                var internalRelease = result.TypeOrigin == 1 ? true : false;
 
                 IndexerFlags flags = 0;
 
@@ -105,7 +104,6 @@ namespace NzbDrone.Core.Indexers.HDBits
                 .AddQueryParam("id", torrentId);
 
             return url.FullUri;
-
         }
     }
 }

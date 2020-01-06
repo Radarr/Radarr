@@ -11,12 +11,12 @@ namespace NzbDrone.Core.Test.NetImport
     [TestFixture]
     public class RSSImportFixture : CoreTest<RSSImport>
     {
-
         [SetUp]
         public void Setup()
         {
             Subject.Definition = Subject.DefaultDefinitions.First();
         }
+
         private void GivenRecentFeedResponse(string rssXmlFile)
         {
             var recentFeed = ReadAllText(@"Files/" + rssXmlFile);

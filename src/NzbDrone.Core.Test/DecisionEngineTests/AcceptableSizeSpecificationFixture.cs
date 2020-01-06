@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -17,39 +16,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class AcceptableSizeSpecificationFixture : CoreTest<AcceptableSizeSpecification>
     {
-        private Movie movie;
-        private RemoteMovie remoteMovie;
-        private QualityDefinition qualityType;
+        private Movie _movie;
+        private RemoteMovie _remoteMovie;
+        private QualityDefinition _qualityType;
 
         [SetUp]
         public void Setup()
         {
+            _movie = Builder<Movie>.CreateNew().Build();
 
-            movie = Builder<Movie>.CreateNew().Build();
-
-            qualityType = Builder<QualityDefinition>.CreateNew()
+            _qualityType = Builder<QualityDefinition>.CreateNew()
                 .With(q => q.MinSize = 2)
                 .With(q => q.MaxSize = 10)
                 .With(q => q.Quality = Quality.SDTV)
                 .Build();
 
-            remoteMovie = new RemoteMovie
+            _remoteMovie = new RemoteMovie
             {
-                Movie = movie,
+                Movie = _movie,
                 Release = new ReleaseInfo(),
                 ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.SDTV, new Revision(version: 2)) },
-
             };
 
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(It.IsAny<Quality>()))
                 .Returns<Quality>(v => Quality.DefaultQualityDefinitions.First(c => c.Quality == v));
 
-
-
-            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.SDTV)).Returns(qualityType);
+            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.SDTV)).Returns(_qualityType);
         }
-
 
         [TestCase(30, 50, false)]
         [TestCase(30, 250, true)]
@@ -59,57 +53,57 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [TestCase(60, 1000, false)]
         public void single_episode(int runtime, int sizeInMegaBytes, bool expectedResult)
         {
-            movie.Runtime = runtime;
-            remoteMovie.Movie = movie;
-            remoteMovie.Release.Size = sizeInMegaBytes.Megabytes();
+            _movie.Runtime = runtime;
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.Release.Size = sizeInMegaBytes.Megabytes();
 
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(expectedResult);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(expectedResult);
         }
 
         [Test]
         public void should_return_true_if_size_is_zero()
         {
-            movie.Runtime = 120;
-            remoteMovie.Movie = movie;
-            remoteMovie.Release.Size = 0;
-            qualityType.MinSize = 10;
-            qualityType.MaxSize = 20;
+            _movie.Runtime = 120;
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.Release.Size = 0;
+            _qualityType.MinSize = 10;
+            _qualityType.MaxSize = 20;
 
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_unlimited_30_minute()
         {
-            movie.Runtime = 30;
-            remoteMovie.Movie = movie;
-            remoteMovie.Release.Size = 18457280000;
-            qualityType.MaxSize = null;
+            _movie.Runtime = 30;
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.Release.Size = 18457280000;
+            _qualityType.MaxSize = null;
 
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_unlimited_60_minute()
         {
-            movie.Runtime = 60;
-            remoteMovie.Movie = movie;
-            remoteMovie.Release.Size = 36857280000;
-            qualityType.MaxSize = null;
+            _movie.Runtime = 60;
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.Release.Size = 36857280000;
+            _qualityType.MaxSize = null;
 
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_use_110_minutes_if_runtime_is_0()
         {
-            movie.Runtime = 0;
-            remoteMovie.Movie = movie;
-            remoteMovie.Release.Size = 1095.Megabytes();
+            _movie.Runtime = 0;
+            _remoteMovie.Movie = _movie;
+            _remoteMovie.Release.Size = 1095.Megabytes();
 
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(true);
-            remoteMovie.Release.Size = 1105.Megabytes();
-            Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(false);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(true);
+            _remoteMovie.Release.Size = 1105.Megabytes();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(false);
             ExceptionVerification.ExpectedWarns(1);
         }
     }

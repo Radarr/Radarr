@@ -1,15 +1,13 @@
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 {
@@ -27,11 +25,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                                      .Build();
 
             _localMovie = new LocalMovie()
-                                {
-                                    Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
-                                    Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
-                                    Movie = _movie
-                                };
+            {
+                Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
+                Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
+                Movie = _movie
+            };
         }
 
         [Test]
@@ -46,30 +44,25 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_return_true_if_upgrade_for_existing_episodeFile()
         {
-
             _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+            _localMovie.Movie.MovieFile =
                     new MovieFile
                     {
                         Quality = new QualityModel(Quality.SDTV, new Revision(version: 1))
-                    }
-                );
-
+                    };
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
         }
-
 
         [Test]
         public void should_return_false_if_not_an_upgrade_for_existing_episodeFile()
         {
             _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+            _localMovie.Movie.MovieFile =
                 new MovieFile
                 {
                     Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 1))
-                }
-            );
+                };
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
         }

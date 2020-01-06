@@ -104,11 +104,11 @@ namespace NzbDrone.Core.Backup
                 if (_diskProvider.FolderExists(folder))
                 {
                     backups.AddRange(GetBackupFiles(folder).Select(b => new Backup
-                                                                        {
-                                                                            Name = Path.GetFileName(b),
-                                                                            Type = backupType,
-                                                                            Time = _diskProvider.FileGetLastWrite(b)
-                                                                        }));
+                    {
+                        Name = Path.GetFileName(b),
+                        Type = backupType,
+                        Time = _diskProvider.FileGetLastWrite(b)
+                    }));
                 }
             }
 

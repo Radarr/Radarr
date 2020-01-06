@@ -13,7 +13,7 @@ using NzbDrone.Mono.Disk;
 namespace NzbDrone.Mono.Test.DiskProviderTests
 {
     [TestFixture]
-    [Platform(Exclude="Win")]
+    [Platform(Exclude = "Win")]
     public class DiskProviderFixture : DiskProviderFixtureBase<DiskProvider>
     {
         public DiskProviderFixture()
@@ -29,7 +29,6 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
             }
 
             // Remove Write permissions, we're still owner so we can clean it up, but we'll have to do that explicitly.
-
             var entry = UnixFileSystemInfo.GetFileSystemEntry(path);
 
             if (writable)
@@ -100,7 +99,8 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
 
             Mocker.GetMock<IProcMountProvider>()
                 .Setup(v => v.GetMounts())
-                .Returns(new List<IMount> {
+                .Returns(new List<IMount>
+                {
                     new ProcMount(DriveType.Fixed, rootDir, rootDir, "myfs", new MountOptions(new Dictionary<string, string>()))
                 });
         }

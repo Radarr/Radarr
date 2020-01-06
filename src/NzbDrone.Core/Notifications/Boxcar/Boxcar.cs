@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE , message.Message, Settings);
+            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck message)

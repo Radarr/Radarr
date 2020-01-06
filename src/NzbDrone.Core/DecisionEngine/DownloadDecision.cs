@@ -7,7 +7,7 @@ namespace NzbDrone.Core.DecisionEngine
     public class DownloadDecision
     {
         public RemoteMovie RemoteMovie { get; private set; }
-        
+
         public IEnumerable<Rejection> Rejections { get; private set; }
 
         public bool Approved => !Rejections.Any();
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.DecisionEngine
             RemoteMovie = movie;
             Rejections = rejections.ToList();
         }
-        
+
         public override string ToString()
         {
             if (Approved)

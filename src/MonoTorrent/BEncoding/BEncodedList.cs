@@ -38,7 +38,7 @@ namespace MonoTorrent.BEncoding
         {
             if (list == null)
                 throw new ArgumentNullException("list");
- 
+
             this.list = new List<BEncodedValue>(list);
         }
 
@@ -99,7 +99,7 @@ namespace MonoTorrent.BEncoding
             int length = 0;
 
             length += 1;   // Lists start with 'l'
-            for (int i=0; i < this.list.Count; i++)
+            for (int i = 0; i < this.list.Count; i++)
                 length += this.list[i].LengthInBytes();
 
             length += 1;   // Lists end with 'e'
@@ -147,9 +147,9 @@ namespace MonoTorrent.BEncoding
             this.list.Add(item);
         }
 
-        public void AddRange (IEnumerable<BEncodedValue> collection)
+        public void AddRange(IEnumerable<BEncodedValue> collection)
         {
-            list.AddRange (collection);
+            list.AddRange(collection);
         }
 
         public void Clear()

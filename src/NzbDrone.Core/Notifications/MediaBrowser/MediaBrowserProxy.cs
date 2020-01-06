@@ -22,11 +22,11 @@ namespace NzbDrone.Core.Notifications.Emby
             request.Headers.ContentType = "application/json";
 
             request.SetContent(new
-                           {
-                               Name = title,
-                               Description = message,
-                               ImageUrl = "https://raw.github.com/Radarr/Radarr/develop/Logo/64.png"
-                           }.ToJson());
+            {
+                Name = title,
+                Description = message,
+                ImageUrl = "https://raw.github.com/Radarr/Radarr/develop/Logo/64.png"
+            }.ToJson());
 
             ProcessRequest(request, settings);
         }
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             var scheme = settings.UseSsl ? "https" : "http";
             var url = $@"{scheme}://{settings.Address}/mediabrowser";
-            
+
             return new HttpRequestBuilder(url).Resource(path).Build();
         }
 

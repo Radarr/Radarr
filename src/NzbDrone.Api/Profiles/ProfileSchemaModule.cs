@@ -2,11 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.Profiles
 {
@@ -33,7 +31,8 @@ namespace NzbDrone.Api.Profiles
 
             var formatItems = _formatService.All().Select(v => new ProfileFormatItem
             {
-                Format = v, Allowed = true
+                Format = v,
+                Allowed = true
             }).ToList();
 
             formatItems.Insert(0, new ProfileFormatItem

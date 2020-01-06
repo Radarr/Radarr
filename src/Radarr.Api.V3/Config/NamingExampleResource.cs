@@ -21,6 +21,7 @@ namespace Radarr.Api.V3.Config
                 ColonReplacementFormat = model.ColonReplacementFormat,
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat,
+
                 //IncludeQuality
                 //ReplaceSpaces
                 //Separator

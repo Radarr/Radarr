@@ -2,18 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Marr.Data;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras
 {
@@ -79,7 +77,6 @@ namespace NzbDrone.Core.Extras
             foreach (var matchingFilename in matchingFilenames)
             {
                 // Filter out duplicate NFO files
-
                 if (matchingFilename.EndsWith(".nfo", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (hasNfo)
@@ -168,7 +165,7 @@ namespace NzbDrone.Core.Extras
 
             foreach (var movieFile in movieFiles)
             {
-                movieFile.Movie = new LazyLoaded<Movie>(_movieService.GetMovie(movieId));
+                movieFile.Movie = _movieService.GetMovie(movieId);
             }
 
             return movieFiles;

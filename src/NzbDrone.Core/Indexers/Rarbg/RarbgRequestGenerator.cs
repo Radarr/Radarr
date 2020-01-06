@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Common.EnvironmentInfo;
 using System.Linq;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -87,15 +87,18 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             requestBuilder.AddQueryParam("mode", "search");
 
-            if (searchCriteria.Movie.ImdbId != null)
+            if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
             {
                 requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.ImdbId);
+            }
+            else if (searchCriteria.Movie.TmdbId > 0)
+            {
+                requestBuilder.AddQueryParam("search_themoviedb", searchCriteria.Movie.TmdbId);
             }
             else
             {
                 requestBuilder.AddQueryParam("search_string", $"{searchCriteria.Movie.Title} {searchCriteria.Movie.Year}");
             }
-            
 
             if (!Settings.RankedOnly)
             {
@@ -112,7 +115,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             yield return new IndexerRequest(requestBuilder.Build());
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

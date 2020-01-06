@@ -7,7 +7,6 @@ namespace NzbDrone.Core.Profiles
         public ProfileInUseException(int profileId)
             : base("Profile [{0}] is in use.", profileId)
         {
-
         }
     }
 }

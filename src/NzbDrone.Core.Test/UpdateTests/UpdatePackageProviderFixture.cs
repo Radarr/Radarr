@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude="NetCore")]
+        [Platform(Exclude = "NetCore")]
         public void finds_update_when_version_lower()
         {
             UseRealHttp();
@@ -39,7 +39,6 @@ namespace NzbDrone.Core.Test.UpdateTests
             UseRealHttp();
             Subject.GetLatestUpdate("invalid_branch", new Version(0, 2)).Should().NotBeNull();
         }
-
 
         [Test]
         public void should_get_recent_updates()

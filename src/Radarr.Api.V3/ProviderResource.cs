@@ -25,7 +25,6 @@ namespace Radarr.Api.V3
         where TProviderDefinition : ProviderDefinition, new()
     {
         public virtual TProviderResource ToResource(TProviderDefinition definition)
-            
         {
             return new TProviderResource
             {
@@ -47,7 +46,10 @@ namespace Radarr.Api.V3
 
         public virtual TProviderDefinition ToModel(TProviderResource resource)
         {
-            if (resource == null) return default(TProviderDefinition);
+            if (resource == null)
+            {
+                return default(TProviderDefinition);
+            }
 
             var definition = new TProviderDefinition
             {

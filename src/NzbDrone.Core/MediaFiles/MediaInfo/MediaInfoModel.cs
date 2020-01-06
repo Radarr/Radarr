@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using Newtonsoft.Json;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
@@ -10,6 +6,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     public class MediaInfoModel : IEmbeddedDocument
     {
         public string ContainerFormat { get; set; }
+
         // Deprecated according to MediaInfo
         public string VideoCodec { get; set; }
         public string VideoFormat { get; set; }

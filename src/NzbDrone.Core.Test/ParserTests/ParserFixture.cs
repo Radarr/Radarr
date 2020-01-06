@@ -1,12 +1,10 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
-
     [TestFixture]
     public class ParserFixture : CoreTest
     {
@@ -32,17 +30,17 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         //Note: This assumes extended language parser is activated
-		[TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
-		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
-		[TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
-		[TestCase("R.I.P.D.2013.720p.BluRay.x264-SPARKS", "R.I.P.D.")]
-		[TestCase("V.H.S.2.2013.LIMITED.720p.BluRay.x264-GECKOS", "V.H.S. 2")]
-		[TestCase("This Is A Movie (1999) [IMDB #] <Genre, Genre, Genre> {ACTORS} !DIRECTOR +MORE_SILLY_STUFF_NO_ONE_NEEDS ?", "This Is A Movie")]
-		[TestCase("We Are the Best!.2013.720p.H264.mkv", "We Are the Best!")]
-		[TestCase("(500).Days.Of.Summer.(2009).DTS.1080p.BluRay.x264.NLsubs", "(500) Days Of Summer")]
-		[TestCase("To.Live.and.Die.in.L.A.1985.1080p.BluRay", "To Live and Die in L.A.")]
-		[TestCase("A.I.Artificial.Intelligence.(2001)", "A.I. Artificial Intelligence")]
-		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
+        [TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
+        [TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
+        [TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
+        [TestCase("R.I.P.D.2013.720p.BluRay.x264-SPARKS", "R.I.P.D.")]
+        [TestCase("V.H.S.2.2013.LIMITED.720p.BluRay.x264-GECKOS", "V.H.S. 2")]
+        [TestCase("This Is A Movie (1999) [IMDB #] <Genre, Genre, Genre> {ACTORS} !DIRECTOR +MORE_SILLY_STUFF_NO_ONE_NEEDS ?", "This Is A Movie")]
+        [TestCase("We Are the Best!.2013.720p.H264.mkv", "We Are the Best!")]
+        [TestCase("(500).Days.Of.Summer.(2009).DTS.1080p.BluRay.x264.NLsubs", "(500) Days Of Summer")]
+        [TestCase("To.Live.and.Die.in.L.A.1985.1080p.BluRay", "To Live and Die in L.A.")]
+        [TestCase("A.I.Artificial.Intelligence.(2001)", "A.I. Artificial Intelligence")]
+        [TestCase("A.Movie.Name.(1998)", "A Movie Name")]
         [TestCase("www.Torrenting.com - Revenge.2008.720p.X264-DIMENSION", "Revenge")]
         [TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
         [TestCase("Resident.Evil.The.Final.Chapter.2016", "Resident Evil The Final Chapter")]
@@ -51,14 +49,14 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
         [TestCase("Valana la Legende TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
         [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
-		[TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
-		[TestCase("My Movie 1999 German Bluray", "My Movie")]
+        [TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
+        [TestCase("My Movie 1999 German Bluray", "My Movie")]
         [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
         [TestCase("Climax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Climax")]
         [TestCase("Movie.Title.Imax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Movie Title")]
         public void should_parse_movie_title(string postTitle, string title)
-		{
-		    Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
+        {
+            Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
         }
 
         [TestCase("(1995) Ghost in the Shell", "Ghost in the Shell")]
@@ -72,9 +70,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", 1897)]
         public void should_parse_movie_year(string postTitle, int year)
-		{
-			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
-		}
+        {
+            Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
+        }
 
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
         [TestCase("Star Wars Episode IV - A New Hope 1999 (Despecialized).mkv", "Despecialized")]

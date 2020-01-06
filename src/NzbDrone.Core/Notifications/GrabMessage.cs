@@ -1,6 +1,6 @@
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications
 {

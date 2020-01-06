@@ -39,10 +39,10 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         [Test]
         public void should_update_insert_remove_titles()
         {
-            var titles = new List<AlternativeTitle> {_title2, _title3};
-            var updates = new List<AlternativeTitle> {_title2};
-            var deletes = new List<AlternativeTitle> {_title1};
-            var inserts = new List<AlternativeTitle> {_title3};
+            var titles = new List<AlternativeTitle> { _title2, _title3 };
+            var updates = new List<AlternativeTitle> { _title2 };
+            var deletes = new List<AlternativeTitle> { _title1 };
+            var inserts = new List<AlternativeTitle> { _title3 };
             GivenExistingTitles(_title1, _title2);
 
             Subject.UpdateTitles(titles, _movie);
@@ -56,8 +56,8 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         public void should_not_insert_duplicates()
         {
             GivenExistingTitles();
-            var titles = new List<AlternativeTitle> {_title1, _title1};
-            var inserts = new List<AlternativeTitle>{ _title1 };
+            var titles = new List<AlternativeTitle> { _title1, _title1 };
+            var inserts = new List<AlternativeTitle> { _title1 };
 
             Subject.UpdateTitles(titles, _movie);
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         public void should_not_insert_main_title()
         {
             GivenExistingTitles();
-            var titles = new List<AlternativeTitle>{_title1};
+            var titles = new List<AlternativeTitle> { _title1 };
             var movie = Builder<Movie>.CreateNew().With(m => m.CleanTitle = _title1.CleanTitle).Build();
 
             Subject.UpdateTitles(titles, movie);
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         public void should_update_movie_id()
         {
             GivenExistingTitles();
-            var titles = new List<AlternativeTitle> {_title1, _title2};
+            var titles = new List<AlternativeTitle> { _title1, _title2 };
 
             Subject.UpdateTitles(titles, _movie);
 
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             var updateTitle = existingTitle.JsonClone();
             updateTitle.Id = 0;
 
-            Subject.UpdateTitles(new List<AlternativeTitle> {updateTitle}, _movie);
+            Subject.UpdateTitles(new List<AlternativeTitle> { updateTitle }, _movie);
 
             Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(list => list.First().Id == existingTitle.Id)), Times.Once());
         }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.Restrictions;
+using Radarr.Http.REST;
 
 namespace Radarr.Http.RESTrictions
 {
@@ -22,7 +22,10 @@ namespace Radarr.Http.RESTrictions
     {
         public static RestrictionResource ToResource(this Restriction model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new RestrictionResource
             {
@@ -37,7 +40,10 @@ namespace Radarr.Http.RESTrictions
 
         public static Restriction ToModel(this RestrictionResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new Restriction
             {

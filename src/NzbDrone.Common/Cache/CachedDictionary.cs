@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace NzbDrone.Common.Cache
 {
-
     public class CachedDictionary<TValue> : ICachedDictionary<TValue>
     {
         private readonly Func<IDictionary<string, TValue>> _fetchFunc;
@@ -34,7 +33,7 @@ namespace NzbDrone.Common.Cache
         }
 
         public void RefreshIfExpired(TimeSpan ttl)
-    {
+        {
             if (IsExpired(ttl))
             {
                 Refresh();

@@ -1,32 +1,30 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Test.CustomFormat;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
     public class CutoffSpecificationFixture : CoreTest<UpgradableSpecification>
     {
-
-        private CustomFormats.CustomFormat _customFormat;
+        private CustomFormat _customFormat;
 
         [SetUp]
         public void Setup()
         {
-
         }
 
         private void GivenCustomFormatHigher()
         {
-            _customFormat = new CustomFormats.CustomFormat("My Format", "L_ENGLISH") {Id = 1};
+            _customFormat = new CustomFormat("My Format", "L_ENGLISH") { Id = 1 };
 
-            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormats.CustomFormat.None);
+            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormat.None);
         }
 
         [Test]
@@ -71,30 +69,32 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenCustomFormatHigher();
             var old = new QualityModel(Quality.HDTV720p);
-            old.CustomFormats = new List<CustomFormats.CustomFormat> {CustomFormats.CustomFormat.None};
+            old.CustomFormats = new List<CustomFormat> { CustomFormat.None };
             var newQ = new QualityModel(Quality.Bluray1080p);
-            newQ.CustomFormats = new List<CustomFormats.CustomFormat> {_customFormat};
+            newQ.CustomFormats = new List<CustomFormat> { _customFormat };
             Subject.CutoffNotMet(
                 new Profile
                 {
                     Cutoff = Quality.HDTV720p.Id,
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
-                    FormatCutoff = CustomFormats.CustomFormat.None.Id,
+                    FormatCutoff = CustomFormat.None.Id,
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
-                }, old, newQ).Should().BeFalse();
+                },
+                old,
+                newQ).Should().BeFalse();
         }
 
         [Test]
         public void should_return_true_if_cutoffs_are_met_but_is_a_revision_upgrade()
         {
-            Profile _profile = new Profile
+            Profile profile = new Profile
             {
                 Cutoff = Quality.HDTV1080p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 
             Subject.CutoffNotMet(
-                _profile,
+                profile,
                 new QualityModel(Quality.WEBDL1080p, new Revision(version: 1)),
                 new QualityModel(Quality.WEBDL1080p, new Revision(version: 2))).Should().BeTrue();
         }

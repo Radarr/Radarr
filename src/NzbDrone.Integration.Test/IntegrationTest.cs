@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Test.Common;

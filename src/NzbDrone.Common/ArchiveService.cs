@@ -73,11 +73,12 @@ namespace NzbDrone.Common
                     {
                         continue; // Ignore directories
                     }
+
                     string entryFileName = zipEntry.Name;
+
                     // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
                     // Optionally match entrynames against a selection list here to skip as desired.
                     // The unpacked length is available in the zipEntry.Size property.
-
                     byte[] buffer = new byte[4096]; // 4K is optimum
                     Stream zipStream = zipFile.GetInputStream(zipEntry);
 
@@ -85,7 +86,9 @@ namespace NzbDrone.Common
                     string fullZipToPath = Path.Combine(destination, entryFileName);
                     string directoryName = Path.GetDirectoryName(fullZipToPath);
                     if (directoryName.Length > 0)
+                    {
                         Directory.CreateDirectory(directoryName);
+                    }
 
                     // Unzip file in buffered chunks. This is just as fast as unpacking to a buffer the full size
                     // of the file, but does not waste memory.

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
- using NzbDrone.Core.CustomFormats;
- using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Languages;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Profiles
 {
@@ -33,8 +32,11 @@ namespace NzbDrone.Core.Profiles
         private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IMovieService movieService,
-            INetImportFactory netImportFactory, ICustomFormatService formatService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository,
+            IMovieService movieService,
+            INetImportFactory netImportFactory,
+            ICustomFormatService formatService,
+            Logger logger)
         {
             _profileRepository = profileRepository;
             _movieService = movieService;
@@ -112,11 +114,15 @@ namespace NzbDrone.Core.Profiles
         {
             // Hack to force custom formats to be loaded into memory, if you have a better solution please let me know.
             _formatService.All();
-            if (All().Any()) return;
+            if (All().Any())
+            {
+                return;
+            }
 
             _logger.Info("Setting up default quality profiles");
 
-            AddDefaultProfile("Any", Quality.Bluray480p,
+            AddDefaultProfile("Any",
+                Quality.Bluray480p,
                 Quality.WORKPRINT,
                 Quality.CAM,
                 Quality.TELESYNC,
@@ -146,7 +152,8 @@ namespace NzbDrone.Core.Profiles
                 Quality.Remux2160p,
                 Quality.BRDISK);
 
-            AddDefaultProfile("SD", Quality.Bluray480p,
+            AddDefaultProfile("SD",
+                Quality.Bluray480p,
                 Quality.WORKPRINT,
                 Quality.CAM,
                 Quality.TELESYNC,
@@ -160,27 +167,31 @@ namespace NzbDrone.Core.Profiles
                 Quality.Bluray480p,
                 Quality.Bluray576p);
 
-            AddDefaultProfile("HD-720p", Quality.Bluray720p,
+            AddDefaultProfile("HD-720p",
+                Quality.Bluray720p,
                 Quality.HDTV720p,
                 Quality.WEBDL720p,
                 Quality.WEBRip720p,
                 Quality.Bluray720p);
 
-            AddDefaultProfile("HD-1080p", Quality.Bluray1080p,
+            AddDefaultProfile("HD-1080p",
+                Quality.Bluray1080p,
                 Quality.HDTV1080p,
                 Quality.WEBDL1080p,
                 Quality.WEBRip1080p,
                 Quality.Bluray1080p,
                 Quality.Remux1080p);
 
-            AddDefaultProfile("Ultra-HD", Quality.Remux2160p,
+            AddDefaultProfile("Ultra-HD",
+                Quality.Remux2160p,
                 Quality.HDTV2160p,
                 Quality.WEBDL2160p,
                 Quality.WEBRip2160p,
                 Quality.Bluray2160p,
                 Quality.Remux2160p);
 
-            AddDefaultProfile("HD - 720p/1080p", Quality.Bluray720p,
+            AddDefaultProfile("HD - 720p/1080p",
+                Quality.Bluray720p,
                 Quality.HDTV720p,
                 Quality.HDTV1080p,
                 Quality.WEBDL720p,
@@ -190,8 +201,7 @@ namespace NzbDrone.Core.Profiles
                 Quality.Bluray720p,
                 Quality.Bluray1080p,
                 Quality.Remux1080p,
-                Quality.Remux2160p
-                );
+                Quality.Remux2160p);
         }
 
         public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)

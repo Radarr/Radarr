@@ -1,14 +1,14 @@
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Languages;
-using System.Collections.Generic;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.Languages = new List<Language> { Language.English})
+                                                  .With(h => h.Languages = new List<Language> { Language.English })
                                                   .BuildNew();
 
             Db.Insert(movieFile);

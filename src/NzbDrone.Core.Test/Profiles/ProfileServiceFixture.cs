@@ -1,14 +1,14 @@
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
-using NzbDrone.Core.CustomFormats;
-using System.Collections.Generic;
+using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Profiles
 {
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Profiles
         {
             Mocker.GetMock<ICustomFormatService>()
                 .Setup(s => s.All())
-                .Returns(new List<CustomFormats.CustomFormat>());
+                .Returns(new List<CustomFormat>());
 
             Subject.Handle(new ApplicationStartedEvent());
 
@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Test.Profiles
         }
 
         [Test]
+
         //This confirms that new profiles are added only if no other profiles exists.
         //We don't want to keep adding them back if a user deleted them on purpose.
         public void Init_should_skip_if_any_profiles_already_exist()
@@ -43,7 +44,6 @@ namespace NzbDrone.Core.Test.Profiles
             Mocker.GetMock<IProfileRepository>()
                 .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Never());
         }
-
 
         [Test]
         public void should_not_be_able_to_delete_profile_if_assigned_to_movie()
@@ -64,7 +64,6 @@ namespace NzbDrone.Core.Test.Profiles
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
             Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
-
         }
 
         [Test]
@@ -86,9 +85,7 @@ namespace NzbDrone.Core.Test.Profiles
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
             Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
-
         }
-
 
         [Test]
         public void should_delete_profile_if_not_assigned_to_movie_or_list()

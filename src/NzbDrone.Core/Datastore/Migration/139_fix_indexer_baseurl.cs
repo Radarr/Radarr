@@ -1,5 +1,4 @@
-﻿﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using FluentMigrator;
 using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Extensions;

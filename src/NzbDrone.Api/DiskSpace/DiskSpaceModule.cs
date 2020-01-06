@@ -4,7 +4,7 @@ using Radarr.Http;
 
 namespace NzbDrone.Api.DiskSpace
 {
-    public class DiskSpaceModule :RadarrRestModule<DiskSpaceResource>
+    public class DiskSpaceModule : RadarrRestModule<DiskSpaceResource>
     {
         private readonly IDiskSpaceService _diskSpaceService;
 
@@ -14,7 +14,6 @@ namespace NzbDrone.Api.DiskSpace
             _diskSpaceService = diskSpaceService;
             GetResourceAll = GetFreeSpace;
         }
-
 
         public List<DiskSpaceResource> GetFreeSpace()
         {

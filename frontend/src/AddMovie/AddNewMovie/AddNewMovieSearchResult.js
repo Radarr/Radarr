@@ -70,11 +70,13 @@ class AddNewMovieSearchResult extends Component {
     const linkProps = isExistingMovie ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
 
     return (
-      <div>
+      <div className={styles.searchResult}>
         <Link
-          className={styles.searchResult}
+          className={styles.underlay}
           {...linkProps}
-        >
+        />
+
+        <div className={styles.overlay}>
           {
             isSmallScreen ?
               null :
@@ -158,7 +160,7 @@ class AddNewMovieSearchResult extends Component {
               {overview}
             </div>
           </div>
-        </Link>
+        </div>
 
         <AddNewMovieModal
           isOpen={isNewAddMovieModalOpen && !isExistingMovie}

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Marr.Data.QGen;
-using NzbDrone.Core.Datastore;
+﻿using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-
 
 namespace NzbDrone.Core.Qualities
 {

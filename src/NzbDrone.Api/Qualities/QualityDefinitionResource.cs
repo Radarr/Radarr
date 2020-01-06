@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.Qualities;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Qualities
 {
@@ -21,7 +21,10 @@ namespace NzbDrone.Api.Qualities
     {
         public static QualityDefinitionResource ToResource(this QualityDefinition model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QualityDefinitionResource
             {
@@ -40,7 +43,10 @@ namespace NzbDrone.Api.Qualities
 
         public static QualityDefinition ToModel(this QualityDefinitionResource resource)
         {
-            if (resource == null) return null;
+            if (resource == null)
+            {
+                return null;
+            }
 
             return new QualityDefinition
             {

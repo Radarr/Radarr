@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -12,12 +10,12 @@ using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -59,7 +57,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             //_remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
             //_remoteEpisode.Episodes.First().EpisodeFileId = 0;
-
             Mocker.GetMock<IDelayProfileService>()
                   .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
                   .Returns(_delayProfile);
@@ -71,14 +68,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
         private void GivenExistingFile(QualityModel quality)
         {
-			//_remoteEpisode.Episodes.First().EpisodeFileId = 1;
-
-			//_remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
-			//                                                                     {
-			//                                                                         Quality = quality
-			//                                                                     });
-
-			_remoteEpisode.Movie.MovieFile = new LazyLoaded<MovieFile>(new MovieFile { Quality = quality });
+            //_remoteEpisode.Episodes.First().EpisodeFileId = 1;
+            _remoteEpisode.Movie.MovieFile = new MovieFile { Quality = quality };
         }
 
         private void GivenUpgradeForExistingFile()

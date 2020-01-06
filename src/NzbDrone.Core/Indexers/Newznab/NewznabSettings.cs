@@ -84,17 +84,22 @@ namespace NzbDrone.Core.Indexers.Newznab
         [FieldDefinition(5, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]
         public string AdditionalParameters { get; set; }
 
-        [FieldDefinition(6, Label = "Remove year from search string",
-            HelpText = "Should Radarr remove the year after the title when searching this indexer?", Advanced = true, Type = FieldType.Checkbox)]
+        [FieldDefinition(6,
+            Label = "Remove year from search string",
+            HelpText = "Should Radarr remove the year after the title when searching this indexer?",
+            Advanced = true,
+            Type = FieldType.Checkbox)]
         public bool RemoveYear { get; set; }
 
-        [FieldDefinition(7, Label = "Search by Title",
+        [FieldDefinition(7,
+            Label = "Search by Title",
             HelpText = "By default, Radarr will try to search by IMDB ID if your indexer supports that. However, some indexers are not very good at tagging their releases correctly, so you can force Radarr to search that indexer by title instead.",
-            Advanced = true, Type = FieldType.Checkbox)]
+            Advanced = true,
+            Type = FieldType.Checkbox)]
         public bool SearchByTitle { get; set; }
+
         // Field 8 is used by TorznabSettings MinimumSeeders
         // If you need to add another field here, update TorznabSettings as well and this comment
-
         public virtual NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

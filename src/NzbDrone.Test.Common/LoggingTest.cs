@@ -1,8 +1,8 @@
+using System;
+using System.IO;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System;
-using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using NzbDrone.Common.EnvironmentInfo;

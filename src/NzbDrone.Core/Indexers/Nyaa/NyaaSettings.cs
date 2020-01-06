@@ -1,11 +1,8 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
-using System.Linq;
 
 namespace NzbDrone.Core.Indexers.Nyaa
 {
@@ -35,7 +32,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         [FieldDefinition(0, Label = "Website URL")]
         public string BaseUrl { get; set; }
-                
+
         // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 

@@ -1,12 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using Radarr.Host;
 using NzbDrone.Test.Common;
+using Radarr.Host;
 
 namespace NzbDrone.Common.Test
 {
@@ -19,6 +21,11 @@ namespace NzbDrone.Common.Test
             var container = MainAppContainerBuilder.BuildContainer(new StartupContext());
             container.Register<IMainDatabase>(new MainDatabase(null));
             container.Resolve<IAppFolderFactory>().Register();
+
+            // A dummy custom format repository since this isn't a DB test
+            var mockCustomFormat = Mocker.GetMock<ICustomFormatRepository>();
+            mockCustomFormat.Setup(x => x.All()).Returns(new List<CustomFormatDefinition>());
+            container.Register<ICustomFormatRepository>(mockCustomFormat.Object);
 
             Mocker.SetConstant(container);
 

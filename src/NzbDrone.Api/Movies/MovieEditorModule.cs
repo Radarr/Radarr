@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
-using Nancy.Responses;
-using Radarr.Http.Extensions;
-using Radarr.Http.REST;
 using NzbDrone.Core.Movies;
-using Radarr.Http.Mapping;
+using Radarr.Http.Extensions;
 
 namespace NzbDrone.Api.Movies
 {
@@ -18,19 +15,19 @@ namespace NzbDrone.Api.Movies
             : base("/movie/editor")
         {
             _movieService = movieService;
-            Put("/",  Movie => SaveAll());
-            Put("/delete",  Movie => DeleteSelected());
+            Put("/", movie => SaveAll());
+            Put("/delete", movie => DeleteSelected());
         }
 
         private object SaveAll()
         {
             var resources = Request.Body.FromJson<List<MovieResource>>();
 
-            var Movie = resources.Select(MovieResource => MovieResource.ToModel(_movieService.GetMovie(MovieResource.Id))).ToList();
+            var movie = resources.Select(movieResource => movieResource.ToModel(_movieService.GetMovie(movieResource.Id))).ToList();
 
-            return ResponseWithCode(_movieService.UpdateMovie(Movie)
-                                 .ToResource()
-                                 , HttpStatusCode.Accepted);
+            return ResponseWithCode(_movieService.UpdateMovie(movie)
+                                    .ToResource(),
+                                    HttpStatusCode.Accepted);
         }
 
         private object DeleteSelected()
@@ -44,10 +41,12 @@ namespace NzbDrone.Api.Movies
             {
                 deleteFiles = Convert.ToBoolean(deleteFilesQuery.Value);
             }
+
             if (addExclusionQuery.HasValue)
             {
                 addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
             }
+
             var ids = Request.Body.FromJson<List<int>>();
 
             foreach (var id in ids)

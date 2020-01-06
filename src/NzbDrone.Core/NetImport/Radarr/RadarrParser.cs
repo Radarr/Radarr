@@ -1,22 +1,22 @@
-﻿﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
-using NzbDrone.Common.Http;
+using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
     public class RadarrParser : IParseNetImportResponse
     {
         private readonly RadarrSettings _settings;
-        private NetImportResponse _importResponse;
         private readonly ISearchForNewMovie _skyhookProxy;
+        private NetImportResponse _importResponse;
 
         public RadarrParser(RadarrSettings settings, ISearchForNewMovie skyhookProxy)
         {
-            _skyhookProxy = skyhookProxy;//TinyIoC.TinyIoCContainer.Current.Resolve<ISearchForNewMovie>();
+            _skyhookProxy = skyhookProxy;
             _settings = settings;
         }
 
@@ -40,8 +40,6 @@ namespace NzbDrone.Core.NetImport.Radarr
             }
 
             return jsonResponse.SelectList(_skyhookProxy.MapMovie);
-
-            
         }
 
         protected virtual bool PreProcess(NetImportResponse indexerResponse)
@@ -60,7 +58,6 @@ namespace NzbDrone.Core.NetImport.Radarr
                 //No error!
             }
 
-
             if (indexerResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 throw new HttpException(indexerResponse.HttpRequest, indexerResponse.HttpResponse);
@@ -68,6 +65,5 @@ namespace NzbDrone.Core.NetImport.Radarr
 
             return true;
         }
-
     }
 }

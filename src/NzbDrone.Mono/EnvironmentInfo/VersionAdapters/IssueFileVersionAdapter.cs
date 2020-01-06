@@ -30,11 +30,10 @@ namespace NzbDrone.Mono.EnvironmentInfo.VersionAdapters
 
             var fileContent = _diskProvider.ReadAllText(issueFile);
 
-
             // Ubuntu 14.04.5 LTS \n \l
             // Ubuntu 16.04.1 LTS \n \l
 
-            // Fedora/Centos    
+            // Fedora/Centos
             // Kernel \r on an \m (\l)
 
             // Arch Linux \r (\l)

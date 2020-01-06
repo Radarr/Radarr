@@ -11,15 +11,16 @@ namespace NzbDrone.Core.Messaging.Commands
     public class CommandExecutor : IHandle<ApplicationStartedEvent>,
                                    IHandle<ApplicationShutdownRequested>
     {
+        private const int THREAD_UPPER_BOUND = 10;
+        private const int THREAD_LOWER_BOUND = 2;
+        private const int THREAD_LIMIT = 2;
+
         private readonly Logger _logger;
         private readonly IServiceFactory _serviceFactory;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IEventAggregator _eventAggregator;
 
         private static CancellationTokenSource _cancellationTokenSource;
-        private const int THREAD_UPPER_BOUND = 10;
-        private const int THREAD_LOWER_BOUND = 2;
-        private const int THREAD_LIMIT = 2;
 
         public CommandExecutor(IServiceFactory serviceFactory,
                                IManageCommandQueue commandQueueManager,
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.Messaging.Commands
                 {
                     try
                     {
-                        ExecuteCommand((dynamic) command.Body, command);
+                        ExecuteCommand((dynamic)command.Body, command);
                     }
                     catch (Exception ex)
                     {
@@ -63,7 +64,8 @@ namespace NzbDrone.Core.Messaging.Commands
             }
         }
 
-        private void ExecuteCommand<TCommand>(TCommand command, CommandModel commandModel) where TCommand : Command
+        private void ExecuteCommand<TCommand>(TCommand command, CommandModel commandModel)
+            where TCommand : Command
         {
             var handlerContract = typeof(IExecute<>).MakeGenericType(command.GetType());
             var handler = (IExecute<TCommand>)_serviceFactory.Build(handlerContract);
@@ -125,11 +127,14 @@ namespace NzbDrone.Core.Messaging.Commands
 
             var envLimit = Environment.GetEnvironmentVariable("THREAD_LIMIT") ?? $"{THREAD_LIMIT}";
             int threadLimit = THREAD_LIMIT;
-            if (int.TryParse(envLimit, out int parsedLimit)) threadLimit = parsedLimit;
+            if (int.TryParse(envLimit, out int parsedLimit))
+            {
+                threadLimit = parsedLimit;
+            }
 
             threadLimit = Math.Max(THREAD_LOWER_BOUND, threadLimit);
             threadLimit = Math.Min(THREAD_UPPER_BOUND, threadLimit);
-            
+
             _logger.Info("Starting {} threads for tasks.", threadLimit);
 
             for (int i = 0; i < threadLimit + 1; i++)

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Jobs;
@@ -48,14 +47,15 @@ namespace Radarr.Api.V3.System.Tasks
             var taskName = scheduledTask.TypeName.Split('.').Last().Replace("Command", "");
 
             return new TaskResource
-                   {
-                       Id = scheduledTask.Id,
-                       Name = taskName.SplitCamelCase(),
-                       TaskName = taskName,
-                       Interval = scheduledTask.Interval,
-                       LastExecution = scheduledTask.LastExecution,
-                       NextExecution = scheduledTask.LastExecution.AddMinutes(scheduledTask.Interval)
-                   };
+            {
+                Id = scheduledTask.Id,
+                Name = taskName.SplitCamelCase(),
+                TaskName = taskName,
+                Interval = scheduledTask.Interval,
+                LastExecution = scheduledTask.LastExecution,
+                LastStartTime = scheduledTask.LastStartTime,
+                NextExecution = scheduledTask.LastExecution.AddMinutes(scheduledTask.Interval)
+            };
         }
 
         public void Handle(CommandExecutedEvent message)

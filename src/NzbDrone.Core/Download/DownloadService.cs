@@ -5,7 +5,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
@@ -18,7 +17,6 @@ namespace NzbDrone.Core.Download
     {
         void DownloadReport(RemoteMovie remoteMovie);
     }
-
 
     public class DownloadService : IDownloadService
     {
@@ -92,6 +90,7 @@ namespace NzbDrone.Core.Download
                 {
                     _indexerStatusService.RecordFailure(remoteMovie.Release.IndexerId);
                 }
+
                 throw;
             }
 

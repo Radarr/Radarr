@@ -1,13 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Radarr.Http.REST;
-using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.Parser;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -15,13 +6,11 @@ namespace Radarr.Api.V3.Movies
     {
         public AlternativeYearResource()
         {
-            
         }
 
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
         public int MovieId { get; set; }
         public int Year { get; set; }
 

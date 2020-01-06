@@ -1,13 +1,7 @@
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
-using System.Linq.Expressions;
-using FluentValidation.Results;
-using System.Collections.Generic;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {
@@ -40,7 +34,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         [FieldDefinition(0, Label = "Username")]
         public string Username { get; set; }
-                
+
         //[FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 

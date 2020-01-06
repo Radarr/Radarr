@@ -25,10 +25,26 @@ namespace NzbDrone.Core.Datastore.Migration
             updater.ReplaceInTags(OriginalRegex, match =>
             {
                 var modifiers = "";
-                if (match.Groups["m_n"].Success) modifiers += "N";
-                if (match.Groups["m_r"].Success) modifiers += "RX";
-                if (match.Groups["m_re"].Success) modifiers += "RQ";
-                if (modifiers != "") modifiers = "_" + modifiers;
+                if (match.Groups["m_n"].Success)
+                {
+                    modifiers += "N";
+                }
+
+                if (match.Groups["m_r"].Success)
+                {
+                    modifiers += "RX";
+                }
+
+                if (match.Groups["m_re"].Success)
+                {
+                    modifiers += "RQ";
+                }
+
+                if (modifiers != "")
+                {
+                    modifiers = "_" + modifiers;
+                }
+
                 return $"{match.Groups["type"].Value}{modifiers}_{match.Groups["value"].Value}";
             });
 

@@ -1,6 +1,4 @@
-using FluentValidation;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Validation.Paths;
 
 namespace Radarr.Api.V3.Config
 {
@@ -9,7 +7,6 @@ namespace Radarr.Api.V3.Config
         public DownloadClientConfigModule(IConfigService configService)
             : base(configService)
         {
-
         }
 
         protected override DownloadClientConfigResource ToResource(IConfigService model)

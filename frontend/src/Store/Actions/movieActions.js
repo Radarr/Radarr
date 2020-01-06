@@ -97,7 +97,7 @@ export const filters = [
         type: filterTypes.EQUAL
       },
       {
-        key: 'movieFile.qualityCutoffNotMet',
+        key: 'qualityCutoffNotMet',
         value: true,
         type: filterTypes.EQUAL
       }
@@ -106,12 +106,6 @@ export const filters = [
 ];
 
 export const filterPredicates = {
-  missing: function(item) {
-    const { statistics = {} } = item;
-
-    return statistics.episodeCount - statistics.episodeFileCount > 0;
-  },
-
   added: function(item, filterValue, type) {
     return dateFilterPredicate(item.added, filterValue, type);
   },
@@ -128,6 +122,12 @@ export const filterPredicates = {
     const predicate = filterTypePredicates[type];
 
     return predicate(item.ratings.value * 10, filterValue);
+  },
+
+  qualityCutoffNotMet: function(item) {
+    const { movieFile = {} } = item;
+
+    return movieFile.qualityCutoffNotMet;
   }
 };
 

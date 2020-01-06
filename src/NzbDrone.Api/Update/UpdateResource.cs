@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Radarr.Http.REST;
 using NzbDrone.Core.Update;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Update
 {
@@ -27,7 +27,10 @@ namespace NzbDrone.Api.Update
     {
         public static UpdateResource ToResource(this UpdatePackage model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new UpdateResource
             {
@@ -37,6 +40,7 @@ namespace NzbDrone.Api.Update
                 ReleaseDate = model.ReleaseDate,
                 FileName = model.FileName,
                 Url = model.Url,
+
                 //Installed
                 //Installable
                 //Latest

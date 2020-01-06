@@ -85,10 +85,10 @@ namespace NzbDrone.Core.Datastore.Migration
                             var tags = tagReader.GetString(1);
 
                             tagged.Add(new TaggedModel079
-                                       {
-                                           Id = id,
-                                           Tags = Json.Deserialize<HashSet<int>>(tags)
-                                       });
+                            {
+                                Id = id,
+                                Tags = Json.Deserialize<HashSet<int>>(tags)
+                            });
                         }
                     }
                 }

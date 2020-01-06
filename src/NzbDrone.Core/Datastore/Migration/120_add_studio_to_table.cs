@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentMigrator;
+﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -15,6 +10,5 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Alter.Table("Movies").AddColumn("Studio").AsString().Nullable();
         }
-
     }
 }

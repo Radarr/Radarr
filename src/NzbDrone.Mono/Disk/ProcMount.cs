@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using Mono.Unix;
 using NzbDrone.Common.Disk;

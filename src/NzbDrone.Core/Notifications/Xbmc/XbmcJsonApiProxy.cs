@@ -122,7 +122,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         private void CheckForError(IRestResponse response)
         {
-
             if (string.IsNullOrWhiteSpace(response.Content))
             {
                 throw new XbmcJsonException("Invalid response from XBMC, the response is not valid JSON");

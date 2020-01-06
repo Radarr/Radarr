@@ -7,7 +7,9 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 namespace NzbDrone.Core.Datastore.Migration
 {
     // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+#pragma warning disable SA1200
     using NzbDrone.Common.Extensions;
+#pragma warning restore SA1200
 
     [Migration(85)]
     public class expand_transmission_urlbase : NzbDroneMigrationBase
@@ -34,7 +36,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         var settings = Json.Deserialize<Dictionary<string, object>>(settingsJson);
 
                         var urlBase = settings.GetValueOrDefault("urlBase", "") as string;
-                        
+
                         if (urlBase.IsNullOrWhiteSpace())
                         {
                             settings["urlBase"] = "/transmission/";

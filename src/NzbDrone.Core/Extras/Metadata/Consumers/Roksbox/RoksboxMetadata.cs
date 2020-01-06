@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
@@ -33,7 +32,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         //Re-enable when/if we store and use mpaa certification
         //private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
-
         public override string Name => "Roksbox";
 
         public override string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
@@ -58,15 +56,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
         {
             var filename = Path.GetFileName(path);
 
-            if (filename == null) return null;
+            if (filename == null)
+            {
+                return null;
+            }
+
             var parentdir = Directory.GetParent(path);
 
             var metadata = new MetadataFile
-                           {
-                               MovieId = movie.Id,
-                               Consumer = GetType().Name,
-                               RelativePath = movie.Path.GetRelativePath(path)
-                           };
+            {
+                MovieId = movie.Id,
+                Consumer = GetType().Name,
+                RelativePath = movie.Path.GetRelativePath(path)
+            };
 
             var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
 
@@ -104,29 +106,28 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
             var xmlResult = string.Empty;
 
-                var sb = new StringBuilder();
-                var xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Indent = false;
+            var sb = new StringBuilder();
+            var xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            xws.Indent = false;
 
-                using (var xw = XmlWriter.Create(sb, xws))
-                {
-                    var doc = new XDocument();
+            using (var xw = XmlWriter.Create(sb, xws))
+            {
+                var doc = new XDocument();
 
-                    var details = new XElement("video");
-                    details.Add(new XElement("title", movie.Title));
+                var details = new XElement("video");
+                details.Add(new XElement("title", movie.Title));
 
-                    details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
-                    details.Add(new XElement("description", movie.Overview));
-                    details.Add(new XElement("length", movie.Runtime));
+                details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
+                details.Add(new XElement("description", movie.Overview));
+                details.Add(new XElement("length", movie.Runtime));
 
-                    doc.Add(details);
-                    doc.Save(xw);
+                doc.Add(details);
+                doc.Save(xw);
 
-                    xmlResult += doc.ToString();
-                    xmlResult += Environment.NewLine;
-                }
-
+                xmlResult += doc.ToString();
+                xmlResult += Environment.NewLine;
+            }
 
             return new MetadataFileResult(GetMovieFileMetadataFilename(movieFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }

@@ -8,12 +8,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
     public class PTPOldSettingsCheck : HealthCheckBase
     {
         private readonly IIndexerFactory _indexerFactory;
-        
+
         public PTPOldSettingsCheck(IIndexerFactory indexerFactory)
         {
             _indexerFactory = indexerFactory;
         }
-        
+
         public override HealthCheck Check()
         {
             var ptpIndexers = _indexerFactory.All().Where(i => i.Settings.GetType() == typeof(PassThePopcornSettings));
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, $"The following PassThePopcorn indexers have deprecated settings and should be updated: {string.Join(",", ptpIndexerOldSettings)}");
             }
-            
+
             return new HealthCheck(GetType());
         }
     }

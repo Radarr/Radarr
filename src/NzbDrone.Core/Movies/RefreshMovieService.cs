@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+
 //using NzbDrone.Core.DataAugmentation.DailyMovie;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
@@ -12,7 +13,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
@@ -87,6 +87,7 @@ namespace NzbDrone.Core.Movies
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
+
             //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
@@ -112,7 +113,7 @@ namespace NzbDrone.Core.Movies
                 mappingsTitles = mappingsTitles.Where(t => t.IsTrusted()).ToList();
 
                 movieInfo.AlternativeTitles.AddRange(mappingsTitles);
-                
+
                 movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
 
                 if (mappings.Item2 != null)
@@ -135,12 +136,12 @@ namespace NzbDrone.Core.Movies
                 _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
 
-
-            _movieService.UpdateMovie(movie);
+            _movieService.UpdateMovie(new List<Movie> { movie });
 
             try
             {
                 var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
+
                 //_titleService.AddAltTitles(newTitles.ToList(), movie);
             }
             catch (Exception e)
@@ -165,7 +166,7 @@ namespace NzbDrone.Core.Movies
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: never recan after refresh", movie);
+                _logger.Trace("Skipping refresh of {0}. Reason: never rescan after refresh", movie);
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
@@ -219,9 +220,16 @@ namespace NzbDrone.Core.Movies
             {
                 var allMovie = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
 
+                var updatedTMDBMovies = new HashSet<int>();
+
+                if (message.LastStartTime.HasValue && message.LastStartTime.Value.AddDays(14) > DateTime.UtcNow)
+                {
+                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
+                }
+
                 foreach (var movie in allMovie)
                 {
-                    if (message.Trigger == CommandTrigger.Manual || _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie))
+                    if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
@@ -239,7 +247,6 @@ namespace NzbDrone.Core.Movies
 
                         RescanMovie(movie, false, trigger);
                     }
-
                     else
                     {
                         _logger.Info("Skipping refresh of movie: {0}", movie.Title);

@@ -56,7 +56,7 @@ namespace MonoTorrent.BEncoding
 
             int written = offset;
             buffer[written++] = (byte)'i';
-            
+
             if (number < 0)
             {
                 buffer[written++] = (byte)'-';
@@ -101,16 +101,16 @@ namespace MonoTorrent.BEncoding
             if (reader.PeekByte() == '-')
             {
                 sign = -1;
-                reader.ReadByte ();
+                reader.ReadByte();
             }
 
             int letter;
             while (((letter = reader.PeekByte()) != -1) && letter != 'e')
             {
-                if(letter < '0' || letter > '9')
+                if (letter < '0' || letter > '9')
                     throw new BEncodingException("Invalid number found.");
                 number = number * 10 + (letter - '0');
-                reader.ReadByte ();
+                reader.ReadByte();
             }
             if (reader.ReadByte() != 'e')        //remove the trailing 'e'
                 throw new BEncodingException("Invalid data found. Aborting.");
@@ -171,7 +171,7 @@ namespace MonoTorrent.BEncoding
 
         #region Overridden Methods
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -185,7 +185,7 @@ namespace MonoTorrent.BEncoding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -194,7 +194,7 @@ namespace MonoTorrent.BEncoding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

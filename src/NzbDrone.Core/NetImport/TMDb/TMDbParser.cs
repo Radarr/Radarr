@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
-using NzbDrone.Core.NetImport.Exceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.NetImport.Exceptions;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
     public class TMDbParser : IParseNetImportResponse
     {
         private readonly TMDbSettings _settings;
-        private NetImportResponse _importResponse;
         private readonly ISearchForNewMovie _skyhookProxy;
+        private NetImportResponse _importResponse;
 
         public TMDbParser(TMDbSettings settings, ISearchForNewMovie skyhookProxy)
         {
@@ -71,7 +71,6 @@ namespace NzbDrone.Core.NetImport.TMDb
                 }
             }
 
-
             return movies;
         }
 
@@ -90,6 +89,5 @@ namespace NzbDrone.Core.NetImport.TMDb
 
             return true;
         }
-
     }
 }

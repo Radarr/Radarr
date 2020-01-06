@@ -6,7 +6,6 @@ using Nancy;
 using NLog;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -47,8 +46,8 @@ namespace Radarr.Api.V3.MovieFiles
             UpdateResource = SetMovieFile;
             DeleteResource = DeleteMovieFile;
 
-            Put("/editor",  movieFiles => SetMovieFile());
-            Delete("/bulk",  movieFiles => DeleteMovieFiles());
+            Put("/editor", movieFiles => SetMovieFile());
+            Delete("/bulk", movieFiles => DeleteMovieFiles());
         }
 
         private MovieFileResource GetMovieFile(int id)
@@ -76,7 +75,6 @@ namespace Radarr.Api.V3.MovieFiles
 
                 return _mediaFileService.GetFilesByMovie(movieId).ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification));
             }
-
             else
             {
                 string movieFileIdsValue = movieFileIdsQuery.Value.ToString();
@@ -89,7 +87,7 @@ namespace Radarr.Api.V3.MovieFiles
 
                 return movieFiles.GroupBy(e => e.MovieId)
                                    .SelectMany(f => f.ToList()
-                                                     .ConvertAll( e => e.ToResource(_movieService.GetMovie(f.Key), _qualityUpgradableSpecification)))
+                                                     .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _qualityUpgradableSpecification)))
                                    .ToList();
             }
         }
@@ -109,24 +107,23 @@ namespace Radarr.Api.V3.MovieFiles
 
             foreach (var movieFile in movieFiles)
             {
-
                 if (resource.Quality != null)
                 {
                     movieFile.Quality = resource.Quality;
                 }
+
                 if (resource.Languages != null)
                 {
                     movieFile.Languages = resource.Languages;
                 }
-
             }
 
             _mediaFileService.Update(movieFiles);
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return ResponseWithCode(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification))
-                               , HttpStatusCode.Accepted);
+            return ResponseWithCode(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification)),
+                                    HttpStatusCode.Accepted);
         }
 
         private void DeleteMovieFile(int id)
@@ -138,6 +135,7 @@ namespace Radarr.Api.V3.MovieFiles
             _logger.Info("Deleting movie file: {0}", fullPath);
             _recycleBinProvider.DeleteFile(fullPath);
             _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
+
             // TODO: Pull MediaFileDeletionService from Sonarr
             //_mediaFileDeletionService.Delete(series, episodeFile);
         }
@@ -154,6 +152,7 @@ namespace Radarr.Api.V3.MovieFiles
                 _logger.Info("Deleting movie file: {0}", fullPath);
                 _recycleBinProvider.DeleteFile(fullPath);
                 _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
+
                 // TODO: Pull MediaFileDeletionService from Sonarr
                 //_mediaFileDeletionService.DeleteEpisodeFile(movie, movieFile);
             }

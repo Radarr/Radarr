@@ -1,5 +1,5 @@
-using Radarr.Http.REST;
 using NzbDrone.Core.Organizer;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
 {
@@ -33,6 +33,7 @@ namespace NzbDrone.Api.Config
                 MultiEpisodeStyle = model.MultiEpisodeStyle,
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat
+
                 //IncludeSeriesTitle
                 //IncludeEpisodeTitle
                 //IncludeQuality

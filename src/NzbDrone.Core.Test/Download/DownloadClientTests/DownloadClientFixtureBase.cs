@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using FluentAssertions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests
 {
@@ -31,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
             Mocker.GetMock<IParsingService>()
                 .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), (SearchCriteriaBase)null))
-                .Returns(() => new MappingResult{RemoteMovie =  CreateRemoteMovie(), MappingResultType = MappingResultType.Success});
+                .Returns(() => new MappingResult { RemoteMovie = CreateRemoteMovie(), MappingResultType = MappingResultType.Success });
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
@@ -68,6 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         {
             VerifyIdentifiable(downloadClientItem);
             downloadClientItem.RemainingSize.Should().NotBe(0);
+
             //downloadClientItem.RemainingTime.Should().NotBe(TimeSpan.Zero);
             //downloadClientItem.OutputPath.Should().NotBeNullOrEmpty();
             downloadClientItem.Status.Should().Be(DownloadItemStatus.Queued);
@@ -78,6 +78,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             VerifyIdentifiable(downloadClientItem);
 
             downloadClientItem.RemainingSize.Should().NotBe(0);
+
             //downloadClientItem.RemainingTime.Should().NotBe(TimeSpan.Zero);
             //downloadClientItem.OutputPath.Should().NotBeNullOrEmpty();
             downloadClientItem.Status.Should().Be(DownloadItemStatus.Paused);
@@ -88,6 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             VerifyIdentifiable(downloadClientItem);
 
             downloadClientItem.RemainingSize.Should().NotBe(0);
+
             //downloadClientItem.RemainingTime.Should().NotBe(TimeSpan.Zero);
             //downloadClientItem.OutputPath.Should().NotBeNullOrEmpty();
             downloadClientItem.Status.Should().Be(DownloadItemStatus.Downloading);
@@ -109,6 +111,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             downloadClientItem.Title.Should().NotBeNullOrEmpty();
             downloadClientItem.RemainingSize.Should().Be(0);
             downloadClientItem.RemainingTime.Should().Be(TimeSpan.Zero);
+
             //downloadClientItem.OutputPath.Should().NotBeNullOrEmpty();
             downloadClientItem.Status.Should().Be(DownloadItemStatus.Completed);
         }

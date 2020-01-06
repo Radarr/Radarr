@@ -3,13 +3,13 @@ using FluentMigrator;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Test.Common.AutoMoq;
 
 namespace NzbDrone.Core.Test.Framework
 {
     [Category("DbMigrationTest")]
     [Category("DbTest")]
-    public abstract class MigrationTest<TMigration> : DbTest where TMigration : NzbDroneMigrationBase
+    public abstract class MigrationTest<TMigration> : DbTest
+        where TMigration : NzbDroneMigrationBase
     {
         protected long MigrationVersion
         {

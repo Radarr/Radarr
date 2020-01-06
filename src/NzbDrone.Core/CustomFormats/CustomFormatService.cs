@@ -7,9 +7,7 @@ using NzbDrone.Common.Composition;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.CustomFormats
@@ -23,12 +21,11 @@ namespace NzbDrone.Core.CustomFormats
         void Delete(int id);
     }
 
-
-    public class CustomFormatService : ICustomFormatService, IHandle<ApplicationStartedEvent>
+    public class CustomFormatService : ICustomFormatService
     {
         private readonly ICustomFormatRepository _formatRepository;
-        private IProfileService _profileService;
         private readonly IHistoryService _historyService;
+        private IProfileService _profileService;
 
         public IProfileService ProfileService
         {
@@ -49,8 +46,10 @@ namespace NzbDrone.Core.CustomFormats
 
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
-        public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
-            IContainer container, IHistoryService historyService,
+        public CustomFormatService(ICustomFormatRepository formatRepository,
+            ICacheManager cacheManager,
+            IContainer container,
+            IHistoryService historyService,
             Logger logger)
         {
             _formatRepository = formatRepository;
@@ -58,6 +57,9 @@ namespace NzbDrone.Core.CustomFormats
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
             _historyService = historyService;
             _logger = logger;
+
+            // Fill up the cache for subsequent DB lookups
+            All();
         }
 
         public void Update(CustomFormat customFormat)
@@ -79,6 +81,7 @@ namespace NzbDrone.Core.CustomFormats
                 _formatRepository.Delete(ret);
                 throw;
             }
+
             _cache.Clear();
             return ret;
         }
@@ -90,27 +93,36 @@ namespace NzbDrone.Core.CustomFormats
             {
                 //First history:
                 var historyRepo = _container.Resolve<IHistoryRepository>();
-                DeleteInRepo(historyRepo, h => h.Quality.CustomFormats, (h, f) =>
-                {
-                    h.Quality.CustomFormats = f;
-                    return h;
-                }, id);
+                DeleteInRepo(historyRepo,
+                    h => h.Quality.CustomFormats,
+                    (h, f) =>
+                    {
+                        h.Quality.CustomFormats = f;
+                        return h;
+                    },
+                    id);
 
                 //Then Blacklist:
                 var blacklistRepo = _container.Resolve<IBlacklistRepository>();
-                DeleteInRepo(blacklistRepo, h => h.Quality.CustomFormats, (h, f) =>
-                {
-                    h.Quality.CustomFormats = f;
-                    return h;
-                }, id);
+                DeleteInRepo(blacklistRepo,
+                    h => h.Quality.CustomFormats,
+                    (h, f) =>
+                    {
+                        h.Quality.CustomFormats = f;
+                        return h;
+                    },
+                    id);
 
                 //Then MovieFiles:
                 var moviefileRepo = _container.Resolve<IMediaFileRepository>();
-                DeleteInRepo(moviefileRepo, h => h.Quality.CustomFormats, (h, f) =>
-                {
-                    h.Quality.CustomFormats = f;
-                    return h;
-                }, id);
+                DeleteInRepo(moviefileRepo,
+                    h => h.Quality.CustomFormats,
+                    (h, f) =>
+                    {
+                        h.Quality.CustomFormats = f;
+                        return h;
+                    },
+                    id);
 
                 //Then Profiles
                 ProfileService.DeleteCustomFormat(id);
@@ -127,16 +139,19 @@ namespace NzbDrone.Core.CustomFormats
             _cache.Clear();
         }
 
-        private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository, Func<TModel, List<CustomFormat>> queryFunc,
-            Func<TModel, List<CustomFormat>, TModel> updateFunc, int customFormatId) where TModel : ModelBase, new()
+        private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository,
+            Func<TModel, List<CustomFormat>> queryFunc,
+            Func<TModel, List<CustomFormat>, TModel> updateFunc,
+            int customFormatId)
+            where TModel : ModelBase, new()
         {
             var allItems = repository.All();
-            
+
             var toUpdate = allItems.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
             {
                 return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
             });
-            
+
             repository.UpdateMany(toUpdate.ToList());
         }
 
@@ -144,7 +159,7 @@ namespace NzbDrone.Core.CustomFormats
         {
             return _cache.Get("all", () =>
             {
-                var all = _formatRepository.All().ToDictionary(m => m.Id);
+                var all = _formatRepository.All().Select(x => (CustomFormat)x).ToDictionary(m => m.Id);
                 AllCustomFormats = all;
                 return all;
             });
@@ -193,12 +208,6 @@ namespace NzbDrone.Core.CustomFormats
                     }
                 };
             }
-        }
-
-        public void Handle(ApplicationStartedEvent message)
-        {
-            // Fillup cache for DataMapper.
-            All();
         }
     }
 }

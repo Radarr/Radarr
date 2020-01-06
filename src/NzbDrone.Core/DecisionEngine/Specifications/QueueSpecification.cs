@@ -26,7 +26,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-
             var queue = _queueService.GetQueue();
             var matchingMovies = queue.Where(q => q.RemoteMovie?.Movie != null &&
                                                    q.RemoteMovie.Movie.Id == subject.Movie.Id)
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             foreach (var queueItem in matchingMovies)
             {
                 var remoteMovie = queueItem.RemoteMovie;
-                var qualityProfile = subject.Movie.Profile.Value;
+                var qualityProfile = subject.Movie.Profile;
 
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteMovie.ParsedMovieInfo.Quality);
 

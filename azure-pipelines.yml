@@ -25,9 +25,32 @@ pr:
 - aphrodite
 
 stages:
+  - stage: Setup
+    displayName: Setup
+    jobs:
+    - job:
+      displayName: Build Variables
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
+      - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
+        displayName: Set Build Name
+      - bash: |
+          if [[ $BUILD_REASON == "PullRequest" ]]; then
+          git diff origin/aphrodite...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
+          echo $? > not_backend_update
+          else
+          echo 0 > not_backend_update
+          fi
+          cat not_backend_update
+        displayName: Check for Backend File Changes
+      - publish: not_backend_update
+        artifact: not_backend_update
+        displayName: Publish update type
   - stage: Build_Backend
     displayName: Build Backend
-          
+    dependsOn: Setup
     jobs:
     - job: Backend
       strategy:
@@ -45,9 +68,6 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
-      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:RADARRVERSION)"
-        displayName: Set Build Name
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -87,8 +107,7 @@ stages:
 
   - stage: Build_Frontend
     displayName: Frontend
-    dependsOn: []
-    
+    dependsOn: Setup
     jobs:
     - job: Build
       strategy:
@@ -246,23 +265,40 @@ stages:
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
           RELEASENAME="${RADARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
-          sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
-          sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases new --finalize -p radarr3 -p radarr3-ui -p radarr-update "${RELEASENAME}"
+          sentry-cli releases -p radarr3-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
         displayName: Publish Sentry Source Maps
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
-          SENTRY_AUTH_TOKEN: $(sentryAuthToken)
+          SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
           SENTRY_ORG: $(sentryOrg)
+          SENTRY_URL: https://sentry.radarr.video
     
   - stage: Unit_Test
     displayName: Unit Tests
     dependsOn: Build_Backend
-    condition: succeeded()
+
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Unit
       displayName: Unit Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+
       strategy:
         matrix:
           MacCore:
@@ -337,26 +373,22 @@ stages:
 
     - job: Unit_Docker
       displayName: Unit Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono518:
-            testName: 'Mono 5.18'
-            containerImage: radarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
             containerImage: radarr/testimages:mono-5.20
-          mono600:
-            testName: 'Mono 6.0'
-            containerImage: radarr/testimages:mono-6.0
-          mono604:
-            testName: 'Mono 6.4'
-            containerImage: radarr/testimages:mono-6.4
           mono606:
             testName: 'Mono 6.6'
             containerImage: radarr/testimages:mono-6.6
+          mono608:
+            testName: 'Mono 6.8'
+            containerImage: radarr/testimages:mono-6.8
 
       pool:
         vmImage: 'ubuntu-16.04'
@@ -396,10 +428,25 @@ stages:
   - stage: Integration
     displayName: Integration
     dependsOn: Packages
+
     jobs:
-    
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Integration_Native
       displayName: Integration Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           MacCore:
@@ -473,26 +520,22 @@ stages:
 
     - job: Integration_Docker
       displayName: Integration Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono510:
             testName: 'Mono 5.10'
             containerImage: radarr/testimages:mono-5.10
-          mono518:
-            testName: 'Mono 5.18'
-            containerImage: radarr/testimages:mono-5.18
           mono520:
             testName: 'Mono 5.20'
             containerImage: radarr/testimages:mono-5.20
-          mono600:
-            testName: 'Mono 6.0'
-            containerImage: radarr/testimages:mono-6.0
-          mono604:
-            testName: 'Mono 6.4'
-            containerImage: radarr/testimages:mono-6.4
           mono606:
             testName: 'Mono 6.6'
             containerImage: radarr/testimages:mono-6.6
+          mono608:
+            testName: 'Mono 6.8'
+            containerImage: radarr/testimages:mono-6.8
 
       variables:
         pattern: 'Radarr.**.linux.tar.gz'
@@ -634,11 +677,24 @@ stages:
         displayName: Publish Test Results
 
   - stage: Analyze
-    dependsOn: []
+    dependsOn:
+    - Setup
     displayName: Analyze
 
-      
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Lint_Frontend
       displayName: Lint Frontend
       strategy:
@@ -687,10 +743,15 @@ stages:
 
     - job: Analyze_Backend
       displayName: Backend
-      pool:
-        vmImage: windows-2019
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+
       variables:
         disable.coverage.autogenerate: 'true'
+
+      pool:
+        vmImage: windows-2019
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .net core'
@@ -711,7 +772,7 @@ stages:
           projectVersion: '$(radarrVersion)'
           extraProperties: |
             sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
-            sonar.coverage.exclusions=**/Radarr.Api.V3/**/*,**/Radarr.Api/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
+            sonar.coverage.exclusions=**/Radarr.Api.V3/**/*,**/NzbDrone.Api/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |

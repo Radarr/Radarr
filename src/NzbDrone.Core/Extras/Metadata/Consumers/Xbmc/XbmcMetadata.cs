@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _mediaCoverService = mediaCoverService;
             _diskProvider = diskProvider;
             _detectNfo = detectNfo;
-
         }
 
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|landscape|logo|backdrop|clearlogo)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -59,7 +58,10 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             var filename = Path.GetFileName(path);
 
-            if (filename == null) return null;
+            if (filename == null)
+            {
+                return null;
+            }
 
             var metadata = new MetadataFile
             {
@@ -162,14 +164,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     {
                         details.Add(new XElement("thumb"));
                     }
-
                     else
                     {
                         details.Add(new XElement("thumb", thumbnail.Url));
                     }
 
                     foreach (var poster in posters)
-                    {                    
+                    {
                         if (poster != null && poster.Url != null)
                         {
                             details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), poster.Url));
@@ -186,6 +187,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                                 fanartElement.Add(new XElement("thumb", fanart.Url));
                             }
                         }
+
                         details.Add(fanartElement);
                     }
 
@@ -240,6 +242,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     xmlResult += Environment.NewLine;
                 }
             }
+
             if (Settings.MovieMetadataURL)
             {
                 xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;

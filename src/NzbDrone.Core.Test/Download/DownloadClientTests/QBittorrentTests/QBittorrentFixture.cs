@@ -1,15 +1,15 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.QBittorrent;
-using NzbDrone.Test.Common;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 {
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             };
 
             Mocker.GetMock<ITorrentFileInfoReader>()
-                  .Setup(s => s.GetHashFromTorrentFile(It.IsAny<Byte[]>()))
+                  .Setup(s => s.GetHashFromTorrentFile(It.IsAny<byte[]>()))
                   .Returns("CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951");
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new Byte[0]));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new byte[0]));
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new Byte[0], System.Net.HttpStatusCode.SeeOther));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new byte[0], System.Net.HttpStatusCode.SeeOther));
         }
 
         protected void GivenRedirectToTorrent()
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.Is<HttpRequest>(h => h.Url.FullUri == _downloadUrl)))
-                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new Byte[0], System.Net.HttpStatusCode.Found));
+                  .Returns<HttpRequest>(r => new HttpResponse(r, httpHeader, new byte[0], System.Net.HttpStatusCode.Found));
         }
 
         protected void GivenFailedDownload()
@@ -96,8 +96,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         protected void GivenHighPriority()
         {
-            Subject.Definition.Settings.As<QBittorrentSettings>().OlderMoviePriority = (int) QBittorrentPriority.First;
-            Subject.Definition.Settings.As<QBittorrentSettings>().RecentMoviePriority = (int) QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().OlderMoviePriority = (int)QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().RecentMoviePriority = (int)QBittorrentPriority.First;
         }
 
         protected void GivenGlobalSeedLimits(float maxRatio, int maxSeedingTime = -1, bool removeOnMaxRatio = false)
@@ -117,7 +117,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         protected virtual void GivenTorrents(List<QBittorrentTorrent> torrents)
         {
             if (torrents == null)
+            {
                 torrents = new List<QBittorrentTorrent>();
+            }
 
             Mocker.GetMock<IQBittorrentProxy>()
                 .Setup(s => s.GetTorrents(It.IsAny<QBittorrentSettings>()))
@@ -414,8 +416,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
         protected virtual QBittorrentTorrent GivenCompletedTorrent(
             string state = "pausedUP",
-            float ratio = 0.1f, float ratioLimit = -2,
-            int seedingTime = 1, int seedingTimeLimit = -2)
+            float ratio = 0.1f,
+            float ratioLimit = -2,
+            int seedingTime = 1,
+            int seedingTimeLimit = -2)
         {
             var torrent = new QBittorrentTorrent
             {
@@ -500,7 +504,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             item.CanMoveFiles.Should().BeFalse();
         }
 
-
         [Test]
         public void should_not_be_removable_and_should_not_allow_move_files_if_max_seedingtime_reached_and_not_paused()
         {
@@ -565,7 +568,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var item = Subject.GetItems().Single();
             item.CanBeRemoved.Should().BeFalse();
             item.CanMoveFiles.Should().BeFalse();
-            
+
             var item2 = Subject.GetItems().Single();
 
             Mocker.GetMock<IQBittorrentProxy>()
@@ -628,11 +631,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             // Let this stand as a lesson to never write temporary unit tests on your dev machine and claim it works.
             // Commit the tests and let it run with the official build on the official build agents.
             // (Also don't replace library versions in your build script)
-
             var json = "{ \"eta\": 18446744073709335000 }";
             var torrent = Newtonsoft.Json.JsonConvert.DeserializeObject<QBittorrentTorrent>(json);
             torrent.Eta.ToString().Should().Be("18446744073709335000");
-
         }
 
         [Test]

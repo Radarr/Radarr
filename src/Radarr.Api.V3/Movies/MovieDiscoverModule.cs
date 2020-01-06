@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Movies;
+using System.Linq;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using System.Linq;
-using Radarr.Http;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
-using Radarr.Api.V3.NetImport;
 using NzbDrone.Core.Organizer;
+using Radarr.Api.V3.NetImport;
+using Radarr.Http;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -22,8 +22,8 @@ namespace Radarr.Api.V3.Movies
             _searchProxy = searchProxy;
             _netImportFactory = netImportFactory;
             _fileNameBuilder = fileNameBuilder;
-            Get("/lists",  x => GetLists());
-            Get("/{action?recommendations}",  x => Search(x.action));
+            Get("/lists", x => GetLists());
+            Get("/{action?recommendations}", x => Search(x.action));
         }
 
         private object Search(string action)
@@ -36,7 +36,8 @@ namespace Radarr.Api.V3.Movies
         {
             var lists = _netImportFactory.Discoverable();
 
-            return lists.Select(definition => {
+            return lists.Select(definition =>
+            {
                 var resource = new NetImportResource();
                 resource.Id = definition.Definition.Id;
 

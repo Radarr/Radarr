@@ -1,7 +1,6 @@
-using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality
 {

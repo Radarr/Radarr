@@ -35,6 +35,17 @@ export const defaultState = {
       return seeders * 1000000 + leechers;
     },
 
+    indexerFlags: function(item, direction) {
+      const indexerFlags = item.indexerFlags;
+      const releaseWeight = item.releaseWeight;
+
+      if (indexerFlags.length === 0) {
+        return releaseWeight + 1000000;
+      }
+
+      return releaseWeight;
+    },
+
     rejections: function(item, direction) {
       const rejections = item.rejections;
       const releaseWeight = item.releaseWeight;

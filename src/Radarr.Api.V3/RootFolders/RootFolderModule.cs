@@ -18,9 +18,8 @@ namespace Radarr.Api.V3.RootFolders
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
-                                FolderWritableValidator folderWritableValidator
-            )
-            : base(signalRBroadcaster)
+                                FolderWritableValidator folderWritableValidator)
+        : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
 

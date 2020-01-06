@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -66,12 +65,12 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
                 altTitles.Add(searchCriteria.Movie.Title);
 
-                var realMaxPages = (int)MaxPages / (altTitles.Count());
+                var realMaxPages = (int)MaxPages / altTitles.Count();
 
                 //pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
 
                 //Also use alt titles for searching.
-                foreach (String altTitle in altTitles)
+                foreach (string altTitle in altTitles)
                 {
                     var searchAltTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
                     var queryString = $"&q={searchAltTitle}";
@@ -79,6 +78,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                     {
                         queryString += $"%20{searchCriteria.Movie.Year}";
                     }
+
                     pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", queryString));
                 }
             }
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 }
             }
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

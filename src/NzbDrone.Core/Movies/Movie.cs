@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
-using System.IO;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Movies
 {
@@ -21,6 +18,7 @@ namespace NzbDrone.Core.Movies
             Tags = new HashSet<int>();
             AlternativeTitles = new List<AlternativeTitle>();
         }
+
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
         public string Title { get; set; }
@@ -29,7 +27,7 @@ namespace NzbDrone.Core.Movies
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
-	    public MovieStatusType MinimumAvailability { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
@@ -47,18 +45,19 @@ namespace NzbDrone.Core.Movies
         public DateTime Added { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
-        public String PhysicalReleaseNote { get; set; }
-        public LazyLoaded<Profile> Profile { get; set; }
+        public string PhysicalReleaseNote { get; set; }
+        public Profile Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }
-		public bool HasPreDBEntry { get; set; }
+        public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
+
         //Get Loaded via a Join Query
         public List<AlternativeTitle> AlternativeTitles { get; set; }
         public int? SecondaryYear { get; set; }
         public int SecondaryYearSourceId { get; set; }
-        public string YouTubeTrailerId{ get; set; }
+        public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
         public bool IsRecentMovie
@@ -83,11 +82,12 @@ namespace NzbDrone.Core.Movies
 
         public string FolderName()
         {
-			if (Path.IsNullOrWhiteSpace())
-			{
-				return "";
-			}
-			//Well what about Path = Null?
+            if (Path.IsNullOrWhiteSpace())
+            {
+                return "";
+            }
+
+            //Well what about Path = Null?
             //return new DirectoryInfo(Path).Name;
             return Path;
         }
@@ -98,39 +98,43 @@ namespace NzbDrone.Core.Movies
             //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
 
             //This more complex sequence handles the delay
-            DateTime MinimumAvailabilityDate;
+            DateTime minimumAvailabilityDate;
             switch (MinimumAvailability)
             {
                 case MovieStatusType.TBA:
                 case MovieStatusType.Announced:
-                    MinimumAvailabilityDate = DateTime.MinValue;
+                    minimumAvailabilityDate = DateTime.MinValue;
                     break;
                 case MovieStatusType.InCinemas:
                     if (InCinemas.HasValue)
-                        MinimumAvailabilityDate = InCinemas.Value;
+                    {
+                        minimumAvailabilityDate = InCinemas.Value;
+                    }
                     else
-                        MinimumAvailabilityDate = DateTime.MaxValue;
+                    {
+                        minimumAvailabilityDate = DateTime.MaxValue;
+                    }
+
                     break;
 
                 case MovieStatusType.Released:
                 case MovieStatusType.PreDB:
                 default:
-                    MinimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
+                    minimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
                     break;
             }
 
-			if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
-			{
-				return true;
-			}
-
-            if (MinimumAvailabilityDate == DateTime.MinValue || MinimumAvailabilityDate == DateTime.MaxValue)
+            if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
             {
-                return DateTime.Now >= MinimumAvailabilityDate;
+                return true;
             }
 
+            if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
+            {
+                return DateTime.Now >= minimumAvailabilityDate;
+            }
 
-            return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
+            return DateTime.Now >= minimumAvailabilityDate.AddDays((double)delay);
         }
 
         public DateTime PhysicalReleaseDate()

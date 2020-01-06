@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using System;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -32,10 +31,13 @@ namespace NzbDrone.Core.NetImport
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
         private readonly IImportExclusionsService _exclusionService;
 
-
-        public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
-            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, ISearchForNzb nzbSearchService,
-                                   IProcessDownloadDecisions processDownloadDecisions, IConfigService configService,
+        public NetImportSearchService(INetImportFactory netImportFactory,
+                                      IMovieService movieService,
+                                      ISearchForNewMovie movieSearch,
+                                      IRootFolderService rootFolder,
+                                      ISearchForNzb nzbSearchService,
+                                      IProcessDownloadDecisions processDownloadDecisions,
+                                      IConfigService configService,
                                       IImportExclusionsService exclusionService,
                                       Logger logger)
         {
@@ -49,7 +51,6 @@ namespace NzbDrone.Core.NetImport
             _logger = logger;
             _configService = configService;
         }
-
 
         public NetImportFetchResult Fetch(int listId, bool onlyEnableAuto = false)
         {
@@ -106,14 +107,12 @@ namespace NzbDrone.Core.NetImport
             };
         }
 
-
-
         public void Execute(NetImportSyncCommand message)
         {
             //if there are no lists that are enabled for automatic import then dont do anything
-            if((_netImportFactory.GetAvailableProviders()).Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
+            if (_netImportFactory.GetAvailableProviders().Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
             {
-		        _logger.Info("No lists are enabled for auto-import.");
+                _logger.Info("No lists are enabled for auto-import.");
                 return;
             }
 
@@ -170,22 +169,15 @@ namespace NzbDrone.Core.NetImport
         private void CleanLibrary(List<Movie> movies)
         {
             var moviesToUpdate = new List<Movie>();
+
             if (_configService.ListSyncLevel != "disabled")
             {
                 var moviesInLibrary = _movieService.GetAllMovies();
                 foreach (var movie in moviesInLibrary)
                 {
-                    bool foundMatch = false;
-                    foreach (var listedMovie in movies)
-                    {
-                        if (movie.TmdbId == listedMovie.TmdbId)
-                        {
-                            foundMatch = true;
-                            break;
-                        }
+                    var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
 
-                    }
-                    if (!foundMatch)
+                    if (!movieExists)
                     {
                         switch (_configService.ListSyncLevel)
                         {
@@ -204,6 +196,7 @@ namespace NzbDrone.Core.NetImport
                             case "removeAndDelete":
                                 _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
                                 _movieService.DeleteMovie(movie.Id, true);
+
                                 //TODO: for some reason the files are not deleted in this case... any idea why?
                                 break;
                             default:

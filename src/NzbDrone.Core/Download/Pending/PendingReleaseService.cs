@@ -8,14 +8,14 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -195,9 +195,7 @@ namespace NzbDrone.Core.Download.Pending
                     };
 
                     queued.Add(queue);
-
                 }
-
             }
 
             //Return best quality release for each movie
@@ -274,7 +272,10 @@ namespace NzbDrone.Core.Download.Pending
                 var movie = movieMap.GetValueOrDefault(release.MovieId);
 
                 // Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
-                if (movie == null) return null;
+                if (movie == null)
+                {
+                    return null;
+                }
 
                 release.RemoteMovie = new RemoteMovie
                 {
@@ -291,22 +292,22 @@ namespace NzbDrone.Core.Download.Pending
 
         private void Insert(DownloadDecision decision, PendingReleaseReason reason)
         {
-		    var release = new PendingRelease
+            var release = new PendingRelease
             {
-	            MovieId = decision.RemoteMovie.Movie.Id,
-	            ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
-	            Release = decision.RemoteMovie.Release,
-	            Title = decision.RemoteMovie.Release.Title,
-	            Added = DateTime.UtcNow,
+                MovieId = decision.RemoteMovie.Movie.Id,
+                ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
+                Release = decision.RemoteMovie.Release,
+                Title = decision.RemoteMovie.Release.Title,
+                Added = DateTime.UtcNow,
                 Reason = reason
             };
 
             if (release.ParsedMovieInfo == null)
-		    {
-			    _logger.Warn("Pending release {0} does not have ParsedMovieInfo, will cause issues.", release.Title);
-		    }
+            {
+                _logger.Warn("Pending release {0} does not have ParsedMovieInfo, will cause issues.", release.Title);
+            }
 
-	        _repository.Insert(release);
+            _repository.Insert(release);
 
             _eventAggregator.PublishEvent(new PendingReleasesUpdatedEvent());
         }
@@ -337,8 +338,7 @@ namespace NzbDrone.Core.Download.Pending
         {
             var pendingReleases = GetPendingReleases(remoteMovie.Movie.Id);
 
-
-			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
+            var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
                                                              .ToList();
 
             if (existingReports.Empty())
@@ -346,7 +346,7 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteMovie.Movie.Profile.Value;
+            var profile = remoteMovie.Movie.Profile;
 
             foreach (var existingReport in existingReports)
             {

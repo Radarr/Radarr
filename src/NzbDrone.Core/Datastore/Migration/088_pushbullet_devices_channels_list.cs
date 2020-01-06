@@ -8,7 +8,9 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 namespace NzbDrone.Core.Datastore.Migration
 {
     // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+#pragma warning disable SA1200
     using NzbDrone.Common.Extensions;
+#pragma warning restore SA1200
 
     [Migration(88)]
     public class pushbullet_devices_channels_list : NzbDroneMigrationBase
@@ -51,7 +53,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                             if (channelTagsString.IsNotNullOrWhiteSpace())
                             {
-                                var channelTags = channelTagsString.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+                                var channelTags = channelTagsString.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
                                 settings["channelTags"] = channelTags;
                             }

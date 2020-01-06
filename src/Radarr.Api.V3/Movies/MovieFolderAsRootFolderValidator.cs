@@ -18,18 +18,33 @@ namespace Radarr.Api.V3.Movies
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (context.PropertyValue == null) return true;
+            if (context.PropertyValue == null)
+            {
+                return true;
+            }
 
             var movieResource = context.Instance as MovieResource;
 
-            if (movieResource == null) return true;
+            if (movieResource == null)
+            {
+                return true;
+            }
 
             var rootFolderPath = context.PropertyValue.ToString();
+
+            if (rootFolderPath.IsNullOrWhiteSpace())
+            {
+                return true;
+            }
+
             var rootFolder = new DirectoryInfo(rootFolderPath).Name;
             var movie = movieResource.ToModel();
             var movieFolder = _fileNameBuilder.GetMovieFolder(movie);
 
-            if (movieFolder == rootFolder) return false;
+            if (movieFolder == rootFolder)
+            {
+                return false;
+            }
 
             var distance = movieFolder.LevenshteinDistance(rootFolder);
 

@@ -1,17 +1,17 @@
-﻿using TinyIoC;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Nancy;
-using Nancy.Diagnostics;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
+using Nancy.Diagnostics;
+using TinyIoC;
+
+#pragma warning disable SX1101
 
 namespace Radarr.Http
 {
-
-
     /// <summary>
     /// TinyIoC bootstrapper - registers default route resolver and registers itself as
     /// INancyModuleCatalog for resolving modules but behaviour can be overridden if required.
@@ -53,42 +53,32 @@ namespace Radarr.Http
             return this.ApplicationContainer.Resolve<INancyEngine>();
         }
 
-                //
-        // Summary:
-        //     Gets the Nancy.Configuration.INancyEnvironmentConfigurator used by th.
-        //
-        // Returns:
-        //     An Nancy.Configuration.INancyEnvironmentConfigurator instance.
+        /// <summary></summary>
+        /// Gets the Nancy.Configuration.INancyEnvironmentConfigurator used by th.
+        /// </summary>
+        /// <returns>An Nancy.Configuration.INancyEnvironmentConfigurator instance.</returns>
         protected override INancyEnvironmentConfigurator GetEnvironmentConfigurator()
         {
             return this.ApplicationContainer.Resolve<INancyEnvironmentConfigurator>();
         }
 
-        //
-        // Summary:
-        //     Get the Nancy.Configuration.INancyEnvironment instance.
-        //
-        // Returns:
-        //     An configured Nancy.Configuration.INancyEnvironment instance.
-        //
-        // Remarks:
-        //     The boostrapper must be initialised (Nancy.Bootstrapper.INancyBootstrapper.Initialise)
-        //     prior to calling this.
+        /// <summary>
+        /// Get the Nancy.Configuration.INancyEnvironment instance.
+        /// </summary>
+        /// <returns>An configured Nancy.Configuration.INancyEnvironment instance.</returns>
+        /// <remarks>
+        /// The boostrapper must be initialised (Nancy.Bootstrapper.INancyBootstrapper.Initialise) prior to calling this.
+        /// </remarks>
         public override INancyEnvironment GetEnvironment()
         {
             return this.ApplicationContainer.Resolve<INancyEnvironment>();
         }
 
-        //
-        // Summary:
-        //     Registers an Nancy.Configuration.INancyEnvironment instance in the container.
-        //
-        // Parameters:
-        //   container:
-        //     The container to register into.
-        //
-        //   environment:
-        //     The Nancy.Configuration.INancyEnvironment instance to register.
+        /// <summary>
+        /// Registers an Nancy.Configuration.INancyEnvironment instance in the container.
+        /// </summary>
+        /// <param name="container">The container to register into.</param>
+        /// <param name="environment">The Nancy.Configuration.INancyEnvironment instance to register.</param>
         protected override void RegisterNancyEnvironment(TinyIoCContainer container, INancyEnvironment environment)
         {
             ApplicationContainer.Register<INancyEnvironment>(environment);

@@ -21,14 +21,14 @@ namespace NzbDrone.Core.Test.IndexerTests.TorznabTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
+            {
+                Name = "Torznab",
+                Settings = new TorznabSettings()
                 {
-                    Name = "Torznab",
-                    Settings = new TorznabSettings()
-                        {
-                            BaseUrl = "http://indexer.local/",
-                            Categories = new int[] { 1 }
-                        }
-                };
+                    BaseUrl = "http://indexer.local/",
+                    Categories = new int[] { 1 }
+                }
+            };
 
             _caps = new NewznabCapabilities();
             Mocker.GetMock<INewznabCapabilitiesProvider>()

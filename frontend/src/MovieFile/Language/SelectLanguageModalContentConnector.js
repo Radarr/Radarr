@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchLanguages } from 'Store/Actions/settingsActions';
 import { updateMovieFiles } from 'Store/Actions/movieFileActions';
-import SelectLanguageModalContent from './SelectLanguageModalContent';
+import SelectLanguageModalContent from 'InteractiveImport/Language/SelectLanguageModalContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -47,15 +47,20 @@ class SelectLanguageModalContentConnector extends Component {
   //
   // Listeners
 
-  onLanguageSelect = ({ value }) => {
-    const languageId = parseInt(value);
+  onLanguageSelect = ({ languageIds }) => {
+    const languages = [];
 
-    const language = _.find(this.props.items,
-      (item) => item.id === languageId);
-    const languages = [language];
-    const movieFileIds = this.props.ids;
+    languageIds.forEach((languageId) => {
+      const language = _.find(this.props.items,
+        (item) => item.id === parseInt(languageId));
 
-    this.props.dispatchupdateMovieFiles({ movieFileIds, languages });
+      languages.push(language);
+    });
+
+    this.props.dispatchupdateMovieFiles({
+      movieFileIds: this.props.ids,
+      languages
+    });
 
     this.props.onModalClose(true);
   }

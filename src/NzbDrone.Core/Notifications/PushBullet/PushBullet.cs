@@ -51,23 +51,23 @@ namespace NzbDrone.Core.Notifications.PushBullet
                 if (Settings.ApiKey.IsNullOrWhiteSpace())
                 {
                     return new
-                           {
-                               devices = new List<object>()
-                           };
+                    {
+                        devices = new List<object>()
+                    };
                 }
 
                 Settings.Validate().Filter("ApiKey").ThrowOnError();
                 var devices = _proxy.GetDevices(Settings);
 
                 return new
-                       {
-                           options = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
+                {
+                    options = devices.Where(d => d.Nickname.IsNotNullOrWhiteSpace())
                                             .OrderBy(d => d.Nickname, StringComparer.InvariantCultureIgnoreCase)
                                             .Select(d => new
-                                                         {
-                                                             id = d.Id,
-                                                             name = d.Nickname
-                                                         })
+                                            {
+                                                id = d.Id,
+                                                name = d.Nickname
+                                            })
                 };
             }
 

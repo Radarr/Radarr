@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Profiles.Languages
@@ -28,12 +27,12 @@ namespace NzbDrone.Api.Profiles.Languages
 
         private List<LanguageResource> GetAll()
         {
-            return ((Language[])Enum.GetValues(typeof (Language)))
+            return ((Language[])Enum.GetValues(typeof(Language)))
                                     .Select(l => new LanguageResource
-                                                    {
-                                                        Id = (int) l,
-                                                        Name = l.ToString()
-                                                    })
+                                    {
+                                        Id = (int)l,
+                                        Name = l.ToString()
+                                    })
                                     .OrderBy(l => l.Name)
                                     .ToList();
         }

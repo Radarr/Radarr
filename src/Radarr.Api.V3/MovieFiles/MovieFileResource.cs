@@ -27,7 +27,10 @@ namespace Radarr.Api.V3.MovieFiles
     {
         private static MovieFileResource ToResource(this MovieFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new MovieFileResource
             {
@@ -35,6 +38,7 @@ namespace Radarr.Api.V3.MovieFiles
 
                 MovieId = model.MovieId,
                 RelativePath = model.RelativePath,
+
                 //Path
                 Size = model.Size,
                 DateAdded = model.DateAdded,
@@ -42,14 +46,17 @@ namespace Radarr.Api.V3.MovieFiles
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
+
                 //QualityCutoffNotMet
             };
-
         }
 
         public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new MovieFileResource
             {
@@ -63,14 +70,16 @@ namespace Radarr.Api.V3.MovieFiles
                 SceneName = model.SceneName,
                 Quality = model.Quality,
                 Languages = model.Languages,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                // QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
+                MediaInfo = model.MediaInfo.ToResource(model.SceneName)
             };
         }
 
         public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IUpgradableSpecification upgradableSpecification)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new MovieFileResource
             {
@@ -85,7 +94,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile.Value, model.Quality)
+                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile, model.Quality)
             };
         }
     }

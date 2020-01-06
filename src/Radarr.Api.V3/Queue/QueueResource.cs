@@ -36,7 +36,10 @@ namespace Radarr.Api.V3.Queue
     {
         public static QueueResource ToResource(this NzbDrone.Core.Queue.Queue model, bool includeMovie)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new QueueResource
             {

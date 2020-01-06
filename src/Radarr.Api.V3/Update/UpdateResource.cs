@@ -27,7 +27,10 @@ namespace Radarr.Api.V3.Update
     {
         public static UpdateResource ToResource(this UpdatePackage model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new UpdateResource
             {
@@ -37,6 +40,7 @@ namespace Radarr.Api.V3.Update
                 ReleaseDate = model.ReleaseDate,
                 FileName = model.FileName,
                 Url = model.Url,
+
                 //Installed
                 //Installable
                 //Latest

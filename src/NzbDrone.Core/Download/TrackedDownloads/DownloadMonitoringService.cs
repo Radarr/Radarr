@@ -103,7 +103,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
 
             return trackedDownloads;
-
         }
 
         private void RemoveCompletedDownloads(List<TrackedDownload> trackedDownloads)
@@ -128,11 +127,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     {
                         _completedDownloadService.Process(trackedDownload);
                     }
-
                 }
 
                 trackedDownloads.AddIfNotNull(trackedDownload);
-
             }
             catch (Exception e)
             {

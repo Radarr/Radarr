@@ -1,8 +1,6 @@
 ﻿using System.Data;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.Datastore.Migration
 {

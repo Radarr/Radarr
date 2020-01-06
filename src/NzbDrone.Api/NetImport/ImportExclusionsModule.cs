@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using FluentValidation;
-using Radarr.Http.ClientSchema;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
 
 namespace NzbDrone.Api.NetImport
@@ -12,7 +9,8 @@ namespace NzbDrone.Api.NetImport
     {
         private readonly IImportExclusionsService _exclusionService;
 
-        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService) : base("exclusions")
+        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService)
+            : base("exclusions")
         {
             _exclusionService = exclusionService;
             GetResourceAll = GetAll;
@@ -30,7 +28,7 @@ namespace NzbDrone.Api.NetImport
         {
             return _exclusionService.GetById(id).ToResource();
         }
-       
+
         public int AddExclusion(ImportExclusionsResource exclusionResource)
         {
             var model = exclusionResource.ToModel();
@@ -38,7 +36,7 @@ namespace NzbDrone.Api.NetImport
             return _exclusionService.AddExclusion(model).Id;
         }
 
-        public void RemoveExclusion (int id)
+        public void RemoveExclusion(int id)
         {
             _exclusionService.RemoveExclusion(new ImportExclusion { Id = id });
         }

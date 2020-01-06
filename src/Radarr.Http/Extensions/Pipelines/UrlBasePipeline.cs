@@ -22,7 +22,7 @@ namespace Radarr.Http.Extensions.Pipelines
         {
             if (_urlBase.IsNotNullOrWhiteSpace())
             {
-                pipelines.BeforeRequest.AddItemToStartOfPipeline((Func<NancyContext, Response>) Handle);
+                pipelines.BeforeRequest.AddItemToStartOfPipeline((Func<NancyContext, Response>)Handle);
             }
         }
 

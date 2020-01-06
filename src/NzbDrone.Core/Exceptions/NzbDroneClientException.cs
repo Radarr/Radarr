@@ -7,7 +7,8 @@ namespace NzbDrone.Core.Exceptions
     {
         public HttpStatusCode StatusCode { get; private set; }
 
-        public NzbDroneClientException(HttpStatusCode statusCode, string message, params object[] args) : base(message, args)
+        public NzbDroneClientException(HttpStatusCode statusCode, string message, params object[] args)
+            : base(message, args)
         {
             StatusCode = statusCode;
         }

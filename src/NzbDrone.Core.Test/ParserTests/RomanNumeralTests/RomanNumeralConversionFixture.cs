@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Core.Parser.RomanNumerals;
@@ -14,7 +11,6 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
     {
         private const string TEST_VALUES = @"Files/ArabicRomanNumeralDictionary.JSON";
 
-
         private Dictionary<int, string> _arabicToRomanNumeralsMapping;
 
         [OneTimeSetUp]
@@ -25,10 +21,9 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
                 JsonConvert.DeserializeObject<Dictionary<int, string>>(File.ReadAllText(pathToTestValues));
         }
 
-
         [Test(Description = "Converts the supported range [1-3999] of Arabic to Roman numerals.")]
         [Order(0)]
-        public void should_convert_arabic_numeral_to_roman_numeral([Range(1,20)] int arabicNumeral)
+        public void should_convert_arabic_numeral_to_roman_numeral([Range(1, 20)] int arabicNumeral)
         {
             RomanNumeral romanNumeral = new RomanNumeral(arabicNumeral);
 
@@ -47,8 +42,5 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
 
             Assert.AreEqual(romanNumeral.ToInt(), expectecdValue);
         }
-
-
-
     }
 }

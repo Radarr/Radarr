@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
-                                                               new IsoLanguage(new List<string> {"en", "us", "uk"}, "eng", Language.English),
+                                                               new IsoLanguage(new List<string> { "en", "us", "uk" }, "eng", Language.English),
                                                                new IsoLanguage("fr", "fra", Language.French),
                                                                new IsoLanguage("es", "spa", Language.Spanish),
                                                                new IsoLanguage("de", "deu", Language.German),
@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("da", "dan", Language.Danish),
                                                                new IsoLanguage("nl", "nld", Language.Dutch),
                                                                new IsoLanguage("ja", "jpn", Language.Japanese),
+
 //                                                             new IsoLanguage("", "", Language.Cantonese),
 //                                                             new IsoLanguage("", "", Language.Mandarin),
                                                                new IsoLanguage("ru", "rus", Language.Russian),
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("fi", "fin", Language.Finnish),
                                                                new IsoLanguage("tr", "tur", Language.Turkish),
                                                                new IsoLanguage("pt", "por", Language.Portuguese),
+
 //                                                             new IsoLanguage("nl", "nld", Language.Flemish),
                                                                new IsoLanguage("el", "ell", Language.Greek),
                                                                new IsoLanguage("ko", "kor", Language.Korean),

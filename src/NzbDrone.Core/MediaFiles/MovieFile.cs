@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Marr.Data;
-using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -24,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles
         public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public string Edition { get; set; }
-        public LazyLoaded<Movie> Movie { get; set; }
+        public Movie Movie { get; set; }
 
         public override string ToString()
         {
@@ -44,6 +42,6 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             return string.Empty;
-}
+        }
     }
 }

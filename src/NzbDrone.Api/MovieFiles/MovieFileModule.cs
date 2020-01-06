@@ -1,15 +1,13 @@
-using System.Collections.Generic;
 using System.IO;
 using NLog;
-using Radarr.Http;
-using Radarr.Http.REST;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
-using NzbDrone.Core.DecisionEngine.Specifications;
+using Radarr.Http;
 
 namespace NzbDrone.Api.MovieFiles
 {
@@ -45,7 +43,6 @@ namespace NzbDrone.Api.MovieFiles
 
             return movie.ToResource();
         }
-
 
         private void SetQuality(MovieFileResource movieFileResource)
         {

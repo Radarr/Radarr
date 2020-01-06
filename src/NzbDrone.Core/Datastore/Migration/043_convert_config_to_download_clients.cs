@@ -48,21 +48,20 @@ namespace NzbDrone.Core.Datastore.Migration
             if (client.Equals("sabnzbd", StringComparison.InvariantCultureIgnoreCase))
             {
                 var settings = new ClientSettingsForMigration
-                               {
-                                   Host = GetConfigValue(config, "SabHost", "localhost"),
-                                   Port = GetConfigValue(config, "SabPort", 8080),
-                                   ApiKey = GetConfigValue(config, "SabApiKey", ""),
-                                   Username = GetConfigValue(config, "SabUsername", ""),
-                                   Password = GetConfigValue(config, "SabPassword", ""),
-                                   TvCategory = GetConfigValue(config, "SabTvCategory", "tv"),
-                                   RecentTvPriority = GetSabnzbdPriority(GetConfigValue(config, "NzbgetRecentTvPriority", "Default")),
-                                   OlderTvPriority = GetSabnzbdPriority(GetConfigValue(config, "NzbgetOlderTvPriority", "Default")),
-                                   UseSsl = GetConfigValue(config, "SabUseSsl", false)
-                               };
+                {
+                    Host = GetConfigValue(config, "SabHost", "localhost"),
+                    Port = GetConfigValue(config, "SabPort", 8080),
+                    ApiKey = GetConfigValue(config, "SabApiKey", ""),
+                    Username = GetConfigValue(config, "SabUsername", ""),
+                    Password = GetConfigValue(config, "SabPassword", ""),
+                    TvCategory = GetConfigValue(config, "SabTvCategory", "tv"),
+                    RecentTvPriority = GetSabnzbdPriority(GetConfigValue(config, "NzbgetRecentTvPriority", "Default")),
+                    OlderTvPriority = GetSabnzbdPriority(GetConfigValue(config, "NzbgetOlderTvPriority", "Default")),
+                    UseSsl = GetConfigValue(config, "SabUseSsl", false)
+                };
 
                 AddDownloadClient(conn, tran, "Sabnzbd", "Sabnzbd", settings.ToJson(), "SabnzbdSettings", 1);
             }
-
             else if (client.Equals("nzbget", StringComparison.InvariantCultureIgnoreCase))
             {
                 var settings = new ClientSettingsForMigration
@@ -78,17 +77,15 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 AddDownloadClient(conn, tran, "Nzbget", "Nzbget", settings.ToJson(), "NzbgetSettings", 1);
             }
-
             else if (client.Equals("pneumatic", StringComparison.InvariantCultureIgnoreCase))
             {
                 var settings = new FolderSettingsForMigration
-                               {
-                                   Folder = GetConfigValue(config, "PneumaticFolder", "")
-                               };
+                {
+                    Folder = GetConfigValue(config, "PneumaticFolder", "")
+                };
 
                 AddDownloadClient(conn, tran, "Pneumatic", "Pneumatic", settings.ToJson(), "FolderSettings", 1);
             }
-
             else if (client.Equals("blackhole", StringComparison.InvariantCultureIgnoreCase))
             {
                 var settings = new FolderSettingsForMigration
@@ -108,14 +105,19 @@ namespace NzbDrone.Core.Datastore.Migration
 
             if (config.ContainsKey(key))
             {
-                return (T) Convert.ChangeType(config[key], typeof (T));
+                return (T)Convert.ChangeType(config[key], typeof(T));
             }
 
             return defaultValue;
         }
 
-        private void AddDownloadClient(IDbConnection conn, IDbTransaction tran, string name, string implementation, string settings,
-                                                                                string configContract, int protocol)
+        private void AddDownloadClient(IDbConnection conn,
+            IDbTransaction tran,
+            string name,
+            string implementation,
+            string settings,
+            string configContract,
+            int protocol)
         {
             using (IDbCommand updateCmd = conn.CreateCommand())
             {

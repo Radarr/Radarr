@@ -28,9 +28,9 @@ namespace Radarr.Api.V3.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
-            Get("/since",  x => GetHistorySince());
-            Get("/movie",  x => GetMovieHistory());
-            Post("/failed",  x => MarkAsFailed());
+            Get("/since", x => GetHistorySince());
+            Get("/movie", x => GetMovieHistory());
+            Post("/failed", x => MarkAsFailed());
         }
 
         protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeMovie)
@@ -44,7 +44,7 @@ namespace Radarr.Api.V3.History
 
             if (model.Movie != null)
             {
-                resource.QualityCutoffNotMet = _upgradableSpecification.CutoffNotMet(model.Movie.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _upgradableSpecification.CutoffNotMet(model.Movie.Profile, model.Quality);
             }
 
             return resource;
@@ -77,7 +77,7 @@ namespace Radarr.Api.V3.History
         {
             var queryDate = Request.Query.Date;
             var queryEventType = Request.Query.EventType;
-            
+
             if (!queryDate.HasValue)
             {
                 throw new BadRequestException("date is missing");

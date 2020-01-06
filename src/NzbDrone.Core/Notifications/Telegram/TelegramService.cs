@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Net;
+using System.Web;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
-using RestSharp;
 using NzbDrone.Core.Rest;
-using System.Web;
+using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Telegram
 {
@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Notifications.Telegram
 
     public class TelegramProxy : ITelegramProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://api.telegram.org";
+        private readonly Logger _logger;
 
         public TelegramProxy(Logger logger)
         {

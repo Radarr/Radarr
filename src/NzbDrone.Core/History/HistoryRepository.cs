@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Marr.Data.QGen;
+using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
@@ -14,7 +15,7 @@ namespace NzbDrone.Core.History
         List<QualityModel> GetBestQualityInHistory(int movieId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> FindDownloadHistory(int idMovieId, QualityModel quality);
+        List<History> FindDownloadHistory(int movieId, QualityModel quality);
         List<History> GetByMovieId(int movieId, HistoryEventType? eventType);
         void DeleteForMovie(int movieId);
         History MostRecentForMovie(int movieId);
@@ -23,7 +24,6 @@ namespace NzbDrone.Core.History
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
     {
-
         public HistoryRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
@@ -31,37 +31,35 @@ namespace NzbDrone.Core.History
 
         public List<QualityModel> GetBestQualityInHistory(int movieId)
         {
-            var history = Query.Where(c => c.MovieId == movieId).ToList();
+            var history = Query(x => x.MovieId == movieId);
 
             return history.Select(h => h.Quality).ToList();
         }
 
         public History MostRecentForDownloadId(string downloadId)
         {
-            return Query.Where(h => h.DownloadId == downloadId)
-             .OrderByDescending(h => h.Date)
-             .FirstOrDefault();
+            return FindByDownloadId(downloadId)
+                .OrderByDescending(h => h.Date)
+                .FirstOrDefault();
         }
 
         public List<History> FindByDownloadId(string downloadId)
         {
-            return Query.Where(h => h.DownloadId == downloadId).ToList();
+            return Query(x => x.DownloadId == downloadId);
         }
 
-        public List<History> FindDownloadHistory(int idMovieId, QualityModel quality)
+        public List<History> FindDownloadHistory(int movieId, QualityModel quality)
         {
-            return Query.Where(h =>
-                 h.MovieId == idMovieId &&
-                 h.Quality == quality &&
-                 (h.EventType == HistoryEventType.Grabbed ||
-                 h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.DownloadFolderImported)
-                 ).ToList();
+            var allowed = new[] { HistoryEventType.Grabbed, HistoryEventType.DownloadFailed, HistoryEventType.DownloadFolderImported };
+
+            return Query(h => h.MovieId == movieId &&
+                         h.Quality == quality &&
+                         allowed.Contains(h.EventType));
         }
 
         public List<History> GetByMovieId(int movieId, HistoryEventType? eventType)
         {
-            var query = Query.Where(h => h.MovieId == movieId).ToList();
+            var query = Query(x => x.MovieId == movieId);
 
             if (eventType.HasValue)
             {
@@ -78,32 +76,46 @@ namespace NzbDrone.Core.History
             Delete(c => c.MovieId == movieId);
         }
 
-        protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
+        private IEnumerable<History> SelectJoined(SqlBuilder.Template sql)
         {
-            var baseQuery = query.Join<History, Movie>(JoinType.Inner, h => h.Movie, (h, e) => h.MovieId == e.Id);
-
-            return base.GetPagedQuery(baseQuery, pagingSpec);
+            using (var conn = _database.OpenConnection())
+            {
+                return conn.Query<History, Movie, Profile, History>(
+                    sql.RawSql,
+                    (hist, movie, profile) =>
+                    {
+                        hist.Movie = movie;
+                        hist.Movie.Profile = profile;
+                        return hist;
+                    },
+                    sql.Parameters)
+                    .ToList();
+            }
         }
+
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder()
+            .Join<History, Movie>((h, m) => h.MovieId == m.Id)
+            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id);
+
+        protected override IEnumerable<History> PagedSelector(SqlBuilder.Template sql) => SelectJoined(sql);
 
         public History MostRecentForMovie(int movieId)
         {
-            return Query.Where(h => h.MovieId == movieId)
-                        .OrderByDescending(h => h.Date)
-                        .FirstOrDefault();
+            return Query(x => x.MovieId == movieId)
+                .OrderByDescending(h => h.Date)
+                .FirstOrDefault();
         }
 
         public List<History> Since(DateTime date, HistoryEventType? eventType)
         {
-            var query = Query.Where(h => h.Date >= date).ToList();
+            var builder = Builder().Where<History>(x => x.Date >= date);
 
             if (eventType.HasValue)
             {
-                query = query.Where(h => h.EventType == eventType).ToList();
+                builder.Where<History>(h => h.EventType == eventType);
             }
 
-            query.OrderBy(h => h.Date);
-
-            return query;
+            return Query(builder).OrderBy(h => h.Date).ToList();
         }
     }
 }

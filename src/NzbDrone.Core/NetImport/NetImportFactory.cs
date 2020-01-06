@@ -21,7 +21,7 @@ namespace NzbDrone.Core.NetImport
 
         public NetImportFactory(INetImportRepository providerRepository,
                               IEnumerable<INetImport> providers,
-                              IContainer container, 
+                              IContainer container,
                               IEventAggregator eventAggregator,
                               Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)

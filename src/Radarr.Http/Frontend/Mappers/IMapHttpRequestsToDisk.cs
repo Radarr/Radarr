@@ -1,5 +1,4 @@
-﻿
-using Nancy;
+﻿using Nancy;
 
 namespace Radarr.Http.Frontend.Mappers
 {

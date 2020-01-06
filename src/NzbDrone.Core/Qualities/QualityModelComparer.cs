@@ -79,20 +79,10 @@ namespace NzbDrone.Core.Qualities
 
         public int Compare(CustomFormat left, CustomFormat right)
         {
-            int leftIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, left));
-            int rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
-
-            return leftIndex.CompareTo(rightIndex);
-        }
-
-        public int Compare(List<CustomFormat> left, CustomFormat right)
-        {
-            left = left.WithNone();
-
-            var leftIndicies = GetIndicies(left, _profile);
+            var leftIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, left));
             var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
 
-            return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
+            return leftIndex.CompareTo(rightIndex);
         }
 
         public int Compare(List<CustomFormat> left, int right)
@@ -100,9 +90,9 @@ namespace NzbDrone.Core.Qualities
             left = left.WithNone();
 
             var leftIndicies = GetIndicies(left, _profile);
-            var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
+            var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format.Id, right));
 
-            return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
+            return leftIndicies.Select(i => i.CompareTo(rightIndex)).Max();
         }
     }
 }

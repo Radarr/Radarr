@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithAdditionalFormats : IAugmentParsedMovieInfo
-
     {
         public Type HelperType
         {
@@ -31,7 +27,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                 }
                 else
                 {
-                    movieInfo.ExtraInfo["AdditionalFormats"] = new List<CustomFormat>{format};
+                    movieInfo.ExtraInfo["AdditionalFormats"] = new List<CustomFormat> { format };
                 }
             }
 

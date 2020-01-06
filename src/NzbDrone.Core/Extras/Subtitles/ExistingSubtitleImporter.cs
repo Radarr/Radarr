@@ -4,8 +4,8 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Extras.Subtitles
 {
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Extras.Subtitles
         public ExistingSubtitleImporter(IExtraFileService<SubtitleFile> subtitleFileService,
                                         IParsingService parsingService,
                                         Logger logger)
-            : base (subtitleFileService)
+            : base(subtitleFileService)
         {
             _subtitleFileService = subtitleFileService;
             _parsingService = parsingService;
@@ -49,13 +49,13 @@ namespace NzbDrone.Core.Extras.Subtitles
                     }
 
                     var subtitleFile = new SubtitleFile
-                                       {
-                                           MovieId = movie.Id,
-                                           MovieFileId = movie.MovieFileId,
-                                           RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
-                                           Extension = extension
-                                       };
+                    {
+                        MovieId = movie.Id,
+                        MovieFileId = movie.MovieFileId,
+                        RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
+                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
+                        Extension = extension
+                    };
 
                     subtitleFiles.Add(subtitleFile);
                 }
@@ -66,7 +66,6 @@ namespace NzbDrone.Core.Extras.Subtitles
 
             // Return files that were just imported along with files that were
             // previously imported so previously imported files aren't imported twice
-
             return subtitleFiles.Concat(filterResult.PreviouslyImported);
         }
     }

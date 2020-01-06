@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Datastore.Migration
             updater.SplitQualityAppend(0, 26); // TELESYNC AFTER Unknown
             updater.SplitQualityAppend(0, 25); // CAM AFTER Unknown
             updater.SplitQualityAppend(0, 24); // WORKPRINT AFTER Unknown
-            
+
             updater.SplitQualityPrepend(2, 23); // DVDR     BEFORE     DVD
             updater.SplitQualityPrepend(2, 28); // DVDSCR   BEFORE     DVD
             updater.SplitQualityPrepend(2, 29); // REGIONAL BEFORE     DVD

@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
-using System.Linq;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.IndexerSearch
 {
@@ -52,14 +51,15 @@ namespace NzbDrone.Core.IndexerSearch
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
+        private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch, bool interactiveSearch)
+            where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec()
             {
                 Movie = movie,
                 UserInvokedSearch = userInvokedSearch,
                 InteractiveSearch = interactiveSearch
-        };
+            };
             return spec;
         }
 

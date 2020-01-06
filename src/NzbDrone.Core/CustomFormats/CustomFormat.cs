@@ -7,9 +7,12 @@ namespace NzbDrone.Core.CustomFormats
 {
     public class CustomFormat : ModelBase, IEquatable<CustomFormat>
     {
+        public string Name { get; set; }
+
+        public List<FormatTag> FormatTags { get; set; }
+
         public CustomFormat()
         {
-
         }
 
         public CustomFormat(string name, params string[] tags)
@@ -18,9 +21,7 @@ namespace NzbDrone.Core.CustomFormats
             FormatTags = tags.Select(t => new FormatTag(t)).ToList();
         }
 
-        public string Name { get; set; }
-
-        public List<FormatTag> FormatTags { get; set; }
+        public static implicit operator CustomFormatDefinition(CustomFormat format) => new CustomFormatDefinition { Id = format.Id, Name = format.Name, FormatTags = format.FormatTags };
 
         public override string ToString()
         {
@@ -31,17 +32,37 @@ namespace NzbDrone.Core.CustomFormats
 
         public bool Equals(CustomFormat other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return int.Equals(Id, other.Id);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((CustomFormat) obj);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((CustomFormat)obj);
         }
 
         public override int GetHashCode()
@@ -60,9 +81,12 @@ namespace NzbDrone.Core.CustomFormats
         public static List<CustomFormat> WithNone(this IEnumerable<CustomFormat> formats)
         {
             var list = formats.ToList();
-            if (list.Any()) return list;
+            if (list.Any())
+            {
+                return list;
+            }
 
-            return new List<CustomFormat>{CustomFormat.None};
+            return new List<CustomFormat> { CustomFormat.None };
         }
     }
 }

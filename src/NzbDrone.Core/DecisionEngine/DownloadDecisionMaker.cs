@@ -6,12 +6,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -25,17 +25,19 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
-	    private readonly IConfigService _configService;
+        private readonly IConfigService _configService;
         private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
         public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
-            IParsingService parsingService, IConfigService configService,
-            IQualityDefinitionService qualityDefinitionService, Logger logger)
+            IParsingService parsingService,
+            IConfigService configService,
+            IQualityDefinitionService qualityDefinitionService,
+            Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
-		    _configService = configService;
+            _configService = configService;
             _definitionService = qualityDefinitionService;
             _logger = logger;
         }
@@ -56,7 +58,6 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 _logger.ProgressInfo("Processing {0} releases", reports.Count);
             }
-
             else
             {
                 _logger.ProgressInfo("No results found");
@@ -71,8 +72,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
-
-                    var parsedMovieInfo = _parsingService.ParseMovieInfo(report.Title, new List<object>{report});
+                    var parsedMovieInfo = _parsingService.ParseMovieInfo(report.Title, new List<object> { report });
 
                     MappingResult result = null;
 
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             MovieTitle = report.Title,
                             Year = 1290,
-                            Languages = new List<Language>{Language.Unknown},
+                            Languages = new List<Language> { Language.Unknown },
                             Quality = new QualityModel(),
                         };
 
@@ -94,11 +94,10 @@ namespace NzbDrone.Core.DecisionEngine
 
                         if (result == null || result.MappingResultType != MappingResultType.SuccessLenientMapping)
                         {
-                            result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
+                            result = new MappingResult { MappingResultType = MappingResultType.NotParsable };
                             result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
                             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
                         }
-
                     }
                     else
                     {
@@ -115,7 +114,6 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         var rejection = result.ToRejection();
                         decision = new DownloadDecision(remoteMovie, rejection);
-
                     }
                     else
                     {
@@ -146,7 +144,6 @@ namespace NzbDrone.Core.DecisionEngine
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
-
                     }
                 }
                 catch (Exception e)
@@ -165,7 +162,6 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         _logger.Debug("Release rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
                     }
-
                     else
                     {
                         _logger.Debug("Release accepted");

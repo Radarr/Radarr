@@ -1,6 +1,4 @@
-using FluentValidation;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Validation.Paths;
 
 namespace NzbDrone.Api.Config
 {
@@ -9,7 +7,6 @@ namespace NzbDrone.Api.Config
         public DownloadClientConfigModule(IConfigService configService)
             : base(configService)
         {
-
         }
 
         protected override DownloadClientConfigResource ToResource(IConfigService model)

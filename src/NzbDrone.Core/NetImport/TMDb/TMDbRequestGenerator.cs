@@ -1,8 +1,8 @@
 ﻿using System;
-using NzbDrone.Common.Http;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
@@ -72,6 +72,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                 requestBuilder.Resource(tmdbParams);
 
                 var request = requestBuilder
+
                     // .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
                     .Accept(HttpAccept.Json)
                     .Build();
@@ -112,7 +113,6 @@ namespace NzbDrone.Core.NetImport.TMDb
                 Logger.Info($"Importing TMDb movies from: {baseUrl}");
                 yield return new NetImportRequest($"{baseUrl}", HttpAccept.Json);
             }
-
         }
     }
 }

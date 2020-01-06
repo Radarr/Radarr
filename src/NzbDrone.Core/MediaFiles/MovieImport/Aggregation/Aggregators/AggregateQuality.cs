@@ -3,7 +3,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -39,21 +38,21 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             foreach (var augmentedQuality in augmentedQualities)
             {
                 if (augmentedQuality.Source > source ||
-                    augmentedQuality.SourceConfidence > sourceConfidence && augmentedQuality.Source != Source.UNKNOWN)
+                    (augmentedQuality.SourceConfidence > sourceConfidence && augmentedQuality.Source != Source.UNKNOWN))
                 {
                     source = augmentedQuality.Source;
                     sourceConfidence = augmentedQuality.SourceConfidence;
                 }
 
                 if (augmentedQuality.Resolution > resolution ||
-                    augmentedQuality.ResolutionConfidence > resolutionConfidence && augmentedQuality.Resolution > 0)
+                    (augmentedQuality.ResolutionConfidence > resolutionConfidence && augmentedQuality.Resolution > 0))
                 {
                     resolution = augmentedQuality.Resolution;
                     resolutionConfidence = augmentedQuality.ResolutionConfidence;
                 }
 
                 if (augmentedQuality.Modifier > modifier ||
-                    augmentedQuality.ModifierConfidence > modifierConfidence && augmentedQuality.Modifier != Modifier.NONE)
+                    (augmentedQuality.ModifierConfidence > modifierConfidence && augmentedQuality.Modifier != Modifier.NONE))
                 {
                     modifier = augmentedQuality.Modifier;
                     modifierConfidence = augmentedQuality.ModifierConfidence;

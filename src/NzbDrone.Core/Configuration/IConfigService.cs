@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Security;
 
@@ -57,21 +57,15 @@ namespace NzbDrone.Core.Configuration
 
         bool PreferIndexerFlags { get; set; }
 
-		int AvailabilityDelay { get; set; }
+        int AvailabilityDelay { get; set; }
 
-		bool AllowHardcodedSubs { get; set; }
-		string WhitelistedHardcodedSubs { get; set; }
+        bool AllowHardcodedSubs { get; set; }
+        string WhitelistedHardcodedSubs { get; set; }
         ParsingLeniencyType ParsingLeniency { get; set; }
 
         int NetImportSyncInterval { get; set; }
-		string ListSyncLevel { get; set; }
-		string ImportExclusions { get; set; }
-        string TraktAuthToken { get; set; }
-        string TraktRefreshToken { get; set; }
-        int TraktTokenExpiry { get; set; }
-		string NewTraktAuthToken { get; set; }
-		string NewTraktRefreshToken {get; set; }
-		int NewTraktTokenExpiry { get; set; }
+        string ListSyncLevel { get; set; }
+        string ImportExclusions { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

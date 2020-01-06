@@ -4,7 +4,6 @@ using FluentValidation;
 using Nancy;
 using NLog;
 using NzbDrone.Common.Cache;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Exceptions;
@@ -12,7 +11,6 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
-using Radarr.Http.Extensions;
 using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Radarr.Api.V3.Indexers
@@ -47,7 +45,7 @@ namespace Radarr.Api.V3.Indexers
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             GetResourceAll = GetReleases;
-            Post("/",  x => DownloadRelease(ReadResourceFromRequest()));
+            Post("/", x => DownloadRelease(ReadResourceFromRequest()));
 
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }

@@ -20,17 +20,17 @@ namespace NzbDrone.Core.Download.Pending
 
         public void DeleteByMovieId(int movieId)
         {
-            Delete(r => r.MovieId == movieId);
+            Delete(movieId);
         }
 
         public List<PendingRelease> AllByMovieId(int movieId)
         {
-            return Query.Where(p => p.MovieId == movieId).ToList();
+            return Query(x => x.MovieId == movieId);
         }
 
         public List<PendingRelease> WithoutFallback()
         {
-            return Query.Where(p => p.Reason != PendingReleaseReason.Fallback);
+            return Query(x => x.Reason != PendingReleaseReason.Fallback);
         }
     }
 }

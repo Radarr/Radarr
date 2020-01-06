@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Datastore.Migration
             foreach (Match match in matches)
             {
                 var tokenMatch = GetTokenMatch(match);
-                var qualityFullToken = string.Format("Quality{0}Full", tokenMatch.Separator); ;
+                var qualityFullToken = string.Format("Quality{0}Full", tokenMatch.Separator);
 
                 if (tokenMatch.Token.All(t => !char.IsLetter(t) || char.IsLower(t)))
                 {
@@ -80,12 +80,12 @@ namespace NzbDrone.Core.Datastore.Migration
         private TokenMatch69 GetTokenMatch(Match match)
         {
             return new TokenMatch69
-                             {
-                                 Prefix = match.Groups["prefix"].Value,
-                                 Token = match.Groups["token"].Value,
-                                 Separator = match.Groups["separator"].Value,
-                                 Suffix = match.Groups["suffix"].Value,
-                             };
+            {
+                Prefix = match.Groups["prefix"].Value,
+                Token = match.Groups["token"].Value,
+                Separator = match.Groups["separator"].Value,
+                Suffix = match.Groups["suffix"].Value,
+            };
         }
 
         private class TokenMatch69

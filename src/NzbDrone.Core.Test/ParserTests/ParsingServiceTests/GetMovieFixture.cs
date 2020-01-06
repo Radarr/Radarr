@@ -1,8 +1,8 @@
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 {
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.GetMovie(title);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(s => s.FindByTitle(Parser.Parser.ParseMovieTitle(title,false,false).MovieTitle), Times.Once());
+                  .Verify(s => s.FindByTitle(Parser.Parser.ParseMovieTitle(title, false, false).MovieTitle), Times.Once());
         }
 
         /*[Test]

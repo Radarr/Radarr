@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Download
                     trackedDownload.Warn("Download wasn't grabbed by Radarr, skipping");
                     return;
                 }
-            
+
                 trackedDownload.State = TrackedDownloadStage.DownloadFailed;
                 PublishDownloadFailedEvent(grabbedItems, failure, trackedDownload);
             }

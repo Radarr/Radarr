@@ -1,0 +1,115 @@
+<RuleSet Name="Stylecop.ruleset" Description="Rules for Radarr" ToolsVersion="15.0">
+  <Rules AnalyzerId="StyleCop.CSharp.SpecialRules"
+         RuleNamespace="StyleCop.CSharp.SpecialRules">
+    <Rule Id="SA0001" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.SpacingRules"
+         RuleNamespace="StyleCop.CSharp.SpacingRules">
+    <Rule Id="SA1005" Action="None" />
+    <Rule Id="SA1025" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.ReadabilityRules"
+         RuleNamespace="StyleCop.CSharp.ReadabilityRules">
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1116" Action="None" />
+    <Rule Id="SA1118" Action="None" />
+    <Rule Id="SA1122" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.OrderingRules"
+         RuleNamespace="StyleCop.CSharp.OrderingRules">
+    <Rule Id="SA1201" Action="Info" />
+    <Rule Id="SA1202" Action="Info" />
+    <Rule Id="SA1204" Action="Info" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.NamingRules"
+         RuleNamespace="StyleCop.CSharp.NamingRules">
+    <Rule Id="SA1300" Action="None" />
+    <Rule Id="SA1301" Action="None" />
+    <Rule Id="SA1303" Action="None" />
+    <Rule Id="SA1304" Action="None" />
+    <Rule Id="SA1306" Action="None" />
+    <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1310" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.MaintainabilityRules"
+         RuleNamespace="StyleCop.CSharp.MaintainabilityRules">
+    <Rule Id="SA1400" Action="Warning" />
+    <Rule Id="SA1401" Action="None" />
+    <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1404" Action="Info" />
+    <Rule Id="SA1405" Action="Info" />
+    <Rule Id="SA1406" Action="Info" />
+    <Rule Id="SA1409" Action="Info" />
+    <Rule Id="SA1410" Action="Info" />
+    <Rule Id="SA1411" Action="Info" />
+    <Rule Id="SA1412" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA1414" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.LayoutRules"
+         RuleNamespace="StyleCop.CSharp.LayoutRules">
+    <Rule Id="SA1516" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.DocumentationRules"
+         RuleNamespace="StyleCop.CSharp.DocumentationRules">
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA1602" Action="None" />
+    <Rule Id="SA1603" Action="None" />
+    <Rule Id="SA1604" Action="None" />
+    <Rule Id="SA1605" Action="None" />
+    <Rule Id="SA1606" Action="None" />
+    <Rule Id="SA1607" Action="None" />
+    <Rule Id="SA1608" Action="None" />
+    <Rule Id="SA1609" Action="None" />
+    <Rule Id="SA1610" Action="None" />
+    <Rule Id="SA1611" Action="None" />
+    <Rule Id="SA1612" Action="None" />
+    <Rule Id="SA1613" Action="None" />
+    <Rule Id="SA1614" Action="None" />
+    <Rule Id="SA1615" Action="None" />
+    <Rule Id="SA1616" Action="None" />
+    <Rule Id="SA1617" Action="None" />
+    <Rule Id="SA1618" Action="None" />
+    <Rule Id="SA1619" Action="None" />
+    <Rule Id="SA1620" Action="None" />
+    <Rule Id="SA1621" Action="None" />
+    <Rule Id="SA1622" Action="None" />
+    <Rule Id="SA1623" Action="None" />
+    <Rule Id="SA1624" Action="None" />
+    <Rule Id="SA1625" Action="None" />
+    <Rule Id="SA1626" Action="None" />
+    <Rule Id="SA1627" Action="None" />
+    <Rule Id="SA1628" Action="None" />
+    <Rule Id="SA1629" Action="None" />
+    <Rule Id="SA1630" Action="None" />
+    <Rule Id="SA1631" Action="None" />
+    <Rule Id="SA1632" Action="None" />
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1634" Action="None" />
+    <Rule Id="SA1635" Action="None" />
+    <Rule Id="SA1636" Action="None" />
+    <Rule Id="SA1637" Action="None" />
+    <Rule Id="SA1638" Action="None" />
+    <Rule Id="SA1639" Action="None" />
+    <Rule Id="SA1640" Action="None" />
+    <Rule Id="SA1641" Action="None" />
+    <Rule Id="SA1642" Action="None" />
+    <Rule Id="SA1643" Action="None" />
+    <Rule Id="SA1644" Action="None" />
+    <Rule Id="SA1645" Action="None" />
+    <Rule Id="SA1646" Action="None" />
+    <Rule Id="SA1647" Action="None" />
+    <Rule Id="SA1648" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+    <Rule Id="SA1650" Action="None" />
+    <Rule Id="SA1651" Action="None" />
+    <Rule Id="SA1652" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.CSharp.AlternativeRules"
+         RuleNamespace="StyleCop.CSharp.AlternativeRules">
+    <!-- Do not prefix local members with this -->
+    <Rule Id="SX1101" Action="Warning" />
+    <Rule Id="SX1309" Action="Warning" />
+  </Rules>
+</RuleSet>

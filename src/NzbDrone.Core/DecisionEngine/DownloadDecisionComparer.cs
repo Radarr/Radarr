@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Configuration;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
-            return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.Value.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
+            return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
                        CompareCustomFormats(x, y),
                        CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
                        CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
@@ -73,8 +73,8 @@ namespace NzbDrone.Core.DecisionEngine
             var left = x.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats.WithNone();
             var right = y.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats;
 
-            var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile.Value);
-            var rightIndicies =  QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile.Value);
+            var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile);
+            var rightIndicies =  QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile);
 
             var leftTotal = leftIndicies.Sum();
             var rightTotal = rightIndicies.Sum();
@@ -87,8 +87,7 @@ namespace NzbDrone.Core.DecisionEngine
             return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
             {
                 var title = remoteMovie.Release.Title;
-                remoteMovie.Movie.Profile.LazyLoad();
-                var preferredWords = remoteMovie.Movie.Profile.Value.PreferredTags;
+                var preferredWords = remoteMovie.Movie.Profile.PreferredTags;
 
                 if (preferredWords == null)
                 {
@@ -98,7 +97,6 @@ namespace NzbDrone.Core.DecisionEngine
                 var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
 
                 return num;
-
             });
         }
 
@@ -189,7 +187,6 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareSize(DownloadDecision x, DownloadDecision y)
         {
             // TODO: Is smaller better? Smaller for usenet could mean no par2 files.
-
             return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode => remoteEpisode.Release.Size.Round(200.Megabytes()));
         }
 

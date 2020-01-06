@@ -4,12 +4,13 @@ using System.IO;
 using FluentValidation.Results;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Extras.Metadata
 {
-    public abstract class MetadataBase<TSettings> : IMetadata where TSettings : IProviderConfig, new()
+    public abstract class MetadataBase<TSettings> : IMetadata
+        where TSettings : IProviderConfig, new()
     {
         public abstract string Name { get; }
 
@@ -36,11 +37,14 @@ namespace NzbDrone.Core.Extras.Metadata
         }
 
         public abstract MetadataFile FindMetadataFile(Movie movie, string path);
-        
+
         public abstract MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile);
         public abstract List<ImageFileResult> MovieImages(Movie movie);
 
-        public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
+        public virtual object RequestAction(string action, IDictionary<string, string> query)
+        {
+            return null;
+        }
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 

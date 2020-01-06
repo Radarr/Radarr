@@ -67,13 +67,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "0"},
-                        { "size_uploaded", "0"},
+                        { "size_downloaded", "0" },
+                        { "size_uploaded", "0" },
                         { "speed_download", "0" }
                     }
                 }
@@ -91,13 +91,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     },
                 }
@@ -115,13 +115,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     }
                 }
@@ -139,13 +139,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "100"},
-                        { "size_uploaded", "10"},
+                        { "size_downloaded", "100" },
+                        { "size_uploaded", "10" },
                         { "speed_download", "50" }
                     }
                 }
@@ -163,13 +163,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "10"},
-                        { "size_uploaded", "1"},
+                        { "size_downloaded", "10" },
+                        { "size_uploaded", "1" },
                         { "speed_download", "0" }
                     }
                 }
@@ -187,13 +187,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     }
                 }
@@ -211,13 +211,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     }
                 }
@@ -235,13 +235,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     }
                 }
@@ -259,13 +259,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 {
                     Detail = new Dictionary<string, string>
                     {
-                        { "destination","shared/folder" },
+                        { "destination", "shared/folder" },
                         { "uri", DownloadURL }
                     },
                     Transfer = new Dictionary<string, string>
                     {
-                        { "size_downloaded", "1000"},
-                        { "size_uploaded", "100"},
+                        { "size_downloaded", "1000" },
+                        { "size_uploaded", "100" },
                         { "speed_download", "0" }
                     }
                 }
@@ -587,7 +587,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         [TestCase(DownloadStationTaskStatus.Downloading, false, false)]
         [TestCase(DownloadStationTaskStatus.Finished, true, true)]
-        [TestCase(DownloadStationTaskStatus.Seeding,  true, false)]
+        [TestCase(DownloadStationTaskStatus.Seeding, true, false)]
         [TestCase(DownloadStationTaskStatus.Waiting, false, false)]
         public void GetItems_should_return_canBeMoved_and_canBeDeleted_as_expected(DownloadStationTaskStatus apiStatus, bool canMoveFilesExpected, bool canBeRemovedExpected)
         {

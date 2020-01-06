@@ -7,11 +7,11 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
-using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.Test.RootFolderTests
 {
@@ -74,8 +74,7 @@ namespace NzbDrone.Core.Test.RootFolderTests
         public void invalid_folder_path_throws_on_add(string path)
         {
             Assert.Throws<ArgumentException>(() =>
-                    Mocker.Resolve<RootFolderService>().Add(new RootFolder { Id = 0, Path = path })
-                );
+                    Mocker.Resolve<RootFolderService>().Add(new RootFolder { Id = 0, Path = path }));
         }
 
         [Test]
@@ -110,13 +109,12 @@ namespace NzbDrone.Core.Test.RootFolderTests
             var rootFolder = Builder<RootFolder>.CreateNew()
                                                 .With(r => r.Path = @"C:\Test\TV")
                                                 .Build();
-			if (OsInfo.IsNotWindows)
-			{
-				rootFolder = Builder<RootFolder>.CreateNew()
-												.With(r => r.Path = @"/Test/TV")
-												.Build();
-			}
-
+            if (OsInfo.IsNotWindows)
+            {
+                rootFolder = Builder<RootFolder>.CreateNew()
+                                                .With(r => r.Path = @"/Test/TV")
+                                                .Build();
+            }
 
             var subFolders = new[]
                         {
@@ -128,10 +126,10 @@ namespace NzbDrone.Core.Test.RootFolderTests
 
             var folders = subFolders.Select(f => Path.Combine(@"C:\Test\TV", f)).ToArray();
 
-			if (OsInfo.IsNotWindows)
-			{
-				folders = subFolders.Select(f => Path.Combine(@"/Test/TV", f)).ToArray();
-			}
+            if (OsInfo.IsNotWindows)
+            {
+                folders = subFolders.Select(f => Path.Combine(@"/Test/TV", f)).ToArray();
+            }
 
             Mocker.GetMock<IRootFolderRepository>()
                   .Setup(s => s.Get(It.IsAny<int>()))

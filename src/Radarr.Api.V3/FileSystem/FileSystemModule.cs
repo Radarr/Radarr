@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using Nancy;
@@ -23,9 +22,9 @@ namespace Radarr.Api.V3.FileSystem
             _fileSystemLookupService = fileSystemLookupService;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
-            Get("/",  x => GetContents());
-            Get("/type",  x => GetEntityType());
-            Get("/mediafiles",  x => GetMediaFiles());
+            Get("/", x => GetContents());
+            Get("/type", x => GetEntityType());
+            Get("/mediafiles", x => GetMediaFiles());
         }
 
         private object GetContents()
@@ -61,7 +60,8 @@ namespace Radarr.Api.V3.FileSystem
                 return new string[0];
             }
 
-            return _diskScanService.GetVideoFiles(path).Select(f => new {
+            return _diskScanService.GetVideoFiles(path).Select(f => new
+            {
                 Path = f,
                 RelativePath = path.GetRelativePath(f),
                 Name = Path.GetFileName(f)

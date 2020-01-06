@@ -1,6 +1,6 @@
-using Radarr.Http.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
 {

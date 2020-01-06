@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Notifications.Pushalot
 
     public class PushalotProxy : IPushalotProxy
     {
-        private readonly Logger _logger;
         private const string URL = "https://pushalot.com/api/sendmessage";
+        private readonly Logger _logger;
 
         public PushalotProxy(Logger logger)
         {
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Notifications.Pushalot
 
             if (settings.Image)
             {
-                request.AddParameter("Image", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");                
+                request.AddParameter("Image", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");
             }
 
             request.AddParameter("Title", title);

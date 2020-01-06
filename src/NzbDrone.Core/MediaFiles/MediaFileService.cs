@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NLog;
+using NzbDrone.Common;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
-using NzbDrone.Common;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -25,27 +24,27 @@ namespace NzbDrone.Core.MediaFiles
 
     public class MediaFileService : IMediaFileService, IHandleAsync<MovieDeletedEvent>
     {
-        private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
-        private readonly Logger _logger;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IEventAggregator _eventAggregator;
 
         public MediaFileService(IMediaFileRepository mediaFileRepository,
-                                IEventAggregator eventAggregator, Logger logger)
+                                IMovieRepository movieRepository,
+                                IEventAggregator eventAggregator)
         {
             _mediaFileRepository = mediaFileRepository;
+            _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
-            _logger = logger;
         }
 
         public MovieFile Add(MovieFile movieFile)
         {
             var addedFile = _mediaFileRepository.Insert(movieFile);
-            addedFile.Movie.LazyLoad();
-            if (addedFile.Movie == null || addedFile.Movie.Value == null)
+            if (addedFile.Movie == null)
             {
-                _logger.Error("Movie is null for the file {0}. Please run the houskeeping command to ensure movies and files are linked correctly.");
+                addedFile.Movie = _movieRepository.Get(movieFile.MovieId);
             }
-            //_movieService.SetFileId(addedFile.Movie.Value, addedFile); //Should not be necessary, but sometimes below fails?
+
             _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
 
             return addedFile;
@@ -64,8 +63,12 @@ namespace NzbDrone.Core.MediaFiles
         public void Delete(MovieFile movieFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the movie attached for the event consumers
-            movieFile.Movie.LazyLoad();
-            movieFile.Path = Path.Combine(movieFile.Movie.Value.Path, movieFile.RelativePath);
+            if (movieFile.Movie == null)
+            {
+                movieFile.Movie = _movieRepository.Get(movieFile.MovieId);
+            }
+
+            movieFile.Path = Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
 
             _mediaFileRepository.Delete(movieFile);
             _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
@@ -85,7 +88,10 @@ namespace NzbDrone.Core.MediaFiles
         {
             var movieFiles = GetFilesByMovie(movie.Id).Select(f => Path.Combine(movie.Path, f.RelativePath)).ToList();
 
-            if (!movieFiles.Any()) return files;
+            if (!movieFiles.Any())
+            {
+                return files;
+            }
 
             return files.Except(movieFiles, PathEqualityComparer.Instance).ToList();
         }
@@ -102,10 +108,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public void HandleAsync(MovieDeletedEvent message)
         {
-
             var files = GetFilesByMovie(message.Movie.Id);
             _mediaFileRepository.DeleteMany(files);
-
         }
     }
 }

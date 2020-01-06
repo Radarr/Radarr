@@ -114,10 +114,11 @@ namespace NzbDrone.Common.Disk
                     {
                         return File.Exists(path) && path == path.GetActualCasing();
                     }
+
                 default:
-                {
-                     return File.Exists(path);
-                }
+                    {
+                        return File.Exists(path);
+                    }
             }
         }
 
@@ -218,13 +219,18 @@ namespace NzbDrone.Common.Disk
                 throw new IOException(string.Format("Source and destination can't be the same {0}", source));
             }
 
-            if (FileExists(destination) && overwrite)
+            var destExists = FileExists(destination);
+
+            if (destExists && overwrite)
             {
                 DeleteFile(destination);
             }
 
             RemoveReadOnly(source);
-            MoveFileInternal(source, destination);
+
+            // NET Core is too eager to copy/delete if overwrite is false
+            // Therefore we also set overwrite if we know destination doesn't exist
+            MoveFileInternal(source, destination, overwrite || !destExists);
         }
 
         public void MoveFolder(string source, string destination, bool overwrite = false)
@@ -246,9 +252,13 @@ namespace NzbDrone.Common.Disk
             Directory.Move(source, destination);
         }
 
-        protected virtual void MoveFileInternal(string source, string destination)
+        protected virtual void MoveFileInternal(string source, string destination, bool overwrite)
         {
+#if NETCOREAPP
+            File.Move(source, destination, overwrite);
+#else
             File.Move(source, destination);
+#endif
         }
 
         public abstract bool TryCreateHardLink(string source, string destination);
@@ -292,7 +302,7 @@ namespace NzbDrone.Common.Disk
         public void FileSetLastWriteTime(string path, DateTime dateTime)
         {
             Ensure.That(path, () => path).IsValidPath();
-            
+
             if (dateTime.Before(DateTimeExtensions.Epoch))
             {
                 dateTime = DateTimeExtensions.Epoch;
@@ -353,9 +363,11 @@ namespace NzbDrone.Common.Disk
                     return;
                 }
 
-                var accessRule = new FileSystemAccessRule(sid, rights,
+                var accessRule = new FileSystemAccessRule(sid,
+                                                          rights,
                                                           InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                                                          PropagationFlags.InheritOnly, controlType);
+                                                          PropagationFlags.InheritOnly,
+                                                          controlType);
 
                 bool modified;
                 directorySecurity.ModifyAccessRule(AccessControlModification.Add, accessRule, out modified);
@@ -370,7 +382,6 @@ namespace NzbDrone.Common.Disk
                 Logger.Warn(e, "Couldn't set permission for {0}. account:{1} rights:{2} accessControlType:{3}", filename, accountSid, rights, controlType);
                 throw;
             }
-
         }
 
         private static void RemoveReadOnly(string path)
@@ -381,7 +392,7 @@ namespace NzbDrone.Common.Disk
 
                 if (attributes.HasFlag(FileAttributes.ReadOnly))
                 {
-                    var newAttributes = attributes & ~(FileAttributes.ReadOnly);
+                    var newAttributes = attributes & ~FileAttributes.ReadOnly;
                     File.SetAttributes(path, newAttributes);
                 }
             }
@@ -395,7 +406,7 @@ namespace NzbDrone.Common.Disk
 
                 if (dirInfo.Attributes.HasFlag(FileAttributes.ReadOnly))
                 {
-                    var newAttributes = dirInfo.Attributes & ~(FileAttributes.ReadOnly);
+                    var newAttributes = dirInfo.Attributes & ~FileAttributes.ReadOnly;
                     dirInfo.Attributes = newAttributes;
                 }
             }

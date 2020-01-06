@@ -1,8 +1,5 @@
-﻿using NzbDrone.Core.Messaging.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.Commands
 {
@@ -14,7 +11,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
 
         public RenameMovieFolderCommand(List<int> ids)
         {
-		MovieIds = ids;
+            MovieIds = ids;
         }
     }
 }

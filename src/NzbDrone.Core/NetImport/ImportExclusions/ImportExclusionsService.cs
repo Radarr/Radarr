@@ -1,18 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions
 {
@@ -32,7 +22,6 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-
         public ImportExclusionsService(IImportExclusionsRepository exclusionRepository,
                              IEventAggregator eventAggregator,
                              IConfigService configService,
@@ -50,6 +39,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
             {
                 return _exclusionRepository.GetByTmdbid(exclusion.TmdbId);
             }
+
             return _exclusionRepository.Insert(exclusion);
         }
 

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Test.CustomFormat;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Qualities
@@ -13,8 +14,10 @@ namespace NzbDrone.Core.Test.Qualities
     {
         public QualityModelComparer Subject { get; set; }
 
-        private CustomFormats.CustomFormat _customFormat1;
-        private CustomFormats.CustomFormat _customFormat2;
+        private CustomFormat _customFormat1;
+        private CustomFormat _customFormat2;
+        private CustomFormat _customFormat3;
+        private CustomFormat _customFormat4;
 
         [SetUp]
         public void Setup()
@@ -77,12 +80,14 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenDefaultProfileWithFormats()
         {
-            _customFormat1 = new CustomFormats.CustomFormat("My Format 1", "L_ENGLISH"){Id=1};
-            _customFormat2 = new CustomFormats.CustomFormat("My Format 2", "L_FRENCH"){Id=2};
+            _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
+            _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
+            _customFormat3 = new CustomFormat("My Format 3", "L_SPANISH") { Id = 3 };
+            _customFormat4 = new CustomFormat("My Format 4", "L_ITALIAN") { Id = 4 };
 
-            CustomFormatsFixture.GivenCustomFormats(CustomFormats.CustomFormat.None, _customFormat1, _customFormat2);
+            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None, _customFormat1, _customFormat2, _customFormat3, _customFormat4);
 
-            Subject = new QualityModelComparer(new Profile {Items = QualityFixture.GetDefaultQualities(), FormatItems = CustomFormatsFixture.GetSampleFormatItems()});
+            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(), FormatItems = CustomFormatsFixture.GetSampleFormatItems(), FormatCutoff = _customFormat2.Id });
         }
 
         [Test]
@@ -142,8 +147,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfileWithFormats();
 
-            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
-            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
+            var first = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormat> { _customFormat1 } };
+            var second = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormat> { _customFormat2 } };
 
             var compare = Subject.Compare(first, second);
 
@@ -155,8 +160,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfileWithFormats();
 
-            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
-            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
+            var first = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormat> { _customFormat2 } };
+            var second = new QualityModel(Quality.DVD) { CustomFormats = new List<CustomFormat> { _customFormat1 } };
 
             var compare = Subject.Compare(first, second);
 
@@ -187,6 +192,58 @@ namespace NzbDrone.Core.Test.Qualities
             var compare = Subject.Compare(first, second, true);
 
             compare.Should().BeLessThan(0);
+        }
+
+        [Test]
+        public void should_be_greater_when_one_format_over_cutoff()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new List<CustomFormat> { _customFormat3 };
+            var second = _customFormat2.Id;
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void should_be_greater_when_multiple_formats_over_cutoff()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new List<CustomFormat> { _customFormat3, _customFormat4 };
+            var second = _customFormat2.Id;
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void should_be_greater_when_one_better_one_worse_than_cutoff()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new List<CustomFormat> { _customFormat1, _customFormat3 };
+            var second = _customFormat2.Id;
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void should_be_zero_when_one_worse_one_equal_to_cutoff()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new List<CustomFormat> { _customFormat1, _customFormat2 };
+            var second = _customFormat2.Id;
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().Be(0);
         }
     }
 }

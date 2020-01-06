@@ -1,50 +1,50 @@
-using System;
 using System.Collections.Generic;
 using FluentValidation;
+using Nancy;
 using NzbDrone.Common.Extensions;
-using Radarr.Http.Extensions;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
-using Nancy;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3.Movies
 {
-    public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Movie>, 
+    public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Movie>,
                                 IHandle<MovieImportedEvent>,
                                 IHandle<MovieFileDeletedEvent>,
-                                IHandle<MovieUpdatedEvent>,       
-                                IHandle<MovieEditedEvent>,  
+                                IHandle<MovieUpdatedEvent>,
+                                IHandle<MovieEditedEvent>,
                                 IHandle<MovieDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
-
     {
         protected readonly IMovieService _moviesService;
         private readonly IMapCoversToLocal _coverMapper;
+        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IMovieService moviesService,
                             IMapCoversToLocal coverMapper,
+                            IUpgradableSpecification qualityUpgradableSpecification,
                             RootFolderValidator rootFolderValidator,
                             MoviePathValidator moviesPathValidator,
                             MovieExistsValidator moviesExistsValidator,
                             MovieAncestorValidator moviesAncestorValidator,
                             ProfileExistsValidator profileExistsValidator,
-                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator
-            )
+                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
-
+            _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _coverMapper = coverMapper;
 
             GetResourceAll = AllMovie;
@@ -78,7 +78,7 @@ namespace Radarr.Api.V3.Movies
 
         private List<MovieResource> AllMovie()
         {
-            var moviesResources = _moviesService.GetAllMovies().ToResource();
+            var moviesResources = _moviesService.GetAllMovies().ToResource(_qualityUpgradableSpecification);
 
             MapCoversToLocal(moviesResources.ToArray());
             PopulateAlternateTitles(moviesResources);
@@ -94,7 +94,10 @@ namespace Radarr.Api.V3.Movies
 
         protected MovieResource MapToResource(Movie movies)
         {
-            if (movies == null) return null;
+            if (movies == null)
+            {
+                return null;
+            }
 
             var resource = movies.ToResource();
             MapCoversToLocal(resource);
@@ -133,7 +136,7 @@ namespace Radarr.Api.V3.Movies
                 _coverMapper.ConvertToLocalUrls(moviesResource.Id, moviesResource.Images);
             }
         }
-        
+
         private void PopulateAlternateTitles(List<MovieResource> resources)
         {
             foreach (var resource in resources)
@@ -147,7 +150,7 @@ namespace Radarr.Api.V3.Movies
             //var mappings = null;//_sceneMappingService.FindByTvdbId(resource.TvdbId);
 
             //if (mappings == null) return;
-            
+
             //Not necessary anymore
 
             //resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
@@ -160,7 +163,10 @@ namespace Radarr.Api.V3.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
-            if (message.Reason == DeleteMediaFileReason.Upgrade) return;
+            if (message.Reason == DeleteMediaFileReason.Upgrade)
+            {
+                return;
+            }
 
             BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }

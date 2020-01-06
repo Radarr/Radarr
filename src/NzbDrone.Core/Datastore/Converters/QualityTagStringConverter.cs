@@ -1,60 +1,41 @@
 ﻿using System;
-using Marr.Data.Converters;
-using Marr.Data.Mapping;
-using NzbDrone.Core.Qualities;
-using Newtonsoft.Json;
+using System.Data;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Dapper;
 using NzbDrone.Core.CustomFormats;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class QualityTagStringConverter : JsonConverter, IConverter
+    public class DapperQualityTagStringConverter : SqlMapper.TypeHandler<FormatTag>
     {
-        public object FromDB(ConverterContext context)
+        public override void SetValue(IDbDataParameter parameter, FormatTag value)
         {
-            if (context.DbValue == DBNull.Value)
+            parameter.Value = value.Raw;
+        }
+
+        public override FormatTag Parse(object value)
+        {
+            if (value == null || value is DBNull)
             {
                 return new FormatTag(""); //Will throw argument exception!
             }
 
-            var val = Convert.ToString(context.DbValue);
-
-            return new FormatTag(val);
+            return new FormatTag(Convert.ToString(value));
         }
+    }
 
-        public object FromDB(ColumnMap map, object dbValue)
+    public class QualityTagStringConverter : JsonConverter<FormatTag>
+    {
+        public override FormatTag Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
-        }
-
-        public object ToDB(object clrValue)
-        {
-            if(clrValue == DBNull.Value) return 0;
-
-            if(!(clrValue is FormatTag))
-            {
-                throw new InvalidOperationException("Attempted to save a quality tag that isn't really a quality tag");
-            }
-
-            var quality = (FormatTag) clrValue;
-            return quality.Raw;
-        }
-
-        public Type DbType => typeof(string);
-
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(FormatTag);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var item = reader.Value;
+            var item = reader.GetString();
             return new FormatTag(Convert.ToString(item));
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, FormatTag value, JsonSerializerOptions options)
         {
-            writer.WriteValue(ToDB(value));
+            writer.WriteStringValue(value.Raw);
         }
     }
 }
