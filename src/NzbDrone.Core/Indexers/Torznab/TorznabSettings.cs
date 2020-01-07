@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(9)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         // [FieldDefinition(10, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }

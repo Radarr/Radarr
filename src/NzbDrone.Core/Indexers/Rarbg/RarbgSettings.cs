@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(7)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {

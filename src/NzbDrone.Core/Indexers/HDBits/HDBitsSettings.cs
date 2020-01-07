@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Indexers.HDBits
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(9)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {

@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(4)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {

@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(5)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         // [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }

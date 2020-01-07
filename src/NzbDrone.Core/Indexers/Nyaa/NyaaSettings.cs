@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(5)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {
