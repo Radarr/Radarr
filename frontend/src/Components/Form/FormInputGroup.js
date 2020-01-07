@@ -17,6 +17,7 @@ import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
 import EnhancedSelectInput from './EnhancedSelectInput';
 import TagInputConnector from './TagInputConnector';
+import TagSelectInputConnector from './TagSelectInputConnector';
 import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
 import FormInputHelpText from './FormInputHelpText';
@@ -71,6 +72,9 @@ function getComponent(type) {
 
     case inputTypes.TEXT_TAG:
       return TextTagInputConnector;
+
+    case inputTypes.TAG_SELECT:
+      return TagSelectInputConnector;
 
     default:
       return TextInput;
