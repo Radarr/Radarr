@@ -18,9 +18,9 @@
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
+    <PackageReference Include="MonoTorrent" Version="1.0.11" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonoTorrent\MonoTorrent.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
