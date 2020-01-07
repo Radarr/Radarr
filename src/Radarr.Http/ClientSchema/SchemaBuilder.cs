@@ -103,7 +103,7 @@ namespace Radarr.Http.ClientSchema
                         Section = fieldAttribute.Section
                     };
 
-                    if (fieldAttribute.Type == FieldType.Select)
+                    if (fieldAttribute.Type == FieldType.Select || fieldAttribute.Type == FieldType.TagSelect)
                     {
                         field.SelectOptions = GetSelectOptions(fieldAttribute.SelectOptions);
                     }

@@ -26,6 +26,8 @@ function getType(type) {
       return inputTypes.SELECT;
     case 'tag':
       return inputTypes.TEXT_TAG;
+    case 'tagSelect':
+      return inputTypes.TAG_SELECT;
     case 'textbox':
       return inputTypes.TEXT;
     case 'oAuth':
