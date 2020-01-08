@@ -19,6 +19,8 @@ export const section = 'interactiveImport';
 const booksSection = `${section}.books`;
 const bookFilesSection = `${section}.bookFiles`;
 
+const MAXIMUM_RECENT_FOLDERS = 10;
+
 //
 // State
 
@@ -203,12 +205,14 @@ export const reducers = createHandleActions({
     const index = recentFolders.findIndex((r) => r.folder === folder);
 
     if (index > -1) {
-      recentFolders.splice(index, 1, recentFolder);
-    } else {
-      recentFolders.push(recentFolder);
+      recentFolders.splice(index, 1);
     }
 
-    return Object.assign({}, state, { recentFolders });
+    recentFolders.push(recentFolder);
+
+    const sliceIndex = Math.max(recentFolders.length - MAXIMUM_RECENT_FOLDERS, 0);
+
+    return Object.assign({}, state, { recentFolders: recentFolders.slice(sliceIndex) });
   },
 
   [REMOVE_RECENT_FOLDER]: function(state, { payload }) {
