@@ -10,7 +10,7 @@ import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import { clearReleases } from 'Store/Actions/releaseActions';
+import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import MovieDetails from './MovieDetails';
@@ -111,6 +111,7 @@ const mapDispatchToProps = {
   fetchMovieFiles,
   clearMovieFiles,
   clearReleases,
+  cancelFetchReleases,
   toggleMovieMonitored,
   fetchQueueDetails,
   clearQueueDetails,
@@ -170,6 +171,7 @@ class MovieDetailsConnector extends Component {
   }
 
   unpopulate = () => {
+    this.props.cancelFetchReleases();
     this.props.clearMovieFiles();
     this.props.clearQueueDetails();
     this.props.clearReleases();
@@ -225,6 +227,7 @@ MovieDetailsConnector.propTypes = {
   fetchMovieFiles: PropTypes.func.isRequired,
   clearMovieFiles: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
+  cancelFetchReleases: PropTypes.func.isRequired,
   toggleMovieMonitored: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
