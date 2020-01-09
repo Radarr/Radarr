@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Movies
         Movie FindByPath(string path);
         List<string> AllMoviePaths();
         bool MovieExists(Movie movie);
-        Movie GetMovieByFileId(int fileId);
+        List<Movie> GetMoviesByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         void SetFileId(Movie movie, MovieFile movieFile);
@@ -358,39 +358,15 @@ namespace NzbDrone.Core.Movies
             _movieRepository.SetFields(movie, s => s.AddOptions);
         }
 
-        public void Handle(MovieFileAddedEvent message)
-        {
-            var movie = message.MovieFile.Movie;
-            movie.MovieFileId = message.MovieFile.Id;
-            _movieRepository.Update(movie);
-
-            //_movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
-            _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
-        }
-
         public void SetFileId(Movie movie, MovieFile movieFile)
         {
             _movieRepository.SetFileId(movieFile.Id, movie.Id);
             _logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
         }
 
-        public void Handle(MovieFileDeletedEvent message)
+        public List<Movie> GetMoviesByFileId(int fileId)
         {
-            var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
-            movie.MovieFileId = 0;
-            _logger.Debug("Detaching movie {0} from file.", movie.Id);
-
-            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedMovies)
-            {
-                movie.Monitored = false;
-            }
-
-            UpdateMovie(movie);
-        }
-
-        public Movie GetMovieByFileId(int fileId)
-        {
-            return _movieRepository.GetMoviesByFileId(fileId).First();
+            return _movieRepository.GetMoviesByFileId(fileId);
         }
 
         public Movie FindByTitleSlug(string slug)
@@ -468,6 +444,32 @@ namespace NzbDrone.Core.Movies
                 .Union(rest.ExceptBy(m => m.Title.CleanSeriesTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
 
             return ret;
+        }
+
+        public void Handle(MovieFileAddedEvent message)
+        {
+            var movie = message.MovieFile.Movie;
+            movie.MovieFileId = message.MovieFile.Id;
+            _movieRepository.Update(movie);
+
+            //_movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
+            _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
+        }
+
+        public void Handle(MovieFileDeletedEvent message)
+        {
+            foreach (var movie in GetMoviesByFileId(message.MovieFile.Id))
+            {
+                _logger.Debug("Detaching movie {0} from file.", movie.Id);
+                movie.MovieFileId = 0;
+
+                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedMovies)
+                {
+                    movie.Monitored = false;
+                }
+
+                UpdateMovie(movie);
+            }
         }
     }
 }
