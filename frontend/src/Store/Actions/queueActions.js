@@ -63,7 +63,7 @@ export const defaultState = {
         isModifiable: false
       },
       {
-        name: 'movie.sortTitle',
+        name: 'movies.sortTitle',
         label: 'Movie',
         isSortable: true,
         isVisible: true

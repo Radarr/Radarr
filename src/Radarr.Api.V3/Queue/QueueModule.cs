@@ -4,6 +4,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -92,6 +93,12 @@ namespace Radarr.Api.V3.Queue
                     ? fullQueue.OrderBy(q => q.Quality, _qualityComparer)
                     : fullQueue.OrderByDescending(q => q.Quality, _qualityComparer);
             }
+            else if (pagingSpec.SortKey == "languages")
+            {
+                ordered = ascending
+                    ? fullQueue.OrderBy(q => q.Languages, new LanguagesComparer())
+                    : fullQueue.OrderByDescending(q => q.Languages, new LanguagesComparer());
+            }
             else
             {
                 ordered = ascending ? fullQueue.OrderBy(orderByFunc) : fullQueue.OrderByDescending(orderByFunc);
@@ -117,11 +124,11 @@ namespace Radarr.Api.V3.Queue
             {
                 case "status":
                     return q => q.Status;
-                case "movie.sortTitle":
+                case "movies.sortTitle":
                     return q => q.Movie.SortTitle;
                 case "title":
                     return q => q.Title;
-                case "language":
+                case "languages":
                     return q => q.Languages;
                 case "quality":
                     return q => q.Quality;

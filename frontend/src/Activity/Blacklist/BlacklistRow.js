@@ -70,7 +70,7 @@ class BlacklistRow extends Component {
               return null;
             }
 
-            if (name === 'movie.sortTitle') {
+            if (name === 'movies.sortTitle') {
               return (
                 <TableRowCell key={name}>
                   <MovieTitleLink
@@ -89,7 +89,7 @@ class BlacklistRow extends Component {
               );
             }
 
-            if (name === 'language') {
+            if (name === 'languages') {
               return (
                 <TableRowCell key={name}>
                   <MovieLanguage
