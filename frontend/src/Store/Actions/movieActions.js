@@ -152,6 +152,31 @@ export const sortPredicates = {
     }
 
     return result;
+  },
+
+  movieStatus: function(item) {
+    let result = 0;
+
+    const hasMovieFile = !!item.movieFile;
+
+    if (hasMovieFile) {
+      // TODO: Consider Quality Weight for Sorting within status of hasMovie
+      if (item.movieFile.qualityCutoffNotMet) {
+        result += 4;
+      } else {
+        result += 8;
+      }
+    }
+
+    if (item.isAvailable) {
+      result++;
+    }
+
+    if (item.monitored) {
+      result += 2;
+    }
+
+    return result;
   }
 };
 
