@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import titleCase from 'Utilities/String/titleCase';
+import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
@@ -71,6 +72,7 @@ class MovieIndexRow extends Component {
       physicalRelease,
       minimumAvailability,
       path,
+      sizeOnDisk,
       genres,
       ratings,
       certification,
@@ -220,6 +222,17 @@ class MovieIndexRow extends Component {
               );
             }
 
+            if (name === 'sizeOnDisk') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {formatBytes(sizeOnDisk)}
+                </VirtualTableRowCell>
+              );
+            }
+
             if (name === 'genres') {
               const joinedGenres = genres.join(', ');
 
@@ -352,6 +365,7 @@ MovieIndexRow.propTypes = {
   physicalRelease: PropTypes.string,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  sizeOnDisk: PropTypes.number.isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   certification: PropTypes.string,

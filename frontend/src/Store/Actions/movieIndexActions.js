@@ -121,6 +121,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'sizeOnDisk',
+      label: 'Size on Disk',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'genres',
       label: 'Genres',
       isSortable: false,
@@ -165,12 +171,6 @@ export const defaultState = {
       const studio = item.studio;
 
       return studio ? studio.toLowerCase() : '';
-    },
-
-    sizeOnDisk: function(item) {
-      const { statistics = {} } = item;
-
-      return statistics.sizeOnDisk;
     },
 
     ratings: function(item) {
