@@ -7,8 +7,10 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
@@ -29,11 +31,13 @@ namespace Radarr.Api.V3.Movies
     {
         protected readonly IMovieService _moviesService;
         private readonly IMapCoversToLocal _coverMapper;
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IMovieService moviesService,
                             IMapCoversToLocal coverMapper,
+                            IManageCommandQueue commandQueueManager,
                             IUpgradableSpecification qualityUpgradableSpecification,
                             RootFolderValidator rootFolderValidator,
                             MoviePathValidator moviesPathValidator,
@@ -46,6 +50,7 @@ namespace Radarr.Api.V3.Movies
             _moviesService = moviesService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _coverMapper = coverMapper;
+            _commandQueueManager = commandQueueManager;
 
             GetResourceAll = AllMovie;
             GetResourceById = GetMovie;
@@ -114,7 +119,24 @@ namespace Radarr.Api.V3.Movies
 
         private void UpdateMovie(MovieResource moviesResource)
         {
-            var model = moviesResource.ToModel(_moviesService.GetMovie(moviesResource.Id));
+            var moveFiles = Request.GetBooleanQueryParameter("moveFiles");
+            var movie = _moviesService.GetMovie(moviesResource.Id);
+
+            if (moveFiles)
+            {
+                var sourcePath = movie.Path;
+                var destinationPath = moviesResource.Path;
+
+                _commandQueueManager.Push(new MoveMovieCommand
+                {
+                    MovieId = movie.Id,
+                    SourcePath = sourcePath,
+                    DestinationPath = destinationPath,
+                    Trigger = CommandTrigger.Manual
+                });
+            }
+
+            var model = moviesResource.ToModel(movie);
 
             _moviesService.UpdateMovie(model);
 

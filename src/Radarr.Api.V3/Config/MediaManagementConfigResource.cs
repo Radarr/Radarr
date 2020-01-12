@@ -46,7 +46,6 @@ namespace Radarr.Api.V3.Config
                 FileDate = model.FileDate,
                 RescanAfterRefresh = model.RescanAfterRefresh,
                 AutoRenameFolders = model.AutoRenameFolders,
-                PathsDefaultStatic = model.PathsDefaultStatic,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,

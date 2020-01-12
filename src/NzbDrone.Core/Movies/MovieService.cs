@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetAllMovies();
         List<Movie> AllForTag(int tagId);
         Movie UpdateMovie(Movie movie);
-        List<Movie> UpdateMovie(List<Movie> movie);
+        List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder);
         List<Movie> FilterExistingMovies(List<Movie> movies);
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
@@ -57,6 +57,7 @@ namespace NzbDrone.Core.Movies
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IImportExclusionsService _exclusionService;
+        private readonly IBuildMoviePaths _moviePathBuilder;
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
@@ -64,6 +65,7 @@ namespace NzbDrone.Core.Movies
                              IBuildFileNames fileNameBuilder,
                              IConfigService configService,
                              IImportExclusionsService exclusionService,
+                             IBuildMoviePaths moviePathBuilder,
                              Logger logger)
         {
             _movieRepository = movieRepository;
@@ -71,6 +73,7 @@ namespace NzbDrone.Core.Movies
             _fileNameBuilder = fileNameBuilder;
             _configService = configService;
             _exclusionService = exclusionService;
+            _moviePathBuilder = moviePathBuilder;
             _logger = logger;
         }
 
@@ -93,21 +96,10 @@ namespace NzbDrone.Core.Movies
         {
             Ensure.That(newMovie, () => newMovie).IsNotNull();
 
-            MoviePathState defaultState = MoviePathState.Static;
-            if (!_configService.PathsDefaultStatic)
-            {
-                defaultState = MoviePathState.Dynamic;
-            }
-
             if (string.IsNullOrWhiteSpace(newMovie.Path))
             {
                 var folderName = _fileNameBuilder.GetMovieFolder(newMovie);
                 newMovie.Path = Path.Combine(newMovie.RootFolderPath, folderName);
-                newMovie.PathState = defaultState;
-            }
-            else
-            {
-                newMovie.PathState = defaultState == MoviePathState.Dynamic ? MoviePathState.StaticOnce : MoviePathState.Static;
             }
 
             _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
@@ -128,21 +120,10 @@ namespace NzbDrone.Core.Movies
 
             newMovies.ForEach(m =>
             {
-                MoviePathState defaultState = MoviePathState.Static;
-                if (!_configService.PathsDefaultStatic)
-                {
-                    defaultState = MoviePathState.Dynamic;
-                }
-
                 if (string.IsNullOrWhiteSpace(m.Path))
                 {
                     var folderName = _fileNameBuilder.GetMovieFolder(m);
                     m.Path = Path.Combine(m.RootFolderPath, folderName);
-                    m.PathState = defaultState;
-                }
-                else
-                {
-                    m.PathState = defaultState == MoviePathState.Dynamic ? MoviePathState.StaticOnce : MoviePathState.Static;
                 }
 
                 m.CleanTitle = m.Title.CleanSeriesTitle();
@@ -324,21 +305,22 @@ namespace NzbDrone.Core.Movies
             return updatedMovie;
         }
 
-        public List<Movie> UpdateMovie(List<Movie> movie)
+        public List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder)
         {
             _logger.Debug("Updating {0} movie", movie.Count);
-            foreach (var s in movie)
+            foreach (var m in movie)
             {
-                _logger.Trace("Updating: {0}", s.Title);
-                if (!s.RootFolderPath.IsNullOrWhiteSpace())
+                _logger.Trace("Updating: {0}", m.Title);
+
+                if (!m.RootFolderPath.IsNullOrWhiteSpace())
                 {
-                    var folderName = new DirectoryInfo(s.Path).Name;
-                    s.Path = Path.Combine(s.RootFolderPath, folderName);
-                    _logger.Trace("Changing path for {0} to {1}", s.Title, s.Path);
+                    m.Path = _moviePathBuilder.BuildPath(m, useExistingRelativeFolder);
+
+                    _logger.Trace("Changing path for {0} to {1}", m.Title, m.Path);
                 }
                 else
                 {
-                    _logger.Trace("Not changing path for: {0}", s.Title);
+                    _logger.Trace("Not changing path for: {0}", m.Title);
                 }
             }
 

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
@@ -20,22 +18,18 @@ namespace NzbDrone.Core.MediaFiles
     public interface IRenameMovieFileService
     {
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
-        void RenameMoviePath(Movie movie, bool shouldRenameFiles);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
                                           IExecute<RenameFilesCommand>,
-                                          IExecute<RenameMovieCommand>,
-                    IExecute<RenameMovieFolderCommand>
+                                          IExecute<RenameMovieCommand>
     {
         private readonly IMovieService _movieService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMoveMovieFiles _movieFileMover;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _filenameBuilder;
-        private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
-        private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
         public RenameMovieFileService(IMovieService movieService,
@@ -43,8 +37,6 @@ namespace NzbDrone.Core.MediaFiles
                                       IMoveMovieFiles movieFileMover,
                                       IEventAggregator eventAggregator,
                                       IBuildFileNames filenameBuilder,
-                                      IConfigService configService,
-                                      IRecycleBinProvider recycleBinProvider,
                                       IDiskProvider diskProvider,
                                       Logger logger)
         {
@@ -53,8 +45,6 @@ namespace NzbDrone.Core.MediaFiles
             _movieFileMover = movieFileMover;
             _eventAggregator = eventAggregator;
             _filenameBuilder = filenameBuilder;
-            _configService = configService;
-            _recycleBinProvider = recycleBinProvider;
             _diskProvider = diskProvider;
             _logger = logger;
         }
@@ -82,28 +72,21 @@ namespace NzbDrone.Core.MediaFiles
                     {
                         MovieId = movie.Id,
                         MovieFileId = file.Id,
-                        ExistingPath = movieFilePath,
+                        ExistingPath = file.RelativePath,
 
-                        //NewPath = movie.Path.GetRelativePath(newPath)
-                        NewPath = newPath
+                        NewPath = movie.Path.GetRelativePath(newPath)
                     };
                 }
             }
         }
 
-        private void RenameFiles(List<MovieFile> movieFiles, Movie movie, string oldMoviePath = null)
+        private void RenameFiles(List<MovieFile> movieFiles, Movie movie)
         {
             var renamed = new List<MovieFile>();
 
-            if (oldMoviePath == null)
-            {
-                oldMoviePath = movie.Path;
-            }
-
             foreach (var movieFile in movieFiles)
             {
-                var oldMovieFilePath = Path.Combine(oldMoviePath, movieFile.RelativePath);
-                movieFile.Path = oldMovieFilePath;
+                var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
                 try
                 {
@@ -116,7 +99,7 @@ namespace NzbDrone.Core.MediaFiles
 
                     _logger.Debug("Renamed movie file: {0}", movieFile);
 
-                    _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, oldMovieFilePath));
+                    _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, movieFilePath));
                 }
                 catch (SameFilenameException ex)
                 {
@@ -124,52 +107,15 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Failed to rename file: {0}", oldMovieFilePath);
+                    _logger.Error(ex, "Failed to rename file: {0}", movieFilePath);
                 }
             }
 
             if (renamed.Any())
             {
+                _diskProvider.RemoveEmptySubfolders(movie.Path);
+
                 _eventAggregator.PublishEvent(new MovieRenamedEvent(movie));
-            }
-        }
-
-        public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
-        {
-            var newFolder = _filenameBuilder.BuildMoviePath(movie);
-            if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
-            {
-                if (!_configService.AutoRenameFolders)
-                {
-                    _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
-                    return;
-                }
-
-                _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
-                var oldFolder = movie.Path;
-                movie.Path = newFolder;
-
-                _diskProvider.MoveFolder(oldFolder, movie.Path);
-
-                // if (false)
-                // {
-                //  var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-                //  _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-                //  RenameFiles(movieFiles, movie, oldFolder);
-                //  _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
-                // }
-                _movieService.UpdateMovie(movie);
-
-                if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)
-                {
-                    _recycleBinProvider.DeleteFolder(oldFolder);
-                }
-            }
-
-            if (movie.PathState == MoviePathState.StaticOnce)
-            {
-                movie.PathState = MoviePathState.Dynamic;
-                _movieService.UpdateMovie(movie);
             }
         }
 
@@ -194,26 +140,6 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 RenameFiles(movieFiles, movie);
                 _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
-            }
-        }
-
-        public void Execute(RenameMovieFolderCommand message)
-        {
-            try
-            {
-                _logger.Debug("Renaming movie folder for selected movie if necessary");
-                var moviesToRename = _movieService.GetMovies(message.MovieIds);
-                foreach (var movie in moviesToRename)
-                {
-                    var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-
-                    //_logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
-                    RenameMoviePath(movie);
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                _logger.Warn(ex, "wtf: {0}, {1}", ex.ResultCode, ex.Data);
             }
         }
     }

@@ -45,7 +45,6 @@ namespace Radarr.Api.V3.Movies
         //View & Edit
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
-        public MoviePathState PathState { get; set; }
 
         //Editing Only
         public bool Monitored { get; set; }
@@ -105,7 +104,6 @@ namespace Radarr.Api.V3.Movies
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
-                PathState = model.PathState,
 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
@@ -166,7 +164,6 @@ namespace Radarr.Api.V3.Movies
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
-                PathState = model.PathState,
 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
@@ -221,7 +218,6 @@ namespace Radarr.Api.V3.Movies
 
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
-                PathState = resource.PathState,
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,

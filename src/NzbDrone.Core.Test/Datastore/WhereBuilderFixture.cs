@@ -153,30 +153,30 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void enum_as_int()
         {
-            _subject = Where(x => x.PathState == MoviePathState.Static);
+            _subject = Where(x => x.Status == MovieStatusType.Released);
 
             var name = _subject.Parameters.ParameterNames.First();
-            _subject.ToString().Should().Be($"(\"Movies\".\"PathState\" = @{name})");
+            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" = @{name})");
         }
 
         [Test]
         public void enum_in_list()
         {
-            var allowed = new List<MoviePathState> { MoviePathState.Dynamic, MoviePathState.Static };
-            _subject = Where(x => allowed.Contains(x.PathState));
+            var allowed = new List<MovieStatusType> { MovieStatusType.InCinemas, MovieStatusType.Released };
+            _subject = Where(x => allowed.Contains(x.Status));
 
             var name = _subject.Parameters.ParameterNames.First();
-            _subject.ToString().Should().Be($"(\"Movies\".\"PathState\" IN @{name})");
+            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" IN @{name})");
         }
 
         [Test]
         public void enum_in_array()
         {
-            var allowed = new MoviePathState[] { MoviePathState.Dynamic, MoviePathState.Static };
-            _subject = Where(x => allowed.Contains(x.PathState));
+            var allowed = new MovieStatusType[] { MovieStatusType.InCinemas, MovieStatusType.Released };
+            _subject = Where(x => allowed.Contains(x.Status));
 
             var name = _subject.Parameters.ParameterNames.First();
-            _subject.ToString().Should().Be($"(\"Movies\".\"PathState\" IN @{name})");
+            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" IN @{name})");
         }
     }
 }

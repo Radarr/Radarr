@@ -49,6 +49,13 @@ function MoveMovieModal(props) {
               `Would you like to move the movie folders to '${destinationRootFolder}'?` :
               `Would you like to move the movie files from '${originalPath}' to '${destinationPath}'?`
           }
+          {
+            destinationRootFolder ?
+              <div>
+                This will also rename the movie folder per the movie folder format in settings.
+              </div> :
+              null
+          }
         </ModalBody>
 
         <ModalFooter>
