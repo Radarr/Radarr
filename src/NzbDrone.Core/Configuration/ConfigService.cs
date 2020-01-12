@@ -299,13 +299,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AutoRenameFolders", value); }
         }
 
-        public bool PathsDefaultStatic
-        {
-            get { return GetValueBoolean("PathsDefaultStatic", true); }
-
-            set { SetValue("PathsDefaultStatic", value); }
-        }
-
         public RescanAfterRefreshType RescanAfterRefresh
         {
             get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }

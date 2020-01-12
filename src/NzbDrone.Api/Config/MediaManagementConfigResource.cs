@@ -39,7 +39,6 @@ namespace NzbDrone.Api.Config
                 CreateEmptySeriesFolders = model.CreateEmptyMovieFolders,
                 FileDate = model.FileDate,
                 AutoRenameFolders = model.AutoRenameFolders,
-                PathsDefaultStatic = model.PathsDefaultStatic,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,

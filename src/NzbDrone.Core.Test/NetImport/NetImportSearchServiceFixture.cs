@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.GetAllMovies(), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>()), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>()), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 3 && s.All(m => !m.Monitored))), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 3 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored))), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored))), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>()), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Exactly(3));
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>()), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
         }
 
         [Test]
@@ -267,7 +267,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>()), Times.Never());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
         }
 
         [Test]

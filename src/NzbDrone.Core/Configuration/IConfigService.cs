@@ -40,7 +40,6 @@ namespace NzbDrone.Core.Configuration
         string ExtraFileExtensions { get; set; }
         RescanAfterRefreshType RescanAfterRefresh { get; set; }
         bool AutoRenameFolders { get; set; }
-        bool PathsDefaultStatic { get; set; }
 
         //Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }
