@@ -89,7 +89,10 @@ export default function createSentryMiddleware() {
     release,
     sendDefaultPii: true,
     beforeSend: cleanseData,
-    integrations: [new Integrations.RewriteFrames({ iteratee: stripUrlBase })]
+    integrations: [
+      new Integrations.RewriteFrames({ iteratee: stripUrlBase }),
+      new Integrations.Dedupe()
+    ]
   });
 
   sentry.configureScope((scope) => {
