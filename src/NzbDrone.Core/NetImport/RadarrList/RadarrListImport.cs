@@ -6,19 +6,19 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 
-namespace NzbDrone.Core.NetImport.Radarr
+namespace NzbDrone.Core.NetImport.RadarrList
 {
-    public class RadarrLists : HttpNetImportBase<RadarrSettings>
+    public class RadarrListImport : HttpNetImportBase<RadarrListSettings>
     {
+        private readonly ISearchForNewMovie _skyhookProxy;
+
         public override string Name => "Radarr Lists";
 
         public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        private readonly ISearchForNewMovie _skyhookProxy;
-
-        public RadarrLists(IHttpClient httpClient,
+        public RadarrListImport(IHttpClient httpClient,
             IConfigService configService,
             IParsingService parsingService,
             ISearchForNewMovie skyhookProxy,
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.NetImport.Radarr
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
-                    Settings = new RadarrSettings { Path = "/imdb/top250" },
+                    Settings = new RadarrListSettings { Path = "/imdb/top250" },
                 };
                 yield return new NetImportDefinition
                 {
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.NetImport.Radarr
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
-                    Settings = new RadarrSettings { Path = "/imdb/popular" },
+                    Settings = new RadarrListSettings { Path = "/imdb/popular" },
                 };
                 yield return new NetImportDefinition
                 {
@@ -62,14 +62,14 @@ namespace NzbDrone.Core.NetImport.Radarr
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
-                    Settings = new RadarrSettings { Path = "/imdb/list?listId=LISTID" },
+                    Settings = new RadarrListSettings { Path = "/imdb/list?listId=LISTID" },
                 };
             }
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {
-            return new RadarrRequestGenerator()
+            return new RadarrListRequestGenerator()
             {
                 Settings = Settings,
                 Logger = _logger,
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         public override IParseNetImportResponse GetParser()
         {
-            return new RadarrParser(Settings, _skyhookProxy);
+            return new RadarrListParser(_skyhookProxy);
         }
     }
 }

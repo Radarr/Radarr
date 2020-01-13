@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.NetImport.Radarr
@@ -12,24 +10,24 @@ namespace NzbDrone.Core.NetImport.Radarr
         public IHttpClient HttpClient { get; set; }
         public Logger Logger { get; set; }
 
-        public int MaxPages { get; set; }
-
         public RadarrRequestGenerator()
         {
-            MaxPages = 3;
         }
 
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
 
-            var baseUrl = $"{Settings.APIURL.TrimEnd("/")}";
+            var baseUrl = Settings.BaseUrl.TrimEnd('/');
 
-            var request = new NetImportRequest($"{baseUrl}{Settings.Path}", HttpAccept.Json);
+            var request = new NetImportRequest($"{baseUrl}/api/v3/movie", HttpAccept.Json);
+
+            request.HttpRequest.Headers["X-Api-Key"] = Settings.ApiKey;
 
             request.HttpRequest.SuppressHttpError = true;
 
             pageableRequests.Add(new List<NetImportRequest> { request });
+
             return pageableRequests;
         }
     }
