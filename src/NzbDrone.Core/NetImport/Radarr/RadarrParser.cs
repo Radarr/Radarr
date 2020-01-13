@@ -1,69 +1,53 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.RadarrAPI;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using System.Collections.Generic;
+using System.Linq;
+using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
     public class RadarrParser : IParseNetImportResponse
     {
         private readonly RadarrSettings _settings;
-        private readonly ISearchForNewMovie _skyhookProxy;
-        private NetImportResponse _importResponse;
-
-        public RadarrParser(RadarrSettings settings, ISearchForNewMovie skyhookProxy)
+        public RadarrParser(RadarrSettings settings)
         {
-            _skyhookProxy = skyhookProxy;
             _settings = settings;
         }
 
-        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movie> ParseResponse(NetImportResponse netMovieImporterResponse)
         {
-            _importResponse = importResponse;
+            var remoteMovies = Json.Deserialize<List<RadarrMovie>>(netMovieImporterResponse.Content);
 
-            var movies = new List<Movies.Movie>();
+            var movies = new List<Movie>();
 
-            if (!PreProcess(_importResponse))
+            foreach (var remoteMovie in remoteMovies)
             {
-                return movies;
+                movies.Add(new Movie
+                    {
+                        TmdbId = remoteMovie.TmdbId,
+                        Title = remoteMovie.Title,
+                        SortTitle = remoteMovie.SortTitle,
+                        TitleSlug = remoteMovie.TitleSlug,
+                        Overview = remoteMovie.Overview,
+                        Images = remoteMovie.Images.Select(x => MapImage(x, _settings.BaseUrl)).ToList(),
+                        Monitored = remoteMovie.Monitored,
+                        PhysicalRelease = remoteMovie.PhysicalRelease,
+                        InCinemas = remoteMovie.InCinemas,
+                        Year = remoteMovie.Year
+                    });
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<List<MovieResult>>(_importResponse.Content);
-
-            // no movies were return
-            if (jsonResponse == null)
-            {
-                return movies;
-            }
-
-            return jsonResponse.SelectList(_skyhookProxy.MapMovie);
+            return movies;
         }
 
-        protected virtual bool PreProcess(NetImportResponse netImportResponse)
+        private static MediaCover.MediaCover MapImage(MediaCover.MediaCover arg, string baseUrl)
         {
-            try
+            var newImage = new MediaCover.MediaCover
             {
-                var error = JsonConvert.DeserializeObject<RadarrError>(netImportResponse.HttpResponse.Content);
+                Url = string.Format("{0}{1}", baseUrl, arg.Url),
+                CoverType = arg.CoverType
+            };
 
-                if (error != null && error.Errors != null && error.Errors.Count != 0)
-                {
-                    throw new RadarrAPIException(error);
-                }
-            }
-            catch (JsonSerializationException)
-            {
-                //No error!
-            }
-
-            if (netImportResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                throw new HttpException(netImportResponse.HttpRequest, netImportResponse.HttpResponse);
-            }
-
-            return true;
+            return newImage;
         }
     }
 }
