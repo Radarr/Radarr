@@ -8,7 +8,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
         public TMDbPopularSettingsValidator()
         : base()
         {
-            RuleFor(c => c.ListType).NotEmpty();
+            RuleFor(c => c.TMDbListType).NotEmpty();
 
             RuleFor(c => c.FilterCriteria).SetValidator(_ => new TMDbFilterSettingsValidator());
         }
@@ -20,11 +20,11 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
 
         public TMDbPopularSettings()
         {
-            ListType = (int)TMDbPopularListType.Popular;
+            TMDbListType = (int)TMDbPopularListType.Popular;
         }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TMDbPopularListType), HelpText = "Type of list your seeking to import from")]
-        public int ListType { get; set; }
+        public int TMDbListType { get; set; }
 
         [FieldDefinition(2)]
         public TMDbFilterSettings FilterCriteria { get; } = new TMDbFilterSettings();

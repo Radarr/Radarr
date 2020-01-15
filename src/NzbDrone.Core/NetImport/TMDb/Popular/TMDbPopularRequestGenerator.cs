@@ -33,7 +33,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
         {
             var minVoteCount = Settings.FilterCriteria.MinVotes;
             var minVoteAverage = Settings.FilterCriteria.MinVoteAverage;
-            var ceritification = Settings.FilterCriteria.Ceritification;
+            var certification = Settings.FilterCriteria.Certification;
             var includeGenreIds = Settings.FilterCriteria.IncludeGenreIds;
             var excludeGenreIds = Settings.FilterCriteria.ExcludeGenreIds;
             var languageCode = (TMDbLanguageCodes)Settings.FilterCriteria.LanguageCode;
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
                                                .SetSegment("id", "")
                                                .SetSegment("secondaryRoute", "movie");
 
-            switch (Settings.ListType)
+            switch (Settings.TMDbListType)
             {
                 case (int)TMDbPopularListType.Theaters:
                     requestBuilder.AddQueryParam("primary_release.gte", threeMonthsAgo)
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
                     break;
             }
 
-            if (ceritification.IsNotNullOrWhiteSpace())
+            if (certification.IsNotNullOrWhiteSpace())
             {
-                requestBuilder.AddQueryParam("certification", ceritification)
+                requestBuilder.AddQueryParam("certification", certification)
                               .AddQueryParam("certification_country", "US");
             }
 
