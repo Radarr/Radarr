@@ -37,9 +37,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             var link = Settings.Link.Trim();
 
-            var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}&limit={Settings.Limit}{Settings.TraktAdditionalParameters}";
+            var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Certification.ToLower()}&limit={Settings.Limit}{Settings.TraktAdditionalParameters}";
 
-            switch (Settings.ListType)
+            switch (Settings.TraktListType)
             {
                 case (int)TraktListType.UserCustomList:
                     var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());

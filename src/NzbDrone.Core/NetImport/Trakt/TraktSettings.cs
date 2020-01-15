@@ -20,13 +20,13 @@ namespace NzbDrone.Core.NetImport.Trakt
             // List name required for UserCustomList
             RuleFor(c => c.Listname)
                 .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
-                .When(c => c.ListType == (int)TraktListType.UserCustomList)
+                .When(c => c.TraktListType == (int)TraktListType.UserCustomList)
                 .WithMessage("List name is required when using Custom Trakt Lists");
 
             // Username required for UserWatchedList/UserWatchList
             RuleFor(c => c.Username)
                 .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
-                .When(c => c.ListType == (int)TraktListType.UserWatchedList || c.ListType == (int)TraktListType.UserWatchList)
+                .When(c => c.TraktListType == (int)TraktListType.UserWatchedList || c.TraktListType == (int)TraktListType.UserWatchList)
                 .WithMessage("Username is required when using User Trakt Lists");
 
             // Loose validation @TODO
@@ -36,9 +36,9 @@ namespace NzbDrone.Core.NetImport.Trakt
                 .WithMessage("Not a valid rating");
 
             // Any valid certification
-            RuleFor(c => c.Ceritification)
+            RuleFor(c => c.Certification)
                 .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
-                .When(c => c.Ceritification.IsNotNullOrWhiteSpace())
+                .When(c => c.Certification.IsNotNullOrWhiteSpace())
                 .WithMessage("Not a valid cerification");
 
             // Loose validation @TODO
@@ -64,11 +64,11 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             Link = "https://api.trakt.tv";
             SignIn = "startOAuth";
-            ListType = (int)TraktListType.Popular;
+            TraktListType = (int)Trakt.TraktListType.Popular;
             Username = "";
             Listname = "";
             Rating = "0-100";
-            Ceritification = "NR,G,PG,PG-13,R,NC-17";
+            Certification = "NR,G,PG,PG-13,R,NC-17";
             Genres = "";
             Years = "";
             Limit = 100;
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         public string Link { get; set; }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TraktListType), HelpText = "Trakt list type")]
-        public int ListType { get; set; }
+        public int TraktListType { get; set; }
 
         [FieldDefinition(2, Label = "Username", HelpText = "Required for User List (Ignores Filtering Options)")]
         public string Username { get; set; }
@@ -103,8 +103,8 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(4, Label = "Rating", HelpText = "Filter movies by rating range (0-100)")]
         public string Rating { get; set; }
 
-        [FieldDefinition(5, Label = "Ceritification", HelpText = "Filter movies by a ceritification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
-        public string Ceritification { get; set; }
+        [FieldDefinition(5, Label = "Certification", HelpText = "Filter movies by a certification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
+        public string Certification { get; set; }
 
         [FieldDefinition(6, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated)")]
         public string Genres { get; set; }

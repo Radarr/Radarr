@@ -22,9 +22,9 @@ namespace NzbDrone.Core.NetImport.TMDb
                 .WithMessage("Minimum votes must be greater than 0");
 
             // Any valid certification
-            RuleFor(c => c.Ceritification)
+            RuleFor(c => c.Certification)
                 .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
-                .When(c => c.Ceritification.IsNotNullOrWhiteSpace())
+                .When(c => c.Certification.IsNotNullOrWhiteSpace())
                 .WithMessage("Not a valid certification");
 
             // CSV of numbers
@@ -58,8 +58,8 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(2, Label = "Minimum Number of Votes", HelpText = "Filter movies by number of votes")]
         public string MinVotes { get; set; }
 
-        [FieldDefinition(3, Label = "Certification", HelpText = "Filter movies by a single ceritification (NR,G,PG,PG-13,R,NC-17)")]
-        public string Ceritification { get; set; }
+        [FieldDefinition(3, Label = "Certification", HelpText = "Filter movies by a single certification (NR,G,PG,PG-13,R,NC-17)")]
+        public string Certification { get; set; }
 
         [FieldDefinition(4, Label = "Include Genre Ids", HelpText = "Filter movies by TMDb Genre Ids (Comma Separated)")]
         public string IncludeGenreIds { get; set; }
