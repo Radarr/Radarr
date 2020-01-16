@@ -23,6 +23,9 @@ namespace NzbDrone.Core.Datastore.Migration
                                   .WithColumn("Type").AsInt32();
 
             Create.Index().OnTable("Credits").OnColumn("MovieId");
+
+            Delete.FromTable("Notifications").Row(new { Implementation = "NotifyMyAndroid" });
+            Delete.FromTable("Notifications").Row(new { Implementation = "Pushalot" });
         }
     }
 }
