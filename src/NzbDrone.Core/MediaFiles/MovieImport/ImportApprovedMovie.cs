@@ -134,6 +134,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles, downloadClientItem));
                     }
                 }
+                catch (RootFolderNotFoundException e)
+                {
+                    _logger.Warn(e, "Couldn't import movie " + localMovie);
+                    _eventAggregator.PublishEvent(new MovieImportFailedEvent(e, localMovie, newDownload, downloadClientItem));
+
+                    importResults.Add(new ImportResult(importDecision, "Failed to import movie, Root folder missing."));
+                }
+                catch (DestinationAlreadyExistsException e)
+                {
+                    _logger.Warn(e, "Couldn't import movie " + localMovie);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import movie, Destination already exists."));
+                }
                 catch (Exception e)
                 {
                     _logger.Warn(e, "Couldn't import movie " + localMovie);

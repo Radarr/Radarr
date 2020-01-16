@@ -7,6 +7,7 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
@@ -188,7 +189,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
-                throw new DirectoryNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
+                throw new RootFolderNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
             }
 
             var changed = false;
