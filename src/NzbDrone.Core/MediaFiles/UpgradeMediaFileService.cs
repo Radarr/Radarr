@@ -1,6 +1,7 @@
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
@@ -40,6 +41,14 @@ namespace NzbDrone.Core.MediaFiles
             var moveFileResult = new MovieFileMoveResult();
 
             var existingFile = localMovie.Movie.MovieFile;
+
+            var rootFolder = _diskProvider.GetParentFolder(localMovie.Movie.Path);
+
+            // If there are existing movie files and the root folder is missing, throw, so the old file isn't left behind during the import process.
+            if (existingFile != null && !_diskProvider.FolderExists(rootFolder))
+            {
+                throw new RootFolderNotFoundException($"Root folder '{rootFolder}' was not found.");
+            }
 
             if (existingFile != null)
             {
