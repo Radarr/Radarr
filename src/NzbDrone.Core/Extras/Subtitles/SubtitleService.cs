@@ -94,16 +94,10 @@ namespace NzbDrone.Core.Extras.Subtitles
                     .Where(m => m.Extension == extension);
 
                 var suffix = GetSuffix(language, existingSrtSubs.Count() + 1, extension.EqualsIgnoreCase(".srt"));                
-                var subtitleFile = new SubtitleFile();
-                
-                if ((extension.EqualsIgnoreCase(".srt") && language != Language.Unknown) ||
-                    !extension.EqualsIgnoreCase(".srt"))
-                {
-                    subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
-                    subtitleFile.Language = language;
+                var subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
+                subtitleFile.Language = language;
 
-                    _subtitleFileService.Upsert(subtitleFile);                                            
-                }
+                _subtitleFileService.Upsert(subtitleFile);                                            
 
                 return subtitleFile;
             }
