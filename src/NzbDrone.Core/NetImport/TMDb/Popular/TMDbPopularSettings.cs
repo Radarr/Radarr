@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 
 namespace NzbDrone.Core.NetImport.TMDb.Popular
@@ -27,6 +27,6 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
         public int TMDbListType { get; set; }
 
         [FieldDefinition(2)]
-        public TMDbFilterSettings FilterCriteria { get; } = new TMDbFilterSettings();
+        public TMDbFilterSettings FilterCriteria { get; set; } = new TMDbFilterSettings();
     }
 }
