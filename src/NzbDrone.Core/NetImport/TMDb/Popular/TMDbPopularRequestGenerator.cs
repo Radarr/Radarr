@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -72,11 +72,27 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
                               .AddQueryParam("certification_country", "US");
             }
 
+            if (minVoteCount.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("vote_count.gte", minVoteCount);
+            }
+
+            if (minVoteAverage.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("vote_average.gte", minVoteAverage);
+            }
+
+            if (includeGenreIds.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("with_genres", includeGenreIds);
+            }
+
+            if (excludeGenreIds.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("without_genres", excludeGenreIds);
+            }
+
             requestBuilder
-                .AddQueryParam("vote_count.gte", minVoteCount)
-                .AddQueryParam("vote_average.gte", minVoteAverage)
-                .AddQueryParam("with_genres", includeGenreIds)
-                .AddQueryParam("without_genres", excludeGenreIds)
                 .AddQueryParam("with_original_language", languageCode)
                 .Accept(HttpAccept.Json);
 
