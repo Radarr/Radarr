@@ -16,13 +16,13 @@ namespace NzbDrone.Core.NetImport.Trakt
 
             // List name required for UserCustomList
             RuleFor(c => c.Listname)
-                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
+                .Matches(@"^[A-Za-z0-9\-_ ]+$", RegexOptions.IgnoreCase)
                 .When(c => c.ListType == (int)TraktListType.UserCustomList)
                 .WithMessage("List name is required when using Custom Trakt Lists");
 
             // Username required for UserWatchedList/UserWatchList
             RuleFor(c => c.Username)
-                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
+                .Matches(@"^[A-Za-z0-9\-_ ]+$", RegexOptions.IgnoreCase)
                 .When(c => c.ListType == (int)TraktListType.UserWatchedList || c.ListType == (int)TraktListType.UserWatchList)
                 .WithMessage("Username is required when using User Trakt Lists");
 
