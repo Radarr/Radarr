@@ -6,6 +6,7 @@ using NLog.Config;
 using NLog.Targets;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation.Sentry;
 
 namespace NzbDrone.Common.Instrumentation
 {
@@ -18,6 +19,7 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration = new LoggingConfiguration();
         }
 
+        const string FILE_LOG_LAYOUT = @"${date:format=yyyy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
 
         public static void Register(IStartupContext startupContext, bool updateApp, bool inConsole)
         {
@@ -37,8 +39,7 @@ namespace NzbDrone.Common.Instrumentation
                 RegisterDebugger();
             }
 
-            //Disabling for now - until its fixed or we yank it out
-            //RegisterExceptron();
+            RegisterSentry(updateApp);
 
             if (updateApp)
             {
@@ -55,6 +56,36 @@ namespace NzbDrone.Common.Instrumentation
             }
 
             LogManager.ReconfigExistingLoggers();
+        }
+
+        private static void RegisterSentry(bool updateClient)
+        {
+            string dsn;
+
+            if (updateClient)
+            {
+                dsn = "https://40e47616afd84525bf49306123cb0926@sentry.radarr.video/10";
+            }
+            else
+            {
+                dsn = RuntimeInfo.IsProduction
+                    ? "https://ef145e92efdd4155a0771c11c099695e@sentry.radarr.video/2"
+                    : "https://dee5b3fe26844368ac4458faa7d00a1f@sentry.radarr.video/9";
+            }
+
+            var target = new SentryTarget(dsn)
+            {
+                Name = "sentryTarget",
+                Layout = "${message}"
+            };
+
+            var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Debug, target);
+            LogManager.Configuration.AddTarget("sentryTarget", target);
+            LogManager.Configuration.LoggingRules.Add(loggingRule);
+
+            // Events logged to Sentry go only to Sentry.
+            var loggingRuleSentry = new LoggingRule("Sentry", LogLevel.Debug, target) { Final = true };
+            LogManager.Configuration.LoggingRules.Insert(0, loggingRuleSentry);
         }
 
         private static void RegisterDebugger()
@@ -83,8 +114,6 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration.AddTarget("console", coloredConsoleTarget);
             LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
-
-        const string FILE_LOG_LAYOUT = @"${date:format=yy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
 
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo)
         {
