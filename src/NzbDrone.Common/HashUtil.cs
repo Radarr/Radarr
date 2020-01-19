@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace NzbDrone.Common
@@ -25,6 +25,12 @@ namespace NzbDrone.Common
                 }
             }
             return string.Format("{0:x8}", mCrc);
+        }
+
+        public static string AnonymousToken()
+        {
+            var seed = $"{Environment.ProcessorCount}_{Environment.OSVersion.Platform}_{Environment.MachineName}_{Environment.UserName}";
+            return HashUtil.CalculateCrc(seed);
         }
     }
 }

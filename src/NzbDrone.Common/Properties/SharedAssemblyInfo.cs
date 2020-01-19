@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration("debug")]
 [assembly: AssemblyCompany("radarr.video")]
 [assembly: AssemblyProduct("Radarr")]
 [assembly: AssemblyVersion("10.0.0.*")]
