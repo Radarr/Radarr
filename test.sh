@@ -4,7 +4,8 @@ TYPE=$2
 COVERAGE=$3
 WHERE="Category!=ManualTest"
 TEST_PATTERN="*Test.dll"
-ASSEMBLIES=""
+FILES=( "Lidarr.Api.Test.dll" "Lidarr.Automation.Test.dll" "Lidarr.Common.Test.dll" "Lidarr.Core.Test.dll" "Lidarr.Host.Test.dll" "Lidarr.Integration.Test.dll" "Lidarr.Libraries.Test.dll" "Lidarr.Mono.Test.dll" "Lidarr.Update.Test.dll" "Lidarr.Windows.Test.dll" )
+ASSMEBLIES=""
 TEST_LOG_FILE="TestLog.txt"
 
 echo "test dir: $TEST_DIR"
@@ -55,8 +56,8 @@ else
   exit 2
 fi
 
-for i in `find $TEST_DIR -name "$TEST_PATTERN"`;
-  do ASSEMBLIES="$ASSEMBLIES $i"
+for i in "${FILES[@]}";
+  do ASSEMBLIES="$ASSEMBLIES $TEST_DIR/$i"
 done
 
 DOTNET_PARAMS="$ASSEMBLIES --TestCaseFilter:$WHERE $VSTEST_PARAMS"

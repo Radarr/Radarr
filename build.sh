@@ -27,23 +27,6 @@ UpdateVersionNumber()
     fi
 }
 
-CleanFolder()
-{
-    local path=$1
-
-    find $path -name "*.transform" -exec rm "{}" \;
-
-    echo "Removing FluentValidation.Resources files"
-    find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
-    find $path -name "App.config" -exec rm "{}" \;
-
-    echo "Removing vshost files"
-    find $path -name "*.vshost.exe" -exec rm "{}" \;
-
-    echo "Removing Empty folders"
-    find $path -depth -empty -type d -exec rm -r "{}" \;
-}
-
 LintUI()
 {
     ProgressStart 'ESLint'
@@ -112,8 +95,6 @@ PackageFiles()
     cp -r $outputFolder/$framework/$runtime/publish/* $folder
     cp -r $outputFolder/Lidarr.Update/$framework/$runtime/publish $folder/Lidarr.Update
     cp -r $outputFolder/UI $folder
-
-    CleanFolder $folder
 
     echo "Adding LICENSE"
     cp LICENSE.md $folder
@@ -260,8 +241,6 @@ PackageTests()
         unzip -o gecko.zip
         cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
     fi
-
-    CleanFolder "$testPackageFolder/$framework/$runtime"
 
     ProgressEnd 'Creating Test Package'
 }

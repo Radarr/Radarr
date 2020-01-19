@@ -62,6 +62,7 @@ stages:
           find ${TESTSFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
           find ${TESTSFOLDER} -depth -empty -type d -exec rm -r "{}" \;
         displayName: Clean up intermediate output
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
         displayName: Publish Backend
@@ -322,6 +323,7 @@ stages:
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - bash: find ${TESTSFOLDER} -name "Lidarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - task: Bash@3
         displayName: Run Tests
         env:
