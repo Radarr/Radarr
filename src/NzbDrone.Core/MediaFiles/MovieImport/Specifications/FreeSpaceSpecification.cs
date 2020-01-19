@@ -55,11 +55,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             }
             catch (DirectoryNotFoundException ex)
             {
-                _logger.Error("Unable to check free disk space while importing. " + ex.Message);
+                _logger.Error(ex, "Unable to check free disk space while importing.");
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to check free disk space while importing: " + localMovie.Path);
+                _logger.Error(ex, "Unable to check free disk space while importing: {0}", localMovie.Path);
             }
 
             return Decision.Accept();

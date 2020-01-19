@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
                 return new ValidationFailure("Host", "Unable to send test message: " + ex.Message);
             }
 

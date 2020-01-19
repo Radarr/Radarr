@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SQLite;
 using Marr.Data;
 using Marr.Data.Reflection;
@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -115,6 +116,10 @@ namespace NzbDrone.Core.Datastore
 
                     throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Radarr/Radarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", ex, fileName);
                 }
+            }
+            catch (Exception e)
+            {
+                throw new RadarrStartupException(e, "Error creating main or log database");
             }
 
             var db = new Database(migrationContext.MigrationType.ToString(), () =>

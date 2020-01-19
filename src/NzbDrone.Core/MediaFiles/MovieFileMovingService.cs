@@ -224,7 +224,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             catch (IOException ex)
             {
-                _logger.Error(ex, "Unable to create directory: " + directoryName);
+                _logger.Error(ex, "Unable to create directory: {0}", directoryName);
             }
 
             _mediaFileAttributeService.SetFolderPermissions(directoryName);

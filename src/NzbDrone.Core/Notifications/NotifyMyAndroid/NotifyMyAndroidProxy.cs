@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
                 return new ValidationFailure("ApiKey", "Unable to send test message");
             }
 

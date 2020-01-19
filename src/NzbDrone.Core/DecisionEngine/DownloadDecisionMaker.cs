@@ -206,7 +206,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 e.Data.Add("report", remoteMovie.Release.ToJson());
                 e.Data.Add("parsed", remoteMovie.ParsedMovieInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on " + remoteMovie.Release.Title + ", with spec: " + spec.GetType().Name);
+                _logger.Error(e, "Couldn't evaluate decision on {0}, with spec: {1}", remoteMovie.Release.Title, spec.GetType().Name);
                 return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
             }
 

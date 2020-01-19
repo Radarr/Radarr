@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Notifications
 
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unable to send OnGrab notification to: " + notification.Definition.Name);
+                    _logger.Error(ex, "Unable to send OnGrab notification to: {0}", notification.Definition.Name);
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Configuration;
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Download
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Couldn't remove item from client " + trackedDownload.DownloadItem.Title);
+                _logger.Error(e, "Couldn't remove item {0} from client {1}", trackedDownload.DownloadItem.Title, downloadClient.Name);
             }
         }
     }
