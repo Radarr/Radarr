@@ -95,11 +95,11 @@ namespace NzbDrone.Api.Indexers
             }
             catch (NotImplementedException ex)
             {
-                _logger.Error(ex, "One or more indexer you selected does not support movie search yet: " + ex.Message);
+                _logger.Error(ex, "One or more indexer you selected does not support movie search yet: {0}", ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Movie search failed: " + ex.Message);
+                _logger.Error(ex, "Movie search failed: {0}", ex.Message);
             }
 
             return new List<ReleaseResource>();

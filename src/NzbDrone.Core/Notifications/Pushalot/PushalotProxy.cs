@@ -73,30 +73,30 @@ namespace NzbDrone.Core.Notifications.Pushalot
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    _logger.Error(ex, "Authentication Token is invalid: " + ex.Message);
+                    _logger.Error(ex, "Authentication Token is invalid: {0}", ex.Message);
                     return new ValidationFailure("AuthToken", "Authentication Token is invalid");
                 }
 
                 if (ex.Response.StatusCode == HttpStatusCode.NotAcceptable)
                 {
-                    _logger.Error(ex, "Message limit reached: " + ex.Message);
+                    _logger.Error(ex, "Message limit reached: {0}", ex.Message);
                     return new ValidationFailure("AuthToken", "Message limit reached");
                 }
 
                 if (ex.Response.StatusCode == HttpStatusCode.Gone)
                 {
-                    _logger.Error(ex, "Authorization Token is no longer valid: " + ex.Message);
+                    _logger.Error(ex, "Authorization Token is no longer valid: {0}", ex.Message);
                     return new ValidationFailure("AuthToken", "Authorization Token is no longer valid, please use a new one.");
                 }
 
                 var response = Json.Deserialize<PushalotResponse>(ex.Response.Content);
 
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
                 return new ValidationFailure("AuthToken", response.Description);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
                 return new ValidationFailure("", "Unable to send test message");
             }
 

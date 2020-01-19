@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Common.EnvironmentInfo
@@ -27,11 +28,23 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         public void Register()
         {
-            _diskProvider.EnsureFolder(_appFolderInfo.AppDataFolder);
+            try
+            {
+                _diskProvider.EnsureFolder(_appFolderInfo.AppDataFolder);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new RadarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
+            }
 
             if (OsInfo.IsWindows)
             {
                 SetPermissions();
+            }
+
+            if (!_diskProvider.FolderWritable(_appFolderInfo.AppDataFolder))
+            {
+                throw new RadarrStartupException("AppFolder {0} is not writable", _appFolderInfo.AppDataFolder);
             }
         }
 

@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 var response = _proxy.GetJsonVersion(settings);
 
-                _logger.Debug("Getting version from response: " + response);
+                _logger.Debug("Getting version from response: {0}", response);
                 var result = Json.Deserialize<XbmcJsonResult<JObject>>(response);
 
                 var versionObject = result.Result.Property("version");
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
                 return new ValidationFailure("Host", "Unable to send test message");
             }
 

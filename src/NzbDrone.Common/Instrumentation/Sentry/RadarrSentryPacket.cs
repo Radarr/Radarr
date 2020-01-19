@@ -14,6 +14,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore
             };
+
+            Breadcrumbs = @event.Breadcrumbs;
         }
 
         public override string ToString(Formatting formatting)

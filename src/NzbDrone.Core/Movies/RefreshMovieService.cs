@@ -180,7 +180,7 @@ namespace NzbDrone.Core.Movies
                         }
                         catch (Exception e)
                         {
-                            _logger.Error(e, "Couldn't refresh info for {0}".Inject(movie));
+                            _logger.Error(e, "Couldn't refresh info for {0}", movie);
                         }
                     }
 
@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Movies
                         }
                         catch (Exception e)
                         {
-                            _logger.Error(e, "Couldn't rescan movie {0}".Inject(movie));
+                            _logger.Error(e, "Couldn't rescan movie {0}", movie);
                         }
                     }
                 }

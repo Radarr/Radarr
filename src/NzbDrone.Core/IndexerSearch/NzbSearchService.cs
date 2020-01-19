@@ -90,7 +90,7 @@ namespace NzbDrone.Core.IndexerSearch
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "Error while searching for " + criteriaBase);
+                        _logger.Error(e, "Error while searching for {0}", criteriaBase);
                     }
                 }).LogExceptions());
             }

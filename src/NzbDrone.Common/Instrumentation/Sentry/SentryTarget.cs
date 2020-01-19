@@ -76,6 +76,16 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             {LogLevel.Warn, ErrorLevel.Warning},
         };
 
+        private static readonly IDictionary<LogLevel, BreadcrumbLevel> BreadcrumbLevelMap = new Dictionary<LogLevel, BreadcrumbLevel>
+        {
+            { LogLevel.Debug, BreadcrumbLevel.Debug },
+            { LogLevel.Error, BreadcrumbLevel.Error },
+            { LogLevel.Fatal, BreadcrumbLevel.Critical },
+            { LogLevel.Info, BreadcrumbLevel.Info },
+            { LogLevel.Trace, BreadcrumbLevel.Debug },
+            { LogLevel.Warn, BreadcrumbLevel.Warning },
+        };
+
         private readonly SentryDebounce _debounce;
         private bool _unauthorized;
 
@@ -199,6 +209,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
             try
             {
+                _client.AddTrail(new Breadcrumb(logEvent.LoggerName) { Level = BreadcrumbLevelMap[logEvent.Level], Message = logEvent.FormattedMessage });
+
                 // don't report non-critical events without exceptions
                 if (!IsSentryMessage(logEvent))
                 {
@@ -249,12 +261,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                     Array.ForEach((string[])logEvent.Properties["Sentry"], sentryEvent.Fingerprint.Add);
                 }
 
-                var osName = Environment.GetEnvironmentVariable("OS_NAME");
-                var osVersion = Environment.GetEnvironmentVariable("OS_VERSION");
                 var runTimeVersion = Environment.GetEnvironmentVariable("RUNTIME_VERSION");
 
-                sentryEvent.Tags.Add("os_name", osName);
-                sentryEvent.Tags.Add("os_version", $"{osName} {osVersion}");
                 sentryEvent.Tags.Add("runtime_version", $"{PlatformInfo.PlatformName} {runTimeVersion}");
 
                 _client.Capture(sentryEvent);
