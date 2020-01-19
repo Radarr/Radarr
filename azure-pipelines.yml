@@ -82,8 +82,8 @@ stages:
           find ${OUTPUTFOLDER} -depth -empty -type d -exec rm -r "{}" \;
           find ${TESTSFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
           find ${TESTSFOLDER} -depth -empty -type d -exec rm -r "{}" \;
-          ls -lR
         displayName: Clean up intermediate output
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
         displayName: Publish Backend
@@ -355,6 +355,7 @@ stages:
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - task: Bash@3
         displayName: Run Tests
         env:
@@ -576,7 +577,6 @@ stages:
       - bash: |
           mkdir -p ./bin/
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
-          ls -lR
         displayName: Move Package Contents
       - task: Bash@3
         displayName: Run Integration Tests
@@ -661,7 +661,6 @@ stages:
           mv geckodriver _tests
         displayName: Install Gecko Driver
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
-      - bash: ls -lR
       - task: Bash@3
         displayName: Run Automation Tests
         inputs:
