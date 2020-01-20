@@ -39,12 +39,11 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             var torrentInfo = base.ProcessItem(item, releaseInfo) as TorrentInfo;
-            if (GetImdbId(item) != null)
+            int? imdbId = GetImdbId(item);
+
+            if (imdbId != null)
             {
-                if (torrentInfo != null)
-                {
-                    torrentInfo.ImdbId = int.Parse(GetImdbId(item).Substring(2));
-                }
+                torrentInfo.ImdbId = imdbId;
             }
 
             torrentInfo.IndexerFlags = GetFlags(item);
@@ -106,10 +105,10 @@ namespace NzbDrone.Core.Indexers.Torznab
             return url;
         }
 
-        protected virtual string GetImdbId(XElement item)
+        protected virtual int? GetImdbId(XElement item)
         {
-            var imdbIdString = TryGetTorznabAttribute(item, "imdbid");
-            return (!imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null);
+            var imdbId = TryGetTorznabAttribute(item, "imdbid");
+            return (!imdbId.IsNullOrWhiteSpace() ? int.Parse(imdbId) : null);
         }
 
         protected override string GetInfoHash(XElement item)
