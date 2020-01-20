@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         protected virtual string GetImdbId(XElement item)
         {
-            var imdbId = TryGetTorznabAttribute(item, "imdbid");
+            var imdbId = TryGetTorznabAttribute(item, "imdb");
             return (!imdbId.IsNullOrWhiteSpace() ? imdbId : null);
         }
 
