@@ -162,8 +162,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
-            movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
-            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Fanart));
+            movie.Images.Add(MapImage(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
+            movie.Images.Add(MapImage(resource.backdrop_path, MediaCoverTypes.Fanart));
+
             movie.Runtime = resource.runtime;
 
             //foreach(Title title in resource.alternative_titles.titles)
@@ -422,7 +423,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         return new List<Movie>();
                     }
@@ -540,12 +541,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     _logger.Debug("Not a valid date time.");
                 }
-
-
 
                 var now = DateTime.Now;
 				//handle the case when we have both theatrical and physical release dates
@@ -588,10 +587,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 try
                 {
-                    var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
-                    imdbMovie.Images.Add(imdbPoster);
+                    imdbMovie.Images.AddIfNotNull(MapImage(result.poster_path, MediaCoverTypes.Poster));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     _logger.Debug(result);
                 }
@@ -615,61 +613,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return null;
         }
 
-        private static Actor MapActors(ActorResource arg)
+        private MediaCover.MediaCover MapImage(string path, MediaCoverTypes type)
         {
-            var newActor = new Actor
+            if (path.IsNotNullOrWhiteSpace())
             {
-                Name = arg.Name,
-                Character = arg.Character
-            };
-
-            if (arg.Image != null)
-            {
-                newActor.Images = new List<MediaCover.MediaCover>
-                {
-                    new MediaCover.MediaCover(MediaCoverTypes.Headshot, arg.Image)
-                };
+                return _configService.GetCoverForURL(path, type);
             }
 
-            return newActor;
-        }
-
-        private static Ratings MapRatings(RatingResource rating)
-        {
-            if (rating == null)
-            {
-                return new Ratings();
-            }
-
-            return new Ratings
-            {
-                Votes = rating.Count,
-                Value = rating.Value
-            };
-        }
-
-        private static MediaCover.MediaCover MapImage(ImageResource arg)
-        {
-            return new MediaCover.MediaCover
-            {
-                Url = arg.Url,
-                CoverType = MapCoverType(arg.CoverType)
-            };
-        }
-
-        private static MediaCoverTypes MapCoverType(string coverType)
-        {
-            switch (coverType.ToLower())
-            {
-                case "poster":
-                    return MediaCoverTypes.Poster;
-                case "banner":
-                    return MediaCoverTypes.Banner;
-                case "fanart":
-                    return MediaCoverTypes.Fanart;
-                default:
-                    return MediaCoverTypes.Unknown;
-            }
+            return null;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)
