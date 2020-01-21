@@ -162,8 +162,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
-            movie.Images.Add(MapImage(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
-            movie.Images.Add(MapImage(resource.backdrop_path, MediaCoverTypes.Fanart));
+            movie.Images.AddIfNotNull(MapImage(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
+            movie.Images.AddIfNotNull(MapImage(resource.backdrop_path, MediaCoverTypes.Fanart));
 
             movie.Runtime = resource.runtime;
 
