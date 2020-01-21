@@ -191,8 +191,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
-            movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster)); //TODO: Update to load image specs from tmdb page!
-            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Fanart));
+            movie.Images.AddIfNotNull(MapImage(resource.poster_path, MediaCoverTypes.Poster)); //TODO: Update to load image specs from tmdb page!
+            movie.Images.AddIfNotNull(MapImage(resource.backdrop_path, MediaCoverTypes.Fanart));
             movie.Runtime = resource.runtime;
 
             //foreach(Title title in resource.alternative_titles.titles)
@@ -321,8 +321,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 movie.Collection = MapCollection(resource.belongs_to_collection);
 
-                movie.Collection.Images.Add(_configService.GetCoverForURL(resource.belongs_to_collection.poster_path, MediaCoverTypes.Poster));
-                movie.Collection.Images.Add(_configService.GetCoverForURL(resource.belongs_to_collection.backdrop_path, MediaCoverTypes.Fanart));
+                movie.Collection.Images.AddIfNotNull(MapImage(resource.belongs_to_collection.poster_path, MediaCoverTypes.Poster));
+                movie.Collection.Images.AddIfNotNull(MapImage(resource.belongs_to_collection.backdrop_path, MediaCoverTypes.Fanart));
             }
 
             return new Tuple<Movie, List<Credit>>(movie, people);
@@ -620,8 +620,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 try
                 {
-                    var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
-                    imdbMovie.Images.Add(imdbPoster);
+                    imdbMovie.Images.AddIfNotNull(MapImage(result.poster_path, MediaCoverTypes.Poster));
                 }
                 catch (Exception)
                 {
@@ -701,6 +700,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             };
 
             return newCollection;
+        }
+
+        private MediaCover.MediaCover MapImage(string path, MediaCoverTypes type)
+        {
+            if (path.IsNotNullOrWhiteSpace())
+            {
+                return _configService.GetCoverForURL(path, type);
+            }
+
+            return null;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)
