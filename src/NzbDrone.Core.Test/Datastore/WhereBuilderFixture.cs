@@ -67,6 +67,23 @@ namespace NzbDrone.Core.Test.Datastore
         }
 
         [Test]
+        public void where_string_is_null()
+        {
+            _subject = Where(x => x.ImdbId == null);
+
+            _subject.ToString().Should().Be($"(\"Movies\".\"ImdbId\" IS NULL)");
+        }
+
+        [Test]
+        public void where_string_is_null_value()
+        {
+            string imdb = null;
+            _subject = Where(x => x.ImdbId == imdb);
+
+            _subject.ToString().Should().Be($"(\"Movies\".\"ImdbId\" IS NULL)");
+        }
+
+        [Test]
         public void where_column_contains_string()
         {
             var test = "small";
