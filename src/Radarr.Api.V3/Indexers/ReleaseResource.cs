@@ -7,6 +7,7 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
+using Radarr.Api.V3.CustomFormats;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Indexers
@@ -15,6 +16,7 @@ namespace Radarr.Api.V3.Indexers
     {
         public string Guid { get; set; }
         public QualityModel Quality { get; set; }
+        public List<CustomFormatResource> CustomFormats { get; set; }
         public int QualityWeight { get; set; }
         public int Age { get; set; }
         public double AgeHours { get; set; }
@@ -68,6 +70,7 @@ namespace Radarr.Api.V3.Indexers
             {
                 Guid = releaseInfo.Guid,
                 Quality = parsedMovieInfo.Quality,
+                CustomFormats = remoteMovie.CustomFormats.ToResource(),
 
                 //QualityWeight
                 Age = releaseInfo.Age,

@@ -86,6 +86,7 @@ class MovieFileEditorRow extends Component {
       size,
       quality,
       qualityCutoffNotMet,
+      customFormats,
       languages
     } = this.props;
 
@@ -173,7 +174,7 @@ class MovieFileEditorRow extends Component {
           className={styles.formats}
         >
           <MovieFormats
-            formats={quality.customFormats}
+            formats={customFormats}
           />
         </TableRowCell>
 
@@ -233,6 +234,7 @@ MovieFileEditorRow.propTypes = {
   size: PropTypes.number.isRequired,
   relativePath: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   mediaInfo: PropTypes.object.isRequired,

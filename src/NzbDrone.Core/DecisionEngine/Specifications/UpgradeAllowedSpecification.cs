@@ -1,4 +1,6 @@
 using NLog;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -7,11 +9,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public class UpgradeAllowedSpecification : IDecisionEngineSpecification
     {
         private readonly UpgradableSpecification _upgradableSpecification;
+        private readonly ICustomFormatCalculationService _formatService;
         private readonly Logger _logger;
 
-        public UpgradeAllowedSpecification(UpgradableSpecification upgradableSpecification, Logger logger)
+        public UpgradeAllowedSpecification(UpgradableSpecification upgradableSpecification,
+                                           ICustomFormatCalculationService formatService,
+                                           Logger logger)
         {
             _upgradableSpecification = upgradableSpecification;
+            _formatService = formatService;
             _logger = logger;
         }
 
@@ -32,11 +38,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     return Decision.Accept();
                 }
 
-                _logger.Debug("Comparing file quality with report. Existing file is {0}", file.Quality);
+                file.Movie = subject.Movie;
+                var customFormats = _formatService.ParseCustomFormat(file);
+                _logger.Debug("Comparing file quality with report. Existing file is {0} [{1}]", file.Quality, customFormats.ConcatToString());
 
                 if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
                                                                file.Quality,
-                                                               subject.ParsedMovieInfo.Quality))
+                                                               customFormats,
+                                                               subject.ParsedMovieInfo.Quality,
+                                                               subject.CustomFormats))
                 {
                     _logger.Debug("Upgrading is not allowed by the quality profile");
 

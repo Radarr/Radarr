@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
@@ -72,6 +73,12 @@ namespace NzbDrone.Core.Profiles
             }
 
             return new QualityIndex();
+        }
+
+        public List<int> GetIndices(List<CustomFormat> formats)
+        {
+            var allFormats = formats.Any() ? formats : new List<CustomFormat> { CustomFormat.None };
+            return allFormats.Select(f => FormatItems.FindIndex(v => Equals(v.Format, f))).ToList();
         }
     }
 }

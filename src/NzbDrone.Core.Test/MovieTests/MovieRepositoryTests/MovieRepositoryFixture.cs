@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -22,19 +23,23 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
         {
             _profileRepository = Mocker.Resolve<ProfileRepository>();
             Mocker.SetConstant<IProfileRepository>(_profileRepository);
+
+            Mocker.GetMock<ICustomFormatService>()
+                .Setup(x => x.All())
+                .Returns(new List<CustomFormat>());
         }
 
         [Test]
         public void should_load_quality_profile()
         {
             var profile = new Profile
-                {
-                    Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-                    FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
-                    FormatCutoff = CustomFormat.None.Id,
-                    Cutoff = Quality.Bluray1080p.Id,
-                    Name = "TestProfile"
-                };
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
+                FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
+                FormatCutoff = CustomFormat.None.Id,
+                Cutoff = Quality.Bluray1080p.Id,
+                Name = "TestProfile"
+            };
 
             _profileRepository.Insert(profile);
 

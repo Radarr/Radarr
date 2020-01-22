@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Movies;
 
@@ -7,6 +9,7 @@ namespace NzbDrone.Core.Parser.Model
     {
         public ReleaseInfo Release { get; set; }
         public ParsedMovieInfo ParsedMovieInfo { get; set; }
+        public List<CustomFormat> CustomFormats { get; set; }
         public Movie Movie { get; set; }
         public MappingResultType MappingResult { get; set; }
         public bool DownloadAllowed { get; set; }

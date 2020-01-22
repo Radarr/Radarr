@@ -11,11 +11,15 @@ namespace NzbDrone.Api.Qualities
     public class CustomFormatModule : RadarrRestModule<CustomFormatResource>
     {
         private readonly ICustomFormatService _formatService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IParsingService _parsingService;
 
-        public CustomFormatModule(ICustomFormatService formatService, IParsingService parsingService)
+        public CustomFormatModule(ICustomFormatService formatService,
+                                  ICustomFormatCalculationService formatCalculator,
+                                  IParsingService parsingService)
         {
             _formatService = formatService;
+            _formatCalculator = formatCalculator;
             _parsingService = parsingService;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
@@ -103,8 +107,8 @@ namespace NzbDrone.Api.Qualities
 
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
 
@@ -125,8 +129,8 @@ namespace NzbDrone.Api.Qualities
 
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
     }

@@ -7,10 +7,6 @@ namespace NzbDrone.Core.CustomFormats
 {
     public class CustomFormat : ModelBase, IEquatable<CustomFormat>
     {
-        public string Name { get; set; }
-
-        public List<FormatTag> FormatTags { get; set; }
-
         public CustomFormat()
         {
         }
@@ -21,18 +17,25 @@ namespace NzbDrone.Core.CustomFormats
             FormatTags = tags.Select(t => new FormatTag(t)).ToList();
         }
 
-        public static implicit operator CustomFormatDefinition(CustomFormat format) => new CustomFormatDefinition { Id = format.Id, Name = format.Name, FormatTags = format.FormatTags };
+        public static CustomFormat None => new CustomFormat
+        {
+            Id = 0,
+            Name = "None",
+            FormatTags = new List<FormatTag>()
+        };
+
+        public string Name { get; set; }
+
+        public List<FormatTag> FormatTags { get; set; }
 
         public override string ToString()
         {
             return Name;
         }
 
-        public static CustomFormat None => new CustomFormat("None");
-
         public bool Equals(CustomFormat other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -47,7 +50,7 @@ namespace NzbDrone.Core.CustomFormats
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -67,26 +70,7 @@ namespace NzbDrone.Core.CustomFormats
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
-        }
-    }
-
-    public static class CustomFormatExtensions
-    {
-        public static string ToExtendedString(this IEnumerable<CustomFormat> formats)
-        {
-            return string.Join(", ", formats.Select(f => f.ToString()));
-        }
-
-        public static List<CustomFormat> WithNone(this IEnumerable<CustomFormat> formats)
-        {
-            var list = formats.ToList();
-            if (list.Any())
-            {
-                return list;
-            }
-
-            return new List<CustomFormat> { CustomFormat.None };
+            return Id;
         }
     }
 }

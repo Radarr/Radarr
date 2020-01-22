@@ -60,6 +60,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie.Release.DownloadProtocol = downloadProtocol;
             remoteMovie.Release.Title = "A Movie 1998";
 
+            remoteMovie.CustomFormats = new List<CustomFormat>();
+
             return remoteMovie;
         }
 
@@ -324,12 +326,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_prefer_better_custom_format()
         {
             var quality1 = new QualityModel(Quality.Bluray720p);
-            quality1.CustomFormats.Add(CustomFormat.None);
             var remoteMovie1 = GivenRemoteMovie(quality1);
+            remoteMovie1.CustomFormats.Add(CustomFormat.None);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
-            quality2.CustomFormats.Add(_customFormat1);
             var remoteMovie2 = GivenRemoteMovie(quality2);
+            remoteMovie2.CustomFormats.Add(_customFormat1);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));
@@ -343,12 +345,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_prefer_better_custom_format2()
         {
             var quality1 = new QualityModel(Quality.Bluray720p);
-            quality1.CustomFormats.Add(_customFormat1);
             var remoteMovie1 = GivenRemoteMovie(quality1);
+            remoteMovie1.CustomFormats.Add(_customFormat1);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
-            quality2.CustomFormats.Add(_customFormat2);
             var remoteMovie2 = GivenRemoteMovie(quality2);
+            remoteMovie2.CustomFormats.Add(_customFormat2);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));
@@ -362,12 +364,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_prefer_2_custom_formats()
         {
             var quality1 = new QualityModel(Quality.Bluray720p);
-            quality1.CustomFormats.Add(_customFormat1);
             var remoteMovie1 = GivenRemoteMovie(quality1);
+            remoteMovie1.CustomFormats.Add(_customFormat1);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
-            quality2.CustomFormats.AddRange(new List<CustomFormat> { _customFormat1, _customFormat2 });
             var remoteMovie2 = GivenRemoteMovie(quality2);
+            remoteMovie2.CustomFormats.AddRange(new List<CustomFormat> { _customFormat1, _customFormat2 });
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));

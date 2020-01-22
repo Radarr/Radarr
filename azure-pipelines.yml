@@ -331,10 +331,10 @@ stages:
           artifactName: '$(testName)Tests'
           targetPath: $(testsFolder)
       - bash: |
-          wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-9_all.deb 
-          sudo dpkg -i repo-mediaarea_1.0-9_all.deb
+          wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-11_all.deb
+          sudo dpkg -i repo-mediaarea_1.0-11_all.deb
           sudo apt-get update
-          sudo apt-get install -y libmediainfo-dev libmediainfo0v5 mediainfo
+          sudo apt-get install -y --allow-unauthenticated libmediainfo-dev libmediainfo0v5 mediainfo
         displayName: Install mediainfo
         condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - powershell: Set-Service SCardSvr -StartupType Manual

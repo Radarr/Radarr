@@ -54,6 +54,7 @@ class HistoryRow extends Component {
     const {
       movie,
       quality,
+      customFormats,
       languages,
       qualityCutoffNotMet,
       eventType,
@@ -126,11 +127,11 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'quality.customFormats') {
+            if (name === 'customFormats') {
               return (
                 <TableRowCell key={name}>
                   <MovieFormats
-                    formats={quality.customFormats}
+                    formats={customFormats}
                   />
                 </TableRowCell>
               );
@@ -219,6 +220,7 @@ HistoryRow.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

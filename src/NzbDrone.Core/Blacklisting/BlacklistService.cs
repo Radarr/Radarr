@@ -152,6 +152,11 @@ namespace NzbDrone.Core.Blacklisting
                 Languages = message.Languages
             };
 
+            if (Enum.TryParse(message.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+            {
+                blacklist.IndexerFlags = flags;
+            }
+
             _blacklistRepository.Insert(blacklist);
         }
 

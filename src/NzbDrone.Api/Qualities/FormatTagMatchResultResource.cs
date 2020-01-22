@@ -27,7 +27,7 @@ namespace NzbDrone.Api.Qualities
 
     public static class QualityTagMatchResultResourceMapper
     {
-        public static FormatTagMatchResultResource ToResource(this FormatTagMatchResult model)
+        public static FormatTagMatchResultResource ToResource(this CustomFormatMatchResult model)
         {
             if (model == null)
             {
@@ -41,7 +41,7 @@ namespace NzbDrone.Api.Qualities
             };
         }
 
-        public static List<FormatTagMatchResultResource> ToResource(this IList<FormatTagMatchResult> models)
+        public static List<FormatTagMatchResultResource> ToResource(this IList<CustomFormatMatchResult> models)
         {
             return models.Select(ToResource).ToList();
         }

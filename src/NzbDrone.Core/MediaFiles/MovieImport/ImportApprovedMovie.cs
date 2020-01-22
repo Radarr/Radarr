@@ -7,6 +7,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
@@ -26,20 +27,23 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IMediaFileService _mediaFileService;
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
-                                      IMediaFileService mediaFileService,
-                                      IExtraService extraService,
-                                      IDiskProvider diskProvider,
-                                      IEventAggregator eventAggregator,
-                                      Logger logger)
+                                   IMediaFileService mediaFileService,
+                                   IExtraService extraService,
+                                   IDiskProvider diskProvider,
+                                   IHistoryService historyService,
+                                   IEventAggregator eventAggregator,
+                                   Logger logger)
         {
             _movieFileUpgrader = movieFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
             _diskProvider = diskProvider;
+            _historyService = historyService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -84,6 +88,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     movieFile.Movie = localMovie.Movie;
                     movieFile.ReleaseGroup = localMovie.ReleaseGroup;
                     movieFile.Edition = localMovie.Edition;
+
+                    if (downloadClientItem?.DownloadId.IsNotNullOrWhiteSpace() == true)
+                    {
+                        var grabHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
+                            .OrderByDescending(h => h.Date)
+                            .FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+
+                        if (Enum.TryParse(grabHistory?.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+                        {
+                            movieFile.IndexerFlags = flags;
+                        }
+                    }
 
                     bool copyOnly;
                     switch (importMode)
