@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
+using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
 using Radarr.Http.REST;
 
@@ -14,6 +16,7 @@ namespace Radarr.Api.V3.History
         public string SourceTitle { get; set; }
         public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
+        public List<CustomFormatResource> CustomFormats { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
@@ -27,7 +30,7 @@ namespace Radarr.Api.V3.History
 
     public static class HistoryResourceMapper
     {
-        public static HistoryResource ToResource(this NzbDrone.Core.History.History model)
+        public static HistoryResource ToResource(this NzbDrone.Core.History.History model, ICustomFormatCalculationService formatCalculator)
         {
             if (model == null)
             {
@@ -42,6 +45,7 @@ namespace Radarr.Api.V3.History
                 SourceTitle = model.SourceTitle,
                 Languages = model.Languages,
                 Quality = model.Quality,
+                CustomFormats = formatCalculator.ParseCustomFormat(model).ToResource(),
 
                 //QualityCutoffNotMet
                 Date = model.Date,

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
@@ -13,7 +11,6 @@ using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser
 {
@@ -25,31 +22,24 @@ namespace NzbDrone.Core.Parser
         ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo parsedMovieInfo, List<object> helpers = null);
         ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
-        List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo);
     }
 
     public class ParsingService : IParsingService
     {
-        private readonly IMovieService _movieService;
-        private readonly IConfigService _config;
-        private readonly IQualityDefinitionService _qualityDefinitionService;
-        private readonly ICustomFormatService _formatService;
-        private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
-        private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
 
-        public ParsingService(
-                              IMovieService movieService,
+        private readonly IMovieService _movieService;
+        private readonly IConfigService _config;
+        private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
+        private readonly Logger _logger;
+
+        public ParsingService(IMovieService movieService,
                               IConfigService configService,
-                              IQualityDefinitionService qualityDefinitionService,
-                              ICustomFormatService formatService,
                               IEnumerable<IAugmentParsedMovieInfo> augmenters,
                               Logger logger)
         {
             _movieService = movieService;
             _config = configService;
-            _qualityDefinitionService = qualityDefinitionService;
-            _formatService = formatService;
             _augmenters = augmenters;
             _logger = logger;
 
@@ -80,15 +70,6 @@ namespace NzbDrone.Core.Parser
                 minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
             }
 
-            // minimalInfo.Quality.Quality = QualityFinder.FindBySourceAndResolution(minimalInfo.Quality.Quality.Source, minimalInfo.Quality.Quality.Resolution,
-            // minimalInfo.Quality.Quality.Modifier);
-            if (minimalInfo != null)
-            {
-                minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
-
-                _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
-            }
-
             return minimalInfo;
         }
 
@@ -103,41 +84,6 @@ namespace NzbDrone.Core.Parser
             }
 
             return minimalInfo;
-        }
-
-        private List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
-        {
-            var matches = MatchFormatTags(movieInfo);
-            var goodMatches = matches.Where(m => m.GoodMatch);
-            return goodMatches.Select(r => r.CustomFormat).ToList();
-        }
-
-        public List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo)
-        {
-            var formats = _formatService.All();
-
-            if (movieInfo.ExtraInfo.GetValueOrDefault("AdditionalFormats") is List<CustomFormat> additionalFormats)
-            {
-                formats.AddRange(additionalFormats);
-            }
-
-            var matches = new List<FormatTagMatchResult>();
-
-            foreach (var customFormat in formats)
-            {
-                var formatMatches = customFormat.FormatTags.GroupBy(t => t.TagType).Select(g =>
-                    new FormatTagMatchesGroup(g.Key, g.ToList().ToDictionary(t => t, t => t.DoesItMatch(movieInfo))));
-
-                var formatTagMatchesGroups = formatMatches.ToList();
-                matches.Add(new FormatTagMatchResult
-                {
-                    CustomFormat = customFormat,
-                    GroupMatches = formatTagMatchesGroups,
-                    GoodMatch = formatTagMatchesGroups.All(g => g.DidMatch)
-                });
-            }
-
-            return matches;
         }
 
         public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)

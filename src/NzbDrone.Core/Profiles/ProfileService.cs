@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.CustomFormats.Events;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
@@ -15,8 +16,6 @@ namespace NzbDrone.Core.Profiles
     {
         Profile Add(Profile profile);
         void Update(Profile profile);
-        void AddCustomFormat(CustomFormat format);
-        void DeleteCustomFormat(int formatId);
         void Delete(int id);
         List<Profile> All();
         Profile Get(int id);
@@ -24,24 +23,27 @@ namespace NzbDrone.Core.Profiles
         Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
     }
 
-    public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
+    public class ProfileService : IProfileService,
+        IHandle<ApplicationStartedEvent>,
+        IHandle<CustomFormatAddedEvent>,
+        IHandle<CustomFormatDeletedEvent>
     {
         private readonly IProfileRepository _profileRepository;
+        private readonly ICustomFormatService _formatService;
         private readonly IMovieService _movieService;
         private readonly INetImportFactory _netImportFactory;
-        private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
         public ProfileService(IProfileRepository profileRepository,
-            IMovieService movieService,
-            INetImportFactory netImportFactory,
-            ICustomFormatService formatService,
-            Logger logger)
+                              ICustomFormatService formatService,
+                              IMovieService movieService,
+                              INetImportFactory netImportFactory,
+                              Logger logger)
         {
             _profileRepository = profileRepository;
+            _formatService = formatService;
             _movieService = movieService;
             _netImportFactory = netImportFactory;
-            _formatService = formatService;
             _logger = logger;
         }
 
@@ -53,36 +55,6 @@ namespace NzbDrone.Core.Profiles
         public void Update(Profile profile)
         {
             _profileRepository.Update(profile);
-        }
-
-        public void AddCustomFormat(CustomFormat customFormat)
-        {
-            var all = All();
-            foreach (var profile in all)
-            {
-                profile.FormatItems.Add(new ProfileFormatItem
-                {
-                    Allowed = true,
-                    Format = customFormat
-                });
-
-                Update(profile);
-            }
-        }
-
-        public void DeleteCustomFormat(int formatId)
-        {
-            var all = All();
-            foreach (var profile in all)
-            {
-                profile.FormatItems = profile.FormatItems.Where(c => c.Format.Id != formatId).ToList();
-                if (profile.FormatCutoff == formatId)
-                {
-                    profile.FormatCutoff = CustomFormat.None.Id;
-                }
-
-                Update(profile);
-            }
         }
 
         public void Delete(int id)
@@ -110,10 +82,38 @@ namespace NzbDrone.Core.Profiles
             return _profileRepository.Exists(id);
         }
 
+        public void Handle(CustomFormatAddedEvent message)
+        {
+            var all = All();
+            foreach (var profile in all)
+            {
+                profile.FormatItems.Add(new ProfileFormatItem
+                {
+                    Allowed = true,
+                    Format = message.CustomFormat
+                });
+
+                Update(profile);
+            }
+        }
+
+        public void Handle(CustomFormatDeletedEvent message)
+        {
+            var all = All();
+            foreach (var profile in all)
+            {
+                profile.FormatItems = profile.FormatItems.Where(c => c.Format.Id != message.CustomFormat.Id).ToList();
+                if (profile.FormatCutoff == message.CustomFormat.Id)
+                {
+                    profile.FormatCutoff = CustomFormat.None.Id;
+                }
+
+                Update(profile);
+            }
+        }
+
         public void Handle(ApplicationStartedEvent message)
         {
-            // Hack to force custom formats to be loaded into memory, if you have a better solution please let me know.
-            _formatService.All();
             if (All().Any())
             {
                 return;
@@ -207,9 +207,7 @@ namespace NzbDrone.Core.Profiles
         public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
         {
             var groupedQualites = Quality.DefaultQualityDefinitions.GroupBy(q => q.Weight);
-            var formats = _formatService.All();
             var items = new List<ProfileQualityItem>();
-            var formatItems = new List<ProfileFormatItem>();
             var groupId = 1000;
             var profileCutoff = cutoff == null ? Quality.Unknown.Id : cutoff.Id;
 
@@ -245,15 +243,20 @@ namespace NzbDrone.Core.Profiles
                 groupId++;
             }
 
-            foreach (var format in formats)
+            var formatItems = new List<ProfileFormatItem>
             {
-                formatItems.Add(new ProfileFormatItem
+                new ProfileFormatItem
                 {
-                    Id = format.Id,
-                    Format = format,
-                    Allowed = false
-                });
-            }
+                    Id = 0,
+                    Allowed = true,
+                    Format = CustomFormat.None
+                }
+            }.Concat(_formatService.All().Select(format => new ProfileFormatItem
+            {
+                Id = format.Id,
+                Allowed = false,
+                Format = format
+            })).ToList();
 
             var qualityProfile = new Profile
             {
@@ -262,18 +265,8 @@ namespace NzbDrone.Core.Profiles
                 Items = items,
                 Language = Language.English,
                 FormatCutoff = CustomFormat.None.Id,
-                FormatItems = new List<ProfileFormatItem>
-                {
-                    new ProfileFormatItem
-                    {
-                        Id = 0,
-                        Allowed = true,
-                        Format = CustomFormat.None
-                    }
-                }
+                FormatItems = formatItems
             };
-
-            qualityProfile.FormatItems.AddRange(formatItems);
 
             return qualityProfile;
         }

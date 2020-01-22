@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
@@ -43,18 +44,20 @@ namespace NzbDrone.Core.Download.Pending
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
         private readonly IConfigService _configService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public PendingReleaseService(IIndexerStatusService indexerStatusService,
-                                    IPendingReleaseRepository repository,
-                                    IMovieService movieService,
-                                    IParsingService parsingService,
-                                    IDelayProfileService delayProfileService,
-                                    ITaskManager taskManager,
-                                    IConfigService configService,
-                                    IEventAggregator eventAggregator,
-                                    Logger logger)
+                                     IPendingReleaseRepository repository,
+                                     IMovieService movieService,
+                                     IParsingService parsingService,
+                                     IDelayProfileService delayProfileService,
+                                     ITaskManager taskManager,
+                                     IConfigService configService,
+                                     ICustomFormatCalculationService formatCalculator,
+                                     IEventAggregator eventAggregator,
+                                     Logger logger)
         {
             _indexerStatusService = indexerStatusService;
             _repository = repository;
@@ -63,6 +66,7 @@ namespace NzbDrone.Core.Download.Pending
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
             _configService = configService;
+            _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -159,6 +163,8 @@ namespace NzbDrone.Core.Download.Pending
             {
                 if (pendingRelease.RemoteMovie != null)
                 {
+                    pendingRelease.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(pendingRelease.ParsedMovieInfo);
+
                     var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
 
                     if (ect < nextRssSync.Value)

@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
@@ -27,20 +28,23 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _config;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
         private readonly ICached<TrackedDownload> _cache;
 
         public TrackedDownloadService(IParsingService parsingService,
-            ICacheManager cacheManager,
-            IHistoryService historyService,
-            IConfigService config,
-            IEventAggregator eventAggregator,
-            Logger logger)
+                                      ICacheManager cacheManager,
+                                      IHistoryService historyService,
+                                      IConfigService config,
+                                      ICustomFormatCalculationService formatCalculator,
+                                      IEventAggregator eventAggregator,
+                                      Logger logger)
         {
             _parsingService = parsingService;
             _historyService = historyService;
             _cache = cacheManager.GetCache<TrackedDownload>(GetType());
             _config = config;
+            _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -127,6 +131,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                             trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
                         }
                     }
+                }
+
+                // Calculate custom formats
+                if (trackedDownload.RemoteMovie != null)
+                {
+                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo);
                 }
 
                 // Track it so it can be displayed in the queue even though we can't determine which movie it is for

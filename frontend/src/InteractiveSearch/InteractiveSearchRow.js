@@ -113,6 +113,7 @@ class InteractiveSearchRow extends Component {
       seeders,
       leechers,
       quality,
+      customFormats,
       languages,
       indexerFlags,
       rejections,
@@ -177,7 +178,7 @@ class InteractiveSearchRow extends Component {
 
         <TableRowCell className={styles.customFormat}>
           <MovieFormats
-            formats={quality.customFormats}
+            formats={customFormats}
           />
         </TableRowCell>
 
@@ -279,6 +280,7 @@ InteractiveSearchRow.propTypes = {
   seeders: PropTypes.number,
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   rejections: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexerFlags: PropTypes.arrayOf(PropTypes.string).isRequired,

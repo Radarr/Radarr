@@ -9,6 +9,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
 import MovieQuality from 'Movie/MovieQuality';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
@@ -64,6 +65,7 @@ class MovieHistoryRow extends Component {
       eventType,
       sourceTitle,
       quality,
+      customFormats,
       languages,
       qualityCutoffNotMet,
       date,
@@ -95,6 +97,12 @@ class MovieHistoryRow extends Component {
           <MovieQuality
             quality={quality}
             isCutoffNotMet={qualityCutoffNotMet}
+          />
+        </TableRowCell>
+
+        <TableRowCell key={name}>
+          <MovieFormats
+            formats={customFormats}
           />
         </TableRowCell>
 
@@ -152,6 +160,7 @@ MovieHistoryRow.propTypes = {
   sourceTitle: PropTypes.string.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,

@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -26,10 +29,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
+            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None);
+
             _movie = Builder<Movie>.CreateNew()
                                      .With(e => e.Profile = new Profile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
+                                         FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                                         FormatCutoff = CustomFormat.None.Id,
                                          UpgradeAllowed = true
                                      })
                                      .Build();
@@ -39,9 +46,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                           .Build();
 
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
-                                                   .With(r => r.Movie = _movie)
-                                                   .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD) })
-                                                   .Build();
+                .With(r => r.Movie = _movie)
+                .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD) })
+                .With(x => x.CustomFormats = new List<CustomFormat> { CustomFormat.None })
+                .Build();
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                .Setup(x => x.ParseCustomFormat(It.IsAny<ParsedMovieInfo>()))
+                .Returns(new List<CustomFormat>());
         }
 
         private void GivenEmptyQueue()
@@ -87,12 +99,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _movie.Profile.Cutoff = Quality.Bluray1080p.Id;
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
-                                                      .With(r => r.Movie = _movie)
-                                                      .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
-                                                      {
-                                                          Quality = new QualityModel(Quality.SDTV)
-                                                      })
-                                                      .Build();
+                .With(r => r.Movie = _movie)
+                .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    Quality = new QualityModel(Quality.SDTV)
+                })
+                .With(x => x.CustomFormats = new List<CustomFormat> { CustomFormat.None })
+                .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();

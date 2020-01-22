@@ -1,9 +1,12 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -12,20 +15,39 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class QualityUpgradeSpecificationFixture : CoreTest<UpgradableSpecification>
     {
+        private static CustomFormat _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
+        private static CustomFormat _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
+
         public static object[] IsUpgradeTestCases =
         {
-            new object[] { Quality.SDTV, 1, Quality.SDTV, 2, Quality.SDTV, true },
-            new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 2, Quality.WEBDL720p, true },
-            new object[] { Quality.SDTV, 1, Quality.SDTV, 1, Quality.SDTV, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.HDTV720p, 2, Quality.Bluray720p, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.HDTV720p, 2, Quality.WEBDL720p, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 1, Quality.WEBDL720p, false },
-            new object[] { Quality.WEBDL1080p, 1, Quality.WEBDL1080p, 1, Quality.WEBDL1080p, false }
+            // Quality upgrade trumps custom format
+            new object[] { Quality.SDTV, 1, new List<CustomFormat>(), Quality.SDTV, 2, new List<CustomFormat>(), true },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, Quality.SDTV, 2, new List<CustomFormat> { _customFormat1 }, true },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, Quality.SDTV, 2, new List<CustomFormat> { _customFormat2 }, true },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat2 }, Quality.SDTV, 2, new List<CustomFormat> { _customFormat1 }, true },
+
+            // Revision upgrade trumps custom format
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat>(), Quality.WEBDL720p, 2, new List<CustomFormat>(), true },
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat> { _customFormat1 }, Quality.WEBDL720p, 2, new List<CustomFormat> { _customFormat1 }, true },
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat> { _customFormat1 }, Quality.WEBDL720p, 2, new List<CustomFormat> { _customFormat2 }, true },
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat> { _customFormat2 }, Quality.WEBDL720p, 2, new List<CustomFormat> { _customFormat1 }, true },
+
+            // Custom formats apply if quality same
+            new object[] { Quality.SDTV, 1, new List<CustomFormat>(), Quality.SDTV, 1, new List<CustomFormat>(), false },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, false },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, Quality.SDTV, 1, new List<CustomFormat> { _customFormat2 }, true },
+            new object[] { Quality.SDTV, 1, new List<CustomFormat> { _customFormat2 }, Quality.SDTV, 1, new List<CustomFormat> { _customFormat1 }, false },
+
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat>(), Quality.HDTV720p, 2, new List<CustomFormat>(), false },
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat>(), Quality.HDTV720p, 2, new List<CustomFormat>(), false },
+            new object[] { Quality.WEBDL720p, 1, new List<CustomFormat>(), Quality.WEBDL720p, 1, new List<CustomFormat>(), false },
+            new object[] { Quality.WEBDL1080p, 1, new List<CustomFormat>(), Quality.WEBDL1080p, 1, new List<CustomFormat>(), false }
         };
 
         [SetUp]
         public void Setup()
         {
+            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None, _customFormat1, _customFormat2);
         }
 
         private void GivenAutoDownloadPropers(bool autoDownloadPropers)
@@ -37,13 +59,27 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         [Test]
         [TestCaseSource("IsUpgradeTestCases")]
-        public void IsUpgradeTest(Quality current, int currentVersion, Quality newQuality, int newVersion, Quality cutoff, bool expected)
+        public void IsUpgradeTest(Quality current,
+                                  int currentVersion,
+                                  List<CustomFormat> currentFormats,
+                                  Quality newQuality,
+                                  int newVersion,
+                                  List<CustomFormat> newFormats,
+                                  bool expected)
         {
             GivenAutoDownloadPropers(true);
 
-            var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
+            var profile = new Profile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems()
+            };
 
-            Subject.IsUpgradable(profile, new QualityModel(current, new Revision(version: currentVersion)), new QualityModel(newQuality, new Revision(version: newVersion)))
+            Subject.IsUpgradable(profile,
+                                 new QualityModel(current, new Revision(version: currentVersion)),
+                                 currentFormats,
+                                 new QualityModel(newQuality, new Revision(version: newVersion)),
+                                 newFormats)
                     .Should().Be(expected);
         }
 
@@ -54,7 +90,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
+            Subject.IsUpgradable(profile,
+                                 new QualityModel(Quality.DVD, new Revision(version: 2)),
+                                 new List<CustomFormat>(),
+                                 new QualityModel(Quality.DVD, new Revision(version: 1)),
+                                 new List<CustomFormat>())
                     .Should().BeFalse();
         }
 
@@ -69,7 +109,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsUpgradable(
                        profile,
                        new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
-                       new QualityModel(Quality.HDTV720p, new Revision(version: 1)))
+                       new List<CustomFormat>(),
+                       new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
+                       new List<CustomFormat>())
                    .Should().BeFalse();
         }
     }

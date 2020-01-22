@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Nancy;
 using NLog;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
@@ -11,6 +12,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
+using Radarr.Api.V3.CustomFormats;
 using Radarr.Http;
 using Radarr.Http.Extensions;
 using BadRequestException = Radarr.Http.REST.BadRequestException;
@@ -24,6 +26,7 @@ namespace Radarr.Api.V3.MovieFiles
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMovieService _movieService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
@@ -31,6 +34,7 @@ namespace Radarr.Api.V3.MovieFiles
                                IMediaFileService mediaFileService,
                                IRecycleBinProvider recycleBinProvider,
                                IMovieService movieService,
+                               ICustomFormatCalculationService formatCalculator,
                                IUpgradableSpecification qualityUpgradableSpecification,
                                Logger logger)
             : base(signalRBroadcaster)
@@ -38,6 +42,7 @@ namespace Radarr.Api.V3.MovieFiles
             _mediaFileService = mediaFileService;
             _recycleBinProvider = recycleBinProvider;
             _movieService = movieService;
+            _formatCalculator = formatCalculator;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
 
@@ -54,8 +59,11 @@ namespace Radarr.Api.V3.MovieFiles
         {
             var movieFile = _mediaFileService.GetMovie(id);
             var movie = _movieService.GetMovie(movieFile.MovieId);
+            movieFile.Movie = movie;
 
-            return movieFile.ToResource(movie, _qualityUpgradableSpecification);
+            var resource = movieFile.ToResource(movie, _qualityUpgradableSpecification);
+            resource.CustomFormats = _formatCalculator.ParseCustomFormat(movieFile).ToResource();
+            return resource;
         }
 
         private List<MovieFileResource> GetMovieFiles()
@@ -72,8 +80,18 @@ namespace Radarr.Api.V3.MovieFiles
             {
                 int movieId = Convert.ToInt32(movieIdQuery.Value);
                 var movie = _movieService.GetMovie(movieId);
+                var file = _mediaFileService.GetFilesByMovie(movieId).FirstOrDefault();
 
-                return _mediaFileService.GetFilesByMovie(movieId).ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification));
+                if (file == null)
+                {
+                    return new List<MovieFileResource>();
+                }
+
+                var resource = file.ToResource(movie, _qualityUpgradableSpecification);
+                file.Movie = movie;
+                resource.CustomFormats = _formatCalculator.ParseCustomFormat(file).ToResource();
+
+                return new List<MovieFileResource> { resource };
             }
             else
             {
@@ -95,6 +113,7 @@ namespace Radarr.Api.V3.MovieFiles
         private void SetMovieFile(MovieFileResource movieFileResource)
         {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
+            movieFile.IndexerFlags = movieFileResource.IndexerFlags;
             movieFile.Quality = movieFileResource.Quality;
             movieFile.Languages = movieFileResource.Languages;
             _mediaFileService.Update(movieFile);

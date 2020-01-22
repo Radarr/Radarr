@@ -4,7 +4,9 @@ using System.IO;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
+using Radarr.Api.V3.CustomFormats;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.MovieFiles
@@ -17,7 +19,9 @@ namespace Radarr.Api.V3.MovieFiles
         public long Size { get; set; }
         public DateTime DateAdded { get; set; }
         public string SceneName { get; set; }
+        public IndexerFlags IndexerFlags { get; set; }
         public QualityModel Quality { get; set; }
+        public List<CustomFormatResource> CustomFormats { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public List<Language> Languages { get; set; }
@@ -43,6 +47,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
+                IndexerFlags = model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
@@ -68,6 +73,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
+                IndexerFlags = model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName)
@@ -91,10 +97,11 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
+                IndexerFlags = model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(movie.Profile, model.Quality)
+                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(movie.Profile, model.Quality)
             };
         }
     }

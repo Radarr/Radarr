@@ -6,16 +6,20 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using Radarr.Http;
 
-namespace Radarr.Api.V3.Qualities
+namespace Radarr.Api.V3.CustomFormats
 {
     public class CustomFormatModule : RadarrRestModule<CustomFormatResource>
     {
         private readonly ICustomFormatService _formatService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IParsingService _parsingService;
 
-        public CustomFormatModule(ICustomFormatService formatService, IParsingService parsingService)
+        public CustomFormatModule(ICustomFormatService formatService,
+                                  ICustomFormatCalculationService formatCalculator,
+                                  IParsingService parsingService)
         {
             _formatService = formatService;
+            _formatCalculator = formatCalculator;
             _parsingService = parsingService;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
@@ -31,7 +35,7 @@ namespace Radarr.Api.V3.Qualities
                         var allNewTags = c.Split(',').Select(t => t.ToLower());
                         var enumerable = allTags.ToList();
                         var newTags = allNewTags.ToList();
-                        return enumerable.All(newTags.Contains) && f.Id != v.Id && enumerable.Count() == newTags.Count();
+                        return enumerable.All(newTags.Contains) && f.Id != v.Id && enumerable.Count == newTags.Count;
                     });
                 })
                 .WithMessage("Should be unique.");
@@ -103,8 +107,8 @@ namespace Radarr.Api.V3.Qualities
 
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
 
@@ -125,8 +129,8 @@ namespace Radarr.Api.V3.Qualities
 
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
     }

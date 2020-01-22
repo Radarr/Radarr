@@ -4,9 +4,9 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using Radarr.Http.REST;
 
-namespace Radarr.Api.V3.Qualities
+namespace Radarr.Api.V3.CustomFormats
 {
-    public class FormatTagMatchResultResource : RestResource
+    public class CustomFormatMatchResultResource : RestResource
     {
         public CustomFormatResource CustomFormat { get; set; }
         public List<FormatTagGroupMatchesResource> GroupMatches { get; set; }
@@ -21,27 +21,27 @@ namespace Radarr.Api.V3.Qualities
 
     public class CustomFormatTestResource : RestResource
     {
-        public List<FormatTagMatchResultResource> Matches { get; set; }
+        public List<CustomFormatMatchResultResource> Matches { get; set; }
         public List<CustomFormatResource> MatchedFormats { get; set; }
     }
 
     public static class QualityTagMatchResultResourceMapper
     {
-        public static FormatTagMatchResultResource ToResource(this FormatTagMatchResult model)
+        public static CustomFormatMatchResultResource ToResource(this CustomFormatMatchResult model)
         {
             if (model == null)
             {
                 return null;
             }
 
-            return new FormatTagMatchResultResource
+            return new CustomFormatMatchResultResource
             {
                 CustomFormat = model.CustomFormat.ToResource(),
                 GroupMatches = model.GroupMatches.ToResource()
             };
         }
 
-        public static List<FormatTagMatchResultResource> ToResource(this IList<FormatTagMatchResult> models)
+        public static List<CustomFormatMatchResultResource> ToResource(this IList<CustomFormatMatchResult> models)
         {
             return models.Select(ToResource).ToList();
         }

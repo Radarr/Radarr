@@ -6,6 +6,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Languages;
@@ -26,19 +27,19 @@ namespace NzbDrone.Core.DecisionEngine
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
         private readonly IConfigService _configService;
-        private readonly IQualityDefinitionService _definitionService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
         public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
-            IParsingService parsingService,
-            IConfigService configService,
-            IQualityDefinitionService qualityDefinitionService,
-            Logger logger)
+                                     IParsingService parsingService,
+                                     IConfigService configService,
+                                     ICustomFormatCalculationService formatCalculator,
+                                     Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
             _configService = configService;
-            _definitionService = qualityDefinitionService;
+            _formatCalculator = formatCalculator;
             _logger = logger;
         }
 
@@ -106,7 +107,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                     result.ReleaseName = report.Title;
                     var remoteMovie = result.RemoteMovie;
-
+                    remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo);
                     remoteMovie.Release = report;
                     remoteMovie.MappingResult = result.MappingResultType;
 

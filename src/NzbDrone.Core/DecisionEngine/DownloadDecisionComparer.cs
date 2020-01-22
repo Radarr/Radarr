@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -49,12 +47,6 @@ namespace NzbDrone.Core.DecisionEngine
             return leftValue.CompareTo(rightValue);
         }
 
-        private int CompareByReverse<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
-            where TValue : IComparable<TValue>
-        {
-            return CompareBy(left, right, funcValue) * -1;
-        }
-
         private int CompareAll(params int[] comparers)
         {
             return comparers.Select(comparer => comparer).FirstOrDefault(result => result != 0);
@@ -63,23 +55,9 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
             return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
-                       CompareCustomFormats(x, y),
-                       CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
-                       CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
-        }
-
-        private int CompareCustomFormats(DownloadDecision x, DownloadDecision y)
-        {
-            var left = x.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats.WithNone();
-            var right = y.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats;
-
-            var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile);
-            var rightIndicies =  QualityModelComparer.GetIndicies(right, y.RemoteMovie.Movie.Profile);
-
-            var leftTotal = leftIndicies.Sum();
-            var rightTotal = rightIndicies.Sum();
-
-            return leftTotal.CompareTo(rightTotal);
+                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndices(remoteMovie.CustomFormats).Select(i => Math.Pow(2, i)).Sum()),
+                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
+                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
         }
 
         private int ComparePreferredWords(DownloadDecision x, DownloadDecision y)

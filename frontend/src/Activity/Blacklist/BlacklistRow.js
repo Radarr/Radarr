@@ -44,6 +44,7 @@ class BlacklistRow extends Component {
       movie,
       sourceTitle,
       quality,
+      customFormats,
       languages,
       date,
       protocol,
@@ -112,11 +113,11 @@ class BlacklistRow extends Component {
               );
             }
 
-            if (name === 'quality.customFormats') {
+            if (name === 'customFormats') {
               return (
                 <TableRowCell key={name}>
                   <MovieFormats
-                    formats={quality.customFormats}
+                    formats={customFormats}
                   />
                 </TableRowCell>
               );
@@ -186,6 +187,7 @@ BlacklistRow.propTypes = {
   movie: PropTypes.object.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   date: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,

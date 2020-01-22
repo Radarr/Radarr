@@ -4,6 +4,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.Download.Pending;
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenUpgradeForExistingFile()
         {
             Mocker.GetMock<IUpgradableSpecification>()
-                  .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
+                  .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<QualityModel>(), It.IsAny<List<CustomFormat>>(), It.IsAny<QualityModel>(), It.IsAny<List<CustomFormat>>()))
                   .Returns(true);
         }
 

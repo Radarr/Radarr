@@ -27,6 +27,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'customFormats',
+    label: 'Custom Formats',
+    isSortable: false,
+    isVisible: true
+  },
+  {
     name: 'date',
     label: 'Date',
     isVisible: true

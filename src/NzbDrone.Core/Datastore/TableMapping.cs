@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.GroupName)
                   .Ignore(d => d.Weight);
 
-            Mapper.Entity<CustomFormatDefinition>("CustomFormats").RegisterModel();
+            Mapper.Entity<CustomFormat>("CustomFormats").RegisterModel();
 
             Mapper.Entity<Profile>("Profiles").RegisterModel();
             Mapper.Entity<Log>("Logs").RegisterModel();
@@ -147,11 +147,10 @@ namespace NzbDrone.Core.Datastore
             SqlMapper.RemoveTypeMap(typeof(DateTime));
             SqlMapper.AddTypeHandler(new DapperUtcConverter());
             SqlMapper.AddTypeHandler(new DapperQualityIntConverter());
-            SqlMapper.AddTypeHandler(new DapperCustomFormatIntConverter());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileQualityItem>>(new QualityIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileFormatItem>>(new CustomFormatIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<FormatTag>>(new QualityTagStringConverter()));
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<QualityModel>(new CustomFormatIntConverter(), new QualityIntConverter()));
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<QualityModel>(new QualityIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<Dictionary<string, string>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<IDictionary<string, string>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<int>>());
@@ -160,7 +159,7 @@ namespace NzbDrone.Core.Datastore
             SqlMapper.AddTypeHandler(new DapperLanguageIntConverter());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<Language>>(new LanguageIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<string>>());
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedMovieInfo>());
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedMovieInfo>(new QualityIntConverter(), new LanguageIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ReleaseInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<HashSet<int>>());
             SqlMapper.AddTypeHandler(new OsPathConverter());

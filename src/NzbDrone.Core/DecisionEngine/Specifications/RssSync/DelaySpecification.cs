@@ -1,5 +1,6 @@
 using System.Linq;
 using NLog;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -12,16 +13,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
     {
         private readonly IPendingReleaseService _pendingReleaseService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly ICustomFormatCalculationService _formatService;
         private readonly IDelayProfileService _delayProfileService;
         private readonly Logger _logger;
 
         public DelaySpecification(IPendingReleaseService pendingReleaseService,
                                   IUpgradableSpecification qualityUpgradableSpecification,
+                                  ICustomFormatCalculationService formatService,
                                   IDelayProfileService delayProfileService,
                                   Logger logger)
         {
             _pendingReleaseService = pendingReleaseService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _formatService = formatService;
             _delayProfileService = delayProfileService;
             _logger = logger;
         }
@@ -65,9 +69,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var comparer = new QualityModelComparer(profile);
 
-            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && subject.Movie.MovieFile != null) && (preferredCount > 0 || preferredWords == null))
+            var file = subject.Movie.MovieFile;
+
+            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null) && (preferredCount > 0 || preferredWords == null))
             {
-                var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
+                var customFormats = _formatService.ParseCustomFormat(file);
+                var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
+                                                                              file.Quality,
+                                                                              customFormats,
+                                                                              subject.ParsedMovieInfo.Quality,
+                                                                              subject.CustomFormats);
 
                 if (upgradable)
                 {

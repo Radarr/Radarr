@@ -3,7 +3,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NzbDrone.Core.CustomFormats;
 
-namespace Radarr.Api.V3.Qualities
+namespace Radarr.Api.V3.CustomFormats
 {
     public class FormatTagValidator : PropertyValidator
     {
@@ -24,7 +24,7 @@ namespace Radarr.Api.V3.Qualities
 
             var invalidTags = tags.Where(t => !FormatTag.QualityTagRegex.IsMatch(t));
 
-            if (invalidTags.Count() == 0)
+            if (!invalidTags.Any())
             {
                 return true;
             }

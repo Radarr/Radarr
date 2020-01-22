@@ -385,7 +385,7 @@ namespace NzbDrone.Core.Parser
             return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLower()).RemoveAccent();
         }
 
-        public static string NormalizeEpisodeTitle(string title)
+        public static string NormalizeEpisodeTitle(this string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
             title = PunctuationRegex.Replace(title, " ");
@@ -395,7 +395,7 @@ namespace NzbDrone.Core.Parser
                         .ToLower();
         }
 
-        public static string NormalizeTitle(string title)
+        public static string NormalizeTitle(this string title)
         {
             title = WordDelimiterRegex.Replace(title, " ");
             title = PunctuationRegex.Replace(title, string.Empty);
@@ -404,6 +404,11 @@ namespace NzbDrone.Core.Parser
             title = SpecialCharRegex.Replace(title, string.Empty);
 
             return title.Trim().ToLower();
+        }
+
+        public static string SimplifyReleaseTitle(this string title)
+        {
+            return SimpleReleaseTitleRegex.Replace(title, string.Empty);
         }
 
         public static string ParseReleaseGroup(string title)

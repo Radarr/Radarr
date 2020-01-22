@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.History;
@@ -12,6 +14,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -35,14 +38,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
+            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None);
+
             _fakeMovie = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
-                         .Build();
+                .With(c => c.Profile = new Profile
+                {
+                    Items = Qualities.QualityFixture.GetDefaultQualities(),
+                    Cutoff = Quality.Bluray1080p.Id,
+                    FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                    FormatCutoff = CustomFormat.None.Id
+                })
+                .Build();
 
             _parseResultSingle = new RemoteMovie
             {
                 Movie = _fakeMovie,
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) }
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
+                CustomFormats = new List<CustomFormat>()
             };
 
             _upgradableQuality = new QualityModel(Quality.SDTV, new Revision(version: 1));
@@ -51,6 +63,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.GetMock<IConfigService>()
                   .SetupGet(s => s.EnableCompletedDownloadHandling)
                   .Returns(true);
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                .Setup(x => x.ParseCustomFormat(It.IsAny<History.History>()))
+                .Returns(new List<CustomFormat>());
         }
 
         private void GivenMostRecentForEpisode(int episodeId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
@@ -142,9 +158,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_episode_is_of_same_quality_as_existing()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                Cutoff = Quality.Bluray1080p.Id,
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                FormatCutoff = CustomFormat.None.Id
+            };
+
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                .Setup(x => x.ParseCustomFormat(It.IsAny<History.History>()))
+                .Returns(new List<CustomFormat>());
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -154,7 +181,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                Cutoff = Quality.WEBDL1080p.Id,
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                FormatCutoff = CustomFormat.None.Id
+            };
+
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
 
@@ -182,7 +216,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeMovie.Profile = new Profile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                Cutoff = Quality.WEBDL1080p.Id,
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                FormatCutoff = CustomFormat.None.Id
+            };
+
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
 
