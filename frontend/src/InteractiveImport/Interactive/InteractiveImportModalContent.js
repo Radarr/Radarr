@@ -54,6 +54,7 @@ const columns = [
   {
     name: 'size',
     label: 'Size',
+    isSortable: true,
     isVisible: true
   },
   {
