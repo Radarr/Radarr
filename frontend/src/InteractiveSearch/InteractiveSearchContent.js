@@ -111,7 +111,7 @@ function InteractiveSearchContent(props) {
       {
         !isFetching && !!error &&
           <div>
-            Unable to load results for this episode search. Try again later
+            Unable to load results for this movie search. Try again later
           </div>
       }
 
