@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import formatBytes from 'Utilities/Number/formatBytes';
 import { icons, kinds } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
@@ -200,6 +201,14 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {downloadClient}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'size') {
+              return (
+                <TableRowCell key={name}>
+                  {formatBytes(size)}
                 </TableRowCell>
               );
             }

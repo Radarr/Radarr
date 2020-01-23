@@ -105,6 +105,12 @@ export const defaultState = {
         isVisible: false
       },
       {
+        name: 'size',
+        label: 'Size',
+        isSortable: true,
+        isVisible: false
+      },
+      {
         name: 'title',
         label: 'Release Title',
         isSortable: true,
