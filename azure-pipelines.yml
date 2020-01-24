@@ -31,7 +31,7 @@ stages:
     - job:
       displayName: Build Variables
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       steps:
       # Set the build name properly.  The 'name' property won't recursively expand so hack here:
       - bash: echo "##vso[build.updatebuildnumber]$RADARRVERSION"
@@ -57,10 +57,10 @@ stages:
         matrix:
           Linux:
             osName: 'Linux'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
           Mac:
             osName: 'Mac'
-            imageName: 'macos-10.13'
+            imageName: 'macos-10.14'
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
@@ -114,10 +114,10 @@ stages:
         matrix:
           Linux:
             osName: 'Linux'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
           Mac:
             osName: 'Mac'
-            imageName: 'macos-10.13'
+            imageName: 'macos-10.14'
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
@@ -182,7 +182,7 @@ stages:
     - job: Other_Packages
       displayName: Create Standard Packages
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       steps:
       - checkout: self
         fetchDepth: 1
@@ -283,7 +283,7 @@ stages:
     jobs:
     - job: Prepare
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       steps:
       - checkout: none
       - task: DownloadPipelineArtifact@2
@@ -304,7 +304,7 @@ stages:
           MacCore:
             osName: 'Mac'
             testName: 'MacCore'
-            imageName: 'macos-10.13'
+            imageName: 'macos-10.14'
           WindowsCore:
             osName: 'Windows'
             testName: 'WindowsCore'
@@ -312,7 +312,7 @@ stages:
           LinuxCore:
             osName: 'Linux'
             testName: 'LinuxCore'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
             pattern: 'Radarr.**.linux-core-x64.tar.gz'
 
       pool:
@@ -346,7 +346,7 @@ stages:
         displayName: Install fpcalc
         condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - bash: |
-          SYMLINK=5_18_1
+          SYMLINK=6_6_0
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
           echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
@@ -392,7 +392,7 @@ stages:
             containerImage: radarr/testimages:mono-6.10
 
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       
       container: $[ variables['containerImage'] ]
 
@@ -433,7 +433,7 @@ stages:
     jobs:
     - job: Prepare
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       steps:
       - checkout: none
       - task: DownloadPipelineArtifact@2
@@ -453,7 +453,7 @@ stages:
           MacCore:
             osName: 'Mac'
             testName: 'MacCore'
-            imageName: 'macos-10.13'
+            imageName: 'macos-10.14'
             pattern: 'Radarr.**.osx-core-x64.tar.gz'
           WindowsCore:
             osName: 'Windows'
@@ -463,7 +463,7 @@ stages:
           LinuxCore:
             osName: 'Linux'
             testName: 'LinuxCore'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
             pattern: 'Radarr.**.linux-core-x64.tar.gz'
 
       pool:
@@ -471,7 +471,7 @@ stages:
         
       steps:
       - bash: |
-          SYMLINK=5_18_1
+          SYMLINK=6_6_0
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
           echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
@@ -542,7 +542,7 @@ stages:
         pattern: 'Radarr.**.linux.tar.gz'
 
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
 
       container: $[ variables['containerImage'] ]
 
@@ -602,12 +602,12 @@ stages:
         matrix:
           Linux:
             osName: 'Linux'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
             pattern: 'Radarr.**.linux-core-x64.tar.gz'
             failBuild: true
           Mac:
             osName: 'Mac'
-            imageName: 'macos-10.13' # Fails due to firefox not being installed on image
+            imageName: 'macos-10.14' # Fails due to firefox not being installed on image
             pattern: 'Radarr.**.osx-core-x64.tar.gz'
             failBuild: false
           Windows:
@@ -683,7 +683,7 @@ stages:
     jobs:
     - job: Prepare
       pool:
-        vmImage: 'ubuntu-16.04'
+        vmImage: 'ubuntu-18.04'
       steps:
       - checkout: none
       - task: DownloadPipelineArtifact@2
@@ -700,7 +700,7 @@ stages:
         matrix:
           Linux:
             osName: 'Linux'
-            imageName: 'ubuntu-16.04'
+            imageName: 'ubuntu-18.04'
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
