@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -252,7 +252,6 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
             });
         }
 
-        [TestCase("BitMeTv/BitMeTv.xml")]
         [TestCase("IPTorrents/IPTorrents.xml")]
         [TestCase("Nyaa/Nyaa.xml")]
         [TestCase("Torznab/torznab_hdaccess_net.xml")]
