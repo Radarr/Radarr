@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
@@ -8,26 +8,15 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
-    public class TraktSettingsValidator : AbstractValidator<TraktSettings>
+    public class TraktSettingsBaseValidator<TSettings> : AbstractValidator<TSettings>
+    where TSettings : TraktSettingsBase<TSettings>
     {
-        public TraktSettingsValidator()
+        public TraktSettingsBaseValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
             RuleFor(c => c.AccessToken).NotEmpty();
             RuleFor(c => c.RefreshToken).NotEmpty();
             RuleFor(c => c.Expires).NotEmpty();
-
-            // List name required for UserCustomList
-            RuleFor(c => c.Listname)
-                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
-                .When(c => c.TraktListType == (int)TraktListType.UserCustomList)
-                .WithMessage("List name is required when using Custom Trakt Lists");
-
-            // Username required for UserWatchedList/UserWatchList
-            RuleFor(c => c.Username)
-                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
-                .When(c => c.TraktListType == (int)TraktListType.UserWatchedList || c.TraktListType == (int)TraktListType.UserWatchList)
-                .WithMessage("Username is required when using User Trakt Lists");
 
             // Loose validation @TODO
             RuleFor(c => c.Rating)
@@ -56,17 +45,15 @@ namespace NzbDrone.Core.NetImport.Trakt
         }
     }
 
-    public class TraktSettings : IProviderConfig
+    public class TraktSettingsBase<TSettings> : IProviderConfig
+        where TSettings : TraktSettingsBase<TSettings>
     {
-        private static readonly TraktSettingsValidator Validator = new TraktSettingsValidator();
+        protected virtual AbstractValidator<TSettings> Validator => new TraktSettingsBaseValidator<TSettings>();
 
-        public TraktSettings()
+        public TraktSettingsBase()
         {
             Link = "https://api.trakt.tv";
             SignIn = "startOAuth";
-            TraktListType = (int)Trakt.TraktListType.Popular;
-            Username = "";
-            Listname = "";
             Rating = "0-100";
             Certification = "NR,G,PG,PG-13,R,NC-17";
             Genres = "";
@@ -88,34 +75,28 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(0, Label = "Expires", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public DateTime Expires { get; set; }
 
+        [FieldDefinition(0, Label = "Auth User", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
+        public string AuthUser { get; set; }
+
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
         public string Link { get; set; }
 
-        [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TraktListType), HelpText = "Trakt list type")]
-        public int TraktListType { get; set; }
-
-        [FieldDefinition(2, Label = "Username", HelpText = "Required for User List (Ignores Filtering Options)")]
-        public string Username { get; set; }
-
-        [FieldDefinition(3, Label = "List Name", HelpText = "Required for Custom List (Ignores Filtering Options)")]
-        public string Listname { get; set; }
-
-        [FieldDefinition(4, Label = "Rating", HelpText = "Filter movies by rating range (0-100)")]
+        [FieldDefinition(1, Label = "Rating", HelpText = "Filter movies by rating range (0-100)")]
         public string Rating { get; set; }
 
-        [FieldDefinition(5, Label = "Certification", HelpText = "Filter movies by a certification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
+        [FieldDefinition(2, Label = "Certification", HelpText = "Filter movies by a certification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
         public string Certification { get; set; }
 
-        [FieldDefinition(6, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated)")]
+        [FieldDefinition(3, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated)")]
         public string Genres { get; set; }
 
-        [FieldDefinition(7, Label = "Years", HelpText = "Filter movies by year or year range")]
+        [FieldDefinition(4, Label = "Years", HelpText = "Filter movies by year or year range")]
         public string Years { get; set; }
 
-        [FieldDefinition(8, Label = "Limit", HelpText = "Limit the number of movies to get")]
+        [FieldDefinition(5, Label = "Limit", HelpText = "Limit the number of movies to get")]
         public int Limit { get; set; }
 
-        [FieldDefinition(9, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]
+        [FieldDefinition(6, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]
         public string TraktAdditionalParameters { get; set; }
 
         [FieldDefinition(99, Label = "Authenticate with Trakt", Type = FieldType.OAuth)]
@@ -123,7 +104,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         public NzbDroneValidationResult Validate()
         {
-            return new NzbDroneValidationResult(Validator.Validate(this));
+            return new NzbDroneValidationResult(Validator.Validate((TSettings)this));
         }
     }
 }

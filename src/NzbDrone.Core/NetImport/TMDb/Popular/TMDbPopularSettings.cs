@@ -8,7 +8,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
         public TMDbPopularSettingsValidator()
         : base()
         {
-            RuleFor(c => c.TMDbListType).NotEmpty();
+            RuleFor(c => c.TMDbListType).NotNull();
 
             RuleFor(c => c.FilterCriteria).SetValidator(_ => new TMDbFilterSettingsValidator());
         }
