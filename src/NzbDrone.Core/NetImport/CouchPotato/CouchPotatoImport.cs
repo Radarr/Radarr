@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
@@ -9,7 +9,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
     {
         public override string Name => "CouchPotato";
 
-        public override NetImportType ListType => NetImportType.Other;
+        public override NetImportType ListType => NetImportType.Program;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

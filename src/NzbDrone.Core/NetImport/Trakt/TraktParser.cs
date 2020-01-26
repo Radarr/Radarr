@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
@@ -8,15 +8,13 @@ namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktParser : IParseNetImportResponse
     {
-        private readonly TraktSettings _settings;
         private NetImportResponse _importResponse;
 
-        public TraktParser(TraktSettings settings)
+        public TraktParser()
         {
-            _settings = settings;
         }
 
-        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
+        public virtual IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
@@ -27,41 +25,23 @@ namespace NzbDrone.Core.NetImport.Trakt
                 return movies;
             }
 
-            if (_settings.TraktListType == (int)TraktListType.Popular)
-            {
-                var jsonResponse = JsonConvert.DeserializeObject<List<Movie>>(_importResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
 
-                foreach (var movie in jsonResponse)
-                {
-                    movies.AddIfNotNull(new Movies.Movie()
-                    {
-                        Title = movie.title,
-                        ImdbId = movie.ids.imdb,
-                        TmdbId = movie.ids.tmdb,
-                        Year = movie.year ?? 0
-                    });
-                }
+            // no movies were return
+            if (jsonResponse == null)
+            {
+                return movies;
             }
-            else
+
+            foreach (var movie in jsonResponse)
             {
-                var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
-
-                // no movies were return
-                if (jsonResponse == null)
+                movies.AddIfNotNull(new Movies.Movie()
                 {
-                    return movies;
-                }
-
-                foreach (var movie in jsonResponse)
-                {
-                    movies.AddIfNotNull(new Movies.Movie()
-                    {
-                        Title = movie.movie.title,
-                        ImdbId = movie.movie.ids.imdb,
-                        TmdbId = movie.movie.ids.tmdb,
-                        Year = movie.movie.year ?? 0
-                    });
-                }
+                    Title = movie.Movie.Title,
+                    ImdbId = movie.Movie.Ids.Imdb,
+                    TmdbId = movie.Movie.Ids.Tmdb,
+                    Year = movie.Movie.Year ?? 0
+                });
             }
 
             return movies;

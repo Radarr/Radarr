@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
@@ -11,7 +11,7 @@ namespace NzbDrone.Core.NetImport.Radarr
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        public override NetImportType ListType => NetImportType.Other;
+        public override NetImportType ListType => NetImportType.Program;
 
         public RadarrImport(IHttpClient httpClient,
                             IConfigService configService,
