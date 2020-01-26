@@ -54,14 +54,28 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-RP", "EVL")]
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-RP-RP", "EVL")]
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-Obfuscated", "EVL")]
-        [TestCase("Lost.S04E04.720p.BluRay.x264-xHD-NZBgeek", "xHD")]
-        [TestCase("Blue.Bloods.S05E11.720p.HDTV.X264-DIMENSION-NZBgeek", "DIMENSION")]
-        [TestCase("Lost.S04E04.720p.BluRay.x264-xHD-1", "xHD")]
-        [TestCase("Blue.Bloods.S05E11.720p.HDTV.X264-DIMENSION-1", "DIMENSION")]
-        [TestCase("saturday.night.live.s40e11.kevin.hart_sia.720p.hdtv.x264-w4f-sample.mkv", "w4f")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-RP", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-RP-RP", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Obfuscation", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-NZBgeek", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-1", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-sample.mkv", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Scrambled", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-postbot", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-xpost", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuv", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuv02", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuvfinhel", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Obfuscated", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-WhiteRev", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-BUYMORE", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-AsRequested", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-AlternativeToRequested", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-GEROV", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Z0iDS3N", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Chamele0n", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4P", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4Planet", "EVO")]
         public void should_not_include_repost_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);

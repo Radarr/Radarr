@@ -84,11 +84,11 @@ namespace Radarr.Api.V3.Indexers
             return GetRss();
         }
 
-        private List<ReleaseResource> GetMovieReleases(int episodeId)
+        private List<ReleaseResource> GetMovieReleases(int movieId)
         {
             try
             {
-                var decisions = _nzbSearchService.MovieSearch(episodeId, true, true);
+                var decisions = _nzbSearchService.MovieSearch(movieId, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
                 return MapDecisions(prioritizedDecisions);
