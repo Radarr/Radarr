@@ -9,6 +9,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using HttpStatusCode = System.Net.HttpStatusCode;
@@ -22,6 +23,7 @@ namespace Radarr.Api.V3.Indexers
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
+        private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
         private readonly ICached<RemoteMovie> _remoteMovieCache;
@@ -31,6 +33,7 @@ namespace Radarr.Api.V3.Indexers
                              IMakeDownloadDecision downloadDecisionMaker,
                              IPrioritizeDownloadDecision prioritizeDownloadDecision,
                              IDownloadService downloadService,
+                             IMovieService movieService,
                              ICacheManager cacheManager,
                              Logger logger)
         {
@@ -39,6 +42,7 @@ namespace Radarr.Api.V3.Indexers
             _downloadDecisionMaker = downloadDecisionMaker;
             _prioritizeDownloadDecision = prioritizeDownloadDecision;
             _downloadService = downloadService;
+            _movieService = movieService;
             _logger = logger;
 
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
@@ -63,6 +67,20 @@ namespace Radarr.Api.V3.Indexers
 
             try
             {
+                if (remoteMovie.Movie == null)
+                {
+                    if (release.MovieId.HasValue)
+                    {
+                        var movie = _movieService.GetMovie(release.MovieId.Value);
+
+                        remoteMovie.Movie = movie;
+                    }
+                    else
+                    {
+                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching movie");
+                    }
+                }
+
                 _downloadService.DownloadReport(remoteMovie);
             }
             catch (ReleaseDownloadException ex)
