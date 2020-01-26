@@ -118,6 +118,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
+                        movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
                         movieFile.SceneName = GetSceneName(downloadClientItem, localMovie);
 
                         var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); //TODO: Check if this works
@@ -174,6 +175,37 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
 
             return importResults;
+        }
+
+        private string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
+        {
+            if (downloadClientItem != null)
+            {
+                return downloadClientItem.OutputPath.Directory.ToString().GetRelativePath(localMovie.Path);
+            }
+
+            var path = localMovie.Path;
+            var folderMovieInfo = localMovie.FolderMovieInfo;
+
+            if (folderMovieInfo != null)
+            {
+                var folderPath = path.GetAncestorPath(folderMovieInfo.SimpleReleaseTitle);
+
+                if (folderPath != null)
+                {
+                    return folderPath.GetParentPath().GetRelativePath(path);
+                }
+            }
+
+            var parentPath = path.GetParentPath();
+            var grandparentPath = parentPath.GetParentPath();
+
+            if (grandparentPath != null)
+            {
+                return grandparentPath.GetRelativePath(path);
+            }
+
+            return Path.Combine(Path.GetFileName(parentPath), Path.GetFileName(path));
         }
 
         private string GetSceneName(DownloadClientItem downloadClientItem, LocalMovie localMovie)

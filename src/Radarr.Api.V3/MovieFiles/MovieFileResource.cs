@@ -23,6 +23,7 @@ namespace Radarr.Api.V3.MovieFiles
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
+        public string OriginalFilePath { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public List<Language> Languages { get; set; }
     }
@@ -51,8 +52,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-
-                //QualityCutoffNotMet
+                OriginalFilePath = model.OriginalFilePath
             };
         }
 
@@ -76,7 +76,8 @@ namespace Radarr.Api.V3.MovieFiles
                 IndexerFlags = model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName)
+                MediaInfo = model.MediaInfo.ToResource(model.SceneName),
+                OriginalFilePath = model.OriginalFilePath
             };
         }
 
@@ -101,7 +102,8 @@ namespace Radarr.Api.V3.MovieFiles
                 Quality = model.Quality,
                 Languages = model.Languages,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(movie.Profile, model.Quality)
+                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(movie.Profile, model.Quality),
+                OriginalFilePath = model.OriginalFilePath
             };
         }
     }
