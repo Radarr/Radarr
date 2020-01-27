@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using Marr.Data.QGen;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Blacklisting
@@ -15,33 +16,43 @@ namespace NzbDrone.Core.Blacklisting
 
     public class BlacklistRepository : BasicRepository<Blacklist>, IBlacklistRepository
     {
-        public BlacklistRepository(IMainDatabase database, IEventAggregator eventAggregator) :
-            base(database, eventAggregator)
+        public BlacklistRepository(IMainDatabase database, IEventAggregator eventAggregator)
+            : base(database, eventAggregator)
         {
         }
 
         public List<Blacklist> BlacklistedByTitle(int movieId, string sourceTitle)
         {
-            return Query.Where(e => e.MovieId == movieId)
-                        .AndWhere(e => e.SourceTitle.Contains(sourceTitle)).ToList();
+            return Query(x => x.MovieId == movieId && x.SourceTitle.Contains(sourceTitle));
         }
 
         public List<Blacklist> BlacklistedByTorrentInfoHash(int movieId, string torrentInfoHash)
         {
-            return Query.Where(e => e.MovieId == movieId)
-                        .AndWhere(e => e.TorrentInfoHash.Contains(torrentInfoHash)).ToList();
+            return Query(x => x.MovieId == movieId && x.TorrentInfoHash.Contains(torrentInfoHash));
         }
 
         public List<Blacklist> BlacklistedByMovie(int movieId)
         {
-            return Query.Where(b => b.MovieId == movieId).ToList();
+            return Query(x => x.MovieId == movieId);
         }
 
-        protected override SortBuilder<Blacklist> GetPagedQuery(QueryBuilder<Blacklist> query, PagingSpec<Blacklist> pagingSpec)
+        private IEnumerable<Blacklist> SelectJoined(SqlBuilder.Template sql)
         {
-            var baseQuery = query.Join<Blacklist, Movie>(JoinType.Inner, h => h.Movie, (h, s) => h.MovieId == s.Id);
-
-            return base.GetPagedQuery(baseQuery, pagingSpec);
+            using (var conn = _database.OpenConnection())
+            {
+                return conn.Query<Blacklist, Movie, Blacklist>(
+                    sql.RawSql,
+                    (bl, movie) =>
+                    {
+                        bl.Movie = movie;
+                        return bl;
+                    },
+                    sql.Parameters)
+                    .ToList();
+            }
         }
+
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Movie>((b, m) => b.MovieId == m.Id);
+        protected override IEnumerable<Blacklist> PagedSelector(SqlBuilder.Template sql) => SelectJoined(sql);
     }
 }

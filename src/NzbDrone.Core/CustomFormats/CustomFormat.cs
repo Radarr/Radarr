@@ -9,7 +9,6 @@ namespace NzbDrone.Core.CustomFormats
     {
         public CustomFormat()
         {
-
         }
 
         public CustomFormat(string name, params string[] tags)
@@ -17,6 +16,13 @@ namespace NzbDrone.Core.CustomFormats
             Name = name;
             FormatTags = tags.Select(t => new FormatTag(t)).ToList();
         }
+
+        public static CustomFormat None => new CustomFormat
+        {
+            Id = 0,
+            Name = "None",
+            FormatTags = new List<FormatTag>()
+        };
 
         public string Name { get; set; }
 
@@ -27,42 +33,44 @@ namespace NzbDrone.Core.CustomFormats
             return Name;
         }
 
-        public static CustomFormat None => new CustomFormat("None");
-
         public bool Equals(CustomFormat other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return int.Equals(Id, other.Id);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((CustomFormat) obj);
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((CustomFormat)obj);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
-        }
-    }
-
-    public static class CustomFormatExtensions
-    {
-        public static string ToExtendedString(this IEnumerable<CustomFormat> formats)
-        {
-            return string.Join(", ", formats.Select(f => f.ToString()));
-        }
-
-        public static List<CustomFormat> WithNone(this IEnumerable<CustomFormat> formats)
-        {
-            var list = formats.ToList();
-            if (list.Any()) return list;
-
-            return new List<CustomFormat>{CustomFormat.None};
+            return Id;
         }
     }
 }

@@ -23,9 +23,9 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
             UseRealHttp();
 
             _singleSearchCriteria = new MovieSearchCriteria()
-                {
-                    SceneTitles = new List<string> { "Person of Interest" },
-                };
+            {
+                SceneTitles = new List<string> { "Person of Interest" },
+            };
         }
 
         private void ValidateTorrentResult(IList<ReleaseInfo> reports, bool hasSize = false, bool hasInfoUrl = false, bool hasMagnet = false)
@@ -60,6 +60,5 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
                 reports.Should().OnlyContain(c => c.Size > 0);
             }
         }
-
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {
@@ -31,12 +28,6 @@ namespace NzbDrone.Core.Parser.Augmenters
                 if ((otherInfo.Edition?.Length ?? 0) > (movieInfo.Edition?.Length ?? 0))
                 {
                     movieInfo.Edition = otherInfo.Edition;
-                }
-
-                if (otherInfo.Quality != null)
-                {
-                    movieInfo.Quality.CustomFormats = movieInfo.Quality.CustomFormats.Union(otherInfo.Quality.CustomFormats)
-                        .Distinct().ToList();
                 }
 
                 if (otherInfo.ReleaseGroup.IsNotNullOrWhiteSpace() && movieInfo.ReleaseGroup.IsNullOrWhiteSpace())

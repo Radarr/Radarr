@@ -1,5 +1,6 @@
 using System.Linq;
 using NLog;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -12,16 +13,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
     {
         private readonly IPendingReleaseService _pendingReleaseService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly ICustomFormatCalculationService _formatService;
         private readonly IDelayProfileService _delayProfileService;
         private readonly Logger _logger;
 
         public DelaySpecification(IPendingReleaseService pendingReleaseService,
                                   IUpgradableSpecification qualityUpgradableSpecification,
+                                  ICustomFormatCalculationService formatService,
                                   IDelayProfileService delayProfileService,
                                   Logger logger)
         {
             _pendingReleaseService = pendingReleaseService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _formatService = formatService;
             _delayProfileService = delayProfileService;
             _logger = logger;
         }
@@ -37,14 +41,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var profile = subject.Movie.Profile.Value;
+            var profile = subject.Movie.Profile;
             var delayProfile = _delayProfileService.BestForTags(subject.Movie.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
-            // Preferred word count 
+            // Preferred word count
             var title = subject.Release.Title;
-            var preferredWords = subject.Movie.Profile?.Value?.PreferredTags;
+            var preferredWords = subject.Movie.Profile?.PreferredTags;
             var preferredCount = 0;
 
             if (preferredWords == null)
@@ -65,34 +69,39 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var comparer = new QualityModelComparer(profile);
 
-            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && subject.Movie.MovieFile != null) && (preferredCount > 0 || preferredWords == null))
+            var file = subject.Movie.MovieFile;
+
+            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null) && (preferredCount > 0 || preferredWords == null))
             {
-                    var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
+                var customFormats = _formatService.ParseCustomFormat(file);
+                var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
+                                                                              file.Quality,
+                                                                              customFormats,
+                                                                              subject.ParsedMovieInfo.Quality,
+                                                                              subject.CustomFormats);
 
-                    if (upgradable)
+                if (upgradable)
+                {
+                    var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
+
+                    if (revisionUpgrade)
                     {
-                        var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
-
-                        if (revisionUpgrade)
-                        {
-                            _logger.Debug("New quality is a better revision for existing quality and preferred word count is {0}, skipping delay", preferredCount);
-                            return Decision.Accept();
-                        }
+                        _logger.Debug("New quality is a better revision for existing quality and preferred word count is {0}, skipping delay", preferredCount);
+                        return Decision.Accept();
                     }
-                
+                }
             }
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = profile.LastAllowedQuality();
             var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
 
-            if (isBestInProfile && isPreferredProtocol && (preferredCount > 0  || preferredWords == null))
+            if (isBestInProfile && isPreferredProtocol && (preferredCount > 0 || preferredWords == null))
             {
                 _logger.Debug("Quality is highest in profile for preferred protocol and preferred word count is {0}, will not delay.", preferredCount);
                 return Decision.Accept();
             }
 
-            
             var oldest = _pendingReleaseService.OldestPendingRelease(subject.Movie.Id);
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)

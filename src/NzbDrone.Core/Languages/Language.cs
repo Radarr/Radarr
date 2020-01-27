@@ -32,15 +32,30 @@ namespace NzbDrone.Core.Languages
 
         public bool Equals(Language other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return Id.Equals(other.Id);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
             return Equals(obj as Language);
         }
@@ -54,7 +69,7 @@ namespace NzbDrone.Core.Languages
         {
             return !Equals(left, right);
         }
-
+        
         public static Language Unknown      { get { return new Language(0, "Unknown"); } }
         public static Language English      { get { return new Language(1, "English"); } }
         public static Language French       { get { return new Language(2, "French"); } }
@@ -65,7 +80,7 @@ namespace NzbDrone.Core.Languages
         public static Language Dutch        { get { return new Language(7, "Dutch"); } }
         public static Language Japanese     { get { return new Language(8, "Japanese"); } }
         public static Language Icelandic    { get { return new Language(9, "Icelandic"); } }
-        public static Language Chinese     { get { return new Language(10, "Chinese"); } }
+        public static Language Chinese      { get { return new Language(10, "Chinese"); } }
         public static Language Russian      { get { return new Language(11, "Russian"); } }
         public static Language Polish       { get { return new Language(12, "Polish"); } }
         public static Language Vietnamese   { get { return new Language(13, "Vietnamese"); } }
@@ -83,7 +98,6 @@ namespace NzbDrone.Core.Languages
         public static Language Czech        { get { return new Language(25, "Czech"); } }
         public static Language Brazilian    { get { return new Language(26, "Brazilian"); } }
         public static Language Any          { get { return new Language(-1, "Any"); } }
-
         
         public static List<Language> All
         {
@@ -125,7 +139,10 @@ namespace NzbDrone.Core.Languages
 
         public static Language FindById(int id)
         {
-            if (id == 0) return Unknown;
+            if (id == 0)
+            {
+                return Unknown;
+            }
 
             Language language = All.FirstOrDefault(v => v.Id == id);
 

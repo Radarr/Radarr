@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Marr.Data;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -18,8 +16,9 @@ namespace NzbDrone.Core.NetImport
         public bool ShouldMonitor { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
-        public LazyLoaded<Profile> Profile { get; set; }
         public string RootFolderPath { get; set; }
         public override bool Enable => Enabled;
+
+        public NetImportType ListType { get; set; }
     }
 }

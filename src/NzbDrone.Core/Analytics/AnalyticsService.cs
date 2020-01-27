@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Analytics
             _historyService = historyService;
         }
 
-        public bool IsEnabled => _configFileProvider.AnalyticsEnabled && RuntimeInfo.IsProduction || RuntimeInfo.IsDevelopment;
+        public bool IsEnabled => (_configFileProvider.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
 
         public bool InstallIsActive
         {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Data;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -21,14 +17,12 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void ConvertConfig(IDbConnection conn, IDbTransaction tran)
         {
-
             using (IDbCommand namingConfigCmd = conn.CreateCommand())
             {
                 namingConfigCmd.Transaction = tran;
                 namingConfigCmd.CommandText = @"SELECT * FROM NamingConfig LIMIT 1";
                 using (IDataReader namingConfigReader = namingConfigCmd.ExecuteReader())
                 {
-
                     while (namingConfigReader.Read())
                     {
                         // Output Settings
@@ -38,12 +32,9 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         movieTitlePattern = "{Movie Title}";
 
-                        var standardMovieFormat = string.Format("{0} {1} {2}", movieTitlePattern, 
-                                                                             movieYearPattern,
-                                                                             qualityFormat);
+                        var standardMovieFormat = string.Format("{0} {1} {2}", movieTitlePattern, movieYearPattern, qualityFormat);
 
                         var movieFolderFormat = string.Format("{0} {1}", movieTitlePattern, movieYearPattern);
-                        
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {

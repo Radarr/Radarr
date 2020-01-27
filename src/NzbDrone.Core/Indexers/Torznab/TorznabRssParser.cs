@@ -22,12 +22,18 @@ namespace NzbDrone.Core.Indexers.Torznab
             var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
-            if (error == null) return true;
+            if (error == null)
+            {
+                return true;
+            }
 
             var code = Convert.ToInt32(error.Attribute("code").Value);
             var errorMessage = error.Attribute("description").Value;
 
-            if (code >= 100 && code <= 199) throw new ApiKeyException("Invalid API key");
+            if (code >= 100 && code <= 199)
+            {
+                throw new ApiKeyException("Invalid API key");
+            }
 
             if (!indexerResponse.Request.Url.FullUri.Contains("apikey=") && errorMessage == "Missing parameter")
             {
@@ -57,7 +63,6 @@ namespace NzbDrone.Core.Indexers.Torznab
 
             return torrentInfo;
         }
-
 
         protected override bool PostProcess(IndexerResponse indexerResponse, List<XElement> items, List<ReleaseInfo> releases)
         {
@@ -122,7 +127,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected virtual string GetImdbId(XElement item)
         {
             var imdbIdString = TryGetTorznabAttribute(item, "imdbid");
-            return (!imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null);
+            return !imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null;
         }
 
         protected override string GetInfoHash(XElement item)
@@ -167,11 +172,11 @@ namespace NzbDrone.Core.Indexers.Torznab
             return base.GetPeers(item);
         }
 
-		protected IndexerFlags GetFlags(XElement item)
-		{
-			IndexerFlags flags = 0;
+        protected IndexerFlags GetFlags(XElement item)
+        {
+            IndexerFlags flags = 0;
 
-			var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
+            var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
 
             var uploadFactor = TryGetFloatTorznabAttribute(item, "uploadvolumefactor", 1);
 
@@ -191,7 +196,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             }
 
             return flags;
-		}
+        }
 
         protected string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
         {
@@ -205,7 +210,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             return defaultValue;
         }
 
-		protected float TryGetFloatTorznabAttribute(XElement item, string key, float defaultValue = 0)
+        protected float TryGetFloatTorznabAttribute(XElement item, string key, float defaultValue = 0)
         {
             var attr = TryGetTorznabAttribute(item, key, defaultValue.ToString());
 

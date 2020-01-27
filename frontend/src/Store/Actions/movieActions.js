@@ -46,8 +46,8 @@ export const filters = [
     ]
   },
   {
-    key: 'wanted',
-    label: 'Wanted Missing',
+    key: 'missing',
+    label: 'Missing',
     filters: [
       {
         key: 'monitored',
@@ -57,6 +57,27 @@ export const filters = [
       {
         key: 'hasFile',
         value: false,
+        type: filterTypes.EQUAL
+      }
+    ]
+  },
+  {
+    key: 'wanted',
+    label: 'Wanted',
+    filters: [
+      {
+        key: 'monitored',
+        value: true,
+        type: filterTypes.EQUAL
+      },
+      {
+        key: 'hasFile',
+        value: false,
+        type: filterTypes.EQUAL
+      },
+      {
+        key: 'isAvailable',
+        value: true,
         type: filterTypes.EQUAL
       }
     ]
@@ -76,7 +97,7 @@ export const filters = [
         type: filterTypes.EQUAL
       },
       {
-        key: 'movieFile.qualityCutoffNotMet',
+        key: 'qualityCutoffNotMet',
         value: true,
         type: filterTypes.EQUAL
       }
@@ -85,20 +106,35 @@ export const filters = [
 ];
 
 export const filterPredicates = {
-  missing: function(item) {
-    const { statistics = {} } = item;
-
-    return statistics.episodeCount - statistics.episodeFileCount > 0;
-  },
-
   added: function(item, filterValue, type) {
     return dateFilterPredicate(item.added, filterValue, type);
+  },
+
+  collection: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const { collection } = item;
+
+    return predicate(collection ? collection.name : '', filterValue);
+  },
+
+  inCinemas: function(item, filterValue, type) {
+    return dateFilterPredicate(item.inCinemas, filterValue, type);
+  },
+
+  physicalRelease: function(item, filterValue, type) {
+    return dateFilterPredicate(item.physicalRelease, filterValue, type);
   },
 
   ratings: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
     return predicate(item.ratings.value * 10, filterValue);
+  },
+
+  qualityCutoffNotMet: function(item) {
+    const { movieFile = {} } = item;
+
+    return movieFile.qualityCutoffNotMet;
   }
 };
 
@@ -120,6 +156,31 @@ export const sortPredicates = {
 
     if (item.status === 'released') {
       result += 3;
+    }
+
+    return result;
+  },
+
+  movieStatus: function(item) {
+    let result = 0;
+
+    const hasMovieFile = !!item.movieFile;
+
+    if (hasMovieFile) {
+      // TODO: Consider Quality Weight for Sorting within status of hasMovie
+      if (item.movieFile.qualityCutoffNotMet) {
+        result += 4;
+      } else {
+        result += 8;
+      }
+    }
+
+    if (item.isAvailable) {
+      result++;
+    }
+
+    if (item.monitored) {
+      result += 2;
     }
 
     return result;

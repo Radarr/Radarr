@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,10 +7,10 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Extras.Subtitles
 {

@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         }
 
         [TestCase("Prometheus", "Prometheus")]
+
         // TODO: TMDB Doesn't like when we clean periods from this
         // [TestCase("The Man from U.N.C.L.E.", "The Man from U.N.C.L.E.")]
         [TestCase("imdb:tt2527336", "Star Wars: The Last Jedi")]
@@ -39,6 +40,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("tmdbid: -12")]
         [TestCase("tmdbid:1")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
+        [TestCase("imdb: tt9805708")]
         public void no_search_result(string term)
         {
             var result = Subject.SearchForNewMovie(term);

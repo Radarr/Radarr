@@ -13,8 +13,8 @@ namespace NzbDrone.Update.Test
     [TestFixture]
     public class InstallUpdateServiceFixture : TestBase<InstallUpdateService>
     {
-        private string _targetFolder = @"C:\NzbDrone\".AsOsAgnostic();
         private const int _processId = 12;
+        private string _targetFolder = @"C:\NzbDrone\".AsOsAgnostic();
 
         [SetUp]
         public void Setup()

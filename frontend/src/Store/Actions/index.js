@@ -19,6 +19,7 @@ import * as rootFolders from './rootFolderActions';
 import * as movies from './movieActions';
 import * as movieHistory from './movieHistoryActions';
 import * as movieIndex from './movieIndexActions';
+import * as movieCredits from './movieCreditsActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
@@ -45,6 +46,7 @@ export default [
   movies,
   movieHistory,
   movieIndex,
+  movieCredits,
   settings,
   system,
   tags

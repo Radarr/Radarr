@@ -1,5 +1,5 @@
-﻿using NzbDrone.Common.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
 {

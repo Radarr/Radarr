@@ -38,7 +38,9 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
         {
             var table = new TableDefinition();
 
-            while (reader.Read() != SqliteSyntaxReader.TokenType.StringToken || reader.ValueToUpper != "TABLE") ;
+            while (reader.Read() != SqliteSyntaxReader.TokenType.StringToken || reader.ValueToUpper != "TABLE")
+            {
+            }
 
             if (reader.Read() == SqliteSyntaxReader.TokenType.StringToken && reader.ValueToUpper == "IF")
             {
@@ -87,7 +89,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             var column = new ColumnDefinition();
 
             column.Name = ParseIdentifier(reader);
-            
+
             reader.TrimBuffer();
 
             reader.Read();
@@ -114,7 +116,10 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             reader.Read();
             index.IsUnique = reader.ValueToUpper == "UNIQUE";
 
-            while (reader.ValueToUpper != "INDEX") reader.Read();
+            while (reader.ValueToUpper != "INDEX")
+            {
+                reader.Read();
+            }
 
             if (reader.Read() == SqliteSyntaxReader.TokenType.StringToken && reader.ValueToUpper == "IF")
             {
@@ -131,7 +136,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             reader.Read(); // ON
 
             index.TableName = ParseIdentifier(reader);
-            
+
             // Find Column List
             reader.SkipTillToken(SqliteSyntaxReader.TokenType.ListStart);
 
@@ -175,21 +180,18 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
             return reader.Value;
         }
 
-        #region ISchemaDumper Members
-
         public virtual IList<TableDefinition> ReadDbSchema()
         {
             IList<TableDefinition> tables = ReadTables();
             foreach (var table in tables)
             {
                 table.Indexes = ReadIndexes(table.SchemaName, table.Name);
+
                 //table.ForeignKeys = ReadForeignKeys(table.SchemaName, table.Name);
             }
 
             return tables;
         }
-
-        #endregion
 
         protected virtual DataSet Read(string template, params object[] args)
         {
@@ -210,6 +212,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
                 tableDefinitionList.Add(table);
             }
+
             return tableDefinitionList;
         }
 
@@ -252,6 +255,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 var index = ReadIndexSchema(sql);
                 indexes.Add(index);
             }
+
             return indexes;
         }
     }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 {

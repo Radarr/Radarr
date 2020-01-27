@@ -53,19 +53,19 @@ function AppRoutes(props) {
 
       {
         window.Radarr.urlBase &&
-        <Route
-          exact={true}
-          path="/"
-          addUrlBase={false}
-          render={() => {
-            return (
-              <Redirect
-                to={getPathWithUrlBase('/')}
-                component={app}
-              />
-            );
-          }}
-        />
+          <Route
+            exact={true}
+            path="/"
+            addUrlBase={false}
+            render={() => {
+              return (
+                <Redirect
+                  to={getPathWithUrlBase('/')}
+                  component={app}
+                />
+              );
+            }}
+          />
       }
 
       <Route

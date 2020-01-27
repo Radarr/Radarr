@@ -37,12 +37,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
             if (dotnetVersion >= stableVersion)
             {
                 _logger.Debug("Dotnet version is {0} or better: {1}", stableVersion, dotnetVersion);
-                return new HealthCheck(GetType(), HealthCheckResult.Notice,
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Notice,
                     $"Currently installed .Net Framework {dotnetVersion} is supported but we recommend upgrading to at least {targetVersion}.",
                     "#currently-installed-net-framework-is-supported-but-upgrading-is-recommended");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Error,
+            return new HealthCheck(GetType(),
+                HealthCheckResult.Error,
                 $"Currently installed .Net Framework {dotnetVersion} is old and unsupported. Please upgrade the .Net Framework to at least {targetVersion}.",
                 "#currently-installed-net-framework-is-old-and-unsupported");
         }

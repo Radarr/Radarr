@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         public XbmcMetadataSettings()
         {
             MovieMetadata = true;
+            MovieMetadataURL = true;
             MovieImages = true;
             UseMovieNfo = false;
         }
@@ -26,10 +27,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         [FieldDefinition(0, Label = "Movie Metadata", Type = FieldType.Checkbox)]
         public bool MovieMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Movie Images", Type = FieldType.Checkbox)]
+        [FieldDefinition(1, Label = "Movie Metadata URL", Type = FieldType.Checkbox, HelpText = "Radarr will write the tmdb/imdb url in the .nfo file", Advanced = true)]
+        public bool MovieMetadataURL { get; set; }
+
+        [FieldDefinition(2, Label = "Movie Images", Type = FieldType.Checkbox)]
         public bool MovieImages { get; set; }
 
-        [FieldDefinition(2, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
+        [FieldDefinition(3, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
         public bool UseMovieNfo { get; set; }
 
         public bool IsValid => true;

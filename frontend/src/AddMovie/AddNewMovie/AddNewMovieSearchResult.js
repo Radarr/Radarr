@@ -39,6 +39,10 @@ class AddNewMovieSearchResult extends Component {
     this.setState({ isNewAddMovieModalOpen: false });
   }
 
+  onTMDBLinkPress = (event) => {
+    event.stopPropagation();
+  }
+
   //
   // Render
 
@@ -66,11 +70,13 @@ class AddNewMovieSearchResult extends Component {
     const linkProps = isExistingMovie ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
 
     return (
-      <div>
+      <div className={styles.searchResult}>
         <Link
-          className={styles.searchResult}
+          className={styles.underlay}
           {...linkProps}
-        >
+        />
+
+        <div className={styles.overlay}>
           {
             isSmallScreen ?
               null :
@@ -82,34 +88,46 @@ class AddNewMovieSearchResult extends Component {
               />
           }
 
-          <div>
+          <div className={styles.content}>
             <div className={styles.title}>
               {title}
 
               {
                 !title.contains(year) && !!year &&
-                <span className={styles.year}>({year})</span>
+                  <span className={styles.year}>({year})</span>
               }
 
               {
                 isExistingMovie &&
-                <Icon
-                  className={styles.alreadyExistsIcon}
-                  name={icons.CHECK_CIRCLE}
-                  size={36}
-                  title="Already in your library"
-                />
+                  <Icon
+                    className={styles.alreadyExistsIcon}
+                    name={icons.CHECK_CIRCLE}
+                    size={36}
+                    title="Already in your library"
+                  />
               }
 
               {
                 isExclusionMovie &&
-                <Icon
-                  className={styles.exclusionIcon}
-                  name={icons.DANGER}
-                  size={36}
-                  title="Movie is on Net Import Exclusion List"
-                />
+                  <Icon
+                    className={styles.exclusionIcon}
+                    name={icons.DANGER}
+                    size={36}
+                    title="Movie is on Net Import Exclusion List"
+                  />
               }
+
+              <Link
+                className={styles.tmdbLink}
+                to={`https://www.themoviedb.org/movie/${tmdbId}`}
+                onPress={this.onTMDBLinkPress}
+              >
+                <Icon
+                  className={styles.tmdbLinkIcon}
+                  name={icons.EXTERNAL_LINK}
+                  size={28}
+                />
+              </Link>
             </div>
 
             <div>
@@ -122,19 +140,19 @@ class AddNewMovieSearchResult extends Component {
 
               {
                 !!studio &&
-                <Label size={sizes.LARGE}>
-                  {studio}
-                </Label>
+                  <Label size={sizes.LARGE}>
+                    {studio}
+                  </Label>
               }
 
               {
                 status === 'ended' &&
-                <Label
-                  kind={kinds.DANGER}
-                  size={sizes.LARGE}
-                >
-                  Ended
-                </Label>
+                  <Label
+                    kind={kinds.DANGER}
+                    size={sizes.LARGE}
+                  >
+                    Ended
+                  </Label>
               }
             </div>
 
@@ -142,7 +160,7 @@ class AddNewMovieSearchResult extends Component {
               {overview}
             </div>
           </div>
-        </Link>
+        </div>
 
         <AddNewMovieModal
           isOpen={isNewAddMovieModalOpen && !isExistingMovie}

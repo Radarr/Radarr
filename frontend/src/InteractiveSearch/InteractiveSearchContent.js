@@ -64,6 +64,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'indexerFlags',
+    label: React.createElement(Icon, { name: icons.FLAG }),
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'rejections',
     label: React.createElement(Icon, { name: icons.DANGER }),
     isSortable: true,
@@ -105,7 +111,7 @@ function InteractiveSearchContent(props) {
       {
         !isFetching && !!error &&
           <div>
-            Unable to load results for this episode search. Try again later
+            Unable to load results for this movie search. Try again later
           </div>
       }
 

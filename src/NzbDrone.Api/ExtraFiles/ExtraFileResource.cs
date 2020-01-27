@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.ExtraFiles
 {
@@ -22,7 +21,10 @@ namespace NzbDrone.Api.ExtraFiles
     {
         public static ExtraFileResource ToResource(this MetadataFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ExtraFileResource
             {
@@ -37,7 +39,10 @@ namespace NzbDrone.Api.ExtraFiles
 
         public static ExtraFileResource ToResource(this SubtitleFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ExtraFileResource
             {
@@ -52,7 +57,10 @@ namespace NzbDrone.Api.ExtraFiles
 
         public static ExtraFileResource ToResource(this OtherExtraFile model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ExtraFileResource
             {
@@ -79,6 +87,5 @@ namespace NzbDrone.Api.ExtraFiles
         {
             return movies.Select(ToResource).ToList();
         }
-
     }
 }

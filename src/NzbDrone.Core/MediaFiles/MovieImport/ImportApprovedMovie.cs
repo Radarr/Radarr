@@ -5,14 +5,14 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.Extras;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Extras;
-
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
 {
@@ -27,20 +27,23 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IMediaFileService _mediaFileService;
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
-                                      IMediaFileService mediaFileService,
-                                      IExtraService extraService,
-                                      IDiskProvider diskProvider,
-                                      IEventAggregator eventAggregator,
-                                      Logger logger)
+                                   IMediaFileService mediaFileService,
+                                   IExtraService extraService,
+                                   IDiskProvider diskProvider,
+                                   IHistoryService historyService,
+                                   IEventAggregator eventAggregator,
+                                   Logger logger)
         {
             _movieFileUpgrader = movieFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
             _diskProvider = diskProvider;
+            _historyService = historyService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -52,12 +55,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             //I added a null op for the rare case that the quality is null. TODO: find out why that would even happen in the first place.
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
-                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel{Quality = Quality.Unknown}, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
+                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel { Quality = Quality.Unknown }, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
                    .ThenByDescending(c => c.LocalMovie.Size))
                .SelectMany(c => c)
                .ToList();
-
-
 
             var importResults = new List<ImportResult>();
 
@@ -87,6 +88,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     movieFile.Movie = localMovie.Movie;
                     movieFile.ReleaseGroup = localMovie.ReleaseGroup;
                     movieFile.Edition = localMovie.Edition;
+
+                    if (downloadClientItem?.DownloadId.IsNotNullOrWhiteSpace() == true)
+                    {
+                        var grabHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
+                            .OrderByDescending(h => h.Date)
+                            .FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+
+                        if (Enum.TryParse(grabHistory?.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+                        {
+                            movieFile.IndexerFlags = flags;
+                        }
+                    }
 
                     bool copyOnly;
                     switch (importMode)
@@ -136,6 +149,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles, downloadClientItem));
                     }
+                }
+                catch (RootFolderNotFoundException e)
+                {
+                    _logger.Warn(e, "Couldn't import movie " + localMovie);
+                    _eventAggregator.PublishEvent(new MovieImportFailedEvent(e, localMovie, newDownload, downloadClientItem));
+
+                    importResults.Add(new ImportResult(importDecision, "Failed to import movie, Root folder missing."));
+                }
+                catch (DestinationAlreadyExistsException e)
+                {
+                    _logger.Warn(e, "Couldn't import movie " + localMovie);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import movie, Destination already exists."));
                 }
                 catch (Exception e)
                 {

@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using Nancy;
-using Radarr.Http.Extensions;
-using Radarr.Http.Validation;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using Radarr.Http;
@@ -13,11 +11,15 @@ namespace NzbDrone.Api.Qualities
     public class CustomFormatModule : RadarrRestModule<CustomFormatResource>
     {
         private readonly ICustomFormatService _formatService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IParsingService _parsingService;
 
-        public CustomFormatModule(ICustomFormatService formatService, IParsingService parsingService)
+        public CustomFormatModule(ICustomFormatService formatService,
+                                  ICustomFormatCalculationService formatCalculator,
+                                  IParsingService parsingService)
         {
             _formatService = formatService;
+            _formatCalculator = formatCalculator;
             _parsingService = parsingService;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
@@ -33,7 +35,7 @@ namespace NzbDrone.Api.Qualities
                         var allNewTags = c.Select(t => t.ToLower());
                         var enumerable = allTags.ToList();
                         var newTags = allNewTags.ToList();
-                        return (enumerable.All(newTags.Contains) && f.Id != v.Id && enumerable.Count() == newTags.Count());
+                        return enumerable.All(newTags.Contains) && f.Id != v.Id && enumerable.Count() == newTags.Count();
                     });
                 })
                 .WithMessage("Should be unique.");
@@ -48,11 +50,11 @@ namespace NzbDrone.Api.Qualities
 
             DeleteResource = DeleteFormat;
 
-            Get("/test",  x => Test());
+            Get("/test", x => Test());
 
-            Post("/test",  x => TestWithNewModel());
+            Post("/test", x => TestWithNewModel());
 
-            Get("schema",  x => GetTemplates());
+            Get("schema", x => GetTemplates());
         }
 
         private int Create(CustomFormatResource customFormatResource)
@@ -97,36 +99,38 @@ namespace NzbDrone.Api.Qualities
 
         private CustomFormatTestResource Test()
         {
-            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new List<object>());
+            var parsed = _parsingService.ParseMovieInfo((string)Request.Query.title, new List<object>());
             if (parsed == null)
             {
                 return null;
             }
+
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
 
         private CustomFormatTestResource TestWithNewModel()
         {
-            var queryTitle = (string) Request.Query.title;
+            var queryTitle = (string)Request.Query.title;
 
             var resource = ReadResourceFromRequest();
 
             var model = resource.ToModel();
             model.Name = model.Name += " (New)";
 
-            var parsed = _parsingService.ParseMovieInfo(queryTitle, new List<object>{model});
+            var parsed = _parsingService.ParseMovieInfo(queryTitle, new List<object> { model });
             if (parsed == null)
             {
                 return null;
             }
+
             return new CustomFormatTestResource
             {
-                Matches = _parsingService.MatchFormatTags(parsed).ToResource(),
-                MatchedFormats = parsed.Quality.CustomFormats.ToResource()
+                Matches = _formatCalculator.MatchFormatTags(parsed).ToResource(),
+                MatchedFormats = _formatCalculator.ParseCustomFormat(parsed).ToResource()
             };
         }
     }

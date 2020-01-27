@@ -5,10 +5,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
-                  .Returns( _pending);
+                  .Returns(_pending);
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
@@ -50,11 +50,11 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private void AddPending(int id, string title, int year)
         {
             _pending.Add(new PendingRelease
-             {
-                 Id = id,
-                 ParsedMovieInfo = new ParsedMovieInfo { MovieTitle = title, Year = year },
-                 MovieId = _movie.Id
-             });
+            {
+                Id = id,
+                ParsedMovieInfo = new ParsedMovieInfo { MovieTitle = title, Year = year },
+                MovieId = _movie.Id
+            });
         }
 
         [Test]
@@ -74,5 +74,4 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             Mocker.GetMock<IPendingReleaseRepository>().Verify(c => c.DeleteMany(It.Is<IEnumerable<int>>(s => s.SequenceEqual(ids))));
         }
     }
-
 }

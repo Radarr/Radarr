@@ -26,7 +26,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _logger = logger;
         }
 
-
         public MediaInfoModel GetMediaInfo(string filename)
         {
             if (!_diskProvider.FileExists(filename))
@@ -37,7 +36,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             MediaInfo mediaInfo = null;
 
             // TODO: Cache media info by path, mtime and length so we don't need to read files multiple times
-
             try
             {
                 mediaInfo = new MediaInfo();
@@ -105,6 +103,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     {
                         int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "BitRate_Nominal"), out videoBitRate);
                     }
+
                     decimal.TryParse(mediaInfo.Get(StreamKind.Video, 0, "FrameRate"), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out videoFrameRate);
                     int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "BitDepth"), out videoBitDepth);
                     int.TryParse(mediaInfo.Get(StreamKind.Video, 0, "MultiView_Count"), out videoMultiViewCount);
@@ -118,7 +117,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                     int.TryParse(aBitRate, out audioBitRate);
                     int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "StreamCount"), out streamCount);
-
 
                     string audioChannelsStr = mediaInfo.Get(StreamKind.Audio, 0, "Channel(s)").Split(new string[] { " /" }, StringSplitOptions.None)[0].Trim();
 

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using System;
-using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.Qualities
 {
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Qualities
         public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager, Logger logger)
         {
             _repo = repo;
-            _cache = cacheManager.GetCache<Dictionary<Quality, QualityDefinition>>(this.GetType());
+            _cache = cacheManager.GetCache<Dictionary<Quality, QualityDefinition>>(GetType());
             _logger = logger;
         }
 
@@ -78,7 +78,6 @@ namespace NzbDrone.Core.Qualities
                 {
                     insertList.Add(definition);
                 }
-
                 else
                 {
                     updateList.Add(existing);

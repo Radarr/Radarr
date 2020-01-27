@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import { align, icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import Measure from 'Components/Measure';
@@ -75,6 +76,7 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasMovie,
+      movieError,
       missingMovieIds,
       isSearchingForMissing,
       useCurrentPage,
@@ -130,21 +132,31 @@ class CalendarPage extends Component {
           className={styles.calendarPageBody}
           innerClassName={styles.calendarInnerPageBody}
         >
-          <Measure
-            whitelist={['width']}
-            onMeasure={this.onMeasure}
-          >
-            {
-              isMeasured ?
-                <PageComponent
-                  useCurrentPage={useCurrentPage}
-                /> :
-                <div />
-            }
-          </Measure>
+          {
+            movieError &&
+              <div className={styles.errorMessage}>
+                {getErrorMessage(movieError, 'Failed to load movie from API')}
+              </div>
+          }
 
           {
-            hasMovie &&
+            !movieError &&
+              <Measure
+                whitelist={['width']}
+                onMeasure={this.onMeasure}
+              >
+                {
+                  isMeasured ?
+                    <PageComponent
+                      useCurrentPage={useCurrentPage}
+                    /> :
+                    <div />
+                }
+              </Measure>
+          }
+
+          {
+            hasMovie && !movieError &&
               <LegendConnector />
           }
         </PageContentBodyConnector>
@@ -167,6 +179,7 @@ CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMovie: PropTypes.bool.isRequired,
+  movieError: PropTypes.object,
   missingMovieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,

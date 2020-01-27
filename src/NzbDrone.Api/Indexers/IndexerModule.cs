@@ -12,7 +12,7 @@ namespace NzbDrone.Api.Indexers
         protected override void MapToResource(IndexerResource resource, IndexerDefinition definition)
         {
             base.MapToResource(resource, definition);
-            
+
             resource.EnableRss = definition.EnableRss;
             resource.EnableSearch = definition.EnableAutomaticSearch || definition.EnableInteractiveSearch;
             resource.SupportsRss = definition.SupportsRss;
@@ -31,7 +31,11 @@ namespace NzbDrone.Api.Indexers
 
         protected override void Validate(IndexerDefinition definition, bool includeWarnings)
         {
-            if (!definition.Enable) return;
+            if (!definition.Enable)
+            {
+                return;
+            }
+
             base.Validate(definition, includeWarnings);
         }
     }

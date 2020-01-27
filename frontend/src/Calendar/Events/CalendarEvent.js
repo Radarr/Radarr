@@ -38,7 +38,8 @@ class CalendarEvent extends Component {
       queueItem,
       showMovieInformation,
       showCutoffUnmetIcon,
-      colorImpairedMode
+      colorImpairedMode,
+      date
     } = this.props;
 
     const startTime = moment(inCinemas);
@@ -47,6 +48,7 @@ class CalendarEvent extends Component {
     const statusStyle = getStatusStyle(hasFile, isDownloading, startTime, isMonitored);
     const joinedGenres = genres.slice(0, 2).join(', ');
     const link = `/movie/${titleSlug}`;
+    const eventType = moment(date).isSame(moment(inCinemas), 'day') ? 'In Cinemas' : 'Physical Release';
 
     return (
       <div>
@@ -104,6 +106,15 @@ class CalendarEvent extends Component {
                 </div>
               </div>
           }
+
+          {
+            showMovieInformation &&
+              <div className={styles.movieInfo}>
+                <div className={styles.genres}>
+                  {eventType}
+                </div>
+              </div>
+          }
         </Link>
 
       </div>
@@ -125,7 +136,8 @@ CalendarEvent.propTypes = {
   showMovieInformation: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired
+  colorImpairedMode: PropTypes.bool.isRequired,
+  date: PropTypes.string.isRequired
   // onEventModalOpenToggle: PropTypes.func.isRequired
 };
 

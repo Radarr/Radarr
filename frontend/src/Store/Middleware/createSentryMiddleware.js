@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 import parseUrl from 'Utilities/String/parseUrl';
 
 function cleanseUrl(url) {
@@ -32,6 +33,13 @@ function cleanseData(data) {
 
 function identity(stuff) {
   return stuff;
+}
+
+function stripUrlBase(frame) {
+  if (frame.filename && window.Radarr.urlBase) {
+    frame.filename = frame.filename.replace(window.Radarr.urlBase, '');
+  }
+  return frame;
 }
 
 function createMiddleware() {
@@ -72,15 +80,19 @@ export default function createSentryMiddleware() {
     return;
   }
 
-  const dsn = isProduction ? 'https://cf0559cfe5c84ccfae3d907daef1b6bb@sentry.io/1523530' :
-    'https://df167d10dc51480b9e4f22e4e77c7315@sentry.io/1523531';
+  const dsn = isProduction ? 'https://f4833ba136384acfafc92ddfd1c7bbc9@sentry.radarr.video/4' :
+    'https://019aef70678c484da8a43fe218690300@sentry.radarr.video/7';
 
   sentry.init({
     dsn,
     environment: branch,
     release,
     sendDefaultPii: true,
-    beforeSend: cleanseData
+    beforeSend: cleanseData,
+    integrations: [
+      new Integrations.RewriteFrames({ iteratee: stripUrlBase }),
+      new Integrations.Dedupe()
+    ]
   });
 
   sentry.configureScope((scope) => {

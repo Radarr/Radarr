@@ -1,8 +1,8 @@
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Linq;
-using Radarr.Api.V2.Movies;
 using NzbDrone.Test.Common;
+using Radarr.Api.V3.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

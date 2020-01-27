@@ -1,9 +1,5 @@
-﻿﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using FluentMigrator;
-using Newtonsoft.Json.Linq;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -25,7 +21,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 cmd.CommandText = "DELETE FROM AlternativeTitles WHERE rowid NOT IN ( SELECT MIN(rowid) FROM AlternativeTitles GROUP BY CleanTitle )";
 
                 cmd.ExecuteNonQuery();
-                
             }
         }
     }

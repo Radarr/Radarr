@@ -1,4 +1,3 @@
-using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
@@ -66,7 +65,6 @@ namespace NzbDrone.Api.Movies
 
             //add a grabbed field in MovieResource?
             //resource.Grabbed = true;
-
             BroadcastResourceChange(ModelAction.Updated, resource);
         }
 

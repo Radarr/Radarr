@@ -1,11 +1,9 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.Nyaa
 {
@@ -35,7 +33,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         [FieldDefinition(0, Label = "Website URL")]
         public string BaseUrl { get; set; }
-                
+
         // [FieldDefinition(1, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
@@ -45,11 +43,11 @@ namespace NzbDrone.Core.Indexers.Nyaa
         [FieldDefinition(3, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        // [FieldDefinition(4, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        [FieldDefinition(4, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(5)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public NzbDroneValidationResult Validate()
         {

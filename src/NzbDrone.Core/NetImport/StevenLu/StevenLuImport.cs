@@ -8,12 +8,15 @@ namespace NzbDrone.Core.NetImport.StevenLu
     public class StevenLuImport : HttpNetImportBase<StevenLuSettings>
     {
         public override string Name => "StevenLu";
+
+        public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
         public StevenLuImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
-        { }
+        {
+        }
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {
@@ -22,7 +25,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
         public override IParseNetImportResponse GetParser()
         {
-            return new StevenLuParser(Settings);
+            return new StevenLuParser();
         }
     }
 }

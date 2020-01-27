@@ -37,6 +37,7 @@ class SelectMovieModalContent extends Component {
   render() {
     const {
       items,
+      relativePath,
       onMovieSelect,
       onModalClose
     } = this.props;
@@ -46,7 +47,9 @@ class SelectMovieModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Movie
+          <div className={styles.header}>
+            Manual Import - Select Movie
+          </div>
         </ModalHeader>
 
         <ModalBody
@@ -81,10 +84,13 @@ class SelectMovieModalContent extends Component {
           </Scroller>
         </ModalBody>
 
-        <ModalFooter>
-          <Button onPress={onModalClose}>
-            Cancel
-          </Button>
+        <ModalFooter className={styles.footer}>
+          <div className={styles.path}>{relativePath}</div>
+          <div className={styles.buttons}>
+            <Button onPress={onModalClose}>
+              Cancel
+            </Button>
+          </div>
         </ModalFooter>
       </ModalContent>
     );
@@ -93,6 +99,7 @@ class SelectMovieModalContent extends Component {
 
 SelectMovieModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  relativePath: PropTypes.string.isRequired,
   onMovieSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

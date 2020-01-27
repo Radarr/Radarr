@@ -4,34 +4,29 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using Radarr.Api.V2.Blacklist;
-using Radarr.Api.V2.Commands;
-using Radarr.Api.V2.Config;
-using Radarr.Api.V2.DownloadClient;
-using Radarr.Api.V2.MovieFiles;
-using Radarr.Api.V2.History;
-using Radarr.Api.V2.Profiles.Quality;
-using Radarr.Api.V2.RootFolders;
-using Radarr.Api.V2.Movies;
-using Radarr.Api.V2.Tags;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Serializer;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
+using Radarr.Api.V3.Blacklist;
+using Radarr.Api.V3.Config;
+using Radarr.Api.V3.DownloadClient;
+using Radarr.Api.V3.History;
+using Radarr.Api.V3.MovieFiles;
+using Radarr.Api.V3.Movies;
+using Radarr.Api.V3.Profiles.Quality;
+using Radarr.Api.V3.RootFolders;
+using Radarr.Api.V3.Tags;
 using RestSharp;
-using NzbDrone.Test.Common;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace NzbDrone.Integration.Test
 {
@@ -97,7 +92,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/v2/");
+            RestClient = new RestClient(RootUrl + "api/v3/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 
@@ -139,7 +134,6 @@ namespace NzbDrone.Integration.Test
         {
             if (_signalrConnection != null)
             {
-
                 await _signalrConnection.StopAsync();
 
                 _signalrConnection = null;
@@ -188,7 +182,6 @@ namespace NzbDrone.Integration.Test
             _signalRReceived = new List<SignalRMessage>();
             _signalrConnection = new HubConnectionBuilder().WithUrl("http://localhost:7878/signalr/messages").Build();
 
-
             var cts = new CancellationTokenSource();
 
             _signalrConnection.Closed += e =>
@@ -211,7 +204,7 @@ namespace NzbDrone.Integration.Test
                 {
                     Console.WriteLine("Connecting to signalR");
 
-                        await _signalrConnection.StartAsync();
+                    await _signalrConnection.StartAsync();
                     connected = true;
                     break;
                 }
@@ -234,13 +227,17 @@ namespace NzbDrone.Integration.Test
             for (var i = 0; i < count; i++)
             {
                 if (predicate())
+                {
                     return;
+                }
 
                 Thread.Sleep(interval);
             }
 
             if (predicate())
+            {
                 return;
+            }
 
             Assert.Fail("Timed on wait");
         }

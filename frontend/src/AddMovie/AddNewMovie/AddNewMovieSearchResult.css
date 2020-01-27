@@ -1,10 +1,15 @@
 .searchResult {
-  display: flex;
+  position: relative;
   margin: 20px 0;
   padding: 20px;
   width: 100%;
-  background-color: $white;
   color: inherit;
+}
+
+.underlay {
+  @add-mixin cover;
+
+  background-color: $white;
   transition: background 500ms;
 
   &:hover {
@@ -14,13 +19,25 @@
   }
 }
 
+.overlay {
+  @add-mixin linkOverlay;
+
+  position: relative;
+  display: flex;
+}
+
 .poster {
   flex: 0 0 170px;
   margin-right: 20px;
   height: 250px;
 }
 
+.content {
+  flex: 0 1 100%;
+}
+
 .title {
+  display: flex;
   font-weight: 300;
   font-size: 36px;
 }
@@ -28,6 +45,18 @@
 .year {
   margin-left: 10px;
   color: $disabledColor;
+}
+
+.tmdbLink {
+  composes: link from '~Components/Link/Link.css';
+
+  margin-top: -4px;
+  margin-left: auto;
+  color: $textColor;
+}
+
+.tmdbLinkIcon {
+  margin-left: 10px;
 }
 
 .alreadyExistsIcon {

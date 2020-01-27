@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.Notifications.Plex.PlexTv;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Notifications.Plex.PlexTv;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Plex.Server
@@ -91,9 +91,9 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 var authToken = _plexTvService.GetAuthToken(Convert.ToInt32(query["pinId"]));
 
                 return new
-                       {
-                           authToken
-                       };
+                {
+                    authToken
+                };
             }
 
             return new { };

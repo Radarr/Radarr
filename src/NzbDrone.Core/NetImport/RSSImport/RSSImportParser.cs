@@ -1,6 +1,4 @@
-﻿using NzbDrone.Core.NetImport.Exceptions;
-using NzbDrone.Core.Movies;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +11,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Exceptions;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.Exceptions;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -105,17 +105,17 @@ namespace NzbDrone.Core.NetImport.RSSImport
             return new Movie();
         }
 
-        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
-            if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
+            if (netImportResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new NetImportException(indexerResponse, "Indexer API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+                throw new NetImportException(netImportResponse, "List API call resulted in an unexpected StatusCode [{0}]", netImportResponse.HttpResponse.StatusCode);
             }
 
-            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/html") &&
-                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/html"))
+            if (netImportResponse.HttpResponse.Headers.ContentType != null && netImportResponse.HttpResponse.Headers.ContentType.Contains("text/html") &&
+                netImportResponse.HttpRequest.Headers.Accept != null && !netImportResponse.HttpRequest.Headers.Accept.Contains("text/html"))
             {
-                throw new NetImportException(indexerResponse, "Indexer responded with html content. Site is likely blocked or unavailable.");
+                throw new NetImportException(netImportResponse, "List responded with html content. Site is likely blocked or unavailable.");
             }
 
             return true;
@@ -128,7 +128,6 @@ namespace NzbDrone.Core.NetImport.RSSImport
             releaseInfo = ProcessItem(item, releaseInfo);
 
             //_logger.Trace("Parsed: {0}", releaseInfo.Title);
-
             return PostProcess(item, releaseInfo);
         }
 
@@ -143,7 +142,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             }
 
             releaseInfo.Title = title;
-            var result = Parser.Parser.ParseMovieTitle(title, false);//Depreciated anyways
+            var result = Parser.Parser.ParseMovieTitle(title, false); //Depreciated anyways
 
             if (result != null)
             {
@@ -158,7 +157,6 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 {
                     releaseInfo.ImdbId = GetImdbId(item);
                 }
-
             }
             catch (Exception)
             {
@@ -197,6 +195,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             {
                 return "";
             }
+
             return Parser.Parser.ParseImdbId(url);
         }
 

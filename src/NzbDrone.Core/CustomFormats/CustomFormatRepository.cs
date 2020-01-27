@@ -5,7 +5,6 @@ namespace NzbDrone.Core.CustomFormats
 {
     public interface ICustomFormatRepository : IBasicRepository<CustomFormat>
     {
-
     }
 
     public class CustomFormatRepository : BasicRepository<CustomFormat>, ICustomFormatRepository

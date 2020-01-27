@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
     public class PassThePopcornRequestGenerator : IIndexerRequestGenerator
     {
-
         public PassThePopcornSettings Settings { get; set; }
 
         public IDictionary<string, string> Cookies { get; set; }
@@ -29,7 +28,16 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
-            pageableRequests.Add(GetRequest(searchCriteria.Movie.ImdbId));
+
+            if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            {
+                pageableRequests.Add(GetRequest(searchCriteria.Movie.ImdbId));
+            }
+            else if (searchCriteria.Movie.Year > 0)
+            {
+                pageableRequests.Add(GetRequest(string.Format("{0}&year={1}", searchCriteria.Movie.Title, searchCriteria.Movie.Year)));
+            }
+
             return pageableRequests;
         }
 
@@ -52,7 +60,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 {
                     request.HttpRequest.Cookies[cookie.Key] = cookie.Value;
                 }
-                
+
                 CookiesUpdater(Cookies, DateTime.Now + TimeSpan.FromDays(30));
             }
 

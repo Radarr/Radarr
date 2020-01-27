@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
@@ -18,13 +17,13 @@ namespace NzbDrone.Core.Test.Blacklisting
         public void Setup()
         {
             _event = new DownloadFailedEvent
-                     {
-                         MovieId = 69,
-                         Quality = new QualityModel(),
-                         SourceTitle = "series.title.s01e01",
-                         DownloadClient = "SabnzbdClient",
-                         DownloadId = "Sabnzbd_nzo_2dfh73k"
-                     };
+            {
+                MovieId = 69,
+                Quality = new QualityModel(),
+                SourceTitle = "series.title.s01e01",
+                DownloadClient = "SabnzbdClient",
+                DownloadId = "Sabnzbd_nzo_2dfh73k"
+            };
 
             _event.Data.Add("publishedDate", DateTime.UtcNow.ToString("s") + "Z");
             _event.Data.Add("size", "1000");

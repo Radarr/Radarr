@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 
@@ -71,7 +70,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b", 
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         public static QualityModel ParseQuality(string name)
@@ -129,7 +128,6 @@ namespace NzbDrone.Core.Parser
             {
                 if (sourceMatch.Groups["bluray"].Success)
                 {
-
                     if (brDiskMatch)
                     {
                         result.Quality = Quality.BRDISK;
@@ -353,7 +351,6 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-
             // Anime Bluray matching
             if (AnimeBlurayRegex.Match(normalizedName).Success)
             {
@@ -475,12 +472,35 @@ namespace NzbDrone.Core.Parser
         {
             var match = ResolutionRegex.Match(name);
 
-            if (!match.Success) return Resolution.Unknown;
-            if (match.Groups["R480p"].Success) return Resolution.R480p;
-            if (match.Groups["R576p"].Success) return Resolution.R576p;
-            if (match.Groups["R720p"].Success) return Resolution.R720p;
-            if (match.Groups["R1080p"].Success) return Resolution.R1080p;
-            if (match.Groups["R2160p"].Success) return Resolution.R2160p;
+            if (!match.Success)
+            {
+                return Resolution.Unknown;
+            }
+
+            if (match.Groups["R480p"].Success)
+            {
+                return Resolution.R480p;
+            }
+
+            if (match.Groups["R576p"].Success)
+            {
+                return Resolution.R576p;
+            }
+
+            if (match.Groups["R720p"].Success)
+            {
+                return Resolution.R720p;
+            }
+
+            if (match.Groups["R1080p"].Success)
+            {
+                return Resolution.R1080p;
+            }
+
+            if (match.Groups["R2160p"].Success)
+            {
+                return Resolution.R2160p;
+            }
 
             return Resolution.Unknown;
         }
@@ -489,9 +509,20 @@ namespace NzbDrone.Core.Parser
         {
             var match = OtherSourceRegex.Match(name);
 
-            if (!match.Success) return Quality.Unknown;
-            if (match.Groups["sdtv"].Success) return Quality.SDTV;
-            if (match.Groups["hdtv"].Success) return Quality.HDTV720p;
+            if (!match.Success)
+            {
+                return Quality.Unknown;
+            }
+
+            if (match.Groups["sdtv"].Success)
+            {
+                return Quality.SDTV;
+            }
+
+            if (match.Groups["hdtv"].Success)
+            {
+                return Quality.HDTV720p;
+            }
 
             return Quality.Unknown;
         }

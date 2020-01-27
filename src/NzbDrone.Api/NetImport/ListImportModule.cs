@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.Extensions;
-using Radarr.Http.Extensions;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
+using Radarr.Http.Extensions;
 
 namespace NzbDrone.Api.NetImport
 {
@@ -19,16 +19,16 @@ namespace NzbDrone.Api.NetImport
         {
             _movieService = movieService;
             _movieSearch = movieSearch;
-            Put("/",  Movie => SaveAll());
+            Put("/", movie => SaveAll());
         }
 
         private object SaveAll()
         {
             var resources = Request.Body.FromJson<List<MovieResource>>();
 
-            var Movies = resources.Select(MovieResource => _movieSearch.MapMovieToTmdbMovie(MovieResource.ToModel())).Where(m => m != null).DistinctBy(m => m.TmdbId).ToList();
+            var movies = resources.Select(movieResource => _movieSearch.MapMovieToTmdbMovie(movieResource.ToModel())).Where(m => m != null).DistinctBy(m => m.TmdbId).ToList();
 
-            return ResponseWithCode(_movieService.AddMovies(Movies).ToResource(), HttpStatusCode.Accepted);
+            return ResponseWithCode(_movieService.AddMovies(movies).ToResource(), HttpStatusCode.Accepted);
         }
     }
 }

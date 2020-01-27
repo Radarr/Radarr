@@ -4,7 +4,6 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
 using Radarr.Http;
-using Radarr.Http.Mapping;
 
 namespace NzbDrone.Api.RootFolders
 {
@@ -19,9 +18,8 @@ namespace NzbDrone.Api.RootFolders
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
-                                FolderWritableValidator folderWritableValidator
-            )
-            : base(signalRBroadcaster)
+                                FolderWritableValidator folderWritableValidator)
+        : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
 

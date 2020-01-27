@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { inputTypes } from 'Helpers/Props';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import ImportMovieSelectMovieConnector from './SelectMovie/ImportMovieSelectMovieConnector';
@@ -10,7 +9,6 @@ import styles from './ImportMovieRow.css';
 
 function ImportMovieRow(props) {
   const {
-    style,
     id,
     monitor,
     qualityProfileId,
@@ -23,7 +21,7 @@ function ImportMovieRow(props) {
   } = props;
 
   return (
-    <VirtualTableRow style={style}>
+    <>
       <VirtualTableSelectCell
         inputClassName={styles.selectInput}
         id={id}
@@ -69,12 +67,11 @@ function ImportMovieRow(props) {
           isExistingMovie={isExistingMovie}
         />
       </VirtualTableRowCell>
-    </VirtualTableRow>
+    </>
   );
 }
 
 ImportMovieRow.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,

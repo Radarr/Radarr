@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using NzbDrone.Core.NetImport.Exceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using NLog;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.NetImport.Exceptions;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -28,7 +27,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                 return movies;
             }
 
-            if (_settings.ListType == (int) TraktListType.Popular)
+            if (_settings.TraktListType == (int)TraktListType.Popular)
             {
                 var jsonResponse = JsonConvert.DeserializeObject<List<Movie>>(_importResponse.Content);
 
@@ -39,7 +38,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                         Title = movie.title,
                         ImdbId = movie.ids.imdb,
                         TmdbId = movie.ids.tmdb,
-                        Year = (movie.year ?? 0)
+                        Year = movie.year ?? 0
                     });
                 }
             }
@@ -60,30 +59,28 @@ namespace NzbDrone.Core.NetImport.Trakt
                         Title = movie.movie.title,
                         ImdbId = movie.movie.ids.imdb,
                         TmdbId = movie.movie.ids.tmdb,
-                        Year = (movie.movie.year ?? 0)
+                        Year = movie.movie.year ?? 0
                     });
                 }
             }
 
             return movies;
-
         }
 
-        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
-            if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
+            if (netImportResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new NetImportException(indexerResponse, "Indexer API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+                throw new NetImportException(netImportResponse, "Trakt API call resulted in an unexpected StatusCode [{0}]", netImportResponse.HttpResponse.StatusCode);
             }
 
-            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
-                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
+            if (netImportResponse.HttpResponse.Headers.ContentType != null && netImportResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
+                netImportResponse.HttpRequest.Headers.Accept != null && !netImportResponse.HttpRequest.Headers.Accept.Contains("text/json"))
             {
-                throw new NetImportException(indexerResponse, "Indexer responded with html content. Site is likely blocked or unavailable.");
+                throw new NetImportException(netImportResponse, "Trakt API responded with html content. Site is likely blocked or unavailable.");
             }
 
             return true;
         }
-
     }
 }

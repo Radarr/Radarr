@@ -1,18 +1,18 @@
 using System;
 using System.Net;
 using MonoTorrent;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Configuration;
-using NLog;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Download
 {
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
 
         public virtual bool PreferTorrentFile => false;
-        
+
         protected abstract string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink);
         protected abstract string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent);
 
@@ -193,7 +193,8 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Radarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteMovie.Release.DownloadUrl);
+                    Definition.Implementation,
+                    remoteMovie.Release.DownloadUrl);
             }
 
             return actualHash;
@@ -206,7 +207,7 @@ namespace NzbDrone.Core.Download
 
             try
             {
-                hash = new MagnetLink(magnetUrl).InfoHash.ToHex();
+                hash = InfoHash.FromMagnetLink(magnetUrl).ToHex();
             }
             catch (FormatException ex)
             {
@@ -224,7 +225,8 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Radarr could potentially lose track of the download in progress.",
-                    Definition.Implementation, remoteMovie.Release.DownloadUrl);
+                    Definition.Implementation,
+                    remoteMovie.Release.DownloadUrl);
             }
 
             return actualHash;

@@ -63,7 +63,7 @@ export const defaultState = {
         isModifiable: false
       },
       {
-        name: 'movie.sortTitle',
+        name: 'movies.sortTitle',
         label: 'Movie',
         isSortable: true,
         isVisible: true
@@ -81,9 +81,9 @@ export const defaultState = {
         isVisible: true
       },
       {
-        name: 'quality.customFormats',
-        label: 'Custom Formats',
-        isSortable: true,
+        name: 'customFormats',
+        label: 'Formats',
+        isSortable: false,
         isVisible: true
       },
       {
@@ -101,6 +101,12 @@ export const defaultState = {
       {
         name: 'downloadClient',
         label: 'Download Client',
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'size',
+        label: 'Size',
         isSortable: true,
         isVisible: false
       },

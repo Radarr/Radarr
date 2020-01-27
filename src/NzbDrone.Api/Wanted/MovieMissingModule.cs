@@ -1,18 +1,18 @@
 using System.Linq;
 using NzbDrone.Api.Movies;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Datastore;
 using NzbDrone.SignalR;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Wanted
 {
-    class MovieMissingModule : MovieModuleWithSignalR
+    public class MovieMissingModule : MovieModuleWithSignalR
     {
-        public MovieMissingModule(IMovieService movieService, 
-                                  IUpgradableSpecification qualityUpgradableSpecification, 
-                                  IBroadcastSignalRMessage signalRBroadcaster) 
+        public MovieMissingModule(IMovieService movieService,
+                                  IUpgradableSpecification qualityUpgradableSpecification,
+                                  IBroadcastSignalRMessage signalRBroadcaster)
             : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
             GetResourcePaged = GetMissingMovies;

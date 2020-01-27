@@ -1,5 +1,4 @@
 /* eslint max-params: 0 */
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -71,28 +70,6 @@ class MovieFileEditorTableContentConnector extends Component {
   //
   // Render
 
-  //
-  // Listeners
-
-  onLanguageChange = (movieFileIds, languageId) => {
-    const language = _.find(this.props.languages, { id: languageId });
-    // TODO - Placeholder till we implement selection of multiple languages
-    const languages = [language];
-    this.props.dispatchUpdateMovieFiles({ movieFileIds, languages });
-  }
-
-  onQualityChange = (movieFileIds, qualityId) => {
-    const quality = {
-      quality: _.find(this.props.qualities, { id: qualityId }),
-      revision: {
-        version: 1,
-        real: 0
-      }
-    };
-
-    this.props.dispatchUpdateMovieFiles({ movieFileIds, quality });
-  }
-
   render() {
     const {
       dispatchFetchLanguages,
@@ -104,8 +81,6 @@ class MovieFileEditorTableContentConnector extends Component {
     return (
       <MovieFileEditorTableContent
         {...otherProps}
-        onLanguageChange={this.onLanguageChange}
-        onQualityChange={this.onQualityChange}
       />
     );
   }

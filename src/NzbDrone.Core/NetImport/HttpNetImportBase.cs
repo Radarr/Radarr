@@ -7,10 +7,10 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -102,10 +102,10 @@ namespace NzbDrone.Core.NetImport
             {
                 anyFailure = true;
                 feedEx.Data.Add("FeedUrl", url);
-                _logger.Error(feedEx, "An error occurred while processing list feed {0}",  url);
+                _logger.Error(feedEx, "An error occurred while processing list feed {0}", url);
             }
 
-            return new NetImportFetchResult {Movies = movies, AnyFailure = anyFailure};
+            return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
         }
 
         protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)
@@ -114,11 +114,11 @@ namespace NzbDrone.Core.NetImport
 
             return parser.ParseResponse(response).ToList().Select(m =>
             {
-                m.RootFolderPath = ((NetImportDefinition) Definition).RootFolderPath;
-                m.ProfileId = ((NetImportDefinition) Definition).ProfileId;
-                m.Monitored = ((NetImportDefinition) Definition).ShouldMonitor;
-		        m.MinimumAvailability = ((NetImportDefinition) Definition).MinimumAvailability;
-                m.Tags = ((NetImportDefinition) Definition).Tags;
+                m.RootFolderPath = ((NetImportDefinition)Definition).RootFolderPath;
+                m.ProfileId = ((NetImportDefinition)Definition).ProfileId;
+                m.Monitored = ((NetImportDefinition)Definition).ShouldMonitor;
+                m.MinimumAvailability = ((NetImportDefinition)Definition).MinimumAvailability;
+                m.Tags = ((NetImportDefinition)Definition).Tags;
                 return m;
             }).ToList();
         }
@@ -171,5 +171,4 @@ namespace NzbDrone.Core.NetImport
             return null;
         }
     }
-
 }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Linq;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithFileSize : IAugmentParsedMovieInfo
-
     {
         public Type HelperType
         {

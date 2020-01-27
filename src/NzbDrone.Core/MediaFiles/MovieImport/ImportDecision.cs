@@ -17,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             LocalMovie = localMovie;
             Rejections = rejections.ToList();
+
             //LocalMovie = new LocalMovie
             //{
             //    Quality = localMovie.Quality,

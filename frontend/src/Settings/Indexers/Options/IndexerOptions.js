@@ -76,6 +76,19 @@ function IndexerOptions(props) {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>Prefer Indexer Flags</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="preferIndexerFlags"
+                helpText="Prioritize releases with special flags"
+                helpLink="https://github.com/Radarr/Radarr/wiki/Indexer-Flags"
+                onChange={onInputChange}
+                {...settings.preferIndexerFlags}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <FormLabel>Availability Delay</FormLabel>
 
               <FormInputGroup
@@ -105,6 +118,36 @@ function IndexerOptions(props) {
                 helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
+              />
+            </FormGroup>
+
+            <FormGroup
+              advancedSettings={advancedSettings}
+              isAdvanced={true}
+            >
+              <FormLabel>Whitelisted Subtitle Tags</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.TEXT_TAG}
+                name="whitelistedHardcodedSubs"
+                helpText="Subtitle tags set here will not be considered hardcoded"
+                onChange={onInputChange}
+                {...settings.whitelistedHardcodedSubs}
+              />
+            </FormGroup>
+
+            <FormGroup
+              advancedSettings={advancedSettings}
+              isAdvanced={true}
+            >
+              <FormLabel>Allow Hardcoded Subs</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="allowHardcodedSubs"
+                helpText="Detected hardcoded subs will be automatically downloaded"
+                onChange={onInputChange}
+                {...settings.allowHardcodedSubs}
               />
             </FormGroup>
           </Form>

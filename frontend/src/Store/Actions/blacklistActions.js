@@ -27,7 +27,7 @@ export const defaultState = {
 
   columns: [
     {
-      name: 'movie.sortTitle',
+      name: 'movies.sortTitle',
       label: 'Movie Title',
       isSortable: true,
       isVisible: true
@@ -39,7 +39,7 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'language',
+      name: 'languages',
       label: 'Language',
       isSortable: true,
       isVisible: true
@@ -51,9 +51,9 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'quality.customFormats',
-      label: 'Custom Formats',
-      isSortable: true,
+      name: 'customFormats',
+      label: 'Formats',
+      isSortable: false,
       isVisible: true
     },
     {

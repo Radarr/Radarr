@@ -1,5 +1,4 @@
 using FizzWare.NBuilder;
-using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
 using NzbDrone.Core.Parser.Model;
@@ -64,6 +63,5 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
         }*/
-
     }
 }

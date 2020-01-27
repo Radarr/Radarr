@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -19,15 +18,15 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         {
             Subject.Settings = new NewznabSettings()
             {
-                 BaseUrl = "http://127.0.0.1:1234/",
-                 Categories = new [] { 1, 2 },
-                 AnimeCategories = new [] { 3, 4 },
-                 ApiKey = "abcd",
+                BaseUrl = "http://127.0.0.1:1234/",
+                Categories = new[] { 1, 2 },
+                AnimeCategories = new[] { 3, 4 },
+                ApiKey = "abcd",
             };
 
             _movieSearchCriteria = new MovieSearchCriteria
             {
-				Movie = new Movies.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977 }
+                Movie = new Movies.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977 }
             };
 
             _capabilities = new NewznabCapabilities();
@@ -107,7 +106,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         [Test]
         public void should_search_by_imdbid_if_supported()
         {
-			_capabilities.SupportedMovieSearchParameters = new[] { "q", "imdbid" };
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "imdbid" };
 
             var results = Subject.GetSearchRequests(_movieSearchCriteria);
             results.GetTier(0).Should().HaveCount(1);
@@ -116,6 +115,5 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             page.Url.Query.Should().Contain("imdbid=0076759");
         }
-
     }
 }

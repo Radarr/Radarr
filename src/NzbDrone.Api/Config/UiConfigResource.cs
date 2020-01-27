@@ -1,5 +1,5 @@
-﻿using Radarr.Http.REST;
-using NzbDrone.Core.Configuration;
+﻿using NzbDrone.Core.Configuration;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
 {
@@ -26,7 +26,7 @@ namespace NzbDrone.Api.Config
             {
                 FirstDayOfWeek = model.FirstDayOfWeek,
                 CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
-                
+
                 ShortDateFormat = model.ShortDateFormat,
                 LongDateFormat = model.LongDateFormat,
                 TimeFormat = model.TimeFormat,

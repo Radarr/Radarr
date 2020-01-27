@@ -74,5 +74,11 @@ namespace NzbDrone.Core.Profiles
 
             return new QualityIndex();
         }
+
+        public List<int> GetIndices(List<CustomFormat> formats)
+        {
+            var allFormats = formats.Any() ? formats : new List<CustomFormat> { CustomFormat.None };
+            return allFormats.Select(f => FormatItems.FindIndex(v => Equals(v.Format, f))).ToList();
+        }
     }
 }

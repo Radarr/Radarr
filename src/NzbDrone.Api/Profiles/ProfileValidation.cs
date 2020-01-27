@@ -20,7 +20,6 @@ namespace NzbDrone.Api.Profiles
         public AllowedValidator()
             : base("Must contain at least one allowed quality")
         {
-
         }
 
         protected override bool IsValid(PropertyValidatorContext context)

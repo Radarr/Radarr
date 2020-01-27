@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Radarr.Http.REST;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
-
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.History
 {
@@ -27,7 +26,10 @@ namespace NzbDrone.Api.History
     {
         public static HistoryResource ToResource(this Core.History.History model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new HistoryResource
             {
@@ -35,13 +37,14 @@ namespace NzbDrone.Api.History
                 MovieId = model.MovieId,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
+
                 //QualityCutoffNotMet
                 Date = model.Date,
                 DownloadId = model.DownloadId,
 
                 EventType = model.EventType,
 
-                Data  = model.Data
+                Data = model.Data
             };
         }
     }

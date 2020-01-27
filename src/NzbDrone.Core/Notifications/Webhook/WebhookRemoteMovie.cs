@@ -10,7 +10,9 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string Title { get; set; }
         public int Year { get; set; }
 
-        public WebhookRemoteMovie() { }
+        public WebhookRemoteMovie()
+        {
+        }
 
         public WebhookRemoteMovie(RemoteMovie remoteMovie)
         {

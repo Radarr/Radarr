@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
+using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using NLog;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     CookiesUpdater(null, null);
                     throw new IndexerException(indexerResponse, "We are being redirected to the PTP login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
                 }
+
                 throw new IndexerException(indexerResponse, $"Unexpected response status {indexerResponse.HttpResponse.StatusCode} code from API request");
             }
 
@@ -43,6 +44,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     CookiesUpdater(null, null);
                     throw new IndexerException(indexerResponse, "We are currently on the login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
                 }
+
                 // Remove cookie cache
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
@@ -55,23 +57,22 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 return torrentInfos;
             }
 
-
             foreach (var result in jsonResponse.Movies)
             {
                 foreach (var torrent in result.Torrents)
                 {
                     var id = torrent.Id;
                     var title = torrent.ReleaseName;
-			        IndexerFlags flags = 0;
+                    IndexerFlags flags = 0;
 
                     if (torrent.GoldenPopcorn)
                     {
-			            flags |= IndexerFlags.PTP_Golden;//title = $"{title} 🍿";
+                        flags |= IndexerFlags.PTP_Golden; //title = $"{title} 🍿";
                     }
 
                     if (torrent.Checked)
                     {
-                        flags |= IndexerFlags.PTP_Approved;//title = $"{title} ✔";
+                        flags |= IndexerFlags.PTP_Approved; //title = $"{title} ✔";
                     }
 
                     if (torrent.FreeleechType == "Freeleech")
@@ -100,7 +101,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
-                            ImdbId = (result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0),
+                            ImdbId = result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0,
                             IndexerFlags = flags
                         });
                     }
@@ -116,13 +117,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                          "}. Please immediately report this info on https://github.com/Radarr/Radarr/issues/1584.");
                         throw;
                     }
-
-
                 }
             }
+
             return
                 torrentInfos;
-
         }
 
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }

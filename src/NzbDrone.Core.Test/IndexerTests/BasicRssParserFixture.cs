@@ -45,7 +45,6 @@ namespace NzbDrone.Core.Test.IndexerTests
             return new IndexerResponse(new IndexerRequest(httpRequest), httpResponse);
         }
 
-
         [Test]
         public void should_handle_relative_url()
         {

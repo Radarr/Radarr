@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using Radarr.Api.V2.DiskSpace;
 using NzbDrone.Integration.Test.Client;
+using Radarr.Api.V3.DiskSpace;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

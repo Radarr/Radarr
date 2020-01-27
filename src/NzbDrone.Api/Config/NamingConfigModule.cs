@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Nancy.ModelBinding;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
-using Nancy.ModelBinding;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Config
@@ -30,7 +30,7 @@ namespace NzbDrone.Api.Config
             GetResourceById = GetNamingConfig;
             UpdateResource = UpdateNamingConfig;
 
-            Get("/samples",  x => GetExamples(this.Bind<NamingConfigResource>()));
+            Get("/samples", x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.MultiEpisodeStyle).InclusiveBetween(0, 5);
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
@@ -87,11 +87,9 @@ namespace NzbDrone.Api.Config
             var movieSampleResult = _filenameSampleService.GetMovieSample(nameSpec);
 
             //var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult); For now, let's hope the user is not stupid enough :/
-
             var validationFailures = new List<ValidationFailure>();
 
             //validationFailures.AddIfNotNull(standardMovieValidationResult);
-
             if (validationFailures.Any())
             {
                 throw new ValidationException(validationFailures.DistinctBy(v => v.PropertyName).ToArray());

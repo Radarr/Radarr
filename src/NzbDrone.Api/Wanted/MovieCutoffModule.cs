@@ -1,10 +1,10 @@
 using System.Linq;
 using NzbDrone.Api.Movies;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
 using Radarr.Http;
-using NzbDrone.Core.DecisionEngine.Specifications;
 
 namespace NzbDrone.Api.Wanted
 {

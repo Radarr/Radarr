@@ -4,8 +4,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _firstEpisode = new Movie() { Monitored = true };
             _secondEpisode = new Movie() { Monitored = true };
-
 
             var singleEpisodeList = new List<Movie> { _firstEpisode };
             var doubleEpisodeList = new List<Movie> { _firstEpisode, _secondEpisode };
@@ -79,8 +78,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_for_single_episode_search()
         {
             _fakeSeries.Monitored = false;
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria {UserInvokedSearch = true}).Accepted.Should().BeTrue();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
         }
-
     }
 }

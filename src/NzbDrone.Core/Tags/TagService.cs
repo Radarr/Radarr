@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Restrictions;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.NetImport;
 
 namespace NzbDrone.Core.Tags
 {
@@ -77,7 +76,7 @@ namespace NzbDrone.Core.Tags
         {
             var tag = GetTag(tagId);
             var delayProfiles = _delayProfileService.AllForTag(tagId);
-            var netImports = _netImportFactory.AllForTag(tagId); 
+            var netImports = _netImportFactory.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
             var restrictions = _restrictionService.AllForTag(tagId);
             var movies = _movieService.AllForTag(tagId);
@@ -116,8 +115,7 @@ namespace NzbDrone.Core.Tags
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     MovieIds = movies.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
-                }
-                );
+                });
             }
 
             return details;

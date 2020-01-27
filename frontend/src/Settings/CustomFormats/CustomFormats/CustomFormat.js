@@ -123,9 +123,6 @@ class CustomFormat extends Component {
               <div>
                 Are you sure you want to delete custom format '{name}'?
               </div>
-              <div>
-                This will remove all associations to this format in the DB. This may result in existing files being updated.
-              </div>
             </div>
           }
           confirmLabel="Delete"

@@ -104,6 +104,9 @@ class Queue extends Component {
       isFetching,
       isPopulated,
       error,
+      isMoviesFetching,
+      isMoviesPopulated,
+      moviesError,
       items,
       columns,
       totalRecords,
@@ -122,8 +125,9 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isCheckForFinishedDownloadExecuting;
-    const hasError = error;
+    const isRefreshing = isFetching || isMoviesFetching || isCheckForFinishedDownloadExecuting;
+    const isAllPopulated = isPopulated && (isMoviesPopulated || !items.length || items.every((e) => !e.movieId));
+    const hasError = error || moviesError;
     const selectedCount = this.getSelectedIds().length;
     const disableSelectedActions = selectedCount === 0;
 
@@ -175,7 +179,7 @@ class Queue extends Component {
 
         <PageContentBodyConnector>
           {
-            isRefreshing && !isPopulated &&
+            isRefreshing && !isAllPopulated &&
               <LoadingIndicator />
           }
 
@@ -194,7 +198,7 @@ class Queue extends Component {
           }
 
           {
-            isPopulated && !hasError && !!items.length &&
+            isAllPopulated && !hasError && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -247,6 +251,9 @@ Queue.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  isMoviesFetching: PropTypes.bool.isRequired,
+  isMoviesPopulated: PropTypes.bool.isRequired,
+  moviesError: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
-import dimensions from 'Styles/Variables/dimensions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
@@ -13,29 +12,6 @@ import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
 import MovieIndex from './MovieIndex';
-
-const POSTERS_PADDING = 15;
-const POSTERS_PADDING_SMALL_SCREEN = 5;
-const TABLE_PADDING = parseInt(dimensions.pageContentBodyPadding);
-const TABLE_PADDING_SMALL_SCREEN = parseInt(dimensions.pageContentBodyPaddingSmallScreen);
-
-// If the scrollTop is greater than zero it needs to be offset
-// by the padding so when it is set initially so it is correct
-// after React Virtualized takes the padding into account.
-
-function getScrollTop(view, scrollTop, isSmallScreen) {
-  if (scrollTop === 0) {
-    return 0;
-  }
-
-  let padding = isSmallScreen ? TABLE_PADDING_SMALL_SCREEN : TABLE_PADDING;
-
-  if (view === 'posters') {
-    padding = isSmallScreen ? POSTERS_PADDING_SMALL_SCREEN : POSTERS_PADDING;
-  }
-
-  return scrollTop + padding;
-}
 
 function createMapStateToProps() {
   return createSelector(
@@ -115,23 +91,6 @@ function createMapDispatchToProps(dispatch, props) {
 
 class MovieIndexConnector extends Component {
 
-  //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    const {
-      view,
-      scrollTop,
-      isSmallScreen
-    } = props;
-
-    this.state = {
-      scrollTop: getScrollTop(view, scrollTop, isSmallScreen)
-    };
-  }
-
   componentDidMount() {
     // TODO: Fetch root folders here for now, but should eventually fetch on editor toggle and check loaded before showing controls
     this.props.dispatchFetchRootFolders();
@@ -142,9 +101,7 @@ class MovieIndexConnector extends Component {
 
   onViewSelect = (view) => {
     // Reset the scroll position before changing the view
-    this.setState({ scrollTop: 0 }, () => {
-      this.props.dispatchSetMovieView(view);
-    });
+    this.props.dispatchSetMovieView(view);
   }
 
   onSaveSelected = (payload) => {
@@ -152,11 +109,7 @@ class MovieIndexConnector extends Component {
   }
 
   onScroll = ({ scrollTop }) => {
-    this.setState({
-      scrollTop
-    }, () => {
-      scrollPositions.movieIndex = scrollTop;
-    });
+    scrollPositions.movieIndex = scrollTop;
   }
 
   //
@@ -166,7 +119,6 @@ class MovieIndexConnector extends Component {
     return (
       <MovieIndex
         {...this.props}
-        scrollTop={this.state.scrollTop}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
         onSaveSelected={this.onSaveSelected}
@@ -178,7 +130,6 @@ class MovieIndexConnector extends Component {
 MovieIndexConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
-  scrollTop: PropTypes.number.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
   dispatchSetMovieView: PropTypes.func.isRequired,
   dispatchSaveMovieEditor: PropTypes.func.isRequired

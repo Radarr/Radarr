@@ -36,13 +36,13 @@ class InteractiveImportRow extends Component {
       id,
       movie,
       quality,
-      language
+      languages
     } = this.props;
 
     if (
       movie &&
       quality &&
-      language
+      languages
     ) {
       this.props.onSelectedChange({ id, value: true });
     }
@@ -53,7 +53,7 @@ class InteractiveImportRow extends Component {
       id,
       movie,
       quality,
-      language,
+      languages,
       isSelected,
       onValidRowChange
     } = this.props;
@@ -61,7 +61,7 @@ class InteractiveImportRow extends Component {
     if (
       prevProps.movie === movie &&
       prevProps.quality === quality &&
-      prevProps.language === language &&
+      prevProps.languages === languages &&
       prevProps.isSelected === isSelected
     ) {
       return;
@@ -70,7 +70,7 @@ class InteractiveImportRow extends Component {
     const isValid = !!(
       movie &&
       quality &&
-      language
+      languages
     );
 
     if (isSelected && !isValid) {
@@ -134,7 +134,7 @@ class InteractiveImportRow extends Component {
       relativePath,
       movie,
       quality,
-      language,
+      languages,
       size,
       rejections,
       isSelected,
@@ -151,9 +151,8 @@ class InteractiveImportRow extends Component {
 
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
-    const showLanguagePlaceholder = isSelected && !language;
-    // TODO - Placeholder till we implement selection of multiple languages
-    const languages = [language];
+    const showLanguagePlaceholder = isSelected && !languages;
+
     return (
       <TableRow>
         <TableSelectCell
@@ -209,7 +208,7 @@ class InteractiveImportRow extends Component {
           }
 
           {
-            !showLanguagePlaceholder && !!language &&
+            !showLanguagePlaceholder && !!languages &&
               <MovieLanguage
                 className={styles.label}
                 languages={languages}
@@ -253,6 +252,7 @@ class InteractiveImportRow extends Component {
         <SelectMovieModal
           isOpen={isSelectMovieModalOpen}
           ids={[id]}
+          relativePath={relativePath}
           onModalClose={this.onSelectMovieModalClose}
         />
 
@@ -268,7 +268,7 @@ class InteractiveImportRow extends Component {
         <SelectLanguageModal
           isOpen={isSelectLanguageModalOpen}
           ids={[id]}
-          languageId={language ? language.id : 0}
+          languageIds={languages ? languages.map((l) => l.id) : []}
           onModalClose={this.onSelectLanguageModalClose}
         />
       </TableRow>
@@ -283,7 +283,7 @@ InteractiveImportRow.propTypes = {
   relativePath: PropTypes.string.isRequired,
   movie: PropTypes.object,
   quality: PropTypes.object,
-  language: PropTypes.object,
+  languages: PropTypes.arrayOf(PropTypes.object),
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSelected: PropTypes.bool,

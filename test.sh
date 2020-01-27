@@ -4,7 +4,8 @@ TYPE=$2
 COVERAGE=$3
 WHERE="Category!=ManualTest"
 TEST_PATTERN="*Test.dll"
-ASSEMBLIES=""
+FILES=( "Radarr.Api.Test.dll" "Radarr.Automation.Test.dll" "Radarr.Common.Test.dll" "Radarr.Core.Test.dll" "Radarr.Host.Test.dll" "Radarr.Integration.Test.dll" "Radarr.Libraries.Test.dll" "Radarr.Mono.Test.dll" "Radarr.Update.Test.dll" "Radarr.Windows.Test.dll" )
+ASSMEBLIES=""
 TEST_LOG_FILE="TestLog.txt"
 
 echo "test dir: $TEST_DIR"
@@ -16,16 +17,12 @@ if [ -d "$TEST_DIR/_tests" ]; then
   TEST_DIR="$TEST_DIR/_tests"
 fi
 
-COVERAGE_RESULT_DIRECTORY="$TEST_DIR/CoverageResults/"
-
 rm -f "$TEST_LOG_FILE"
 
 # Uncomment to log test output to a file instead of the console
 export RADARR_TESTS_LOG_OUTPUT="File"
 
-NUNIT="dotnet vstest"
-NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--Platform:x64 --logger:nunit;LogFilePath=TestResult.xml"
+VSTEST_PARAMS="--Platform:x64 --logger:nunit;LogFilePath=TestResult.xml"
 
 if [ "$PLATFORM" = "Mac" ]; then
 
@@ -59,24 +56,17 @@ else
   exit 2
 fi
 
-for i in `find $TEST_DIR -name "$TEST_PATTERN"`;
-  do ASSEMBLIES="$ASSEMBLIES $i"
+for i in "${FILES[@]}";
+  do ASSEMBLIES="$ASSEMBLIES $TEST_DIR/$i"
 done
 
+DOTNET_PARAMS="$ASSEMBLIES --TestCaseFilter:$WHERE $VSTEST_PARAMS"
+
 if [ "$COVERAGE" = "Coverage" ]; then
-  if [ "$PLATFORM" = "Windows" ] || [ "$PLATFORM" = "Linux" ]; then
-    dotnet tool install coverlet.console --tool-path="$TEST_DIR/coverlet/"
-    mkdir $COVERAGE_RESULT_DIRECTORY
-    OPEN_COVER="$TEST_DIR/coverlet/coverlet"
-    $OPEN_COVER "$TEST_DIR/" --verbosity "detailed" --format "cobertura" --format "opencover" --output "$COVERAGE_RESULT_DIRECTORY" --exclude "[Radarr.*.Test]*" --exclude "[Radarr.Test.*]*" --exclude "[Radarr.Api*]*" --exclude "[Marr.Data]*" --exclude "[MonoTorrent]*" --exclude "[CurlSharp]*" --target "$NUNIT" --targetargs "$NUNIT_PARAMS --where=\"$WHERE\" $ASSEMBLIES";
-    EXIT_CODE=$?
-  else
-    echo "Coverage only supported on Windows and Linux"
-    exit 3
-  fi
+  dotnet vstest $DOTNET_PARAMS --settings:"src/coverlet.runsettings" --ResultsDirectory:./CoverageResults
+  EXIT_CODE=$?
 elif [ "$COVERAGE" = "Test" ] ; then
-  echo "$NUNIT_COMMAND $ASSEMBLIES --TestCaseFilter:$WHERE $NUNIT_PARAMS"
-  $NUNIT_COMMAND $ASSEMBLIES --TestCaseFilter:"$WHERE" $NUNIT_PARAMS
+  dotnet vstest $DOTNET_PARAMS
   EXIT_CODE=$?
 else
   echo "Run Type must be provided as third argument: Coverage or Test"

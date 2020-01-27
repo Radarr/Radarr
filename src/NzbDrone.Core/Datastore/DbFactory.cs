@@ -1,7 +1,5 @@
 using System;
 using System.Data.SQLite;
-using Marr.Data;
-using Marr.Data.Reflection;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
@@ -9,7 +7,6 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Datastore.Migration.Framework;
-
 
 namespace NzbDrone.Core.Datastore
 {
@@ -31,7 +28,6 @@ namespace NzbDrone.Core.Datastore
         {
             InitializeEnvironment();
 
-            MapRepository.Instance.ReflectionStrategy = new SimpleReflectionStrategy();
             TableMapping.Map();
         }
 
@@ -83,6 +79,7 @@ namespace NzbDrone.Core.Datastore
 
                         break;
                     }
+
                 case MigrationType.Log:
                     {
                         connectionString = _connectionStringFactory.LogDbConnectionString;
@@ -90,6 +87,7 @@ namespace NzbDrone.Core.Datastore
 
                         break;
                     }
+
                 default:
                     {
                         throw new ArgumentException("Invalid MigrationType");
@@ -98,12 +96,11 @@ namespace NzbDrone.Core.Datastore
 
             var db = new Database(migrationContext.MigrationType.ToString(), () =>
             {
-                var dataMapper = new DataMapper(SQLiteFactory.Instance, connectionString)
-                {
-                    SqlMode = SqlModes.Text,
-                };
+                var conn = SQLiteFactory.Instance.CreateConnection();
+                conn.ConnectionString = connectionString;
+                conn.Open();
 
-                return dataMapper;
+                return conn;
             });
 
             return db;

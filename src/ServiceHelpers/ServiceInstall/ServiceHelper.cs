@@ -31,18 +31,18 @@ namespace ServiceInstall
             }
 
             var startInfo = new ProcessStartInfo
-                                {
-                                    FileName = RadarrExe,
-                                    Arguments = arg,
-                                    UseShellExecute = false,
-                                    RedirectStandardOutput = true,
-                                    RedirectStandardError = true,
-                                    CreateNoWindow = true
-                                };
+            {
+                FileName = RadarrExe,
+                Arguments = arg,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
 
             var process = new Process { StartInfo = startInfo };
-            process.OutputDataReceived += (OnDataReceived);
-            process.ErrorDataReceived += (OnDataReceived);
+            process.OutputDataReceived += OnDataReceived;
+            process.ErrorDataReceived += OnDataReceived;
 
             process.Start();
 
@@ -50,13 +50,11 @@ namespace ServiceInstall
             process.BeginOutputReadLine();
 
             process.WaitForExit();
-
         }
 
         private static void OnDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine(e.Data);
         }
-
     }
 }

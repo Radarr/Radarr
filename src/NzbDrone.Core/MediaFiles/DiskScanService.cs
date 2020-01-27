@@ -10,12 +10,11 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
@@ -41,7 +40,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRootFolderService _rootFolderService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileService _movieFileRepository;
-	    private readonly IRenameMovieFileService _renameMovieFiles;
+        private readonly IRenameMovieFileService _renameMovieFiles;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -53,7 +52,7 @@ namespace NzbDrone.Core.MediaFiles
                                IRootFolderService rootFolderService,
                                IEventAggregator eventAggregator,
                                IMediaFileService movieFileRepository,
-		                       IRenameMovieFileService renameMovieFiles,
+                               IRenameMovieFileService renameMovieFiles,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -65,7 +64,7 @@ namespace NzbDrone.Core.MediaFiles
             _rootFolderService = rootFolderService;
             _eventAggregator = eventAggregator;
             _movieFileRepository = movieFileRepository;
-		    _renameMovieFiles = renameMovieFiles;
+            _renameMovieFiles = renameMovieFiles;
             _logger = logger;
         }
 
@@ -191,10 +190,8 @@ namespace NzbDrone.Core.MediaFiles
                 var permissions = _configService.FolderChmod;
                 _diskProvider.SetPermissions(path, permissions, _configService.ChownUser, _configService.ChownGroup);
             }
-
             catch (Exception ex)
             {
-
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
@@ -222,7 +219,6 @@ namespace NzbDrone.Core.MediaFiles
                 var movie = _movieService.GetMovie(message.MovieId.Value);
                 Scan(movie);
             }
-
             else
             {
                 var allMovies = _movieService.GetAllMovies();

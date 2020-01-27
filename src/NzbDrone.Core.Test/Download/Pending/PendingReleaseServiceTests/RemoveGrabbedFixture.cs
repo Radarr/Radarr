@@ -1,19 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using System.Linq;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -35,18 +33,18 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                      .Build();
 
             _profile = new Profile
-                       {
-                           Name = "Test",
-                           Cutoff = Quality.HDTV720p.Id,
-                           Items = new List<ProfileQualityItem>
+            {
+                Name = "Test",
+                Cutoff = Quality.HDTV720p.Id,
+                Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
                                    },
-                       };
+            };
 
-            _movie.Profile = new LazyLoaded<Profile>(_profile);
+            _movie.Profile = _profile;
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
@@ -77,7 +75,6 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovies(It.IsAny<IEnumerable<int>>()))
                   .Returns(new List<Movie> { _movie });
-
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisionsForMovies(It.IsAny<List<DownloadDecision>>()))

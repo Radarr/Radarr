@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
-using Marr.Data;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
-using System.Linq;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -24,7 +22,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
-		private ParsedMovieInfo _parsedMovieInfo;
+        private ParsedMovieInfo _parsedMovieInfo;
         private RemoteMovie _remoteMovie;
         private List<PendingRelease> _heldReleases;
 
@@ -35,18 +33,18 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                      .Build();
 
             _profile = new Profile
-                       {
-                           Name = "Test",
-                           Cutoff = Quality.HDTV720p.Id,
-                           Items = new List<ProfileQualityItem>
+            {
+                Name = "Test",
+                Cutoff = Quality.HDTV720p.Id,
+                Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
                                    },
-                       };
+            };
 
-            _movie.Profile = new LazyLoaded<Profile>(_profile);
+            _movie.Profile = _profile;
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
@@ -54,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
             _remoteMovie = new RemoteMovie();
-			_remoteMovie.Movie = _movie;
+            _remoteMovie.Movie = _movie;
             _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
             _remoteMovie.Release = _release;
 
@@ -84,7 +82,6 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             var release = _release.JsonClone();
             release.Indexer = indexer;
             release.PublishDate = publishDate;
-
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()

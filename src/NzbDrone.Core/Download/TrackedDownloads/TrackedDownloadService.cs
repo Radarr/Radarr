@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
@@ -27,20 +28,23 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _config;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
         private readonly ICached<TrackedDownload> _cache;
 
         public TrackedDownloadService(IParsingService parsingService,
-            ICacheManager cacheManager,
-            IHistoryService historyService,
-            IConfigService config,
-            IEventAggregator eventAggregator,
-            Logger logger)
+                                      ICacheManager cacheManager,
+                                      IHistoryService historyService,
+                                      IConfigService config,
+                                      ICustomFormatCalculationService formatCalculator,
+                                      IEventAggregator eventAggregator,
+                                      Logger logger)
         {
             _parsingService = parsingService;
             _historyService = historyService;
             _cache = cacheManager.GetCache<TrackedDownload>(GetType());
             _config = config;
+            _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -97,12 +101,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
                 var grabbedHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
                 var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
+
                 //TODO: Create release info from history and use that here, so we don't loose indexer flags!
-                var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title, new List<object>{grabbedHistoryItem});
+                var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title, new List<object> { grabbedHistoryItem });
 
                 if (parsedMovieInfo != null)
                 {
@@ -120,13 +124,19 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie == null ||
                         trackedDownload.RemoteMovie.Movie == null)
                     {
-                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle, new List<object>{grabbedHistoryItem});
+                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle, new List<object> { grabbedHistoryItem });
 
                         if (parsedMovieInfo != null)
                         {
                             trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
                         }
                     }
+                }
+
+                // Calculate custom formats
+                if (trackedDownload.RemoteMovie != null)
+                {
+                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo);
                 }
 
                 // Track it so it can be displayed in the queue even though we can't determine which movie it is for
@@ -170,9 +180,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                  existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
                 _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} SonarrStage={4} Episode='{5}' OutputPath={6}.",
-                    downloadItem.DownloadClient, downloadItem.Title,
-                    downloadItem.Status, downloadItem.CanBeRemoved ? "" :
-                                         downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
+                    downloadItem.DownloadClient,
+                    downloadItem.Title,
+                    downloadItem.Status,
+                    downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
                     trackedDownload.State,
                     trackedDownload.RemoteMovie?.ParsedMovieInfo,
                     downloadItem.OutputPath);

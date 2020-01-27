@@ -1,15 +1,8 @@
 using System;
-using System.Collections.Generic;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.TorrentPotato
 {
@@ -23,7 +16,6 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         public TorrentPotato(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
-
         }
 
         private IndexerDefinition GetDefinition(string name, TorrentPotatoSettings settings)
@@ -51,7 +43,5 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         {
             return new TorrentPotatoParser();
         }
-
-      
     }
 }

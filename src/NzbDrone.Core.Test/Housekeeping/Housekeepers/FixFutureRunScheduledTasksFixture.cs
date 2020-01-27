@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Subject.Clean();
 
-			AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().NotBeAfter(DateTime.UtcNow));
+            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().NotBeAfter(DateTime.UtcNow));
         }
 
         [Test]

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 using NLog;
 using NzbDrone.Core.Datastore;
-using System.Data;
 
 namespace NzbDrone.Core.Backup
 {
@@ -27,13 +22,15 @@ namespace NzbDrone.Core.Backup
         public void BackupDatabase(IDatabase database, string targetDirectory)
         {
             var sourceConnectionString = "";
-            using (var db = database.GetDataMapper())
+            using (var db = database.OpenConnection())
             {
                 sourceConnectionString = db.ConnectionString;
             }
+
             var backupConnectionStringBuilder = new SQLiteConnectionStringBuilder(sourceConnectionString);
 
             backupConnectionStringBuilder.DataSource = Path.Combine(targetDirectory, Path.GetFileName(backupConnectionStringBuilder.DataSource));
+
             // We MUST use journal mode instead of WAL coz WAL has issues when page sizes change. This should also automatically deal with the -journal and -wal files during restore.
             backupConnectionStringBuilder.JournalMode = SQLiteJournalModeEnum.Truncate;
 

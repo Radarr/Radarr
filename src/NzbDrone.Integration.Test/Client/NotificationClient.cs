@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Radarr.Api.V2.Notifications;
+using Radarr.Api.V3.Notifications;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

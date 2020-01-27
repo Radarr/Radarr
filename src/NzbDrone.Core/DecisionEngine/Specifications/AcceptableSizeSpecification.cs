@@ -1,11 +1,8 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -38,10 +35,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             var qualityDefinition = _qualityDefinitionService.Get(quality);
 
             if (subject.Movie.Runtime == 0)
-		    {
-			    _logger.Warn("{0} has no runtime information using median movie runtime of 110 minutes.", subject.Movie);
-			    subject.Movie.Runtime = 110;
-		    }
+            {
+                _logger.Warn("{0} has no runtime information using median movie runtime of 110 minutes.", subject.Movie);
+                subject.Movie.Runtime = 110;
+            }
 
             if (qualityDefinition.MinSize.HasValue)
             {
@@ -59,6 +56,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     return Decision.Reject("{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage);
                 }
             }
+
             if (!qualityDefinition.MaxSize.HasValue || qualityDefinition.MaxSize.Value == 0)
             {
                 _logger.Debug("Max size is unlimited - skipping check.");
@@ -72,8 +70,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 //If the parsed size is greater than maxSize we don't want it
                 if (subject.Release.Size > maxSize)
-                {;
-
+                {
                     _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} for {3}), rejecting.", subject, subject.Release.Size, maxSize, subject.Movie.Title);
                     return Decision.Reject("{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), subject.Movie.Title);
                 }

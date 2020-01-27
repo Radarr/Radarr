@@ -52,7 +52,6 @@ class AddListMovieOverview extends Component {
 
   render() {
     const {
-      style,
       tmdbId,
       title,
       titleSlug,
@@ -82,7 +81,7 @@ class AddListMovieOverview extends Component {
     const overviewHeight = contentHeight - titleRowHeight;
 
     return (
-      <div className={styles.container} style={style}>
+      <div className={styles.container}>
         <Link
           className={styles.content}
           {...linkProps}
@@ -132,7 +131,6 @@ class AddListMovieOverview extends Component {
 }
 
 AddListMovieOverview.propTypes = {
-  style: PropTypes.object.isRequired,
   tmdbId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   folder: PropTypes.string.isRequired,

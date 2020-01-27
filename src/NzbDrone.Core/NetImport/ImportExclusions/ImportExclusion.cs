@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Marr.Data;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.MediaFiles;
-using System.IO;
+﻿using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions
 {
@@ -15,7 +8,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         public string MovieTitle { get; set; }
         public int MovieYear { get; set; }
 
-        new public string ToString()
+        public new string ToString()
         {
             return string.Format("Excluded Movie: [{0}][{1} {2}]", TmdbId, MovieTitle, MovieYear);
         }

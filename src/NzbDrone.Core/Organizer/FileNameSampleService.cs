@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaFiles.MediaInfo;
-using System;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -67,6 +65,7 @@ namespace NzbDrone.Core.Organizer
                 Title = "The Movie: Title",
                 Year = 2010,
                 ImdbId = "tt0066921",
+                TmdbId = 345691,
                 MovieFile = _movieFile,
                 MovieFileId = 1,
             };

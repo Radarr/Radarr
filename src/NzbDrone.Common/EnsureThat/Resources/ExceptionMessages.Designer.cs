@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NzbDrone.Common.EnsureThat.Resources {
+namespace NzbDrone.Common.EnsureThat.Resources
+{
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,202 +20,246 @@ namespace NzbDrone.Common.EnsureThat.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ExceptionMessages {
-        
+    internal class ExceptionMessages
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExceptionMessages() {
+        internal ExceptionMessages()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NzbDrone.Common.EnsureThat.Resources.ExceptionMessages", typeof(ExceptionMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Empty collection is not allowed..
         /// </summary>
-        internal static string EnsureExtensions_IsEmptyCollection {
-            get {
+        internal static string EnsureExtensions_IsEmptyCollection
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsEmptyCollection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Empty Guid is not allowed..
         /// </summary>
-        internal static string EnsureExtensions_IsEmptyGuid {
-            get {
+        internal static string EnsureExtensions_IsEmptyGuid
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsEmptyGuid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expected an expression that evaluates to false..
         /// </summary>
-        internal static string EnsureExtensions_IsNotFalse {
-            get {
+        internal static string EnsureExtensions_IsNotFalse
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotFalse", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not greater than limit &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotGt {
-            get {
+        internal static string EnsureExtensions_IsNotGt
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotGt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not greater than or equal to limit &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotGte {
-            get {
+        internal static string EnsureExtensions_IsNotGte
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotGte", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is &gt; max &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotInRange_ToHigh {
-            get {
+        internal static string EnsureExtensions_IsNotInRange_ToHigh
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToHigh", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string is too long. Must be between &apos;{0}&apos; and  &apos;{1}&apos;. Must be between &apos;{0}&apos; and &apos;{1}&apos; but was &apos;{2}&apos; characters long..
         /// </summary>
-        internal static string EnsureExtensions_IsNotInRange_ToLong {
-            get {
+        internal static string EnsureExtensions_IsNotInRange_ToLong
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToLong", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is &lt; min &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotInRange_ToLow {
-            get {
+        internal static string EnsureExtensions_IsNotInRange_ToLow
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToLow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string is not long enough. Must be between &apos;{0}&apos; and &apos;{1}&apos; but was &apos;{2}&apos; characters long..
         /// </summary>
-        internal static string EnsureExtensions_IsNotInRange_ToShort {
-            get {
+        internal static string EnsureExtensions_IsNotInRange_ToShort
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotInRange_ToShort", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not lower than limit &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotLt {
-            get {
+        internal static string EnsureExtensions_IsNotLt
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotLt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; is not lower than or equal to limit &apos;{1}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotLte {
-            get {
+        internal static string EnsureExtensions_IsNotLte
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotLte", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Value can not be null..
         /// </summary>
-        internal static string EnsureExtensions_IsNotNull {
-            get {
+        internal static string EnsureExtensions_IsNotNull
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string can&apos;t be null or empty..
         /// </summary>
-        internal static string EnsureExtensions_IsNotNullOrEmpty {
-            get {
+        internal static string EnsureExtensions_IsNotNullOrEmpty
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNullOrEmpty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The string can&apos;t be left empty, null or consist of only whitespaces..
         /// </summary>
-        internal static string EnsureExtensions_IsNotNullOrWhiteSpace {
-            get {
+        internal static string EnsureExtensions_IsNotNullOrWhiteSpace
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The param is not of expected type: &apos;{0}&apos;..
         /// </summary>
-        internal static string EnsureExtensions_IsNotOfType {
-            get {
+        internal static string EnsureExtensions_IsNotOfType
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotOfType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expected an expression that evaluates to true..
         /// </summary>
-        internal static string EnsureExtensions_IsNotTrue {
-            get {
+        internal static string EnsureExtensions_IsNotTrue
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_IsNotTrue", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to value &apos;{0}&apos; does not match &apos;{1}&apos;.
         /// </summary>
-        internal static string EnsureExtensions_NoMatch {
-            get {
+        internal static string EnsureExtensions_NoMatch
+        {
+            get
+            {
                 return ResourceManager.GetString("EnsureExtensions_NoMatch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No MemberExpression found in expression: &apos;{0}&apos;..
         /// </summary>
-        internal static string ExpressionUtils_GetRightMostMember_NoMemberFound {
-            get {
+        internal static string ExpressionUtils_GetRightMostMember_NoMemberFound
+        {
+            get
+            {
                 return ResourceManager.GetString("ExpressionUtils_GetRightMostMember_NoMemberFound", resourceCulture);
             }
         }

@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -42,9 +42,9 @@ namespace NzbDrone.Core.DiskSpace
 
         private IEnumerable<string> GetMoviesRootPaths()
         {
-            return _movieService.GetAllMovies()
-                .Where(s => _diskProvider.FolderExists(s.Path))
-                .Select(s => _diskProvider.GetPathRoot(s.Path))
+            return _movieService.AllMoviePaths()
+                .Where(s => _diskProvider.FolderExists(s))
+                .Select(s => _diskProvider.GetPathRoot(s))
                 .Distinct();
         }
 
@@ -73,11 +73,11 @@ namespace NzbDrone.Core.DiskSpace
                     }
 
                     diskSpace = new DiskSpace
-                                {
-                                    Path = path,
-                                    FreeSpace = freeSpace.Value,
-                                    TotalSpace = totalSpace.Value
-                                };
+                    {
+                        Path = path,
+                        FreeSpace = freeSpace.Value,
+                        TotalSpace = totalSpace.Value
+                    };
 
                     diskSpace.Label = _diskProvider.GetVolumeLabel(path);
                 }

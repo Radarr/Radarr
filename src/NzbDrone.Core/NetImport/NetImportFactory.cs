@@ -21,7 +21,7 @@ namespace NzbDrone.Core.NetImport
 
         public NetImportFactory(INetImportRepository providerRepository,
                               IEnumerable<INetImport> providers,
-                              IContainer container, 
+                              IContainer container,
                               IEventAggregator eventAggregator,
                               Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)
@@ -32,13 +32,14 @@ namespace NzbDrone.Core.NetImport
 
         protected override List<NetImportDefinition> Active()
         {
-            // return base.Active().Where(c => c.Enabled).ToList(); // use this for when/if we add a setting to enable/disable lists
-            return base.Active().ToList();
+            return base.Active().Where(c => c.Enabled).ToList();
         }
 
         public override void SetProviderCharacteristics(INetImport provider, NetImportDefinition definition)
         {
             base.SetProviderCharacteristics(provider, definition);
+
+            definition.ListType = provider.ListType;
         }
 
         public List<INetImport> Enabled()
@@ -50,7 +51,7 @@ namespace NzbDrone.Core.NetImport
 
         public List<INetImport> Discoverable()
         {
-            var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(Radarr.RadarrLists) || n.GetType() == typeof(TMDb.TMDbImport)));
+            var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(Radarr.RadarrLists) || n.GetType() == typeof(TMDb.Popular.TMDbPopularImport)));
             var indexers = FilterBlockedIndexers(enabledImporters);
             return indexers.ToList();
         }

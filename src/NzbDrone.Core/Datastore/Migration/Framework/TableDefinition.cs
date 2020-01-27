@@ -1,5 +1,3 @@
-#region License
-//
 // Copyright (c) 2007-2009, Sean Chambers <schambers80@gmail.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;

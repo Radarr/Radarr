@@ -1,6 +1,7 @@
 const radarrYellow = '#ffc230';
 
 module.exports = {
+  textColor: '#515253',
   defaultColor: '#333',
   disabledColor: '#999',
   dimColor: '#555',

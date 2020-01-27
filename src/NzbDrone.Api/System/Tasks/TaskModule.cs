@@ -32,14 +32,14 @@ namespace NzbDrone.Api.System.Tasks
             var taskName = scheduledTask.TypeName.Split('.').Last().Replace("Command", "");
 
             return new TaskResource
-                   {
-                       Id = scheduledTask.Id,
-                       Name = NameRegex.Replace(taskName, match => " " + match.Value),
-                       TaskName = taskName,
-                       Interval = scheduledTask.Interval,
-                       LastExecution = scheduledTask.LastExecution,
-                       NextExecution = scheduledTask.LastExecution.AddMinutes(scheduledTask.Interval)
-                   };
+            {
+                Id = scheduledTask.Id,
+                Name = NameRegex.Replace(taskName, match => " " + match.Value),
+                TaskName = taskName,
+                Interval = scheduledTask.Interval,
+                LastExecution = scheduledTask.LastExecution,
+                NextExecution = scheduledTask.LastExecution.AddMinutes(scheduledTask.Interval)
+            };
         }
 
         public void Handle(CommandExecutedEvent message)

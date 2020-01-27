@@ -72,7 +72,8 @@ function createMapStateToProps() {
         selectedFilterKey,
         filters,
         colorImpairedMode: uiSettings.enableColorImpairedMode,
-        hasMovie: !!movieCount,
+        hasMovie: !!movieCount.count,
+        movieError: movieCount.error,
         missingMovieIds,
         isSearchingForMissing
       };

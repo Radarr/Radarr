@@ -3,10 +3,10 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -61,8 +61,8 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             Subject.UpdateMovie(_settings, fakeMovie);
 
-             Mocker.GetMock<IXbmcJsonApiProxy>()
-                   .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());
         }
     }
 }

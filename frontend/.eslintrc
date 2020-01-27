@@ -268,7 +268,7 @@
     "react/jsx-curly-spacing": [2, "never"],
     "react/jsx-equals-spacing": [2, "never"],
     "react/jsx-indent-props": [2, 2],
-    "react/jsx-indent": [2, 2],
+    "react/jsx-indent": [2, 2, { "indentLogicalExpressions": true }],
     "react/jsx-key": 2,
     "react/jsx-no-bind": [2, { "allowArrowFunctions": true }],
     "react/jsx-no-duplicate-props": [2, { "ignoreCase": true }],

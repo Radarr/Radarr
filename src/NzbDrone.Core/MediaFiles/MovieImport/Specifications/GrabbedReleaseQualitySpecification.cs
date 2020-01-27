@@ -4,7 +4,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -17,7 +16,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         private readonly IHistoryService _historyService;
         private readonly IParsingService _parsingService;
 
-        public GrabbedReleaseQualitySpecification(Logger logger, IHistoryService historyService,
+        public GrabbedReleaseQualitySpecification(Logger logger,
+            IHistoryService historyService,
             IParsingService parsingService)
         {
             _logger = logger;

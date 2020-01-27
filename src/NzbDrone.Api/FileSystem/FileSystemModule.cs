@@ -1,11 +1,10 @@
-using System;
 using System.IO;
 using System.Linq;
 using Nancy;
-using Radarr.Http.Extensions;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
+using Radarr.Http.Extensions;
 
 namespace NzbDrone.Api.FileSystem
 {
@@ -23,9 +22,9 @@ namespace NzbDrone.Api.FileSystem
             _fileSystemLookupService = fileSystemLookupService;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
-            Get("/",  x => GetContents());
-            Get("/type",  x => GetEntityType());
-            Get("/mediafiles",  x => GetMediaFiles());
+            Get("/", x => GetContents());
+            Get("/type", x => GetEntityType());
+            Get("/mediafiles", x => GetMediaFiles());
         }
 
         private object GetContents()
@@ -61,7 +60,8 @@ namespace NzbDrone.Api.FileSystem
                 return new string[0];
             }
 
-            return _diskScanService.GetVideoFiles(path).Select(f => new {
+            return _diskScanService.GetVideoFiles(path).Select(f => new
+            {
                 Path = f,
                 RelativePath = path.GetRelativePath(f),
                 Name = Path.GetFileName(f)

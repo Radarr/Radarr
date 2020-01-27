@@ -17,7 +17,10 @@ namespace NzbDrone.Api.Logs
     {
         public static LogResource ToResource(this Core.Instrumentation.Log model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new LogResource
             {

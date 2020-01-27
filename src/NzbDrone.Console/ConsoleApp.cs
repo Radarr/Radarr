@@ -35,6 +35,7 @@ namespace NzbDrone.Console
                     System.Console.WriteLine("NLog Exception: " + ex.ToString());
                     throw;
                 }
+
                 Bootstrap.Start(startupArgs, new ConsoleAlerts());
             }
             catch (RadarrStartupException ex)
@@ -87,7 +88,10 @@ namespace NzbDrone.Console
                     for (int i = 0; i < 3600; i++)
                     {
                         System.Threading.Thread.Sleep(1000);
-                        if (System.Console.KeyAvailable) break;
+                        if (!System.Console.IsInputRedirected && System.Console.KeyAvailable)
+                        {
+                            break;
+                        }
                     }
                 }
 

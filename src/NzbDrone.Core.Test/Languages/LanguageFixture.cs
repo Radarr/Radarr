@@ -1,9 +1,7 @@
-using System.Linq;
-using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Languages
 {
@@ -70,14 +68,16 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] {Language.Brazilian, 26}
             };
 
-        [Test, TestCaseSource("FromIntCases")]
+        [Test]
+        [TestCaseSource("FromIntCases")]
         public void should_be_able_to_convert_int_to_languageTypes(int source, Language expected)
         {
             var language = (Language)source;
             language.Should().Be(expected);
         }
 
-        [Test, TestCaseSource("ToIntCases")]
+        [Test]
+        [TestCaseSource("ToIntCases")]
         public void should_be_able_to_convert_languageTypes_to_int(Language source, int expected)
         {
             var i = (int)source;

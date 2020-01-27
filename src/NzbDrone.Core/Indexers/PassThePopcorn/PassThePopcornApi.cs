@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
@@ -62,7 +61,5 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public string Result { get; set; }
         public string Popcron { get; set; }
         public string AntiCsrfToken { get; set; }
-
     }
-
 }

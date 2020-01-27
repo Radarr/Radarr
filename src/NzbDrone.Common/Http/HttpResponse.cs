@@ -48,7 +48,6 @@ namespace NzbDrone.Common.Http
             }
         }
 
-
         public bool HasHttpError => (int)StatusCode >= 400;
 
         public bool HasHttpRedirect => StatusCode == HttpStatusCode.Moved ||
@@ -90,8 +89,8 @@ namespace NzbDrone.Common.Http
         }
     }
 
-
-    public class HttpResponse<T> : HttpResponse where T : new()
+    public class HttpResponse<T> : HttpResponse
+        where T : new()
     {
         public HttpResponse(HttpResponse response)
             : base(response.Request, response.Headers, response.ResponseData, response.StatusCode)

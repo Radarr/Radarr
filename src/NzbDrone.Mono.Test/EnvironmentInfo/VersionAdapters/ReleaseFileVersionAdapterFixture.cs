@@ -37,7 +37,6 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo.VersionAdapters
             Subject.Read().Should().BeNull();
         }
 
-
         [Test]
         public void should_return_null_if_release_file_doestn_exist()
         {
@@ -76,7 +75,6 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo.VersionAdapters
             version.Name.Should().Be("ubuntu");
             version.Version.Should().Be("14.04");
             version.FullName.Should().Be("Ubuntu 14.04.5 LTS");
-
         }
     }
 }

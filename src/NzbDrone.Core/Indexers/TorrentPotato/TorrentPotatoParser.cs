@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                     {
                         throw new IndexerException(indexerResponse, "Indexer API call returned an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
                     }
+
                     break;
             }
 
@@ -34,14 +35,14 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
                 torrentInfo.Guid = GetGuid(torrent);
                 torrentInfo.Title = torrent.release_name;
-                torrentInfo.Size = (long)torrent.size*1000*1000;
+                torrentInfo.Size = (long)torrent.size * 1000 * 1000;
                 torrentInfo.DownloadUrl = torrent.download_url;
                 torrentInfo.InfoUrl = torrent.details_url;
                 torrentInfo.PublishDate = torrent.publish_date.ToUniversalTime();
                 torrentInfo.Seeders = torrent.seeders;
                 torrentInfo.Peers = torrent.leechers + torrent.seeders;
                 torrentInfo.Freeleech = torrent.freeleech;
-                
+
                 results.Add(torrentInfo);
             }
 
@@ -63,6 +64,5 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                 return string.Format("potato-{0}", torrent.download_url);
             }
         }
-
     }
 }

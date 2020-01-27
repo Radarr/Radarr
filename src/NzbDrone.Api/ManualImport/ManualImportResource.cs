@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Movies;
-using Radarr.Http.REST;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.ManualImport
 {
@@ -25,7 +25,10 @@ namespace NzbDrone.Api.ManualImport
     {
         public static ManualImportResource ToResource(this Core.MediaFiles.MovieImport.Manual.ManualImportItem model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new ManualImportResource
             {
@@ -37,6 +40,7 @@ namespace NzbDrone.Api.ManualImport
                 Size = model.Size,
                 Movie = model.Movie.ToResource(),
                 Quality = model.Quality,
+
                 //QualityWeight
                 DownloadId = model.DownloadId,
                 Rejections = model.Rejections

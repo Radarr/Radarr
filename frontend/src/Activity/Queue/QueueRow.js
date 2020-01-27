@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import formatBytes from 'Utilities/Number/formatBytes';
 import { icons, kinds } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
@@ -71,6 +72,7 @@ class QueueRow extends Component {
       errorMessage,
       movie,
       quality,
+      customFormats,
       languages,
       protocol,
       indexer,
@@ -133,7 +135,7 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'movie.sortTitle') {
+            if (name === 'movies.sortTitle') {
               return (
                 <TableRowCell key={name}>
                   {
@@ -168,11 +170,11 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'quality.customFormats') {
+            if (name === 'customFormats') {
               return (
                 <TableRowCell key={name}>
                   <MovieFormats
-                    formats={quality.customFormats}
+                    formats={customFormats}
                   />
                 </TableRowCell>
               );
@@ -200,6 +202,14 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {downloadClient}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'size') {
+              return (
+                <TableRowCell key={name}>
+                  {formatBytes(size)}
                 </TableRowCell>
               );
             }
@@ -320,6 +330,7 @@ QueueRow.propTypes = {
   errorMessage: PropTypes.string,
   movie: PropTypes.object,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object),
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

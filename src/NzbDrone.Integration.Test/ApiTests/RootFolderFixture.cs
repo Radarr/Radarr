@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
-using Radarr.Api.V2.RootFolders;
+using Radarr.Api.V3.RootFolders;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -32,11 +32,9 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             RootFolders.All().Should().OnlyContain(c => c.Id == postResponse.Id);
 
-
             RootFolders.Delete(postResponse.Id);
 
             RootFolders.All().Should().BeEmpty();
-
 
             SignalRMessages.Should().Contain(c => c.Name == "rootfolder");
         }

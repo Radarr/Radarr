@@ -23,7 +23,6 @@ namespace NzbDrone.Core.Extras.Files
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
         where TExtraFile : ExtraFile, new()
-
     {
         private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
@@ -88,7 +87,7 @@ namespace NzbDrone.Core.Extras.Files
             {
                 filenameBuilder.Append(fileNameSuffix);
             }
-            
+
             filenameBuilder.Append(extraFile.Extension);
 
             var existingFileName = Path.Combine(movie.Path, extraFile.RelativePath);
@@ -113,4 +112,3 @@ namespace NzbDrone.Core.Extras.Files
         }
     }
 }
-

@@ -5,17 +5,16 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-//using NzbDrone.Core.DataAugmentation.DailyMovie;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies
@@ -25,6 +24,7 @@ namespace NzbDrone.Core.Movies
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
         private readonly IAlternativeTitleService _titleService;
+        private readonly ICreditService _creditService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Movies
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
                                     IAlternativeTitleService titleService,
+                                    ICreditService creditService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     IRadarrAPIClient apiClient,
@@ -48,6 +49,7 @@ namespace NzbDrone.Core.Movies
             _movieInfo = movieInfo;
             _movieService = movieService;
             _titleService = titleService;
+            _creditService = creditService;
             _eventAggregator = eventAggregator;
             _apiClient = apiClient;
             _commandQueueManager = commandQueue;
@@ -61,9 +63,9 @@ namespace NzbDrone.Core.Movies
         {
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
-            Movie movieInfo;
+            var tuple = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
 
-            movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
+            var movieInfo = tuple.Item1;
 
             if (movie.TmdbId != movieInfo.TmdbId)
             {
@@ -82,11 +84,12 @@ namespace NzbDrone.Core.Movies
             movie.Runtime = movieInfo.Runtime;
             movie.Images = movieInfo.Images;
             movie.Ratings = movieInfo.Ratings;
-            movie.Actors = movieInfo.Actors;
+            movie.Collection = movieInfo.Collection;
             movie.Genres = movieInfo.Genres;
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
+
             //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
@@ -112,7 +115,7 @@ namespace NzbDrone.Core.Movies
                 mappingsTitles = mappingsTitles.Where(t => t.IsTrusted()).ToList();
 
                 movieInfo.AlternativeTitles.AddRange(mappingsTitles);
-                
+
                 movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
 
                 if (mappings.Item2 != null)
@@ -135,12 +138,13 @@ namespace NzbDrone.Core.Movies
                 _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
 
-
-            _movieService.UpdateMovie(movie);
+            _movieService.UpdateMovie(new List<Movie> { movie });
+            _creditService.UpdateCredits(tuple.Item2, movie);
 
             try
             {
                 var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
+
                 //_titleService.AddAltTitles(newTitles.ToList(), movie);
             }
             catch (Exception e)
@@ -165,7 +169,7 @@ namespace NzbDrone.Core.Movies
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: never recan after refresh", movie);
+                _logger.Trace("Skipping refresh of {0}. Reason: never rescan after refresh", movie);
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
@@ -219,9 +223,16 @@ namespace NzbDrone.Core.Movies
             {
                 var allMovie = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
 
+                var updatedTMDBMovies = new HashSet<int>();
+
+                if (message.LastStartTime.HasValue && message.LastStartTime.Value.AddDays(14) > DateTime.UtcNow)
+                {
+                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
+                }
+
                 foreach (var movie in allMovie)
                 {
-                    if (message.Trigger == CommandTrigger.Manual || _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie))
+                    if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
@@ -239,7 +250,6 @@ namespace NzbDrone.Core.Movies
 
                         RescanMovie(movie, false, trigger);
                     }
-
                     else
                     {
                         _logger.Info("Skipping refresh of movie: {0}", movie.Title);

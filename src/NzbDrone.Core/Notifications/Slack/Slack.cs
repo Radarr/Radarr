@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Validation;
-
 
 namespace NzbDrone.Core.Notifications.Slack
 {
     public class Slack : NotificationBase<SlackSettings>
     {
         private readonly ISlackProxy _proxy;
-  
+
         public Slack(ISlackProxy proxy)
         {
             _proxy = proxy;
@@ -64,8 +63,8 @@ namespace NzbDrone.Core.Notifications.Slack
                                         Title = movie.Title,
                                     }
                                 };
- 
-             var payload = CreatePayload("Renamed", attachments);
+
+            var payload = CreatePayload("Renamed", attachments);
 
             _proxy.SendPayload(payload, Settings);
         }
@@ -105,7 +104,6 @@ namespace NzbDrone.Core.Notifications.Slack
                 var payload = CreatePayload(message);
 
                 _proxy.SendPayload(payload, Settings);
-
             }
             catch (SlackExeption ex)
             {

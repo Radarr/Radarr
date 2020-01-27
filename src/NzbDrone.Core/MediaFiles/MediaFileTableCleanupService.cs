@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using NLog;
 using NzbDrone.Common;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MediaFiles
@@ -34,7 +33,7 @@ namespace NzbDrone.Core.MediaFiles
 
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
 
-            foreach(var movieFile in movieFiles)
+            foreach (var movieFile in movieFiles)
             {
                 var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
@@ -56,7 +55,6 @@ namespace NzbDrone.Core.MediaFiles
                     //    continue;
                     //}
                 }
-
                 catch (Exception ex)
                 {
                     var errorMessage = string.Format("Unable to cleanup MovieFile in DB: {0}", movieFile.Id);

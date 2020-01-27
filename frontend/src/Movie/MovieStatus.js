@@ -1,35 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import isBefore from 'Utilities/Date/isBefore';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import ProgressBar from 'Components/ProgressBar';
 import QueueDetails from 'Activity/Queue/QueueDetails';
-import formatBytes from 'Utilities/Number/formatBytes';
+import MovieQuality from 'Movie/MovieQuality';
 import Label from 'Components/Label';
 import styles from './MovieStatus.css';
-
-function getTooltip(title, quality, size) {
-  const revision = quality.revision;
-
-  if (revision.real && revision.real > 0) {
-    title += ' [REAL]';
-  }
-
-  if (revision.version && revision.version > 1) {
-    title += ' [PROPER]';
-  }
-
-  if (size) {
-    title += ` - ${formatBytes(size)}`;
-  }
-
-  return title;
-}
 
 function MovieStatus(props) {
   const {
     inCinemas,
+    isAvailable,
     monitored,
     grabbed,
     queueItem,
@@ -38,7 +20,7 @@ function MovieStatus(props) {
 
   const hasMovieFile = !!movieFile;
   const isQueued = !!queueItem;
-  const hasReleased = isBefore(inCinemas);
+  const hasReleased = isAvailable;
 
   if (isQueued) {
     const {
@@ -78,17 +60,16 @@ function MovieStatus(props) {
 
   if (hasMovieFile) {
     const quality = movieFile.quality;
-    // TODO: Fix on Backend
-    // const isCutoffNotMet = movieFile.qualityCutoffNotMet;
 
     return (
       <div className={styles.center}>
-        <Label
-          kind={kinds.SUCCESS}
-          title={getTooltip('Movie Downloaded', quality, movieFile.size)}
-        >
-          {quality.quality.name}
-        </Label>
+        <MovieQuality
+          title={quality.quality.name}
+          size={movieFile.size}
+          quality={quality}
+          isMonitored={monitored}
+          isCutoffNotMet={movieFile.qualityCutoffNotMet}
+        />
       </div>
     );
   }
@@ -144,6 +125,7 @@ function MovieStatus(props) {
 
 MovieStatus.propTypes = {
   inCinemas: PropTypes.string,
+  isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,

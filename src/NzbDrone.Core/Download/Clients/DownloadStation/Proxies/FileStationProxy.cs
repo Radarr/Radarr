@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
@@ -22,7 +20,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             : base(DiskStationApi.FileStationList, "SYNO.FileStation.List", httpClient, cacheManager, logger)
         {
         }
-        
+
         public SharedFolderMapping GetSharedFolderMapping(string sharedFolder, DownloadStationSettings settings)
         {
             var info = GetInfoFileOrDirectory(sharedFolder, settings);

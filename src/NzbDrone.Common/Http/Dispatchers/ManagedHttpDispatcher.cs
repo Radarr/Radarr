@@ -8,7 +8,6 @@ using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Common.Instrumentation.Extensions;
 
 namespace NzbDrone.Common.Http.Dispatchers
 {
@@ -219,6 +218,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                     {
                         var responseStreamInfo = currentOperation.GetType().GetField("responseStream", BindingFlags.NonPublic | BindingFlags.Instance);
                         var responseStream = responseStreamInfo.GetValue(currentOperation) as Stream;
+
                         // Note that responseStream will likely be null once mono fixes it.
                         responseStream?.Dispose();
                     }

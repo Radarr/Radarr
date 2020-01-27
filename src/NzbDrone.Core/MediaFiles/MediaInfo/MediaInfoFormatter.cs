@@ -12,6 +12,9 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public static class MediaInfoFormatter
     {
+        private const string ValidHdrColourPrimaries = "BT.2020";
+        private static readonly string[] ValidHdrTransferFunctions = { "PQ", "HLG" };
+
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(MediaInfoFormatter));
 
         public static decimal FormatAudioChannels(MediaInfoModel mediaInfo)
@@ -42,13 +45,13 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             var audioCodecID = mediaInfo.AudioCodecID ?? string.Empty;
             var audioProfile = mediaInfo.AudioProfile ?? string.Empty;
             var audioCodecLibrary = mediaInfo.AudioCodecLibrary ?? string.Empty;
-            var splitAdditionalFeatures = (mediaInfo.AudioAdditionalFeatures ?? string.Empty).Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var splitAdditionalFeatures = (mediaInfo.AudioAdditionalFeatures ?? string.Empty).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (audioFormat.Empty())
             {
                 return string.Empty;
             }
-            
+
             if (audioFormat.ContainsIgnoreCase("Atmos"))
             {
                 return "TrueHD Atmos";
@@ -82,6 +85,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     {
                         return "DTS-X";
                     }
+
                     return "DTS-HD MA";
                 }
 
@@ -100,6 +104,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (audioFormat.ContainsIgnoreCase("E-AC-3"))
             {
+                if (splitAdditionalFeatures.ContainsIgnoreCase("JOC"))
+                {
+                    return "EAC3 Atmos";
+                }
+
                 return "EAC3";
             }
 
@@ -379,7 +388,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.Debug()
-                  .Message("Unknown video format: '{0}' in '{1}'.", string.Join(", ", videoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName)
+                  .Message("Unknown video format: '{0}' in '{1}'.", string.Join(", ", mediaInfo.VideoFormat, videoCodecID, videoProfile, videoCodecLibrary), sceneName)
                   .WriteSentryWarn("UnknownVideoFormat", mediaInfo.ContainerFormat, mediaInfo.VideoFormat, videoCodecID)
                   .Write();
 
@@ -452,13 +461,37 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                 if (audioChannelPositions.Contains("/"))
                 {
-                    return Regex.Replace(audioChannelPositions, @"^\d+\sobjects", "",
+                    var channelStringList = Regex.Replace(audioChannelPositions,
+                            @"^\d+\sobjects",
+                            "",
                             RegexOptions.Compiled | RegexOptions.IgnoreCase)
                         .Replace("Object Based / ", "")
-                        .Split(new string[] {" / "}, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new string[] { " / " }, StringSplitOptions.RemoveEmptyEntries)
                         .FirstOrDefault()
-                        ?.Split('/')
-                        .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
+                        ?.Split('/');
+
+                    var positions = default(decimal);
+
+                    if (channelStringList == null)
+                    {
+                        return 0;
+                    }
+
+                    foreach (var channel in channelStringList)
+                    {
+                        var channelSplit = channel.Split(new string[] { "." }, StringSplitOptions.None);
+
+                        if (channelSplit.Count() == 3)
+                        {
+                            positions += decimal.Parse(string.Format("{0}.{1}", channelSplit[1], channelSplit[2]));
+                        }
+                        else
+                        {
+                            positions += decimal.Parse(channel);
+                        }
+                    }
+
+                    return positions;
                 }
             }
             catch (Exception)
@@ -521,9 +554,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             // Last token is the default.
             return tokens.Last();
         }
-
-        private static readonly string[] ValidHdrTransferFunctions = {"PQ", "HLG"};
-        private const string ValidHdrColourPrimaries = "BT.2020";
 
         public static string FormatVideoDynamicRange(MediaInfoModel mediaInfo)
         {

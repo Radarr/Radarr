@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Validation;
-using System.Text.RegularExpressions;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using System.Linq;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
@@ -39,10 +35,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
         [FieldDefinition(1, Label = "APIUser", HelpText = "These settings are found in your PassThePopcorn security settings (Edit Profile > Security).")]
         public string APIUser { get; set; }
-        
+
         [FieldDefinition(2, Label = "APIKey", Type = FieldType.Password)]
         public string APIKey { get; set; }
-              
+
         // [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(Language), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
@@ -50,9 +46,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(5)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        // [FieldDefinition(6, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://github.com/Radarr/Radarr/wiki/Indexer-Flags#1-required-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()

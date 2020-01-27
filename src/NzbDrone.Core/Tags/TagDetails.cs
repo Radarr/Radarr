@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Tags
         {
             get
             {
-                return (MovieIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any());
+                return MovieIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any();
             }
         }
     }

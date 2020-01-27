@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Radarr.Http.REST;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.Qualities;
-using System;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Qualities
 {
@@ -29,9 +27,12 @@ namespace NzbDrone.Api.Qualities
 
     public static class QualityTagMatchResultResourceMapper
     {
-        public static FormatTagMatchResultResource ToResource(this FormatTagMatchResult model)
+        public static FormatTagMatchResultResource ToResource(this CustomFormatMatchResult model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new FormatTagMatchResultResource
             {
@@ -40,7 +41,7 @@ namespace NzbDrone.Api.Qualities
             };
         }
 
-        public static List<FormatTagMatchResultResource> ToResource(this IList<FormatTagMatchResult> models)
+        public static List<FormatTagMatchResultResource> ToResource(this IList<CustomFormatMatchResult> models)
         {
             return models.Select(ToResource).ToList();
         }

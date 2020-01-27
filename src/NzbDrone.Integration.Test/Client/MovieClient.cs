@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
-using Radarr.Api.V2.Movies;
+using Radarr.Api.V3.Movies;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
@@ -31,7 +31,6 @@ namespace NzbDrone.Integration.Test.Client
             var request = BuildRequest(slug);
             return Get<MovieResource>(request, statusCode);
         }
-
     }
 
     public class SystemInfoClient : ClientBase<MovieResource>

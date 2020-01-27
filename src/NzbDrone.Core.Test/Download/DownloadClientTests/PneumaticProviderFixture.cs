@@ -4,7 +4,6 @@ using System.Net;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Pneumatic;
 using NzbDrone.Core.Parser.Model;
@@ -58,7 +57,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_nzbUrl, _nzbPath), Times.Once());
         }
-
 
         [Test]
         public void should_throw_on_failed_download()

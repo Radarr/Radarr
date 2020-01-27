@@ -16,7 +16,7 @@ namespace Radarr.Http.REST
         private const string ROOT_ROUTE = "/";
         private const string ID_ROUTE = @"/(?<id>[\d]{1,10})";
 
-        private HashSet<string> EXCLUDED_KEYS = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
+        private readonly HashSet<string> _excludedKeys = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
                                                 {
                                                     "page",
                                                     "pageSize",
@@ -56,10 +56,12 @@ namespace Radarr.Http.REST
             SharedValidator = new ResourceValidator<TResource>();
         }
 
-
         private void ValidateModule()
         {
-            if (GetResourceById != null) return;
+            if (GetResourceById != null)
+            {
+                return;
+            }
 
             if (CreateResource != null || UpdateResource != null)
             {
@@ -69,7 +71,11 @@ namespace Radarr.Http.REST
 
         protected Action<int> DeleteResource
         {
-            private get { return _deleteResource; }
+            private get
+            {
+                return _deleteResource;
+            }
+
             set
             {
                 _deleteResource = value;
@@ -85,7 +91,11 @@ namespace Radarr.Http.REST
 
         protected Func<int, TResource> GetResourceById
         {
-            get { return _getResourceById; }
+            get
+            {
+                return _getResourceById;
+            }
+
             set
             {
                 _getResourceById = value;
@@ -113,11 +123,14 @@ namespace Radarr.Http.REST
 
         protected Func<List<TResource>> GetResourceAll
         {
-            private get { return _getResourceAll; }
+            private get
+            {
+                return _getResourceAll;
+            }
+
             set
             {
                 _getResourceAll = value;
-
                 Get(ROOT_ROUTE, options =>
                 {
                     var resource = GetResourceAll();
@@ -128,11 +141,14 @@ namespace Radarr.Http.REST
 
         protected Func<PagingResource<TResource>, PagingResource<TResource>> GetResourcePaged
         {
-            private get { return _getResourcePaged; }
+            private get
+            {
+                return _getResourcePaged;
+            }
+
             set
             {
                 _getResourcePaged = value;
-
                 Get(ROOT_ROUTE, options =>
                 {
                     var resource = GetResourcePaged(ReadPagingResourceFromRequest());
@@ -143,11 +159,14 @@ namespace Radarr.Http.REST
 
         protected Func<TResource> GetResourceSingle
         {
-            private get { return _getResourceSingle; }
+            private get
+            {
+                return _getResourceSingle;
+            }
+
             set
             {
                 _getResourceSingle = value;
-
                 Get(ROOT_ROUTE, options =>
                 {
                     var resource = GetResourceSingle();
@@ -158,7 +177,11 @@ namespace Radarr.Http.REST
 
         protected Func<TResource, int> CreateResource
         {
-            private get { return _createResource; }
+            private get
+            {
+                return _createResource;
+            }
+
             set
             {
                 _createResource = value;
@@ -172,7 +195,11 @@ namespace Radarr.Http.REST
 
         protected Action<TResource> UpdateResource
         {
-            private get { return _updateResource; }
+            private get
+            {
+                return _updateResource;
+            }
+
             set
             {
                 _updateResource = value;
@@ -182,7 +209,6 @@ namespace Radarr.Http.REST
                         UpdateResource(resource);
                         return ResponseWithCode(GetResourceById(resource.Id), HttpStatusCode.Accepted);
                     });
-
                 Put(ID_ROUTE, options =>
                     {
                         var resource = ReadResourceFromRequest();
@@ -239,12 +265,17 @@ namespace Radarr.Http.REST
         {
             int pageSize;
             int.TryParse(Request.Query.PageSize.ToString(), out pageSize);
-            if (pageSize == 0) pageSize = 10;
+            if (pageSize == 0)
+            {
+                pageSize = 10;
+            }
 
             int page;
             int.TryParse(Request.Query.Page.ToString(), out page);
-            if (page == 0) page = 1;
-
+            if (page == 0)
+            {
+                page = 1;
+            }
 
             var pagingResource = new PagingResource<TResource>
             {
@@ -280,9 +311,9 @@ namespace Radarr.Http.REST
             if (Request.Query.FilterKey != null)
             {
                 var filter = new PagingResourceFilter
-                             {
-                                 Key = Request.Query.FilterKey.ToString()
-                             };
+                {
+                    Key = Request.Query.FilterKey.ToString()
+                };
 
                 if (Request.Query.FilterValue != null)
                 {
@@ -293,19 +324,18 @@ namespace Radarr.Http.REST
             }
 
             // v3 uses filters in key=value format
-
             foreach (var key in Request.Query)
             {
-                if (EXCLUDED_KEYS.Contains(key))
+                if (_excludedKeys.Contains(key))
                 {
                     continue;
                 }
 
                 pagingResource.Filters.Add(new PagingResourceFilter
-                                           {
-                                               Key = key,
-                                               Value = Request.Query[key]
-                                           });
+                {
+                    Key = key,
+                    Value = Request.Query[key]
+                });
             }
 
             return pagingResource;

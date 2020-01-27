@@ -7,8 +7,8 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Blacklisting
 {
@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Blacklisting
         PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec);
         void Delete(int id);
     }
+
     public class BlacklistService : IBlacklistService,
 
                                     IExecute<ClearBlacklistCommand>,
@@ -34,12 +35,15 @@ namespace NzbDrone.Core.Blacklisting
         public bool Blacklisted(int movieId, ReleaseInfo release)
         {
             var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(movieId, release.Title);
-            
+
             if (release.DownloadProtocol == DownloadProtocol.Torrent)
             {
                 var torrentInfo = release as TorrentInfo;
 
-                if (torrentInfo == null) return false;
+                if (torrentInfo == null)
+                {
+                    return false;
+                }
 
                 if (torrentInfo.InfoHash.IsNullOrWhiteSpace())
                 {
@@ -105,7 +109,10 @@ namespace NzbDrone.Core.Blacklisting
 
         private bool HasSamePublishedDate(Blacklist item, DateTime publishedDate)
         {
-            if (!item.PublishedDate.HasValue) return true;
+            if (!item.PublishedDate.HasValue)
+            {
+                return true;
+            }
 
             return item.PublishedDate.Value.AddMinutes(-2) <= publishedDate &&
                    item.PublishedDate.Value.AddMinutes(2) >= publishedDate;
@@ -113,7 +120,10 @@ namespace NzbDrone.Core.Blacklisting
 
         private bool HasSameSize(Blacklist item, long size)
         {
-            if (!item.Size.HasValue) return true;
+            if (!item.Size.HasValue)
+            {
+                return true;
+            }
 
             var difference = Math.Abs(item.Size.Value - size);
 
@@ -128,19 +138,24 @@ namespace NzbDrone.Core.Blacklisting
         public void Handle(DownloadFailedEvent message)
         {
             var blacklist = new Blacklist
-                            {
-                                MovieId = message.MovieId,
-                                SourceTitle = message.SourceTitle,
-                                Quality = message.Quality,
-                                Date = DateTime.UtcNow,
-                                PublishedDate = DateTime.Parse(message.Data.GetValueOrDefault("publishedDate")),
-                                Size = long.Parse(message.Data.GetValueOrDefault("size", "0")),
-                                Indexer = message.Data.GetValueOrDefault("indexer"),
-                                Protocol = (DownloadProtocol)Convert.ToInt32(message.Data.GetValueOrDefault("protocol")),
-                                Message = message.Message,
-                                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash"),
-                                Languages = message.Languages
-                            };
+            {
+                MovieId = message.MovieId,
+                SourceTitle = message.SourceTitle,
+                Quality = message.Quality,
+                Date = DateTime.UtcNow,
+                PublishedDate = DateTime.Parse(message.Data.GetValueOrDefault("publishedDate")),
+                Size = long.Parse(message.Data.GetValueOrDefault("size", "0")),
+                Indexer = message.Data.GetValueOrDefault("indexer"),
+                Protocol = (DownloadProtocol)Convert.ToInt32(message.Data.GetValueOrDefault("protocol")),
+                Message = message.Message,
+                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash"),
+                Languages = message.Languages
+            };
+
+            if (Enum.TryParse(message.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+            {
+                blacklist.IndexerFlags = flags;
+            }
 
             _blacklistRepository.Insert(blacklist);
         }

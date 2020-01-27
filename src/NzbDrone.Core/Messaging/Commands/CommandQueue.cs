@@ -70,6 +70,7 @@ namespace NzbDrone.Core.Messaging.Commands
                 }
             }
         }
+
         public bool RemoveIfQueued(int id)
         {
             var rval = false;
@@ -137,27 +138,32 @@ namespace NzbDrone.Core.Messaging.Commands
                             return c.Status == CommandStatus.Queued &&
                                    !c.Body.RequiresDiskAccess;
                         }
+
                         return c.Status == CommandStatus.Queued;
                     })
                                          .OrderByDescending(c => c.Priority)
                                          .ThenBy(c => c.QueuedAt)
                                          .FirstOrDefault();
+
                     // Nothing queued that meets the requirements
                     if (localItem == null)
                     {
                         rval = false;
                     }
+
                     // If any executing command is exclusive don't want return another command until it completes.
                     else if (startedCommands.Any(c => c.Body.IsExclusive))
                     {
                         rval = false;
                     }
+
                     // If the next command to execute is exclusive wait for executing commands to complete.
                     // This will prevent other tasks from starting so the exclusive task executes in the order it should.
                     else if (localItem.Body.IsExclusive && startedCommands.Any())
                     {
                         rval = false;
                     }
+
                     // A command ready to execute
                     else
                     {

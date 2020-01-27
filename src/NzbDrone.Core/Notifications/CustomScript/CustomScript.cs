@@ -8,9 +8,8 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
-using NzbDrone.Core.HealthCheck;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.CustomScript
@@ -87,6 +86,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
 
             if (message.OldMovieFiles.Any())
             {
@@ -125,6 +125,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             ExecuteScript(environmentVariables);
         }
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();

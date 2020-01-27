@@ -34,13 +34,13 @@ export const defaultState = {
       isModifiable: false
     },
     {
-      name: 'movie.sortTitle',
+      name: 'movies.sortTitle',
       label: 'Movie',
       isSortable: true,
       isVisible: true
     },
     {
-      name: 'language',
+      name: 'languages',
       label: 'Language',
       isSortable: true,
       isVisible: true
@@ -52,9 +52,9 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'quality.customFormats',
-      label: 'Custom Formats',
-      isSortable: true,
+      name: 'customFormats',
+      label: 'Formats',
+      isSortable: false,
       isVisible: true
     },
     {
@@ -133,7 +133,7 @@ export const defaultState = {
       filters: [
         {
           key: 'eventType',
-          value: '5',
+          value: '6',
           type: filterTypes.EQUAL
         }
       ]
@@ -144,7 +144,7 @@ export const defaultState = {
       filters: [
         {
           key: 'eventType',
-          value: '6',
+          value: '8',
           type: filterTypes.EQUAL
         }
       ]

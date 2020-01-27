@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 
-
 namespace NzbDrone.Core.MediaFiles
 {
     public static class MediaFileExtensions
@@ -63,12 +62,12 @@ namespace NzbDrone.Core.MediaFiles
 
                 //HD
                 { ".mkv", Quality.WEBDL720p },
-                { ".mk3d", Quality.WEBDL720p},
+                { ".mk3d", Quality.WEBDL720p },
                 { ".ts", Quality.SDTV },
                 { ".wtv", Quality.SDTV },
 
                 //Bluray
-                { ".m2ts", Quality.Bluray720p}
+                { ".m2ts", Quality.Bluray720p }
             };
         }
 
@@ -83,6 +82,5 @@ namespace NzbDrone.Core.MediaFiles
 
             return Quality.Unknown;
         }
-
     }
 }

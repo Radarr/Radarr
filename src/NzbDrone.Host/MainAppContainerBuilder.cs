@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Nancy.Bootstrapper;
-using Radarr.Http;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.SignalR;
+using Radarr.Http;
 
 namespace Radarr.Host
 {
@@ -17,7 +17,7 @@ namespace Radarr.Host
                                  "Radarr.Core",
                                  "Radarr.Api",
                                  "Radarr.SignalR",
-                                 "Radarr.Api.V2",
+                                 "Radarr.Api.V3",
                                  "Radarr.Http"
                              };
 

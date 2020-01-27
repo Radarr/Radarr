@@ -53,8 +53,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public DownloadStationSettings()
         {
-            this.Host = "127.0.0.1";
-            this.Port = 5000;
+            Host = "127.0.0.1";
+            Port = 5000;
         }
 
         public NzbDroneValidationResult Validate()

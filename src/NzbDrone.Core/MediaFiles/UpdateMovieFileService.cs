@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
@@ -23,17 +22,17 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
-        private readonly IMovieService _movieService;
+        private readonly IMediaFileService _mediaFileService;
         private readonly Logger _logger;
 
         public UpdateMovieFileService(IDiskProvider diskProvider,
-                                        IConfigService configService,
-                                        IMovieService movieService,
-                                        Logger logger)
+                                      IConfigService configService,
+                                      IMediaFileService mediaFileService,
+                                      Logger logger)
         {
             _diskProvider = diskProvider;
             _configService = configService;
-            _movieService = movieService;
+            _mediaFileService = mediaFileService;
             _logger = logger;
         }
 
@@ -91,7 +90,6 @@ namespace NzbDrone.Core.MediaFiles
 
                         return true;
                     }
-
                     catch (Exception ex)
                     {
                         _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
@@ -109,18 +107,11 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            var movies = _movieService.MoviesWithFiles(message.Movie.Id);
-
-            var movieFiles = new List<MovieFile>();
+            var movieFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id);
             var updated = new List<MovieFile>();
 
-            foreach (var group in movies.GroupBy(e => e.MovieFileId))
+            foreach (var movieFile in movieFiles)
             {
-                var moviesInFile = group.Select(e => e).ToList();
-                var movieFile = moviesInFile.First().MovieFile;
-
-                movieFiles.Add(movieFile);
-
                 if (ChangeFileDate(movieFile, message.Movie))
                 {
                     updated.Add(movieFile);
@@ -131,68 +122,10 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Movie.Title);
             }
-
             else
             {
                 _logger.ProgressDebug("No file dates changed for {0}", message.Movie.Title);
             }
-        }
-
-        private bool ChangeFileDateToLocalAirDate(string filePath, string fileDate, string fileTime)
-        {
-            DateTime airDate;
-
-            if (DateTime.TryParse(fileDate + ' ' + fileTime, out airDate))
-            {
-                // avoiding false +ve checks and set date skewing by not using UTC (Windows)
-                DateTime oldDateTime = _diskProvider.FileGetLastWrite(filePath);
-
-                if (!DateTime.Equals(airDate, oldDateTime))
-                {
-                    try
-                    {
-                        _diskProvider.FileSetLastWriteTime(filePath, airDate);
-                        _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldDateTime, airDate);
-
-                        return true;
-                    }
-
-                    catch (Exception ex)
-                    {
-                        _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
-                    }
-                }
-            }
-
-            else
-            {
-                _logger.Debug("Could not create valid date to change file [{0}]", filePath);
-            }
-
-            return false;
-        }
-
-        private bool ChangeFileDateToUtcAirDate(string filePath, DateTime airDateUtc)
-        {
-            DateTime oldLastWrite = _diskProvider.FileGetLastWrite(filePath);
-
-            if (!DateTime.Equals(airDateUtc, oldLastWrite))
-            {
-                try
-                {
-                    _diskProvider.FileSetLastWriteTime(filePath, airDateUtc);
-                    _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldLastWrite, airDateUtc);
-
-                    return true;
-                }
-
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
-                }
-            }
-
-            return false;
         }
     }
 }

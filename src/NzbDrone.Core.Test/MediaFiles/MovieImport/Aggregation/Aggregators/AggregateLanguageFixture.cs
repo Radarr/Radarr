@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -5,11 +6,10 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
 {
-    [TestFixture]  
+    [TestFixture]
     public class AggregateLanguageFixture : CoreTest<AggregateLanguage>
     {
         private LocalMovie _localMovie;
@@ -57,7 +57,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _localMovie.FileMovieInfo = GetParsedMovieInfo(Language.English);
 
             Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.DownloadClientMovieInfo.Languages);
-
         }
 
         [Test]

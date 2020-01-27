@@ -25,23 +25,6 @@ UpdateVersionNumber()
     fi
 }
 
-CleanFolder()
-{
-    local path=$1
-
-    find $path -name "*.transform" -exec rm "{}" \;
-
-    echo "Removing FluentValidation.Resources files"
-    find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
-    find $path -name "App.config" -exec rm "{}" \;
-
-    echo "Removing vshost files"
-    find $path -name "*.vshost.exe" -exec rm "{}" \;
-
-    echo "Removing Empty folders"
-    find $path -depth -empty -type d -exec rm -r "{}" \;
-}
-
 LintUI()
 {
     ProgressStart 'ESLint'
@@ -64,15 +47,17 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
+    slnFile=src/Radarr.sln
+
     if [ $os = "windows" ]; then
-        slnFile=src/Radarr.Windows.sln
+        platform=Windows
     else
-        slnFile=src/Radarr.Posix.sln
+        platform=Posix
     fi
 
     dotnet clean $slnFile -c Debug
     dotnet clean $slnFile -c Release
-    dotnet msbuild -restore $slnFile -p:Configuration=Release -t:PublishAllRids
+    dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
 
     ProgressEnd 'Build'
 }
@@ -103,8 +88,6 @@ PackageFiles()
     cp -r $outputFolder/Radarr.Update/$framework/$runtime/publish $folder/Radarr.Update
     cp -r $outputFolder/UI $folder
 
-    CleanFolder $folder
-
     echo "Adding LICENSE"
     cp LICENSE $folder
 }
@@ -129,7 +112,7 @@ PackageLinux()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -161,7 +144,7 @@ PackageMacOS()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "netcoreapp3.0" ]; then
+    if [ "$framework" = "netcoreapp3.1" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -196,18 +179,16 @@ PackageTests()
     ProgressStart 'Creating Test Package'
 
     cp test.sh $testPackageFolder/net462/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/win-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.0/osx-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/win-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/linux-x64/publish
+    cp test.sh $testPackageFolder/netcoreapp3.1/osx-x64/publish
 
     rm -f $testPackageFolder/*.log.config
 
     # geckodriver.exe isn't copied by dotnet publish
-    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip"
+    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
     unzip -o gecko.zip
-    cp geckodriver.exe $testPackageFolder/netcoreapp3.0/win-x64/publish
-
-    CleanFolder $testPackageFolder
+    cp geckodriver.exe $testPackageFolder/netcoreapp3.1/win-x64/publish
 
     ProgressEnd 'Creating Test Package'
 }
@@ -317,11 +298,11 @@ fi
 if [ "$PACKAGES" = "YES" ];
 then
     UpdateVersionNumber
-    PackageWindows "netcoreapp3.0"
+    PackageWindows "netcoreapp3.1"
     PackageLinux "net462" "linux-x64"
-    PackageLinux "netcoreapp3.0" "linux-x64"
-    PackageLinux "netcoreapp3.0" "linux-arm64"
-    PackageLinux "netcoreapp3.0" "linux-arm"
-    PackageMacOS "netcoreapp3.0"
-    PackageMacOSApp "netcoreapp3.0"
+    PackageLinux "netcoreapp3.1" "linux-x64"
+    PackageLinux "netcoreapp3.1" "linux-arm64"
+    PackageLinux "netcoreapp3.1" "linux-arm"
+    PackageMacOS "netcoreapp3.1"
+    PackageMacOSApp "netcoreapp3.1"
 fi

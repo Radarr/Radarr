@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -8,10 +7,11 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.MediaFiles
         private MovieFile TransferFile(MovieFile movieFile, Movie movie, string destinationFilePath, TransferMode mode)
         {
             Ensure.That(movieFile, () => movieFile).IsNotNull();
-            Ensure.That(movie,() => movie).IsNotNull();
+            Ensure.That(movie, () => movie).IsNotNull();
             Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
 
             var movieFilePath = movieFile.Path ?? Path.Combine(movie.Path, movieFile.RelativePath);
@@ -133,7 +133,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _mediaFileAttributeService.SetFolderLastWriteTime(movie.Path, movieFile.DateAdded);
             }
-
             catch (Exception ex)
             {
                 _logger.Warn(ex, "Unable to set last write time");
@@ -141,7 +140,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _mediaFileAttributeService.SetFilePermissions(destinationFilePath);
 
-            if(oldMoviePath != newMoviePath && _diskProvider.FolderExists(oldMoviePath))
+            if (oldMoviePath != newMoviePath && _diskProvider.FolderExists(oldMoviePath))
             {
                 //Let's move the old files before deleting the old folder. We could just do move folder, but the main file (movie file) is already moved, so eh.
                 var files = _diskProvider.GetFiles(oldMoviePath, SearchOption.AllDirectories);
@@ -183,13 +182,14 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
         {
             var movieFolder = Path.GetDirectoryName(filePath);
-		//movie.Path = movieFolder;
+
+            //movie.Path = movieFolder;
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
             var fileName = Path.GetFileName(filePath);
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
-                throw new DirectoryNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
+                throw new RootFolderNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
             }
 
             var changed = false;
@@ -224,7 +224,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             catch (IOException ex)
             {
-                _logger.Error(ex, "Unable to create directory: " + directoryName);
+                _logger.Error(ex, "Unable to create directory: {0}", directoryName);
             }
 
             _mediaFileAttributeService.SetFolderPermissions(directoryName);

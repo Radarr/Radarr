@@ -3,9 +3,10 @@ using Nancy;
 
 namespace NzbDrone.Api.Wanted
 {
-    class LegacyMissingModule : NzbDroneApiModule
+    public class LegacyMissingModule : NzbDroneApiModule
     {
-        public LegacyMissingModule() : base("missing")
+        public LegacyMissingModule()
+            : base("missing")
         {
             Get("/", x =>
             {

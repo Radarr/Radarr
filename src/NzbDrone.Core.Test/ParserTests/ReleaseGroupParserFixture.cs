@@ -37,31 +37,45 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("NCIS.S16E04.Third.Wheel.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-GEROV", "NTb")]
         [TestCase("Will.and.Grace.S10E06.Kid.n.Play.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-Z0iDS3N", "NTb")]
         [TestCase("Absolute.Power.S02E06.The.House.of.Lords.DVDRip.x264-MaG-Chamele0n", "MaG")]
+
         //[TestCase("", "")]
         public void should_parse_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
-        
-
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV English", "SKGTV")]
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV_English", "SKGTV")]
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV.English", "SKGTV")]
+
         //[TestCase("", "")]
         public void should_not_include_language_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-RP", "EVL")]
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-RP-RP", "EVL")]
-        [TestCase("The.Longest.Mystery.S02E04.720p.WEB-DL.AAC2.0.H.264-EVL-Obfuscated", "EVL")]
-        [TestCase("Lost.S04E04.720p.BluRay.x264-xHD-NZBgeek", "xHD")]
-        [TestCase("Blue.Bloods.S05E11.720p.HDTV.X264-DIMENSION-NZBgeek", "DIMENSION")]
-        [TestCase("Lost.S04E04.720p.BluRay.x264-xHD-1", "xHD")]
-        [TestCase("Blue.Bloods.S05E11.720p.HDTV.X264-DIMENSION-1", "DIMENSION")]
-        [TestCase("saturday.night.live.s40e11.kevin.hart_sia.720p.hdtv.x264-w4f-sample.mkv", "w4f")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-RP", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-RP-RP", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Obfuscation", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-NZBgeek", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-1", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-sample.mkv", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Scrambled", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-postbot", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-xpost", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuv", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuv02", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Rakuvfinhel", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Obfuscated", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-WhiteRev", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-BUYMORE", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-AsRequested", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-AlternativeToRequested", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-GEROV", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Z0iDS3N", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Chamele0n", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4P", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4Planet", "EVO")]
         public void should_not_include_repost_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
@@ -72,6 +86,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Anime-Koi] Barakamon - S01E06 - Guys From Tokyo", "Anime-Koi")]
         [TestCase("[Anime-Koi] Barakamon - S01E07 - A High-Grade Fish", "Anime-Koi")]
         [TestCase("[Anime-Koi] Kami-sama Hajimemashita 2 - 01 [h264-720p][28D54E2C]", "Anime-Koi")]
+
         //[TestCase("Tokyo.Ghoul.02x01.013.HDTV-720p-Anime-Koi", "Anime-Koi")]
         //[TestCase("", "")]
         public void should_parse_anime_release_groups(string title, string expected)

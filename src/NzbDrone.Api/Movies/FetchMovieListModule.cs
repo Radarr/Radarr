@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Nancy;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using System.Linq;
 using NzbDrone.Core.NetImport;
 using Radarr.Http;
-using Radarr.Http.Extensions;
 
 namespace NzbDrone.Api.Movies
 {
@@ -19,13 +18,12 @@ namespace NzbDrone.Api.Movies
         {
             _fetchNetImport = netImport;
             _movieSearch = movieSearch;
-            Get("/",  x => Search());
+            Get("/", x => Search());
         }
-
 
         private object Search()
         {
-            var results = _fetchNetImport.FetchAndFilter((int) Request.Query.listId, false);
+            var results = _fetchNetImport.FetchAndFilter((int)Request.Query.listId, false);
 
             List<Core.Movies.Movie> realResults = new List<Core.Movies.Movie>();
 
@@ -41,7 +39,6 @@ namespace NzbDrone.Api.Movies
 
             return MapToResource(results);
         }
-
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
         {

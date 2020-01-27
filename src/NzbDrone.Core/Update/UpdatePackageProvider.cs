@@ -48,7 +48,10 @@ namespace NzbDrone.Core.Update
 
             var update = _httpClient.Get<UpdatePackageAvailable>(request.Build()).Resource;
 
-            if (!update.Available) return null;
+            if (!update.Available)
+            {
+                return null;
+            }
 
             return update.UpdatePackage;
         }

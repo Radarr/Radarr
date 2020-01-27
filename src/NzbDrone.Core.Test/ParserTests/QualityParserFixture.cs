@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -13,7 +11,6 @@ namespace NzbDrone.Core.Test.ParserTests
 
     public class QualityParserFixture : CoreTest
     {
-        
         [SetUp]
         public void Setup()
         {
@@ -21,7 +18,6 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         //public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
-
         public static object[] OtherSourceQualityParserCases =
         {
             new object[] { "SD TV", Source.TV, Resolution.R480p, Modifier.NONE },
@@ -114,7 +110,6 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R720p);
         }
-
 
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.X264-QCF", false)]
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.x264-QCF", false)]
@@ -235,12 +230,12 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
         }
 
-		[TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
-		[TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
-		public void should_parse_bluray576p_quality(string title)
-		{
-			ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
-		}
+        [TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
+        [TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
+        public void should_parse_bluray576p_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
+        }
 
         [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
@@ -284,7 +279,6 @@ namespace NzbDrone.Core.Test.ParserTests
         //{
         //    ParseAndVerifyQuality(title, Quality.RAWHD, proper);
         //}
-
         [TestCase("Sonny.With.a.Chance.S02E15", false)]
         [TestCase("Law & Order: Special Victims Unit - 11x11 - Quickie", false)]
         [TestCase("Series.Title.S01E01.webm", false)]
@@ -308,7 +302,8 @@ namespace NzbDrone.Core.Test.ParserTests
 
         }*/
 
-        [Test, TestCaseSource("OtherSourceQualityParserCases")]
+        [Test]
+        [TestCaseSource("OtherSourceQualityParserCases")]
         public void should_parse_quality_from_other_source(string qualityString, Source source, Resolution resolution, Modifier modifier = Modifier.NONE)
         {
             foreach (var c in new char[] { '-', '.', ' ', '_' })
@@ -365,6 +360,7 @@ namespace NzbDrone.Core.Test.ParserTests
             {
                 result.Quality.Resolution.Should().Be((int)resolution);
             }
+
             result.Quality.Source.Should().Be(source);
             if (modifier != Modifier.NONE)
             {

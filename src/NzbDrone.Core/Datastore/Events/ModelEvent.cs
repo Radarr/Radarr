@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Core.Datastore.Events
 {
-    public class ModelEvent <TModel> : IEvent
+    public class ModelEvent<TModel> : IEvent
     {
         public TModel Model { get; set; }
         public ModelAction Action { get; set; }

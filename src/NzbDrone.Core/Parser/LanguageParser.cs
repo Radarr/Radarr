@@ -25,103 +25,164 @@ namespace NzbDrone.Core.Parser
             var languages = new List<Language>();
 
             if (lowerTitle.Contains("english"))
+            {
                 languages.Add(Language.English);
+            }
 
             if (lowerTitle.Contains("french"))
+            {
                 languages.Add(Language.French);
+            }
 
             if (lowerTitle.Contains("spanish"))
-                languages.Add( Language.Spanish);
+            {
+                languages.Add(Language.Spanish);
+            }
 
             if (lowerTitle.Contains("danish"))
-                languages.Add( Language.Danish);
+            {
+                languages.Add(Language.Danish);
+            }
 
             if (lowerTitle.Contains("dutch"))
-                languages.Add( Language.Dutch);
+            {
+                languages.Add(Language.Dutch);
+            }
 
             if (lowerTitle.Contains("japanese"))
-                languages.Add( Language.Japanese);
+            {
+                languages.Add(Language.Japanese);
+            }
 
             if (lowerTitle.Contains("icelandic"))
-                languages.Add( Language.Icelandic);
+            {
+                languages.Add(Language.Icelandic);
+            }
 
             if (lowerTitle.Contains("mandarin") || lowerTitle.Contains("cantonese") || lowerTitle.Contains("chinese"))
-                languages.Add( Language.Chinese);
+            {
+                languages.Add(Language.Chinese);
+            }
 
             if (lowerTitle.Contains("korean"))
-                languages.Add( Language.Korean);
+            {
+                languages.Add(Language.Korean);
+            }
 
             if (lowerTitle.Contains("russian"))
-                languages.Add( Language.Russian);
+            {
+                languages.Add(Language.Russian);
+            }
 
             if (lowerTitle.Contains("polish"))
-                languages.Add( Language.Polish);
+            {
+                languages.Add(Language.Polish);
+            }
 
             if (lowerTitle.Contains("vietnamese"))
-                languages.Add( Language.Vietnamese);
+            {
+                languages.Add(Language.Vietnamese);
+            }
 
             if (lowerTitle.Contains("swedish"))
-                languages.Add( Language.Swedish);
+            {
+                languages.Add(Language.Swedish);
+            }
 
             if (lowerTitle.Contains("norwegian"))
-                languages.Add( Language.Norwegian);
+            {
+                languages.Add(Language.Norwegian);
+            }
 
             if (lowerTitle.Contains("nordic"))
-                languages.Add( Language.Norwegian);
+            {
+                languages.Add(Language.Norwegian);
+            }
 
             if (lowerTitle.Contains("finnish"))
-                languages.Add( Language.Finnish);
+            {
+                languages.Add(Language.Finnish);
+            }
 
             if (lowerTitle.Contains("turkish"))
-                languages.Add( Language.Turkish);
+            {
+                languages.Add(Language.Turkish);
+            }
 
             if (lowerTitle.Contains("portuguese"))
-                languages.Add( Language.Portuguese);
+            {
+                languages.Add(Language.Portuguese);
+            }
 
             if (lowerTitle.Contains("brazilian"))
                 languages.Add( Language.Brazilian);
 
             if (lowerTitle.Contains("hungarian"))
-                languages.Add( Language.Hungarian);
+            {
+                languages.Add(Language.Hungarian);
+            }
 
             if (lowerTitle.Contains("hebrew"))
-                languages.Add( Language.Hebrew);
+            {
+                languages.Add(Language.Hebrew);
+            }
 
             if (lowerTitle.Contains("czech"))
-                languages.Add( Language.Czech);
+            {
+                languages.Add(Language.Czech);
+            }
 
             var match = LanguageRegex.Match(title);
 
             if (match.Groups["italian"].Captures.Cast<Capture>().Any())
-                languages.Add( Language.Italian);
+            {
+                languages.Add(Language.Italian);
+            }
 
             if (match.Groups["german"].Captures.Cast<Capture>().Any())
-                languages.Add( Language.German);
+            {
+                languages.Add(Language.German);
+            }
 
             if (match.Groups["flemish"].Captures.Cast<Capture>().Any())
-                languages.Add( Language.Flemish);
+            {
+                languages.Add(Language.Flemish);
+            }
 
             if (match.Groups["greek"].Captures.Cast<Capture>().Any())
-                languages.Add( Language.Greek);
+            {
+                languages.Add(Language.Greek);
+            }
 
             if (match.Groups["french"].Success)
-                languages.Add( Language.French);
+            {
+                languages.Add(Language.French);
+            }
 
             if (match.Groups["russian"].Success)
-                languages.Add( Language.Russian);
+            {
+                languages.Add(Language.Russian);
+            }
 
             if (match.Groups["dutch"].Success)
-                languages.Add( Language.Dutch);
+            {
+                languages.Add(Language.Dutch);
+            }
 
             if (match.Groups["hungarian"].Success)
-                languages.Add( Language.Hungarian);
+            {
+                languages.Add(Language.Hungarian);
+            }
 
             if (match.Groups["hebrew"].Success)
-                languages.Add( Language.Hebrew);
+            {
+                languages.Add(Language.Hebrew);
+            }
 
             if (match.Groups["czech"].Success)
-                languages.Add( Language.Czech);
-
+            {
+                languages.Add(Language.Czech);
+            }
 
             return languages.DistinctBy(l => (int)l).ToList();
         }
@@ -137,7 +198,10 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (!languages.Any()) languages.Add(Language.English);
+            if (!languages.Any())
+            {
+                languages.Add(Language.English);
+            }
 
             return languages;
         }

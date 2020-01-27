@@ -22,7 +22,7 @@ function createCalendarEventsConnector() {
     (state) => state.calendar.items,
     (date, items) => {
       const filtered = _.filter(items, (item) => {
-        return moment(date).isSame(moment(item.inCinemas), 'day');
+        return moment(date).isSame(moment(item.inCinemas), 'day') || moment(date).isSame(moment(item.physicalRelease), 'day');
       });
 
       return sort(filtered);

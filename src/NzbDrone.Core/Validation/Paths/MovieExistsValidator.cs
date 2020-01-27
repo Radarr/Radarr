@@ -1,4 +1,3 @@
-using System;
 using FluentValidation.Validators;
 using NzbDrone.Core.Movies;
 
@@ -16,11 +15,14 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (context.PropertyValue == null) return true;
+            if (context.PropertyValue == null)
+            {
+                return true;
+            }
 
             int tmdbId = (int)context.PropertyValue;
 
-            return (!_movieService.GetAllMovies().Exists(s => s.TmdbId == tmdbId));
+            return _movieService.FindByTmdbId(tmdbId) == null;
         }
     }
 }

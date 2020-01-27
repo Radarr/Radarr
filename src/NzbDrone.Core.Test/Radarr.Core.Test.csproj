@@ -1,21 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     <PackageReference Include="NunitXml.TestLogger" Version="2.1.41" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="NBuilder" Version="6.0.1" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="coverlet.collector" Version="1.1.0" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*"/>
+    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Logo\1024.png">
@@ -26,10 +30,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" >
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" >
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>

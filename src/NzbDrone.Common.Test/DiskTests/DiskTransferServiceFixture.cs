@@ -20,14 +20,36 @@ namespace NzbDrone.Common.Test.DiskTests
         private readonly string _tempTargetPath = @"C:\target\my.video.mkv.partial~".AsOsAgnostic();
         private readonly string _nfsFile = ".nfs01231232";
 
+        private MockMount _sourceMount;
+        private MockMount _targetMount;
+
         [SetUp]
         public void SetUp()
         {
             Mocker.GetMock<IDiskProvider>(MockBehavior.Strict);
 
+            _sourceMount = new MockMount()
+            {
+                Name = "source",
+                RootDirectory = @"C:\source".AsOsAgnostic()
+            };
+            _targetMount = new MockMount()
+            {
+                Name = "target",
+                RootDirectory = @"C:\target".AsOsAgnostic()
+            };
+
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.GetMount(It.IsAny<string>()))
                 .Returns((IMount)null);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.GetMount(It.Is<string>(p => p.StartsWith(_sourceMount.RootDirectory))))
+                .Returns(_sourceMount);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.GetMount(It.Is<string>(p => p.StartsWith(_targetMount.RootDirectory))))
+                .Returns(_targetMount);
 
             WithEmulatedDiskProvider();
 
@@ -48,6 +70,30 @@ namespace NzbDrone.Common.Test.DiskTests
             WindowsOnly();
 
             Subject.VerificationMode.Should().Be(DiskTransferVerificationMode.VerifyOnly);
+
+            var result = Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Move);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Verify(v => v.TryCreateHardLink(_sourcePath, _backupPath), Times.Never());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Verify(v => v.MoveFile(_sourcePath, _targetPath, false), Times.Once());
+        }
+
+        [TestCase("fuse.mergerfs", "")]
+        [TestCase("fuse.rclone", "")]
+        [TestCase("mergerfs", "")]
+        [TestCase("rclone", "")]
+        [TestCase("", "fuse.mergerfs")]
+        [TestCase("", "fuse.rclone")]
+        [TestCase("", "mergerfs")]
+        [TestCase("", "rclone")]
+        public void should_not_use_verified_transfer_on_specific_filesystems(string fsSource, string fsTarget)
+        {
+            MonoOnly();
+
+            _sourceMount.DriveFormat = fsSource;
+            _targetMount.DriveFormat = fsTarget;
 
             var result = Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Move);
 
@@ -489,7 +535,10 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Callback(() =>
                     {
                         WithExistingFile(_tempTargetPath, true, 900);
-                        if (retry++ == 1) WithExistingFile(_tempTargetPath, true, 1000);
+                        if (retry++ == 1)
+                        {
+                            WithExistingFile(_tempTargetPath, true, 1000);
+                        }
                     });
 
             var result = Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Copy);
@@ -508,7 +557,10 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Callback(() =>
                     {
                         WithExistingFile(_tempTargetPath, true, 900);
-                        if (retry++ == 3) throw new Exception("Test Failed, retried too many times.");
+                        if (retry++ == 3)
+                        {
+                            throw new Exception("Test Failed, retried too many times.");
+                        }
                     });
 
             Assert.Throws<IOException>(() => Subject.TransferFile(_sourcePath, _targetPath, TransferMode.Copy));
@@ -886,7 +938,9 @@ namespace NzbDrone.Common.Test.DiskTests
         {
             var dir = Path.GetDirectoryName(path);
             if (exists && dir.IsNotNullOrWhiteSpace())
+            {
                 WithExistingFolder(dir);
+            }
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FolderExists(path))
@@ -897,7 +951,9 @@ namespace NzbDrone.Common.Test.DiskTests
         {
             var dir = Path.GetDirectoryName(path);
             if (exists && dir.IsNotNullOrWhiteSpace())
+            {
                 WithExistingFolder(dir);
+            }
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FileExists(path))
@@ -951,7 +1007,6 @@ namespace NzbDrone.Common.Test.DiskTests
                     WithExistingFile(v, false);
                 });
 
-
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.FolderExists(It.IsAny<string>()))
                 .Returns(false);
@@ -969,6 +1024,7 @@ namespace NzbDrone.Common.Test.DiskTests
                {
                    WithExistingFolder(s, false);
                    WithExistingFolder(d);
+
                    // Note: Should also deal with the files.
                });
 
@@ -977,6 +1033,7 @@ namespace NzbDrone.Common.Test.DiskTests
                .Callback<string, bool>((f, r) =>
                {
                    WithExistingFolder(f, false);
+
                    // Note: Should also deal with the files.
                });
 
@@ -1007,7 +1064,7 @@ namespace NzbDrone.Common.Test.DiskTests
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.DeleteFolder(It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback<string, bool>((v,r) => Directory.Delete(v, r));
+                .Callback<string, bool>((v, r) => Directory.Delete(v, r));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.DeleteFile(It.IsAny<string>()))
@@ -1035,8 +1092,13 @@ namespace NzbDrone.Common.Test.DiskTests
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.MoveFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback<string, string, bool>((s,d,o) => {
-                    if (File.Exists(d) && o) File.Delete(d);
+                .Callback<string, string, bool>((s, d, o) =>
+                {
+                    if (File.Exists(d) && o)
+                    {
+                        File.Delete(d);
+                    }
+
                     File.Move(s, d);
                 });
 

@@ -1,7 +1,5 @@
-﻿using System.Data;
-using FluentMigrator;
+﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -10,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-			Alter.Table("Movies").AddColumn("PhysicalReleaseNote").AsString().Nullable();
+            Alter.Table("Movies").AddColumn("PhysicalReleaseNote").AsString().Nullable();
         }
     }
 }

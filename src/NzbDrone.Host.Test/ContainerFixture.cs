@@ -1,22 +1,22 @@
 using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using Radarr.Host;
-using NzbDrone.Test.Common;
-using FluentAssertions;
-using System.Linq;
-using NzbDrone.Common.Composition;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.SignalR;
-using Moq;
+using NzbDrone.Test.Common;
+using Radarr.Host;
 
 namespace NzbDrone.App.Test
 {
@@ -71,7 +71,7 @@ namespace NzbDrone.App.Test
         }
 
         [Test]
-		[Ignore("Shit appveyor")]
+        [Ignore("Shit appveyor")]
         public void should_return_same_instance_of_singletons()
         {
             var first = _container.ResolveAll<IHandle<ApplicationShutdownRequested>>().OfType<Scheduler>().Single();

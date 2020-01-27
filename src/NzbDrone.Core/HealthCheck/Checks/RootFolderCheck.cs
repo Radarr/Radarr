@@ -1,5 +1,6 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 
@@ -7,6 +8,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(MovieDeletedEvent))]
     [CheckOn(typeof(MovieMovedEvent))]
+    [CheckOn(typeof(MoviesImportedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class RootFolderCheck : HealthCheckBase
     {
         private readonly IMovieService _movieService;
@@ -20,11 +23,11 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var missingRootFolders = _movieService.GetAllMovies()
-                                                   .Select(s => _diskProvider.GetParentFolder(s.Path))
-                                                   .Distinct()
-                                                   .Where(s => !_diskProvider.FolderExists(s))
-                                                   .ToList();
+            var missingRootFolders = _movieService.AllMoviePaths()
+                                                  .Select(s => _diskProvider.GetParentFolder(s))
+                                                  .Distinct()
+                                                  .Where(s => !_diskProvider.FolderExists(s))
+                                                  .ToList();
 
             if (missingRootFolders.Any())
             {

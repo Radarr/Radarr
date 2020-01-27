@@ -11,4 +11,4 @@ namespace NzbDrone.Core.HealthCheck
             HealthCheck = healthCheck;
         }
     }
-} 
+}

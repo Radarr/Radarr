@@ -4,7 +4,6 @@ using NUnit.Framework;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {
@@ -25,7 +24,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_error_when_download_client_throws()
         {
             var downloadClient = Mocker.GetMock<IDownloadClient>();
-            downloadClient.Setup(s => s.Definition).Returns(new DownloadClientDefinition{Name = "Test"});
+            downloadClient.Setup(s => s.Definition).Returns(new DownloadClientDefinition { Name = "Test" });
 
             downloadClient.Setup(s => s.GetItems())
                           .Throws<Exception>();

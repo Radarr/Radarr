@@ -20,7 +20,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             // Get languages in preferred order, download client item, folder and finally file.
             // Non-English languages will be preferred later, in the event there is a conflict
             // between parsed languages the more preferred item will be used.
-
             var languages = new List<Language>();
 
             languages.AddRange(GetLanguage(localMovie.DownloadClientMovieInfo));
@@ -41,7 +40,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             if (parsedMovieInfo == null)
             {
                 // English is the default language when otherwise unknown
-
                 return new List<Language> { Language.English };
             }
 

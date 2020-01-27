@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Radarr.Http.REST;
 using NzbDrone.Core.Messaging.Commands;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Commands
 {
@@ -27,30 +27,21 @@ namespace NzbDrone.Api.Commands
         //Legacy
         public CommandStatus State
         {
-            get
-            {
-                return Status;
-            }
+            get { return Status; }
 
             set { }
         }
 
         public bool Manual
         {
-            get
-            {
-                return Trigger == CommandTrigger.Manual;
-            }
+            get { return Trigger == CommandTrigger.Manual; }
 
             set { }
         }
 
         public DateTime StartedOn
         {
-            get
-            {
-                return Queued;
-            }
+            get { return Queued; }
 
             set { }
         }
@@ -59,37 +50,51 @@ namespace NzbDrone.Api.Commands
         {
             get
             {
-
-                if (Started.HasValue) return Started.Value;
+                if (Started.HasValue)
+                {
+                    return Started.Value;
+                }
 
                 return Ended;
             }
 
-            set { }
+            set
+            {
+            }
         }
 
         public bool SendUpdatesToClient
         {
             get
             {
-                if (Body != null) return (Body as Command).SendUpdatesToClient;
+                if (Body != null)
+                {
+                    return (Body as Command).SendUpdatesToClient;
+                }
 
                 return false;
             }
 
-            set { }
+            set
+            {
+            }
         }
 
         public bool UpdateScheduledTask
         {
             get
             {
-                if (Body != null) return (Body as Command).UpdateScheduledTask;
+                if (Body != null)
+                {
+                    return (Body as Command).UpdateScheduledTask;
+                }
 
                 return false;
             }
 
-            set { }
+            set
+            {
+            }
         }
 
         public DateTime? LastExecutionTime { get; set; }
@@ -99,7 +104,10 @@ namespace NzbDrone.Api.Commands
     {
         public static CommandResource ToResource(this CommandModel model)
         {
-            if (model == null) return null;
+            if (model == null)
+            {
+                return null;
+            }
 
             return new CommandResource
             {

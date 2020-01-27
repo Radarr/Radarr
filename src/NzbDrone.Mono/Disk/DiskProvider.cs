@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.AccessControl;
 using Mono.Unix;
 using Mono.Unix.Native;
 using NLog;
@@ -15,14 +14,14 @@ namespace NzbDrone.Mono.Disk
 {
     public class DiskProvider : DiskProviderBase
     {
+        // Mono supports sending -1 for a uint to indicate that the owner or group should not be set
+        // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
+        private const uint UNCHANGED_ID = uint.MaxValue;
+
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DiskProvider));
 
         private readonly IProcMountProvider _procMountProvider;
         private readonly ISymbolicLinkResolver _symLinkResolver;
-
-        // Mono supports sending -1 for a uint to indicate that the owner or group should not be set
-        // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
-        private const uint UNCHANGED_ID = uint.MaxValue;
 
         public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
         {
@@ -151,7 +150,7 @@ namespace NzbDrone.Mono.Disk
             }
         }
 
-        protected override void MoveFileInternal(string source, string destination)
+        protected override void MoveFileInternal(string source, string destination, bool overwrite)
         {
             var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
 
@@ -188,7 +187,7 @@ namespace NzbDrone.Mono.Disk
             }
             else
             {
-                base.MoveFileInternal(source, destination);
+                base.MoveFileInternal(source, destination, overwrite);
             }
         }
 
@@ -198,7 +197,10 @@ namespace NzbDrone.Mono.Disk
             {
                 var fileInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
 
-                if (fileInfo.IsSymbolicLink) return false;
+                if (fileInfo.IsSymbolicLink)
+                {
+                    return false;
+                }
 
                 fileInfo.CreateLink(destination);
                 return true;

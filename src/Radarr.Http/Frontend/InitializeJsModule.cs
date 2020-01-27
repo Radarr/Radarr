@@ -27,7 +27,7 @@ namespace Radarr.Http.Frontend
             _apiKey = configFileProvider.ApiKey;
             _urlBase = configFileProvider.UrlBase;
 
-            Get("/initialize.js",  x => Index());
+            Get("/initialize.js", x => Index());
         }
 
         private Response Index()
@@ -58,7 +58,7 @@ namespace Radarr.Http.Frontend
 
             var builder = new StringBuilder();
             builder.AppendLine("window.Radarr = {");
-            builder.AppendLine($"  apiRoot: '{_urlBase}/api/v2',");
+            builder.AppendLine($"  apiRoot: '{_urlBase}/api/v3',");
             builder.AppendLine($"  apiKey: '{_apiKey}',");
             builder.AppendLine($"  release: '{BuildInfo.Release}',");
             builder.AppendLine($"  version: '{BuildInfo.Version.ToString()}',");

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
-using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.Queue;
-using NzbDrone.Core.Test.Framework;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Queue;
+using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.QueueTests
 {

@@ -30,7 +30,9 @@ import MoviePoster from 'Movie/MoviePoster';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
-import MovieTitlesTable from 'Movie/Titles/MovieTitlesTable';
+import MovieTitlesTable from './Titles/MovieTitlesTable';
+import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
+import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
 import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
@@ -68,7 +70,6 @@ class MovieDetails extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
-      isManageEpisodesOpen: false,
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
       isInteractiveImportModalOpen: false,
@@ -93,10 +94,6 @@ class MovieDetails extends Component {
 
   onManageEpisodesPress = () => {
     this.setState({ isManageEpisodesOpen: true });
-  }
-
-  onManageEpisodesModalClose = () => {
-    this.setState({ isManageEpisodesOpen: false });
   }
 
   onInteractiveImportPress = () => {
@@ -170,6 +167,7 @@ class MovieDetails extends Component {
       qualityProfileId,
       monitored,
       studio,
+      collection,
       overview,
       youTubeTrailerId,
       inCinemas,
@@ -181,7 +179,9 @@ class MovieDetails extends Component {
       isSearching,
       isFetching,
       isPopulated,
+      isSmallScreen,
       movieFilesError,
+      movieCreditsError,
       hasMovieFiles,
       previousMovie,
       nextMovie,
@@ -228,13 +228,6 @@ class MovieDetails extends Component {
               iconName={icons.ORGANIZE}
               isDisabled={!hasMovieFiles}
               onPress={this.onOrganizePress}
-            />
-
-            <PageToolbarButton
-              label="Manage Files"
-              iconName={icons.MOVIE_FILE}
-              isDisabled={!hasMovieFiles}
-              onPress={this.onManageEpisodesPress}
             />
 
             <PageToolbarButton
@@ -336,29 +329,31 @@ class MovieDetails extends Component {
                   </div>
                 </div>
 
+                <div className={styles.details}>
+                  <div>
+                    {
+                      !!runtime &&
+                        <span className={styles.runtime}>
+                          {runtime} Minutes
+                        </span>
+                    }
+
+                    <HeartRating
+                      rating={ratings.value}
+                      iconSize={20}
+                    />
+                  </div>
+                </div>
+
                 <div className={styles.detailsLabels}>
-
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Runtime"
+                    title="Path"
                     size={sizes.LARGE}
                   >
-                    <span className={styles.runtime}>
-                      {runtime} Minutes
+                    <span className={styles.path}>
+                      {path}
                     </span>
-                  </InfoLabel>
-
-                  <InfoLabel
-                    className={styles.detailsInfoLabel}
-                    title="Rating"
-                    size={sizes.LARGE}
-                  >
-                    <div>
-                      <HeartRating
-                        rating={ratings.value}
-                        iconSize={16}
-                      />
-                    </div>
                   </InfoLabel>
 
                   <InfoLabel
@@ -401,6 +396,19 @@ class MovieDetails extends Component {
                       }
                     </span>
                   </InfoLabel>
+
+                  {
+                    !!collection &&
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        title="Collection"
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.collection}>
+                          {collection.name}
+                        </span>
+                      </InfoLabel>
+                  }
 
                   {
                     !!studio &&
@@ -456,12 +464,12 @@ class MovieDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !movieFilesError &&
+              !isPopulated && !movieFilesError && !movieCreditsError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && movieFilesError &&
+              !isFetching && movieFilesError && !movieCreditsError &&
                 <div>Loading movie files failed</div>
             }
 
@@ -497,6 +505,20 @@ class MovieDetails extends Component {
                   Titles
                 </Tab>
 
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Cast
+                </Tab>
+
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Crew
+                </Tab>
+
                 {
                   selectedTabIndex === 1 &&
                     <div className={styles.filterIcon}>
@@ -527,6 +549,18 @@ class MovieDetails extends Component {
               <TabPanel>
                 <MovieTitlesTable
                   movieId={id}
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <MovieCastPostersConnector
+                  isSmallScreen={isSmallScreen}
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <MovieCrewPostersConnector
+                  isSmallScreen={isSmallScreen}
                 />
               </TabPanel>
             </Tabs>
@@ -581,6 +615,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
   inCinemas: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
@@ -592,7 +627,9 @@ MovieDetails.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
   movieFilesError: PropTypes.object,
+  movieCreditsError: PropTypes.object,
   hasMovieFiles: PropTypes.bool.isRequired,
   previousMovie: PropTypes.object.isRequired,
   nextMovie: PropTypes.object.isRequired,

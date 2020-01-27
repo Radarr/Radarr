@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
     public class IPTorrentsRequestGenerator : IIndexerRequestGenerator
     {
         public IPTorrentsSettings Settings { get; set; }
-        
+
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
 
             return pageableRequests;
         }
-        
+
         public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
             return new IndexerPageableRequestChain();
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
         {
             yield return new IndexerRequest(Settings.BaseUrl, HttpAccept.Rss);
         }
-        
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

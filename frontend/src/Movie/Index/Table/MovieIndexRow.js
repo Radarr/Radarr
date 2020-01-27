@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
 import titleCase from 'Utilities/String/titleCase';
+import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-// import ProgressBar from 'Components/ProgressBar';
 import TagListConnector from 'Components/TagListConnector';
-// import CheckInput from 'Components/Form/CheckInput';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import MovieTitleLink from 'Movie/MovieTitleLink';
@@ -63,12 +60,12 @@ class MovieIndexRow extends Component {
 
   render() {
     const {
-      style,
       id,
       monitored,
       status,
       title,
       titleSlug,
+      collection,
       studio,
       qualityProfile,
       added,
@@ -76,6 +73,7 @@ class MovieIndexRow extends Component {
       physicalRelease,
       minimumAvailability,
       path,
+      sizeOnDisk,
       genres,
       ratings,
       certification,
@@ -97,7 +95,7 @@ class MovieIndexRow extends Component {
     } = this.state;
 
     return (
-      <VirtualTableRow style={style}>
+      <>
         {
           columns.map((column) => {
             const {
@@ -144,6 +142,17 @@ class MovieIndexRow extends Component {
                     titleSlug={titleSlug}
                     title={title}
                   />
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'collection') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {collection ? collection.name : null }
                 </VirtualTableRowCell>
               );
             }
@@ -221,6 +230,17 @@ class MovieIndexRow extends Component {
                   className={styles[name]}
                 >
                   {path}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'sizeOnDisk') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {formatBytes(sizeOnDisk)}
                 </VirtualTableRowCell>
               );
             }
@@ -339,25 +359,26 @@ class MovieIndexRow extends Component {
           movieId={id}
           onModalClose={this.onDeleteMovieModalClose}
         />
-      </VirtualTableRow>
+      </>
     );
   }
 }
 
 MovieIndexRow.propTypes = {
-  style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  collection: PropTypes.object,
   qualityProfile: PropTypes.object.isRequired,
   added: PropTypes.string,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  sizeOnDisk: PropTypes.number.isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   certification: PropTypes.string,

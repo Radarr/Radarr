@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using FluentValidation;
 using Nancy;
+using Nancy.ModelBinding;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Parser.Model;
-using Nancy.ModelBinding;
-using Radarr.Http.Extensions;
-using NzbDrone.Common.Cache;
 using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace NzbDrone.Api.Indexers
@@ -24,7 +23,7 @@ namespace NzbDrone.Api.Indexers
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
-        
+
         private readonly ICached<RemoteMovie> _remoteMovieCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
@@ -43,11 +42,11 @@ namespace NzbDrone.Api.Indexers
             _logger = logger;
 
             GetResourceAll = GetReleases;
-            Post("/",  x => DownloadRelease(this.Bind<ReleaseResource>()));
+            Post("/", x => DownloadRelease(this.Bind<ReleaseResource>()));
 
             //PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
-            
+
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
 
@@ -61,6 +60,7 @@ namespace NzbDrone.Api.Indexers
 
                 return new NotFoundResponse();
             }
+
             try
             {
                 _downloadService.DownloadReport(remoteMovie);
@@ -116,10 +116,9 @@ namespace NzbDrone.Api.Indexers
 
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
+            _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
 
-           _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
-            
-           return base.MapDecision(decision, initialWeight);
+            return base.MapDecision(decision, initialWeight);
         }
     }
 }

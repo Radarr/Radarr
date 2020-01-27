@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
-using Radarr.Http.REST;
+using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.DecisionEngine;
-using System.Linq;
-using NzbDrone.Core.Datastore.Migration;
+using NzbDrone.Core.Qualities;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Indexers
 {
@@ -56,7 +55,6 @@ namespace NzbDrone.Api.Indexers
         public int? Seeders { get; set; }
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
-
 
         // TODO: Remove in v3
         // Used to support the original Release Push implementation
@@ -123,8 +121,8 @@ namespace NzbDrone.Api.Indexers
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
                 MappingResult = mappingResult,
-                //ReleaseWeight
 
+                //ReleaseWeight
                 SuspectedMovieId = movieId,
 
                 MagnetUrl = torrentInfo.MagnetUrl,
@@ -137,7 +135,6 @@ namespace NzbDrone.Api.Indexers
 
                 //Special = parsedMovieInfo.Special,
             };
-
         }
 
         public static ReleaseInfo ToModel(this ReleaseResource resource)

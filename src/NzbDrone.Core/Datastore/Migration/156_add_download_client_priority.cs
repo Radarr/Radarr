@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Alter.Table("DownloadClients").AddColumn("Priority").AsInt32().WithDefaultValue(1);
             Execute.WithConnection(InitPriorityForBackwardCompatibility);
-
         }
 
         private void InitPriorityForBackwardCompatibility(IDbConnection conn, IDbTransaction tran)
@@ -52,5 +51,30 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
         }
+    }
+
+    public class DelugeSettings156
+    {
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string UrlBase { get; set; }
+        public string Password { get; set; }
+        public string TvCategory { get; set; }
+        public int RecentTvPriority { get; set; }
+        public int OlderTvPriority { get; set; }
+        public bool UseSsl { get; set; }
+    }
+
+    public class SabnzbdSettings156
+    {
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string ApiKey { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string TvCategory { get; set; }
+        public int RecentTvPriority { get; set; }
+        public int OlderTvPriority { get; set; }
+        public bool UseSsl { get; set; }
     }
 }

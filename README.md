@@ -2,7 +2,7 @@
 <img src="/Logo/text256.png" alt="Radarr">
 </p>
 
-**New UI Development:** For an overview of the new UI development see https://github.com/Radarr/Radarr/blob/aphrodite/DEVELOPMENT.md.
+**New UI Development:** For an overview of the new UI development see [DEVELOPMENT.md](https://github.com/Radarr/Radarr/blob/aphrodite/DEVELOPMENT.md).
 
 Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) reworked for automatically downloading movies via Usenet and BitTorrent.
 
@@ -24,12 +24,11 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ## Downloads
 
-Branch | develop (stable) | nightly (semi-unstable) |
----|---|---
-Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases) | [![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)
-Docker (linuxserver.io, x86_64, arm64, armhf) | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr) 
-Docker (hotio, see [here](https://github.com/hotio/docker-radarr) for more information) | [![Docker release / nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr) | [![Docker release / nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)
-
+| Release Type    | Branch: develop (stable)                                                                                                                                                     | Branch: nightly (semi-unstable)                                                                                                                                                                | Branch: aphrodite (very-unstable)                                                                                                                                              |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)                 | [![AppVeyor Builds](https://img.shields.io/badge/downloads-nightly-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)    |                                                                                                                                                                                |
+| Docker          | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)                   | [![Docker aphrodite](https://img.shields.io/badge/linuxserver-radarr:preview-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr) |
+| Docker          | [![Docker release](https://img.shields.io/badge/hotio-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)              | [![Docker nightly](https://img.shields.io/badge/hotio-radarr:unstable-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)                              | [![Docker aphrodite](https://img.shields.io/badge/hotio-radarr:aphrodite-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)           |
 
 ## Support
 
@@ -104,7 +103,7 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ### Requirements
 
-* [Visual Studio Community 2017](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
+* [Visual Studio Community 2019](https://www.visualstudio.com/vs/community/) or [Rider](http://www.jetbrains.com/rider/)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
 * [Yarn](https://yarnpkg.com/)
@@ -151,6 +150,7 @@ This project would not be possible without the support by these amazing folks. [
 ### JetBrains
 
 Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrains](http://www.jetbrains.com/) for providing us with free licenses to their great tools
+
 * [<img src="/Logo/resharper.svg" alt="ReSharper" width="32"> ReSharper](http://www.jetbrains.com/resharper/)
 * [<img src="/Logo/webstorm.svg" alt="WebStorm" width="32"> WebStorm](http://www.jetbrains.com/webstorm/)
 * [<img src="/Logo/rider.svg" alt="Rider" width="32"> Rider](http://www.jetbrains.com/rider/)

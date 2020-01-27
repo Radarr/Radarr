@@ -8,7 +8,7 @@ import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
 import { fetchMovies } from 'Store/Actions/movieActions';
 import { fetchTags } from 'Store/Actions/tagActions';
-import { fetchQualityProfiles, fetchUISettings, fetchLanguages } from 'Store/Actions/settingsActions';
+import { fetchQualityProfiles, fetchUISettings, fetchLanguages, fetchNetImports } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
@@ -43,69 +43,69 @@ const selectAppProps = createSelector(
 );
 
 const selectIsPopulated = createSelector(
-  (state) => state.movies.isPopulated,
   (state) => state.customFilters.isPopulated,
   (state) => state.tags.isPopulated,
   (state) => state.settings.ui.isPopulated,
   (state) => state.settings.qualityProfiles.isPopulated,
   (state) => state.settings.languages.isPopulated,
+  (state) => state.settings.netImports.isPopulated,
   (state) => state.system.status.isPopulated,
   (
-    moviesIsPopulated,
     customFiltersIsPopulated,
     tagsIsPopulated,
     uiSettingsIsPopulated,
     qualityProfilesIsPopulated,
     languagesIsPopulated,
+    netImportsIsPopulated,
     systemStatusIsPopulated
   ) => {
     return (
-      moviesIsPopulated &&
       customFiltersIsPopulated &&
       tagsIsPopulated &&
       uiSettingsIsPopulated &&
       qualityProfilesIsPopulated &&
       languagesIsPopulated &&
+      netImportsIsPopulated &&
       systemStatusIsPopulated
     );
   }
 );
 
 const selectErrors = createSelector(
-  (state) => state.movies.error,
   (state) => state.customFilters.error,
   (state) => state.tags.error,
   (state) => state.settings.ui.error,
   (state) => state.settings.qualityProfiles.error,
   (state) => state.settings.languages.error,
+  (state) => state.settings.netImports.error,
   (state) => state.system.status.error,
   (
-    moviesError,
     customFiltersError,
     tagsError,
     uiSettingsError,
     qualityProfilesError,
     languagesError,
+    netImportsError,
     systemStatusError
   ) => {
     const hasError = !!(
-      moviesError ||
       customFiltersError ||
       tagsError ||
       uiSettingsError ||
       qualityProfilesError ||
       languagesError ||
+      netImportsError ||
       systemStatusError
     );
 
     return {
       hasError,
-      moviesError,
       customFiltersError,
       tagsError,
       uiSettingsError,
       qualityProfilesError,
       languagesError,
+      netImportsError,
       systemStatusError
     };
   }
@@ -153,6 +153,9 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchFetchLanguages() {
       dispatch(fetchLanguages());
     },
+    dispatchFetchNetImports() {
+      dispatch(fetchNetImports());
+    },
     dispatchFetchUISettings() {
       dispatch(fetchUISettings());
     },
@@ -188,6 +191,7 @@ class PageConnector extends Component {
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguages();
+      this.props.dispatchFetchNetImports();
       this.props.dispatchFetchUISettings();
       this.props.dispatchFetchStatus();
     }
@@ -211,6 +215,7 @@ class PageConnector extends Component {
       dispatchFetchTags,
       dispatchFetchQualityProfiles,
       dispatchFetchLanguages,
+      dispatchFetchNetImports,
       dispatchFetchUISettings,
       dispatchFetchStatus,
       ...otherProps
@@ -249,6 +254,7 @@ PageConnector.propTypes = {
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguages: PropTypes.func.isRequired,
+  dispatchFetchNetImports: PropTypes.func.isRequired,
   dispatchFetchUISettings: PropTypes.func.isRequired,
   dispatchFetchStatus: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired

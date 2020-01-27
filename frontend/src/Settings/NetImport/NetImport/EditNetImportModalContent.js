@@ -40,6 +40,7 @@ function EditNetImportModalContent(props) {
     enabled,
     enableAuto,
     shouldMonitor,
+    minimumAvailability,
     qualityProfileId,
     rootFolderPath,
     tags,
@@ -111,6 +112,16 @@ function EditNetImportModalContent(props) {
                   name="shouldMonitor"
                   helpText="If enabled, movies added by this list are added and monitored"
                   {...shouldMonitor}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Minimum Availability</FormLabel>
+                <FormInputGroup
+                  type={inputTypes.AVAILABILITY_SELECT}
+                  name="minimumAvailability"
+                  {...minimumAvailability}
                   onChange={onInputChange}
                 />
               </FormGroup>

@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Data.SQLite;
 using NLog;
 using NLog.Common;
 using NLog.Targets;
@@ -21,7 +21,8 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         // don't report uninformative SQLite exceptions
         // busy/locked are benign https://forums.sonarr.tv/t/owin-sqlite-error-5-database-is-locked/5423/11
         // The others will be user configuration problems and silt up Sentry
-        private static readonly HashSet<SQLiteErrorCode> FilteredSQLiteErrors = new HashSet<SQLiteErrorCode> {
+        private static readonly HashSet<SQLiteErrorCode> FilteredSQLiteErrors = new HashSet<SQLiteErrorCode>
+        {
             SQLiteErrorCode.Busy,
             SQLiteErrorCode.Locked,
             SQLiteErrorCode.Perm,
@@ -35,18 +36,23 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
         // use string and not Type so we don't need a reference to the project
         // where these are defined
-        private static readonly HashSet<string> FilteredExceptionTypeNames = new HashSet<string> {
+        private static readonly HashSet<string> FilteredExceptionTypeNames = new HashSet<string>
+        {
             // UnauthorizedAccessExceptions will just be user configuration issues
             "UnauthorizedAccessException",
+
             // Filter out people stuck in boot loops
             "CorruptDatabaseException",
+
             // This also filters some people in boot loops
             "TinyIoCResolutionException"
         };
 
-        public static readonly List<string> FilteredExceptionMessages = new List<string> {
+        public static readonly List<string> FilteredExceptionMessages = new List<string>
+        {
             // Swallow the many, many exceptions flowing through from Jackett
             "Jackett.Common.IndexerException",
+
             // Fix openflixr being stupid with permissions
             "openflixr"
         };
@@ -54,35 +60,36 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         // exception types in this list will additionally have the exception message added to the
         // sentry fingerprint.  Make sure that this message doesn't vary by exception
         // (e.g. containing a path or a url) so that the sentry grouping is sensible
-        private static readonly HashSet<string> IncludeExceptionMessageTypes = new HashSet<string> {
+        private static readonly HashSet<string> IncludeExceptionMessageTypes = new HashSet<string>
+        {
             "SQLiteException"
         };
-        
+
         private static readonly IDictionary<LogLevel, SentryLevel> LoggingLevelMap = new Dictionary<LogLevel, SentryLevel>
         {
-            {LogLevel.Debug, SentryLevel.Debug},
-            {LogLevel.Error, SentryLevel.Error},
-            {LogLevel.Fatal, SentryLevel.Fatal},
-            {LogLevel.Info, SentryLevel.Info},
-            {LogLevel.Trace, SentryLevel.Debug},
-            {LogLevel.Warn, SentryLevel.Warning},
+            { LogLevel.Debug, SentryLevel.Debug },
+            { LogLevel.Error, SentryLevel.Error },
+            { LogLevel.Fatal, SentryLevel.Fatal },
+            { LogLevel.Info, SentryLevel.Info },
+            { LogLevel.Trace, SentryLevel.Debug },
+            { LogLevel.Warn, SentryLevel.Warning },
         };
 
         private static readonly IDictionary<LogLevel, BreadcrumbLevel> BreadcrumbLevelMap = new Dictionary<LogLevel, BreadcrumbLevel>
         {
-            {LogLevel.Debug, BreadcrumbLevel.Debug},
-            {LogLevel.Error, BreadcrumbLevel.Error},
-            {LogLevel.Fatal, BreadcrumbLevel.Critical},
-            {LogLevel.Info, BreadcrumbLevel.Info},
-            {LogLevel.Trace, BreadcrumbLevel.Debug},
-            {LogLevel.Warn, BreadcrumbLevel.Warning},
+            { LogLevel.Debug, BreadcrumbLevel.Debug },
+            { LogLevel.Error, BreadcrumbLevel.Error },
+            { LogLevel.Fatal, BreadcrumbLevel.Critical },
+            { LogLevel.Info, BreadcrumbLevel.Info },
+            { LogLevel.Trace, BreadcrumbLevel.Debug },
+            { LogLevel.Warn, BreadcrumbLevel.Warning },
         };
 
         private readonly DateTime _startTime = DateTime.UtcNow;
         private readonly IDisposable _sdk;
-        private bool _disposed;
-
         private readonly SentryDebounce _debounce;
+
+        private bool _disposed;
         private bool _unauthorized;
 
         public bool FilterEvents { get; set; }
@@ -105,6 +112,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                           // TODO: Check specific version
                                           o.RequestBodyCompressionLevel = System.IO.Compression.CompressionLevel.NoCompression;
                                       }
+
                                       o.BeforeSend = x => SentryCleanser.CleanseEvent(x);
                                       o.BeforeBreadcrumb = x => SentryCleanser.CleanseBreadcrumb(x);
                                       o.Environment = BuildInfo.Branch;
@@ -244,7 +252,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                     {
                         return false;
                     }
-                    
+
                     if (FilteredExceptionMessages.Any(x => logEvent.Exception.Message.Contains(x)))
                     {
                         return false;
@@ -256,7 +264,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
             return false;
         }
-
 
         protected override void Write(LogEventInfo logEvent)
         {
@@ -322,6 +329,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                 {
                     _sdk?.Dispose();
                 }
+
                 // Flag us as disposed.  This allows us to handle multiple calls to Dispose() as well as ObjectDisposedException
                 _disposed = true;
             }

@@ -1,5 +1,5 @@
-using RestSharp;
 using NzbDrone.Core.Rest;
+using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Gotify
 {

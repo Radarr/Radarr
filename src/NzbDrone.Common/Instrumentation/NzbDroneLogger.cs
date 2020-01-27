@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -13,13 +12,14 @@ namespace NzbDrone.Common.Instrumentation
 {
     public static class NzbDroneLogger
     {
+        private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
+
         private static bool _isConfigured;
 
         static NzbDroneLogger()
         {
             LogManager.Configuration = new LoggingConfiguration();
         }
-
 
         public static void Register(IStartupContext startupContext, bool updateApp, bool inConsole)
         {
@@ -62,19 +62,17 @@ namespace NzbDrone.Common.Instrumentation
 
         private static void RegisterSentry(bool updateClient)
         {
-
             string dsn;
 
             if (updateClient)
             {
-                dsn = "https://89744ec1d2a14a36856f601bdf78e69f@sentry.io/1523535";
-
+                dsn = "https://379d628d45ba475a98d2e55675d14a02@sentry.radarr.video/5";
             }
             else
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://ef61083de8e54a8cb81b63fee479c4ee@sentry.io/1485284"
-                    : "https://e4e7bfd3cc0e45a4814613a096c79cc3@sentry.io/1523529";
+                    ? "https://cc1ac16546314ed0845256c54d8306d8@sentry.radarr.video/3"
+                    : "https://8de711a75cbd43d08202f4207758bd19@sentry.radarr.video/6";
             }
 
             var target = new SentryTarget(dsn)
@@ -118,13 +116,11 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
 
-        private const string FILE_LOG_LAYOUT = @"${date:format=yy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
-
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo)
         {
-            RegisterAppFile(appFolderInfo, "appFileInfo", "radarr.txt", 5, LogLevel.Info);
-            RegisterAppFile(appFolderInfo, "appFileDebug", "radarr.debug.txt", 50, LogLevel.Off);
-            RegisterAppFile(appFolderInfo, "appFileTrace", "radarr.trace.txt", 50, LogLevel.Off);
+            RegisterAppFile(appFolderInfo, "appFileInfo", "radarr.txt", 50, LogLevel.Info);
+            RegisterAppFile(appFolderInfo, "appFileDebug", "radarr.debug.txt", 500, LogLevel.Off);
+            RegisterAppFile(appFolderInfo, "appFileTrace", "radarr.trace.txt", 500, LogLevel.Off);
         }
 
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo, string name, string fileName, int maxArchiveFiles, LogLevel minLogLevel)
@@ -195,6 +191,5 @@ namespace NzbDrone.Common.Instrumentation
         {
             return GetLogger(obj.GetType());
         }
-
     }
 }

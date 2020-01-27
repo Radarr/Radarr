@@ -10,7 +10,7 @@ namespace Radarr.Http.Mapping
     {
         public static void ValidateMapping(Type modelType, Type resourceType)
         {
-            var errors = modelType.GetSimpleProperties().Where(c=>!c.GetGetMethod().IsStatic).Select(p => GetError(resourceType, p)).Where(c => c != null).ToList();
+            var errors = modelType.GetSimpleProperties().Where(c => !c.GetGetMethod().IsStatic).Select(p => GetError(resourceType, p)).Where(c => c != null).ToList();
 
             if (errors.Any())
             {

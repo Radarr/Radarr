@@ -1,22 +1,22 @@
-﻿﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
-using NzbDrone.Common.Http;
+using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
     public class RadarrParser : IParseNetImportResponse
     {
         private readonly RadarrSettings _settings;
-        private NetImportResponse _importResponse;
         private readonly ISearchForNewMovie _skyhookProxy;
+        private NetImportResponse _importResponse;
 
         public RadarrParser(RadarrSettings settings, ISearchForNewMovie skyhookProxy)
         {
-            _skyhookProxy = skyhookProxy;//TinyIoC.TinyIoCContainer.Current.Resolve<ISearchForNewMovie>();
+            _skyhookProxy = skyhookProxy;
             _settings = settings;
         }
 
@@ -40,15 +40,13 @@ namespace NzbDrone.Core.NetImport.Radarr
             }
 
             return jsonResponse.SelectList(_skyhookProxy.MapMovie);
-
-            
         }
 
-        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
             try
             {
-                var error = JsonConvert.DeserializeObject<RadarrError>(indexerResponse.HttpResponse.Content);
+                var error = JsonConvert.DeserializeObject<RadarrError>(netImportResponse.HttpResponse.Content);
 
                 if (error != null && error.Errors != null && error.Errors.Count != 0)
                 {
@@ -60,14 +58,12 @@ namespace NzbDrone.Core.NetImport.Radarr
                 //No error!
             }
 
-
-            if (indexerResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
+            if (netImportResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new HttpException(indexerResponse.HttpRequest, indexerResponse.HttpResponse);
+                throw new HttpException(netImportResponse.HttpRequest, netImportResponse.HttpResponse);
             }
 
             return true;
         }
-
     }
 }

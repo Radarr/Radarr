@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
+﻿namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-
     public class ConfigResource
     {
         public Images images { get; set; }
@@ -22,5 +16,4 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string[] profile_sizes { get; set; }
         public string[] still_sizes { get; set; }
     }
-
 }

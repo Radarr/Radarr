@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -27,7 +27,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>()
                   .Setup(e => e.FileExists(It.Is<string>(c => !c.Contains(DELETED_PATH))))
                   .Returns(true);
-
         }
 
         private void GivenMovieFiles(IEnumerable<MovieFile> movieFiles)

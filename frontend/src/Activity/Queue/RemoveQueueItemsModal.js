@@ -79,7 +79,7 @@ class RemoveQueueItemsModal extends Component {
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Prevents Radarr from automatically grabbing this movie again"
+                helpText="Prevents Radarr from automatically grabbing this release again"
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>

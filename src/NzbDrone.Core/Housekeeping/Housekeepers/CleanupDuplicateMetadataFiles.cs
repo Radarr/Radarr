@@ -1,3 +1,4 @@
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -19,10 +20,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void DeleteDuplicateMovieMetadata()
         {
-            using (var mapper = _database.GetDataMapper())
+            using (var mapper = _database.OpenConnection())
             {
-
-                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 1
@@ -34,10 +34,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void DeleteDuplicateMovieFileMetadata()
         {
-            using (var mapper = _database.GetDataMapper())
+            using (var mapper = _database.OpenConnection())
             {
-
-                mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
+                mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 1

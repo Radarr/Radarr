@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
@@ -18,39 +16,37 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
     [TestFixture]
     public class MapFixture : TestBase<ParsingService>
     {
-		private Movie _movie;
-		private ParsedMovieInfo _parsedMovieInfo;
-		private ParsedMovieInfo _wrongYearInfo;
+        private Movie _movie;
+        private ParsedMovieInfo _parsedMovieInfo;
+        private ParsedMovieInfo _wrongYearInfo;
         private ParsedMovieInfo _wrongTitleInfo;
-		private ParsedMovieInfo _romanTitleInfo;
-		private ParsedMovieInfo _alternativeTitleInfo;
+        private ParsedMovieInfo _romanTitleInfo;
+        private ParsedMovieInfo _alternativeTitleInfo;
         private ParsedMovieInfo _umlautInfo;
         private ParsedMovieInfo _umlautAltInfo;
-		private MovieSearchCriteria _movieSearchCriteria;
+        private MovieSearchCriteria _movieSearchCriteria;
 
         [SetUp]
         public void Setup()
         {
+            _movie = Builder<Movie>.CreateNew()
+                                   .With(m => m.Title = "Fack Ju Göthe 2")
+                                   .With(m => m.CleanTitle = "fackjugoethe2")
+                                   .With(m => m.Year = 2015)
+                                   .With(m => m.AlternativeTitles = new List<AlternativeTitle> { new AlternativeTitle("Fack Ju Göthe 2: Same same") })
+                                   .Build();
 
-			_movie = Builder<Movie>.CreateNew()
-								   .With(m => m.Title = "Fack Ju Göthe 2")
-								   .With(m => m.CleanTitle = "fackjugoethe2")
-			                       .With(m => m.Year = 2015)
-			                       .With(m => m.AlternativeTitles = new LazyList<AlternativeTitle>( new List<AlternativeTitle> {new AlternativeTitle("Fack Ju Göthe 2: Same same")}))
-								   .Build();
+            _parsedMovieInfo = new ParsedMovieInfo
+            {
+                MovieTitle = _movie.Title,
+                Year = _movie.Year,
+            };
 
-			_parsedMovieInfo = new ParsedMovieInfo
-			{
-				MovieTitle = _movie.Title,
-				Year = _movie.Year,
-
-			};
-
-			_wrongYearInfo = new ParsedMovieInfo
-			{
-				MovieTitle = _movie.Title,
-				Year = 1900,
-			};
+            _wrongYearInfo = new ParsedMovieInfo
+            {
+                MovieTitle = _movie.Title,
+                Year = 1900,
+            };
 
             _wrongTitleInfo = new ParsedMovieInfo
             {
@@ -58,17 +54,17 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 Year = 2015
             };
 
-			_alternativeTitleInfo = new ParsedMovieInfo
-			{
-				MovieTitle = _movie.AlternativeTitles.First().Title,
-				Year = _movie.Year,
-			};
+            _alternativeTitleInfo = new ParsedMovieInfo
+            {
+                MovieTitle = _movie.AlternativeTitles.First().Title,
+                Year = _movie.Year,
+            };
 
-			_romanTitleInfo = new ParsedMovieInfo
-			{
-				MovieTitle = "Fack Ju Göthe II",
-				Year = _movie.Year,
-			};
+            _romanTitleInfo = new ParsedMovieInfo
+            {
+                MovieTitle = "Fack Ju Göthe II",
+                Year = _movie.Year,
+            };
 
             _umlautInfo = new ParsedMovieInfo
             {
@@ -82,10 +78,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 Year = _movie.Year
             };
 
-			_movieSearchCriteria = new MovieSearchCriteria
-			{
-				Movie = _movie
-			};
+            _movieSearchCriteria = new MovieSearchCriteria
+            {
+                Movie = _movie
+            };
         }
 
         private void GivenMatchByMovieTitle()
@@ -119,9 +115,9 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
         [Test]
         public void should_not_match_with_wrong_year()
-		{
-			GivenMatchByMovieTitle();
-			Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongYear);
+        {
+            GivenMatchByMovieTitle();
+            Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongYear);
         }
 
         [Test]
@@ -141,17 +137,17 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 .Be(MappingResultType.TitleNotFound);
         }
 
-		[Test]
-		public void should_match_alternative_title()
-		{
-			Subject.Map(_alternativeTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
-		}
+        [Test]
+        public void should_match_alternative_title()
+        {
+            Subject.Map(_alternativeTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+        }
 
-		[Test]
-		public void should_match_roman_title()
-		{
-			Subject.Map(_romanTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
-		}
+        [Test]
+        public void should_match_roman_title()
+        {
+            Subject.Map(_romanTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+        }
 
         [Test]
         public void should_match_umlauts()
@@ -159,6 +155,5 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_umlautInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
             Subject.Map(_umlautAltInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
-
     }
 }

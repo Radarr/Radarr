@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
 {
-    public abstract class NotificationBase<TSettings> : INotification where TSettings : IProviderConfig, new()
+    public abstract class NotificationBase<TSettings> : INotification
+        where TSettings : IProviderConfig, new()
     {
         protected const string MOVIE_GRABBED_TITLE = "Movie Grabbed";
         protected const string MOVIE_DOWNLOADED_TITLE = "Movie Downloaded";
@@ -31,22 +32,18 @@ namespace NzbDrone.Core.Notifications
 
         public virtual void OnGrab(GrabMessage grabMessage)
         {
-
         }
 
         public virtual void OnDownload(DownloadMessage message)
         {
-
         }
 
         public virtual void OnMovieRename(Movie movie)
         {
-
         }
 
         public virtual void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
-
         }
 
         public bool SupportsOnGrab => HasConcreteImplementation("OnGrab");
@@ -62,8 +59,10 @@ namespace NzbDrone.Core.Notifications
             return GetType().Name;
         }
 
-        public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
-
+        public virtual object RequestAction(string action, IDictionary<string, string> query)
+        {
+            return null;
+        }
 
         private bool HasConcreteImplementation(string methodName)
         {
@@ -76,6 +75,5 @@ namespace NzbDrone.Core.Notifications
 
             return !method.DeclaringType.IsAbstract;
         }
-
     }
 }

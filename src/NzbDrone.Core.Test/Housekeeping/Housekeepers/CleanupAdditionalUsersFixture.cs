@@ -1,4 +1,5 @@
-﻿using FizzWare.NBuilder;
+﻿using System;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Authentication;
@@ -14,7 +15,11 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_additional_users()
         {
             var specs = Builder<User>.CreateListOfSize(5)
-                                             .BuildListOfNew();
+                .All()
+                .With(x => x.Id = 0)
+                .BuildListOfNew();
+
+            specs.ForEach(x => x.Identifier = Guid.NewGuid());
 
             Db.InsertMany(specs);
 
@@ -26,7 +31,9 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_not_delete_if_only_one_user()
         {
             var spec = Builder<User>.CreateNew()
-                                            .BuildNew();
+                .With(x => x.Id = 0)
+                .With(x => x.Identifier = Guid.NewGuid())
+                .BuildNew();
 
             Db.Insert(spec);
 

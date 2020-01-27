@@ -19,10 +19,10 @@ namespace NzbDrone.Core.Test.IndexerTests.RarbgTests
         public void Setup()
         {
             Subject.Definition = new IndexerDefinition()
-                {
-                    Name = "Rarbg",
-                    Settings = new RarbgSettings()
-                };
+            {
+                Name = "Rarbg",
+                Settings = new RarbgSettings()
+            };
 
             Mocker.GetMock<IRarbgTokenProvider>()
                 .Setup(v => v.GetToken(It.IsAny<RarbgSettings>()))

@@ -1,10 +1,7 @@
-using Radarr.Http.REST;
-using NzbDrone.Core.MediaFiles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NzbDrone.Core.MediaFiles;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Movies
 {
@@ -22,7 +19,7 @@ namespace NzbDrone.Api.Movies
 
         private List<RenameMovieResource> GetMovies()
         {
-            if(!Request.Query.MovieId.HasValue)
+            if (!Request.Query.MovieId.HasValue)
             {
                 throw new BadRequestException("movieId is missing");
             }
@@ -31,6 +28,5 @@ namespace NzbDrone.Api.Movies
 
             return _renameMovieFileService.GetRenamePreviews(movieId).ToResource();
         }
-
     }
 }

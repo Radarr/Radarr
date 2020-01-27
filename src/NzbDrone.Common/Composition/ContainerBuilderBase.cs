@@ -6,10 +6,10 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
 using TinyIoC;
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using System.IO;
-using System.Runtime.Loader;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 #endif
 
 namespace NzbDrone.Common.Composition
@@ -27,21 +27,21 @@ namespace NzbDrone.Common.Composition
             assemblies.Add(OsInfo.IsWindows ? "Radarr.Windows" : "Radarr.Mono");
             assemblies.Add("Radarr.Common");
 
-#if !NETCOREAPP3_0
+#if !NETCOREAPP
             foreach (var assembly in assemblies)
             {
                 _loadedTypes.AddRange(Assembly.Load(assembly).GetTypes());
             }
 #else
-            var _startupPath = AppDomain.CurrentDomain.BaseDirectory;
+            var startupPath = AppDomain.CurrentDomain.BaseDirectory;
 
             foreach (var assemblyName in assemblies)
             {
-                _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(_startupPath, $"{assemblyName}.dll")).GetTypes());
+                _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(startupPath, $"{assemblyName}.dll")).GetTypes());
             }
 
             var toRegisterResolver = new List<string> { "System.Data.SQLite" };
-            toRegisterResolver.AddRange(assemblies.Intersect(new [] { "Radarr.Core" }));
+            toRegisterResolver.AddRange(assemblies.Intersect(new[] { "Radarr.Core" }));
             RegisterNativeResolver(toRegisterResolver);
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ContainerResolveEventHandler);
 #endif
@@ -51,11 +51,11 @@ namespace NzbDrone.Common.Composition
             Container.Register(args);
         }
 
-#if  NETCOREAPP3_0
+#if  NETCOREAPP
         private static Assembly ContainerResolveEventHandler(object sender, ResolveEventArgs args)
         {
-            var _resolver = new AssemblyDependencyResolver(args.RequestingAssembly.Location);
-            var assemblyPath = _resolver.ResolveAssemblyToPath(new AssemblyName(args.Name));
+            var resolver = new AssemblyDependencyResolver(args.RequestingAssembly.Location);
+            var assemblyPath = resolver.ResolveAssemblyToPath(new AssemblyName(args.Name));
 
             if (assemblyPath == null)
             {
@@ -72,8 +72,7 @@ namespace NzbDrone.Common.Composition
             foreach (var name in assemblyNames)
             {
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{name}.dll")
-                    );
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{name}.dll"));
 
                 try
                 {
@@ -134,6 +133,7 @@ namespace NzbDrone.Common.Composition
             {
                 return;
             }
+
             if (implementations.Count == 1)
             {
                 var impl = implementations.Single();

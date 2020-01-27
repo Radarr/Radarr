@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         public string Password { get; set; }
 
         [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional")]
-        public string MovieCategory { get; set; }        
+        public string MovieCategory { get; set; }
 
         [FieldDefinition(6, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
         public int RecentMoviePriority { get; set; }

@@ -113,7 +113,9 @@ class InteractiveSearchRow extends Component {
       seeders,
       leechers,
       quality,
+      customFormats,
       languages,
+      indexerFlags,
       rejections,
       downloadAllowed,
       isGrabbing,
@@ -176,8 +178,37 @@ class InteractiveSearchRow extends Component {
 
         <TableRowCell className={styles.customFormat}>
           <MovieFormats
-            formats={quality.customFormats}
+            formats={customFormats}
           />
+        </TableRowCell>
+
+        <TableRowCell className={styles.indexerFlags}>
+          {
+            !!indexerFlags.length &&
+              <Popover
+                anchor={
+                  <Icon
+                    name={icons.FLAG}
+                    kind={kinds.PRIMARY}
+                  />
+                }
+                title="Indexer Flags"
+                body={
+                  <ul>
+                    {
+                      indexerFlags.map((flag, index) => {
+                        return (
+                          <li key={index}>
+                            {flag}
+                          </li>
+                        );
+                      })
+                    }
+                  </ul>
+                }
+                position={tooltipPositions.LEFT}
+              />
+          }
         </TableRowCell>
 
         <TableRowCell className={styles.rejected}>
@@ -249,8 +280,10 @@ InteractiveSearchRow.propTypes = {
   seeders: PropTypes.number,
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   rejections: PropTypes.arrayOf(PropTypes.string).isRequired,
+  indexerFlags: PropTypes.arrayOf(PropTypes.string).isRequired,
   downloadAllowed: PropTypes.bool.isRequired,
   isGrabbing: PropTypes.bool.isRequired,
   isGrabbed: PropTypes.bool.isRequired,

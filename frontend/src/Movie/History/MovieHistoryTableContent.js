@@ -27,6 +27,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'customFormats',
+    label: 'Custom Formats',
+    isSortable: false,
+    isVisible: true
+  },
+  {
     name: 'date',
     label: 'Date',
     isVisible: true
@@ -78,21 +84,21 @@ class MovieHistoryTableContent extends Component {
 
         {
           isPopulated && hasItems && !error &&
-          <Table columns={columns}>
-            <TableBody>
-              {
-                items.reverse().map((item) => {
-                  return (
-                    <MovieHistoryRowConnector
-                      key={item.id}
-                      {...item}
-                      onMarkAsFailedPress={onMarkAsFailedPress}
-                    />
-                  );
-                })
-              }
-            </TableBody>
-          </Table>
+            <Table columns={columns}>
+              <TableBody>
+                {
+                  items.reverse().map((item) => {
+                    return (
+                      <MovieHistoryRowConnector
+                        key={item.id}
+                        {...item}
+                        onMarkAsFailedPress={onMarkAsFailedPress}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
         }
       </div>
     );

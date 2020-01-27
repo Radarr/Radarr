@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 
@@ -7,10 +11,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public interface IUpgradableSpecification
     {
-        bool IsUpgradable(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
-        bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
+        bool IsUpgradable(Profile profile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats);
+        bool CutoffNotMet(Profile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null);
+        bool QualityCutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
         bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality);
-        bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, QualityModel newQuality);
+        bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats);
     }
 
     public class UpgradableSpecification : IUpgradableSpecification
@@ -24,38 +29,51 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
-        public bool IsUpgradable(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
+        public bool IsUpgradable(Profile profile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats)
         {
-            if (newQuality != null)
+            var qualityComparer = new QualityModelComparer(profile);
+            var qualityCompare = qualityComparer.Compare(newQuality?.Quality, currentQuality.Quality);
+
+            if (qualityCompare > 0)
             {
-                int compare = new QualityModelComparer(profile).Compare(newQuality, currentQuality);
-                if (compare <= 0)
-                {
-                    return false;
-                }
-
-                if (IsRevisionUpgrade(currentQuality, newQuality))
-                {
-                    _logger.Debug("New item has a better quality revision");
-                    return true;
-                }
-            }
-
-            _logger.Debug("New item has a better quality");
-            return true;
-        }
-
-        public bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
-        {
-            var comparer = new QualityModelComparer(profile);
-            var cutoffCompare = comparer.Compare(currentQuality.Quality.Id, profile.Cutoff);
-
-            if (cutoffCompare < 0)
-            {
+                _logger.Debug("New item has a better quality");
                 return true;
             }
 
-            if (comparer.Compare(currentQuality.CustomFormats, profile.FormatCutoff) < 0)
+            if (qualityCompare < 0)
+            {
+                _logger.Debug("Existing item has better quality, skipping");
+                return false;
+            }
+
+            // Accept unless the user doesn't want to prefer propers, optionally they can
+            // use preferred words to prefer propers/repacks over non-propers/repacks.
+            if (_configService.AutoDownloadPropers &&
+                newQuality?.Revision.CompareTo(currentQuality.Revision) > 0)
+            {
+                _logger.Debug("New item has a better quality revision");
+                return true;
+            }
+
+            var customFormatCompare = new CustomFormatsComparer(profile).Compare(newCustomFormats, currentCustomFormats);
+
+            if (customFormatCompare <= 0)
+            {
+                _logger.Debug("New item's custom formats [{0}] do not improve on [{1}], skipping",
+                              newCustomFormats.ConcatToString(),
+                              currentCustomFormats.ConcatToString());
+                return false;
+            }
+
+            _logger.Debug("New item has a custom format upgrade");
+            return true;
+        }
+
+        public bool QualityCutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
+        {
+            var cutoffCompare = new QualityModelComparer(profile).Compare(currentQuality.Quality.Id, profile.Cutoff);
+
+            if (cutoffCompare < 0)
             {
                 return true;
             }
@@ -66,7 +84,24 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             return false;
+        }
 
+        private bool CustomFormatCutoffNotMet(Profile profile, List<CustomFormat> currentFormats)
+        {
+            var cutoff = new List<CustomFormat> { profile.FormatItems.Single(x => x.Format.Id == profile.FormatCutoff).Format };
+            var cutoffCompare = new CustomFormatsComparer(profile).Compare(currentFormats, cutoff);
+
+            if (cutoffCompare < 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CutoffNotMet(Profile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null)
+        {
+            return QualityCutoffNotMet(profile, currentQuality, newQuality) || CustomFormatCutoffNotMet(profile, currentFormats);
         }
 
         public bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality)
@@ -82,11 +117,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return false;
         }
 
-        public bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, QualityModel newQuality)
+        public bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats)
         {
             var isQualityUpgrade = new QualityModelComparer(qualityProfile).Compare(newQuality, currentQuality) > 0;
+            var isCustomFormatUpgrade = new CustomFormatsComparer(qualityProfile).Compare(newCustomFormats, currentCustomFormats) > 0;
 
-            if (isQualityUpgrade && qualityProfile.UpgradeAllowed)
+            if ((isQualityUpgrade || isCustomFormatUpgrade) && qualityProfile.UpgradeAllowed)
             {
                 _logger.Debug("Quality profile allows upgrading");
                 return true;

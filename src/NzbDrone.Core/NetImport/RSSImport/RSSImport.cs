@@ -10,12 +10,15 @@ namespace NzbDrone.Core.NetImport.RSSImport
     public class RSSImport : HttpNetImportBase<RSSImportSettings>
     {
         public override string Name => "RSSList";
+
+        public override NetImportType ListType => NetImportType.Other;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
         public RSSImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
-        { }
+        {
+        }
 
         public override IEnumerable<ProviderDefinition> DefaultDefinitions
         {
@@ -25,6 +28,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 {
                     yield return def;
                 }
+
                 yield return new NetImportDefinition
                 {
                     Name = "IMDb List",

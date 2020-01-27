@@ -1,16 +1,18 @@
-using System.Data;
-using FluentMigrator;
-using NzbDrone.Core.Datastore.Migration.Framework;
-using NzbDrone.Core.Datastore.Converters;
-using NzbDrone.Core.Languages;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using FluentMigrator;
+using NzbDrone.Core.Datastore.Converters;
+using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
     // this is here to resolve ambiguity in GetValueOrDefault extension method in net core 3
+#pragma warning disable SA1200
     using NzbDrone.Common.Extensions;
+#pragma warning restore SA1200
 
     [Migration(154)]
     public class add_language_to_files_history_blacklist : NzbDroneMigrationBase
@@ -31,7 +33,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void UpdateLanguage(IDbConnection conn, IDbTransaction tran)
         {
-            var LanguageConverter = new EmbeddedDocumentConverter(new LanguageIntConverter());
+            var languageConverter = new EmbeddedDocumentConverter<List<Language>>(new LanguageIntConverter());
 
             var profileLanguages = new Dictionary<int, int>();
             using (IDbCommand getProfileCmd = conn.CreateCommand())
@@ -77,7 +79,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             foreach (var group in movieLanguages.GroupBy(v => v.Value, v => v.Key))
             {
-                var languageJson = LanguageConverter.ToDB(new List<Language> { Language.FindById(group.Key) });
+                var language = new List<Language> { Language.FindById(group.Key) };
 
                 var movieIds = group.Select(v => v.ToString()).Join(",");
 
@@ -85,7 +87,9 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateMovieFilesCmd.Transaction = tran;
                     updateMovieFilesCmd.CommandText = $"UPDATE MovieFiles SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateMovieFilesCmd.AddParameter(languageJson);
+                    var param = updateMovieFilesCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
+                    updateMovieFilesCmd.Parameters.Add(param);
 
                     updateMovieFilesCmd.ExecuteNonQuery();
                 }
@@ -94,7 +98,9 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateHistoryCmd.Transaction = tran;
                     updateHistoryCmd.CommandText = $"UPDATE History SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateHistoryCmd.AddParameter(languageJson);
+                    var param = updateHistoryCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
+                    updateHistoryCmd.Parameters.Add(param);
 
                     updateHistoryCmd.ExecuteNonQuery();
                 }
@@ -103,7 +109,9 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     updateBlacklistCmd.Transaction = tran;
                     updateBlacklistCmd.CommandText = $"UPDATE Blacklist SET Languages = ? WHERE MovieId IN ({movieIds})";
-                    updateBlacklistCmd.AddParameter(languageJson);
+                    var param = updateBlacklistCmd.CreateParameter();
+                    languageConverter.SetValue(param, language);
+                    updateBlacklistCmd.Parameters.Add(param);
 
                     updateBlacklistCmd.ExecuteNonQuery();
                 }
