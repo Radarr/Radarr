@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Languages
         {
             return !Equals(left, right);
         }
-        
+
         public static Language Unknown => new Language(0, "Unknown");
         public static Language English => new Language(1, "English");
         public static Language French => new Language(2, "French");
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Languages
         public static Language Czech => new Language(25, "Czech");
         public static Language Brazilian => new Language(26, "Brazilian");
         public static Language Any => new Language(-1, "Any");
-        
+
         public static List<Language> All
         {
             get

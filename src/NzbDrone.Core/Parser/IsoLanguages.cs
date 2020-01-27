@@ -27,8 +27,8 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("fi", "fin", Language.Finnish),
                                                                new IsoLanguage("tr", "tur", Language.Turkish),
                                                                new IsoLanguage("pt", "por", Language.Portuguese),
-          
-                                                               new IsoLanguage(new List<string> {"pt-br", "pt-BR"}, "pob", Language.Brazilian),
+
+                                                               new IsoLanguage(new List<string> { "pt-br", "pt-BR" }, "pob", Language.Brazilian),
 
 //                                                             new IsoLanguage("nl", "nld", Language.Flemish),
                                                                new IsoLanguage("el", "ell", Language.Greek),
