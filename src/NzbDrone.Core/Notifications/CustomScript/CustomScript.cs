@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_EventType", "Grab");
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.Year.ToString());
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.InCinemas.ToString() ?? string.Empty);
@@ -65,6 +66,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_IsUpgrade", message.OldMovieFiles.Any().ToString());
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.Year.ToString());
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
@@ -96,6 +98,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_EventType", "Rename");
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.Year.ToString());
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
