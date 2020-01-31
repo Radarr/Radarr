@@ -523,7 +523,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var movieResults = response.Resource.results;
 
-                return movieResults.SelectList(MapMovie);
+                return movieResults.SelectList(MapSearchResult);
             }
             catch (HttpException)
             {
@@ -534,6 +534,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, ex.Message);
                 throw new SkyHookException("Search for '{0}' failed. Invalid response received from TMDb.", title);
             }
+        }
+
+        private Movie MapSearchResult(MovieResult result)
+        {
+            var movie = _movieService.FindByTmdbId(result.id);
+
+            if (movie == null)
+            {
+                movie = MapMovie(result);
+            }
+
+            return movie;
         }
 
         public Movie MapMovie(MovieResult result)
