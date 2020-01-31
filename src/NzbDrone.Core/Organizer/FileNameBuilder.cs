@@ -7,16 +7,19 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Organizer
 {
     public interface IBuildFileNames
     {
-        string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null);
+        string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null, List<CustomFormat> customFormats = null);
         string BuildFilePath(Movie movie, string fileName, string extension);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetMovieFolder(Movie movie, NamingConfig namingConfig = null);
@@ -29,6 +32,7 @@ namespace NzbDrone.Core.Organizer
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IUpdateMediaInfo _mediaInfoUpdater;
+        private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
@@ -65,15 +69,17 @@ namespace NzbDrone.Core.Organizer
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
                                IUpdateMediaInfo mediaInfoUpdater,
+                               ICustomFormatService formatService,
                                Logger logger)
         {
             _namingConfigService = namingConfigService;
             _qualityDefinitionService = qualityDefinitionService;
             _mediaInfoUpdater = mediaInfoUpdater;
+            _formatService = formatService;
             _logger = logger;
         }
 
-        public string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null)
+        public string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null, List<CustomFormat> customFormats = null)
         {
             if (namingConfig == null)
             {
@@ -97,6 +103,7 @@ namespace NzbDrone.Core.Organizer
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
             AddTagsTokens(tokenHandlers, movieFile);
+            AddCustomFormats(tokenHandlers, movie, movieFile, customFormats);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -330,6 +337,58 @@ namespace NzbDrone.Core.Organizer
 
             tokenHandlers[MediaInfoVideoDynamicRangeToken] =
                 m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
+        }
+
+        private void AddCustomFormats(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile, List<CustomFormat> customFormats = null)
+        {
+            if (customFormats == null)
+            {
+                var info = new ParsedMovieInfo
+                {
+                    MovieTitle = movie.Title,
+                    SimpleReleaseTitle = movieFile.GetSceneOrFileName().SimplifyReleaseTitle(),
+                    Quality = movieFile.Quality,
+                    Languages = movieFile.Languages,
+                    ReleaseGroup = movieFile.ReleaseGroup,
+                    Edition = movieFile.Edition,
+                    Year = movie.Year,
+                    ImdbId = movie.ImdbId,
+                    ExtraInfo = new Dictionary<string, object>
+                    {
+                        { "IndexerFlags", movieFile.IndexerFlags },
+                        { "Size", movieFile.Size },
+                        { "Filename", System.IO.Path.GetFileName(movieFile.RelativePath) }
+                    }
+                };
+
+                var allFormats = _formatService.All();
+
+                var matches = new List<CustomFormatMatchResult>();
+
+                foreach (var customFormat in allFormats)
+                {
+                    var tagTypeMatches = customFormat.FormatTags
+                        .GroupBy(t => t.TagType)
+                        .Select(g => new FormatTagMatchesGroup
+                        {
+                            Type = g.Key,
+                            Matches = g.ToDictionary(t => t, t => t.DoesItMatch(info))
+                        })
+                        .ToList();
+
+                    matches.Add(new CustomFormatMatchResult
+                    {
+                        CustomFormat = customFormat,
+                        GroupMatches = tagTypeMatches
+                    });
+                }
+
+                customFormats = matches.Where(m => m.GoodMatch)
+                                       .Select(r => r.CustomFormat)
+                                       .ToList();
+            }
+
+            tokenHandlers["{Custom Formats}"] = m => string.Join(" ", customFormats);
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)

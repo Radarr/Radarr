@@ -148,6 +148,14 @@ class NamingModal extends Component {
       { token: '{Release Group}', example: 'Rls Grp' }
     ];
 
+    const editionTokens = [
+      { token: '{Edition Tags}', example: 'IMAX' }
+    ];
+
+    const customFormatTokens = [
+      { token: '{Custom Formats}', example: 'Surround Sound' }
+    ];
+
     const originalTokens = [
       { token: '{Original Title}', example: 'Movie.Title.HDTV.x264-EVOLVE' },
       { token: '{Original Filename}', example: 'Movie.title.hdtv.x264-EVOLVE' }
@@ -304,6 +312,50 @@ class NamingModal extends Component {
                     <div className={styles.groups}>
                       {
                         releaseGroupTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenSeparator={tokenSeparator}
+                              tokenCase={tokenCase}
+                              onPress={this.onOptionPress}
+                            />
+                          );
+                        }
+                        )
+                      }
+                    </div>
+                  </FieldSet>
+
+                  <FieldSet legend="Edition">
+                    <div className={styles.groups}>
+                      {
+                        editionTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenSeparator={tokenSeparator}
+                              tokenCase={tokenCase}
+                              onPress={this.onOptionPress}
+                            />
+                          );
+                        }
+                        )
+                      }
+                    </div>
+                  </FieldSet>
+
+                  <FieldSet legend="Custom Formats">
+                    <div className={styles.groups}>
+                      {
+                        customFormatTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
                               key={token}
