@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Indexers.FileList
                 }
 
                 var imdbId = 0;
-                if (result.ImdbId.Length > 2)
+                if (result.ImdbId != null && result.ImdbId.Length > 2)
                 {
                     imdbId = int.Parse(result.ImdbId.Substring(2));
                 }
