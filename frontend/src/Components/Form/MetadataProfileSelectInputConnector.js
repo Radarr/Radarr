@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import sortByName from 'Utilities/Array/sortByName';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import { metadataProfileNames } from 'Helpers/Props';
 import SelectInput from './SelectInput';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.metadataProfiles,
+    createSortedSectionSelector('settings.metadataProfiles', sortByName),
     (state, { includeNoChange }) => includeNoChange,
     (state, { includeMixed }) => includeMixed,
     (state, { includeNone }) => includeNone,
@@ -18,7 +19,7 @@ function createMapStateToProps() {
       const profiles = metadataProfiles.items.filter((item) => item.name !== metadataProfileNames.NONE);
       const noneProfile = metadataProfiles.items.find((item) => item.name === metadataProfileNames.NONE);
 
-      const values = _.map(profiles.sort(sortByName), (metadataProfile) => {
+      const values = _.map(profiles, (metadataProfile) => {
         return {
           key: metadataProfile.id,
           value: metadataProfile.name

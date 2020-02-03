@@ -12,7 +12,7 @@ function createMapStateToProps() {
     createAllArtistSelector(),
     (items) => {
       return {
-        items: items.sort((a, b) => {
+        items: [...items].sort((a, b) => {
           if (a.sortName < b.sortName) {
             return -1;
           }

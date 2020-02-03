@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import sortByName from 'Utilities/Array/sortByName';
 import { icons } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
@@ -68,7 +67,7 @@ class ImportLists extends Component {
         >
           <div className={styles.lists}>
             {
-              items.sort(sortByName).map((item) => {
+              items.map((item) => {
                 return (
                   <ImportList
                     key={item.id}
