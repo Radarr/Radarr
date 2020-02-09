@@ -1,5 +1,6 @@
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
@@ -13,17 +14,17 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease localAlbumRelease)
+        public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
         {
-            if (localAlbumRelease.NewDownload && localAlbumRelease.TrackMapping.LocalExtra.Count > 0)
+            if (item.NewDownload && item.TrackMapping.LocalExtra.Count > 0)
             {
-                _logger.Debug("This release has track files that have not been matched. Skipping {0}", localAlbumRelease);
+                _logger.Debug("This release has track files that have not been matched. Skipping {0}", item);
                 return Decision.Reject("Has unmatched tracks");
             }
 
-            if (localAlbumRelease.NewDownload && localAlbumRelease.TrackMapping.MBExtra.Count > 0)
+            if (item.NewDownload && item.TrackMapping.MBExtra.Count > 0)
             {
-                _logger.Debug("This release is missing tracks. Skipping {0}", localAlbumRelease);
+                _logger.Debug("This release is missing tracks. Skipping {0}", item);
                 return Decision.Reject("Has missing tracks");
             }
 

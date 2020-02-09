@@ -105,18 +105,24 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
         private List<ManualImportItem> ProcessFolder(string folder, string downloadId, FilterFilesType filter, bool replaceExistingFiles)
         {
+            DownloadClientItem downloadClientItem = null;
             var directoryInfo = new DirectoryInfo(folder);
             var artist = _parsingService.GetArtist(directoryInfo.Name);
 
-            if (artist == null && downloadId.IsNotNullOrWhiteSpace())
+            if (downloadId.IsNotNullOrWhiteSpace())
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
-                artist = trackedDownload.RemoteAlbum?.Artist;
+                downloadClientItem = trackedDownload.DownloadItem;
+
+                if (artist == null)
+                {
+                    artist = trackedDownload.RemoteAlbum?.Artist;
+                }
             }
 
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
             var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, null, null, null, folderInfo, filter, true, false, !replaceExistingFiles);
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, null, null, downloadClientItem, folderInfo, filter, true, false, !replaceExistingFiles);
 
             // paths will be different for new and old files which is why we need to map separately
             var newFiles = artistFiles.Join(decisions,

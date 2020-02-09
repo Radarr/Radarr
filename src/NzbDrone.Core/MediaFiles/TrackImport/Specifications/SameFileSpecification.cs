@@ -1,6 +1,7 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
@@ -14,9 +15,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalTrack localTrack)
+        public Decision IsSatisfiedBy(LocalTrack item, DownloadClientItem downloadClientItem)
         {
-            var trackFiles = localTrack.Tracks.Where(e => e.TrackFileId != 0).Select(e => e.TrackFile).ToList();
+            var trackFiles = item.Tracks.Where(e => e.TrackFileId != 0).Select(e => e.TrackFile).ToList();
 
             if (trackFiles.Count == 0)
             {
@@ -30,9 +31,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                 return Decision.Accept();
             }
 
-            if (trackFiles.First().Value.Size == localTrack.Size)
+            if (trackFiles.First().Value.Size == item.Size)
             {
-                _logger.Debug("'{0}' Has the same filesize as existing file", localTrack.Path);
+                _logger.Debug("'{0}' Has the same filesize as existing file", item.Path);
                 return Decision.Reject("Has the same filesize as existing file");
             }
 

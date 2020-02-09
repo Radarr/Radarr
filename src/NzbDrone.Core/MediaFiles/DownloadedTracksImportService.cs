@@ -200,7 +200,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles, artist, trackInfo);
+            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles, artist, downloadClientItem, trackInfo);
             var importResults = _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
 
             if (importMode == ImportMode.Auto)
@@ -259,7 +259,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<IFileInfo>() { fileInfo }, artist, null);
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<IFileInfo>() { fileInfo }, artist, downloadClientItem, null);
 
             return _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
         }

@@ -18,7 +18,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     public interface IMakeImportDecision
     {
         List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, FilterFilesType filter, bool includeExisting);
-        List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
+        List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo);
         List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, Album album, AlbumRelease albumRelease, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, FilterFilesType filter, bool newDownload, bool singleRelease, bool includeExisting);
     }
 
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             return GetImportDecisions(musicFiles, artist, null, null, null, null, filter, false, false, true);
         }
 
-        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
+        public List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo)
         {
-            return GetImportDecisions(musicFiles, artist, null, null, null, folderInfo, FilterFilesType.None, true, false, false);
+            return GetImportDecisions(musicFiles, artist, null, null, downloadClientItem, folderInfo, FilterFilesType.None, true, false, false);
         }
 
         public List<ImportDecision<LocalTrack>> GetImportDecisions(List<IFileInfo> musicFiles, Artist artist, Album album, AlbumRelease albumRelease, DownloadClientItem downloadClientItem, ParsedTrackInfo folderInfo, FilterFilesType filter, bool newDownload, bool singleRelease, bool includeExisting)
@@ -136,13 +136,13 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             foreach (var release in releases)
             {
                 release.NewDownload = newDownload;
-                var releaseDecision = GetDecision(release);
+                var releaseDecision = GetDecision(release, downloadClientItem);
 
                 foreach (var localTrack in release.LocalTracks)
                 {
                     if (releaseDecision.Approved)
                     {
-                        decisions.AddIfNotNull(GetDecision(localTrack));
+                        decisions.AddIfNotNull(GetDecision(localTrack, downloadClientItem));
                     }
                     else
                     {
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             return decisions;
         }
 
-        private ImportDecision<LocalAlbumRelease> GetDecision(LocalAlbumRelease localAlbumRelease)
+        private ImportDecision<LocalAlbumRelease> GetDecision(LocalAlbumRelease localAlbumRelease, DownloadClientItem downloadClientItem)
         {
             ImportDecision<LocalAlbumRelease> decision = null;
 
@@ -164,7 +164,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             }
             else
             {
-                var reasons = _albumSpecifications.Select(c => EvaluateSpec(c, localAlbumRelease))
+                var reasons = _albumSpecifications.Select(c => EvaluateSpec(c, localAlbumRelease, downloadClientItem))
                     .Where(c => c != null);
 
                 decision = new ImportDecision<LocalAlbumRelease>(localAlbumRelease, reasons.ToArray());
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             return decision;
         }
 
-        private ImportDecision<LocalTrack> GetDecision(LocalTrack localTrack)
+        private ImportDecision<LocalTrack> GetDecision(LocalTrack localTrack, DownloadClientItem downloadClientItem)
         {
             ImportDecision<LocalTrack> decision = null;
 
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             }
             else
             {
-                var reasons = _trackSpecifications.Select(c => EvaluateSpec(c, localTrack))
+                var reasons = _trackSpecifications.Select(c => EvaluateSpec(c, localTrack, downloadClientItem))
                     .Where(c => c != null);
 
                 decision = new ImportDecision<LocalTrack>(localTrack, reasons.ToArray());
@@ -219,11 +219,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             return decision;
         }
 
-        private Rejection EvaluateSpec<T>(IImportDecisionEngineSpecification<T> spec, T item)
+        private Rejection EvaluateSpec<T>(IImportDecisionEngineSpecification<T> spec, T item, DownloadClientItem downloadClientItem)
         {
             try
             {
-                var result = spec.IsSatisfiedBy(item);
+                var result = spec.IsSatisfiedBy(item, downloadClientItem);
 
                 if (!result.Accepted)
                 {

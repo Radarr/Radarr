@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IMakeImportDecision>()
-                .Verify(c => c.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()),
+                .Verify(c => c.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>(), It.IsAny<ParsedTrackInfo>()),
                     Times.Never());
 
             VerifyNoImport();
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
@@ -238,7 +238,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()
@@ -278,7 +278,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             imported.Add(new ImportDecision<LocalTrack>(localTrack));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), null))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<IFileInfo>>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedTracks>()

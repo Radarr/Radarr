@@ -1,6 +1,7 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -15,20 +16,20 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease localAlbumRelease)
+        public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
         {
-            var artist = localAlbumRelease.AlbumRelease.Album.Value.Artist.Value;
+            var artist = item.AlbumRelease.Album.Value.Artist.Value;
             var qualityComparer = new QualityModelComparer(artist.QualityProfile);
 
             // check if we are changing release
-            var currentRelease = localAlbumRelease.AlbumRelease.Album.Value.AlbumReleases.Value.Single(x => x.Monitored);
-            var newRelease = localAlbumRelease.AlbumRelease;
+            var currentRelease = item.AlbumRelease.Album.Value.AlbumReleases.Value.Single(x => x.Monitored);
+            var newRelease = item.AlbumRelease;
 
             // if we are, check we are upgrading
             if (newRelease.Id != currentRelease.Id)
             {
                 // min quality of all new tracks
-                var newMinQuality = localAlbumRelease.LocalTracks.Select(x => x.Quality).OrderBy(x => x, qualityComparer).First();
+                var newMinQuality = item.LocalTracks.Select(x => x.Quality).OrderBy(x => x, qualityComparer).First();
                 _logger.Debug("Min quality of new files: {0}", newMinQuality);
 
                 // get minimum quality of existing release
@@ -39,7 +40,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                     _logger.Debug("Min quality of existing files: {0}", existingMinQuality);
                     if (qualityComparer.Compare(existingMinQuality, newMinQuality) > 0)
                     {
-                        _logger.Debug("This album isn't a quality upgrade for all tracks. Skipping {0}", localAlbumRelease);
+                        _logger.Debug("This album isn't a quality upgrade for all tracks. Skipping {0}", item);
                         return Decision.Reject("Not an upgrade for existing album file(s)");
                     }
                 }

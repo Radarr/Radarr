@@ -1,5 +1,6 @@
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
@@ -14,14 +15,14 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalTrack localTrack)
+        public Decision IsSatisfiedBy(LocalTrack item, DownloadClientItem downloadClientItem)
         {
-            var dist = localTrack.Distance.NormalizedDistance();
-            var reasons = localTrack.Distance.Reasons;
+            var dist = item.Distance.NormalizedDistance();
+            var reasons = item.Distance.Reasons;
 
             if (dist > _threshold)
             {
-                _logger.Debug($"Track match is not close enough: {dist} vs {_threshold} {reasons}. Skipping {localTrack}");
+                _logger.Debug($"Track match is not close enough: {dist} vs {_threshold} {reasons}. Skipping {item}");
                 return Decision.Reject($"Track match is not close enough: {1 - dist:P1} vs {1 - _threshold:P0} {reasons}");
             }
 

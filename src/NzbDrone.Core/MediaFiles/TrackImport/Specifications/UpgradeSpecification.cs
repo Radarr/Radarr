@@ -2,6 +2,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -18,12 +19,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalTrack localTrack)
+        public Decision IsSatisfiedBy(LocalTrack item, DownloadClientItem downloadClientItem)
         {
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
-            var qualityComparer = new QualityModelComparer(localTrack.Artist.QualityProfile);
+            var qualityComparer = new QualityModelComparer(item.Artist.QualityProfile);
 
-            foreach (var track in localTrack.Tracks.Where(e => e.TrackFileId > 0))
+            foreach (var track in item.Tracks.Where(e => e.TrackFileId > 0))
             {
                 var trackFile = track.TrackFile.Value;
 
@@ -33,18 +34,18 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
                     continue;
                 }
 
-                var qualityCompare = qualityComparer.Compare(localTrack.Quality.Quality, trackFile.Quality.Quality);
+                var qualityCompare = qualityComparer.Compare(item.Quality.Quality, trackFile.Quality.Quality);
 
                 if (qualityCompare < 0)
                 {
-                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
+                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", item.Path);
                     return Decision.Reject("Not an upgrade for existing track file(s)");
                 }
 
                 if (qualityCompare == 0 && downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
-                    localTrack.Quality.Revision.CompareTo(trackFile.Quality.Revision) < 0)
+                    item.Quality.Revision.CompareTo(trackFile.Quality.Revision) < 0)
                 {
-                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
+                    _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", item.Path);
                     return Decision.Reject("Not an upgrade for existing track file(s)");
                 }
             }
