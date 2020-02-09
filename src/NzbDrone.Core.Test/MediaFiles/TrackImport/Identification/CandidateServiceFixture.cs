@@ -4,6 +4,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.MediaFiles.TrackImport.Identification;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
@@ -13,7 +14,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
     [TestFixture]
-    public class GetCandidatesFixture : CoreTest<IdentificationService>
+    public class GetCandidatesFixture : CoreTest<CandidateService>
     {
         private ArtistMetadata _artist;
 
@@ -28,12 +29,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
         private List<Track> GivenTracks(int count)
         {
-            return Builder<Track>
-               .CreateListOfSize(count)
-               .All()
-               .With(x => x.ArtistMetadata = _artist)
-               .Build()
-               .ToList();
+             return Builder<Track>
+                .CreateListOfSize(count)
+                .All()
+                .With(x => x.ArtistMetadata = _artist)
+                .Build()
+                .ToList();
         }
 
         private ParsedTrackInfo GivenParsedTrackInfo(Track track, AlbumRelease release)
@@ -108,12 +109,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             Mocker.GetMock<IFingerprintingService>()
                 .Setup(x => x.Lookup(It.IsAny<List<LocalTrack>>(), It.IsAny<double>()))
                 .Callback((List<LocalTrack> x, double thres) =>
-                {
-                    foreach (var track in x)
                     {
-                        track.AcoustIdResults = null;
-                    }
-                });
+                        foreach (var track in x)
+                        {
+                            track.AcoustIdResults = null;
+                        }
+                    });
 
             Mocker.GetMock<IReleaseService>()
                 .Setup(x => x.GetReleasesByRecordingIds(It.IsAny<List<string>>()))
@@ -121,7 +122,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var local = GivenLocalAlbumRelease();
 
-            Subject.GetCandidatesFromFingerprint(local, null, null, null, false).Should().BeEquivalentTo(new List<CandidateAlbumRelease>());
+            Subject.GetDbCandidatesFromFingerprint(local, null, false).Should().BeEquivalentTo(new List<CandidateAlbumRelease>());
         }
 
         [Test]
@@ -131,8 +132,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var release = GivenAlbumRelease("album", tracks);
             var localTracks = GivenLocalTracks(tracks, release);
             var localAlbumRelease = new LocalAlbumRelease(localTracks);
+            var idOverrides = new IdentificationOverrides
+            {
+                AlbumRelease = release
+            };
 
-            Subject.GetCandidatesFromTags(localAlbumRelease, null, null, release, false).Should().BeEquivalentTo(
+            Subject.GetDbCandidatesFromTags(localAlbumRelease, idOverrides, false).Should().BeEquivalentTo(
                 new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) });
         }
 
@@ -149,7 +154,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                   .Setup(x => x.GetReleaseByForeignReleaseId("xxx", true))
                   .Returns(release);
 
-            Subject.GetCandidatesFromTags(localAlbumRelease, null, null, null, false).Should().BeEquivalentTo(
+            Subject.GetDbCandidatesFromTags(localAlbumRelease, null, false).Should().BeEquivalentTo(
                 new List<CandidateAlbumRelease> { new CandidateAlbumRelease(release) });
         }
     }

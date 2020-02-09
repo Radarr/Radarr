@@ -115,7 +115,6 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             result.Should().HaveCount(1);
             result.First().Should().ContainKey("path");
-            result.First().Should().ContainKey("relativePath");
             result.First().Should().ContainKey("name");
 
             result.First()["name"].Should().Be("somevideo.mp3");

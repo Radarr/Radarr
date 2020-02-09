@@ -34,10 +34,10 @@ export const defaultState = {
   recentFolders: [],
   importMode: 'move',
   sortPredicates: {
-    relativePath: function(item, direction) {
-      const relativePath = item.relativePath;
+    path: function(item, direction) {
+      const path = item.path;
 
-      return relativePath.toLowerCase();
+      return path.toLowerCase();
     },
 
     artist: function(item, direction) {

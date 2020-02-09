@@ -149,7 +149,7 @@ class InteractiveImportRow extends Component {
     const {
       id,
       allowArtistChange,
-      relativePath,
+      path,
       artist,
       album,
       albumReleaseId,
@@ -190,7 +190,7 @@ class InteractiveImportRow extends Component {
 
     const pathCellContents = (
       <div>
-        {relativePath}
+        {path}
       </div>
     );
 
@@ -213,8 +213,8 @@ class InteractiveImportRow extends Component {
         />
 
         <TableRowCell
-          className={styles.relativePath}
-          title={relativePath}
+          className={styles.path}
+          title={path}
         >
           {pathCell}
         </TableRowCell>
@@ -328,7 +328,7 @@ class InteractiveImportRow extends Component {
           audioTags={audioTags}
           sortKey='mediumNumber'
           sortDirection={sortDirections.ASCENDING}
-          filename={relativePath}
+          filename={path}
           onModalClose={this.onSelectTrackModalClose}
         />
 
@@ -349,7 +349,7 @@ class InteractiveImportRow extends Component {
 InteractiveImportRow.propTypes = {
   id: PropTypes.number.isRequired,
   allowArtistChange: PropTypes.bool.isRequired,
-  relativePath: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   artist: PropTypes.object,
   album: PropTypes.object,
   albumReleaseId: PropTypes.number,

@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Music
         private readonly IArtistService _artistService;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IAlbumAddedService _albumAddedService;
-
         private readonly Logger _logger;
 
         public ArtistScannedHandler(IAlbumMonitoredService albumMonitoredService,

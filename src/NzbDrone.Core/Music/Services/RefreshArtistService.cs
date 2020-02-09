@@ -11,24 +11,29 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Music
 {
-    public class RefreshArtistService : RefreshEntityServiceBase<Artist, Album>, IExecute<RefreshArtistCommand>
+    public class RefreshArtistService : RefreshEntityServiceBase<Artist, Album>,
+        IExecute<RefreshArtistCommand>,
+        IExecute<BulkRefreshArtistCommand>
     {
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IRefreshAlbumService _refreshAlbumService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly IMediaFileService _mediaFileService;
         private readonly IHistoryService _historyService;
-        private readonly IDiskScanService _diskScanService;
+        private readonly IRootFolderService _rootFolderService;
         private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
         private readonly IConfigService _configService;
         private readonly IImportListExclusionService _importListExclusionService;
@@ -40,9 +45,10 @@ namespace NzbDrone.Core.Music
                                     IAlbumService albumService,
                                     IRefreshAlbumService refreshAlbumService,
                                     IEventAggregator eventAggregator,
+                                    IManageCommandQueue commandQueueManager,
                                     IMediaFileService mediaFileService,
                                     IHistoryService historyService,
-                                    IDiskScanService diskScanService,
+                                    IRootFolderService rootFolderService,
                                     ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
                                     IConfigService configService,
                                     IImportListExclusionService importListExclusionService,
@@ -54,9 +60,10 @@ namespace NzbDrone.Core.Music
             _albumService = albumService;
             _refreshAlbumService = refreshAlbumService;
             _eventAggregator = eventAggregator;
+            _commandQueueManager = commandQueueManager;
             _mediaFileService = mediaFileService;
             _historyService = historyService;
-            _diskScanService = diskScanService;
+            _rootFolderService = rootFolderService;
             _checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
             _configService = configService;
             _importListExclusionService = importListExclusionService;
@@ -258,24 +265,24 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(entity, newChildren, updateChildren));
         }
 
-        private void RescanArtist(Artist artist, bool isNew, CommandTrigger trigger, bool infoUpdated)
+        private void Rescan(List<int> artistIds, bool isNew, CommandTrigger trigger, bool infoUpdated)
         {
             var rescanAfterRefresh = _configService.RescanAfterRefresh;
             var shouldRescan = true;
 
             if (isNew)
             {
-                _logger.Trace("Forcing rescan of {0}. Reason: New artist", artist);
+                _logger.Trace("Forcing rescan. Reason: New artist added");
                 shouldRescan = true;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping rescan of {0}. Reason: never recan after refresh", artist);
+                _logger.Trace("Skipping rescan. Reason: never rescan after refresh");
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
             {
-                _logger.Trace("Skipping rescan of {0}. Reason: not after automatic scans", artist);
+                _logger.Trace("Skipping rescan. Reason: not after automatic refreshes");
                 shouldRescan = false;
             }
 
@@ -289,12 +296,41 @@ namespace NzbDrone.Core.Music
                 // If some metadata has been updated then rescan unmatched files.
                 // Otherwise only scan files that haven't been seen before.
                 var filter = infoUpdated ? FilterFilesType.Matched : FilterFilesType.Known;
-                _diskScanService.Scan(artist, filter);
+                _logger.Trace($"InfoUpdated: {infoUpdated}, using scan filter {filter}");
+
+                var folders = _rootFolderService.All().Select(x => x.Path).ToList();
+
+                _commandQueueManager.Push(new RescanFoldersCommand(folders, filter, artistIds));
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Couldn't rescan artist {0}", artist);
+                _logger.Error(e, "Couldn't rescan");
             }
+        }
+
+        private void RefreshSelectedArtists(List<int> artistIds, bool isNew, CommandTrigger trigger)
+        {
+            bool updated = false;
+            var artists = _artistService.GetArtists(artistIds);
+
+            foreach (var artist in artists)
+            {
+                try
+                {
+                    updated |= RefreshEntityInfo(artist, null, true, false);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't refresh info for {0}", artist);
+                }
+            }
+
+            Rescan(artistIds, isNew, trigger, updated);
+        }
+
+        public void Execute(BulkRefreshArtistCommand message)
+        {
+            RefreshSelectedArtists(message.ArtistIds, message.AreNewArtists, message.Trigger);
         }
 
         public void Execute(RefreshArtistCommand message)
@@ -304,49 +340,36 @@ namespace NzbDrone.Core.Music
 
             if (message.ArtistId.HasValue)
             {
-                var artist = _artistService.GetArtist(message.ArtistId.Value);
-                bool updated = false;
-                try
-                {
-                    updated = RefreshEntityInfo(artist, null, true, false);
-                    _logger.Trace($"Artist {artist} updated: {updated}");
-                    RescanArtist(artist, isNew, trigger, updated);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(e, "Couldn't refresh info for {0}", artist);
-                    RescanArtist(artist, isNew, trigger, updated);
-                    throw;
-                }
+                RefreshSelectedArtists(new List<int> { message.ArtistId.Value }, isNew, trigger);
             }
             else
             {
-                var allArtists = _artistService.GetAllArtists().OrderBy(c => c.Name).ToList();
+                var updated = false;
+                var artists = _artistService.GetAllArtists().OrderBy(c => c.Name).ToList();
+                var artistIds = artists.Select(x => x.Id).ToList();
 
-                foreach (var artist in allArtists)
+                foreach (var artist in artists)
                 {
                     var manualTrigger = message.Trigger == CommandTrigger.Manual;
 
                     if (manualTrigger || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
                     {
-                        bool updated = false;
                         try
                         {
-                            updated = RefreshEntityInfo(artist, null, manualTrigger, false);
+                            updated |= RefreshEntityInfo(artist, null, manualTrigger, false);
                         }
                         catch (Exception e)
                         {
                             _logger.Error(e, "Couldn't refresh info for {0}", artist);
                         }
-
-                        RescanArtist(artist, false, trigger, updated);
                     }
                     else
                     {
                         _logger.Info("Skipping refresh of artist: {0}", artist.Name);
-                        RescanArtist(artist, false, trigger, false);
                     }
                 }
+
+                Rescan(artistIds, isNew, trigger, updated);
             }
         }
     }

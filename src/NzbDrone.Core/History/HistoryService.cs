@@ -313,7 +313,6 @@ namespace NzbDrone.Core.History
         public void Handle(TrackFileRenamedEvent message)
         {
             var sourcePath = message.OriginalPath;
-            var sourceRelativePath = message.Artist.Path.GetRelativePath(message.OriginalPath);
             var path = message.TrackFile.Path;
 
             foreach (var track in message.TrackFile.Tracks.Value)
@@ -330,7 +329,6 @@ namespace NzbDrone.Core.History
                 };
 
                 history.Data.Add("SourcePath", sourcePath);
-                history.Data.Add("SourceRelativePath", sourceRelativePath);
                 history.Data.Add("Path", path);
 
                 _historyRepository.Insert(history);

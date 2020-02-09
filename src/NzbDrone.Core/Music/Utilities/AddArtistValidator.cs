@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Music
         public AddArtistValidator(RootFolderValidator rootFolderValidator,
                                   ArtistPathValidator artistPathValidator,
                                   ArtistAncestorValidator artistAncestorValidator,
-                                  ProfileExistsValidator profileExistsValidator,
+                                  QualityProfileExistsValidator qualityProfileExistsValidator,
                                   MetadataProfileExistsValidator metadataProfileExistsValidator)
         {
             RuleFor(c => c.Path).Cascade(CascadeMode.StopOnFirstFailure)
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Music
                                 .SetValidator(artistPathValidator)
                                 .SetValidator(artistAncestorValidator);
 
-            RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
+            RuleFor(c => c.QualityProfileId).SetValidator(qualityProfileExistsValidator);
 
             RuleFor(c => c.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
         }

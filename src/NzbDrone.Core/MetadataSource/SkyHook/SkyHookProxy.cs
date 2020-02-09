@@ -5,7 +5,7 @@ using System.Net;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Configuration;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
@@ -21,7 +21,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IMetadataRequestBuilder _requestBuilder;
-        private readonly IConfigService _configService;
         private readonly IMetadataProfileService _metadataProfileService;
 
         private static readonly List<string> NonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
@@ -32,11 +31,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                             IArtistService artistService,
                             IAlbumService albumService,
                             Logger logger,
-                            IConfigService configService,
                             IMetadataProfileService metadataProfileService)
         {
             _httpClient = httpClient;
-            _configService = configService;
             _metadataProfileService = metadataProfileService;
             _requestBuilder = requestBuilder;
             _artistService = artistService;
@@ -259,6 +256,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
+        public List<Album> SearchForNewAlbumByRecordingIds(List<string> recordingIds)
+        {
+            var ids = recordingIds.Where(x => x.IsNotNullOrWhiteSpace()).Distinct();
+            var httpRequest = _requestBuilder.GetRequestBuilder().Create()
+                .SetSegment("route", "search/fingerprint")
+                .Build();
+
+            httpRequest.SetContent(ids.ToJson());
+            httpRequest.Headers.ContentType = "application/json";
+
+            var httpResponse = _httpClient.Post<List<AlbumResource>>(httpRequest);
+
+            return httpResponse.Resource.SelectList(MapSearchResult);
+        }
+
         public List<object> SearchForNewEntity(string title)
         {
             try
@@ -351,6 +363,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             if (resource.Releases != null)
             {
                 album.AlbumReleases = resource.Releases.Select(x => MapRelease(x, artistDict)).Where(x => x.TrackCount > 0).ToList();
+
+                // Monitor the release with most tracks
+                var mostTracks = album.AlbumReleases.Value.OrderByDescending(x => x.TrackCount).FirstOrDefault();
+                if (mostTracks != null)
+                {
+                    mostTracks.Monitored = true;
+                }
+            }
+            else
+            {
+                album.AlbumReleases = new List<AlbumRelease>();
             }
 
             album.AnyReleaseOk = true;

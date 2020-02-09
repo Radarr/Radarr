@@ -153,5 +153,15 @@ namespace NzbDrone.Common.Extensions
         {
             return string.Join(separator, source.Select(predicate));
         }
+
+        public static TSource MostCommon<TSource>(this IEnumerable<TSource> items)
+        {
+            return items.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
+        }
+
+        public static TResult MostCommon<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> predicate)
+        {
+            return items.Select(predicate).GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
+        }
     }
 }

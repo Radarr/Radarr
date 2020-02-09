@@ -28,8 +28,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'relativePath',
-    label: 'Relative Path',
+    name: 'path',
+    label: 'Path',
     isVisible: true
   },
   {

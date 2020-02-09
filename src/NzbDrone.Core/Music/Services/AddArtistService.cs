@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Organizer;
@@ -115,12 +116,35 @@ namespace NzbDrone.Core.Music
 
         private Artist SetPropertiesAndValidate(Artist newArtist)
         {
-            if (string.IsNullOrWhiteSpace(newArtist.Path))
+            var path = newArtist.Path;
+            if (string.IsNullOrWhiteSpace(path))
             {
                 var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
-                newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
+                path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
+            // Disambiguate artist path if it exists already
+            if (_artistService.ArtistPathExists(path))
+            {
+                if (newArtist.Metadata.Value.Disambiguation.IsNotNullOrWhiteSpace())
+                {
+                    path += $" ({newArtist.Metadata.Value.Disambiguation})";
+                }
+
+                if (_artistService.ArtistPathExists(path))
+                {
+                    var basepath = path;
+                    int i = 0;
+                    do
+                    {
+                        i++;
+                        path = basepath + $" ({i})";
+                    }
+                    while (_artistService.ArtistPathExists(path));
+                }
+            }
+
+            newArtist.Path = path;
             newArtist.CleanName = newArtist.Metadata.Value.Name.CleanArtistName();
             newArtist.SortName = Parser.Parser.NormalizeTitle(newArtist.Metadata.Value.Name).ToLower();
             newArtist.Added = DateTime.UtcNow;

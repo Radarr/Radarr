@@ -9,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileTableCleanupService
     {
-        void Clean(Artist artist, List<string> filesOnDisk);
+        void Clean(string folder, List<string> filesOnDisk);
     }
 
     public class MediaFileTableCleanupService : IMediaFileTableCleanupService
@@ -27,9 +27,9 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public void Clean(Artist artist, List<string> filesOnDisk)
+        public void Clean(string folder, List<string> filesOnDisk)
         {
-            var dbFiles = _mediaFileService.GetFilesWithBasePath(artist.Path);
+            var dbFiles = _mediaFileService.GetFilesWithBasePath(folder);
 
             // get files in database that are missing on disk and remove from database
             var missingFiles = dbFiles.ExceptBy(x => x.Path, filesOnDisk, x => x, PathEqualityComparer.Instance).ToList();

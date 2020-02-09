@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import sortByName from 'Utilities/Array/sortByName';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import { fetchImportLists, deleteImportList } from 'Store/Actions/settingsActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { fetchImportLists, deleteImportList, fetchRootFolders } from 'Store/Actions/settingsActions';
 import ImportLists from './ImportLists';
 
 function createMapStateToProps() {

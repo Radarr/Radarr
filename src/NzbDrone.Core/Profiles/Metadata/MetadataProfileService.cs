@@ -6,6 +6,7 @@ using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Profiles.Metadata
 {
@@ -25,16 +26,19 @@ namespace NzbDrone.Core.Profiles.Metadata
         private readonly IMetadataProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
         private readonly IImportListFactory _importListFactory;
+        private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
         public MetadataProfileService(IMetadataProfileRepository profileRepository,
                                       IArtistService artistService,
                                       IImportListFactory importListFactory,
+                                      IRootFolderService rootFolderService,
                                       Logger logger)
         {
             _profileRepository = profileRepository;
             _artistService = artistService;
             _importListFactory = importListFactory;
+            _rootFolderService = rootFolderService;
             _logger = logger;
         }
 
@@ -59,7 +63,8 @@ namespace NzbDrone.Core.Profiles.Metadata
 
             if (profile.Name == NONE_PROFILE_NAME ||
                 _artistService.GetAllArtists().Any(c => c.MetadataProfileId == id) ||
-                _importListFactory.All().Any(c => c.MetadataProfileId == id))
+                _importListFactory.All().Any(c => c.MetadataProfileId == id) ||
+                _rootFolderService.All().Any(c => c.DefaultMetadataProfileId == id))
             {
                 throw new MetadataProfileInUseException(profile.Name);
             }

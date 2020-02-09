@@ -15,5 +15,12 @@ namespace NzbDrone.Core.RootFolders
         }
 
         protected override bool PublishModelEvents => true;
+
+        public new void Delete(int id)
+        {
+            var model = Get(id);
+            base.Delete(id);
+            ModelDeleted(model);
+        }
     }
 }

@@ -10,7 +10,7 @@ function TrackFileEditorRow(props) {
   const {
     id,
     trackNumber,
-    relativePath,
+    path,
     quality,
     isSelected,
     onSelectedChange
@@ -29,7 +29,7 @@ function TrackFileEditorRow(props) {
       </TableRowCell>
 
       <TableRowCell>
-        {relativePath}
+        {path}
       </TableRowCell>
 
       <TableRowCell>
@@ -44,7 +44,7 @@ function TrackFileEditorRow(props) {
 TrackFileEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
   trackNumber: PropTypes.string.isRequired,
-  relativePath: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired

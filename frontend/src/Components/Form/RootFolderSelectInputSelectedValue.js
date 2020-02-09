@@ -6,11 +6,14 @@ import styles from './RootFolderSelectInputSelectedValue.css';
 
 function RootFolderSelectInputSelectedValue(props) {
   const {
+    name,
     value,
     freeSpace,
     includeFreeSpace,
     ...otherProps
   } = props;
+
+  const text = value === '' ? name : `${name} [${value}]`;
 
   return (
     <EnhancedSelectInputSelectedValue
@@ -18,7 +21,7 @@ function RootFolderSelectInputSelectedValue(props) {
       {...otherProps}
     >
       <div className={styles.path}>
-        {value}
+        {text}
       </div>
 
       {
@@ -32,6 +35,7 @@ function RootFolderSelectInputSelectedValue(props) {
 }
 
 RootFolderSelectInputSelectedValue.propTypes = {
+  name: PropTypes.string,
   value: PropTypes.string,
   freeSpace: PropTypes.number,
   includeFreeSpace: PropTypes.bool.isRequired

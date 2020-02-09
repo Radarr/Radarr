@@ -6,6 +6,7 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Profiles.Qualities
 {
@@ -25,13 +26,19 @@ namespace NzbDrone.Core.Profiles.Qualities
         private readonly IProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
         private readonly IImportListFactory _importListFactory;
+        private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
-        public QualityProfileService(IProfileRepository profileRepository, IArtistService artistService, IImportListFactory importListFactory, Logger logger)
+        public QualityProfileService(IProfileRepository profileRepository,
+                                     IArtistService artistService,
+                                     IImportListFactory importListFactory,
+                                     IRootFolderService rootFolderService,
+                                     Logger logger)
         {
             _profileRepository = profileRepository;
             _artistService = artistService;
             _importListFactory = importListFactory;
+            _rootFolderService = rootFolderService;
             _logger = logger;
         }
 
@@ -47,7 +54,9 @@ namespace NzbDrone.Core.Profiles.Qualities
 
         public void Delete(int id)
         {
-            if (_artistService.GetAllArtists().Any(c => c.QualityProfileId == id) || _importListFactory.All().Any(c => c.ProfileId == id))
+            if (_artistService.GetAllArtists().Any(c => c.QualityProfileId == id) ||
+                _importListFactory.All().Any(c => c.ProfileId == id) ||
+                _rootFolderService.All().Any(c => c.DefaultQualityProfileId == id))
             {
                 var profile = _profileRepository.Get(id);
                 throw new QualityProfileInUseException(profile.Name);

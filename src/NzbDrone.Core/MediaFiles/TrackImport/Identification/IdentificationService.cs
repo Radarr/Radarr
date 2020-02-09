@@ -4,8 +4,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common;
-using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
@@ -17,58 +17,38 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 {
     public interface IIdentificationService
     {
-        List<LocalAlbumRelease> Identify(List<LocalTrack> localTracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting);
+        List<LocalAlbumRelease> Identify(List<LocalTrack> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config);
     }
 
     public class IdentificationService : IIdentificationService
     {
-        private readonly IArtistService _artistService;
-        private readonly IAlbumService _albumService;
-        private readonly IReleaseService _releaseService;
         private readonly ITrackService _trackService;
         private readonly ITrackGroupingService _trackGroupingService;
         private readonly IFingerprintingService _fingerprintingService;
         private readonly IAudioTagService _audioTagService;
         private readonly IAugmentingService _augmentingService;
-        private readonly IMediaFileService _mediaFileService;
+        private readonly ICandidateService _candidateService;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public IdentificationService(IArtistService artistService,
-                                     IAlbumService albumService,
-                                     IReleaseService releaseService,
-                                     ITrackService trackService,
+        public IdentificationService(ITrackService trackService,
                                      ITrackGroupingService trackGroupingService,
                                      IFingerprintingService fingerprintingService,
                                      IAudioTagService audioTagService,
                                      IAugmentingService augmentingService,
-                                     IMediaFileService mediaFileService,
+                                     ICandidateService candidateService,
                                      IConfigService configService,
                                      Logger logger)
         {
-            _artistService = artistService;
-            _albumService = albumService;
-            _releaseService = releaseService;
             _trackService = trackService;
             _trackGroupingService = trackGroupingService;
             _fingerprintingService = fingerprintingService;
             _audioTagService = audioTagService;
             _augmentingService = augmentingService;
-            _mediaFileService = mediaFileService;
+            _candidateService = candidateService;
             _configService = configService;
             _logger = logger;
         }
-
-        private readonly List<IsoCountry> _preferredCountries = new List<string>
-        {
-            "United States",
-            "United Kingdom",
-            "Europe",
-            "[Worldwide]"
-        }.Select(x => IsoCountries.Find(x)).ToList();
-
-        private readonly List<string> _variousArtistNames = new List<string> { "various artists", "various", "va", "unknown" };
-        private readonly List<string> _variousArtistIds = new List<string> { "89ad4ac3-39f7-470e-963a-56509c546377" };
 
         private void LogTestCaseOutput(List<LocalTrack> localTracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease)
         {
@@ -104,17 +84,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             _logger.Debug($"*** IdentificationService TestCaseGenerator ***\n{output}");
         }
 
-        public List<LocalAlbumRelease> Identify(List<LocalTrack> localTracks, Artist artist, Album album, AlbumRelease release, bool newDownload, bool singleRelease, bool includeExisting)
+        public List<LocalAlbumRelease> GetLocalAlbumReleases(List<LocalTrack> localTracks, bool singleRelease)
         {
-            // 1 group localTracks so that we think they represent a single release
-            // 2 get candidates given specified artist, album and release.  Candidates can include extra files already on disk.
-            // 3 find best candidate
-            // 4 If best candidate worse than threshold, try fingerprinting
             var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            _logger.Debug("Starting track identification");
-            LogTestCaseOutput(localTracks, artist, album, release, newDownload, singleRelease);
-
             List<LocalAlbumRelease> releases = null;
             if (singleRelease)
             {
@@ -137,8 +109,29 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 {
                     _logger.Warn($"Augmentation failed for {localRelease}");
                 }
+            }
 
-                IdentifyRelease(localRelease, artist, album, release, newDownload, includeExisting);
+            return releases;
+        }
+
+        public List<LocalAlbumRelease> Identify(List<LocalTrack> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
+        {
+            // 1 group localTracks so that we think they represent a single release
+            // 2 get candidates given specified artist, album and release.  Candidates can include extra files already on disk.
+            // 3 find best candidate
+            // 4 If best candidate worse than threshold, try fingerprinting
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            _logger.Debug("Starting track identification");
+
+            var releases = GetLocalAlbumReleases(localTracks, config.SingleRelease);
+
+            int i = 0;
+            foreach (var localRelease in releases)
+            {
+                i++;
+                _logger.ProgressInfo($"Identifying album {i}/{releases.Count}");
+                IdentifyRelease(localRelease, idOverrides, config);
             }
 
             watch.Stop();
@@ -191,25 +184,37 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 AdditionalFile = true,
                 Quality = x.Quality
             }))
-                .ToList();
+            .ToList();
 
             localTracks.ForEach(x => _augmentingService.Augment(x, true));
 
             return localTracks;
         }
 
-        private void IdentifyRelease(LocalAlbumRelease localAlbumRelease, Artist artist, Album album, AlbumRelease release, bool newDownload, bool includeExisting)
+        private void IdentifyRelease(LocalAlbumRelease localAlbumRelease, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             bool fingerprinted = false;
 
-            var candidateReleases = GetCandidatesFromTags(localAlbumRelease, artist, album, release, includeExisting);
-            if (candidateReleases.Count == 0 && FingerprintingAllowed(newDownload))
+            var candidateReleases = _candidateService.GetDbCandidatesFromTags(localAlbumRelease, idOverrides, config.IncludeExisting);
+
+            if (candidateReleases.Count == 0 && config.AddNewArtists)
+            {
+                candidateReleases = _candidateService.GetRemoteCandidates(localAlbumRelease);
+            }
+
+            if (candidateReleases.Count == 0 && FingerprintingAllowed(config.NewDownload))
             {
                 _logger.Debug("No candidates found, fingerprinting");
                 _fingerprintingService.Lookup(localAlbumRelease.LocalTracks, 0.5);
                 fingerprinted = true;
-                candidateReleases = GetCandidatesFromFingerprint(localAlbumRelease, artist, album, release, includeExisting);
+                candidateReleases = _candidateService.GetDbCandidatesFromFingerprint(localAlbumRelease, idOverrides, config.IncludeExisting);
+
+                if (candidateReleases.Count == 0 && config.AddNewArtists)
+                {
+                    // Now fingerprints are populated this will return a different answer
+                    candidateReleases = _candidateService.GetRemoteCandidates(localAlbumRelease);
+                }
             }
 
             if (candidateReleases.Count == 0)
@@ -220,32 +225,36 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             _logger.Debug($"Got {candidateReleases.Count} candidates for {localAlbumRelease.LocalTracks.Count} tracks in {watch.ElapsedMilliseconds}ms");
 
-            var allTracks = _trackService.GetTracksByReleases(candidateReleases.Select(x => x.AlbumRelease.Id).ToList());
+            PopulateTracks(candidateReleases);
 
             // convert all the TrackFiles that represent extra files to List<LocalTrack>
             var allLocalTracks = ToLocalTrack(candidateReleases
                                               .SelectMany(x => x.ExistingTracks)
                                               .DistinctBy(x => x.Path), localAlbumRelease);
 
-            _logger.Debug($"Retrieved {allTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
+            _logger.Debug($"Retrieved {allLocalTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
 
-            GetBestRelease(localAlbumRelease, candidateReleases, allTracks, allLocalTracks);
+            GetBestRelease(localAlbumRelease, candidateReleases, allLocalTracks);
 
             // If result isn't great and we haven't fingerprinted, try that
             // Note that this can improve the match even if we try the same candidates
-            if (!fingerprinted && FingerprintingAllowed(newDownload) && ShouldFingerprint(localAlbumRelease))
+            if (!fingerprinted && FingerprintingAllowed(config.NewDownload) && ShouldFingerprint(localAlbumRelease))
             {
                 _logger.Debug($"Match not good enough, fingerprinting");
                 _fingerprintingService.Lookup(localAlbumRelease.LocalTracks, 0.5);
 
                 // Only include extra possible candidates if neither album nor release are specified
                 // Will generally be specified as part of manual import
-                if (album == null && release == null)
+                if (idOverrides?.Album == null && idOverrides?.AlbumRelease == null)
                 {
-                    var extraCandidates = GetCandidatesFromFingerprint(localAlbumRelease, artist, album, release, includeExisting);
+                    var dbCandidates = _candidateService.GetDbCandidatesFromFingerprint(localAlbumRelease, idOverrides, config.IncludeExisting);
+                    var remoteCandidates = config.AddNewArtists ? _candidateService.GetRemoteCandidates(localAlbumRelease) : new List<CandidateAlbumRelease>();
+                    var extraCandidates = dbCandidates.Concat(remoteCandidates);
                     var newCandidates = extraCandidates.ExceptBy(x => x.AlbumRelease.Id, candidateReleases, y => y.AlbumRelease.Id, EqualityComparer<int>.Default);
                     candidateReleases.AddRange(newCandidates);
-                    allTracks.AddRange(_trackService.GetTracksByReleases(newCandidates.Select(x => x.AlbumRelease.Id).ToList()));
+
+                    PopulateTracks(candidateReleases);
+
                     allLocalTracks.AddRange(ToLocalTrack(newCandidates
                                                          .SelectMany(x => x.ExistingTracks)
                                                          .DistinctBy(x => x.Path)
@@ -256,7 +265,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 // fingerprint all the local files in candidates we might be matching against
                 _fingerprintingService.Lookup(allLocalTracks, 0.5);
 
-                GetBestRelease(localAlbumRelease, candidateReleases, allTracks, allLocalTracks);
+                GetBestRelease(localAlbumRelease, candidateReleases, allLocalTracks);
             }
 
             _logger.Debug($"Best release found in {watch.ElapsedMilliseconds}ms");
@@ -266,186 +275,22 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             _logger.Debug($"IdentifyRelease done in {watch.ElapsedMilliseconds}ms");
         }
 
-        public List<CandidateAlbumRelease> GetCandidatesFromTags(LocalAlbumRelease localAlbumRelease, Artist artist, Album album, AlbumRelease release, bool includeExisting)
+        public void PopulateTracks(List<CandidateAlbumRelease> candidateReleases)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            // Generally artist, album and release are null.  But if they're not then limit candidates appropriately.
-            // We've tried to make sure that tracks are all for a single release.
-            List<CandidateAlbumRelease> candidateReleases;
+            var releasesMissingTracks = candidateReleases.Where(x => !x.AlbumRelease.Tracks.IsLoaded);
+            var allTracks = _trackService.GetTracksByReleases(releasesMissingTracks.Select(x => x.AlbumRelease.Id).ToList());
 
-            // if we have a release ID, use that
-            AlbumRelease tagMbidRelease = null;
-            List<CandidateAlbumRelease> tagCandidate = null;
+            _logger.Debug($"Retrieved {allTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
 
-            var releaseIds = localAlbumRelease.LocalTracks.Select(x => x.FileTrackInfo.ReleaseMBId).Distinct().ToList();
-            if (releaseIds.Count == 1 && releaseIds[0].IsNotNullOrWhiteSpace())
+            foreach (var release in releasesMissingTracks)
             {
-                _logger.Debug("Selecting release from consensus ForeignReleaseId [{0}]", releaseIds[0]);
-                tagMbidRelease = _releaseService.GetReleaseByForeignReleaseId(releaseIds[0], true);
-
-                if (tagMbidRelease != null)
-                {
-                    tagCandidate = GetCandidatesByRelease(new List<AlbumRelease> { tagMbidRelease }, includeExisting);
-                }
+                release.AlbumRelease.Tracks = allTracks.Where(x => x.AlbumReleaseId == release.AlbumRelease.Id).ToList();
             }
-
-            if (release != null)
-            {
-                // this case overrides the release picked up from the file tags
-                _logger.Debug("Release {0} [{1} tracks] was forced", release, release.TrackCount);
-                candidateReleases = GetCandidatesByRelease(new List<AlbumRelease> { release }, includeExisting);
-            }
-            else if (album != null)
-            {
-                // use the release from file tags if it exists and agrees with the specified album
-                if (tagMbidRelease?.AlbumId == album.Id)
-                {
-                    candidateReleases = tagCandidate;
-                }
-                else
-                {
-                    candidateReleases = GetCandidatesByAlbum(localAlbumRelease, album, includeExisting);
-                }
-            }
-            else if (artist != null)
-            {
-                // use the release from file tags if it exists and agrees with the specified album
-                if (tagMbidRelease?.Album.Value.ArtistMetadataId == artist.ArtistMetadataId)
-                {
-                    candidateReleases = tagCandidate;
-                }
-                else
-                {
-                    candidateReleases = GetCandidatesByArtist(localAlbumRelease, artist, includeExisting);
-                }
-            }
-            else
-            {
-                if (tagMbidRelease != null)
-                {
-                    candidateReleases = tagCandidate;
-                }
-                else
-                {
-                    candidateReleases = GetCandidates(localAlbumRelease, includeExisting);
-                }
-            }
-
-            watch.Stop();
-            _logger.Debug($"Getting candidates from tags for {localAlbumRelease.LocalTracks.Count} tracks took {watch.ElapsedMilliseconds}ms");
-
-            // if we haven't got any candidates then try fingerprinting
-            return candidateReleases;
         }
 
-        private List<CandidateAlbumRelease> GetCandidatesByRelease(List<AlbumRelease> releases, bool includeExisting)
-        {
-            // get the local tracks on disk for each album
-            var albumTracks = releases.Select(x => x.AlbumId)
-                .Distinct()
-                .ToDictionary(id => id, id => includeExisting ? _mediaFileService.GetFilesByAlbum(id) : new List<TrackFile>());
-
-            return releases.Select(x => new CandidateAlbumRelease
-            {
-                AlbumRelease = x,
-                ExistingTracks = albumTracks[x.AlbumId]
-            }).ToList();
-        }
-
-        private List<CandidateAlbumRelease> GetCandidatesByAlbum(LocalAlbumRelease localAlbumRelease, Album album, bool includeExisting)
-        {
-            // sort candidate releases by closest track count so that we stand a chance of
-            // getting a perfect match early on
-            return GetCandidatesByRelease(_releaseService.GetReleasesByAlbum(album.Id)
-                                          .OrderBy(x => Math.Abs(localAlbumRelease.TrackCount - x.TrackCount))
-                                          .ToList(), includeExisting);
-        }
-
-        private List<CandidateAlbumRelease> GetCandidatesByArtist(LocalAlbumRelease localAlbumRelease, Artist artist, bool includeExisting)
-        {
-            _logger.Trace("Getting candidates for {0}", artist);
-            var candidateReleases = new List<CandidateAlbumRelease>();
-
-            var albumTag = MostCommon(localAlbumRelease.LocalTracks.Select(x => x.FileTrackInfo.AlbumTitle)) ?? "";
-            if (albumTag.IsNotNullOrWhiteSpace())
-            {
-                var possibleAlbums = _albumService.GetCandidates(artist.ArtistMetadataId, albumTag);
-                foreach (var album in possibleAlbums)
-                {
-                    candidateReleases.AddRange(GetCandidatesByAlbum(localAlbumRelease, album, includeExisting));
-                }
-            }
-
-            return candidateReleases;
-        }
-
-        private List<CandidateAlbumRelease> GetCandidates(LocalAlbumRelease localAlbumRelease, bool includeExisting)
-        {
-            // most general version, nothing has been specified.
-            // get all plausible artists, then all plausible albums, then get releases for each of these.
-
-            // check if it looks like VA.
-            if (TrackGroupingService.IsVariousArtists(localAlbumRelease.LocalTracks))
-            {
-                throw new NotImplementedException("Various artists not supported");
-            }
-
-            var candidateReleases = new List<CandidateAlbumRelease>();
-
-            var artistTag = MostCommon(localAlbumRelease.LocalTracks.Select(x => x.FileTrackInfo.ArtistTitle)) ?? "";
-            if (artistTag.IsNotNullOrWhiteSpace())
-            {
-                var possibleArtists = _artistService.GetCandidates(artistTag);
-                foreach (var artist in possibleArtists)
-                {
-                    candidateReleases.AddRange(GetCandidatesByArtist(localAlbumRelease, artist, includeExisting));
-                }
-            }
-
-            return candidateReleases;
-        }
-
-        public List<CandidateAlbumRelease> GetCandidatesFromFingerprint(LocalAlbumRelease localAlbumRelease, Artist artist, Album album, AlbumRelease release, bool includeExisting)
-        {
-            var recordingIds = localAlbumRelease.LocalTracks.Where(x => x.AcoustIdResults != null).SelectMany(x => x.AcoustIdResults).ToList();
-            var allReleases = _releaseService.GetReleasesByRecordingIds(recordingIds);
-
-            // make sure releases are consistent with those selected by the user
-            if (release != null)
-            {
-                allReleases = allReleases.Where(x => x.Id == release.Id).ToList();
-            }
-            else if (album != null)
-            {
-                allReleases = allReleases.Where(x => x.AlbumId == album.Id).ToList();
-            }
-            else if (artist != null)
-            {
-                allReleases = allReleases.Where(x => x.Album.Value.ArtistMetadataId == artist.ArtistMetadataId).ToList();
-            }
-
-            return GetCandidatesByRelease(allReleases.Select(x => new
-            {
-                Release = x,
-                TrackCount = x.TrackCount,
-                CommonProportion = x.Tracks.Value.Select(y => y.ForeignRecordingId).Intersect(recordingIds).Count() / localAlbumRelease.TrackCount
-            })
-                .Where(x => x.CommonProportion > 0.6)
-                .ToList()
-                .OrderBy(x => Math.Abs(x.TrackCount - localAlbumRelease.TrackCount))
-                .ThenByDescending(x => x.CommonProportion)
-                .Select(x => x.Release)
-                .Take(10)
-                .ToList(), includeExisting);
-        }
-
-        private T MostCommon<T>(IEnumerable<T> items)
-        {
-            return items.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
-        }
-
-        private void GetBestRelease(LocalAlbumRelease localAlbumRelease, List<CandidateAlbumRelease> candidateReleases, List<Track> dbTracks, List<LocalTrack> extraTracksOnDisk)
+        private void GetBestRelease(LocalAlbumRelease localAlbumRelease, List<CandidateAlbumRelease> candidateReleases, List<LocalTrack> extraTracksOnDisk)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -464,8 +309,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
                 var extraTracks = extraTracksOnDisk.Where(x => extraTrackPaths.Contains(x.Path)).ToList();
                 var allLocalTracks = localAlbumRelease.LocalTracks.Concat(extraTracks).DistinctBy(x => x.Path).ToList();
 
-                var mapping = MapReleaseTracks(allLocalTracks, dbTracks.Where(x => x.AlbumReleaseId == release.Id).ToList());
-                var distance = AlbumReleaseDistance(allLocalTracks, release, mapping);
+                var mapping = MapReleaseTracks(allLocalTracks, release.Tracks.Value);
+                var distance = DistanceCalculator.AlbumReleaseDistance(allLocalTracks, release, mapping);
                 var currDistance = distance.NormalizedDistance();
 
                 rwatch.Stop();
@@ -493,11 +338,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             _logger.Debug($"Best release: {localAlbumRelease.AlbumRelease} Distance {localAlbumRelease.Distance.NormalizedDistance()} found in {watch.ElapsedMilliseconds}ms");
         }
 
-        public int GetTotalTrackNumber(Track track, List<Track> allTracks)
-        {
-            return track.AbsoluteTrackNumber + allTracks.Count(t => t.MediumNumber < track.MediumNumber);
-        }
-
         public TrackMapping MapReleaseTracks(List<LocalTrack> localTracks, List<Track> mbTracks)
         {
             var distances = new Distance[localTracks.Count, mbTracks.Count];
@@ -505,10 +345,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             for (int col = 0; col < mbTracks.Count; col++)
             {
-                var totalTrackNumber = GetTotalTrackNumber(mbTracks[col], mbTracks);
+                var totalTrackNumber = DistanceCalculator.GetTotalTrackNumber(mbTracks[col], mbTracks);
                 for (int row = 0; row < localTracks.Count; row++)
                 {
-                    distances[row, col] = TrackDistance(localTracks[row], mbTracks[col], totalTrackNumber, false);
+                    distances[row, col] = DistanceCalculator.TrackDistance(localTracks[row], mbTracks[col], totalTrackNumber, false);
                     costs[row, col] = distances[row, col].NormalizedDistance();
                 }
             }
@@ -530,179 +370,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             _logger.Trace($"Missing tracks:\n{string.Join("\n", result.MBExtra)}");
 
             return result;
-        }
-
-        private bool TrackIndexIncorrect(LocalTrack localTrack, Track mbTrack, int totalTrackNumber)
-        {
-            return localTrack.FileTrackInfo.TrackNumbers[0] != mbTrack.AbsoluteTrackNumber &&
-                localTrack.FileTrackInfo.TrackNumbers[0] != totalTrackNumber;
-        }
-
-        public Distance TrackDistance(LocalTrack localTrack, Track mbTrack, int totalTrackNumber, bool includeArtist = false)
-        {
-            var dist = new Distance();
-
-            var localLength = localTrack.FileTrackInfo.Duration.TotalSeconds;
-            var mbLength = mbTrack.Duration / 1000;
-            var diff = Math.Abs(localLength - mbLength) - 10;
-
-            if (mbLength > 0)
-            {
-                dist.AddRatio("track_length", diff, 30);
-            }
-
-            // musicbrainz never has 'featuring' in the track title
-            // see https://musicbrainz.org/doc/Style/Artist_Credits
-            dist.AddString("track_title", localTrack.FileTrackInfo.CleanTitle ?? "", mbTrack.Title);
-
-            if (includeArtist && localTrack.FileTrackInfo.ArtistTitle.IsNotNullOrWhiteSpace()
-                && !_variousArtistNames.Any(x => x.Equals(localTrack.FileTrackInfo.ArtistTitle, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                dist.AddString("track_artist", localTrack.FileTrackInfo.ArtistTitle, mbTrack.ArtistMetadata.Value.Name);
-            }
-
-            if (localTrack.FileTrackInfo.TrackNumbers.FirstOrDefault() > 0 && mbTrack.AbsoluteTrackNumber > 0)
-            {
-                dist.AddBool("track_index", TrackIndexIncorrect(localTrack, mbTrack, totalTrackNumber));
-            }
-
-            var recordingId = localTrack.FileTrackInfo.RecordingMBId;
-            if (recordingId.IsNotNullOrWhiteSpace())
-            {
-                dist.AddBool("recording_id", localTrack.FileTrackInfo.RecordingMBId != mbTrack.ForeignRecordingId &&
-                             !mbTrack.OldForeignRecordingIds.Contains(localTrack.FileTrackInfo.RecordingMBId));
-            }
-
-            // for fingerprinted files
-            if (localTrack.AcoustIdResults != null)
-            {
-                dist.AddBool("recording_id", !localTrack.AcoustIdResults.Contains(mbTrack.ForeignRecordingId));
-            }
-
-            return dist;
-        }
-
-        public Distance AlbumReleaseDistance(List<LocalTrack> localTracks, AlbumRelease release, TrackMapping mapping)
-        {
-            var dist = new Distance();
-
-            if (!_variousArtistIds.Contains(release.Album.Value.ArtistMetadata.Value.ForeignArtistId))
-            {
-                var artist = MostCommon(localTracks.Select(x => x.FileTrackInfo.ArtistTitle)) ?? "";
-                dist.AddString("artist", artist, release.Album.Value.ArtistMetadata.Value.Name);
-                _logger.Trace("artist: {0} vs {1}; {2}", artist, release.Album.Value.ArtistMetadata.Value.Name, dist.NormalizedDistance());
-            }
-
-            var title = MostCommon(localTracks.Select(x => x.FileTrackInfo.AlbumTitle)) ?? "";
-
-            // Use the album title since the differences in release titles can cause confusion and
-            // aren't always correct in the tags
-            dist.AddString("album", title, release.Album.Value.Title);
-            _logger.Trace("album: {0} vs {1}; {2}", title, release.Title, dist.NormalizedDistance());
-
-            // Number of discs, either as tagged or the max disc number seen
-            var discCount = MostCommon(localTracks.Select(x => x.FileTrackInfo.DiscCount));
-            discCount = discCount != 0 ? discCount : localTracks.Max(x => x.FileTrackInfo.DiscNumber);
-            if (discCount > 0)
-            {
-                dist.AddNumber("media_count", discCount, release.Media.Count);
-                _logger.Trace("media_count: {0} vs {1}; {2}", discCount, release.Media.Count, dist.NormalizedDistance());
-            }
-
-            // Media format
-            if (release.Media.Select(x => x.Format).Contains("Unknown"))
-            {
-                dist.Add("media_format", 1.0);
-            }
-
-            // Year
-            var localYear = MostCommon(localTracks.Select(x => x.FileTrackInfo.Year));
-            if (localYear > 0 && (release.Album.Value.ReleaseDate.HasValue || release.ReleaseDate.HasValue))
-            {
-                var albumYear = release.Album.Value.ReleaseDate?.Year ?? 0;
-                var releaseYear = release.ReleaseDate?.Year ?? 0;
-                if (localYear == albumYear || localYear == releaseYear)
-                {
-                    dist.Add("year", 0.0);
-                }
-                else
-                {
-                    var remoteYear = albumYear > 0 ? albumYear : releaseYear;
-                    var diff = Math.Abs(localYear - remoteYear);
-                    var diff_max = Math.Abs(DateTime.Now.Year - remoteYear);
-                    dist.AddRatio("year", diff, diff_max);
-                }
-
-                _logger.Trace($"year: {localYear} vs {release.Album.Value.ReleaseDate?.Year} or {release.ReleaseDate?.Year}; {dist.NormalizedDistance()}");
-            }
-
-            // If we parsed a country from the files use that, otherwise use our preference
-            var country = MostCommon(localTracks.Select(x => x.FileTrackInfo.Country));
-            if (release.Country.Count > 0)
-            {
-                if (country != null)
-                {
-                    dist.AddEquality("country", country.Name, release.Country);
-                    _logger.Trace("country: {0} vs {1}; {2}", country.Name, string.Join(", ", release.Country), dist.NormalizedDistance());
-                }
-                else if (_preferredCountries.Count > 0)
-                {
-                    dist.AddPriority("country", release.Country, _preferredCountries.Select(x => x.Name).ToList());
-                    _logger.Trace("country priority: {0} vs {1}; {2}", string.Join(", ", _preferredCountries.Select(x => x.Name)), string.Join(", ", release.Country), dist.NormalizedDistance());
-                }
-            }
-            else
-            {
-                // full penalty if MusicBrainz release is missing a country
-                dist.Add("country", 1.0);
-            }
-
-            var label = MostCommon(localTracks.Select(x => x.FileTrackInfo.Label));
-            if (label.IsNotNullOrWhiteSpace())
-            {
-                dist.AddEquality("label", label, release.Label);
-                _logger.Trace("label: {0} vs {1}; {2}", label, string.Join(", ", release.Label), dist.NormalizedDistance());
-            }
-
-            var disambig = MostCommon(localTracks.Select(x => x.FileTrackInfo.Disambiguation));
-            if (disambig.IsNotNullOrWhiteSpace())
-            {
-                dist.AddString("album_disambiguation", disambig, release.Disambiguation);
-                _logger.Trace("album_disambiguation: {0} vs {1}; {2}", disambig, release.Disambiguation, dist.NormalizedDistance());
-            }
-
-            var mbAlbumId = MostCommon(localTracks.Select(x => x.FileTrackInfo.ReleaseMBId));
-            if (mbAlbumId.IsNotNullOrWhiteSpace())
-            {
-                dist.AddBool("album_id", mbAlbumId != release.ForeignReleaseId && !release.OldForeignReleaseIds.Contains(mbAlbumId));
-                _logger.Trace("album_id: {0} vs {1} or {2}; {3}", mbAlbumId, release.ForeignReleaseId, string.Join(", ", release.OldForeignReleaseIds), dist.NormalizedDistance());
-            }
-
-            // tracks
-            foreach (var pair in mapping.Mapping)
-            {
-                dist.Add("tracks", pair.Value.Item2.NormalizedDistance());
-            }
-
-            _logger.Trace("after trackMapping: {0}", dist.NormalizedDistance());
-
-            // missing tracks
-            foreach (var track in mapping.MBExtra.Take(localTracks.Count))
-            {
-                dist.Add("missing_tracks", 1.0);
-            }
-
-            _logger.Trace("after missing tracks: {0}", dist.NormalizedDistance());
-
-            // unmatched tracks
-            foreach (var track in mapping.LocalExtra.Take(localTracks.Count))
-            {
-                dist.Add("unmatched_tracks", 1.0);
-            }
-
-            _logger.Trace("after unmatched tracks: {0}", dist.NormalizedDistance());
-
-            return dist;
         }
     }
 }

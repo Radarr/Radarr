@@ -244,9 +244,7 @@ function HistoryDetails(props) {
   if (eventType === 'trackFileRenamed') {
     const {
       sourcePath,
-      sourceRelativePath,
-      path,
-      relativePath
+      path
     } = data;
 
     return (
@@ -257,18 +255,8 @@ function HistoryDetails(props) {
         />
 
         <DescriptionListItem
-          title="Source Relative Path"
-          data={sourceRelativePath}
-        />
-
-        <DescriptionListItem
           title="Destination Path"
           data={path}
-        />
-
-        <DescriptionListItem
-          title="Destination Relative Path"
-          data={relativePath}
         />
       </DescriptionList>
     );

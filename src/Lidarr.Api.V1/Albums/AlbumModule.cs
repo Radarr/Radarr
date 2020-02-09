@@ -39,7 +39,7 @@ namespace Lidarr.Api.V1.Albums
                            IMapCoversToLocal coverMapper,
                            IUpgradableSpecification upgradableSpecification,
                            IBroadcastSignalRMessage signalRBroadcaster,
-                           ProfileExistsValidator profileExistsValidator,
+                           QualityProfileExistsValidator qualityProfileExistsValidator,
                            MetadataProfileExistsValidator metadataProfileExistsValidator)
 
         : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
@@ -54,7 +54,7 @@ namespace Lidarr.Api.V1.Albums
             Put("/monitor", x => SetAlbumsMonitored());
 
             PostValidator.RuleFor(s => s.ForeignAlbumId).NotEmpty();
-            PostValidator.RuleFor(s => s.Artist.QualityProfileId).SetValidator(profileExistsValidator);
+            PostValidator.RuleFor(s => s.Artist.QualityProfileId).SetValidator(qualityProfileExistsValidator);
             PostValidator.RuleFor(s => s.Artist.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
             PostValidator.RuleFor(s => s.Artist.RootFolderPath).IsValidPath().When(s => s.Artist.Path.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.Artist.ForeignArtistId).NotEmpty();

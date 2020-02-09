@@ -1,18 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lidarr.Http.REST;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 
 namespace Lidarr.Api.V1.RootFolders
 {
     public class RootFolderResource : RestResource
     {
+        public string Name { get; set; }
         public string Path { get; set; }
+        public int DefaultMetadataProfileId { get; set; }
+        public int DefaultQualityProfileId { get; set; }
+        public MonitorTypes DefaultMonitorOption { get; set; }
+        public HashSet<int> DefaultTags { get; set; }
+
         public bool Accessible { get; set; }
         public long? FreeSpace { get; set; }
         public long? TotalSpace { get; set; }
-
-        public List<UnmappedFolder> UnmappedFolders { get; set; }
     }
 
     public static class RootFolderResourceMapper
@@ -28,11 +33,16 @@ namespace Lidarr.Api.V1.RootFolders
             {
                 Id = model.Id,
 
+                Name = model.Name,
                 Path = model.Path,
+                DefaultMetadataProfileId = model.DefaultMetadataProfileId,
+                DefaultQualityProfileId = model.DefaultQualityProfileId,
+                DefaultMonitorOption = model.DefaultMonitorOption,
+                DefaultTags = model.DefaultTags,
+
                 Accessible = model.Accessible,
                 FreeSpace = model.FreeSpace,
                 TotalSpace = model.TotalSpace,
-                UnmappedFolders = model.UnmappedFolders
             };
         }
 
@@ -46,12 +56,13 @@ namespace Lidarr.Api.V1.RootFolders
             return new RootFolder
             {
                 Id = resource.Id,
-
+                Name = resource.Name,
                 Path = resource.Path,
 
-                //Accessible
-                //FreeSpace
-                //UnmappedFolders
+                DefaultMetadataProfileId = resource.DefaultMetadataProfileId,
+                DefaultQualityProfileId = resource.DefaultQualityProfileId,
+                DefaultMonitorOption = resource.DefaultMonitorOption,
+                DefaultTags = resource.DefaultTags
             };
         }
 

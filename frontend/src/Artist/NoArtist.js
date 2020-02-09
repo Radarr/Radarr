@@ -20,15 +20,15 @@ function NoArtist(props) {
   return (
     <div>
       <div className={styles.message}>
-        No artist found, to get started you'll want to add a new artist or album or import some existing ones.
+        No artists found, to get started you'll want to add a new artist or album or add an existing library location (Root Folder) and update.
       </div>
 
       <div className={styles.buttonContainer}>
         <Button
-          to="/add/import"
+          to="/settings/mediamanagement"
           kind={kinds.PRIMARY}
         >
-          Import Existing Artist(s)
+          Add Root Folder
         </Button>
       </div>
 

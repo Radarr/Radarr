@@ -103,8 +103,8 @@ namespace NzbDrone.Core.MediaFiles
                         AlbumId = album.Id,
                         TrackNumbers = tracksInFile.Select(e => e.AbsoluteTrackNumber).ToList(),
                         TrackFileId = file.Id,
-                        ExistingPath = artist.Path.GetRelativePath(file.Path),
-                        NewPath = artist.Path.GetRelativePath(newPath)
+                        ExistingPath = file.Path,
+                        NewPath = newPath
                     };
                 }
             }

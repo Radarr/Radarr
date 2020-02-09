@@ -8,7 +8,6 @@ import * as albums from './albumActions';
 import * as trackFiles from './trackFileActions';
 import * as albumHistory from './albumHistoryActions';
 import * as history from './historyActions';
-import * as importArtist from './importArtistActions';
 import * as interactiveImportActions from './interactiveImportActions';
 import * as oAuth from './oAuthActions';
 import * as organizePreview from './organizePreviewActions';
@@ -17,7 +16,6 @@ import * as paths from './pathActions';
 import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
-import * as rootFolders from './rootFolderActions';
 import * as albumStudio from './albumStudioActions';
 import * as artist from './artistActions';
 import * as artistEditor from './artistEditorActions';
@@ -41,7 +39,6 @@ export default [
   trackFiles,
   albumHistory,
   history,
-  importArtist,
   interactiveImportActions,
   oAuth,
   organizePreview,
@@ -50,7 +47,6 @@ export default [
   providerOptions,
   queue,
   releases,
-  rootFolders,
   albumStudio,
   artist,
   artistEditor,

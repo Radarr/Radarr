@@ -29,10 +29,6 @@ const links = [
         to: '/add/search'
       },
       {
-        title: 'Import',
-        to: '/add/import'
-      },
-      {
         title: 'Mass Editor',
         to: '/artisteditor'
       },

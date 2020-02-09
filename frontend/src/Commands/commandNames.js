@@ -14,6 +14,7 @@ export const MOVE_ARTIST = 'MoveArtist';
 export const REFRESH_ARTIST = 'RefreshArtist';
 export const RENAME_FILES = 'RenameFiles';
 export const RENAME_ARTIST = 'RenameArtist';
+export const RESCAN_FOLDERS = 'RescanFolders';
 export const RETAG_FILES = 'RetagFiles';
 export const RETAG_ARTIST = 'RetagArtist';
 export const RESET_API_KEY = 'ResetApiKey';

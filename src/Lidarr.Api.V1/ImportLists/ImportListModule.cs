@@ -9,7 +9,7 @@ namespace Lidarr.Api.V1.ImportLists
         public static readonly ImportListResourceMapper ResourceMapper = new ImportListResourceMapper();
 
         public ImportListModule(ImportListFactory importListFactory,
-                                ProfileExistsValidator profileExistsValidator,
+                                QualityProfileExistsValidator qualityProfileExistsValidator,
                                 MetadataProfileExistsValidator metadataProfileExistsValidator)
             : base(importListFactory, "importlist", ResourceMapper)
         {
@@ -17,7 +17,7 @@ namespace Lidarr.Api.V1.ImportLists
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.MetadataProfileId));
 
             SharedValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
-            SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
+            SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(qualityProfileExistsValidator);
             SharedValidator.RuleFor(c => c.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
         }
 

@@ -18,9 +18,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 
         public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
         {
-            var artist = item.AlbumRelease.Album.Value.Artist.Value;
-            var qualityComparer = new QualityModelComparer(artist.QualityProfile);
-
             // check if we are changing release
             var currentRelease = item.AlbumRelease.Album.Value.AlbumReleases.Value.Single(x => x.Monitored);
             var newRelease = item.AlbumRelease;
@@ -28,6 +25,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             // if we are, check we are upgrading
             if (newRelease.Id != currentRelease.Id)
             {
+                var qualityComparer = new QualityModelComparer(item.AlbumRelease.Album.Value.Artist.Value.QualityProfile);
+
                 // min quality of all new tracks
                 var newMinQuality = item.LocalTracks.Select(x => x.Quality).OrderBy(x => x, qualityComparer).First();
                 _logger.Debug("Min quality of new files: {0}", newMinQuality);

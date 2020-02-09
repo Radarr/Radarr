@@ -8,10 +8,13 @@ import styles from './RootFolderSelectInputOption.css';
 function RootFolderSelectInputOption(props) {
   const {
     value,
+    name,
     freeSpace,
     isMobile,
     ...otherProps
   } = props;
+
+  const text = value === '' ? name : `${name} [${value}]`;
 
   return (
     <EnhancedSelectInputOption
@@ -23,7 +26,7 @@ function RootFolderSelectInputOption(props) {
         isMobile && styles.isMobile
       )}
       >
-        <div>{value}</div>
+        <div>{text}</div>
 
         {
           freeSpace != null &&
@@ -37,6 +40,7 @@ function RootFolderSelectInputOption(props) {
 }
 
 RootFolderSelectInputOption.propTypes = {
+  name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   freeSpace: PropTypes.number,
   isMobile: PropTypes.bool.isRequired

@@ -62,7 +62,6 @@ namespace Lidarr.Api.V1.FileSystem
             return _diskScanService.GetAudioFiles(path).Select(f => new
             {
                 Path = f.FullName,
-                RelativePath = path.GetRelativePath(f.FullName),
                 Name = f.Name
             });
         }

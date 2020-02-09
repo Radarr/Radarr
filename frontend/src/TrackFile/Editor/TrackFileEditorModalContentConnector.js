@@ -65,7 +65,7 @@ function createMapStateToProps() {
         const trackFile = _.find(trackFiles.items, { id: track.trackFileId });
 
         return {
-          relativePath: trackFile.relativePath,
+          path: trackFile.path,
           quality: trackFile.quality,
           ...track
         };

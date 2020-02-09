@@ -17,7 +17,7 @@ namespace Lidarr.Api.V1.Tracks
         public int AlbumId { get; set; }
         public List<int> TrackNumbers { get; set; }
         public int TrackFileId { get; set; }
-        public string RelativePath { get; set; }
+        public string Path { get; set; }
         public List<TagDifference> Changes { get; set; }
     }
 
@@ -36,7 +36,7 @@ namespace Lidarr.Api.V1.Tracks
                 AlbumId = model.AlbumId,
                 TrackNumbers = model.TrackNumbers.ToList(),
                 TrackFileId = model.TrackFileId,
-                RelativePath = model.RelativePath,
+                Path = model.Path,
                 Changes = model.Changes.Select(x => new TagDifference
                 {
                     Field = x.Key,

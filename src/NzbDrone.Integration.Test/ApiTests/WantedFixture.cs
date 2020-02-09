@@ -1,6 +1,8 @@
 using System.Linq;
 using FluentAssertions;
+using Lidarr.Api.V1.RootFolders;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -8,6 +10,20 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class WantedFixture : IntegrationTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            // Add a root folder
+            RootFolders.Post(new RootFolderResource
+            {
+                Name = "TestLibrary",
+                Path = ArtistRootFolder,
+                DefaultMetadataProfileId = 1,
+                DefaultQualityProfileId = 1,
+                DefaultMonitorOption = MonitorTypes.All
+            });
+        }
+
         [Test]
         [Order(0)]
         public void missing_should_be_empty()

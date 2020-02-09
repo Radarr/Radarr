@@ -3,11 +3,11 @@ using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Validation
 {
-    public class ProfileExistsValidator : PropertyValidator
+    public class QualityProfileExistsValidator : PropertyValidator
     {
         private readonly IProfileService _profileService;
 
-        public ProfileExistsValidator(IProfileService profileService)
+        public QualityProfileExistsValidator(IProfileService profileService)
             : base("Quality Profile does not exist")
         {
             _profileService = profileService;

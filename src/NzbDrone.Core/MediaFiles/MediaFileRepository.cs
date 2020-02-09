@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Marr.Data.QGen;
+using NzbDrone.Common;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
@@ -15,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesByRelease(int releaseId);
         List<TrackFile> GetUnmappedFiles();
         List<TrackFile> GetFilesWithBasePath(string path);
+        List<TrackFile> GetFileWithPath(List<string> paths);
         TrackFile GetFileWithPath(string path);
         void DeleteFilesByAlbum(int albumId);
         void UnlinkFilesByAlbum(int albumId);
@@ -88,7 +91,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             // ensure path ends with a single trailing path separator to avoid matching partial paths
             var safePath = path.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-            return Query
+            return DataMapper.Query<TrackFile>()
                 .Where(x => x.Path.StartsWith(safePath))
                 .ToList();
         }
@@ -96,6 +99,16 @@ namespace NzbDrone.Core.MediaFiles
         public TrackFile GetFileWithPath(string path)
         {
             return Query.Where(x => x.Path == path).SingleOrDefault();
+        }
+
+        public List<TrackFile> GetFileWithPath(List<string> paths)
+        {
+            // use more limited join for speed
+            var all = DataMapper.Query<TrackFile>()
+                .Join<TrackFile, Track>(JoinType.Left, t => t.Tracks, (t, x) => t.Id == x.TrackFileId)
+                .ToList();
+            var joined = all.Join(paths, x => x.Path, x => x, (file, path) => file, PathEqualityComparer.Instance).ToList();
+            return joined;
         }
     }
 }

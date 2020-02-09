@@ -1,8 +1,0 @@
-.artist {
-  padding: 10px 20px;
-  width: 100%;
-
-  &:hover {
-    background-color: $menuItemHoverBackgroundColor;
-  }
-}

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import parseUrl from 'Utilities/String/parseUrl';
 import { getSearchResults, clearSearchResults } from 'Store/Actions/searchActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { fetchRootFolders } from 'Store/Actions/settingsActions';
 import AddNewItem from './AddNewItem';
 
 function createMapStateToProps() {

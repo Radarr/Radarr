@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
@@ -26,6 +27,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
         public List<LocalAlbumRelease> GroupTracks(List<LocalTrack> localTracks)
         {
+            _logger.ProgressInfo($"Grouping {localTracks.Count} tracks");
+
             var releases = new List<LocalAlbumRelease>();
 
             // first attempt, assume grouped by folder

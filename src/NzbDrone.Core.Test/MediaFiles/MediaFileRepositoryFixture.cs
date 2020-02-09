@@ -123,7 +123,6 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             VerifyData();
             var firstReleaseFiles = Subject.GetFilesWithBasePath(dir.AsOsAgnostic());
-            VerifyEagerLoaded(firstReleaseFiles);
 
             firstReleaseFiles.Should().HaveCount(2);
         }

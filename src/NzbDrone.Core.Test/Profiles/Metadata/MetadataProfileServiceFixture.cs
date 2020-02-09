@@ -8,6 +8,7 @@ using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Profiles.Metadata
@@ -122,8 +123,14 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(c => c.MetadataProfileId = 1)
                 .Build().ToList();
 
+            var rootFolders = Builder<RootFolder>.CreateListOfSize(2)
+                .All()
+                .With(f => f.DefaultMetadataProfileId = 1)
+                .BuildList();
+
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
             Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
@@ -148,8 +155,14 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(c => c.MetadataProfileId = profile.Id)
                 .Build().ToList();
 
+            var rootFolders = Builder<RootFolder>.CreateListOfSize(2)
+                .All()
+                .With(f => f.DefaultMetadataProfileId = 1)
+                .BuildList();
+
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
             Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
@@ -158,7 +171,39 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
         }
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_artist_or_import_list()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_root_folder()
+        {
+            var profile = Builder<MetadataProfile>.CreateNew()
+                .With(p => p.Id = 2)
+                .Build();
+
+            var artistList = Builder<Artist>.CreateListOfSize(3)
+                .All()
+                .With(c => c.MetadataProfileId = 1)
+                .Build().ToList();
+
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .All()
+                .With(c => c.MetadataProfileId = 1)
+                .Build().ToList();
+
+            var rootFolders = Builder<RootFolder>.CreateListOfSize(2)
+                .Random(1)
+                .With(f => f.DefaultMetadataProfileId = profile.Id)
+                .BuildList();
+
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
+            Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
+
+            Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
+
+            Mocker.GetMock<IMetadataProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+        }
+
+        [Test]
+        public void should_delete_profile_if_not_assigned_to_artist_import_list_or_root_folder()
         {
             var profile = Builder<MetadataProfile>.CreateNew()
                 .With(p => p.Id = 1)
@@ -174,8 +219,14 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(c => c.MetadataProfileId = 2)
                 .Build().ToList();
 
+            var rootFolders = Builder<RootFolder>.CreateListOfSize(2)
+                .All()
+                .With(f => f.DefaultMetadataProfileId = 2)
+                .BuildList();
+
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
             Subject.Delete(1);

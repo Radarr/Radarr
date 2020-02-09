@@ -74,7 +74,6 @@ class RetagPreviewModalContent extends Component {
       isPopulated,
       error,
       items,
-      path,
       onModalClose
     } = this.props;
 
@@ -113,12 +112,6 @@ class RetagPreviewModalContent extends Component {
               <div>
                 <Alert>
                   <div>
-                    All paths are relative to:
-                    <span className={styles.path}>
-                      {path}
-                    </span>
-                  </div>
-                  <div>
                     MusicBrainz identifiers will also be added to the files; these are not shown below.
                   </div>
                 </Alert>
@@ -130,7 +123,7 @@ class RetagPreviewModalContent extends Component {
                         <RetagPreviewRow
                           key={item.trackFileId}
                           id={item.trackFileId}
-                          path={item.relativePath}
+                          path={item.path}
                           changes={item.changes}
                           isSelected={selectedState[item.trackFileId]}
                           onSelectedChange={this.onSelectedChange}

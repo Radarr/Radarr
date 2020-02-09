@@ -69,7 +69,8 @@ class UnmappedFilesTable extends Component {
       sortDirection,
       onTableOptionChange,
       onSortPress,
-      deleteUnmappedFile,
+      isScanningFolders,
+      onAddMissingArtistsPress,
       ...otherProps
     } = this.props;
 
@@ -80,6 +81,16 @@ class UnmappedFilesTable extends Component {
     return (
       <PageContent title="UnmappedFiles">
         <PageToolbar>
+          <PageToolbarSection>
+            <PageToolbarButton
+              label="Add missing"
+              iconName={icons.ADD_MISSING_ARTISTS}
+              isDisabled={isPopulated && !error && !items.length}
+              isSpinning={isScanningFolders}
+              onPress={onAddMissingArtistsPress}
+            />
+          </PageToolbarSection>
+
           <PageToolbarSection alignContent={align.RIGHT}>
             <TableOptionsModalWrapper
               {...otherProps}
@@ -148,7 +159,9 @@ UnmappedFilesTable.propTypes = {
   sortDirection: PropTypes.oneOf(sortDirections.all),
   onTableOptionChange: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
-  deleteUnmappedFile: PropTypes.func.isRequired
+  deleteUnmappedFile: PropTypes.func.isRequired,
+  isScanningFolders: PropTypes.bool.isRequired,
+  onAddMissingArtistsPress: PropTypes.func.isRequired
 };
 
 export default UnmappedFilesTable;

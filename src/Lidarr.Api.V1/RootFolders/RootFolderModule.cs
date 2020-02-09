@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using FluentValidation;
 using Lidarr.Http;
+using Lidarr.Http.REST;
 using NzbDrone.Core.RootFolders;
+using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
 
@@ -18,7 +20,9 @@ namespace Lidarr.Api.V1.RootFolders
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
-                                FolderWritableValidator folderWritableValidator)
+                                FolderWritableValidator folderWritableValidator,
+                                QualityProfileExistsValidator qualityProfileExistsValidator,
+                                MetadataProfileExistsValidator metadataProfileExistsValidator)
             : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
@@ -26,17 +30,29 @@ namespace Lidarr.Api.V1.RootFolders
             GetResourceAll = GetRootFolders;
             GetResourceById = GetRootFolder;
             CreateResource = CreateRootFolder;
+            UpdateResource = UpdateRootFolder;
             DeleteResource = DeleteFolder;
 
             SharedValidator.RuleFor(c => c.Path)
-                           .Cascade(CascadeMode.StopOnFirstFailure)
-                           .IsValidPath()
-                           .SetValidator(rootFolderValidator)
-                           .SetValidator(mappedNetworkDriveValidator)
-                           .SetValidator(startupFolderValidator)
-                           .SetValidator(pathExistsValidator)
-                           .SetValidator(systemFolderValidator)
-                           .SetValidator(folderWritableValidator);
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .IsValidPath()
+                .SetValidator(mappedNetworkDriveValidator)
+                .SetValidator(startupFolderValidator)
+                .SetValidator(pathExistsValidator)
+                .SetValidator(systemFolderValidator)
+                .SetValidator(folderWritableValidator);
+
+            PostValidator.RuleFor(c => c.Path)
+                .SetValidator(rootFolderValidator);
+
+            SharedValidator.RuleFor(c => c.Name)
+                .NotEmpty();
+
+            SharedValidator.RuleFor(c => c.DefaultMetadataProfileId)
+                .SetValidator(metadataProfileExistsValidator);
+
+            SharedValidator.RuleFor(c => c.DefaultQualityProfileId)
+                .SetValidator(qualityProfileExistsValidator);
         }
 
         private RootFolderResource GetRootFolder(int id)
@@ -51,9 +67,21 @@ namespace Lidarr.Api.V1.RootFolders
             return _rootFolderService.Add(model).Id;
         }
 
+        private void UpdateRootFolder(RootFolderResource rootFolderResource)
+        {
+            var model = rootFolderResource.ToModel();
+
+            if (model.Path != rootFolderResource.Path)
+            {
+                throw new BadRequestException("Cannot edit root folder path");
+            }
+
+            _rootFolderService.Update(model);
+        }
+
         private List<RootFolderResource> GetRootFolders()
         {
-            return _rootFolderService.AllWithUnmappedFolders().ToResource();
+            return _rootFolderService.AllWithSpaceStats().ToResource();
         }
 
         private void DeleteFolder(int id)

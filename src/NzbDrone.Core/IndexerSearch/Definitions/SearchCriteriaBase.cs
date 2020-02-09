@@ -26,6 +26,12 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         {
             Ensure.That(title, () => title).IsNotNullOrWhiteSpace();
 
+            // Most VA albums are listed as VA, not Various Artists
+            if (title == "Various Artists")
+            {
+                title = "VA";
+            }
+
             var cleanTitle = BeginningThe.Replace(title, string.Empty);
 
             cleanTitle = cleanTitle.Replace(" & ", " ");

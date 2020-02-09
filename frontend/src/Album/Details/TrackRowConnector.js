@@ -10,8 +10,7 @@ function createMapStateToProps() {
     createTrackFileSelector(),
     (id, trackFile) => {
       return {
-        trackFilePath: trackFile ? trackFile.path : null,
-        trackFileRelativePath: trackFile ? trackFile.relativePath : null
+        trackFilePath: trackFile ? trackFile.path : null
       };
     }
   );

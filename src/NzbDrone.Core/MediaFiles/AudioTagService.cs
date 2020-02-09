@@ -355,7 +355,7 @@ namespace NzbDrone.Core.MediaFiles
                         AlbumId = file.Album.Value.Id,
                         TrackNumbers = file.Tracks.Value.Select(e => e.AbsoluteTrackNumber).ToList(),
                         TrackFileId = file.Id,
-                        RelativePath = file.Artist.Value.Path.GetRelativePath(file.Path),
+                        Path = file.Path,
                         Changes = diff
                     };
                 }

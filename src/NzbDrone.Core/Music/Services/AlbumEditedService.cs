@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -34,7 +33,7 @@ namespace NzbDrone.Core.Music
                     tracks.ForEach(x => x.TrackFileId = 0);
                     _trackService.SetFileIds(tracks);
 
-                    _commandQueueManager.Push(new RescanArtistCommand(message.Album.ArtistId, FilterFilesType.Matched));
+                    _commandQueueManager.Push(new RescanFoldersCommand());
                 }
             }
         }

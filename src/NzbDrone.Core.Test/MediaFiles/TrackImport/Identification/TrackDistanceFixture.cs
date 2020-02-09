@@ -10,7 +10,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 {
     [TestFixture]
-    public class TrackDistanceFixture : CoreTest<IdentificationService>
+    public class TrackDistanceFixture : CoreTest
     {
         private Track GivenTrack(string title)
         {
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var track = GivenTrack("one");
             var localTrack = GivenLocalTrack(track);
 
-            Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
+            DistanceCalculator.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localTrack = GivenLocalTrack(track);
             localTrack.FileTrackInfo.Title = "one (feat. two)";
 
-            Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
+            DistanceCalculator.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localTrack = GivenLocalTrack(track);
             localTrack.FileTrackInfo.CleanTitle = "foo";
 
-            Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().NotBe(0.0);
+            DistanceCalculator.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().NotBe(0.0);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localTrack = GivenLocalTrack(track);
             localTrack.FileTrackInfo.ArtistTitle = "foo";
 
-            Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().NotBe(0.0);
+            DistanceCalculator.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().NotBe(0.0);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var localTrack = GivenLocalTrack(track);
             localTrack.FileTrackInfo.ArtistTitle = "Various Artists";
 
-            Subject.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
+            DistanceCalculator.TrackDistance(localTrack, track, 1, true).NormalizedDistance().Should().Be(0.0);
         }
     }
 }

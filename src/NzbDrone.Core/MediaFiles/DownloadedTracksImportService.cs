@@ -200,7 +200,25 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles, artist, downloadClientItem, trackInfo);
+            var idOverrides = new IdentificationOverrides
+            {
+                Artist = artist
+            };
+            var idInfo = new ImportDecisionMakerInfo
+            {
+                DownloadClientItem = downloadClientItem,
+                ParsedTrackInfo = trackInfo
+            };
+            var idConfig = new ImportDecisionMakerConfig
+            {
+                Filter = FilterFilesType.None,
+                NewDownload = true,
+                SingleRelease = false,
+                IncludeExisting = false,
+                AddNewArtists = false
+            };
+
+            var decisions = _importDecisionMaker.GetImportDecisions(audioFiles, idOverrides, idInfo, idConfig);
             var importResults = _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
 
             if (importMode == ImportMode.Auto)
@@ -259,7 +277,24 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<IFileInfo>() { fileInfo }, artist, downloadClientItem, null);
+            var idOverrides = new IdentificationOverrides
+            {
+                Artist = artist
+            };
+            var idInfo = new ImportDecisionMakerInfo
+            {
+                DownloadClientItem = downloadClientItem
+            };
+            var idConfig = new ImportDecisionMakerConfig
+            {
+                Filter = FilterFilesType.None,
+                NewDownload = true,
+                SingleRelease = false,
+                IncludeExisting = false,
+                AddNewArtists = false
+            };
+
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<IFileInfo>() { fileInfo }, idOverrides, idInfo, idConfig);
 
             return _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
         }

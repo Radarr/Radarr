@@ -6,7 +6,6 @@ import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import ArtistIndexConnector from 'Artist/Index/ArtistIndexConnector';
 import AddNewItemConnector from 'Search/AddNewItemConnector';
-import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
 import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
 import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
 import UnmappedFilesTableConnector from 'UnmappedFiles/UnmappedFilesTableConnector';
@@ -74,11 +73,6 @@ function AppRoutes(props) {
       <Route
         path="/add/search"
         component={AddNewItemConnector}
-      />
-
-      <Route
-        path="/add/import"
-        component={ImportArtist}
       />
 
       <Route

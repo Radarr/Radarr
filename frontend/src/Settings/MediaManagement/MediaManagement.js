@@ -10,9 +10,8 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import RootFoldersConnector from 'RootFolder/RootFoldersConnector';
+import RootFoldersConnector from './RootFolder/RootFoldersConnector';
 import NamingConnector from './Naming/NamingConnector';
-import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
 
 const rescanAfterRefreshOptions = [
   { key: 'always', value: 'Always' },
@@ -64,6 +63,7 @@ class MediaManagement extends Component {
         />
 
         <PageContentBodyConnector>
+          <RootFoldersConnector />
           <NamingConnector />
 
           {
@@ -427,11 +427,6 @@ class MediaManagement extends Component {
                 }
               </Form>
           }
-
-          <FieldSet legend="Root Folders">
-            <RootFoldersConnector />
-            <AddRootFolderConnector />
-          </FieldSet>
         </PageContentBodyConnector>
       </PageContent>
     );

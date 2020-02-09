@@ -30,8 +30,8 @@ import styles from './InteractiveImportModalContent.css';
 
 const columns = [
   {
-    name: 'relativePath',
-    label: 'Relative Path',
+    name: 'path',
+    label: 'Path',
     isSortable: true,
     isVisible: true
   },

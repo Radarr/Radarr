@@ -5,17 +5,22 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchTrackFiles, deleteTrackFile, setTrackFilesSort, setTrackFilesTableOption } from 'Store/Actions/trackFileActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import * as commandNames from 'Commands/commandNames';
 import withCurrentPage from 'Components/withCurrentPage';
 import UnmappedFilesTable from './UnmappedFilesTable';
 
 function createMapStateToProps() {
   return createSelector(
     createClientSideCollectionSelector('trackFiles'),
+    createCommandExecutingSelector(commandNames.RESCAN_FOLDERS),
     createDimensionsSelector(),
     (
       trackFiles,
+      isScanningFolders,
       dimensionsState
     ) => {
       // trackFiles could pick up mapped entries via signalR so filter again here
@@ -27,6 +32,7 @@ function createMapStateToProps() {
       return {
         items: unmappedFiles,
         ...otherProps,
+        isScanningFolders,
         isSmallScreen: dimensionsState.isSmallScreen
       };
     }
@@ -49,6 +55,13 @@ function createMapDispatchToProps(dispatch, props) {
 
     deleteUnmappedFile(id) {
       dispatch(deleteTrackFile({ id }));
+    },
+
+    onAddMissingArtistsPress() {
+      dispatch(executeCommand({
+        name: commandNames.RESCAN_FOLDERS,
+        filter: 'matched'
+      }));
     }
   };
 }

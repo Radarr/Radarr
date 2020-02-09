@@ -75,7 +75,6 @@ class OrganizePreviewModalContent extends Component {
       error,
       items,
       trackFormat,
-      path,
       onModalClose
     } = this.props;
 
@@ -113,13 +112,6 @@ class OrganizePreviewModalContent extends Component {
             !isFetching && isPopulated && !!items.length &&
               <div>
                 <Alert>
-                  <div>
-                    All paths are relative to:
-                    <span className={styles.path}>
-                      {path}
-                    </span>
-                  </div>
-
                   <div>
                     Naming pattern:
                     <span className={styles.trackFormat}>

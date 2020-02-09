@@ -217,6 +217,7 @@ class ArtistEditorFooter extends Component {
                 name="metadataProfileId"
                 value={metadataProfileId}
                 includeNoChange={true}
+                includeNone={true}
                 isDisabled={!selectedCount}
                 onChange={this.onInputChange}
               />

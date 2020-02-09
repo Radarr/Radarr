@@ -11,7 +11,7 @@ import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
 import { fetchArtist } from 'Store/Actions/artistActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { fetchRootFolders } from 'Store/Actions/settingsActions';
 import { fetchTags, fetchTagDetails } from 'Store/Actions/tagActions';
 
 function getHandlerName(name) {
@@ -275,8 +275,14 @@ class SignalRConnector extends Component {
     // No-op for now, we may want this later
   }
 
-  handleRootfolder = () => {
-    this.props.dispatchFetchRootFolders();
+  handleRootfolder = (body) => {
+    if (body.action === 'updated') {
+      this.props.dispatchUpdateItem({
+        section: 'settings.rootFolders',
+        updateOnly: true,
+        ...body.resource
+      });
+    }
   }
 
   handleTag = (body) => {

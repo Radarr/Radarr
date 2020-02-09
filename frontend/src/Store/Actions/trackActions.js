@@ -46,11 +46,6 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'relativePath',
-      label: 'Relative Path',
-      isVisible: false
-    },
-    {
       name: 'duration',
       label: 'Duration',
       isVisible: true

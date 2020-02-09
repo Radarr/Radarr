@@ -27,7 +27,7 @@ function ConnectionLostModal(props) {
 
         <ModalBody>
           <div>
-            Lidarr has lost it's connection to the backend and will need to be reloaded to restore functionality.
+            Lidarr has lost its connection to the backend and will need to be reloaded to restore functionality.
           </div>
 
           <div className={styles.automatic}>
