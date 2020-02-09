@@ -35,6 +35,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class MediaFileService : IMediaFileService,
+        IHandle<ArtistMovedEvent>,
         IHandleAsync<AlbumDeletedEvent>,
         IHandleAsync<ModelEvent<RootFolder>>
     {
@@ -198,6 +199,19 @@ namespace NzbDrone.Core.MediaFiles
         public void UpdateMediaInfo(List<TrackFile> trackFiles)
         {
             _mediaFileRepository.SetFields(trackFiles, t => t.MediaInfo);
+        }
+
+        public void Handle(ArtistMovedEvent message)
+        {
+            var files = _mediaFileRepository.GetFilesWithBasePath(message.SourcePath);
+
+            foreach (var file in files)
+            {
+                var newPath = message.DestinationPath + file.Path.Substring(message.SourcePath.Length);
+                file.Path = newPath;
+            }
+
+            Update(files);
         }
 
         public void HandleAsync(AlbumDeletedEvent message)
