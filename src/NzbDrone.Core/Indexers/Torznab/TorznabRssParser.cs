@@ -40,10 +40,11 @@ namespace NzbDrone.Core.Indexers.Torznab
         {
             var torrentInfo = base.ProcessItem(item, releaseInfo) as TorrentInfo;
             var imdbId = GetImdbId(item);
+            int parsedImdbId;
 
-            if (imdbId != null)
+            if (imdbId != null && int.TryParse(imdbId, out parsedImdbId))
             {
-                int.TryParse(imdbId, out torrentInfo.ImdbId);
+                torrentInfo.ImdbId = parsedImdbId;
             }
 
             torrentInfo.IndexerFlags = GetFlags(item);
