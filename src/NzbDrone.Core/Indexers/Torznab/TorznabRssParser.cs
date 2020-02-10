@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Indexers.Torznab
 
             if (imdbId != null)
             {
-                torrentInfo.ImdbId = int.TryParse(imdbId);
+                int.TryParse(imdbId, torrentInfo.ImdbId);
             }
 
             torrentInfo.IndexerFlags = GetFlags(item);
