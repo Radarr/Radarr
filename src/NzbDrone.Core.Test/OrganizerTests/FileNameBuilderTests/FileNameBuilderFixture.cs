@@ -493,6 +493,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
         [TestCase("English", "[EN]")]
         [TestCase("English/German", "[EN+DE]")]
+        [TestCase("French/French/German", "[2FR+DE]")]
         public void should_format_audio_languages_all(string audioLanguages, string expected)
         {
             _movieFile.ReleaseGroup = null;

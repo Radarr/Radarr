@@ -360,7 +360,7 @@ namespace NzbDrone.Core.Organizer
                 }
             }
 
-            return string.Join("+", tokens.Distinct());
+            return string.Join("+", tokens.GroupBy(t => t).Select(g => g.Count() > 1 ? g.Count() + g.Key : g.Key));
         }
 
         private void UpdateMediaInfoIfNeeded(string pattern, MovieFile movieFile, Movie movie)
