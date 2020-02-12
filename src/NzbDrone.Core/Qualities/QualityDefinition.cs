@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
+        public double? PreferredSize { get; set; }
 
         public QualityDefinition()
         {
