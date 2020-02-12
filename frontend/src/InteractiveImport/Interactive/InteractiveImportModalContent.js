@@ -358,7 +358,7 @@ class InteractiveImportModalContent extends Component {
         <SelectLanguageModal
           isOpen={selectModalOpen === LANGUAGE}
           ids={selectedIds}
-          languageId={0}
+          languageIds={[0]}
           onModalClose={this.onSelectModalClose}
         />
 
