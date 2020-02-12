@@ -288,10 +288,6 @@ class MovieDetails extends Component {
                       {title}
                     </div>
 
-                    <div className={styles.year}>
-                      {year}
-                    </div>
-
                     {
                       !!alternateTitles.length &&
                         <div className={styles.alternateTitlesIconContainer}>
@@ -331,6 +327,10 @@ class MovieDetails extends Component {
 
                 <div className={styles.details}>
                   <div>
+                    <span className={styles.year}>
+                      {year}
+                    </span>
+
                     {
                       !!runtime &&
                         <span className={styles.runtime}>
@@ -432,16 +432,6 @@ class MovieDetails extends Component {
                     />
                   </div>
                 </Measure>
-
-                <InfoLabel
-                  className={styles.detailsInfoLabel}
-                  title="Path"
-                  size={sizes.LARGE}
-                >
-                  <span className={styles.path}>
-                    {path}
-                  </span>
-                </InfoLabel>
 
                 <InfoLabel
                   className={styles.detailsInfoLabel}

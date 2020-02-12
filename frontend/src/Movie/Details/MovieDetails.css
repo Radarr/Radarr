@@ -69,11 +69,6 @@
   line-height: 50px;
 }
 
-.year {
-  margin-left: 5px;
-  color: $disabledColor;
-}
-
 .toggleMonitoredContainer {
   align-self: center;
   margin-right: 10px;
@@ -121,6 +116,7 @@
   font-size: 20px;
 }
 
+.year,
 .runtime {
   margin-right: 15px;
 }
