@@ -213,13 +213,15 @@ export const defaultState = {
     {
       name: 'studio',
       label: 'Studio',
-      type: filterBuilderTypes.ARRAY,
+      type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const tagList = items.reduce((acc, movie) => {
-          acc.push({
-            id: movie.studio,
-            name: movie.studio
-          });
+          if (movie.studio) {
+            acc.push({
+              id: movie.studio,
+              name: movie.studio
+            });
+          }
 
           return acc;
         }, []);
