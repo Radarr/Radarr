@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 using Nancy;
 using Nancy.Responses;
@@ -22,12 +22,12 @@ namespace NzbDrone.Api.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get(MEDIA_COVER_ROUTE, options => GetMediaCover(options.seriesId, options.filename));
+            Get(MEDIA_COVER_ROUTE, options => GetMediaCover(options.movieId, options.filename));
         }
 
-        private object GetMediaCover(int seriesId, string filename)
+        private object GetMediaCover(int movieId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", seriesId.ToString(), filename);
+            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", movieId.ToString(), filename);
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {
