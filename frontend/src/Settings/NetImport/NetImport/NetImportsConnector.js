@@ -2,18 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import sortByName from 'Utilities/Array/sortByName';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import { fetchNetImports, deleteNetImport } from 'Store/Actions/settingsActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import NetImports from './NetImports';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.netImports,
-    (netImports) => {
-      return {
-        ...netImports
-      };
-    }
+    createSortedSectionSelector('settings.netImports', sortByName),
+    (netImports) => netImports
   );
 }
 
