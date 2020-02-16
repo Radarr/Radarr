@@ -4,24 +4,55 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
+import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import SelectMovieModalContent from './SelectMovieModalContent';
 
-function createMapStateToProps() {
+function createCleanMovieSelector() {
   return createSelector(
     createAllMoviesSelector(),
     (items) => {
+      return items.map((movie) => {
+        const {
+          id,
+          title,
+          titleSlug,
+          sortTitle,
+          year,
+          images,
+          alternateTitles = []
+        } = movie;
+
+        return {
+          id,
+          title,
+          titleSlug,
+          sortTitle,
+          year,
+          images,
+          alternateTitles,
+          firstCharacter: title.charAt(0).toLowerCase()
+        };
+      }).sort((a, b) => {
+        if (a.sortTitle < b.sortTitle) {
+          return -1;
+        }
+
+        if (a.sortTitle > b.sortTitle) {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+  );
+}
+
+function createMapStateToProps() {
+  return createDeepEqualSelector(
+    createCleanMovieSelector(),
+    (movies) => {
       return {
-        items: [...items].sort((a, b) => {
-          if (a.sortTitle < b.sortTitle) {
-            return -1;
-          }
-
-          if (a.sortTitle > b.sortTitle) {
-            return 1;
-          }
-
-          return 0;
-        })
+        items: movies
       };
     }
   );
