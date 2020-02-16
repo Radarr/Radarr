@@ -1,6 +1,9 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { scrollDirections } from 'Helpers/Props';
+import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import Button from 'Components/Link/Button';
 import Scroller from 'Components/Scroller/Scroller';
 import TextInput from 'Components/Form/TextInput';
@@ -8,8 +11,12 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SelectMovieRow from './SelectMovieRow';
+import FuseWorker from 'Components/Page/Header/fuse.worker';
 import styles from './SelectMovieModalContent.css';
+
+const workerInstance = new FuseWorker();
 
 class SelectMovieModalContent extends Component {
 
@@ -20,15 +27,84 @@ class SelectMovieModalContent extends Component {
     super(props, context);
 
     this.state = {
-      filter: ''
+      scroller: null,
+      filter: '',
+      showLoading: false,
+      suggestions: props.items
     };
+  }
+
+  componentDidMount() {
+    workerInstance.addEventListener('message', this.onSuggestionsReceived, false);
+  }
+
+  //
+  // Control
+
+  setScrollerRef = (ref) => {
+    this.setState({ scroller: ref });
+  }
+
+  rowRenderer = ({ key, rowIndex, style }) => {
+    const item = this.state.suggestions[rowIndex];
+
+    return (
+      <VirtualTableRow
+        key={key}
+        style={style}
+      >
+        <SelectMovieRow
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          year={item.year}
+          onMovieSelect={this.props.onMovieSelect}
+        />
+      </VirtualTableRow>
+    );
   }
 
   //
   // Listeners
 
   onFilterChange = ({ value }) => {
-    this.setState({ filter: value.toLowerCase() });
+    if (value) {
+      this.setState({
+        showLoading: true,
+        filter: value.toLowerCase()
+      });
+      this.requestSuggestions(value);
+    } else {
+      this.setState({
+        showLoading: false,
+        filter: '',
+        suggestions: this.props.items
+      });
+      this.requestSuggestions.cancel();
+    }
+  }
+
+  requestSuggestions = _.debounce((value) => {
+    const payload = {
+      value,
+      movies: this.props.items
+    };
+
+    workerInstance.postMessage(payload);
+  }, 250);
+
+  onSuggestionsReceived = (message) => {
+    this.setState((state, props) => {
+      // this guards against setting a stale set of suggestions returned
+      // after the filter has been cleared
+      if (state.filter !== '') {
+        return {
+          showLoading: false,
+          suggestions: message.data.map((suggestion) => suggestion.item)
+        };
+      }
+      return {};
+    });
   }
 
   //
@@ -36,13 +112,16 @@ class SelectMovieModalContent extends Component {
 
   render() {
     const {
-      items,
       relativePath,
-      onMovieSelect,
       onModalClose
     } = this.props;
 
-    const filter = this.state.filter;
+    const {
+      scroller,
+      filter,
+      showLoading,
+      suggestions
+    } = this.state;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -58,29 +137,32 @@ class SelectMovieModalContent extends Component {
         >
           <TextInput
             className={styles.filterInput}
-            placeholder="Filter movie"
+            placeholder="Search movies"
             name="filter"
             value={filter}
             autoFocus={true}
             onChange={this.onFilterChange}
           />
 
-          <Scroller className={styles.scroller}>
-            {
-              items.map((item) => {
-                return item.title.toLowerCase().includes(filter) ?
-                  (
-                    <SelectMovieRow
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      year={item.year}
-                      onMovieSelect={onMovieSelect}
-                    />
-                  ) :
-                  null;
-              })
-            }
+          <Scroller
+            registerScroller={this.setScrollerRef}
+            className={styles.scroller}
+          >
+            <div>
+              {
+                showLoading || !scroller ?
+                  <LoadingIndicator /> :
+                  <VirtualTable
+                    header={
+                      <div />
+                    }
+                    items={suggestions}
+                    isSmallScreen={false}
+                    scroller={scroller}
+                    rowRenderer={this.rowRenderer}
+                  />
+              }
+            </div>
           </Scroller>
         </ModalBody>
 
