@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.SkyHook;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common.Categories;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
@@ -20,6 +16,8 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         public void Setup()
         {
             UseRealHttp();
+
+            Mocker.SetConstant<ITmdbConfigService>(Mocker.Resolve<TmdbConfigService>());
         }
 
         [TestCase(11, "Star Wars")]

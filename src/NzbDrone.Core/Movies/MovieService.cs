@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Movies
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
+        Movie FindByTmdbId(int tmdbid);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title, int? year);
@@ -235,6 +236,11 @@ namespace NzbDrone.Core.Movies
         public Movie FindByImdbId(string imdbid)
         {
             return _movieRepository.FindByImdbId(imdbid);
+        }
+
+        public Movie FindByTmdbId(int tmdbid)
+        {
+            return _movieRepository.FindByTmdbId(tmdbid);
         }
 
         private List<Movie> FindByTitleInexactAll(string title)
