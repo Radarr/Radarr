@@ -511,7 +511,19 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var movieResults = response.Resource.results;
 
-            return movieResults.SelectList(MapMovie);
+            return movieResults.SelectList(MapSearchResult);
+        }
+
+        private Movie MapSearchResult(MovieResult result)
+        {
+            var movie = _movieService.FindByTmdbId(result.id);
+
+            if (movie == null)
+            {
+                movie = MapMovie(result);
+            }
+
+            return movie;
         }
 
         public Movie MapMovie(MovieResult result)
