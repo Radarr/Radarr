@@ -186,7 +186,8 @@ namespace Radarr.Api.V3.Movies
                 Ratings = model.Ratings,
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio
+                Studio = model.Studio,
+                Collection = model.Collection
             };
         }
 
