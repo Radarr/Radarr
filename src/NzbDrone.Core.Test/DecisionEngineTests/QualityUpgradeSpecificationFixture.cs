@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
@@ -15,8 +16,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class QualityUpgradeSpecificationFixture : CoreTest<UpgradableSpecification>
     {
-        private static CustomFormat _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
-        private static CustomFormat _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
+        private static CustomFormat _customFormat1 = new CustomFormat("My Format 1", new ResolutionSpecification { Value = (int)Resolution.R1080p }) { Id = 1 };
+        private static CustomFormat _customFormat2 = new CustomFormat("My Format 2", new ResolutionSpecification { Value = (int)Resolution.R480p }) { Id = 2 };
 
         public static object[] IsUpgradeTestCases =
         {

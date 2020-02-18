@@ -2,17 +2,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import sortByName from 'Utilities/Array/sortByName';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import { fetchCustomFormats, deleteCustomFormat, cloneCustomFormat } from 'Store/Actions/settingsActions';
 import CustomFormats from './CustomFormats';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.customFormats,
-    (customFormats) => {
-      return {
-        ...customFormats
-      };
-    }
+    createSortedSectionSelector('settings.customFormats', sortByName),
+    (customFormats) => customFormats
   );
 }
 

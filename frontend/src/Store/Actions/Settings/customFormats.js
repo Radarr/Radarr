@@ -4,9 +4,9 @@ import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
 import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
-import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
 import createSaveProviderHandler from 'Store/Actions/Creators/createSaveProviderHandler';
 import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHandler';
+import { set } from '../baseActions';
 
 //
 // Variables
@@ -17,7 +17,6 @@ const section = 'settings.customFormats';
 // Actions Types
 
 export const FETCH_CUSTOM_FORMATS = 'settings/customFormats/fetchCustomFormats';
-export const FETCH_CUSTOM_FORMAT_SCHEMA = 'settings/customFormats/fetchCustomFormatSchema';
 export const SAVE_CUSTOM_FORMAT = 'settings/customFormats/saveCustomFormat';
 export const DELETE_CUSTOM_FORMAT = 'settings/customFormats/deleteCustomFormat';
 export const SET_CUSTOM_FORMAT_VALUE = 'settings/customFormats/setCustomFormatValue';
@@ -27,7 +26,6 @@ export const CLONE_CUSTOM_FORMAT = 'settings/customFormats/cloneCustomFormat';
 // Action Creators
 
 export const fetchCustomFormats = createThunk(FETCH_CUSTOM_FORMATS);
-export const fetchCustomFormatSchema = createThunk(FETCH_CUSTOM_FORMAT_SCHEMA);
 export const saveCustomFormat = createThunk(SAVE_CUSTOM_FORMAT);
 export const deleteCustomFormat = createThunk(DELETE_CUSTOM_FORMAT);
 
@@ -49,15 +47,13 @@ export default {
   // State
 
   defaultState: {
+    isSchemaFetching: false,
+    isSchemaPopulated: false,
     isFetching: false,
     isPopulated: false,
     error: null,
     isDeleting: false,
     deleteError: null,
-    isSchemaFetching: false,
-    isSchemaPopulated: false,
-    schemaError: null,
-    schema: {},
     isSaving: false,
     saveError: null,
     items: [],
@@ -69,9 +65,21 @@ export default {
 
   actionHandlers: {
     [FETCH_CUSTOM_FORMATS]: createFetchHandler(section, '/customformat'),
-    [FETCH_CUSTOM_FORMAT_SCHEMA]: createFetchSchemaHandler(section, '/customformat/schema'),
-    [SAVE_CUSTOM_FORMAT]: createSaveProviderHandler(section, '/customformat'),
-    [DELETE_CUSTOM_FORMAT]: createRemoveItemHandler(section, '/customformat')
+
+    [DELETE_CUSTOM_FORMAT]: createRemoveItemHandler(section, '/customformat'),
+
+    [SAVE_CUSTOM_FORMAT]: (getState, payload, dispatch) => {
+      // move the format tags in as a pending change
+      const state = getState();
+      const pendingChanges = state.settings.customFormats.pendingChanges;
+      pendingChanges.specifications = state.settings.customFormatSpecifications.items;
+      dispatch(set({
+        section,
+        pendingChanges
+      }));
+
+      createSaveProviderHandler(section, '/customformat')(getState, payload, dispatch);
+    }
   },
 
   //

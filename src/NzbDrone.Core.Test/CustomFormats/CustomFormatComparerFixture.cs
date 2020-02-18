@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -25,10 +26,10 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenDefaultProfileWithFormats()
         {
-            _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
-            _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
-            _customFormat3 = new CustomFormat("My Format 3", "L_SPANISH") { Id = 3 };
-            _customFormat4 = new CustomFormat("My Format 4", "L_ITALIAN") { Id = 4 };
+            _customFormat1 = new CustomFormat("My Format 1", new LanguageSpecification { Value = (int)Language.English }) { Id = 1 };
+            _customFormat2 = new CustomFormat("My Format 2", new LanguageSpecification { Value = (int)Language.French }) { Id = 2 };
+            _customFormat3 = new CustomFormat("My Format 3", new LanguageSpecification { Value = (int)Language.Spanish }) { Id = 3 };
+            _customFormat4 = new CustomFormat("My Format 4", new LanguageSpecification { Value = (int)Language.Italian }) { Id = 4 };
 
             CustomFormatsFixture.GivenCustomFormats(CustomFormat.None, _customFormat1, _customFormat2, _customFormat3, _customFormat4);
 

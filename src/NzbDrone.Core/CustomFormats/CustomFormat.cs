@@ -11,22 +11,22 @@ namespace NzbDrone.Core.CustomFormats
         {
         }
 
-        public CustomFormat(string name, params string[] tags)
+        public CustomFormat(string name, params ICustomFormatSpecification[] specs)
         {
             Name = name;
-            FormatTags = tags.Select(t => new FormatTag(t)).ToList();
+            Specifications = specs.ToList();
         }
 
         public static CustomFormat None => new CustomFormat
         {
             Id = 0,
             Name = "None",
-            FormatTags = new List<FormatTag>()
+            Specifications = new List<ICustomFormatSpecification>()
         };
 
         public string Name { get; set; }
 
-        public List<FormatTag> FormatTags { get; set; }
+        public List<ICustomFormatSpecification> Specifications { get; set; }
 
         public override string ToString()
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Core.Annotations;
 
 namespace Radarr.Http.ClientSchema
 {

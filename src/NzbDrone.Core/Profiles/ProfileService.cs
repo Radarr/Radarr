@@ -87,9 +87,9 @@ namespace NzbDrone.Core.Profiles
             var all = All();
             foreach (var profile in all)
             {
-                profile.FormatItems.Add(new ProfileFormatItem
+                profile.FormatItems.Insert(0, new ProfileFormatItem
                 {
-                    Allowed = true,
+                    Allowed = false,
                     Format = message.CustomFormat
                 });
 

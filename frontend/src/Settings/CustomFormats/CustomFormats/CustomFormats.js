@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import sortByName from 'Utilities/Array/sortByName';
 import { icons } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
@@ -19,7 +18,8 @@ class CustomFormats extends Component {
     super(props, context);
 
     this.state = {
-      isCustomFormatModalOpen: false
+      isCustomFormatModalOpen: false,
+      tagsFromId: undefined
     };
   }
 
@@ -28,7 +28,10 @@ class CustomFormats extends Component {
 
   onCloneCustomFormatPress = (id) => {
     this.props.onCloneCustomFormatPress(id);
-    this.setState({ isCustomFormatModalOpen: true });
+    this.setState({
+      isCustomFormatModalOpen: true,
+      tagsFromId: id
+    });
   }
 
   onEditCustomFormatPress = () => {
@@ -36,7 +39,10 @@ class CustomFormats extends Component {
   }
 
   onModalClose = () => {
-    this.setState({ isCustomFormatModalOpen: false });
+    this.setState({
+      isCustomFormatModalOpen: false,
+      tagsFromId: undefined
+    });
   }
 
   //
@@ -59,7 +65,7 @@ class CustomFormats extends Component {
         >
           <div className={styles.customFormats}>
             {
-              items.sort(sortByName).map((item) => {
+              items.map((item) => {
                 return (
                   <CustomFormat
                     key={item.id}
@@ -87,6 +93,7 @@ class CustomFormats extends Component {
 
           <EditCustomFormatModalConnector
             isOpen={this.state.isCustomFormatModalOpen}
+            tagsFromId={this.state.tagsFromId}
             onModalClose={this.onModalClose}
           />
 

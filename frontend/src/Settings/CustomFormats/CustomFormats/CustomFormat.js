@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import split from 'Utilities/String/split';
 import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
@@ -65,7 +64,7 @@ class CustomFormat extends Component {
     const {
       id,
       name,
-      formatTags,
+      specifications,
       isDeleting
     } = this.props;
 
@@ -90,17 +89,17 @@ class CustomFormat extends Component {
 
         <div>
           {
-            split(formatTags).map((item) => {
+            specifications.map((item, index) => {
               if (!item) {
                 return null;
               }
 
               return (
                 <Label
-                  key={item}
-                  kind={kinds.DEFAULT}
+                  key={index}
+                  kind={item.required ? kinds.DANGER : kinds.DEFAULT}
                 >
-                  {item}
+                  {item.name}
                 </Label>
               );
             })
@@ -138,7 +137,7 @@ class CustomFormat extends Component {
 CustomFormat.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  formatTags: PropTypes.string.isRequired,
+  specifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
   onConfirmDeleteCustomFormat: PropTypes.func.isRequired,
   onCloneCustomFormatPress: PropTypes.func.isRequired

@@ -62,12 +62,12 @@ class QualityProfileFormatItems extends Component {
 
           <div className={styles.formats}>
             {
-              profileFormatItems.map(({ allowed, format }, index) => {
+              profileFormatItems.map(({ allowed, format, name }, index) => {
                 return (
                   <QualityProfileFormatItemDragSource
-                    key={format.id}
-                    formatId={format.id}
-                    name={format.name}
+                    key={format}
+                    formatId={format}
+                    name={name}
                     allowed={allowed}
                     sortIndex={index}
                     isDragging={isDragging}

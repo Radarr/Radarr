@@ -9,6 +9,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
@@ -32,8 +33,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Usenet);
 
-            _customFormat1 = new CustomFormat("My Format 1", "L_ENGLISH") { Id = 1 };
-            _customFormat2 = new CustomFormat("My Format 2", "L_FRENCH") { Id = 2 };
+            _customFormat1 = new CustomFormat("My Format 1", new LanguageSpecification { Value = (int)Language.English }) { Id = 1 };
+            _customFormat2 = new CustomFormat("My Format 2", new LanguageSpecification { Value = (int)Language.French }) { Id = 2 };
 
             CustomFormatsFixture.GivenCustomFormats(CustomFormat.None, _customFormat1, _customFormat2);
         }
