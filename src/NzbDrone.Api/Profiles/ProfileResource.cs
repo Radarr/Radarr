@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.Qualities;
+using NzbDrone.Api.CustomFormats;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;

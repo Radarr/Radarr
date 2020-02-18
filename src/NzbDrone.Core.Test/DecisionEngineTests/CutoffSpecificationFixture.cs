@@ -9,6 +9,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -71,7 +72,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenCustomFormatHigher()
         {
-            _customFormat = new CustomFormat("My Format", "L_ENGLISH") { Id = 1 };
+            _customFormat = new CustomFormat("My Format", new ResolutionSpecification { Value = (int)Resolution.R1080p }) { Id = 1 };
 
             CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormat.None);
         }

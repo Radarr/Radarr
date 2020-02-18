@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
 using Radarr.Api.V3.CustomFormats;
@@ -34,7 +35,8 @@ namespace Radarr.Api.V3.Profiles.Quality
 
     public class ProfileFormatItemResource : RestResource
     {
-        public CustomFormatResource Format { get; set; }
+        public int Format { get; set; }
+        public string Name { get; set; }
         public bool Allowed { get; set; }
     }
 
@@ -82,7 +84,8 @@ namespace Radarr.Api.V3.Profiles.Quality
         {
             return new ProfileFormatItemResource
             {
-                Format = model.Format.ToResource(),
+                Format = model.Format.Id,
+                Name = model.Format.Name,
                 Allowed = model.Allowed
             };
         }
@@ -129,7 +132,7 @@ namespace Radarr.Api.V3.Profiles.Quality
         {
             return new ProfileFormatItem
             {
-                Format = resource.Format.ToModel(),
+                Format = new CustomFormat { Id = resource.Format },
                 Allowed = resource.Allowed
             };
         }

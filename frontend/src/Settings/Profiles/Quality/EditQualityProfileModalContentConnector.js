@@ -79,8 +79,8 @@ function createFormatsSelector() {
             });
           } else {
             result.push({
-              key: format.id,
-              value: format.name
+              key: format,
+              value: name
             });
           }
         }
@@ -201,7 +201,7 @@ class EditQualityProfileModalContentConnector extends Component {
         return false;
       }
 
-      return i.id === cutoff || (i.format && i.format.id === cutoff);
+      return i.id === cutoff || (i.format === cutoff);
     });
 
     // If the cutoff isn't allowed anymore or there isn't a cutoff set one
@@ -210,7 +210,7 @@ class EditQualityProfileModalContentConnector extends Component {
       let cutoffId = null;
 
       if (firstAllowed) {
-        cutoffId = firstAllowed.format ? firstAllowed.format.id : firstAllowed.id;
+        cutoffId = firstAllowed.format;
       }
 
       this.props.setQualityProfileValue({ name: 'formatCutoff', value: cutoffId });
@@ -241,11 +241,7 @@ class EditQualityProfileModalContentConnector extends Component {
 
   onFormatCutoffChange = ({ name, value }) => {
     const id = parseInt(value);
-    const item = _.find(this.props.item.formatItems.value, (i) => {
-      return i.format.id === id;
-    });
-
-    const cutoffId = item.format.id;
+    const cutoffId = _.find(this.props.item.formatItems.value, (i) => i.format === id).format;
 
     this.props.setQualityProfileValue({ name, value: cutoffId });
   }
@@ -281,7 +277,7 @@ class EditQualityProfileModalContentConnector extends Component {
   onQualityProfileFormatItemAllowedChange = (id, allowed) => {
     const qualityProfile = _.cloneDeep(this.props.item);
     const formatItems = qualityProfile.formatItems.value;
-    const item = _.find(qualityProfile.formatItems.value, (i) => i.format && i.format.id === id);
+    const item = _.find(qualityProfile.formatItems.value, (i) => i.format === id);
 
     item.allowed = allowed;
 

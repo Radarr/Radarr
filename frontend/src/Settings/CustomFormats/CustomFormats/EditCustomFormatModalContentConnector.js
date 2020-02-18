@@ -3,17 +3,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
-import { setCustomFormatValue, saveCustomFormat } from 'Store/Actions/settingsActions';
+import { setCustomFormatValue, saveCustomFormat, fetchCustomFormatSpecifications, cloneCustomFormatSpecification, deleteCustomFormatSpecification } from 'Store/Actions/settingsActions';
 import EditCustomFormatModalContent from './EditCustomFormatModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
     createProviderSettingsSelector('customFormats'),
-    (advancedSettings, customFormat) => {
+    (state) => state.settings.customFormatSpecifications,
+    (advancedSettings, customFormat, specifications) => {
       return {
         advancedSettings,
-        ...customFormat
+        ...customFormat,
+        specificationsPopulated: specifications.isPopulated,
+        specifications: specifications.items
       };
     }
   );
@@ -21,13 +24,24 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   setCustomFormatValue,
-  saveCustomFormat
+  saveCustomFormat,
+  fetchCustomFormatSpecifications,
+  cloneCustomFormatSpecification,
+  deleteCustomFormatSpecification
 };
 
 class EditCustomFormatModalContentConnector extends Component {
 
   //
   // Lifecycle
+
+  componentDidMount() {
+    const {
+      id,
+      tagsFromId
+    } = this.props;
+    this.props.fetchCustomFormatSpecifications({ id: tagsFromId || id });
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.isSaving && !this.props.isSaving && !this.props.saveError) {
@@ -46,6 +60,14 @@ class EditCustomFormatModalContentConnector extends Component {
     this.props.saveCustomFormat({ id: this.props.id });
   }
 
+  onCloneSpecificationPress = (id) => {
+    this.props.cloneCustomFormatSpecification({ id });
+  }
+
+  onConfirmDeleteSpecification = (id) => {
+    this.props.deleteCustomFormatSpecification({ id });
+  }
+
   //
   // Render
 
@@ -55,6 +77,8 @@ class EditCustomFormatModalContentConnector extends Component {
         {...this.props}
         onSavePress={this.onSavePress}
         onInputChange={this.onInputChange}
+        onCloneSpecificationPress={this.onCloneSpecificationPress}
+        onConfirmDeleteSpecification={this.onConfirmDeleteSpecification}
       />
     );
   }
@@ -62,12 +86,16 @@ class EditCustomFormatModalContentConnector extends Component {
 
 EditCustomFormatModalContentConnector.propTypes = {
   id: PropTypes.number,
+  tagsFromId: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,
   setCustomFormatValue: PropTypes.func.isRequired,
   saveCustomFormat: PropTypes.func.isRequired,
+  fetchCustomFormatSpecifications: PropTypes.func.isRequired,
+  cloneCustomFormatSpecification: PropTypes.func.isRequired,
+  deleteCustomFormatSpecification: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

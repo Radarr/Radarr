@@ -1,4 +1,4 @@
-﻿namespace Radarr.Http.ClientSchema
+namespace NzbDrone.Core.Annotations
 {
     public class SelectOption
     {

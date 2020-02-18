@@ -143,10 +143,21 @@ namespace Radarr.Http.ClientSchema
 
         private static List<SelectOption> GetSelectOptions(Type selectOptions)
         {
-            var options = from Enum e in Enum.GetValues(selectOptions)
-                          select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
+            if (selectOptions.IsEnum)
+            {
+                var options = from Enum e in Enum.GetValues(selectOptions)
+                    select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
 
-            return options.OrderBy(o => o.Value).ToList();
+                return options.OrderBy(o => o.Value).ToList();
+            }
+
+            if (typeof(ISelectOptionsConverter).IsAssignableFrom(selectOptions))
+            {
+                var converter = Activator.CreateInstance(selectOptions) as ISelectOptionsConverter;
+                return converter.GetSelectOptions();
+            }
+
+            throw new NotSupportedException();
         }
 
         private static Func<object, object> GetValueConverter(Type propertyType)
