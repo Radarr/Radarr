@@ -243,11 +243,11 @@ namespace NzbDrone.Core.Music
             _albumService.InsertMany(children);
         }
 
-        protected override bool RefreshChildren(SortedChildren localChildren, List<Album> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags)
+        protected override bool RefreshChildren(SortedChildren localChildren, List<Album> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             // we always want to end up refreshing the albums since we don't yet have proper data
             Ensure.That(localChildren.UpToDate.Count, () => localChildren.UpToDate.Count).IsLessThanOrEqualTo(0);
-            return _refreshAlbumService.RefreshAlbumInfo(localChildren.All, remoteChildren, forceChildRefresh, forceUpdateFileTags);
+            return _refreshAlbumService.RefreshAlbumInfo(localChildren.All, remoteChildren, forceChildRefresh, forceUpdateFileTags, lastUpdate);
         }
 
         protected override void PublishEntityUpdatedEvent(Artist entity)
@@ -317,7 +317,7 @@ namespace NzbDrone.Core.Music
             {
                 try
                 {
-                    updated |= RefreshEntityInfo(artist, null, true, false);
+                    updated |= RefreshEntityInfo(artist, null, true, false, null);
                 }
                 catch (Exception e)
                 {
@@ -348,15 +348,24 @@ namespace NzbDrone.Core.Music
                 var artists = _artistService.GetAllArtists().OrderBy(c => c.Name).ToList();
                 var artistIds = artists.Select(x => x.Id).ToList();
 
+                var updatedMusicbrainzArtists = new HashSet<string>();
+
+                if (message.LastExecutionTime.HasValue && message.LastExecutionTime.Value.AddDays(14) > DateTime.UtcNow)
+                {
+                    updatedMusicbrainzArtists = _artistInfo.GetChangedArtists(message.LastStartTime.Value);
+                }
+
                 foreach (var artist in artists)
                 {
                     var manualTrigger = message.Trigger == CommandTrigger.Manual;
 
-                    if (manualTrigger || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
+                    if ((updatedMusicbrainzArtists == null && _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist)) ||
+                        (updatedMusicbrainzArtists != null && updatedMusicbrainzArtists.Contains(artist.ForeignArtistId)) ||
+                        manualTrigger)
                     {
                         try
                         {
-                            updated |= RefreshEntityInfo(artist, null, manualTrigger, false);
+                            updated |= RefreshEntityInfo(artist, null, manualTrigger, false, message.LastStartTime);
                         }
                         catch (Exception e)
                         {

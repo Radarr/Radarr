@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IRefreshAlbumReleaseService
     {
-        bool RefreshEntityInfo(AlbumRelease entity, List<AlbumRelease> remoteEntityList, bool forceChildRefresh, bool forceUpdateFileTags);
+        bool RefreshEntityInfo(AlbumRelease entity, List<AlbumRelease> remoteEntityList, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
         bool RefreshEntityInfo(List<AlbumRelease> releases, List<AlbumRelease> remoteEntityList, bool forceChildRefresh, bool forceUpdateFileTags);
     }
 
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Music
             _trackService.InsertMany(children);
         }
 
-        protected override bool RefreshChildren(SortedChildren localChildren, List<Track> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags)
+        protected override bool RefreshChildren(SortedChildren localChildren, List<Track> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             return _refreshTrackService.RefreshTrackInfo(localChildren.Added, localChildren.Updated, localChildren.Merged, localChildren.Deleted, localChildren.UpToDate, remoteChildren, forceUpdateFileTags);
         }

@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
     public interface IRefreshAlbumService
     {
         bool RefreshAlbumInfo(Album album, List<Album> remoteAlbums, bool forceUpdateFileTags);
-        bool RefreshAlbumInfo(List<Album> albums, List<Album> remoteAlbums, bool forceAlbumRefresh, bool forceUpdateFileTags);
+        bool RefreshAlbumInfo(List<Album> albums, List<Album> remoteAlbums, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
     }
 
     public class RefreshAlbumService : RefreshEntityServiceBase<Album, AlbumRelease>, IRefreshAlbumService, IExecute<RefreshAlbumCommand>
@@ -295,7 +295,7 @@ namespace NzbDrone.Core.Music
             toMonitor.Monitored = true;
         }
 
-        protected override bool RefreshChildren(SortedChildren localChildren, List<AlbumRelease> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags)
+        protected override bool RefreshChildren(SortedChildren localChildren, List<AlbumRelease> remoteChildren, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             var refreshList = localChildren.All;
 
@@ -314,14 +314,28 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new AlbumUpdatedEvent(_albumService.GetAlbum(entity.Id)));
         }
 
-        public bool RefreshAlbumInfo(List<Album> albums, List<Album> remoteAlbums, bool forceAlbumRefresh, bool forceUpdateFileTags)
+        public bool RefreshAlbumInfo(List<Album> albums, List<Album> remoteAlbums, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             bool updated = false;
+
+            var updatedMusicbrainzAlbums = new HashSet<string>();
+
+            if (lastUpdate.HasValue && lastUpdate.Value.AddDays(14) > DateTime.UtcNow)
+            {
+                updatedMusicbrainzAlbums = _albumInfo.GetChangedAlbums(lastUpdate.Value);
+            }
+
             foreach (var album in albums)
             {
-                if (forceAlbumRefresh || _checkIfAlbumShouldBeRefreshed.ShouldRefresh(album))
+                if (forceAlbumRefresh ||
+                    (updatedMusicbrainzAlbums == null && _checkIfAlbumShouldBeRefreshed.ShouldRefresh(album)) ||
+                    (updatedMusicbrainzAlbums != null && updatedMusicbrainzAlbums.Contains(album.ForeignAlbumId)))
                 {
                     updated |= RefreshAlbumInfo(album, remoteAlbums, forceUpdateFileTags);
+                }
+                else
+                {
+                    _logger.Debug("Skipping refresh of album: {0}", album.Title);
                 }
             }
 
@@ -330,7 +344,7 @@ namespace NzbDrone.Core.Music
 
         public bool RefreshAlbumInfo(Album album, List<Album> remoteAlbums, bool forceUpdateFileTags)
         {
-            return RefreshEntityInfo(album, remoteAlbums, true, forceUpdateFileTags);
+            return RefreshEntityInfo(album, remoteAlbums, true, forceUpdateFileTags, null);
         }
 
         public void Execute(RefreshAlbumCommand message)

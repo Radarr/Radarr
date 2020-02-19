@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             GivenNewAlbumInfo(newAlbumInfo);
 
-            Subject.RefreshAlbumInfo(_albums, null, false, false);
+            Subject.RefreshAlbumInfo(_albums, null, false, false, null);
 
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.UpdateMany(It.Is<List<Album>>(s => s.First().ForeignAlbumId == newAlbumInfo.ForeignAlbumId)));
@@ -143,7 +143,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             GivenNewAlbumInfo(newAlbumInfo);
 
-            Subject.RefreshAlbumInfo(_albums, null, false, false);
+            Subject.RefreshAlbumInfo(_albums, null, false, false, null);
 
             // check releases moved to clashing album
             Mocker.GetMock<IReleaseService>()

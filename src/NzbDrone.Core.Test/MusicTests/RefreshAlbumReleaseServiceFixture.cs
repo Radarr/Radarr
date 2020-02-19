@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MusicTests
             newInfo.OldForeignReleaseIds = new List<string> { _release.ForeignReleaseId };
             newInfo.Tracks = _tracks;
 
-            Subject.RefreshEntityInfo(_release, new List<AlbumRelease> { newInfo }, false, false);
+            Subject.RefreshEntityInfo(_release, new List<AlbumRelease> { newInfo }, false, false, null);
 
             Mocker.GetMock<IReleaseService>()
                 .Verify(v => v.UpdateMany(It.Is<List<AlbumRelease>>(s => s.First().ForeignReleaseId == newInfo.ForeignReleaseId)));
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Setup(s => s.GetTracksForRefresh(_release.Id, It.IsAny<IEnumerable<string>>()))
                 .Returns(new List<Track> { oldTrack });
 
-            Subject.RefreshEntityInfo(_release, new List<AlbumRelease> { newInfo }, false, false);
+            Subject.RefreshEntityInfo(_release, new List<AlbumRelease> { newInfo }, false, false, null);
 
             Mocker.GetMock<IRefreshTrackService>()
                 .Verify(v => v.RefreshTrackInfo(It.IsAny<List<Track>>(),

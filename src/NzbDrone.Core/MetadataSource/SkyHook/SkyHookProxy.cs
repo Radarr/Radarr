@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IAlbumService _albumService;
         private readonly IMetadataRequestBuilder _requestBuilder;
         private readonly IMetadataProfileService _metadataProfileService;
+        private readonly ICached<HashSet<string>> _cache;
 
         private static readonly List<string> NonAudioMedia = new List<string> { "DVD", "DVD-Video", "Blu-ray", "HD-DVD", "VCD", "SVCD", "UMD", "VHS" };
         private static readonly List<string> SkippedTracks = new List<string> { "[data track]" };
@@ -31,14 +33,36 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                             IArtistService artistService,
                             IAlbumService albumService,
                             Logger logger,
-                            IMetadataProfileService metadataProfileService)
+                            IMetadataProfileService metadataProfileService,
+                            ICacheManager cacheManager)
         {
             _httpClient = httpClient;
             _metadataProfileService = metadataProfileService;
             _requestBuilder = requestBuilder;
             _artistService = artistService;
             _albumService = albumService;
+            _cache = cacheManager.GetCache<HashSet<string>>(GetType());
             _logger = logger;
+        }
+
+        public HashSet<string> GetChangedArtists(DateTime startTime)
+        {
+            var startTimeUtc = (DateTimeOffset)DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
+            var httpRequest = _requestBuilder.GetRequestBuilder().Create()
+                .SetSegment("route", "recent/artist")
+                .AddQueryParam("since", startTimeUtc.ToUnixTimeSeconds())
+                .Build();
+
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Get<RecentUpdatesResource>(httpRequest);
+
+            if (httpResponse.Resource.Limited)
+            {
+                return null;
+            }
+
+            return new HashSet<string>(httpResponse.Resource.Items);
         }
 
         public Artist GetArtistInfo(string foreignArtistId, int metadataProfileId)
@@ -79,6 +103,31 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .Select(x => MapAlbum(x, null)).ToList();
 
             return artist;
+        }
+
+        public HashSet<string> GetChangedAlbums(DateTime startTime)
+        {
+            return _cache.Get("ChangedAlbums", () => GetChangedAlbumsUncached(startTime), TimeSpan.FromMinutes(30));
+        }
+
+        private HashSet<string> GetChangedAlbumsUncached(DateTime startTime)
+        {
+            var startTimeUtc = (DateTimeOffset)DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
+            var httpRequest = _requestBuilder.GetRequestBuilder().Create()
+                .SetSegment("route", "recent/album")
+                .AddQueryParam("since", startTimeUtc.ToUnixTimeSeconds())
+                .Build();
+
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Get<RecentUpdatesResource>(httpRequest);
+
+            if (httpResponse.Resource.Limited)
+            {
+                return null;
+            }
+
+            return new HashSet<string>(httpResponse.Resource.Items);
         }
 
         public IEnumerable<AlbumResource> FilterAlbums(IEnumerable<AlbumResource> albums, int metadataProfileId)
