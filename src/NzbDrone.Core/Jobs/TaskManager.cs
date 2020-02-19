@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Jobs
             if (scheduledTask != null && message.Command.Body.UpdateScheduledTask)
             {
                 _logger.Trace("Updating last run time for: {0}", scheduledTask.TypeName);
-                _scheduledTaskRepository.SetLastExecutionTime(scheduledTask.Id, DateTime.UtcNow);
+                _scheduledTaskRepository.SetLastExecutionTime(scheduledTask.Id, DateTime.UtcNow, message.Command.StartedAt.Value);
             }
         }
 
