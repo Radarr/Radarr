@@ -1,3 +1,4 @@
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -13,14 +14,15 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM Tracks
+            using (var mapper = _database.OpenConnection())
+            {
+                mapper.Execute(@"DELETE FROM Tracks
                                      WHERE Id IN (
                                      SELECT Tracks.Id FROM Tracks
                                      LEFT OUTER JOIN AlbumReleases
                                      ON Tracks.AlbumReleaseId = AlbumReleases.Id
                                      WHERE AlbumReleases.Id IS NULL)");
+            }
         }
     }
 }

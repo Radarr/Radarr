@@ -29,10 +29,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 Monitored = true,
                 ForeignArtistId = "this is a fake id",
                 Id = 1,
-                Metadata = new ArtistMetadata
-                {
-                    Id = 1
-                }
+                ArtistMetadataId = 1
             };
 
             _albumRepo = Mocker.Resolve<AlbumRepository>();

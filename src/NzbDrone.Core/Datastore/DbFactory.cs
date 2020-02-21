@@ -1,7 +1,5 @@
 using System;
 using System.Data.SQLite;
-using Marr.Data;
-using Marr.Data.Reflection;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Disk;
@@ -30,7 +28,6 @@ namespace NzbDrone.Core.Datastore
         {
             InitializeEnvironment();
 
-            MapRepository.Instance.ReflectionStrategy = new SimpleReflectionStrategy();
             TableMapping.Map();
         }
 
@@ -99,12 +96,11 @@ namespace NzbDrone.Core.Datastore
 
             var db = new Database(migrationContext.MigrationType.ToString(), () =>
             {
-                var dataMapper = new DataMapper(SQLiteFactory.Instance, connectionString)
-                {
-                    SqlMode = SqlModes.Text,
-                };
+                var conn = SQLiteFactory.Instance.CreateConnection();
+                conn.ConnectionString = connectionString;
+                conn.Open();
 
-                return dataMapper;
+                return conn;
             });
 
             return db;
@@ -123,7 +119,7 @@ namespace NzbDrone.Core.Datastore
 
                 if (OsInfo.IsOsx)
                 {
-                    throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Lidarr/Lidarr/wiki/FAQ#i-use-lidarr-on-a-mac-and-it-suddenly-stopped-working-what-happened", e, fileName);
+                    throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Sonarr/Sonarr/wiki/FAQ#i-use-sonarr-on-a-mac-and-it-suddenly-stopped-working-what-happened", e, fileName);
                 }
 
                 throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Lidarr/Lidarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);

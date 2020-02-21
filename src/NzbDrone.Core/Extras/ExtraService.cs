@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Extras
             foreach (var trackFile in trackFiles)
             {
                 var localTrackFile = trackFile;
-                trackFile.Tracks = new LazyList<Track>(tracks.Where(e => e.TrackFileId == localTrackFile.Id));
+                trackFile.Tracks = tracks.Where(e => e.TrackFileId == localTrackFile.Id).ToList();
             }
 
             return trackFiles;

@@ -4,9 +4,9 @@ using System.Reflection;
 using AutoFixture;
 using Equ;
 using FluentAssertions;
-using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 

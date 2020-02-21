@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Equ;
-using Marr.Data;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Music
 {
@@ -58,6 +59,7 @@ namespace NzbDrone.Core.Music
 
         //compatibility properties with old version of Album
         [MemberwiseEqualityIgnore]
+        [JsonIgnore]
         public int ArtistId
         {
             get { return Artist?.Value?.Id ?? 0; } set { Artist.Value.Id = value; }

@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         public void Setup()
         {
             _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
-            _metadataList = Builder<ArtistMetadata>.CreateListOfSize(10).BuildList();
+            _metadataList = Builder<ArtistMetadata>.CreateListOfSize(10).All().With(x => x.Id = 0).BuildList();
         }
 
         [Test]

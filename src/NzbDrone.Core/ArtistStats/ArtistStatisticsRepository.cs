@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Dapper;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.ArtistStats
 {
@@ -13,6 +16,8 @@ namespace NzbDrone.Core.ArtistStats
 
     public class ArtistStatisticsRepository : IArtistStatisticsRepository
     {
+        private const string _selectTemplate = "SELECT /**select**/ FROM Tracks /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/ /**orderby**/";
+
         private readonly IMainDatabase _database;
 
         public ArtistStatisticsRepository(IMainDatabase database)
@@ -22,57 +27,41 @@ namespace NzbDrone.Core.ArtistStats
 
         public List<AlbumStatistics> ArtistStatistics()
         {
-            var mapper = _database.GetDataMapper();
-
-            mapper.AddParameter("currentDate", DateTime.UtcNow);
-
-            var sb = new StringBuilder();
-            sb.AppendLine(GetSelectClause());
-            sb.AppendLine("AND Albums.ReleaseDate < @currentDate");
-            sb.AppendLine(GetGroupByClause());
-            var queryText = sb.ToString();
-
-            return mapper.Query<AlbumStatistics>(queryText);
+            var time = DateTime.UtcNow;
+            return Query(Builder().Where<Album>(x => x.ReleaseDate < time));
         }
 
         public List<AlbumStatistics> ArtistStatistics(int artistId)
         {
-            var mapper = _database.GetDataMapper();
-
-            mapper.AddParameter("currentDate", DateTime.UtcNow);
-            mapper.AddParameter("artistId", artistId);
-
-            var sb = new StringBuilder();
-            sb.AppendLine(GetSelectClause());
-            sb.AppendLine("AND Artists.Id = @artistId");
-            sb.AppendLine("AND Albums.ReleaseDate < @currentDate");
-            sb.AppendLine(GetGroupByClause());
-            var queryText = sb.ToString();
-
-            return mapper.Query<AlbumStatistics>(queryText);
+            var time = DateTime.UtcNow;
+            return Query(Builder().Where<Album>(x => x.ReleaseDate < time)
+                         .Where<Artist>(x => x.Id == artistId));
         }
 
-        private string GetSelectClause()
+        private List<AlbumStatistics> Query(SqlBuilder builder)
         {
-            return @"SELECT
-                     Artists.Id AS ArtistId,
+            var sql = builder.AddTemplate(_selectTemplate).LogQuery();
+
+            using (var conn = _database.OpenConnection())
+            {
+                return conn.Query<AlbumStatistics>(sql.RawSql, sql.Parameters).ToList();
+            }
+        }
+
+        private SqlBuilder Builder() => new SqlBuilder()
+            .Select(@"Artists.Id AS ArtistId,
                      Albums.Id AS AlbumId,
                      SUM(COALESCE(TrackFiles.Size, 0)) AS SizeOnDisk,
                      COUNT(Tracks.Id) AS TotalTrackCount,
                      SUM(CASE WHEN Tracks.TrackFileId > 0 THEN 1 ELSE 0 END) AS AvailableTrackCount,
                      SUM(CASE WHEN Albums.Monitored = 1 OR Tracks.TrackFileId > 0 THEN 1 ELSE 0 END) AS TrackCount,
-                     SUM(CASE WHEN TrackFiles.Id IS NULL THEN 0 ELSE 1 END) AS TrackFileCount
-                     FROM Tracks
-                     JOIN AlbumReleases ON Tracks.AlbumReleaseId = AlbumReleases.Id
-                     JOIN Albums ON AlbumReleases.AlbumId = Albums.Id
-                     JOIN Artists on Albums.ArtistMetadataId = Artists.ArtistMetadataId
-                     LEFT OUTER JOIN TrackFiles ON Tracks.TrackFileId = TrackFiles.Id
-                     WHERE AlbumReleases.Monitored = 1";
-        }
-
-        private string GetGroupByClause()
-        {
-            return "GROUP BY Artists.Id, Albums.Id";
-        }
+                     SUM(CASE WHEN TrackFiles.Id IS NULL THEN 0 ELSE 1 END) AS TrackFileCount")
+            .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
+            .Join<AlbumRelease, Album>((r, a) => r.AlbumId == a.Id)
+            .Join<Album, Artist>((album, artist) => album.ArtistMetadataId == artist.ArtistMetadataId)
+            .LeftJoin<Track, TrackFile>((t, f) => t.TrackFileId == f.Id)
+            .Where<AlbumRelease>(x => x.Monitored == true)
+            .GroupBy<Artist>(x => x.Id)
+            .GroupBy<Album>(x => x.Id);
     }
 }

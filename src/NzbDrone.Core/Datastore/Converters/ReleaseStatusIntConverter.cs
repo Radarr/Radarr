@@ -1,62 +1,21 @@
 using System;
-using Marr.Data.Converters;
-using Marr.Data.Mapping;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class ReleaseStatusIntConverter : JsonConverter, IConverter
+    public class ReleaseStatusIntConverter : JsonConverter<ReleaseStatus>
     {
-        public object FromDB(ConverterContext context)
+        public override ReleaseStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (context.DbValue == DBNull.Value)
-            {
-                return ReleaseStatus.Official;
-            }
-
-            var val = Convert.ToInt32(context.DbValue);
-
-            return (ReleaseStatus)val;
+            var item = reader.GetInt32();
+            return (ReleaseStatus)item;
         }
 
-        public object FromDB(ColumnMap map, object dbValue)
+        public override void Write(Utf8JsonWriter writer, ReleaseStatus value, JsonSerializerOptions options)
         {
-            return FromDB(new ConverterContext { ColumnMap = map, DbValue = dbValue });
-        }
-
-        public object ToDB(object clrValue)
-        {
-            if (clrValue == DBNull.Value)
-            {
-                return 0;
-            }
-
-            if (clrValue as ReleaseStatus == null)
-            {
-                throw new InvalidOperationException("Attempted to save a release status that isn't really a release status");
-            }
-
-            var releaseStatus = (ReleaseStatus)clrValue;
-            return (int)releaseStatus;
-        }
-
-        public Type DbType => typeof(int);
-
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(ReleaseStatus);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var item = reader.Value;
-            return (ReleaseStatus)Convert.ToInt32(item);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(ToDB(value));
+            writer.WriteNumberValue((int)value);
         }
     }
 }

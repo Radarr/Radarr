@@ -42,22 +42,22 @@ namespace NzbDrone.Core.Extras.Files
 
         public List<TExtraFile> GetFilesByArtist(int artistId)
         {
-            return Query.Where(c => c.ArtistId == artistId);
+            return Query(c => c.ArtistId == artistId);
         }
 
         public List<TExtraFile> GetFilesByAlbum(int artistId, int albumId)
         {
-            return Query.Where(c => c.ArtistId == artistId && c.AlbumId == albumId);
+            return Query(c => c.ArtistId == artistId && c.AlbumId == albumId);
         }
 
         public List<TExtraFile> GetFilesByTrackFile(int trackFileId)
         {
-            return Query.Where(c => c.TrackFileId == trackFileId);
+            return Query(c => c.TrackFileId == trackFileId);
         }
 
         public TExtraFile FindByPath(string path)
         {
-            return Query.Where(c => c.RelativePath == path).SingleOrDefault();
+            return Query(c => c.RelativePath == path).SingleOrDefault();
         }
     }
 }

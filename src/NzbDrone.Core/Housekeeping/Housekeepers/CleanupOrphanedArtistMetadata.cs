@@ -1,3 +1,4 @@
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -13,15 +14,16 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM ArtistMetadata
+            using (var mapper = _database.OpenConnection())
+            {
+                mapper.Execute(@"DELETE FROM ArtistMetadata
                                      WHERE Id IN (
                                      SELECT ArtistMetadata.Id FROM ArtistMetadata
                                      LEFT OUTER JOIN Albums ON Albums.ArtistMetadataId = ArtistMetadata.Id
                                      LEFT OUTER JOIN Tracks ON Tracks.ArtistMetadataId = ArtistMetadata.Id
                                      LEFT OUTER JOIN Artists ON Artists.ArtistMetadataId = ArtistMetadata.Id
                                      WHERE Albums.Id IS NULL AND Tracks.Id IS NULL AND Artists.Id IS NULL)");
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(7)]
-        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
         public override NzbDroneValidationResult Validate()
         {

@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Music
 
         public void SetAddOptions(IEnumerable<Album> albums)
         {
-            _albumRepository.SetFields(albums, s => s.AddOptions);
+            _albumRepository.SetFields(albums.ToList(), s => s.AddOptions);
         }
 
         public PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec)

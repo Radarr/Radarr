@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Music
@@ -28,91 +30,76 @@ namespace NzbDrone.Core.Music
 
         public List<Track> GetTracks(int artistId)
         {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Artists " +
-                                         "JOIN Albums ON Albums.ArtistMetadataId == Artists.ArtistMetadataId " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "WHERE Artists.Id = {0} " +
-                                         "AND AlbumReleases.Monitored = 1",
-                                         artistId);
-
-            return Query.QueryText(query).ToList();
+            return Query(Builder()
+                         .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
+                         .Join<AlbumRelease, Album>((r, a) => r.AlbumId == a.Id)
+                         .Join<Album, Artist>((album, artist) => album.ArtistMetadataId == artist.ArtistMetadataId)
+                         .Where<AlbumRelease>(r => r.Monitored == true)
+                         .Where<Artist>(x => x.Id == artistId));
         }
 
         public List<Track> GetTracksByAlbum(int albumId)
         {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Albums " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "WHERE Albums.Id = {0} " +
-                                         "AND AlbumReleases.Monitored = 1",
-                                         albumId);
-
-            return Query.QueryText(query).ToList();
+            return Query(Builder()
+                         .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
+                         .Join<AlbumRelease, Album>((r, a) => r.AlbumId == a.Id)
+                         .Where<AlbumRelease>(r => r.Monitored == true)
+                         .Where<Album>(x => x.Id == albumId));
         }
 
         public List<Track> GetTracksByRelease(int albumReleaseId)
         {
-            return Query.Where(t => t.AlbumReleaseId == albumReleaseId).ToList();
+            return Query(t => t.AlbumReleaseId == albumReleaseId).ToList();
         }
 
         public List<Track> GetTracksByReleases(List<int> albumReleaseIds)
         {
             // this will populate the artist metadata also
-            return Query
-                .Join<Track, ArtistMetadata>(Marr.Data.QGen.JoinType.Inner, t => t.ArtistMetadata, (l, r) => l.ArtistMetadataId == r.Id)
-                .Where($"[AlbumReleaseId] IN ({string.Join(", ", albumReleaseIds)})")
-                .ToList();
+            return _database.QueryJoined<Track, ArtistMetadata>(Builder()
+                               .Join<Track, ArtistMetadata>((l, r) => l.ArtistMetadataId == r.Id)
+                               .Where<Track>(x => albumReleaseIds.Contains(x.AlbumReleaseId)), (track, metadata) =>
+                    {
+                        track.ArtistMetadata = metadata;
+                        return track;
+                    }).ToList();
         }
 
         public List<Track> GetTracksForRefresh(int albumReleaseId, IEnumerable<string> foreignTrackIds)
         {
-            return Query
-                .Where(t => t.AlbumReleaseId == albumReleaseId)
-                .OrWhere($"[ForeignTrackId] IN ('{string.Join("', '", foreignTrackIds)}')")
-                .ToList();
+            return Query(a => a.AlbumReleaseId == albumReleaseId || foreignTrackIds.Contains(a.ForeignTrackId));
         }
 
         public List<Track> GetTracksByFileId(int fileId)
         {
-            return Query.Where(e => e.TrackFileId == fileId).ToList();
+            return Query(e => e.TrackFileId == fileId);
         }
 
         public List<Track> GetTracksByFileId(IEnumerable<int> ids)
         {
-            return Query.Where($"[TrackFileId] IN ({string.Join(", ", ids)})").ToList();
+            return Query(x => ids.Contains(x.TrackFileId));
         }
 
         public List<Track> TracksWithFiles(int artistId)
         {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Artists " +
-                                         "JOIN Albums ON Albums.ArtistMetadataId = Artists.ArtistMetadataId " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "JOIN TrackFiles ON TrackFiles.Id == Tracks.TrackFileId " +
-                                         "WHERE Artists.Id == {0} " +
-                                         "AND AlbumReleases.Monitored = 1 ",
-                                         artistId);
-
-            return Query.QueryText(query).ToList();
+            return Query(Builder()
+                         .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
+                         .Join<AlbumRelease, Album>((r, a) => r.AlbumId == a.Id)
+                         .Join<Album, Artist>((album, artist) => album.ArtistMetadataId == artist.ArtistMetadataId)
+                         .Join<Track, TrackFile>((t, f) => t.TrackFileId == f.Id)
+                         .Where<AlbumRelease>(r => r.Monitored == true)
+                         .Where<Artist>(x => x.Id == artistId));
         }
 
         public List<Track> TracksWithoutFiles(int albumId)
         {
-            string query = string.Format("SELECT Tracks.* " +
-                                         "FROM Albums " +
-                                         "JOIN AlbumReleases ON AlbumReleases.AlbumId == Albums.Id " +
-                                         "JOIN Tracks ON Tracks.AlbumReleaseId == AlbumReleases.Id " +
-                                         "LEFT OUTER JOIN TrackFiles ON TrackFiles.Id == Tracks.TrackFileId " +
-                                         "WHERE Albums.Id == {0} " +
-                                         "AND AlbumReleases.Monitored = 1 " +
-                                         "AND TrackFiles.Id IS NULL",
-                                         albumId);
-
-            return Query.QueryText(query).ToList();
+            //x.Id == null is converted to SQL, so warning incorrect
+#pragma warning disable CS0472
+            return Query(Builder()
+                         .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
+                         .LeftJoin<Track, TrackFile>((t, f) => t.TrackFileId == f.Id)
+                         .Where<AlbumRelease>(r => r.Monitored == true && r.AlbumId == albumId)
+                         .Where<TrackFile>(x => x.Id == null));
+#pragma warning restore CS0472
         }
 
         public void SetFileId(List<Track> tracks)
@@ -122,11 +109,9 @@ namespace NzbDrone.Core.Music
 
         public void DetachTrackFile(int trackFileId)
         {
-            DataMapper.Update<Track>()
-                .Where(x => x.TrackFileId == trackFileId)
-                .ColumnsIncluding(x => x.TrackFileId)
-                .Entity(new Track { TrackFileId = 0 })
-                .Execute();
+            var tracks = GetTracksByFileId(trackFileId);
+            tracks.ForEach(x => x.TrackFileId = 0);
+            SetFileId(tracks);
         }
     }
 }

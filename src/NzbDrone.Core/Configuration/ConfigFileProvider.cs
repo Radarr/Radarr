@@ -32,6 +32,8 @@ namespace NzbDrone.Core.Configuration
         bool AnalyticsEnabled { get; }
         string LogLevel { get; }
         string ConsoleLogLevel { get; }
+        bool LogSql { get; }
+        int LogRotate { get; }
         bool FilterSentryEvents { get; }
         string Branch { get; }
         string ApiKey { get; }
@@ -177,6 +179,8 @@ namespace NzbDrone.Core.Configuration
 
         public string LogLevel => GetValue("LogLevel", "info");
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
+        public bool LogSql => GetValueBoolean("LogSql", false, persist: false);
+        public int LogRotate => GetValueInt("LogRotate", 50, persist: false);
         public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
         public string SslCertPath => GetValue("SslCertPath", "");
         public string SslCertPassword => GetValue("SslCertPassword", "");
@@ -204,9 +208,9 @@ namespace NzbDrone.Core.Configuration
 
         public string UpdateScriptPath => GetValue("UpdateScriptPath", "", false);
 
-        public int GetValueInt(string key, int defaultValue)
+        public int GetValueInt(string key, int defaultValue, bool persist = true)
         {
-            return Convert.ToInt32(GetValue(key, defaultValue));
+            return Convert.ToInt32(GetValue(key, defaultValue, persist));
         }
 
         public bool GetValueBoolean(string key, bool defaultValue, bool persist = true)

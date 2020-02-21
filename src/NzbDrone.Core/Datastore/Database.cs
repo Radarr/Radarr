@@ -1,5 +1,6 @@
-using System;
-using Marr.Data;
+﻿using System;
+using System.Data;
+using Dapper;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 
@@ -7,7 +8,7 @@ namespace NzbDrone.Core.Datastore
 {
     public interface IDatabase
     {
-        IDataMapper GetDataMapper();
+        IDbConnection OpenConnection();
         Version Version { get; }
         int Migration { get; }
         void Vacuum();
@@ -16,17 +17,17 @@ namespace NzbDrone.Core.Datastore
     public class Database : IDatabase
     {
         private readonly string _databaseName;
-        private readonly Func<IDataMapper> _datamapperFactory;
+        private readonly Func<IDbConnection> _datamapperFactory;
 
         private readonly Logger _logger = NzbDroneLogger.GetLogger(typeof(Database));
 
-        public Database(string databaseName, Func<IDataMapper> datamapperFactory)
+        public Database(string databaseName, Func<IDbConnection> datamapperFactory)
         {
             _databaseName = databaseName;
             _datamapperFactory = datamapperFactory;
         }
 
-        public IDataMapper GetDataMapper()
+        public IDbConnection OpenConnection()
         {
             return _datamapperFactory();
         }
@@ -35,8 +36,11 @@ namespace NzbDrone.Core.Datastore
         {
             get
             {
-                var version = _datamapperFactory().ExecuteScalar("SELECT sqlite_version()").ToString();
-                return new Version(version);
+                using (var db = _datamapperFactory())
+                {
+                    var version = db.QueryFirstOrDefault<string>("SELECT sqlite_version()");
+                    return new Version(version);
+                }
             }
         }
 
@@ -44,9 +48,10 @@ namespace NzbDrone.Core.Datastore
         {
             get
             {
-                var migration = _datamapperFactory()
-                    .ExecuteScalar("SELECT version from VersionInfo ORDER BY version DESC LIMIT 1").ToString();
-                return Convert.ToInt32(migration);
+                using (var db = _datamapperFactory())
+                {
+                    return db.QueryFirstOrDefault<int>("SELECT version from VersionInfo ORDER BY version DESC LIMIT 1");
+                }
             }
         }
 
@@ -55,7 +60,11 @@ namespace NzbDrone.Core.Datastore
             try
             {
                 _logger.Info("Vacuuming {0} database", _databaseName);
-                _datamapperFactory().ExecuteNonQuery("Vacuum;");
+                using (var db = _datamapperFactory())
+                {
+                    db.Execute("Vacuum;");
+                }
+
                 _logger.Info("{0} database compressed", _databaseName);
             }
             catch (Exception e)

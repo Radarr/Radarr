@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Music
 
         public List<ArtistMetadata> FindById(List<string> foreignIds)
         {
-            return Query.Where($"[ForeignArtistId] IN ('{string.Join("','", foreignIds)}')").ToList();
+            return Query(x => Enumerable.Contains(foreignIds, x.ForeignArtistId));
         }
 
         public bool UpsertMany(List<ArtistMetadata> data)

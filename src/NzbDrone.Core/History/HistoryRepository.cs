@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Marr.Data.QGen;
+using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
@@ -30,63 +30,72 @@ namespace NzbDrone.Core.History
 
         public History MostRecentForAlbum(int albumId)
         {
-            return Query.Where(h => h.AlbumId == albumId)
-                        .OrderByDescending(h => h.Date)
-                        .FirstOrDefault();
+            return Query(h => h.AlbumId == albumId)
+                .OrderByDescending(h => h.Date)
+                .FirstOrDefault();
         }
 
         public History MostRecentForDownloadId(string downloadId)
         {
-            return Query.Where(h => h.DownloadId == downloadId)
-             .OrderByDescending(h => h.Date)
-             .FirstOrDefault();
+            return Query(h => h.DownloadId == downloadId)
+                .OrderByDescending(h => h.Date)
+                .FirstOrDefault();
         }
 
         public List<History> FindByDownloadId(string downloadId)
         {
-            return Query.Join<History, Artist>(JoinType.Left, h => h.Artist, (h, a) => h.ArtistId == a.Id)
-                        .Join<History, Album>(JoinType.Left, h => h.Album, (h, r) => h.AlbumId == r.Id)
-                        .Where(h => h.DownloadId == downloadId);
+            return _database.QueryJoined<History, Artist, Album>(
+                Builder()
+                .Join<History, Artist>((h, a) => h.ArtistId == a.Id)
+                .Join<History, Album>((h, a) => h.AlbumId == a.Id)
+                .Where<History>(h => h.DownloadId == downloadId),
+                (history, artist, album) =>
+                {
+                    history.Artist = artist;
+                    history.Album = album;
+                    return history;
+                }).ToList();
         }
 
         public List<History> GetByArtist(int artistId, HistoryEventType? eventType)
         {
-            var query = Query.Where(h => h.ArtistId == artistId);
+            var builder = Builder().Where<History>(h => h.ArtistId == artistId);
 
             if (eventType.HasValue)
             {
-                query.AndWhere(h => h.EventType == eventType);
+                builder.Where<History>(h => h.EventType == eventType);
             }
 
-            query.OrderByDescending(h => h.Date);
-
-            return query;
+            return Query(builder).OrderByDescending(h => h.Date).ToList();
         }
 
         public List<History> GetByAlbum(int albumId, HistoryEventType? eventType)
         {
-            var query = Query.Join<History, Album>(JoinType.Inner, h => h.Album, (h, e) => h.AlbumId == e.Id)
-                .Where(h => h.AlbumId == albumId);
+            var builder = Builder()
+                .Join<History, Album>((h, a) => h.AlbumId == a.Id)
+                .Where<History>(h => h.AlbumId == albumId);
 
             if (eventType.HasValue)
             {
-                query.AndWhere(h => h.EventType == eventType);
+                builder.Where<History>(h => h.EventType == eventType);
             }
 
-            query.OrderByDescending(h => h.Date);
-
-            return query;
+            return _database.QueryJoined<History, Album>(
+                builder,
+                (history, album) =>
+                {
+                    history.Album = album;
+                    return history;
+                }).OrderByDescending(h => h.Date).ToList();
         }
 
         public List<History> FindDownloadHistory(int idArtistId, QualityModel quality)
         {
-            return Query.Where(h =>
-                 h.ArtistId == idArtistId &&
-                 h.Quality == quality &&
-                 (h.EventType == HistoryEventType.Grabbed ||
-                 h.EventType == HistoryEventType.DownloadFailed ||
-                 h.EventType == HistoryEventType.TrackFileImported))
-                 .ToList();
+            var allowed = new[] { HistoryEventType.Grabbed, HistoryEventType.DownloadFailed, HistoryEventType.TrackFileImported };
+
+            return Query(h => h.ArtistId == idArtistId &&
+                         h.Quality == quality &&
+                         allowed.Contains(h.EventType));
         }
 
         public void DeleteForArtist(int artistId)
@@ -94,27 +103,29 @@ namespace NzbDrone.Core.History
             Delete(c => c.ArtistId == artistId);
         }
 
-        protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
-        {
-            var baseQuery = query.Join<History, Artist>(JoinType.Inner, h => h.Artist, (h, a) => h.ArtistId == a.Id)
-                                 .Join<History, Album>(JoinType.Inner, h => h.Album, (h, r) => h.AlbumId == r.Id)
-                                 .Join<History, Track>(JoinType.Left, h => h.Track, (h, t) => h.TrackId == t.Id);
-
-            return base.GetPagedQuery(baseQuery, pagingSpec);
-        }
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder()
+            .Join<History, Artist>((h, a) => h.ArtistId == a.Id)
+            .Join<History, Album>((h, a) => h.AlbumId == a.Id)
+            .LeftJoin<History, Track>((h, t) => h.TrackId == t.Id);
+        protected override IEnumerable<History> PagedQuery(SqlBuilder builder) =>
+            _database.QueryJoined<History, Artist, Album, Track>(builder, (history, artist, album, track) =>
+                    {
+                        history.Artist = artist;
+                        history.Album = album;
+                        history.Track = track;
+                        return history;
+                    });
 
         public List<History> Since(DateTime date, HistoryEventType? eventType)
         {
-            var query = Query.Where(h => h.Date >= date);
+            var builder = Builder().Where<History>(x => x.Date >= date);
 
             if (eventType.HasValue)
             {
-                query.AndWhere(h => h.EventType == eventType);
+                builder.Where<History>(h => h.EventType == eventType);
             }
 
-            query.OrderBy(h => h.Date);
-
-            return query;
+            return Query(builder).OrderBy(h => h.Date).ToList();
         }
     }
 }

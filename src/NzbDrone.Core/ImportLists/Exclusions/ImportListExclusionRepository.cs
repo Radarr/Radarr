@@ -20,12 +20,14 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 
         public ImportListExclusion FindByForeignId(string foreignId)
         {
-            return Query.Where<ImportListExclusion>(m => m.ForeignId == foreignId).SingleOrDefault();
+            return Query(m => m.ForeignId == foreignId).SingleOrDefault();
         }
 
         public List<ImportListExclusion> FindByForeignId(List<string> ids)
         {
-            return Query.Where($"[ForeignId] IN ('{string.Join("', '", ids)}')").ToList();
+            // Using Enumerable.Contains forces the builder to create an 'IN'
+            // and not a string 'LIKE' expression
+            return Query(x => Enumerable.Contains(ids, x.ForeignId));
         }
     }
 }

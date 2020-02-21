@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.Pending;
 
@@ -15,18 +16,17 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.GetDataMapper();
-            var twoWeeksAgo = DateTime.UtcNow.AddDays(-14);
-
-            mapper.Delete<PendingRelease>(p => p.Added < twoWeeksAgo &&
-                                               (p.Reason == PendingReleaseReason.DownloadClientUnavailable ||
-                                                p.Reason == PendingReleaseReason.Fallback));
-
-            //            mapper.AddParameter("twoWeeksAgo", $"{DateTime.UtcNow.AddDays(-14).ToString("s")}Z");
-
-            //            mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
-            //                                     WHERE Added < @twoWeeksAgo
-            //                                     AND (Reason = 'DownloadClientUnavailable' OR Reason = 'Fallback')");
+            using (var mapper = _database.OpenConnection())
+            {
+                mapper.Execute(@"DELETE FROM PendingReleases
+                            WHERE Added < @TwoWeeksAgo
+                            AND REASON IN @Reasons",
+                               new
+                               {
+                                   TwoWeeksAgo = DateTime.UtcNow.AddDays(-14),
+                                   Reasons = new[] { (int)PendingReleaseReason.DownloadClientUnavailable, (int)PendingReleaseReason.Fallback }
+                               });
+            }
         }
     }
 }

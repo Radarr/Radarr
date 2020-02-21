@@ -3,7 +3,6 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
     <ProjectReference Include="..\Lidarr.Http\Lidarr.Http.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
     <ProjectReference Include="..\NzbDrone.Core\Lidarr.Core.csproj" />

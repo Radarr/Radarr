@@ -3,6 +3,8 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
@@ -21,7 +23,6 @@
     <PackageReference Include="MonoTorrent" Version="1.0.11" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Marr.Data\Marr.Data.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Lidarr.Common.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

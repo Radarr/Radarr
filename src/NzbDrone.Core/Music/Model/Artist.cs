@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Equ;
-using Marr.Data;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 

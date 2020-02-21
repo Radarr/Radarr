@@ -122,6 +122,7 @@ namespace NzbDrone.Core.MediaFiles
                       (f, af) => new { DiskFile = f, DbFile = af },
                       PathEqualityComparer.Instance)
                 .ToList();
+            _logger.Trace($"Matched paths for {combined.Count} files");
 
             List<IFileInfo> unwanted = null;
             if (filter == FilterFilesType.Known)

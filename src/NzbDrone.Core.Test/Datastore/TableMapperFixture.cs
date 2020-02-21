@@ -1,16 +1,15 @@
 using System.Collections.Generic;
+using Dapper;
 using FluentAssertions;
-using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Converters;
-using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Datastore
 {
     [TestFixture]
-    public class MappingExtensionFixture
+    public class TableMapperFixture
     {
         public class EmbeddedType : IEmbeddedDocument
         {
@@ -37,9 +36,8 @@ namespace NzbDrone.Core.Test.Datastore
         [SetUp]
         public void Setup()
         {
-            MapRepository.Instance.RegisterTypeConverter(typeof(List<EmbeddedType>), new EmbeddedDocumentConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(EmbeddedType), new EmbeddedDocumentConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(int), new Int32Converter());
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<EmbeddedType>>());
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<EmbeddedType>());
         }
 
         [Test]
@@ -47,7 +45,7 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var properties = typeof(TypeWithAllMappableProperties).GetProperties();
             properties.Should().NotBeEmpty();
-            properties.Should().OnlyContain(c => MappingExtensions.IsMappableProperty(c));
+            properties.Should().OnlyContain(c => c.IsMappableProperty());
         }
 
         [Test]
@@ -55,7 +53,7 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var properties = typeof(TypeWithNoMappableProperties).GetProperties();
             properties.Should().NotBeEmpty();
-            properties.Should().NotContain(c => MappingExtensions.IsMappableProperty(c));
+            properties.Should().NotContain(c => c.IsMappableProperty());
         }
     }
 }
