@@ -1,6 +1,5 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -68,6 +67,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Girls.Next.Door.S03E06.DVD.Rip.XviD-WiDE", false)]
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
         [TestCase("the_x-files.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
+        [TestCase("The.Third.Jihad.2008.DVDRip.360p.H264 iPod -20-40", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p);
@@ -91,6 +91,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Heidi Girl of the Alps (BD)(640x480(RAW) (BATCH 1) (1-13)", false)]
         [TestCase("Hannibal.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
+        [TestCase("Where.Do.We.Go.Now.2011.LIMITED.BluRay.360p.H264-20-40", false)]
         public void should_parse_bluray480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R480p);

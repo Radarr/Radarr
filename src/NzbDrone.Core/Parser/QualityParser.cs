@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480p|640x480|848x480)|(?<R576p>576p)|(?<R720p>720p|1280x720)|(?<R1080p>1080p|1920x1080|1440p|FHD|1080i)|(?<R2160p>2160p|4k[-_. ](?:UHD|HEVC|BD)|(?:UHD|HEVC|BD)[-_. ]4k))\b",
+        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R360p>360p)|(?<R480p>480p|640x480|848x480)|(?<R576p>576p)|(?<R720p>720p|1280x720)|(?<R1080p>1080p|1920x1080|1440p|FHD|1080i)|(?<R2160p>2160p|4k[-_. ](?:UHD|HEVC|BD)|(?:UHD|HEVC|BD)[-_. ]4k))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>X-?vid)|(?<divx>divx))\b",
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Parser
                         return result;
                     }
 
-                    if (resolution == Resolution.R480p)
+                    if (resolution == Resolution.R360p || resolution == Resolution.R480p)
                     {
                         result.Quality = Quality.Bluray480p;
                         return result;
@@ -354,7 +354,7 @@ namespace NzbDrone.Core.Parser
             // Anime Bluray matching
             if (AnimeBlurayRegex.Match(normalizedName).Success)
             {
-                if (resolution == Resolution.R480p || resolution == Resolution.R576p || normalizedName.Contains("480p"))
+                if (resolution == Resolution.R360p || resolution == Resolution.R480p || resolution == Resolution.R576p || normalizedName.Contains("480p"))
                 {
                     result.Quality = Quality.DVD;
                     return result;
@@ -401,7 +401,7 @@ namespace NzbDrone.Core.Parser
                 return result;
             }
 
-            if (resolution == Resolution.R480p)
+            if (resolution == Resolution.R360p || resolution == Resolution.R480p)
             {
                 result.Quality = Quality.SDTV;
                 return result;
@@ -475,6 +475,11 @@ namespace NzbDrone.Core.Parser
             if (!match.Success)
             {
                 return Resolution.Unknown;
+            }
+
+            if (match.Groups["R360p"].Success)
+            {
+                return Resolution.R360p;
             }
 
             if (match.Groups["R480p"].Success)
@@ -565,6 +570,7 @@ namespace NzbDrone.Core.Parser
     public enum Resolution
     {
         Unknown,
+        R360p = 360,
         R480p = 480,
         R576p = 576,
         R720p = 720,
