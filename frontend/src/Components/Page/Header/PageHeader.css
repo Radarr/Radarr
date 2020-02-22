@@ -15,6 +15,11 @@
   padding-left: 20px;
 }
 
+.logoFull,
+.logo {
+  vertical-align: middle;
+}
+
 .logoFull {
   width: 144px;
   height: 48px;
