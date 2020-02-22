@@ -11,6 +11,13 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import NamingModal from './NamingModal';
 import styles from './Naming.css';
 
+const colonReplacementOptions = [
+  { key: 'delete', value: 'Delete' },
+  { key: 'dash', value: 'Replace with Dash' },
+  { key: 'spaceDash', value: 'Replace with Space Dash' },
+  { key: 'spaceDashSpace', value: 'Replace with Space Dash Space' }
+];
+
 class Naming extends Component {
 
   //
@@ -72,6 +79,7 @@ class Naming extends Component {
     } = this.state;
 
     const renameMovies = hasSettings && settings.renameMovies.value;
+    const replaceIllegalCharacters = hasSettings && settings.replaceIllegalCharacters.value;
 
     const standardMovieFormatHelpTexts = [];
     const standardMovieFormatErrors = [];
@@ -132,23 +140,37 @@ class Naming extends Component {
               </FormGroup>
 
               {
-                renameMovies &&
-                  <div>
-                    <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Standard Movie Format</FormLabel>
+                replaceIllegalCharacters &&
+                  <FormGroup>
+                    <FormLabel>Colon Replacement</FormLabel>
 
-                      <FormInputGroup
-                        inputClassName={styles.namingInput}
-                        type={inputTypes.TEXT}
-                        name="standardMovieFormat"
-                        buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
-                        onChange={onInputChange}
-                        {...settings.standardMovieFormat}
-                        helpTexts={standardMovieFormatHelpTexts}
-                        errors={[...standardMovieFormatErrors, ...settings.standardMovieFormat.errors]}
-                      />
-                    </FormGroup>
-                  </div>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="colonReplacementFormat"
+                      values={colonReplacementOptions}
+                      helpText="Change how Radarr handles colon replacement"
+                      onChange={onInputChange}
+                      {...settings.colonReplacementFormat}
+                    />
+                  </FormGroup>
+              }
+
+              {
+                renameMovies &&
+                  <FormGroup size={sizes.LARGE}>
+                    <FormLabel>Standard Movie Format</FormLabel>
+
+                    <FormInputGroup
+                      inputClassName={styles.namingInput}
+                      type={inputTypes.TEXT}
+                      name="standardMovieFormat"
+                      buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
+                      onChange={onInputChange}
+                      {...settings.standardMovieFormat}
+                      helpTexts={standardMovieFormatHelpTexts}
+                      errors={[...standardMovieFormatErrors, ...settings.standardMovieFormat.errors]}
+                    />
+                  </FormGroup>
               }
 
               <FormGroup
