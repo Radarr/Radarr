@@ -33,7 +33,7 @@ class InteractiveImportSelectFolderModalContentConnector extends Component {
     this.props.addRecentFolder({ folder });
 
     this.props.executeCommand({
-      name: commandNames.DOWNLOADED_EPSIODES_SCAN,
+      name: commandNames.DOWNLOADED_MOVIES_SCAN,
       path: folder
     });
 
