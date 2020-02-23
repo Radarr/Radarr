@@ -270,6 +270,7 @@ stages:
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
         displayName: Publish Sentry Source Maps
+        continueOnError: true
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
           SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
