@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
                 FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
-                FormatCutoff = CustomFormat.None.Id,
+                MinFormatScore = 0,
                 Cutoff = Quality.Bluray1080p.Id,
                 Name = "TestProfile"
             };

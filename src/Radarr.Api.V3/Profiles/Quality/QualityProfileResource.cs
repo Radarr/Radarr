@@ -15,29 +15,30 @@ namespace Radarr.Api.V3.Profiles.Quality
         public int Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<QualityProfileQualityItemResource> Items { get; set; }
-        public int FormatCutoff { get; set; }
+        public int MinFormatScore { get; set; }
+        public int CutoffFormatScore { get; set; }
         public List<ProfileFormatItemResource> FormatItems { get; set; }
         public Language Language { get; set; }
     }
 
     public class QualityProfileQualityItemResource : RestResource
     {
-        public string Name { get; set; }
-        public NzbDrone.Core.Qualities.Quality Quality { get; set; }
-        public List<QualityProfileQualityItemResource> Items { get; set; }
-        public bool Allowed { get; set; }
-
         public QualityProfileQualityItemResource()
         {
             Items = new List<QualityProfileQualityItemResource>();
         }
+
+        public string Name { get; set; }
+        public NzbDrone.Core.Qualities.Quality Quality { get; set; }
+        public List<QualityProfileQualityItemResource> Items { get; set; }
+        public bool Allowed { get; set; }
     }
 
     public class ProfileFormatItemResource : RestResource
     {
         public int Format { get; set; }
         public string Name { get; set; }
-        public bool Allowed { get; set; }
+        public int Score { get; set; }
     }
 
     public static class ProfileResourceMapper
@@ -57,7 +58,8 @@ namespace Radarr.Api.V3.Profiles.Quality
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
-                FormatCutoff = model.FormatCutoff,
+                MinFormatScore = model.MinFormatScore,
+                CutoffFormatScore = model.CutoffFormatScore,
                 FormatItems = model.FormatItems.ConvertAll(ToResource),
                 Language = model.Language
             };
@@ -86,7 +88,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             {
                 Format = model.Format.Id,
                 Name = model.Format.Name,
-                Allowed = model.Allowed
+                Score = model.Score
             };
         }
 
@@ -105,7 +107,8 @@ namespace Radarr.Api.V3.Profiles.Quality
                 Cutoff = resource.Cutoff,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
-                FormatCutoff = resource.FormatCutoff,
+                MinFormatScore = resource.MinFormatScore,
+                CutoffFormatScore = resource.CutoffFormatScore,
                 FormatItems = resource.FormatItems.ConvertAll(ToModel),
                 Language = resource.Language
             };
@@ -133,7 +136,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             return new ProfileFormatItem
             {
                 Format = new CustomFormat { Id = resource.Format },
-                Allowed = resource.Allowed
+                Score = resource.Score
             };
         }
 

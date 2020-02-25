@@ -20,6 +20,14 @@
   width: 100px;
 }
 
+.customFormatScore {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 55px;
+  font-weight: bold;
+  cursor: default;
+}
+
 .rejected,
 .indexerFlags,
 .download {

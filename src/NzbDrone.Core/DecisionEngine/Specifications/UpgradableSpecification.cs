@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -55,9 +54,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return true;
             }
 
-            var customFormatCompare = new CustomFormatsComparer(profile).Compare(newCustomFormats, currentCustomFormats);
+            var currentFormatScore = profile.CalculateCustomFormatScore(currentCustomFormats);
+            var newFormatScore = profile.CalculateCustomFormatScore(newCustomFormats);
 
-            if (customFormatCompare <= 0)
+            if (newFormatScore <= currentFormatScore)
             {
                 _logger.Debug("New item's custom formats [{0}] do not improve on [{1}], skipping",
                               newCustomFormats.ConcatToString(),
@@ -88,15 +88,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         private bool CustomFormatCutoffNotMet(Profile profile, List<CustomFormat> currentFormats)
         {
-            var cutoff = new List<CustomFormat> { profile.FormatItems.Single(x => x.Format.Id == profile.FormatCutoff).Format };
-            var cutoffCompare = new CustomFormatsComparer(profile).Compare(currentFormats, cutoff);
-
-            if (cutoffCompare < 0)
-            {
-                return true;
-            }
-
-            return false;
+            var score = profile.CalculateCustomFormatScore(currentFormats);
+            return score < profile.CutoffFormatScore;
         }
 
         public bool CutoffNotMet(Profile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null)
@@ -120,7 +113,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public bool IsUpgradeAllowed(Profile qualityProfile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats)
         {
             var isQualityUpgrade = new QualityModelComparer(qualityProfile).Compare(newQuality, currentQuality) > 0;
-            var isCustomFormatUpgrade = new CustomFormatsComparer(qualityProfile).Compare(newCustomFormats, currentCustomFormats) > 0;
+            var isCustomFormatUpgrade = qualityProfile.CalculateCustomFormatScore(newCustomFormats) > qualityProfile.CalculateCustomFormatScore(currentCustomFormats);
 
             if ((isQualityUpgrade || isCustomFormatUpgrade) && qualityProfile.UpgradeAllowed)
             {

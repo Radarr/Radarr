@@ -17,7 +17,8 @@ namespace NzbDrone.Core.Profiles
         public string Name { get; set; }
         public int Cutoff { get; set; }
         public List<ProfileQualityItem> Items { get; set; }
-        public int FormatCutoff { get; set; }
+        public int MinFormatScore { get; set; }
+        public int CutoffFormatScore { get; set; }
         public List<ProfileFormatItem> FormatItems { get; set; }
         public List<string> PreferredTags { get; set; }
         public Language Language { get; set; }
@@ -75,10 +76,9 @@ namespace NzbDrone.Core.Profiles
             return new QualityIndex();
         }
 
-        public List<int> GetIndices(List<CustomFormat> formats)
+        public int CalculateCustomFormatScore(List<CustomFormat> formats)
         {
-            var allFormats = formats.Any() ? formats : new List<CustomFormat> { CustomFormat.None };
-            return allFormats.Select(f => FormatItems.FindIndex(v => Equals(v.Format, f))).ToList();
+            return FormatItems.Where(x => formats.Contains(x.Format)).Sum(x => x.Score);
         }
     }
 }

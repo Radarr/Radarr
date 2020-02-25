@@ -90,14 +90,14 @@ class Specification extends Component {
 
           {
             negate &&
-              <Label kind={kinds.INVERSE}>
+              <Label kind={kinds.DANGER}>
                 {'Negated'}
               </Label>
           }
 
           {
             required &&
-              <Label kind={kinds.DANGER}>
+              <Label kind={kinds.SUCCESS}>
                 {'Required'}
               </Label>
           }

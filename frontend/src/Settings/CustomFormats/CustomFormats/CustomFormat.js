@@ -94,10 +94,18 @@ class CustomFormat extends Component {
                 return null;
               }
 
+              let kind = kinds.DEFAULT;
+              if (item.required) {
+                kind = kinds.SUCCESS;
+              }
+              if (item.negate) {
+                kind = kinds.DANGER;
+              }
+
               return (
                 <Label
                   key={index}
-                  kind={item.required ? kinds.DANGER : kinds.DEFAULT}
+                  kind={kind}
                 >
                   {item.name}
                 </Label>

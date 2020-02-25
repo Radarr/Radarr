@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Parser.Model
         public ReleaseInfo Release { get; set; }
         public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public List<CustomFormat> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public Movie Movie { get; set; }
         public MappingResultType MappingResult { get; set; }
         public bool DownloadAllowed { get; set; }

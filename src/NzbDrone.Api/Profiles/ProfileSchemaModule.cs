@@ -32,21 +32,18 @@ namespace NzbDrone.Api.Profiles
             var formatItems = _formatService.All().Select(v => new ProfileFormatItem
             {
                 Format = v,
-                Allowed = true
+                Score = 0
             }).ToList();
 
-            formatItems.Insert(0, new ProfileFormatItem
+            var profile = new Profile
             {
-                Format = CustomFormat.None,
-                Allowed = true
-            });
-
-            var profile = new Profile();
-            profile.Cutoff = Quality.Unknown.Id;
-            profile.Items = items;
-            profile.FormatCutoff = CustomFormat.None.Id;
-            profile.FormatItems = formatItems;
-            profile.Language = Language.English;
+                Cutoff = Quality.Unknown.Id,
+                Items = items,
+                MinFormatScore = 0,
+                CutoffFormatScore = 0,
+                FormatItems = formatItems,
+                Language = Language.English
+            };
 
             return new List<ProfileResource> { profile.ToResource() };
         }

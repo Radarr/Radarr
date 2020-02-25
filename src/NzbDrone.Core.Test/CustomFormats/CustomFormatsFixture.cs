@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
@@ -19,19 +20,15 @@ namespace NzbDrone.Core.Test.CustomFormats
 
         public static List<ProfileFormatItem> GetSampleFormatItems(params string[] allowed)
         {
-            return _customFormats.Select(f => new ProfileFormatItem { Format = f, Allowed = allowed.Contains(f.Name) }).ToList();
+            var allowedItems = _customFormats.Where(x => allowed.Contains(x.Name)).Select((f, index) => new ProfileFormatItem { Format = f, Score = (int)Math.Pow(2, index) }).ToList();
+            var disallowedItems = _customFormats.Where(x => !allowed.Contains(x.Name)).Select(f => new ProfileFormatItem { Format = f, Score = -1 * (int)Math.Pow(2, allowedItems.Count) });
+
+            return disallowedItems.Concat(allowedItems).ToList();
         }
 
         public static List<ProfileFormatItem> GetDefaultFormatItems()
         {
-            return new List<ProfileFormatItem>
-            {
-                new ProfileFormatItem
-                {
-                    Allowed = true,
-                    Format = CustomFormat.None
-                }
-            };
+            return new List<ProfileFormatItem>();
         }
     }
 }

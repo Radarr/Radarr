@@ -23,13 +23,10 @@ namespace NzbDrone.Api.Profiles
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {
                 var all = _formatService.All().Select(f => f.Id).ToList();
-                all.Add(CustomFormat.None.Id);
                 var ids = items.Select(i => i.Format.Id);
 
                 return all.Except(ids).Empty();
             }).WithMessage("All Custom Formats and no extra ones need to be present inside your Profile! Try refreshing your browser.");
-            SharedValidator.RuleFor(c => c.FormatCutoff)
-                .Must(c => _formatService.All().Select(f => f.Id).Contains(c.Id) || c.Id == CustomFormat.None.Id).WithMessage("The Custom Format Cutoff must be a valid Custom Format! Try refreshing your browser.");
 
             GetResourceAll = GetAll;
             GetResourceById = GetById;

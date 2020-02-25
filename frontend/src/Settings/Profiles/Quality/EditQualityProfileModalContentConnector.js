@@ -70,19 +70,19 @@ function createFormatsSelector() {
         return [];
       }
 
-      return _.reduceRight(items.value, (result, { allowed, id, name, format }) => {
-        if (allowed) {
-          if (id) {
-            result.push({
-              key: id,
-              value: name
-            });
-          } else {
-            result.push({
-              key: format,
-              value: name
-            });
-          }
+      return _.reduceRight(items.value, (result, { id, name, format, score }) => {
+        if (id) {
+          result.push({
+            key: id,
+            value: name,
+            score
+          });
+        } else {
+          result.push({
+            key: format,
+            value: name,
+            score
+          });
         }
 
         return result;
@@ -193,30 +193,6 @@ class EditQualityProfileModalContentConnector extends Component {
     }
   }
 
-  ensureFormatCutoff = (qualityProfile) => {
-    const cutoff = qualityProfile.formatCutoff.value;
-
-    const cutoffItem = _.find(qualityProfile.formatItems.value, (i) => {
-      if (!cutoff) {
-        return false;
-      }
-
-      return i.id === cutoff || (i.format === cutoff);
-    });
-
-    // If the cutoff isn't allowed anymore or there isn't a cutoff set one
-    if (!cutoff || !cutoffItem || !cutoffItem.allowed) {
-      const firstAllowed = _.find(qualityProfile.formatItems.value, { allowed: true });
-      let cutoffId = null;
-
-      if (firstAllowed) {
-        cutoffId = firstAllowed.format;
-      }
-
-      this.props.setQualityProfileValue({ name: 'formatCutoff', value: cutoffId });
-    }
-  }
-
   //
   // Listeners
 
@@ -235,13 +211,6 @@ class EditQualityProfileModalContentConnector extends Component {
     });
 
     const cutoffId = item.quality ? item.quality.id : item.id;
-
-    this.props.setQualityProfileValue({ name, value: cutoffId });
-  }
-
-  onFormatCutoffChange = ({ name, value }) => {
-    const id = parseInt(value);
-    const cutoffId = _.find(this.props.item.formatItems.value, (i) => i.format === id).format;
 
     this.props.setQualityProfileValue({ name, value: cutoffId });
   }
@@ -274,19 +243,17 @@ class EditQualityProfileModalContentConnector extends Component {
     this.ensureCutoff(qualityProfile);
   }
 
-  onQualityProfileFormatItemAllowedChange = (id, allowed) => {
+  onQualityProfileFormatItemScoreChange = (id, score) => {
     const qualityProfile = _.cloneDeep(this.props.item);
     const formatItems = qualityProfile.formatItems.value;
     const item = _.find(qualityProfile.formatItems.value, (i) => i.format === id);
 
-    item.allowed = allowed;
+    item.score = score;
 
     this.props.setQualityProfileValue({
       name: 'formatItems',
       value: formatItems
     });
-
-    this.ensureFormatCutoff(qualityProfile);
   }
 
   onItemGroupAllowedChange = (id, allowed) => {
@@ -505,39 +472,6 @@ class EditQualityProfileModalContentConnector extends Component {
     });
   }
 
-  onQualityProfileFormatItemDragMove = (dragIndex, dropIndex) => {
-    if (this.state.dragIndex !== dragIndex || this.state.dropIndex !== dropIndex) {
-      this.setState({
-        dragIndex,
-        dropIndex
-      });
-    }
-  }
-
-  onQualityProfileFormatItemDragEnd = ({ id }, didDrop) => {
-    const {
-      dragIndex,
-      dropIndex
-    } = this.state;
-
-    if (didDrop && dropIndex !== null) {
-      const qualityProfile = _.cloneDeep(this.props.item);
-
-      const formats = qualityProfile.formatItems.value.splice(dragIndex, 1);
-      qualityProfile.formatItems.value.splice(dropIndex, 0, formats[0]);
-
-      this.props.setQualityProfileValue({
-        name: 'formatItems',
-        value: qualityProfile.formatItems.value
-      });
-    }
-
-    this.setState({
-      dragIndex: null,
-      dropIndex: null
-    });
-  }
-
   onToggleEditGroupsMode = () => {
     this.setState({ editGroups: !this.state.editGroups });
   }
@@ -557,18 +491,15 @@ class EditQualityProfileModalContentConnector extends Component {
         onSavePress={this.onSavePress}
         onInputChange={this.onInputChange}
         onCutoffChange={this.onCutoffChange}
-        onFormatCutoffChange={this.onFormatCutoffChange}
         onLanguageChange={this.onLanguageChange}
         onCreateGroupPress={this.onCreateGroupPress}
         onDeleteGroupPress={this.onDeleteGroupPress}
         onQualityProfileItemAllowedChange={this.onQualityProfileItemAllowedChange}
-        onQualityProfileFormatItemAllowedChange={this.onQualityProfileFormatItemAllowedChange}
         onItemGroupAllowedChange={this.onItemGroupAllowedChange}
         onItemGroupNameChange={this.onItemGroupNameChange}
         onQualityProfileItemDragMove={this.onQualityProfileItemDragMove}
         onQualityProfileItemDragEnd={this.onQualityProfileItemDragEnd}
-        onQualityProfileFormatItemDragMove={this.onQualityProfileFormatItemDragMove}
-        onQualityProfileFormatItemDragEnd={this.onQualityProfileFormatItemDragEnd}
+        onQualityProfileFormatItemScoreChange={this.onQualityProfileFormatItemScoreChange}
         onToggleEditGroupsMode={this.onToggleEditGroupsMode}
       />
     );

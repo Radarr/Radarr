@@ -15,7 +15,8 @@ namespace NzbDrone.Api.Profiles
         public Quality Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
-        public CustomFormatResource FormatCutoff { get; set; }
+        public int MinFormatScore { get; set; }
+        public int CutoffFormatScore { get; set; }
         public List<ProfileFormatItemResource> FormatItems { get; set; }
         public Language Language { get; set; }
     }
@@ -29,7 +30,7 @@ namespace NzbDrone.Api.Profiles
     public class ProfileFormatItemResource : RestResource
     {
         public CustomFormatResource Format { get; set; }
-        public bool Allowed { get; set; }
+        public int Score { get; set; }
     }
 
     public static class ProfileResourceMapper
@@ -60,23 +61,6 @@ namespace NzbDrone.Api.Profiles
                 ? cutoffItem.Quality
                 : cutoffItem.Items.First().Quality;
 
-            var formatCutoffItem = model.FormatItems.First(q =>
-            {
-                if (q.Id == model.FormatCutoff)
-                {
-                    return true;
-                }
-
-                if (q.Format == null)
-                {
-                    return false;
-                }
-
-                return q.Format.Id == model.FormatCutoff;
-            });
-
-            var formatCutoff = formatCutoffItem.Format;
-
             return new ProfileResource
             {
                 Id = model.Id,
@@ -100,7 +84,8 @@ namespace NzbDrone.Api.Profiles
 
                     return new List<ProfileQualityItemResource> { ToResource(i) };
                 }).ToList(),
-                FormatCutoff = formatCutoff.ToResource(),
+                MinFormatScore = model.MinFormatScore,
+                CutoffFormatScore = model.CutoffFormatScore,
                 FormatItems = model.FormatItems.ConvertAll(ToResource),
                 Language = model.Language
             };
@@ -125,7 +110,7 @@ namespace NzbDrone.Api.Profiles
             return new ProfileFormatItemResource
             {
                 Format = model.Format.ToResource(),
-                Allowed = model.Allowed
+                Score = model.Score,
             };
         }
 
@@ -144,7 +129,8 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = resource.Cutoff.Id,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
-                FormatCutoff = resource.FormatCutoff.ToModel().Id,
+                MinFormatScore = resource.MinFormatScore,
+                CutoffFormatScore = resource.CutoffFormatScore,
                 FormatItems = resource.FormatItems.ConvertAll(ToModel),
                 Language = resource.Language
             };
@@ -169,7 +155,7 @@ namespace NzbDrone.Api.Profiles
             return new ProfileFormatItem
             {
                 Format = resource.Format.ToModel(),
-                Allowed = resource.Allowed
+                Score = resource.Score
             };
         }
 

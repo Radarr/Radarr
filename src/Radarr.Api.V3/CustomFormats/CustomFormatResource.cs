@@ -34,11 +34,6 @@ namespace Radarr.Api.V3.CustomFormats
 
         public static CustomFormat ToModel(this CustomFormatResource resource, List<ICustomFormatSpecification> specifications)
         {
-            if (resource.Id == 0 && resource.Name == "None")
-            {
-                return CustomFormat.None;
-            }
-
             return new CustomFormat
             {
                 Id = resource.Id,

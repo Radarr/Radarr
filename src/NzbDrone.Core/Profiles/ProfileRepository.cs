@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Profiles
             {
                 foreach (var formatItem in profile.FormatItems)
                 {
-                    formatItem.Format = formatItem.Format.Id == 0 ? CustomFormat.None : cfs[formatItem.Format.Id];
+                    formatItem.Format = cfs[formatItem.Format.Id];
                 }
             }
 
