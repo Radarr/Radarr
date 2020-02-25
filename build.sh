@@ -57,7 +57,13 @@ Build()
 
     dotnet clean $slnFile -c Debug
     dotnet clean $slnFile -c Release
-    dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
+
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
+    else
+        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
+    fi
 
     ProgressEnd 'Build'
 }
@@ -174,25 +180,6 @@ PackageMacOSApp()
     ProgressEnd 'Creating macOS App Package'
 }
 
-PackageTests()
-{
-    ProgressStart 'Creating Test Package'
-
-    cp test.sh $testPackageFolder/net462/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.1/win-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.1/linux-x64/publish
-    cp test.sh $testPackageFolder/netcoreapp3.1/osx-x64/publish
-
-    rm -f $testPackageFolder/*.log.config
-
-    # geckodriver.exe isn't copied by dotnet publish
-    curl -Lo gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
-    unzip -o gecko.zip
-    cp geckodriver.exe $testPackageFolder/netcoreapp3.1/win-x64/publish
-
-    ProgressEnd 'Creating Test Package'
-}
-
 PackageWindows()
 {
     local framework="$1"
@@ -212,6 +199,48 @@ PackageWindows()
     cp $folder/Radarr.Windows.* $folder/Radarr.Update
 
     ProgressEnd 'Creating Windows Package'
+}
+
+Package()
+{
+    local framework="$1"
+    local runtime="$2"
+    local SPLIT
+
+    IFS='-' read -ra SPLIT <<< "$runtime"
+
+    case "${SPLIT[0]}" in
+        linux)
+            PackageLinux "$framework" "$runtime"
+            ;;
+        win)
+            PackageWindows "$framework"
+            ;;
+        osx)
+            PackageMacOS "$framework"
+            PackageMacOSApp "$framework"
+            ;;
+    esac
+}
+
+PackageTests()
+{
+    local framework="$1"
+    local runtime="$2"
+
+    cp test.sh "$testPackageFolder/$framework/$runtime/publish"
+
+    rm -f $testPackageFolder/$framework/$runtime/*.log.config
+
+    # geckodriver.exe isn't copied by dotnet publish
+    if [ "$runtime" = "win-x64" ];
+    then
+        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
+        unzip -o gecko.zip
+        cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
+    fi
+
+    ProgressEnd 'Creating Test Package'
 }
 
 # Use mono or .net depending on OS
@@ -245,6 +274,16 @@ case $key in
         BACKEND=YES
         shift # past argument
         ;;
+    -r|--runtime)
+        RID="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    -f|--framework)
+        FRAMEWORK="$2"
+        shift # past argument
+        shift # past value
+        ;;
     --frontend)
         FRONTEND=YES
         shift # past argument
@@ -276,7 +315,15 @@ if [ "$BACKEND" = "YES" ];
 then
     UpdateVersionNumber
     Build
-    PackageTests
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        PackageTests "netcoreapp3.1" "win-x64"
+        PackageTests "netcoreapp3.1" "linux-x64"
+        PackageTests "netcoreapp3.1" "osx-x64"
+        PackageTests "net462" "linux-x64"
+    else
+        PackageTests "$FRAMEWORK" "$RID"
+    fi
 fi
 
 if [ "$FRONTEND" = "YES" ];
@@ -298,11 +345,16 @@ fi
 if [ "$PACKAGES" = "YES" ];
 then
     UpdateVersionNumber
-    PackageWindows "netcoreapp3.1"
-    PackageLinux "net462" "linux-x64"
-    PackageLinux "netcoreapp3.1" "linux-x64"
-    PackageLinux "netcoreapp3.1" "linux-arm64"
-    PackageLinux "netcoreapp3.1" "linux-arm"
-    PackageMacOS "netcoreapp3.1"
-    PackageMacOSApp "netcoreapp3.1"
+
+    if [[ -z "$RID" || -z "$FRAMEWORK" ]];
+    then
+        Package "netcoreapp3.1" "win-x64"
+        Package "netcoreapp3.1" "linux-x64"
+        Package "netcoreapp3.1" "linux-arm64"
+        Package "netcoreapp3.1" "linux-arm"
+        Package "netcoreapp3.1" "osx-x64"
+        Package "net462" "linux-x64"
+    else
+        Package "$FRAMEWORK" "$RID"
+    fi
 fi
