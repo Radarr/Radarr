@@ -99,7 +99,6 @@ class EditQualityProfileModalContent extends Component {
       isInUse,
       onInputChange,
       onCutoffChange,
-      onFormatCutoffChange,
       onLanguageChange,
       onSavePress,
       onModalClose,
@@ -112,7 +111,8 @@ class EditQualityProfileModalContent extends Component {
       name,
       upgradeAllowed,
       cutoff,
-      formatCutoff,
+      minFormatScore,
+      cutoffFormatScore,
       language,
       items,
       formatItems
@@ -201,19 +201,35 @@ class EditQualityProfileModalContent extends Component {
                         }
 
                         {
-                          upgradeAllowed.value &&
+                          formatItems.value.length > 0 &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                              Upgrade Until Format
+                                Minimum Custom Format Score
                               </FormLabel>
 
                               <FormInputGroup
-                                type={inputTypes.SELECT}
-                                name="formatCutoff"
-                                {...formatCutoff}
-                                values={customFormats}
-                                helpText="Once this custom format is reached Radarr will no longer download movies"
-                                onChange={onFormatCutoffChange}
+                                type={inputTypes.NUMBER}
+                                name="minFormatScore"
+                                {...minFormatScore}
+                                helpText="Minimum custom format score allowed to download"
+                                onChange={onInputChange}
+                              />
+                            </FormGroup>
+                        }
+
+                        {
+                          upgradeAllowed.value && formatItems.value.length > 0 &&
+                            <FormGroup size={sizes.EXTRA_SMALL}>
+                              <FormLabel size={sizes.SMALL}>
+                              Upgrade Until Custom Format Score
+                              </FormLabel>
+
+                              <FormInputGroup
+                                type={inputTypes.NUMBER}
+                                name="cutoffFormatScore"
+                                {...cutoffFormatScore}
+                                helpText="Once this custom format score is reached Radarr will no longer download movies"
+                                onChange={onInputChange}
                               />
                             </FormGroup>
                         }
@@ -320,7 +336,6 @@ EditQualityProfileModalContent.propTypes = {
   isInUse: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onCutoffChange: PropTypes.func.isRequired,
-  onFormatCutoffChange: PropTypes.func.isRequired,
   onLanguageChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onContentHeightChange: PropTypes.func.isRequired,

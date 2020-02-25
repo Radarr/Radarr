@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
-            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None);
+            CustomFormatsFixture.GivenCustomFormats();
 
             _fakeMovie = Builder<Movie>.CreateNew()
                 .With(c => c.Profile = new Profile
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
                     Cutoff = Quality.Bluray1080p.Id,
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                    FormatCutoff = CustomFormat.None.Id
+                    MinFormatScore = 0
                 })
                 .Build();
 
@@ -162,8 +162,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.Bluray1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                FormatCutoff = CustomFormat.None.Id
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                MinFormatScore = 0
             };
 
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
@@ -185,8 +185,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                FormatCutoff = CustomFormat.None.Id
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                MinFormatScore = 0
             };
 
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
@@ -220,8 +220,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                FormatCutoff = CustomFormat.None.Id
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                MinFormatScore = 0
             };
 
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));

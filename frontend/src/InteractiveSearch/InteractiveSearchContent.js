@@ -64,6 +64,15 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'customFormatScore',
+    label: React.createElement(Icon, {
+      name: icons.SCORE,
+      title: 'Custom Format score'
+    }),
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'indexerFlags',
     label: React.createElement(Icon, { name: icons.FLAG }),
     isSortable: true,

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { kinds } from 'Helpers/Props';
 import Alert from 'Components/Alert';
+import Link from 'Components/Link/Link';
 import Button from 'Components/Link/Button';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -48,8 +49,8 @@ class AddSpecificationModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports custom conditions against the following release properties</div>
-                  <div>Visit github for more details</div>
+                  <div>Radarr supports custom conditions against the release properties below.</div>
+                  <div>Visit <Link to='https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite'>GitHub</Link> for more details.</div>
                 </Alert>
 
                 <div className={styles.specifications}>

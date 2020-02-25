@@ -55,7 +55,7 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
             return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
-                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndices(remoteMovie.CustomFormats).Select(i => Math.Pow(2, i)).Sum()),
+                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.CustomFormatScore),
                               CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
                               CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
         }

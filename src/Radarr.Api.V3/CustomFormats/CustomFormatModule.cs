@@ -94,7 +94,7 @@ namespace Radarr.Api.V3.CustomFormats
             yield return new ReleaseTitleSpecification
             {
                 Name = "Simple Hardcoded Subs",
-                Value = @"C_RX_subs?"
+                Value = @"subs?"
             };
 
             yield return new ReleaseTitleSpecification

@@ -40,9 +40,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenProfile(Profile profile)
         {
-            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None);
-            profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems("None");
-            profile.FormatCutoff = CustomFormat.None.Id;
+            CustomFormatsFixture.GivenCustomFormats();
+            profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems();
+            profile.MinFormatScore = 0;
             _remoteMovie.Movie.Profile = profile;
 
             Console.WriteLine(profile.ToJson());
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _customFormat = new CustomFormat("My Format", new ResolutionSpecification { Value = (int)Resolution.R1080p }) { Id = 1 };
 
-            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormat.None);
+            CustomFormatsFixture.GivenCustomFormats(_customFormat);
         }
 
         [Test]
@@ -126,8 +126,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
-                FormatCutoff = CustomFormat.None.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
+                MinFormatScore = 0,
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems("My Format")
             });
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p));
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenCustomFormatHigher();
 
-            GivenOldCustomFormats(new List<CustomFormat> { CustomFormat.None });
+            GivenOldCustomFormats(new List<CustomFormat>());
             GivenNewCustomFormats(new List<CustomFormat> { _customFormat });
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();

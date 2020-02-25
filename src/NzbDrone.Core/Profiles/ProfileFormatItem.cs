@@ -9,6 +9,6 @@ namespace NzbDrone.Core.Profiles
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int Id { get; set; }
         public CustomFormat Format { get; set; }
-        public bool Allowed { get; set; }
+        public int Score { get; set; }
     }
 }

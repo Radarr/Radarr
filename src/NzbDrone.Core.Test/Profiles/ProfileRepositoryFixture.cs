@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.Profiles
             var profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-                FormatCutoff = CustomFormat.None.Id,
+                MinFormatScore = 0,
                 FormatItems = CustomFormatsFixture.GetDefaultFormatItems(),
                 Cutoff = Quality.Bluray1080p.Id,
                 Name = "TestProfile"

@@ -114,6 +114,7 @@ class InteractiveSearchRow extends Component {
       leechers,
       quality,
       customFormats,
+      customFormatScore,
       languages,
       indexerFlags,
       rejections,
@@ -180,6 +181,11 @@ class InteractiveSearchRow extends Component {
           <MovieFormats
             formats={customFormats}
           />
+        </TableRowCell>
+
+        <TableRowCell className={styles.customFormatScore}>
+          {customFormatScore > 0 && `+${customFormatScore}`}
+          {customFormatScore < 0 && customFormatScore}
         </TableRowCell>
 
         <TableRowCell className={styles.indexerFlags}>
@@ -281,6 +287,7 @@ InteractiveSearchRow.propTypes = {
   leechers: PropTypes.number,
   quality: PropTypes.object.isRequired,
   customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFormatScore: PropTypes.number.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   rejections: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexerFlags: PropTypes.arrayOf(PropTypes.string).isRequired,

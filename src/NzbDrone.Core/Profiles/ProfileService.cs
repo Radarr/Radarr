@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Profiles
             {
                 profile.FormatItems.Insert(0, new ProfileFormatItem
                 {
-                    Allowed = false,
+                    Score = 0,
                     Format = message.CustomFormat
                 });
 
@@ -103,9 +103,10 @@ namespace NzbDrone.Core.Profiles
             foreach (var profile in all)
             {
                 profile.FormatItems = profile.FormatItems.Where(c => c.Format.Id != message.CustomFormat.Id).ToList();
-                if (profile.FormatCutoff == message.CustomFormat.Id)
+                if (!profile.FormatItems.Any())
                 {
-                    profile.FormatCutoff = CustomFormat.None.Id;
+                    profile.MinFormatScore = 0;
+                    profile.CutoffFormatScore = 0;
                 }
 
                 Update(profile);
@@ -243,20 +244,12 @@ namespace NzbDrone.Core.Profiles
                 groupId++;
             }
 
-            var formatItems = new List<ProfileFormatItem>
-            {
-                new ProfileFormatItem
-                {
-                    Id = 0,
-                    Allowed = true,
-                    Format = CustomFormat.None
-                }
-            }.Concat(_formatService.All().Select(format => new ProfileFormatItem
+            var formatItems = _formatService.All().Select(format => new ProfileFormatItem
             {
                 Id = format.Id,
-                Allowed = false,
+                Score = 0,
                 Format = format
-            })).ToList();
+            }).ToList();
 
             var qualityProfile = new Profile
             {
@@ -264,7 +257,8 @@ namespace NzbDrone.Core.Profiles
                 Cutoff = profileCutoff,
                 Items = items,
                 Language = Language.English,
-                FormatCutoff = CustomFormat.None.Id,
+                MinFormatScore = 0,
+                CutoffFormatScore = 0,
                 FormatItems = formatItems
             };
 

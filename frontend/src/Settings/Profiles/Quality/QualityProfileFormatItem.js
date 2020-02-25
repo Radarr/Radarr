@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import CheckInput from 'Components/Form/CheckInput';
+import NumberInput from 'Components/Form/NumberInput';
 import styles from './QualityProfileFormatItem.css';
 
 class QualityProfileFormatItem extends Component {
@@ -11,13 +8,12 @@ class QualityProfileFormatItem extends Component {
   //
   // Listeners
 
-  onAllowedChange = ({ value }) => {
+  onScoreChange = ({ value }) => {
     const {
-      formatId,
-      onQualityProfileFormatItemAllowedChange
+      formatId
     } = this.props;
 
-    onQualityProfileFormatItemAllowedChange(formatId, value);
+    this.props.onScoreChange(formatId, value);
   }
 
   //
@@ -26,40 +22,32 @@ class QualityProfileFormatItem extends Component {
   render() {
     const {
       name,
-      allowed,
-      isDragging,
-      connectDragSource
+      score
     } = this.props;
 
     return (
       <div
-        className={classNames(
-          styles.qualityProfileFormatItem,
-          isDragging && styles.isDragging
-        )}
+        className={styles.qualityProfileFormatItemContainer}
       >
-        <label
-          className={styles.formatName}
+        <div
+          className={styles.qualityProfileFormatItem}
         >
-          <CheckInput
-            containerClassName={styles.checkContainer}
-            name={name}
-            value={allowed}
-            onChange={this.onAllowedChange}
-          />
-          {name}
-        </label>
-
-        {
-          connectDragSource(
-            <div className={styles.dragHandle}>
-              <Icon
-                className={styles.dragIcon}
-                name={icons.REORDER}
-              />
+          <label
+            className={styles.formatNameContainer}
+          >
+            <div className={styles.formatName}>
+              {name}
             </div>
-          )
-        }
+            <NumberInput
+              containerClassName={styles.scoreContainer}
+              className={styles.scoreInput}
+              name={name}
+              value={score}
+              onChange={this.onScoreChange}
+            />
+          </label>
+
+        </div>
       </div>
     );
   }
@@ -68,16 +56,13 @@ class QualityProfileFormatItem extends Component {
 QualityProfileFormatItem.propTypes = {
   formatId: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  allowed: PropTypes.bool.isRequired,
-  sortIndex: PropTypes.number.isRequired,
-  isDragging: PropTypes.bool.isRequired,
-  connectDragSource: PropTypes.func,
-  onQualityProfileFormatItemAllowedChange: PropTypes.func
+  score: PropTypes.number.isRequired,
+  onScoreChange: PropTypes.func
 };
 
 QualityProfileFormatItem.defaultProps = {
-  // The drag preview will not connect the drag handle.
-  connectDragSource: (node) => node
+  // To handle the case score is deleted during edit
+  score: 0
 };
 
 export default QualityProfileFormatItem;

@@ -29,14 +29,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            CustomFormatsFixture.GivenCustomFormats(CustomFormat.None);
+            CustomFormatsFixture.GivenCustomFormats();
 
             _movie = Builder<Movie>.CreateNew()
                                      .With(e => e.Profile = new Profile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
-                                         FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                                         FormatCutoff = CustomFormat.None.Id,
+                                         FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                                         MinFormatScore = 0,
                                          UpgradeAllowed = true
                                      })
                                      .Build();
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
                 .With(r => r.Movie = _movie)
                 .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD) })
-                .With(x => x.CustomFormats = new List<CustomFormat> { CustomFormat.None })
+                .With(x => x.CustomFormats = new List<CustomFormat>())
                 .Build();
 
             Mocker.GetMock<ICustomFormatCalculationService>()
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 {
                     Quality = new QualityModel(Quality.SDTV)
                 })
-                .With(x => x.CustomFormats = new List<CustomFormat> { CustomFormat.None })
+                .With(x => x.CustomFormats = new List<CustomFormat>())
                 .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });

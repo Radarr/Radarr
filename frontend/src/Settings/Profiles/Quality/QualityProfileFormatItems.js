@@ -1,37 +1,87 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { sizes } from 'Helpers/Props';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
-import QualityProfileFormatItemDragSource from './QualityProfileFormatItemDragSource';
-import QualityProfileFormatItemDragPreview from './QualityProfileFormatItemDragPreview';
+import Link from 'Components/Link/Link';
+import QualityProfileFormatItem from './QualityProfileFormatItem';
 import styles from './QualityProfileFormatItems.css';
 
+function calcOrder(profileFormatItems) {
+  const items = profileFormatItems.reduce((acc, cur, index) => {
+    acc[cur.format] = index;
+    return acc;
+  }, {});
+
+  return [...profileFormatItems].sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    return a.name > b.name ? 1 : -1;
+  }).map((x) => items[x.format]);
+}
+
 class QualityProfileFormatItems extends Component {
+
+  //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      order: calcOrder(this.props.profileFormatItems)
+    };
+  }
+
+  //
+  // Listeners
+
+  onScoreChange = (formatId, value) => {
+    const {
+      onQualityProfileFormatItemScoreChange
+    } = this.props;
+
+    onQualityProfileFormatItemScoreChange(formatId, value);
+    this.reorderItems();
+  }
+
+  reorderItems = _.debounce(() => this.setState({ order: calcOrder(this.props.profileFormatItems) }), 1000);
 
   //
   // Render
 
   render() {
     const {
-      dragIndex,
-      dropIndex,
       profileFormatItems,
       errors,
-      warnings,
-      ...otherProps
+      warnings
     } = this.props;
 
-    const isDragging = dropIndex !== null;
-    const isDraggingUp = isDragging && dropIndex > dragIndex;
-    const isDraggingDown = isDragging && dropIndex < dragIndex;
+    const {
+      order
+    } = this.state;
+
+    if (profileFormatItems.length < 1) {
+      return (
+        <div className={styles.addCustomFormatMessage}>
+          Want more control over which downloads are preferred? Add a
+          <Link to='/settings/customformats'> Custom Format </Link>
+        </div>
+      );
+    }
 
     return (
-      <FormGroup>
-        <FormLabel>Custom Formats</FormLabel>
+      <FormGroup size={sizes.EXTRA_SMALL}>
+        <FormLabel size={sizes.SMALL}>
+          Custom Formats
+        </FormLabel>
+
         <div>
           <FormInputHelpText
-            text="Custom Formats higher in the list are more preferred. Only checked custom formats are wanted"
+            text='Radarr scores each release using the sum of scores for matching custom formats. If a new release would improve the score, at the same or better quality, then Radarr will grab it.'
           />
 
           {
@@ -61,25 +111,32 @@ class QualityProfileFormatItems extends Component {
           }
 
           <div className={styles.formats}>
+            <div className={styles.headerContainer}>
+              <div className={styles.headerTitle}>
+                Custom Format
+              </div>
+              <div className={styles.headerScore}>
+                Score
+              </div>
+            </div>
             {
-              profileFormatItems.map(({ allowed, format, name }, index) => {
+              order.map((index) => {
+                const {
+                  format,
+                  name,
+                  score
+                } = profileFormatItems[index];
                 return (
-                  <QualityProfileFormatItemDragSource
+                  <QualityProfileFormatItem
                     key={format}
                     formatId={format}
                     name={name}
-                    allowed={allowed}
-                    sortIndex={index}
-                    isDragging={isDragging}
-                    isDraggingUp={isDraggingUp}
-                    isDraggingDown={isDraggingDown}
-                    {...otherProps}
+                    score={score}
+                    onScoreChange={this.onScoreChange}
                   />
                 );
-              }).reverse()
+              })
             }
-
-            <QualityProfileFormatItemDragPreview />
           </div>
         </div>
       </FormGroup>
@@ -88,11 +145,10 @@ class QualityProfileFormatItems extends Component {
 }
 
 QualityProfileFormatItems.propTypes = {
-  dragIndex: PropTypes.number,
-  dropIndex: PropTypes.number,
   profileFormatItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object),
-  warnings: PropTypes.arrayOf(PropTypes.object)
+  warnings: PropTypes.arrayOf(PropTypes.object),
+  onQualityProfileFormatItemScoreChange: PropTypes.func
 };
 
 QualityProfileFormatItems.defaultProps = {

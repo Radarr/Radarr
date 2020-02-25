@@ -17,13 +17,6 @@ namespace NzbDrone.Core.CustomFormats
             Specifications = specs.ToList();
         }
 
-        public static CustomFormat None => new CustomFormat
-        {
-            Id = 0,
-            Name = "None",
-            Specifications = new List<ICustomFormatSpecification>()
-        };
-
         public string Name { get; set; }
 
         public List<ICustomFormatSpecification> Specifications { get; set; }
