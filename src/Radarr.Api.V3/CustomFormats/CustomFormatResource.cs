@@ -12,6 +12,7 @@ namespace Radarr.Api.V3.CustomFormats
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public override int Id { get; set; }
         public string Name { get; set; }
+        public bool IncludeCustomFormatWhenRenaming { get; set; }
         public List<CustomFormatSpecificationSchema> Specifications { get; set; }
     }
 
@@ -23,7 +24,8 @@ namespace Radarr.Api.V3.CustomFormats
             {
                 Id = model.Id,
                 Name = model.Name,
-                Specifications = model.Specifications.Select(x => x.ToSchema()).ToList(),
+                IncludeCustomFormatWhenRenaming = model.IncludeCustomFormatWhenRenaming,
+                Specifications = model.Specifications.Select(x => x.ToSchema()).ToList()
             };
         }
 
@@ -38,6 +40,7 @@ namespace Radarr.Api.V3.CustomFormats
             {
                 Id = resource.Id,
                 Name = resource.Name,
+                IncludeCustomFormatWhenRenaming = resource.IncludeCustomFormatWhenRenaming,
                 Specifications = resource.Specifications.Select(x => MapSpecification(x, specifications)).ToList()
             };
         }

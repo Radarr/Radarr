@@ -33,13 +33,11 @@ namespace NzbDrone.Core.CustomFormats
             _movieService = movieService;
         }
 
-        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
+        public static List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo, List<CustomFormat> allCustomFormats)
         {
-            var formats = _formatService.All();
-
             var matches = new List<CustomFormat>();
 
-            foreach (var customFormat in formats)
+            foreach (var customFormat in allCustomFormats)
             {
                 var specificationMatches = customFormat.Specifications
                     .GroupBy(t => t.GetType())
@@ -58,7 +56,7 @@ namespace NzbDrone.Core.CustomFormats
             return matches;
         }
 
-        public List<CustomFormat> ParseCustomFormat(MovieFile movieFile)
+        public static List<CustomFormat> ParseCustomFormat(MovieFile movieFile, List<CustomFormat> allCustomFormats)
         {
             var info = new ParsedMovieInfo
             {
@@ -78,7 +76,17 @@ namespace NzbDrone.Core.CustomFormats
                 }
             };
 
-            return ParseCustomFormat(info);
+            return ParseCustomFormat(info, allCustomFormats);
+        }
+
+        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
+        {
+            return ParseCustomFormat(movieInfo, _formatService.All());
+        }
+
+        public List<CustomFormat> ParseCustomFormat(MovieFile movieFile)
+        {
+            return ParseCustomFormat(movieFile, _formatService.All());
         }
 
         public List<CustomFormat> ParseCustomFormat(Blacklist blacklist)

@@ -51,6 +51,9 @@ export default {
     isSchemaPopulated: false,
     isFetching: false,
     isPopulated: false,
+    schema: {
+      includeCustomFormatWhenRenaming: false
+    },
     error: null,
     isDeleting: false,
     deleteError: null,

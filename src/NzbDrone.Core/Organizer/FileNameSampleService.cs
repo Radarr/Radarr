@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
@@ -17,6 +19,7 @@ namespace NzbDrone.Core.Organizer
 
         private static MovieFile _movieFile;
         private static Movie _movie;
+        private static List<CustomFormat> _customFormats;
 
         public FileNameSampleService(IBuildFileNames buildFileNames)
         {
@@ -55,6 +58,20 @@ namespace NzbDrone.Core.Organizer
                 MovieFile = _movieFile,
                 MovieFileId = 1,
             };
+
+            _customFormats = new List<CustomFormat>
+            {
+                new CustomFormat
+                {
+                    Name = "Surround Sound",
+                    IncludeCustomFormatWhenRenaming = true
+                },
+                new CustomFormat
+                {
+                    Name = "x264",
+                    IncludeCustomFormatWhenRenaming = true
+                }
+            };
         }
 
         public SampleResult GetMovieSample(NamingConfig nameSpec)
@@ -76,7 +93,7 @@ namespace NzbDrone.Core.Organizer
         {
             try
             {
-                return _buildFileNames.BuildFileName(movie, movieFile, nameSpec);
+                return _buildFileNames.BuildFileName(movie, movieFile, nameSpec, _customFormats);
             }
             catch (NamingFormatException)
             {

@@ -80,7 +80,8 @@ class EditCustomFormatModalContent extends Component {
 
     const {
       id,
-      name
+      name,
+      includeCustomFormatWhenRenaming
     } = item;
 
     return (
@@ -117,6 +118,18 @@ class EditCustomFormatModalContent extends Component {
                         type={inputTypes.TEXT}
                         name="name"
                         {...name}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Include Custom Format when Renaming</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.CHECK}
+                        name="includeCustomFormatWhenRenaming"
+                        helpText="Include in {Custom Formats} renaming format"
+                        {...includeCustomFormatWhenRenaming}
                         onChange={onInputChange}
                       />
                     </FormGroup>
