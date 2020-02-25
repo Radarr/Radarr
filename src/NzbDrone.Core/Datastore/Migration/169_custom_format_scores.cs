@@ -20,6 +20,8 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(MigrateOrderToScores);
 
             Delete.Column("FormatCutoff").FromTable("Profiles");
+
+            Alter.Table("CustomFormats").AddColumn("IncludeCustomFormatWhenRenaming").AsBoolean().WithDefaultValue(0);
         }
 
         private void MigrateOrderToScores(IDbConnection conn, IDbTransaction tran)
