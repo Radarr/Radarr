@@ -176,17 +176,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 movie.InCinemas = DateTime.Parse(resource.release_date);
 
-                // get the lowest year in all release date
-                var lowestYear = new List<int>();
-                foreach (ReleaseDates releaseDates in resource.release_dates.results)
-                {
-                    foreach (ReleaseDate releaseDate in releaseDates.release_dates)
-                    {
-                        lowestYear.Add(DateTime.Parse(releaseDate.release_date).Year);
-                    }
-                }
-
-                movie.Year = lowestYear.Min();
+                movie.Year = movie.InCinemas.Value.Year;
             }
 
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
