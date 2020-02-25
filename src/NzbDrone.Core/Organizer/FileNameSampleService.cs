@@ -32,22 +32,8 @@ namespace NzbDrone.Core.Organizer
                 AudioFormat = "DTS",
                 AudioChannels = 6,
                 AudioChannelPositions = "3/2/0.1",
-                AudioLanguages = "English",
+                AudioLanguages = "German",
                 Subtitles = "English/German"
-            };
-
-            var mediaInfoAnime = new MediaInfoModel()
-            {
-                VideoFormat = "AVC",
-                VideoBitDepth = 10,
-                VideoMultiViewCount = 2,
-                VideoColourPrimaries = "BT.2020",
-                VideoTransferCharacteristics = "HLG",
-                AudioFormat = "DTS",
-                AudioChannels = 6,
-                AudioChannelPositions = "3/2/0.1",
-                AudioLanguages = "Japanese",
-                Subtitles = "Japanese/English"
             };
 
             _movieFile = new MovieFile

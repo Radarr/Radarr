@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Mocker.GetMock<INamingConfigService>()
                   .Setup(c => c.GetConfig()).Returns(_namingConfig);
 
-            _movieFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
+            _movieFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "RadarrTest" };
 
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_replace_SERIES_TITLE_with_all_caps()
+        public void should_replace_MOVIE_TITLE_with_all_caps()
         {
             _namingConfig.StandardMovieFormat = "{MOVIE TITLE}";
 
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_replace_SERIES_TITLE_with_random_casing_should_keep_original_casing()
+        public void should_replace_MOVIE_TITLE_with_random_casing_should_keep_original_casing()
         {
             _namingConfig.StandardMovieFormat = "{mOvIe-tItLE}";
 
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_replace_series_title_with_all_lower_case()
+        public void should_replace_movie_title_with_all_lower_case()
         {
             _namingConfig.StandardMovieFormat = "{movie title}";
 
@@ -444,7 +444,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_use_Sonarr_as_release_group_when_not_available()
+        public void should_use_Radarr_as_release_group_when_not_available()
         {
             _movieFile.ReleaseGroup = null;
             _namingConfig.StandardMovieFormat = "{Release Group}";
@@ -456,7 +456,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("{Movie Title}{-Release Group}", "South Park")]
         [TestCase("{Movie Title}{ Release Group}", "South Park")]
         [TestCase("{Movie Title}{ [Release Group]}", "South Park")]
-        public void should_not_use_Sonarr_as_release_group_if_pattern_has_separator(string pattern, string expectedFileName)
+        public void should_not_use_Radarr_as_release_group_if_pattern_has_separator(string pattern, string expectedFileName)
         {
             _movieFile.ReleaseGroup = null;
             _namingConfig.StandardMovieFormat = pattern;
