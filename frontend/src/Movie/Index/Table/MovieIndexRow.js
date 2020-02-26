@@ -71,6 +71,7 @@ class MovieIndexRow extends Component {
       added,
       inCinemas,
       physicalRelease,
+      runtime,
       minimumAvailability,
       path,
       sizeOnDisk,
@@ -209,6 +210,17 @@ class MovieIndexRow extends Component {
                   date={physicalRelease}
                   component={VirtualTableRowCell}
                 />
+              );
+            }
+
+            if (name === 'runtime') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {runtime} Minutes
+                </VirtualTableRowCell>
               );
             }
 
@@ -376,6 +388,7 @@ MovieIndexRow.propTypes = {
   added: PropTypes.string,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
+  runtime: PropTypes.number,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,

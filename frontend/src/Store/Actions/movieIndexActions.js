@@ -115,6 +115,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'runtime',
+      label: 'Runtime',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'minimumAvailability',
       label: 'Min Availability',
       isSortable: true,
@@ -271,6 +277,11 @@ export const defaultState = {
       label: 'Physical Release',
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'runtime',
+      label: 'Runtime',
+      type: filterBuilderTypes.NUMBER
     },
     {
       name: 'path',
