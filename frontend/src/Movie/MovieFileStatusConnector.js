@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import createQueueItemSelector from 'Store/Selectors/createQueueItemSelector';
-import MovieStatus from './MovieStatus';
+import MovieFileStatus from './MovieFileStatus';
 
 function createMapStateToProps() {
   return createSelector(
@@ -30,22 +30,22 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
 };
 
-class MovieStatusConnector extends Component {
+class MovieFileStatusConnector extends Component {
 
   //
   // Render
 
   render() {
     return (
-      <MovieStatus
+      <MovieFileStatus
         {...this.props}
       />
     );
   }
 }
 
-MovieStatusConnector.propTypes = {
+MovieFileStatusConnector.propTypes = {
   movieId: PropTypes.number.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieStatusConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(MovieFileStatusConnector);

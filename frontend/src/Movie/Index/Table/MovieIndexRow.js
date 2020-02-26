@@ -13,7 +13,7 @@ import MovieTitleLink from 'Movie/MovieTitleLink';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieStatusCell from './MovieStatusCell';
-import MovieStatusConnector from 'Movie/MovieStatusConnector';
+import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import styles from './MovieIndexRow.css';
 
@@ -278,7 +278,7 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  <MovieStatusConnector
+                  <MovieFileStatusConnector
                     movieId={id}
                   />
                 </VirtualTableRowCell>

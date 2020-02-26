@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -6,6 +9,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -13,7 +17,6 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MovieTests
 {
     [TestFixture]
-    [Ignore("Weird moq errors")]
     public class RefreshMovieServiceFixture : CoreTest<RefreshMovieService>
     {
         private Movie _movie;
@@ -22,36 +25,37 @@ namespace NzbDrone.Core.Test.MovieTests
         public void Setup()
         {
             _movie = Builder<Movie>.CreateNew()
-                                     .Build();
+                .With(s => s.Status = MovieStatusType.Released)
+                .Build();
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(_movie.Id))
                   .Returns(_movie);
 
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(It.IsAny<int>(), It.IsAny<Profile>(), false))
-                  .Callback<int>(p => { throw new MovieNotFoundException(p.ToString()); });
+                  .Setup(s => s.GetMovieInfo(It.IsAny<int>(), It.IsAny<Profile>(), It.IsAny<bool>()))
+                  .Callback<int, Profile, bool>((i, p, b) => { throw new MovieNotFoundException(i); });
         }
 
         private void GivenNewMovieInfo(Movie movie)
         {
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(_movie.ImdbId))
-                  .Returns(movie);
+                  .Setup(s => s.GetMovieInfo(_movie.TmdbId, It.IsAny<Profile>(), It.IsAny<bool>()))
+                  .Returns(new Tuple<Movie, List<Credit>>(movie, new List<Credit>()));
         }
 
         [Test]
-        public void should_update_tvrage_id_if_changed()
+        public void should_update_imdb_id_if_changed()
         {
-            var newSeriesInfo = _movie.JsonClone();
-            newSeriesInfo.ImdbId = _movie.ImdbId + 1;
+            var newMovieInfo = _movie.JsonClone();
+            newMovieInfo.ImdbId = _movie.ImdbId + 1;
 
-            GivenNewMovieInfo(newSeriesInfo);
+            GivenNewMovieInfo(newMovieInfo);
 
             Subject.Execute(new RefreshMovieCommand(_movie.Id));
 
             Mocker.GetMock<IMovieService>()
-                .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.ImdbId == newSeriesInfo.ImdbId)));
+                .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.First().ImdbId == newMovieInfo.ImdbId), true));
         }
 
         [Test]
@@ -60,7 +64,7 @@ namespace NzbDrone.Core.Test.MovieTests
             Subject.Execute(new RefreshMovieCommand(_movie.Id));
 
             Mocker.GetMock<IMovieService>()
-                .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Never());
+                .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Status == MovieStatusType.Deleted)), Times.Once());
 
             ExceptionVerification.ExpectedErrors(1);
         }
@@ -68,17 +72,41 @@ namespace NzbDrone.Core.Test.MovieTests
         [Test]
         public void should_update_if_tmdb_id_changed()
         {
-            var newSeriesInfo = _movie.JsonClone();
-            newSeriesInfo.TmdbId = _movie.TmdbId + 1;
+            var newMovieInfo = _movie.JsonClone();
+            newMovieInfo.TmdbId = _movie.TmdbId + 1;
 
-            GivenNewMovieInfo(newSeriesInfo);
+            GivenNewMovieInfo(newMovieInfo);
 
             Subject.Execute(new RefreshMovieCommand(_movie.Id));
 
             Mocker.GetMock<IMovieService>()
-                .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.TmdbId == newSeriesInfo.TmdbId)));
+                .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.First().TmdbId == newMovieInfo.TmdbId), true));
 
             ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void should_mark_as_deleted_if_tmdb_id_not_found()
+        {
+            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+
+            Mocker.GetMock<IMovieService>()
+                .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Status == MovieStatusType.Deleted)), Times.Once());
+
+            ExceptionVerification.ExpectedErrors(1);
+        }
+
+        [Test]
+        public void should_not_remark_as_deleted_if_tmdb_id_not_found()
+        {
+            _movie.Status = MovieStatusType.Deleted;
+
+            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+
+            Mocker.GetMock<IMovieService>()
+                .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Never());
+
+            ExceptionVerification.ExpectedErrors(1);
         }
     }
 }

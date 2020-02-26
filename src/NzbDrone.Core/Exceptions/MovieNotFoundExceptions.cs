@@ -1,27 +1,33 @@
-﻿using NzbDrone.Common.Exceptions;
+using NzbDrone.Common.Exceptions;
 
 namespace NzbDrone.Core.Exceptions
 {
     public class MovieNotFoundException : NzbDroneException
     {
-        public string ImdbId { get; set; }
+        public int TmdbMovieId { get; set; }
 
-        public MovieNotFoundException(string imdbid)
-            : base(string.Format("Movie with imdbid {0} was not found, it may have been removed from IMDb.", imdbid))
+        public MovieNotFoundException(int tmdbMovieId)
+            : base(string.Format("Movie with tmdbId {0} was not found, it may have been removed from TMDb.", tmdbMovieId))
         {
-            ImdbId = imdbid;
+            TmdbMovieId = tmdbMovieId;
         }
 
-        public MovieNotFoundException(string imdbid, string message, params object[] args)
+        public MovieNotFoundException(string imdbId)
+            : base(string.Format("Movie with IMDBId {0} was not found, it may have been removed from TMDb.", imdbId))
+        {
+            TmdbMovieId = 0;
+        }
+
+        public MovieNotFoundException(int tmdbMovieId, string message, params object[] args)
             : base(message, args)
         {
-            ImdbId = imdbid;
+            TmdbMovieId = tmdbMovieId;
         }
 
-        public MovieNotFoundException(string imdbid, string message)
+        public MovieNotFoundException(int tmdbMovieId, string message)
             : base(message)
         {
-            ImdbId = imdbid;
+            TmdbMovieId = tmdbMovieId;
         }
     }
 }

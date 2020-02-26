@@ -100,7 +100,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new MovieNotFoundException("Movie not found.");
+                throw new MovieNotFoundException(tmdbId);
             }
 
             if (response.StatusCode != HttpStatusCode.OK)
