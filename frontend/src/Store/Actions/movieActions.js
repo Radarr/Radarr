@@ -3,6 +3,7 @@ import { createAction } from 'redux-actions';
 // import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
+import padNumber from 'Utilities/Number/padNumber';
 import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
@@ -163,8 +164,17 @@ export const sortPredicates = {
 
   movieStatus: function(item) {
     let result = 0;
+    let qualityName = '';
 
     const hasMovieFile = !!item.movieFile;
+
+    if (item.isAvailable && item.inCinemas) {
+      result++;
+    }
+
+    if (item.monitored) {
+      result += 2;
+    }
 
     if (hasMovieFile) {
       // TODO: Consider Quality Weight for Sorting within status of hasMovie
@@ -173,17 +183,10 @@ export const sortPredicates = {
       } else {
         result += 8;
       }
+      qualityName = item.movieFile.quality.quality.name;
     }
 
-    if (item.isAvailable) {
-      result++;
-    }
-
-    if (item.monitored) {
-      result += 2;
-    }
-
-    return result;
+    return padNumber(result.toString(), 2) + qualityName;
   }
 };
 
