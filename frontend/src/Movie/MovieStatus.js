@@ -20,7 +20,7 @@ function MovieStatus(props) {
 
   const hasMovieFile = !!movieFile;
   const isQueued = !!queueItem;
-  const hasReleased = isAvailable;
+  const hasReleased = isAvailable && inCinemas;
 
   if (isQueued) {
     const {
@@ -69,17 +69,6 @@ function MovieStatus(props) {
           quality={quality}
           isMonitored={monitored}
           isCutoffNotMet={movieFile.qualityCutoffNotMet}
-        />
-      </div>
-    );
-  }
-
-  if (!inCinemas) {
-    return (
-      <div className={styles.center}>
-        <Icon
-          name={icons.TBA}
-          title="TBA"
         />
       </div>
     );
