@@ -63,13 +63,31 @@ namespace NzbDrone.Core.Movies
         {
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
-            var tuple = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
+            Movie movieInfo;
+            List<Credit> credits;
 
-            var movieInfo = tuple.Item1;
+            try
+            {
+                var tuple = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
+                movieInfo = tuple.Item1;
+                credits = tuple.Item2;
+            }
+            catch (MovieNotFoundException)
+            {
+                if (movie.Status != MovieStatusType.Deleted)
+                {
+                    movie.Status = MovieStatusType.Deleted;
+                    _movieService.UpdateMovie(movie);
+                    _logger.Debug("Movie marked as deleted on tmdb for {0}", movie.Title);
+                    _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
+                }
+
+                throw;
+            }
 
             if (movie.TmdbId != movieInfo.TmdbId)
             {
-                _logger.Warn("Movie '{0}' (tvdbid {1}) was replaced with '{2}' (tvdbid {3}), because the original was a duplicate.", movie.Title, movie.TmdbId, movieInfo.Title, movieInfo.TmdbId);
+                _logger.Warn("Movie '{0}' (TmdbId {1}) was replaced with '{2}' (TmdbId {3}), because the original was a duplicate.", movie.Title, movie.TmdbId, movieInfo.Title, movieInfo.TmdbId);
                 movie.TmdbId = movieInfo.TmdbId;
             }
 
@@ -139,7 +157,7 @@ namespace NzbDrone.Core.Movies
             }
 
             _movieService.UpdateMovie(new List<Movie> { movie }, true);
-            _creditService.UpdateCredits(tuple.Item2, movie);
+            _creditService.UpdateCredits(credits, movie);
 
             try
             {

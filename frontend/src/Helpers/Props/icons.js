@@ -190,6 +190,7 @@ export const SCORE = fasUserPlus;
 export const SEARCH = fasSearch;
 export const MOVIE_CONTINUING = fasPlay;
 export const SERIES_ENDED = fasStop;
+export const MOVIE_DELETED = fasExclamationTriangle;
 export const SETTINGS = fasCogs;
 export const SHUTDOWN = fasPowerOff;
 export const SORT = fasSort;

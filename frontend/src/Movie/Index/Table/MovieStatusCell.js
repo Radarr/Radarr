@@ -3,6 +3,7 @@ import React from 'react';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
+import { getMovieStatusDetails } from 'Movie/MovieStatus';
 import styles from './MovieStatusCell.css';
 
 function MovieStatusCell(props) {
@@ -13,6 +14,8 @@ function MovieStatusCell(props) {
     component: Component,
     ...otherProps
   } = props;
+
+  const statusDetails = getMovieStatusDetails(status);
 
   return (
     <Component
@@ -25,32 +28,12 @@ function MovieStatusCell(props) {
         title={monitored ? 'Movie is monitored' : 'Movie is unmonitored'}
       />
 
-      {
-        status === 'announced' ?
-          <Icon
-            className={styles.statusIcon}
-            name={icons.ANNOUNCED}
-            title={'Movie is announced'}
-          /> : null
-      }
+      <Icon
+        className={styles.statusIcon}
+        name={statusDetails.icon}
+        title={`${statusDetails.title}: ${statusDetails.message}`}
+      />
 
-      {
-        status === 'inCinemas' ?
-          <Icon
-            className={styles.statusIcon}
-            name={icons.IN_CINEMAS}
-            title={'Movie is in Cinemas'}
-          /> : null
-      }
-
-      {
-        status === 'released' ?
-          <Icon
-            className={styles.statusIcon}
-            name={icons.MOVIE_FILE}
-            title={'Movie is released'}
-          /> : null
-      }
     </Component>
   );
 }
