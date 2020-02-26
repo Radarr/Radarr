@@ -13,10 +13,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             if (enabled.HasValue)
             {
                 Mocker.GetMock<IConfigService>()
-                      .Setup(s => s.IsDefined("EnableCompletedDownloadHandling"))
-                      .Returns(true);
-
-                Mocker.GetMock<IConfigService>()
                       .SetupGet(s => s.EnableCompletedDownloadHandling)
                       .Returns(enabled.Value);
             }
@@ -24,12 +20,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         [Test]
         public void should_return_warning_when_completed_download_handling_not_configured()
-        {
-            Subject.Check().ShouldBeWarning();
-        }
-
-        [Test]
-        public void should_return_warning_when_both_completeddownloadhandling_and_dronefactory_are_not_configured()
         {
             GivenCompletedDownloadHandling(false);
 
