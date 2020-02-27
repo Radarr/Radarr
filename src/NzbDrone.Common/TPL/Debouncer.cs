@@ -6,15 +6,17 @@ namespace NzbDrone.Common.TPL
     {
         private readonly Action _action;
         private readonly System.Timers.Timer _timer;
+        private readonly bool _executeRestartsTimer;
 
         private volatile int _paused;
         private volatile bool _triggered;
 
-        public Debouncer(Action action, TimeSpan debounceDuration)
+        public Debouncer(Action action, TimeSpan debounceDuration, bool executeRestartsTimer = false)
         {
             _action = action;
             _timer = new System.Timers.Timer(debounceDuration.TotalMilliseconds);
             _timer.Elapsed += timer_Elapsed;
+            _executeRestartsTimer = executeRestartsTimer;
         }
 
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -32,6 +34,11 @@ namespace NzbDrone.Common.TPL
             lock (_timer)
             {
                 _triggered = true;
+                if (_executeRestartsTimer)
+                {
+                    _timer.Stop();
+                }
+
                 if (_paused == 0)
                 {
                     _timer.Start();

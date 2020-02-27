@@ -259,6 +259,22 @@ class MediaManagement extends Component {
                   <FormGroup
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
+                    size={sizes.MEDIUM}
+                  >
+                    <FormLabel>Watch Root Folders for file changes</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="watchLibraryForChanges"
+                      helpText="Rescan automatically when files change in a root folder"
+                      onChange={onInputChange}
+                      {...settings.watchLibraryForChanges}
+                    />
+                  </FormGroup>
+
+                  <FormGroup
+                    advancedSettings={advancedSettings}
+                    isAdvanced={true}
                   >
                     <FormLabel>Rescan Artist Folder after Refresh</FormLabel>
 

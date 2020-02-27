@@ -2,6 +2,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Commands;
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Music
         private readonly IArtistService _artistService;
         private readonly IBuildFileNames _filenameBuilder;
         private readonly IDiskProvider _diskProvider;
+        private readonly IRootFolderWatchingService _rootFolderWatchingService;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -22,6 +24,7 @@ namespace NzbDrone.Core.Music
         public MoveArtistService(IArtistService artistService,
                                  IBuildFileNames filenameBuilder,
                                  IDiskProvider diskProvider,
+                                 IRootFolderWatchingService rootFolderWatchingService,
                                  IDiskTransferService diskTransferService,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
@@ -29,6 +32,7 @@ namespace NzbDrone.Core.Music
             _artistService = artistService;
             _filenameBuilder = filenameBuilder;
             _diskProvider = diskProvider;
+            _rootFolderWatchingService = rootFolderWatchingService;
             _diskTransferService = diskTransferService;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -53,6 +57,8 @@ namespace NzbDrone.Core.Music
 
             try
             {
+                _rootFolderWatchingService.ReportFileSystemChangeBeginning(sourcePath, destinationPath);
+
                 _diskTransferService.TransferFolder(sourcePath, destinationPath, TransferMode.Move);
 
                 _logger.ProgressInfo("{0} moved successfully to {1}", artist.Name, artist.Path);

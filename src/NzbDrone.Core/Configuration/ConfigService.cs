@@ -227,6 +227,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ExtraFileExtensions", value); }
         }
 
+        public bool WatchLibraryForChanges
+        {
+            get { return GetValueBoolean("WatchLibraryForChanges", true); }
+
+            set { SetValue("WatchLibraryForChanges", value); }
+        }
+
         public RescanAfterRefreshType RescanAfterRefresh
         {
             get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }

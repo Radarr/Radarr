@@ -40,6 +40,28 @@ namespace NzbDrone.Common.Test.TPLTests
 
         [Test]
         [Retry(3)]
+        public void should_wait_for_last_call_if_execute_resets_timer()
+        {
+            var counter = new Counter();
+            var debounceFunction = new Debouncer(counter.Hit, TimeSpan.FromMilliseconds(200), true);
+
+            debounceFunction.Execute();
+
+            Thread.Sleep(100);
+
+            debounceFunction.Execute();
+
+            Thread.Sleep(150);
+
+            counter.Count.Should().Be(0);
+
+            Thread.Sleep(100);
+
+            counter.Count.Should().Be(1);
+        }
+
+        [Test]
+        [Retry(3)]
         public void should_throttle_calls()
         {
             var counter = new Counter();

@@ -39,6 +39,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IConfigService _configService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IRootFolderWatchingService _rootFolderWatchingService;
         private readonly IArtistService _artistService;
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly IEventAggregator _eventAggregator;
@@ -47,6 +48,7 @@ namespace NzbDrone.Core.MediaFiles
         public AudioTagService(IConfigService configService,
                                IMediaFileService mediaFileService,
                                IDiskProvider diskProvider,
+                               IRootFolderWatchingService rootFolderWatchingService,
                                IArtistService artistService,
                                IMapCoversToLocal mediaCoverService,
                                IEventAggregator eventAggregator,
@@ -55,6 +57,7 @@ namespace NzbDrone.Core.MediaFiles
             _configService = configService;
             _mediaFileService = mediaFileService;
             _diskProvider = diskProvider;
+            _rootFolderWatchingService = rootFolderWatchingService;
             _artistService = artistService;
             _mediaCoverService = mediaCoverService;
             _eventAggregator = eventAggregator;
@@ -186,6 +189,7 @@ namespace NzbDrone.Core.MediaFiles
             tags.MusicBrainzAlbumComment = null;
             tags.MusicBrainzReleaseTrackId = null;
 
+            _rootFolderWatchingService.ReportFileSystemChangeBeginning(path);
             tags.Write(path);
         }
 
@@ -211,6 +215,8 @@ namespace NzbDrone.Core.MediaFiles
 
             var diff = ReadAudioTag(path).Diff(newTags);
 
+            _rootFolderWatchingService.ReportFileSystemChangeBeginning(path);
+
             if (_configService.ScrubAudioTags)
             {
                 _logger.Debug($"Scrubbing tags for {trackfile}");
@@ -218,6 +224,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             _logger.Debug($"Writing tags for {trackfile}");
+
             newTags.Write(path);
 
             UpdateTrackfileSizeAndModified(trackfile, path);

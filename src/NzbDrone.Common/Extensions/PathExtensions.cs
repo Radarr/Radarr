@@ -32,19 +32,23 @@ namespace NzbDrone.Common.Extensions
             Ensure.That(path, () => path).IsValidPath();
 
             var info = new FileInfo(path.Trim());
+            return info.FullName.CleanFilePathBasic();
+        }
 
+        public static string CleanFilePathBasic(this string path)
+        {
             //UNC
-            if (OsInfo.IsWindows && info.FullName.StartsWith(@"\\"))
+            if (OsInfo.IsWindows && path.StartsWith(@"\\"))
             {
-                return info.FullName.TrimEnd('/', '\\', ' ');
+                return path.TrimEnd('/', '\\', ' ');
             }
 
-            if (OsInfo.IsNotWindows && info.FullName.TrimEnd('/').Length == 0)
+            if (OsInfo.IsNotWindows && path.TrimEnd('/').Length == 0)
             {
                 return "/";
             }
 
-            return info.FullName.TrimEnd('/').Trim('\\', ' ');
+            return path.TrimEnd('/').Trim('\\', ' ');
         }
 
         public static bool PathNotEquals(this string firstPath, string secondPath, StringComparison? comparison = null)

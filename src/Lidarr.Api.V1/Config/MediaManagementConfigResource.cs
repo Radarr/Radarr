@@ -14,6 +14,7 @@ namespace Lidarr.Api.V1.Config
         public bool CreateEmptyArtistFolders { get; set; }
         public bool DeleteEmptyFolders { get; set; }
         public FileDateType FileDate { get; set; }
+        public bool WatchLibraryForChanges { get; set; }
         public RescanAfterRefreshType RescanAfterRefresh { get; set; }
         public AllowFingerprinting AllowFingerprinting { get; set; }
 
@@ -43,6 +44,7 @@ namespace Lidarr.Api.V1.Config
                 CreateEmptyArtistFolders = model.CreateEmptyArtistFolders,
                 DeleteEmptyFolders = model.DeleteEmptyFolders,
                 FileDate = model.FileDate,
+                WatchLibraryForChanges = model.WatchLibraryForChanges,
                 RescanAfterRefresh = model.RescanAfterRefresh,
                 AllowFingerprinting = model.AllowFingerprinting,
 
