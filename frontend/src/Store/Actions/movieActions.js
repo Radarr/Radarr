@@ -168,7 +168,7 @@ export const sortPredicates = {
 
     const hasMovieFile = !!item.movieFile;
 
-    if (item.isAvailable && item.inCinemas) {
+    if (item.isAvailable) {
       result++;
     }
 

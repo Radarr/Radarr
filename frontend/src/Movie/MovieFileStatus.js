@@ -10,7 +10,6 @@ import styles from './MovieFileStatus.css';
 
 function MovieFileStatus(props) {
   const {
-    inCinemas,
     isAvailable,
     monitored,
     grabbed,
@@ -20,7 +19,7 @@ function MovieFileStatus(props) {
 
   const hasMovieFile = !!movieFile;
   const isQueued = !!queueItem;
-  const hasReleased = isAvailable && inCinemas;
+  const hasReleased = isAvailable;
 
   if (isQueued) {
     const {
@@ -78,7 +77,7 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title="Announced"
+          title="Not Monitored"
           kind={kinds.WARNING}
         >
           Not Monitored
@@ -103,7 +102,7 @@ function MovieFileStatus(props) {
   return (
     <div className={styles.center}>
       <Label
-        title="Announced"
+        title="Not Available"
         kind={kinds.INFO}
       >
         Not Available
@@ -113,7 +112,6 @@ function MovieFileStatus(props) {
 }
 
 MovieFileStatus.propTypes = {
-  inCinemas: PropTypes.string,
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
