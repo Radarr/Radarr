@@ -105,11 +105,25 @@ namespace NzbDrone.Core.Organizer
             AddTagsTokens(tokenHandlers, movieFile);
             AddCustomFormats(tokenHandlers, movie, movieFile, customFormats);
 
-            var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
-            fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
-            fileName = TrimSeparatorsRegex.Replace(fileName, string.Empty);
+            var splitPatterns = pattern.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var components = new List<string>();
 
-            return fileName;
+            foreach (var s in splitPatterns)
+            {
+                var splitPattern = s;
+
+                var component = ReplaceTokens(splitPattern, tokenHandlers, namingConfig).Trim();
+
+                component = FileNameCleanupRegex.Replace(component, match => match.Captures[0].Value[0].ToString());
+                component = TrimSeparatorsRegex.Replace(component, string.Empty);
+
+                if (component.IsNotNullOrWhiteSpace())
+                {
+                    components.Add(component);
+                }
+            }
+
+            return Path.Combine(components.ToArray());
         }
 
         public string BuildFilePath(Movie movie, string fileName, string extension)
@@ -154,8 +168,23 @@ namespace NzbDrone.Core.Organizer
                 AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" });
             }
 
-            string name = ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig);
-            return CleanFolderName(name, namingConfig.ReplaceIllegalCharacters, namingConfig.ColonReplacementFormat);
+            var splitPatterns = pattern.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var components = new List<string>();
+
+            foreach (var s in splitPatterns)
+            {
+                var splitPattern = s;
+
+                var component = ReplaceTokens(splitPattern, tokenHandlers, namingConfig);
+                component = CleanFolderName(component);
+
+                if (component.IsNotNullOrWhiteSpace())
+                {
+                    components.Add(component);
+                }
+            }
+
+            return Path.Combine(components.ToArray());
         }
 
         public static string CleanTitle(string title)
@@ -188,12 +217,11 @@ namespace NzbDrone.Core.Organizer
             return result.Trim();
         }
 
-        public static string CleanFolderName(string name, bool replace = true, ColonReplacementFormat colonReplacement = ColonReplacementFormat.Delete)
+        public static string CleanFolderName(string name)
         {
             name = FileNameCleanupRegex.Replace(name, match => match.Captures[0].Value[0].ToString());
-            name = name.Trim(' ', '.');
 
-            return CleanFileName(name, replace, colonReplacement);
+            return name.Trim(' ', '.');
         }
 
         private void AddMovieTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
@@ -202,6 +230,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
             tokenHandlers["{Movie Certification}"] = mbox => movie.Certification;
+            tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
         }
 
         private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
