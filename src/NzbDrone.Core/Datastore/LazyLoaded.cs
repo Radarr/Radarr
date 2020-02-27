@@ -1,4 +1,6 @@
 ﻿using System;
+using NLog;
+using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -74,6 +76,8 @@ namespace NzbDrone.Core.Datastore
     /// <typeparam name="TChild">The child entity that is being lazy loaded.</typeparam>
     internal class LazyLoaded<TParent, TChild> : LazyLoaded<TChild>
     {
+        private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LazyLoaded<TParent, TChild>));
+
         private readonly Func<IDatabase, TParent, TChild> _query;
         private readonly Func<TParent, bool> _condition;
 
@@ -115,6 +119,12 @@ namespace NzbDrone.Core.Datastore
             {
                 if (_condition != null && _condition(_parent))
                 {
+                    if (SqlBuilderExtensions.LogSql)
+                    {
+                        Logger.Trace($"Lazy loading {typeof(TChild)} for {typeof(TParent)}");
+                        Logger.Trace("StackTrace: '{0}'", Environment.StackTrace);
+                    }
+
                     _value = _query(_database, _parent);
                 }
                 else
