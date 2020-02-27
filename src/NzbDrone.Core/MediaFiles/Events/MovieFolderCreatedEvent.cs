@@ -7,6 +7,7 @@ namespace NzbDrone.Core.MediaFiles.Events
     {
         public Movie Movie { get; private set; }
         public MovieFile MovieFile { get; private set; }
+        public string MovieFileFolder { get; set; }
         public string MovieFolder { get; set; }
 
         public MovieFolderCreatedEvent(Movie movie, MovieFile movieFile)
