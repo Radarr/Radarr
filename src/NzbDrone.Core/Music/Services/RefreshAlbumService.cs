@@ -318,7 +318,7 @@ namespace NzbDrone.Core.Music
         {
             bool updated = false;
 
-            var updatedMusicbrainzAlbums = new HashSet<string>();
+            HashSet<string> updatedMusicbrainzAlbums = null;
 
             if (lastUpdate.HasValue && lastUpdate.Value.AddDays(14) > DateTime.UtcNow)
             {
