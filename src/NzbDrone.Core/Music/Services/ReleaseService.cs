@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
 
@@ -8,6 +9,7 @@ namespace NzbDrone.Core.Music
     {
         AlbumRelease GetRelease(int id);
         AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false);
+        List<AlbumRelease> GetAllReleases();
         void InsertMany(List<AlbumRelease> releases);
         void UpdateMany(List<AlbumRelease> releases);
         void DeleteMany(List<AlbumRelease> releases);
@@ -38,6 +40,11 @@ namespace NzbDrone.Core.Music
         public AlbumRelease GetReleaseByForeignReleaseId(string foreignReleaseId, bool checkRedirect = false)
         {
             return _releaseRepository.FindByForeignReleaseId(foreignReleaseId, checkRedirect);
+        }
+
+        public List<AlbumRelease> GetAllReleases()
+        {
+            return _releaseRepository.All().ToList();
         }
 
         public void InsertMany(List<AlbumRelease> releases)

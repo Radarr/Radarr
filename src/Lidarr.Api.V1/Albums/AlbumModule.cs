@@ -29,10 +29,12 @@ namespace Lidarr.Api.V1.Albums
         IHandle<TrackImportedEvent>,
         IHandle<TrackFileDeletedEvent>
     {
+        protected readonly IArtistService _artistService;
         protected readonly IReleaseService _releaseService;
         protected readonly IAddAlbumService _addAlbumService;
 
-        public AlbumModule(IAlbumService albumService,
+        public AlbumModule(IArtistService artistService,
+                           IAlbumService albumService,
                            IAddAlbumService addAlbumService,
                            IReleaseService releaseService,
                            IArtistStatisticsService artistStatisticsService,
@@ -44,6 +46,7 @@ namespace Lidarr.Api.V1.Albums
 
         : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
         {
+            _artistService = artistService;
             _releaseService = releaseService;
             _addAlbumService = addAlbumService;
 
@@ -69,7 +72,25 @@ namespace Lidarr.Api.V1.Albums
 
             if (!Request.Query.ArtistId.HasValue && !albumIdsQuery.HasValue && !foreignIdQuery.HasValue)
             {
-                return MapToResource(_albumService.GetAllAlbums(), false);
+                var albums = _albumService.GetAllAlbums();
+
+                var artists = _artistService.GetAllArtists().ToDictionary(x => x.ArtistMetadataId);
+                var releases = _releaseService.GetAllReleases().GroupBy(x => x.AlbumId).ToDictionary(x => x.Key, y => y.ToList());
+
+                foreach (var album in albums)
+                {
+                    album.Artist = artists[album.ArtistMetadataId];
+                    if (releases.TryGetValue(album.Id, out var albumReleases))
+                    {
+                        album.AlbumReleases = albumReleases;
+                    }
+                    else
+                    {
+                        album.AlbumReleases = new List<AlbumRelease>();
+                    }
+                }
+
+                return MapToResource(albums, false);
             }
 
             if (artistIdQuery.HasValue)
