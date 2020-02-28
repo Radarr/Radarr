@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
+import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import AlbumStudioAlbum from './AlbumStudioAlbum';
 import styles from './AlbumStudioRow.css';
@@ -31,37 +30,40 @@ class AlbumStudioRow extends Component {
     } = this.props;
 
     return (
-      <TableRow>
-        <TableSelectCell
+      <>
+        <VirtualTableSelectCell
+          className={styles.selectCell}
           id={artistId}
           isSelected={isSelected}
           onSelectedChange={onSelectedChange}
+          isDisabled={false}
         />
 
-        <TableRowCell className={styles.status}>
+        <VirtualTableRowCell className={styles.monitored}>
+          <MonitorToggleButton
+            monitored={monitored}
+            size={14}
+            isSaving={isSaving}
+            onPress={onArtistMonitoredPress}
+          />
+        </VirtualTableRowCell>
+
+        <VirtualTableRowCell className={styles.status}>
           <Icon
             className={styles.statusIcon}
             name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
             title={status === 'ended' ? 'Ended' : 'Continuing'}
           />
-        </TableRowCell>
+        </VirtualTableRowCell>
 
-        <TableRowCell className={styles.title}>
+        <VirtualTableRowCell className={styles.title}>
           <ArtistNameLink
             foreignArtistId={foreignArtistId}
             artistName={artistName}
           />
-        </TableRowCell>
+        </VirtualTableRowCell>
 
-        <TableRowCell className={styles.monitored}>
-          <MonitorToggleButton
-            monitored={monitored}
-            isSaving={isSaving}
-            onPress={onArtistMonitoredPress}
-          />
-        </TableRowCell>
-
-        <TableRowCell className={styles.albums}>
+        <VirtualTableRowCell className={styles.albums}>
           {
             albums.map((album) => {
               return (
@@ -73,8 +75,8 @@ class AlbumStudioRow extends Component {
               );
             })
           }
-        </TableRowCell>
-      </TableRow>
+        </VirtualTableRowCell>
+      </>
     );
   }
 }

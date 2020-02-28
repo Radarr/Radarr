@@ -8,12 +8,23 @@ import { toggleArtistMonitored } from 'Store/Actions/artistActions';
 import { toggleAlbumsMonitored } from 'Store/Actions/albumActions';
 import AlbumStudioRow from './AlbumStudioRow';
 
+// Use a const to share the reselect cache between instances
+const getAlbumMap = createSelector(
+  (state) => state.albums.items,
+  (albums) => {
+    return albums.reduce((acc, curr) => {
+      (acc[curr.artistId] = acc[curr.artistId] || []).push(curr);
+      return acc;
+    }, {});
+  }
+);
+
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.albums,
     createArtistSelector(),
-    (albums, artist) => {
-      const albumsInArtist = _.filter(albums.items, { artistId: artist.id });
+    getAlbumMap,
+    (artist, albumMap) => {
+      const albumsInArtist = albumMap.hasOwnProperty(artist.id) ? albumMap[artist.id] : [];
       const sortedAlbums = _.orderBy(albumsInArtist, 'releaseDate', 'desc');
 
       return {

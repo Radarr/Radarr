@@ -7,8 +7,6 @@ import { WindowScroller, Grid } from 'react-virtualized';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import styles from './VirtualTable.css';
 
-const ROW_HEIGHT = 38;
-
 function overscanIndicesGetter(options) {
   const {
     cellCount,
@@ -48,7 +46,8 @@ class VirtualTable extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {
       items,
-      scrollIndex
+      scrollIndex,
+      onRecompute
     } = this.props;
 
     const {
@@ -58,6 +57,7 @@ class VirtualTable extends Component {
     if (this._grid &&
         (prevState.width !== width ||
             hasDifferentItemsOrOrder(prevProps.items, items))) {
+      onRecompute(width);
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
@@ -97,6 +97,7 @@ class VirtualTable extends Component {
       scroller,
       header,
       headerHeight,
+      rowHeight,
       rowRenderer,
       ...otherProps
     } = this.props;
@@ -146,7 +147,7 @@ class VirtualTable extends Component {
                     width={width}
                     height={height}
                     headerHeight={height - headerHeight}
-                    rowHeight={ROW_HEIGHT}
+                    rowHeight={rowHeight}
                     rowCount={items.length}
                     columnCount={1}
                     columnWidth={width}
@@ -181,12 +182,15 @@ VirtualTable.propTypes = {
   scroller: PropTypes.instanceOf(Element).isRequired,
   header: PropTypes.node.isRequired,
   headerHeight: PropTypes.number.isRequired,
-  rowRenderer: PropTypes.func.isRequired
+  rowHeight: PropTypes.oneOfType([PropTypes.func, PropTypes.number]).isRequired,
+  rowRenderer: PropTypes.func.isRequired,
+  onRecompute: PropTypes.func.isRequired
 };
 
 VirtualTable.defaultProps = {
   className: styles.tableContainer,
-  headerHeight: 38
+  headerHeight: 38,
+  onRecompute: () => {}
 };
 
 export default VirtualTable;

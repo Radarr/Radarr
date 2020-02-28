@@ -2,17 +2,42 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createArtistClientSideCollectionItemsSelector from 'Store/Selectors/createArtistClientSideCollectionItemsSelector';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { setAlbumStudioSort, setAlbumStudioFilter, saveAlbumStudio } from 'Store/Actions/albumStudioActions';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import AlbumStudio from './AlbumStudio';
 
+function createAlbumFetchStateSelector() {
+  return createSelector(
+    (state) => state.albums.items.length,
+    (state) => state.albums.isFetching,
+    (state) => state.albums.isPopulated,
+    (length, isFetching, isPopulated) => {
+      const albumCount = (!isFetching && isPopulated) ? length : 0;
+      return {
+        albumCount,
+        isFetching,
+        isPopulated
+      };
+    }
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector('artist', 'albumStudio'),
-    (artist) => {
+    createAlbumFetchStateSelector(),
+    createArtistClientSideCollectionItemsSelector('albumStudio'),
+    createDimensionsSelector(),
+    (albums, artist, dimensionsState) => {
+      const isPopulated = albums.isPopulated && artist.isPopulated;
+      const isFetching = artist.isFetching || albums.isFetching;
       return {
-        ...artist
+        ...artist,
+        isPopulated,
+        isFetching,
+        albumCount: albums.albumCount,
+        isSmallScreen: dimensionsState.isSmallScreen
       };
     }
   );

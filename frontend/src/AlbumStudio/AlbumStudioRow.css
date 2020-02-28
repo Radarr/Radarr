@@ -1,20 +1,46 @@
+.cell {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.selectCell {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
 .status,
 .monitored {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
-  width: 50px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  width: 20px;
+}
+
+.statusIcon {
+  width: 20px !important;
 }
 
 .title {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
-  width: 1px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+
+  min-width: 110px;
+  flex-shrink: 0;
 }
 
 .albums {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 4;
+  min-width: 400px;
 }
