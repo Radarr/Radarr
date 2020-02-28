@@ -180,7 +180,7 @@ namespace NzbDrone.Core.ImportLists
             {
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 
-                albumsToAdd.Add(new Album
+                var toAdd = new Album
                 {
                     ForeignAlbumId = report.AlbumMusicBrainzId,
                     Monitored = monitored,
@@ -199,7 +199,14 @@ namespace NzbDrone.Core.ImportLists
                             Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
                         }
                     },
-                });
+                };
+
+                if (importList.ShouldMonitor == ImportListMonitorType.SpecificAlbum)
+                {
+                    toAdd.Artist.Value.AddOptions.AlbumsToMonitor.Add(toAdd.ForeignAlbumId);
+                }
+
+                albumsToAdd.Add(toAdd);
             }
         }
 
