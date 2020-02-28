@@ -184,6 +184,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     ForeignAlbumId = report.AlbumMusicBrainzId,
                     Monitored = monitored,
+                    AnyReleaseOk = true,
                     Artist = new Artist
                     {
                         Monitored = monitored,
