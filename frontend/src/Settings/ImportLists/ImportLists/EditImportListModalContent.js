@@ -180,6 +180,7 @@ function EditImportListModalContent(props) {
                   name="metadataProfileId"
                   helpText={'Metadata Profile list items should be added with'}
                   {...metadataProfileId}
+                  includeNone={true}
                   onChange={onInputChange}
                 />
               </FormGroup>
