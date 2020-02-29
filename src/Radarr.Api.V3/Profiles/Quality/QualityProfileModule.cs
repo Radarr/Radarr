@@ -32,7 +32,8 @@ namespace Radarr.Api.V3.Profiles.Quality
             }).WithMessage("All Custom Formats and no extra ones need to be present inside your Profile! Try refreshing your browser.");
             SharedValidator.RuleFor(c => c).Custom((profile, context) =>
             {
-                if (profile.FormatItems.Sum(x => x.Score) < profile.MinFormatScore)
+                if (profile.FormatItems.Where(x => x.Score > 0).Sum(x => x.Score) < profile.MinFormatScore &&
+                    profile.FormatItems.Max(x => x.Score) < profile.MinFormatScore)
                 {
                     context.AddFailure("Minimum Custom Format Score can never be satisfied");
                 }
