@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         [FieldDefinition(3, Label = "API Key", Type = FieldType.Textbox)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
+        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]

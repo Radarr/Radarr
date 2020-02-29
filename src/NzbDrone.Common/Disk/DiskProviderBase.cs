@@ -136,7 +136,7 @@ namespace NzbDrone.Common.Disk
 
             try
             {
-                var testPath = Path.Combine(path, "lidarr_write_test.txt");
+                var testPath = Path.Combine(path, "readarr_write_test.txt");
                 var testContent = $"This file was created to verify if '{path}' is writable. It should've been automatically deleted. Feel free to delete it.";
                 _fileSystem.File.WriteAllText(testPath, testContent);
                 _fileSystem.File.Delete(testPath);

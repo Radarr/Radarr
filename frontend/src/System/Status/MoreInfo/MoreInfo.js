@@ -16,27 +16,27 @@ class MoreInfo extends Component {
         <DescriptionList>
           <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://lidarr.audio/">lidarr.audio</Link>
+            <Link to="https://readarr.audio/">readarr.audio</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/lidarr/Lidarr/wiki">wiki.lidarr.audio</Link>
+            <Link to="https://github.com/readarr/Readarr/wiki">wiki.readarr.audio</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Reddit</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://www.reddit.com/r/Lidarr/">Lidarr</Link>
+            <Link to="https://www.reddit.com/r/Readarr/">Readarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://discord.gg/8Y7rDc9">#lidarr on Discord</Link>
+            <Link to="https://discord.gg/8Y7rDc9">#readarr on Discord</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://opencollective.com/lidarr">Donate to Lidarr</Link>
+            <Link to="https://opencollective.com/readarr">Donate to Readarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Sonarr Donations</DescriptionListItemTitle>
@@ -46,12 +46,12 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Source</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/lidarr/Lidarr/">github.com/Lidarr/Lidarr</Link>
+            <Link to="https://github.com/readarr/Readarr/">github.com/Readarr/Readarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Feature Requests</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/lidarr/Lidarr/issues">github.com/Lidarr/Lidarr/issues</Link>
+            <Link to="https://github.com/readarr/Readarr/issues">github.com/Readarr/Readarr/issues</Link>
           </DescriptionListItemDescription>
 
         </DescriptionList>

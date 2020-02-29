@@ -7,10 +7,10 @@ variables:
   outputFolder: './_output'
   artifactsFolder: './_artifacts'
   testsFolder: './_tests'
-  majorVersion: '0.7.1'
-  minorVersion: $[counter('minorVersion', 1076)]
-  lidarrVersion: '$(majorVersion).$(minorVersion)'
-  buildName: '$(Build.SourceBranchName).$(lidarrVersion)'
+  majorVersion: '0.1.0'
+  minorVersion: $[counter('minorVersion', 1)]
+  readarrVersion: '$(majorVersion).$(minorVersion)'
+  buildName: '$(Build.SourceBranchName).$(readarrVersion)'
   sentryOrg: 'radarr'
   dotnetVersion: '3.1.102'
 
@@ -45,7 +45,7 @@ stages:
         vmImage: $(imageName)
       steps:
       # Set the build name properly.  The 'name' property won't recursively expand so hack here:
-      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:LIDARRVERSION)"
+      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:READARRVERSION)"
         displayName: Set Build Name
       - checkout: self
         submodules: true
@@ -55,7 +55,7 @@ stages:
         inputs:
           version: $(dotnetVersion)
       - bash: ./build.sh --backend
-        displayName: Build Lidarr Backend
+        displayName: Build Readarr Backend
       - bash: |
           find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
           find ${OUTPUTFOLDER} -depth -empty -type d -exec rm -r "{}" \;
@@ -112,7 +112,7 @@ stages:
         submodules: true
         fetchDepth: 1
       - bash: ./build.sh --frontend
-        displayName: Build Lidarr Frontend
+        displayName: Build Readarr Frontend
         env:
           FORCE_COLOR: 0
       - publish: $(outputFolder)
@@ -147,8 +147,8 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/lidarr.iss //DFramework=netcoreapp3.1
-          cp setup/output/Lidarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Lidarr.${BUILDNAME}.windows-core-x64-installer.exe
+          setup/inno/ISCC.exe setup/readarr.iss //DFramework=netcoreapp3.1
+          cp setup/output/Readarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Readarr.${BUILDNAME}.windows-core-x64-installer.exe
         displayName: Create .NET Core Windows installer
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
@@ -182,27 +182,27 @@ stages:
         displayName: Create Packages
       - bash: |
           find . -name "fpcalc" -exec chmod a+x {} \;
-          find . -name "Lidarr" -exec chmod a+x {} \;
-          find . -name "Lidarr.Update" -exec chmod a+x {} \;
+          find . -name "Readarr" -exec chmod a+x {} \;
+          find . -name "Readarr.Update" -exec chmod a+x {} \;
         displayName: Set executable bits
       - task: ArchiveFiles@2
         displayName: Create Windows Core zip
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).windows-core-x64.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/windows/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create MacOS Core app
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).osx-app-core-x64.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/macos-app/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create MacOS Core tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).osx-core-x64.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).osx-core-x64.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
@@ -210,7 +210,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Create Linux Mono tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).linux.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
@@ -218,7 +218,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Create Linux Core tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).linux-core-x64.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-core-x64.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
@@ -226,7 +226,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Create ARM32 Core tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).linux-core-arm.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-core-arm.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
@@ -234,7 +234,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Create Linux Core tar
         inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Lidarr.$(buildName).linux-core-arm64.tar.gz'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-core-arm64.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
@@ -245,9 +245,9 @@ stages:
       - bash: |
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
-          RELEASENAME="${LIDARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
-          sentry-cli releases new --finalize -p lidarr -p lidarr-ui -p lidarr-update "${RELEASENAME}"
-          sentry-cli releases -p lidarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          RELEASENAME="${READARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
+          sentry-cli releases new --finalize -p readarr -p readarr-ui -p readarr-update "${RELEASENAME}"
+          sentry-cli releases -p readarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           if [[ ${BUILD_SOURCEBRANCH} == "refs/heads/develop" ]]; then
           sentry-cli releases deploys "${RELEASENAME}" new -e nightly
@@ -287,7 +287,7 @@ stages:
             osName: 'Linux'
             testName: 'LinuxCore'
             imageName: 'ubuntu-18.04'
-            pattern: 'Lidarr.**.linux-core-x64.tar.gz'
+            pattern: 'Readarr.**.linux-core-x64.tar.gz'
 
       pool:
         vmImage: $(imageName)
@@ -322,7 +322,7 @@ stages:
           chmod a+x _tests/fpcalc
         displayName: Set Mono Version and make fpcalc Executable
         condition: and(succeeded(), eq(variables['osName'], 'Mac'))
-      - bash: find ${TESTSFOLDER} -name "Lidarr.Test.Dummy" -exec chmod a+x {} \;
+      - bash: find ${TESTSFOLDER} -name "Readarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - task: Bash@3
@@ -347,16 +347,16 @@ stages:
         matrix:
           mono508:
             testName: 'Mono 5.8'
-            containerImage: lidarr/testimages:mono-5.8
+            containerImage: readarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
-            containerImage: lidarr/testimages:mono-5.20
+            containerImage: readarr/testimages:mono-5.20
           mono608:
             testName: 'Mono 6.8'
-            containerImage: lidarr/testimages:mono-6.8
+            containerImage: readarr/testimages:mono-6.8
           mono610:
             testName: 'Mono 6.10'
-            containerImage: lidarr/testimages:mono-6.10
+            containerImage: readarr/testimages:mono-6.10
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -406,17 +406,17 @@ stages:
             osName: 'Mac'
             testName: 'MacCore'
             imageName: 'macos-10.14'
-            pattern: 'Lidarr.**.osx-core-x64.tar.gz'
+            pattern: 'Readarr.**.osx-core-x64.tar.gz'
           WindowsCore:
             osName: 'Windows'
             testName: 'WindowsCore'
             imageName: 'windows-2019'
-            pattern: 'Lidarr.**.windows-core-x64.zip'
+            pattern: 'Readarr.**.windows-core-x64.zip'
           LinuxCore:
             osName: 'Linux'
             testName: 'LinuxCore'
             imageName: 'ubuntu-18.04'
-            pattern: 'Lidarr.**.linux-core-x64.tar.gz'
+            pattern: 'Readarr.**.linux-core-x64.tar.gz'
 
       pool:
         vmImage: $(imageName)
@@ -455,7 +455,7 @@ stages:
         displayName: Extract Package
       - bash: |
           mkdir -p ./bin/
-          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Lidarr/. ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - task: Bash@3
         displayName: Run Integration Tests
@@ -477,19 +477,19 @@ stages:
         matrix:
           mono508:
             testName: 'Mono 5.8'
-            containerImage: lidarr/testimages:mono-5.8
+            containerImage: readarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
-            containerImage: lidarr/testimages:mono-5.20
+            containerImage: readarr/testimages:mono-5.20
           mono608:
             testName: 'Mono 6.8'
-            containerImage: lidarr/testimages:mono-6.8
+            containerImage: readarr/testimages:mono-6.8
           mono610:
             testName: 'Mono 6.10'
-            containerImage: lidarr/testimages:mono-6.10
+            containerImage: readarr/testimages:mono-6.10
 
       variables:
-        pattern: 'Lidarr.**.linux.tar.gz'
+        pattern: 'Readarr.**.linux.tar.gz'
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -526,7 +526,7 @@ stages:
         displayName: Extract Package
       - bash: |
           mkdir -p ./bin/
-          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Lidarr/. ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - task: Bash@3
         displayName: Run Integration Tests
@@ -553,17 +553,17 @@ stages:
           Linux:
             osName: 'Linux'
             imageName: 'ubuntu-18.04'
-            pattern: 'Lidarr.**.linux-core-x64.tar.gz'
+            pattern: 'Readarr.**.linux-core-x64.tar.gz'
             failBuild: true
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.14' # Fails due to firefox not being installed on image
-            pattern: 'Lidarr.**.osx-core-x64.tar.gz'
+            pattern: 'Readarr.**.osx-core-x64.tar.gz'
             failBuild: false
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
-            pattern: 'Lidarr.**.windows-core-x64.zip'
+            pattern: 'Readarr.**.windows-core-x64.zip'
             failBuild: true
 
       pool:
@@ -595,7 +595,7 @@ stages:
         displayName: Extract Package
       - bash: |
           mkdir -p ./bin/
-          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Lidarr/. ./bin/
+          cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
           if [[ $OSNAME == "Mac" ]]; then
@@ -652,7 +652,7 @@ stages:
         submodules: true
         fetchDepth: 1
       - bash: ./build.sh --lint
-        displayName: Lint Lidarr Frontend
+        displayName: Lint Readarr Frontend
         env:
           FORCE_COLOR: 0
 
@@ -667,12 +667,12 @@ stages:
           SONAR_SCANNER_OPTS: ''
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: 'lidarr'
+          organization: 'readarr'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: 'lidarr_Lidarr.UI'
-          cliProjectName: 'LidarrUI'
-          cliProjectVersion: '$(lidarrVersion)'
+          cliProjectKey: 'readarr_Readarr.UI'
+          cliProjectName: 'ReadarrUI'
+          cliProjectVersion: '$(readarrVersion)'
           cliSources: './frontend'
       - task: SonarCloudAnalyze@1
 
@@ -694,14 +694,14 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: 'lidarr'
+          organization: 'readarr'
           scannerMode: 'MSBuild'
-          projectKey: 'lidarr_Lidarr'
-          projectName: 'Lidarr'
-          projectVersion: '$(lidarrVersion)'
+          projectKey: 'readarr_Readarr'
+          projectName: 'Readarr'
+          projectVersion: '$(readarrVersion)'
           extraProperties: |
             sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
-            sonar.coverage.exclusions=**/Lidarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
+            sonar.coverage.exclusions=**/Readarr.Api.V1/**/*,**/MonoTorrent/**/*,**/Marr.Data/**/*
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |

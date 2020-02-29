@@ -1,4 +1,4 @@
-const lidarrGreen = '#00A65B';
+const readarrGreen = '#00A65B';
 
 module.exports = {
   textColor: '#515253',
@@ -15,10 +15,10 @@ module.exports = {
   successColor: '#27c24c',
   dangerColor: '#f05050',
   warningColor: '#ffa500',
-  infoColor: lidarrGreen,
+  infoColor: readarrGreen,
   purple: '#7a43b6',
   pink: '#ff69b4',
-  lidarrGreen,
+  readarrGreen,
   helpTextColor: '#909293',
   darkGray: '#888',
   gray: '#adadad',
@@ -27,7 +27,7 @@ module.exports = {
 
   // Theme Colors
 
-  themeBlue: lidarrGreen,
+  themeBlue: readarrGreen,
   themeAlternateBlue: '#00a65b',
   themeRed: '#c4273c',
   themeDarkColor: '#353535',

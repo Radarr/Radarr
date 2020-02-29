@@ -24,8 +24,8 @@ namespace NzbDrone.Common.Composition
         {
             _loadedTypes = new List<Type>();
 
-            assemblies.Add(OsInfo.IsWindows ? "Lidarr.Windows" : "Lidarr.Mono");
-            assemblies.Add("Lidarr.Common");
+            assemblies.Add(OsInfo.IsWindows ? "Readarr.Windows" : "Readarr.Mono");
+            assemblies.Add("Readarr.Common");
 
 #if !NETCOREAPP
             foreach (var assembly in assemblies)

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="FluentValidation" Version="8.6.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="RestSharp" Version="106.6.10" />
+    <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
+    <PackageReference Include="Unity" Version="5.11.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Common\Readarr.Common.csproj" />
+    <ProjectReference Include="..\NzbDrone.Core\Readarr.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,5 +1,5 @@
 <Project>
-  <!-- Common to all Lidarr Projects -->
+  <!-- Common to all Readarr Projects -->
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(SolutionDir)Stylecop.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -9,35 +9,35 @@
     <RuntimeIdentifiers>win-x64;osx-x64;linux-x64;linux-arm;linux-arm64</RuntimeIdentifiers>
     <ExcludedRuntimeFrameworkPairs>win-x64:net462;osx-x64:net462;linux-arm:net462;linux-arm64:net462</ExcludedRuntimeFrameworkPairs>
 
-    <LidarrRootDir>$(MSBuildThisFileDirectory)..\</LidarrRootDir>
+    <ReadarrRootDir>$(MSBuildThisFileDirectory)..\</ReadarrRootDir>
 
     <!-- Specifies the type of output -->
-    <LidarrOutputType>Library</LidarrOutputType>
-    <LidarrOutputType Condition="$(MSBuildProjectName.Contains('.Test'))">Test</LidarrOutputType>
-    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceInstall'">Exe</LidarrOutputType>
-    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</LidarrOutputType>
-    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr'">Exe</LidarrOutputType>
-    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr.Console'">Exe</LidarrOutputType>
-    <LidarrOutputType Condition="'$(MSBuildProjectName)'=='Lidarr.Update'">Update</LidarrOutputType>
+    <ReadarrOutputType>Library</ReadarrOutputType>
+    <ReadarrOutputType Condition="$(MSBuildProjectName.Contains('.Test'))">Test</ReadarrOutputType>
+    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceInstall'">Exe</ReadarrOutputType>
+    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='ServiceUninstall'">Exe</ReadarrOutputType>
+    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr'">Exe</ReadarrOutputType>
+    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Console'">Exe</ReadarrOutputType>
+    <ReadarrOutputType Condition="'$(MSBuildProjectName)'=='Readarr.Update'">Update</ReadarrOutputType>
 
     <!-- Specifies whether it's one of our own libraries -->
-    <LidarrProject>false</LidarrProject>
-    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('Lidarr'))">true</LidarrProject>
-    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</LidarrProject>
-    <LidarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</LidarrProject>
+    <ReadarrProject>false</ReadarrProject>
+    <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('Readarr'))">true</ReadarrProject>
+    <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</ReadarrProject>
+    <ReadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</ReadarrProject>
   </PropertyGroup>
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Release</Configuration>
     <!-- Centralize intermediate and default outputs -->
-    <BaseIntermediateOutputPath>$(LidarrRootDir)_temp\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(LidarrRootDir)_temp\obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
-    <OutputPath>$(LidarrRootDir)_temp\bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+    <BaseIntermediateOutputPath>$(ReadarrRootDir)_temp\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(ReadarrRootDir)_temp\obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath>$(ReadarrRootDir)_temp\bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
 
     <!-- Output to _output and _tests respectively -->
-    <OutputPath Condition="'$(LidarrProject)'=='true'">$(LidarrRootDir)_output\</OutputPath>
-    <OutputPath Condition="'$(LidarrOutputType)'=='Test'">$(LidarrRootDir)_tests\</OutputPath>
-    <OutputPath Condition="'$(LidarrOutputType)'=='Update'">$(LidarrRootDir)_output\Lidarr.Update\</OutputPath>
+    <OutputPath Condition="'$(ReadarrProject)'=='true'">$(ReadarrRootDir)_output\</OutputPath>
+    <OutputPath Condition="'$(ReadarrOutputType)'=='Test'">$(ReadarrRootDir)_tests\</OutputPath>
+    <OutputPath Condition="'$(ReadarrOutputType)'=='Update'">$(ReadarrRootDir)_output\Readarr.Update\</OutputPath>
 
     <!-- Paths relative to project file for better readability -->
     <BaseIntermediateOutputPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)'))</BaseIntermediateOutputPath>
@@ -48,17 +48,17 @@
   </PropertyGroup>
   
   <!-- Test projects need bindingRedirects -->
-  <PropertyGroup Condition="'$(LidarrOutputType)'=='Test'">
+  <PropertyGroup Condition="'$(ReadarrOutputType)'=='Test'">
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <SelfContained>false</SelfContained>
   </PropertyGroup>
 
   <!-- Set the Product and Version info for our own projects -->
-  <PropertyGroup Condition="'$(LidarrProject)'=='true'">
-    <Product>Lidarr</Product>
-    <Company>lidarr.audio</Company>
-    <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) lidarr.audio (GNU General Public v3)</Copyright>
+  <PropertyGroup Condition="'$(ReadarrProject)'=='true'">
+    <Product>Readarr</Product>
+    <Company>readarr.audio</Company>
+    <Copyright>Copyright 2017-$([System.DateTime]::Now.ToString('yyyy')) readarr.audio (GNU General Public v3)</Copyright>
     
     <!-- Should be replaced by CI -->
     <AssemblyVersion>10.0.0.*</AssemblyVersion>
@@ -72,7 +72,7 @@
   </PropertyGroup>
 
   <!-- Set the AssemblyConfiguration attribute for projects -->
-  <ItemGroup Condition="'$(LidarrProject)'=='true'">
+  <ItemGroup Condition="'$(ReadarrProject)'=='true'">
     <AssemblyAttribute Include="System.Reflection.AssemblyConfigurationAttribute">
       <_Parameter1>$(AssemblyConfiguration)</_Parameter1>
     </AssemblyAttribute>
@@ -80,7 +80,7 @@
 
   <PropertyGroup>
     <!-- For now keep the NzbDrone namespace -->
-    <RootNamespace Condition="'$(LidarrProject)'=='true'">$(MSBuildProjectName.Replace('Lidarr','NzbDrone'))</RootNamespace>
+    <RootNamespace Condition="'$(ReadarrProject)'=='true'">$(MSBuildProjectName.Replace('Readarr','NzbDrone'))</RootNamespace>
   </PropertyGroup>
 
   <!-- Allow building net framework using mono -->
@@ -92,7 +92,7 @@
   </ItemGroup>
 
   <!-- Set up stylecop -->
-  <ItemGroup Condition="'$(LidarrProject)'=='true'">
+  <ItemGroup Condition="'$(ReadarrProject)'=='true'">
     <!-- StyleCop analysis -->
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

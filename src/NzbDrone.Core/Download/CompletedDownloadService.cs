@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Download
 
             if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
             {
-                trackedDownload.Warn("Download wasn't grabbed by Lidarr and not in a category, Skipping.");
+                trackedDownload.Warn("Download wasn't grabbed by Readarr and not in a category, Skipping.");
                 return;
             }
 

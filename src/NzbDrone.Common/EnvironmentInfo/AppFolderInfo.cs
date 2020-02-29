@@ -33,7 +33,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
             else
             {
-                AppDataFolder = Path.Combine(Environment.GetFolderPath(_dataSpecialFolder, Environment.SpecialFolderOption.DoNotVerify), "Lidarr");
+                AppDataFolder = Path.Combine(Environment.GetFolderPath(_dataSpecialFolder, Environment.SpecialFolderOption.DoNotVerify), "Readarr");
             }
 
             StartUpFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;

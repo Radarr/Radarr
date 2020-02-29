@@ -31,7 +31,7 @@ namespace NzbDrone.Update.UpdateEngine
 
         public void Start(AppType appType, string installationFolder)
         {
-            _logger.Info("Starting Lidarr");
+            _logger.Info("Starting Readarr");
             if (appType == AppType.Service)
             {
                 try
@@ -40,7 +40,7 @@ namespace NzbDrone.Update.UpdateEngine
                 }
                 catch (InvalidOperationException e)
                 {
-                    _logger.Warn(e, "Couldn't start Lidarr Service (Most likely due to permission issues). Falling back to console.");
+                    _logger.Warn(e, "Couldn't start Readarr Service (Most likely due to permission issues). Falling back to console.");
                     StartConsole(installationFolder);
                 }
             }
@@ -56,18 +56,18 @@ namespace NzbDrone.Update.UpdateEngine
 
         private void StartService()
         {
-            _logger.Info("Starting Lidarr service");
+            _logger.Info("Starting Readarr service");
             _serviceProvider.Start(ServiceProvider.SERVICE_NAME);
         }
 
         private void StartWinform(string installationFolder)
         {
-            Start(installationFolder, "Lidarr".ProcessNameToExe());
+            Start(installationFolder, "Readarr".ProcessNameToExe());
         }
 
         private void StartConsole(string installationFolder)
         {
-            Start(installationFolder, "Lidarr.Console".ProcessNameToExe());
+            Start(installationFolder, "Readarr.Console".ProcessNameToExe());
         }
 
         private void Start(string installationFolder, string fileName)

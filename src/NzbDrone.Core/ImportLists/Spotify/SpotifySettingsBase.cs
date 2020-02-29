@@ -30,8 +30,8 @@ namespace NzbDrone.Core.ImportLists.Spotify
         public string BaseUrl { get; set; }
 
         public string OAuthUrl => "https://accounts.spotify.com/authorize";
-        public string RedirectUri => "https://spotify.lidarr.audio/auth";
-        public string RenewUri => "https://spotify.lidarr.audio/renew";
+        public string RedirectUri => "https://spotify.readarr.audio/auth";
+        public string RenewUri => "https://spotify.readarr.audio/renew";
         public string ClientId => "848082790c32436d8a0405fddca0aa18";
         public virtual string Scope => "";
 

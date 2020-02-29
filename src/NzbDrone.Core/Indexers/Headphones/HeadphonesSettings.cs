@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Indexers.Headphones
         [FieldDefinition(2, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Advanced = true)]
+        [FieldDefinition(3, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Readarr will download from this indexer, empty is no limit", Advanced = true)]
         public int? EarlyReleaseLimit { get; set; }
 
         public virtual NzbDroneValidationResult Validate()

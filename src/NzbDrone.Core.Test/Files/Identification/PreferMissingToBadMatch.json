@@ -154,7 +154,7 @@
   "singleRelease": false,
   "tracks": [
     {
-      "path": "/mnt/data1/LidarrTest/Bruce Springsteen/Album/10_Glory_Days.mp3",
+      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Album/10_Glory_Days.mp3",
       "fileTrackInfo": {
         "title": "Glory Days",
         "cleanTitle": "Glory Days",
@@ -191,7 +191,7 @@
       }
     },
     {
-      "path": "/mnt/data1/LidarrTest/Bruce Springsteen/Album/11_Dancing_In_The_Dark.mp3",
+      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Album/11_Dancing_In_The_Dark.mp3",
       "fileTrackInfo": {
         "title": "Dancing In The Dark",
         "cleanTitle": "Dancing In The Dark",

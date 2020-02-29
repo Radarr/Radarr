@@ -125,7 +125,7 @@ namespace NzbDrone.Core.ImportLists
 
         private void MapAlbumReport(ImportListItemInfo report)
         {
-            var albumQuery = report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() ? $"lidarr:{report.AlbumMusicBrainzId}" : report.Album;
+            var albumQuery = report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() ? $"readarr:{report.AlbumMusicBrainzId}" : report.Album;
             var mappedAlbum = _albumSearchService.SearchForNewAlbum(albumQuery, report.Artist)
                 .FirstOrDefault();
 

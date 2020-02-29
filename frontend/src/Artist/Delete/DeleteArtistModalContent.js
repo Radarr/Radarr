@@ -112,7 +112,7 @@ class DeleteArtistModalContent extends Component {
               type={inputTypes.CHECK}
               name="addImportListExclusion"
               value={addImportListExclusion}
-              helpText="Prevent artist from being added to Lidarr by Import lists"
+              helpText="Prevent artist from being added to Readarr by Import lists"
               kind={kinds.DANGER}
               onChange={this.onAddImportListExclusionChange}
             />

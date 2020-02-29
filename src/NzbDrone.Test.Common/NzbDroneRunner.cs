@@ -21,10 +21,10 @@ namespace NzbDrone.Test.Common
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
 
-        public NzbDroneRunner(Logger logger, int port = 8686)
+        public NzbDroneRunner(Logger logger, int port = 8787)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient("http://localhost:8686/api/v1");
+            _restClient = new RestClient("http://localhost:8787/api/v1");
         }
 
         public void Start()
@@ -34,28 +34,28 @@ namespace NzbDrone.Test.Common
 
             GenerateConfigFile();
 
-            string lidarrConsoleExe;
+            string readarrConsoleExe;
             if (OsInfo.IsWindows)
             {
-                lidarrConsoleExe = "Lidarr.Console.exe";
+                readarrConsoleExe = "Readarr.Console.exe";
             }
             else if (PlatformInfo.IsMono)
             {
-                lidarrConsoleExe = "Lidarr.exe";
+                readarrConsoleExe = "Readarr.exe";
             }
             else
             {
-                lidarrConsoleExe = "Lidarr";
+                readarrConsoleExe = "Readarr";
             }
 
             if (BuildInfo.IsDebug)
             {
                 var frameworkFolder = PlatformInfo.IsNetCore ? "netcoreapp3.1" : "net462";
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", frameworkFolder, lidarrConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "_output", frameworkFolder, readarrConsoleExe));
             }
             else
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", lidarrConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", readarrConsoleExe));
             }
 
             while (true)
@@ -64,7 +64,7 @@ namespace NzbDrone.Test.Common
 
                 if (_nzbDroneProcess.HasExited)
                 {
-                    TestContext.Progress.WriteLine("Lidarr has exited unexpectedly");
+                    TestContext.Progress.WriteLine("Readarr has exited unexpectedly");
                     Thread.Sleep(2000);
                     Assert.Fail("Process has exited: ExitCode={0}", _nzbDroneProcess.ExitCode);
                 }
@@ -77,11 +77,11 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    TestContext.Progress.WriteLine("Lidarr is started. Running Tests");
+                    TestContext.Progress.WriteLine("Readarr is started. Running Tests");
                     return;
                 }
 
-                TestContext.Progress.WriteLine("Waiting for Lidarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException.Message);
+                TestContext.Progress.WriteLine("Waiting for Readarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException.Message);
 
                 Thread.Sleep(500);
             }
@@ -96,8 +96,8 @@ namespace NzbDrone.Test.Common
                     _processProvider.Kill(_nzbDroneProcess.Id);
                 }
 
-                _processProvider.KillAll(ProcessProvider.LIDARR_CONSOLE_PROCESS_NAME);
-                _processProvider.KillAll(ProcessProvider.LIDARR_PROCESS_NAME);
+                _processProvider.KillAll(ProcessProvider.READARR_CONSOLE_PROCESS_NAME);
+                _processProvider.KillAll(ProcessProvider.READARR_PROCESS_NAME);
             }
             catch (InvalidOperationException)
             {

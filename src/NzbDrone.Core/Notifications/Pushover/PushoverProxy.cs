@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Notifications.Pushover
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Lidarr";
+                const string body = "This is a test message from Readarr";
 
                 SendNotification(title, body, settings);
             }

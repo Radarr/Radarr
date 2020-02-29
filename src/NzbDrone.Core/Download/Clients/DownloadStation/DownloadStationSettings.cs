@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         [FieldDefinition(3, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
+        [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(5, Label = "Directory", Type = FieldType.Textbox, HelpText = "Optional shared folder to put downloads into, leave blank to use the default Download Station location")]

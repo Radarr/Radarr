@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _parsedAlbumInfo = Builder<ParsedAlbumInfo>.CreateNew()
                                                            .With(p => p.Quality = new QualityModel(Quality.FLAC,
                                                                new Revision(2, 0, false)))
-                                                           .With(p => p.ReleaseGroup = "Lidarr")
+                                                           .With(p => p.ReleaseGroup = "Readarr")
                                                            .Build();
 
             _albums = Builder<Album>.CreateListOfSize(1)
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.Select(c =>
             {
-                c.ReleaseGroup = "Lidarr";
+                c.ReleaseGroup = "Readarr";
                 return c;
             }).ToList();
             _trackFiles.Select(c =>
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.Select(c =>
             {
-                c.ReleaseGroup = "Lidarr";
+                c.ReleaseGroup = "Readarr";
                 return c;
             }).ToList();
             _trackFiles.Select(c =>
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.Select(c =>
             {
-                c.ReleaseGroup = "Lidarr";
+                c.ReleaseGroup = "Readarr";
                 return c;
             }).ToList();
             _trackFiles.Select(c =>
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            _trackFiles.First().ReleaseGroup = "NotLidarr";
+            _trackFiles.First().ReleaseGroup = "NotReadarr";
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                       .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.Select(c =>
             {
-                c.ReleaseGroup = "NotLidarr";
+                c.ReleaseGroup = "NotReadarr";
                 return c;
             }).ToList();
             _trackFiles.Select(c =>
@@ -224,7 +224,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.Select(c =>
             {
-                c.ReleaseGroup = "Lidarr";
+                c.ReleaseGroup = "Readarr";
                 return c;
             }).ToList();
 

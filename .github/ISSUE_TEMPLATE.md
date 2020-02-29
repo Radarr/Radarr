@@ -18,7 +18,7 @@ Remove if not opening a bug report
 
 ### System Information/Logs
 
-**Lidarr Version:**
+**Readarr Version:**
 
 **Operating System:**
 

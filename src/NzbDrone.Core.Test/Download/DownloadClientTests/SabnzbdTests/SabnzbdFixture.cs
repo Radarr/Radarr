@@ -351,7 +351,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             Mocker.GetMock<ISabnzbdProxy>()
                     .Setup(s => s.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()))
-                    .Returns(new SabnzbdAddResponse { Ids = new List<string> { "lidarrtest" } });
+                    .Returns(new SabnzbdAddResponse { Ids = new List<string> { "readarrtest" } });
 
             var remoteAlbum = CreateRemoteAlbum();
             remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1)

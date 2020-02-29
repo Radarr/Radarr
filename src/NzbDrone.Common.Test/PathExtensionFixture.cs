@@ -19,7 +19,7 @@ namespace NzbDrone.Common.Test
         {
             var fakeEnvironment = new Mock<IAppFolderInfo>();
 
-            fakeEnvironment.SetupGet(c => c.AppDataFolder).Returns(@"C:\Lidarr\".AsOsAgnostic());
+            fakeEnvironment.SetupGet(c => c.AppDataFolder).Returns(@"C:\Readarr\".AsOsAgnostic());
 
             fakeEnvironment.SetupGet(c => c.TempFolder).Returns(@"C:\Temp\".AsOsAgnostic());
 
@@ -165,8 +165,8 @@ namespace NzbDrone.Common.Test
 
             // This test will fail on Windows if long path support is not enabled: https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/
             // It will also fail if the app isn't configured to use long path (such as resharper): https://blogs.msdn.microsoft.com/jeremykuhne/2016/07/30/net-4-6-2-and-long-paths-on-windows-10/
-            var path = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\lidarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories".AsOsAgnostic();
-            var parentPath = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\lidarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing".AsOsAgnostic();
+            var path = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\readarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories".AsOsAgnostic();
+            var parentPath = @"C:\media\2e168617-f2ae-43fb-b88c-3663af1c8eea\downloads\sabnzbd\readarr\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing\With.Alot.Of.Nested.Directories\Some.Real.Big.Thing".AsOsAgnostic();
 
             path.GetParentPath().Should().Be(parentPath);
         }
@@ -249,43 +249,43 @@ namespace NzbDrone.Common.Test
         [Test]
         public void AppDataDirectory_path_test()
         {
-            GetIAppDirectoryInfo().GetAppDataPath().Should().BeEquivalentTo(@"C:\Lidarr\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetAppDataPath().Should().BeEquivalentTo(@"C:\Readarr\".AsOsAgnostic());
         }
 
         [Test]
         public void Config_path_test()
         {
-            GetIAppDirectoryInfo().GetConfigPath().Should().BeEquivalentTo(@"C:\Lidarr\Config.xml".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetConfigPath().Should().BeEquivalentTo(@"C:\Readarr\Config.xml".AsOsAgnostic());
         }
 
         [Test]
         public void Sandbox()
         {
-            GetIAppDirectoryInfo().GetUpdateSandboxFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateSandboxFolder().Should().BeEquivalentTo(@"C:\Temp\readarr_update\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdatePackageFolder()
         {
-            GetIAppDirectoryInfo().GetUpdatePackageFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdatePackageFolder().Should().BeEquivalentTo(@"C:\Temp\readarr_update\Readarr\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateClientFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\Lidarr.Update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\readarr_update\Readarr\Readarr.Update\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateClientExePath()
         {
-            GetIAppDirectoryInfo().GetUpdateClientExePath(PlatformType.DotNet).Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr.Update.exe".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientExePath(PlatformType.DotNet).Should().BeEquivalentTo(@"C:\Temp\readarr_update\Readarr.Update.exe".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateLogFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateLogFolder().Should().BeEquivalentTo(@"C:\Lidarr\UpdateLogs\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateLogFolder().Should().BeEquivalentTo(@"C:\Readarr\UpdateLogs\".AsOsAgnostic());
         }
 
         [Test]

@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Lidarr.Core.Test")]
+[assembly: InternalsVisibleTo("Readarr.Core.Test")]

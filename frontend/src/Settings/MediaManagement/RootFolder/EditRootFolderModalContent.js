@@ -156,12 +156,12 @@ function EditRootFolderModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Default Lidarr Tags</FormLabel>
+                <FormLabel>Default Readarr Tags</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="defaultTags"
-                  helpText="Default Lidarr Tags for artists detected in this folder"
+                  helpText="Default Readarr Tags for artists detected in this folder"
                   {...defaultTags}
                   onChange={onInputChange}
                 />

@@ -100,7 +100,7 @@ class AddNewItem extends Component {
               className={styles.searchInput}
               name="searchBox"
               value={term}
-              placeholder="eg. Breaking Benjamin, lidarr:854a1807-025b-42a8-ba8c-2a39717f1d25"
+              placeholder="eg. Breaking Benjamin, readarr:854a1807-025b-42a8-ba8c-2a39717f1d25"
               autoFocus={true}
               onChange={this.onSearchInputChange}
             />
@@ -163,7 +163,7 @@ class AddNewItem extends Component {
                 <div>
                   You can also search using the
                   <Link to="https://musicbrainz.org/search"> MusicBrainz ID </Link>
-                  of an artist e.g. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
+                  of an artist e.g. readarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
                 </div>
               </div>
           }
@@ -175,7 +175,7 @@ class AddNewItem extends Component {
                 <div>
                   You can also search using the
                   <Link to="https://musicbrainz.org/search"> MusicBrainz ID </Link>
-                  of an artist e.g. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
+                  of an artist e.g. readarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
                 </div>
               </div>
           }

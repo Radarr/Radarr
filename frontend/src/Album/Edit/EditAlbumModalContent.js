@@ -64,7 +64,7 @@ class EditAlbumModalContent extends Component {
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="monitored"
-                helpText="Lidarr will search for and download album"
+                helpText="Readarr will search for and download album"
                 {...monitored}
                 onChange={onInputChange}
               />
@@ -76,7 +76,7 @@ class EditAlbumModalContent extends Component {
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="anyReleaseOk"
-                helpText="Lidarr will automatically switch to the release best matching downloaded tracks"
+                helpText="Readarr will automatically switch to the release best matching downloaded tracks"
                 {...anyReleaseOk}
                 onChange={onInputChange}
               />

@@ -53,11 +53,11 @@ class PageHeader extends Component {
         <div className={styles.logoContainer}>
           <Link
             className={styles.logoLink}
-            to={`${window.Lidarr.urlBase}/`}
+            to={`${window.Readarr.urlBase}/`}
           >
             <img
               className={styles.logo}
-              src={`${window.Lidarr.urlBase}/Content/Images/logo.svg`}
+              src={`${window.Readarr.urlBase}/Content/Images/logo.svg`}
             />
           </Link>
         </div>
@@ -76,7 +76,7 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
-            to="https://opencollective.com/lidarr"
+            to="https://opencollective.com/readarr"
             size={14}
           />
           <PageHeaderActionsMenuConnector

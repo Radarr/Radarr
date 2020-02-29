@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Update
             }
 
             _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime));
-            _logger.ProgressInfo("Lidarr will restart shortly.");
+            _logger.ProgressInfo("Readarr will restart shortly.");
 
             _processProvider.Start(_appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime), GetUpdaterArgs(updateSandboxFolder));
         }
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Update
                 throw new UpdateFailedException("Update Script: '{0}' does not exist", scriptPath);
             }
 
-            _logger.Info("Removing Lidarr.Update");
+            _logger.Info("Removing Readarr.Update");
             _diskProvider.DeleteFolder(_appFolderInfo.GetUpdateClientFolder(), true);
 
             _logger.ProgressInfo("Starting update script: {0}", _configFileProvider.UpdateScriptPath);
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Update
             if (_appFolderInfo.StartUpFolder.IsParentPath(_appFolderInfo.AppDataFolder) ||
                 _appFolderInfo.StartUpFolder.PathEquals(_appFolderInfo.AppDataFolder))
             {
-                throw new UpdateFailedException("Your Lidarr configuration '{0}' is being stored in application folder '{1}' which will cause data lost during the upgrade. Please remove any symlinks or redirects before trying again.", _appFolderInfo.AppDataFolder, _appFolderInfo.StartUpFolder);
+                throw new UpdateFailedException("Your Readarr configuration '{0}' is being stored in application folder '{1}' which will cause data lost during the upgrade. Please remove any symlinks or redirects before trying again.", _appFolderInfo.AppDataFolder, _appFolderInfo.StartUpFolder);
             }
         }
 
@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Update
             try
             {
                 InstallUpdate(latestAvailable);
-                _logger.ProgressDebug("Restarting Lidarr to apply updates");
+                _logger.ProgressDebug("Restarting Readarr to apply updates");
             }
             catch (UpdateFolderNotWritableException ex)
             {

@@ -89,7 +89,7 @@ class Updates extends Component {
                   size={30}
                 />
                 <div className={styles.upToDateMessage}>
-                  The latest version of Lidarr is already installed
+                  The latest version of Readarr is already installed
                 </div>
 
                 {

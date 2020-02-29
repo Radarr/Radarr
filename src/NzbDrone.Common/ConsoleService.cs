@@ -28,8 +28,8 @@ namespace NzbDrone.Common
                 Console.WriteLine("                 /{0} Register URL and open firewall port (allows access from other devices on your network).", StartupContext.REGISTER_URL);
             }
 
-            Console.WriteLine("                 /{0} Don't open Lidarr in a browser", StartupContext.NO_BROWSER);
-            Console.WriteLine("                 /{0} Start Lidarr terminating any other instances", StartupContext.TERMINATE);
+            Console.WriteLine("                 /{0} Don't open Readarr in a browser", StartupContext.NO_BROWSER);
+            Console.WriteLine("                 /{0} Start Readarr terminating any other instances", StartupContext.TERMINATE);
             Console.WriteLine("                 /{0}=path Path to use as the AppData location (stores database, config, logs, etc)", StartupContext.APPDATA);
             Console.WriteLine("                 <No Arguments>  Run application in console mode.");
         }

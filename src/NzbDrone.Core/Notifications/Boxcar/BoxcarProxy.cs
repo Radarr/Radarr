@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Lidarr";
+                const string body = "This is a test message from Readarr";
 
                 SendNotification(title, body, settings);
                 return null;
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
                 request.AddParameter("notification[title]", title);
                 request.AddParameter("notification[long_message]", message);
                 request.AddParameter("notification[source_name]", BuildInfo.AppName);
-                request.AddParameter("notification[icon_url]", "https://github.com/lidarr/Lidarr/raw/develop/Logo/64.png");
+                request.AddParameter("notification[icon_url]", "https://github.com/readarr/Readarr/raw/develop/Logo/64.png");
 
                 client.ExecuteAndValidate(request);
             }

@@ -1,9 +1,9 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: nzbdrone
-Source: https://github.com/lidarr/Lidarr
+Source: https://github.com/readarr/Readarr
 
 Files: *
-Copyright: 2010-2016 Lidarr <hello@lidarr.audio>
+Copyright: 2010-2016 Readarr <hello@readarr.audio>
 
 License: GPL-3.0+
 

@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
         public override string Name => "Custom Script";
 
-        public override string Link => "https://github.com/Lidarr/Lidarr/wiki/Custom-Post-Processing-Scripts";
+        public override string Link => "https://github.com/Readarr/Readarr/wiki/Custom-Post-Processing-Scripts";
 
         public override ProviderMessage Message => new ProviderMessage("Testing will execute the script with the EventType set to Test, ensure your script handles this correctly", ProviderMessageType.Warning);
 
@@ -39,22 +39,22 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var releaseGroup = remoteAlbum.ParsedAlbumInfo.ReleaseGroup;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Lidarr_EventType", "Grab");
-            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
-            environmentVariables.Add("Lidarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
-            environmentVariables.Add("Lidarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
-            environmentVariables.Add("Lidarr_Release_AlbumTitles", string.Join("|", remoteAlbum.Albums.Select(e => e.Title)));
-            environmentVariables.Add("Lidarr_Release_Title", remoteAlbum.Release.Title);
-            environmentVariables.Add("Lidarr_Release_Indexer", remoteAlbum.Release.Indexer ?? string.Empty);
-            environmentVariables.Add("Lidarr_Release_Size", remoteAlbum.Release.Size.ToString());
-            environmentVariables.Add("Lidarr_Release_Quality", remoteAlbum.ParsedAlbumInfo.Quality.Quality.Name);
-            environmentVariables.Add("Lidarr_Release_QualityVersion", remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.ToString());
-            environmentVariables.Add("Lidarr_Release_ReleaseGroup", releaseGroup ?? string.Empty);
-            environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
-            environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
+            environmentVariables.Add("Readarr_EventType", "Grab");
+            environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
+            environmentVariables.Add("Readarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
+            environmentVariables.Add("Readarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
+            environmentVariables.Add("Readarr_Release_AlbumTitles", string.Join("|", remoteAlbum.Albums.Select(e => e.Title)));
+            environmentVariables.Add("Readarr_Release_Title", remoteAlbum.Release.Title);
+            environmentVariables.Add("Readarr_Release_Indexer", remoteAlbum.Release.Indexer ?? string.Empty);
+            environmentVariables.Add("Readarr_Release_Size", remoteAlbum.Release.Size.ToString());
+            environmentVariables.Add("Readarr_Release_Quality", remoteAlbum.ParsedAlbumInfo.Quality.Quality.Name);
+            environmentVariables.Add("Readarr_Release_QualityVersion", remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Readarr_Release_ReleaseGroup", releaseGroup ?? string.Empty);
+            environmentVariables.Add("Readarr_Download_Client", message.DownloadClient ?? string.Empty);
+            environmentVariables.Add("Readarr_Download_Id", message.DownloadId ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }
@@ -66,28 +66,28 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var release = message.Release;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Lidarr_EventType", "AlbumDownload");
-            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
-            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
-            environmentVariables.Add("Lidarr_Album_Title", album.Title);
-            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
-            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
-            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
-            environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
-            environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
+            environmentVariables.Add("Readarr_EventType", "AlbumDownload");
+            environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Readarr_Artist_Path", artist.Path);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
+            environmentVariables.Add("Readarr_Album_Id", album.Id.ToString());
+            environmentVariables.Add("Readarr_Album_Title", album.Title);
+            environmentVariables.Add("Readarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Readarr_AlbumRelease_MBId", release.ForeignReleaseId);
+            environmentVariables.Add("Readarr_Album_ReleaseDate", album.ReleaseDate.ToString());
+            environmentVariables.Add("Readarr_Download_Client", message.DownloadClient ?? string.Empty);
+            environmentVariables.Add("Readarr_Download_Id", message.DownloadId ?? string.Empty);
 
             if (message.TrackFiles.Any())
             {
-                environmentVariables.Add("Lidarr_AddedTrackPaths", string.Join("|", message.TrackFiles.Select(e => e.Path)));
+                environmentVariables.Add("Readarr_AddedTrackPaths", string.Join("|", message.TrackFiles.Select(e => e.Path)));
             }
 
             if (message.OldFiles.Any())
             {
-                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => e.Path)));
+                environmentVariables.Add("Readarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => e.Path)));
             }
 
             ExecuteScript(environmentVariables);
@@ -97,12 +97,12 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Lidarr_EventType", "Rename");
-            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
+            environmentVariables.Add("Readarr_EventType", "Rename");
+            environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Readarr_Artist_Path", artist.Path);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
 
             ExecuteScript(environmentVariables);
         }
@@ -115,28 +115,28 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var trackFile = message.TrackFile;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Lidarr_EventType", "TrackRetag");
-            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
-            environmentVariables.Add("Lidarr_Artist_Type", artist.Metadata.Value.Type);
-            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
-            environmentVariables.Add("Lidarr_Album_Title", album.Title);
-            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
-            environmentVariables.Add("Lidarr_AlbumRelease_MBId", release.ForeignReleaseId);
-            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_Path", trackFile.Path);
-            environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
-            environmentVariables.Add("Lidarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
-            environmentVariables.Add("Lidarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
-            environmentVariables.Add("Lidarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_ReleaseGroup", trackFile.ReleaseGroup ?? string.Empty);
-            environmentVariables.Add("Lidarr_TrackFile_SceneName", trackFile.SceneName ?? string.Empty);
-            environmentVariables.Add("Lidarr_Tags_Diff", message.Diff.ToJson());
-            environmentVariables.Add("Lidarr_Tags_Scrubbed", message.Scrubbed.ToString());
+            environmentVariables.Add("Readarr_EventType", "TrackRetag");
+            environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
+            environmentVariables.Add("Readarr_Artist_Path", artist.Path);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
+            environmentVariables.Add("Readarr_Album_Id", album.Id.ToString());
+            environmentVariables.Add("Readarr_Album_Title", album.Title);
+            environmentVariables.Add("Readarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Readarr_AlbumRelease_MBId", release.ForeignReleaseId);
+            environmentVariables.Add("Readarr_Album_ReleaseDate", album.ReleaseDate.ToString());
+            environmentVariables.Add("Readarr_TrackFile_Id", trackFile.Id.ToString());
+            environmentVariables.Add("Readarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
+            environmentVariables.Add("Readarr_TrackFile_Path", trackFile.Path);
+            environmentVariables.Add("Readarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
+            environmentVariables.Add("Readarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
+            environmentVariables.Add("Readarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
+            environmentVariables.Add("Readarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Readarr_TrackFile_ReleaseGroup", trackFile.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Readarr_TrackFile_SceneName", trackFile.SceneName ?? string.Empty);
+            environmentVariables.Add("Readarr_Tags_Diff", message.Diff.ToJson());
+            environmentVariables.Add("Readarr_Tags_Scrubbed", message.Scrubbed.ToString());
 
             ExecuteScript(environmentVariables);
         }
@@ -145,11 +145,11 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Lidarr_EventType", "HealthIssue");
-            environmentVariables.Add("Lidarr_Health_Issue_Level", nameof(healthCheck.Type));
-            environmentVariables.Add("Lidarr_Health_Issue_Message", healthCheck.Message);
-            environmentVariables.Add("Lidarr_Health_Issue_Type", healthCheck.Source.Name);
-            environmentVariables.Add("Lidarr_Health_Issue_Wiki", healthCheck.WikiUrl.ToString() ?? string.Empty);
+            environmentVariables.Add("Readarr_EventType", "HealthIssue");
+            environmentVariables.Add("Readarr_Health_Issue_Level", nameof(healthCheck.Type));
+            environmentVariables.Add("Readarr_Health_Issue_Message", healthCheck.Message);
+            environmentVariables.Add("Readarr_Health_Issue_Type", healthCheck.Source.Name);
+            environmentVariables.Add("Readarr_Health_Issue_Wiki", healthCheck.WikiUrl.ToString() ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             try
             {
                 var environmentVariables = new StringDictionary();
-                environmentVariables.Add("Lidarr_EventType", "Test");
+                environmentVariables.Add("Readarr_EventType", "Test");
 
                 var processOutput = ExecuteScript(environmentVariables);
 

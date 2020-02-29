@@ -24,7 +24,7 @@ namespace NzbDrone.Test.Common
                 LogManager.Configuration = new LoggingConfiguration();
 
                 var logOutput = TestLogOutput.Console;
-                Enum.TryParse<TestLogOutput>(Environment.GetEnvironmentVariable("LIDARR_TESTS_LOG_OUTPUT"), out logOutput);
+                Enum.TryParse<TestLogOutput>(Environment.GetEnvironmentVariable("READARR_TESTS_LOG_OUTPUT"), out logOutput);
 
                 RegisterSentryLogger();
 

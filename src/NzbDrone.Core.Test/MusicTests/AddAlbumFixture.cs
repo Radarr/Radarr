@@ -34,10 +34,10 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Build();
         }
 
-        private void GivenValidAlbum(string lidarrId)
+        private void GivenValidAlbum(string readarrId)
         {
             Mocker.GetMock<IProvideAlbumInfo>()
-                .Setup(s => s.GetAlbumInfo(lidarrId))
+                .Setup(s => s.GetAlbumInfo(readarrId))
                 .Returns(Tuple.Create(_fakeArtist.Metadata.Value.ForeignArtistId,
                                       _fakeAlbum,
                                       new List<ArtistMetadata> { _fakeArtist.Metadata.Value }));

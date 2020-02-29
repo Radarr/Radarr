@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         [FieldDefinition(4, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
+        [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(6, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]

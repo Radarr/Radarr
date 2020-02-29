@@ -1,9 +1,9 @@
 using System.Linq;
 using FluentAssertions;
-using Lidarr.Api.V1.RootFolders;
 using NUnit.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
+using Readarr.Api.V1.RootFolders;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

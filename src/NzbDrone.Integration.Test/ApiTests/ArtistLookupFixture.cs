@@ -19,7 +19,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void lookup_new_artist_by_mbid()
         {
-            var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419");
+            var artist = Artist.Lookup("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419");
 
             artist.Should().NotBeEmpty();
             artist.Should().Contain(c => c.ArtistName == "Linkin Park");

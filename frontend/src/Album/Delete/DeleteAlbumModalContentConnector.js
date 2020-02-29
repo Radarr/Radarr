@@ -35,7 +35,7 @@ class DeleteAlbumModalContentConnector extends Component {
 
     this.props.onModalClose(true);
 
-    this.props.push(`${window.Lidarr.urlBase}/artist/${this.props.foreignArtistId}`);
+    this.props.push(`${window.Readarr.urlBase}/artist/${this.props.foreignArtistId}`);
   }
 
   //

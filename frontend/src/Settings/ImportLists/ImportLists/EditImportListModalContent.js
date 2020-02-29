@@ -115,7 +115,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAutomaticAdd"
-                  helpText={'Add artist/albums to Lidarr when syncs are performed via the UI or by Lidarr'}
+                  helpText={'Add artist/albums to Readarr when syncs are performed via the UI or by Readarr'}
                   {...enableAutomaticAdd}
                   onChange={onInputChange}
                 />
@@ -186,7 +186,7 @@ function EditImportListModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Lidarr Tags</FormLabel>
+                <FormLabel>Readarr Tags</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}

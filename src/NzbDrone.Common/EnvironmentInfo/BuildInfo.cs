@@ -26,7 +26,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             Release = $"{Version}-{Branch}";
         }
 
-        public static string AppName { get; } = "Lidarr";
+        public static string AppName { get; } = "Readarr";
 
         public static Version Version { get; }
         public static string Branch { get; }

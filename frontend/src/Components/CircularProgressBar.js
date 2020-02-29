@@ -132,7 +132,7 @@ CircularProgressBar.defaultProps = {
   containerClassName: styles.circularProgressBarContainer,
   size: 60,
   strokeWidth: 5,
-  strokeColor: colors.lidarrGreen,
+  strokeColor: colors.readarrGreen,
   showProgressText: false
 };
 

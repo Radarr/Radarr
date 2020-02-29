@@ -275,7 +275,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     return new NzbDroneValidationFailure("MusicCategory", "Category is recommended")
                     {
                         IsWarning = true,
-                        DetailedDescription = "Lidarr will not attempt to import completed downloads without a category."
+                        DetailedDescription = "Readarr will not attempt to import completed downloads without a category."
                     };
                 }
 
@@ -285,7 +285,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 {
                     return new NzbDroneValidationFailure(string.Empty, "qBittorrent is configured to remove torrents when they reach their Share Ratio Limit")
                     {
-                        DetailedDescription = "Lidarr will be unable to perform Completed Download Handling as configured. You can fix this in qBittorrent ('Tools -> Options...' in the menu) by changing 'Options -> BitTorrent -> Share Ratio Limiting' from 'Remove them' to 'Pause them'."
+                        DetailedDescription = "Readarr will be unable to perform Completed Download Handling as configured. You can fix this in qBittorrent ('Tools -> Options...' in the menu) by changing 'Options -> BitTorrent -> Share Ratio Limiting' from 'Remove them' to 'Pause them'."
                     };
                 }
             }
@@ -344,7 +344,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 {
                     return new NzbDroneValidationFailure("MusicCategory", "Configuration of label failed")
                     {
-                        DetailedDescription = "Lidarr was unable to add the label to qBittorrent."
+                        DetailedDescription = "Readarr was unable to add the label to qBittorrent."
                     };
                 }
             }
@@ -358,7 +358,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 {
                     return new NzbDroneValidationFailure("MusicImportedCategory", "Configuration of label failed")
                     {
-                        DetailedDescription = "Lidarr was unable to add the label to qBittorrent."
+                        DetailedDescription = "Readarr was unable to add the label to qBittorrent."
                     };
                 }
             }

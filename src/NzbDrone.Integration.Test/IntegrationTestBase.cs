@@ -5,15 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Lidarr.Api.V1.Albums;
-using Lidarr.Api.V1.Artist;
-using Lidarr.Api.V1.Blacklist;
-using Lidarr.Api.V1.Config;
-using Lidarr.Api.V1.DownloadClient;
-using Lidarr.Api.V1.History;
-using Lidarr.Api.V1.Profiles.Quality;
-using Lidarr.Api.V1.RootFolders;
-using Lidarr.Api.V1.Tags;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
 using NLog.Config;
@@ -26,6 +17,15 @@ using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
+using Readarr.Api.V1.Albums;
+using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Blacklist;
+using Readarr.Api.V1.Config;
+using Readarr.Api.V1.DownloadClient;
+using Readarr.Api.V1.History;
+using Readarr.Api.V1.Profiles.Quality;
+using Readarr.Api.V1.RootFolders;
+using Readarr.Api.V1.Tags;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test
@@ -187,7 +187,7 @@ namespace NzbDrone.Integration.Test
         {
             _signalRReceived = new List<SignalRMessage>();
             _signalrConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:8686/signalr/messages", options =>
+                .WithUrl("http://localhost:8787/signalr/messages", options =>
                     {
                         options.AccessTokenProvider = () => Task.FromResult(ApiKey);
                     })
@@ -251,13 +251,13 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public ArtistResource EnsureArtist(string lidarrId, string artistName, bool? monitored = null)
+        public ArtistResource EnsureArtist(string readarrId, string artistName, bool? monitored = null)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == readarrId);
 
             if (result == null)
             {
-                var lookup = Artist.Lookup("lidarr:" + lidarrId);
+                var lookup = Artist.Lookup("readarr:" + readarrId);
                 var artist = lookup.First();
                 artist.QualityProfileId = 1;
                 artist.MetadataProfileId = 1;
@@ -297,9 +297,9 @@ namespace NzbDrone.Integration.Test
             return result;
         }
 
-        public void EnsureNoArtist(string lidarrId, string artistTitle)
+        public void EnsureNoArtist(string readarrId, string artistTitle)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == readarrId);
 
             if (result != null)
             {

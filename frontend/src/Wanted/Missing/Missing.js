@@ -257,7 +257,7 @@ class Missing extends Component {
                         Are you sure you want to search for all {totalRecords} missing albums?
                       </div>
                       <div>
-                        This cannot be cancelled once started without restarting Lidarr.
+                        This cannot be cancelled once started without restarting Readarr.
                       </div>
                     </div>
                   }

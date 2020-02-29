@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         [FieldDefinition(5, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
+        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MusicCategory { get; set; }
 
         [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(SabnzbdPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]

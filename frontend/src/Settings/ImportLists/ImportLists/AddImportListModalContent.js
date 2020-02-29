@@ -50,7 +50,7 @@ class AddImportListModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Lidarr supports multiple lists for importing Albums and Artists into the database.</div>
+                  <div>Readarr supports multiple lists for importing Albums and Artists into the database.</div>
                   <div>For more information on the individual lists, click on the info buttons.</div>
                 </Alert>
                 {

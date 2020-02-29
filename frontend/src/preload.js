@@ -1,2 +1,2 @@
 /* eslint no-undef: 0 */
-__webpack_public_path__ = `${window.Lidarr.urlBase}/`;
+__webpack_public_path__ = `${window.Readarr.urlBase}/`;

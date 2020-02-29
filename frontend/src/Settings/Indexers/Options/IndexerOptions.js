@@ -88,7 +88,7 @@ function IndexerOptions(props) {
                 unit="minutes"
                 helpText="Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing)"
                 helpTextWarning="This will apply to all indexers, please follow the rules set forth by them"
-                helpLink="https://github.com/Lidarr/Lidarr/wiki/RSS-Sync"
+                helpLink="https://github.com/Readarr/Readarr/wiki/RSS-Sync"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
               />

@@ -23,7 +23,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (enabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, "No indexers available with RSS sync enabled, Lidarr will not grab new releases automatically");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, "No indexers available with RSS sync enabled, Readarr will not grab new releases automatically");
             }
 
             var active = _indexerFactory.RssEnabled(true);

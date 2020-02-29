@@ -214,7 +214,7 @@ class InteractiveSearchRow extends Component {
           isOpen={this.state.isConfirmGrabModalOpen}
           kind={kinds.WARNING}
           title="Grab Release"
-          message={`Lidarr was unable to determine which artist and album this release was for. Lidarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
+          message={`Readarr was unable to determine which artist and album this release was for. Readarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
           confirmLabel="Grab"
           onConfirm={this.onGrabConfirm}
           onCancel={this.onGrabCancel}

@@ -55,7 +55,7 @@ class ArtistDetailsPageConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (!this.props.foreignArtistId) {
-      this.props.push(`${window.Lidarr.urlBase}/`);
+      this.props.push(`${window.Readarr.urlBase}/`);
       return;
     }
   }

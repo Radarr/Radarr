@@ -19,10 +19,10 @@ namespace NzbDrone.Integration.Test
 
             var resultGet = Artist.All();
 
-            var logFile = "Lidarr.trace.txt";
+            var logFile = "Readarr.trace.txt";
             var logLines = Logs.GetLogFileLines(logFile);
 
-            var result = Artist.InvalidPost(new Lidarr.Api.V1.Artist.ArtistResource());
+            var result = Artist.InvalidPost(new Readarr.Api.V1.Artist.ArtistResource());
 
             // Skip 2 and 1 to ignore the logs endpoint
             logLines = Logs.GetLogFileLines(logFile).Skip(logLines.Length + 2).ToArray();

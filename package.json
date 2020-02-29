@@ -1,7 +1,7 @@
 {
-  "name": "lidarr",
+  "name": "readarr",
   "version": "1.0.0",
-  "description": "Lidarr",
+  "description": "Readarr",
   "scripts": {
     "build": "gulp build",
     "start": "gulp watch",
@@ -14,9 +14,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Lidarr/Lidarr.git"
+    "url": "git://github.com/Readarr/Readarr.git"
   },
-  "author": "Team Lidarr",
+  "author": "Team Readarr",
   "license": "GPL-3.0",
   "readmeFilename": "readme.md",
   "dependencies": {

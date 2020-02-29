@@ -21,7 +21,7 @@ function ErrorBoundaryError(props) {
       <div className={styles.imageContainer}>
         <img
           className={styles.image}
-          src={`${window.Lidarr.urlBase}/Content/Images/error.png`}
+          src={`${window.Readarr.urlBase}/Content/Images/error.png`}
         />
       </div>
 

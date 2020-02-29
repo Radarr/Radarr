@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Lidarr.Api.V1.Albums;
 using NUnit.Framework;
 using NzbDrone.Integration.Test.Client;
+using Readarr.Api.V1.Albums;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

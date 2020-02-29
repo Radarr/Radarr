@@ -12,7 +12,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"http://rss.torrentleech.org/mySecret")]
         [TestCase(@"http://rss.torrentleech.org/rss/download/12345/01233210/filename.torrent")]
         [TestCase(@"http://www.bitmetv.org/rss.php?uid=mySecret&passkey=mySecret")]
-        [TestCase(@"https://rss.omgwtfnzbs.org/rss-search.php?catid=19,20&user=Lidarr&api=mySecret&eng=1")]
+        [TestCase(@"https://rss.omgwtfnzbs.org/rss-search.php?catid=19,20&user=Readarr&api=mySecret&eng=1")]
         [TestCase(@"https://dognzb.cr/fetch/2b51db35e1912ffc138825a12b9933d2/2b51db35e1910123321025a12b9933d2")]
         [TestCase(@"https://baconbits.org/feeds.php?feed=torrents_tv&user=12345&auth=2b51db35e1910123321025a12b9933d2&passkey=mySecret&authkey=2b51db35e1910123321025a12b9933d2")]
         [TestCase(@"http://127.0.0.1:9117/dl/indexername?jackett_apikey=flwjiefewklfjacketmySecretsdfldskjfsdlk&path=we0re9f0sdfbase64sfdkfjsdlfjk&file=The+Torrent+File+Name.torrent")]
@@ -51,7 +51,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"""DownloadURL"":""https:\/\/broadcasthe.net\/torrents.php?action=download&id=123&authkey=mySecret&torrent_pass=mySecret""")]
 
         // Spotify Refresh
-        [TestCase(@"https://spotify.lidarr.audio/renew?refresh_token=mySecret")]
+        [TestCase(@"https://spotify.readarr.audio/renew?refresh_token=mySecret")]
         public void should_clean_message(string message)
         {
             var cleansedMessage = CleanseLogMessage.Cleanse(message);

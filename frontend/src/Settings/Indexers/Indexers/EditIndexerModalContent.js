@@ -95,7 +95,7 @@ function EditIndexerModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAutomaticSearch"
-                  helpText={supportsSearch.value ? 'Will be used when automatic searches are performed via the UI or by Lidarr' : undefined}
+                  helpText={supportsSearch.value ? 'Will be used when automatic searches are performed via the UI or by Readarr' : undefined}
                   helpTextWarning={supportsSearch.value ? undefined : 'Search is not supported with this indexer'}
                   isDisabled={!supportsSearch.value}
                   {...enableAutomaticSearch}

@@ -156,7 +156,7 @@ function HostSettings(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="launchBrowser"
-              helpText=" Open a web browser and navigate to Lidarr homepage on app start."
+              helpText=" Open a web browser and navigate to Readarr homepage on app start."
               onChange={onInputChange}
               {...launchBrowser}
             />

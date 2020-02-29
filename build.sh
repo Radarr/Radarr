@@ -19,11 +19,11 @@ ProgressEnd()
 
 UpdateVersionNumber()
 {
-    if [ "$LIDARRVERSION" != "" ]; then
+    if [ "$READARRVERSION" != "" ]; then
         echo "Updating Version Info"
-        sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$LIDARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
+        sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$READARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
         sed -i'' -e "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" src/Directory.Build.props
-        sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$LIDARRVERSION<\/string>/g" macOS/Lidarr.app/Contents/Info.plist
+        sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$READARRVERSION<\/string>/g" macOS/Readarr.app/Contents/Info.plist
     fi
 }
 
@@ -49,7 +49,7 @@ Build()
     rm -rf $outputFolder
     rm -rf $testPackageFolder
 
-    slnFile=src/Lidarr.sln
+    slnFile=src/Readarr.sln
 
     if [ $os = "windows" ]; then
         platform=Windows
@@ -93,7 +93,7 @@ PackageFiles()
     rm -rf $folder
     mkdir -p $folder
     cp -r $outputFolder/$framework/$runtime/publish/* $folder
-    cp -r $outputFolder/Lidarr.Update/$framework/$runtime/publish $folder/Lidarr.Update
+    cp -r $outputFolder/Readarr.Update/$framework/$runtime/publish $folder/Readarr.Update
     cp -r $outputFolder/UI $folder
 
     echo "Adding LICENSE"
@@ -107,7 +107,7 @@ PackageLinux()
 
     ProgressStart "Creating $runtime Package for $framework"
 
-    local folder=$artifactsFolder/$runtime/$framework/Lidarr
+    local folder=$artifactsFolder/$runtime/$framework/Readarr
 
     PackageFiles "$folder" "$framework" "$runtime"
 
@@ -115,14 +115,14 @@ PackageLinux()
     rm -f $folder/ServiceUninstall.*
     rm -f $folder/ServiceInstall.*
 
-    echo "Removing Lidarr.Windows"
-    rm $folder/Lidarr.Windows.*
+    echo "Removing Readarr.Windows"
+    rm $folder/Readarr.Windows.*
 
-    echo "Adding Lidarr.Mono to UpdatePackage"
-    cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
+    echo "Adding Readarr.Mono to UpdatePackage"
+    cp $folder/Readarr.Mono.* $folder/Readarr.Update
     if [ "$framework" = "netcoreapp3.1" ]; then
-        cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
-        cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
+        cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
     fi
 
     ProgressEnd "Creating $runtime Package for $framework"
@@ -134,27 +134,27 @@ PackageMacOS()
     
     ProgressStart "Creating MacOS Package for $framework"
 
-    local folder=$artifactsFolder/macos/$framework/Lidarr
+    local folder=$artifactsFolder/macos/$framework/Readarr
 
     PackageFiles "$folder" "$framework" "osx-x64"
 
     if [ "$framework" = "net462" ]; then
         echo "Adding Startup script"
-        cp macOS/Lidarr $folder
+        cp macOS/Readarr $folder
     fi
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
     rm -f $folder/ServiceInstall.*
 
-    echo "Removing Lidarr.Windows"
-    rm $folder/Lidarr.Windows.*
+    echo "Removing Readarr.Windows"
+    rm $folder/Readarr.Windows.*
 
-    echo "Adding Lidarr.Mono to UpdatePackage"
-    cp $folder/Lidarr.Mono.* $folder/Lidarr.Update
+    echo "Adding Readarr.Mono to UpdatePackage"
+    cp $folder/Readarr.Mono.* $folder/Readarr.Update
     if [ "$framework" = "netcoreapp3.1" ]; then
-        cp $folder/Mono.Posix.NETStandard.* $folder/Lidarr.Update
-        cp $folder/libMonoPosixHelper.* $folder/Lidarr.Update
+        cp $folder/Mono.Posix.NETStandard.* $folder/Readarr.Update
+        cp $folder/libMonoPosixHelper.* $folder/Readarr.Update
     fi
 
     ProgressEnd 'Creating MacOS Package'
@@ -170,14 +170,14 @@ PackageMacOSApp()
 
     rm -rf $folder
     mkdir -p $folder
-    cp -r macOS/Lidarr.app $folder
-    mkdir -p $folder/Lidarr.app/Contents/MacOS
+    cp -r macOS/Readarr.app $folder
+    mkdir -p $folder/Readarr.app/Contents/MacOS
 
     echo "Copying Binaries"
-    cp -r $artifactsFolder/macos/$framework/Lidarr/* $folder/Lidarr.app/Contents/MacOS
+    cp -r $artifactsFolder/macos/$framework/Readarr/* $folder/Readarr.app/Contents/MacOS
 
     echo "Removing Update Folder"
-    rm -r $folder/Lidarr.app/Contents/MacOS/Lidarr.Update
+    rm -r $folder/Readarr.app/Contents/MacOS/Readarr.Update
 
     ProgressEnd 'Creating macOS App Package'
 }
@@ -188,17 +188,17 @@ PackageWindows()
     
     ProgressStart "Creating Windows Package for $framework"
 
-    local folder=$artifactsFolder/windows/$framework/Lidarr
+    local folder=$artifactsFolder/windows/$framework/Readarr
     
     PackageFiles "$folder" "$framework" "win-x64"
 
-    echo "Removing Lidarr.Mono"
-    rm -f $folder/Lidarr.Mono.*
+    echo "Removing Readarr.Mono"
+    rm -f $folder/Readarr.Mono.*
     rm -f $folder/Mono.Posix.NETStandard.*
     rm -f $folder/libMonoPosixHelper.*
 
-    echo "Adding Lidarr.Windows to UpdatePackage"
-    cp $folder/Lidarr.Windows.* $folder/Lidarr.Update
+    echo "Adding Readarr.Windows to UpdatePackage"
+    cp $folder/Readarr.Windows.* $folder/Readarr.Update
 
     ProgressEnd 'Creating Windows Package'
 }

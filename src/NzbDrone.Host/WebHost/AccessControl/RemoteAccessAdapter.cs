@@ -24,7 +24,7 @@ namespace NzbDrone.Host.AccessControl
                 }
                 else if (!passive)
                 {
-                    throw new RemoteAccessException("Failed to register URLs for Lidarr. Lidarr will not be accessible remotely");
+                    throw new RemoteAccessException("Failed to register URLs for Readarr. Readarr will not be accessible remotely");
                 }
             }
         }

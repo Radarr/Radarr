@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         [FieldDefinition(3)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Advanced = true)]
+        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", Unit = "days", HelpText = "Time before release date Readarr will download from this indexer, empty is no limit", Advanced = true)]
         public int? EarlyReleaseLimit { get; set; }
 
         public NzbDroneValidationResult Validate()

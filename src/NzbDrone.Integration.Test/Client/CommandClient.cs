@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Threading;
 using FluentAssertions;
-using Lidarr.Http.REST;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Core.Messaging.Commands;
+using Readarr.Http.REST;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

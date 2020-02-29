@@ -80,7 +80,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 }
                                 else
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} places downloads in {folder.FullPath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} places downloads in {folder.FullPath} but Readarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
                                 }
                             }
                         }
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     var trackPath = failureMessage.TrackInfo.Path;
                     if (_diskProvider.FileExists(trackPath))
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr can see but not access downloaded track {trackPath}.  Likely permissions error.", "#permissions-error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Readarr can see but not access downloaded track {trackPath}.  Likely permissions error.", "#permissions-error");
                     }
                     else
                     {
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     // that the user realises something is wrong.
                     if (dlpath.IsNullOrWhiteSpace())
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr failed to import a track.  Check your logs for details.");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Readarr failed to import a track.  Check your logs for details.");
                     }
 
                     if (!dlpath.IsPathValid())
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                     if (_diskProvider.FolderExists(dlpath))
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Lidarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions-error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Readarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions-error");
                     }
 
                     // if it's a remote client/docker, likely missing path mappings
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     else
                     {
                         // path mappings shouldn't be needed locally so probably a permissions issue
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Lidarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Readarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions-error");
                     }
                 }
                 catch (DownloadClientException ex)

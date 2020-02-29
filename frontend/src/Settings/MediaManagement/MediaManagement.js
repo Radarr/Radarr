@@ -140,7 +140,7 @@ class MediaManagement extends Component {
                             <FormInputGroup
                               type={inputTypes.CHECK}
                               name="skipFreeSpaceCheckWhenImporting"
-                              helpText="Use when Lidarr is unable to detect free space from your artist root folder"
+                              helpText="Use when Readarr is unable to detect free space from your artist root folder"
                               onChange={onInputChange}
                               {...settings.skipFreeSpaceCheckWhenImporting}
                             />
@@ -175,7 +175,7 @@ class MediaManagement extends Component {
                           type={inputTypes.CHECK}
                           name="copyUsingHardlinks"
                           helpText="Use Hardlinks when trying to copy files from torrents that are still being seeded"
-                          helpTextWarning="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Lidarr's rename function as a work around."
+                          helpTextWarning="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Readarr's rename function as a work around."
                           onChange={onInputChange}
                           {...settings.copyUsingHardlinks}
                         />
@@ -225,7 +225,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="autoUnmonitorPreviouslyDownloadedTracks"
-                      helpText="Tracks deleted from disk are automatically unmonitored in Lidarr"
+                      helpText="Tracks deleted from disk are automatically unmonitored in Readarr"
                       onChange={onInputChange}
                       {...settings.autoUnmonitorPreviouslyDownloadedTracks}
                     />
@@ -282,7 +282,7 @@ class MediaManagement extends Component {
                       type={inputTypes.SELECT}
                       name="rescanAfterRefresh"
                       helpText="Rescan the artist folder after refreshing the artist"
-                      helpTextWarning="Lidarr will not automatically detect changes to files when not set to 'Always'"
+                      helpTextWarning="Readarr will not automatically detect changes to files when not set to 'Always'"
                       values={rescanAfterRefreshOptions}
                       onChange={onInputChange}
                       {...settings.rescanAfterRefresh}
@@ -299,7 +299,7 @@ class MediaManagement extends Component {
                       type={inputTypes.SELECT}
                       name="allowFingerprinting"
                       helpText="Use fingerprinting to improve accuracy of track matching"
-                      helpTextWarning="This requires Lidarr to read parts of the file which will slow down scans and may cause high disk or network activity."
+                      helpTextWarning="This requires Readarr to read parts of the file which will slow down scans and may cause high disk or network activity."
                       values={allowFingerprintingOptions}
                       onChange={onInputChange}
                       {...settings.allowFingerprinting}
@@ -386,7 +386,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="fileChmod"
-                          helpText="Octal, applied to media files when imported/renamed by Lidarr"
+                          helpText="Octal, applied to media files when imported/renamed by Readarr"
                           onChange={onInputChange}
                           {...settings.fileChmod}
                         />
@@ -401,7 +401,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="folderChmod"
-                          helpText="Octal, applied to artist/album folders created by Lidarr"
+                          helpText="Octal, applied to artist/album folders created by Readarr"
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.folderChmod}

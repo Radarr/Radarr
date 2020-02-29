@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
     {
         private Artist _artist = null;
         private List<ReleaseProfile> _releaseProfiles = null;
-        private string _title = "Artist.Name-Album.Name-2018-Flac-Vinyl-Lidarr";
+        private string _title = "Artist.Name-Album.Name-2018-Flac-Vinyl-Readarr";
 
         [SetUp]
         public void Setup()

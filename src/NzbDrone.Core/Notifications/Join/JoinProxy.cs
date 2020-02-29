@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Notifications.Join
         public ValidationFailure Test(JoinSettings settings)
         {
             const string title = "Test Notification";
-            const string body = "This is a test message from Lidarr.";
+            const string body = "This is a test message from Readarr.";
 
             try
             {
@@ -91,8 +91,8 @@ namespace NzbDrone.Core.Notifications.Join
             request.AddParameter("apikey", settings.ApiKey);
             request.AddParameter("title", title);
             request.AddParameter("text", message);
-            request.AddParameter("icon", "https://cdn.rawgit.com/Lidarr/Lidarr/develop/Logo/256.png"); // Use the Lidarr logo.
-            request.AddParameter("smallicon", "https://cdn.rawgit.com/Lidarr/Lidarr/develop/Logo/96-Outline-White.png"); // 96x96px with outline at 88x88px on a transparent background.
+            request.AddParameter("icon", "https://cdn.rawgit.com/Readarr/Readarr/develop/Logo/256.png"); // Use the Readarr logo.
+            request.AddParameter("smallicon", "https://cdn.rawgit.com/Readarr/Readarr/develop/Logo/96-Outline-White.png"); // 96x96px with outline at 88x88px on a transparent background.
             request.AddParameter("priority", settings.Priority);
 
             var response = client.ExecuteAndValidate(request);

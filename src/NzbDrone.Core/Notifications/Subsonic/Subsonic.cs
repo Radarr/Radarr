@@ -22,14 +22,14 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string header = "Lidarr - Grabbed";
+            const string header = "Readarr - Grabbed";
 
             Notify(Settings, header, grabMessage.Message);
         }
 
         public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            const string header = "Lidarr - Downloaded";
+            const string header = "Readarr - Downloaded";
 
             Notify(Settings, header, message.Message);
             Update();

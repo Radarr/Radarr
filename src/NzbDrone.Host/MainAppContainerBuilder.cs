@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Lidarr.Http;
 using Nancy.Bootstrapper;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.SignalR;
+using Readarr.Http;
 
 namespace NzbDrone.Host
 {
@@ -13,11 +13,11 @@ namespace NzbDrone.Host
         {
             var assemblies = new List<string>
                              {
-                                 "Lidarr.Host",
-                                 "Lidarr.Core",
-                                 "Lidarr.SignalR",
-                                 "Lidarr.Api.V1",
-                                 "Lidarr.Http"
+                                 "Readarr.Host",
+                                 "Readarr.Core",
+                                 "Readarr.SignalR",
+                                 "Readarr.Api.V1",
+                                 "Readarr.Http"
                              };
 
             return new MainAppContainerBuilder(args, assemblies).Container;
@@ -28,7 +28,7 @@ namespace NzbDrone.Host
         {
             AutoRegisterImplementations<MessageHub>();
 
-            Container.Register<INancyBootstrapper, LidarrBootstrapper>();
+            Container.Register<INancyBootstrapper, ReadarrBootstrapper>();
 
             if (OsInfo.IsWindows)
             {

@@ -23,14 +23,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (automaticSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Automatic Search enabled, Lidarr will not provide any automatic search results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Automatic Search enabled, Readarr will not provide any automatic search results");
             }
 
             var interactiveSearchEnabled = _indexerFactory.InteractiveSearchEnabled(false);
 
             if (interactiveSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Interactive Search enabled, Lidarr will not provide any interactive search results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Interactive Search enabled, Readarr will not provide any interactive search results");
             }
 
             var active = _indexerFactory.AutomaticSearchEnabled(true);

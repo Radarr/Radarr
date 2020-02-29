@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         protected DownloadStationTask _seeding;
 
         protected string _serialNumber = "SERIALNUMBER";
-        protected string _category = "lidarr";
+        protected string _category = "readarr";
         protected string _musicDirectory = @"music/Artist";
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");

@@ -54,11 +54,11 @@ function createMapStateToProps() {
 function createMapDispatchToProps(dispatch, props) {
   return {
     onGoToArtist(foreignArtistId) {
-      dispatch(push(`${window.Lidarr.urlBase}/artist/${foreignArtistId}`));
+      dispatch(push(`${window.Readarr.urlBase}/artist/${foreignArtistId}`));
     },
 
     onGoToAddNewArtist(query) {
-      dispatch(push(`${window.Lidarr.urlBase}/add/search?term=${encodeURIComponent(query)}`));
+      dispatch(push(`${window.Readarr.urlBase}/add/search?term=${encodeURIComponent(query)}`));
     }
   };
 }

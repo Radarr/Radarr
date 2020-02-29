@@ -22,7 +22,7 @@ namespace NzbDrone.Host
         {
             try
             {
-                Logger.Info("Starting Lidarr - {0} - Version {1}", Assembly.GetCallingAssembly().Location, Assembly.GetExecutingAssembly().GetName().Version);
+                Logger.Info("Starting Readarr - {0} - Version {1}", Assembly.GetCallingAssembly().Location, Assembly.GetExecutingAssembly().GetName().Version);
 
                 if (!PlatformValidation.IsValidate(userAlert))
                 {
@@ -51,11 +51,11 @@ namespace NzbDrone.Host
             }
             catch (InvalidConfigFileException ex)
             {
-                throw new LidarrStartupException(ex);
+                throw new ReadarrStartupException(ex);
             }
             catch (AccessDeniedConfigFileException ex)
             {
-                throw new LidarrStartupException(ex);
+                throw new ReadarrStartupException(ex);
             }
             catch (TerminateApplicationException ex)
             {

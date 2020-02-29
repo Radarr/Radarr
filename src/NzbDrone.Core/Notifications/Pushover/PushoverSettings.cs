@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Pushover
         }
 
         //TODO: Get Pushover to change our app name (or create a new app) when we have a new logo
-        [FieldDefinition(0, Label = "API Key", HelpLink = "https://pushover.net/apps/clone/lidarr")]
+        [FieldDefinition(0, Label = "API Key", HelpLink = "https://pushover.net/apps/clone/readarr")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(1, Label = "User Key", HelpLink = "https://pushover.net/")]

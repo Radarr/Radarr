@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             {
                 request.AddParameter("u", settings.Username);
                 request.AddParameter("p", settings.Password);
-                request.AddParameter("c", "Lidarr");
+                request.AddParameter("c", "Readarr");
                 request.AddParameter("v", "1.15.0");
             }
 

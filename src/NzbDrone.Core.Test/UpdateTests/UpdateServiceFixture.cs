@@ -35,8 +35,8 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "Lidarr.develop.0.6.2.883.tar.gz",
-                    Url = "https://github.com/lidarr/Lidarr/releases/download/v0.6.2.883/Lidarr.develop.0.6.2.883.linux.tar.gz",
+                    FileName = "Readarr.develop.0.6.2.883.tar.gz",
+                    Url = "https://github.com/readarr/Readarr/releases/download/v0.6.2.883/Readarr.develop.0.6.2.883.linux.tar.gz",
                     Version = new Version("0.6.2.883")
                 };
             }
@@ -44,21 +44,21 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "Lidarr.develop.0.6.2.883.zip",
-                    Url = "https://github.com/lidarr/Lidarr/releases/download/v0.6.2.883/Lidarr.develop.0.6.2.883.windows.zip",
+                    FileName = "Readarr.develop.0.6.2.883.zip",
+                    Url = "https://github.com/readarr/Readarr/releases/download/v0.6.2.883/Readarr.develop.0.6.2.883.windows.zip",
                     Version = new Version("0.6.2.883")
                 };
             }
 
             Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.TempFolder).Returns(TempFolder);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\Lidarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Readarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\Readarr".AsOsAgnostic);
 
             Mocker.GetMock<ICheckUpdateService>().Setup(c => c.AvailableUpdate()).Returns(_updatePackage);
             Mocker.GetMock<IVerifyUpdates>().Setup(c => c.Verify(It.IsAny<UpdatePackage>(), It.IsAny<string>())).Returns(true);
 
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetCurrentProcess()).Returns(new ProcessInfo { Id = 12 });
-            Mocker.GetMock<IRuntimeInfo>().Setup(c => c.ExecutingApplication).Returns(@"C:\Test\Lidarr.exe");
+            Mocker.GetMock<IRuntimeInfo>().Setup(c => c.ExecutingApplication).Returns(@"C:\Test\Readarr.exe");
 
             Mocker.GetMock<IConfigFileProvider>()
                   .SetupGet(s => s.UpdateAutomatically)
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform(Exclude = "Win")]
         public void should_run_script_if_configured()
         {
-            const string scriptPath = "/tmp/lidarr/update.sh";
+            const string scriptPath = "/tmp/readarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform(Exclude = "Win")]
         public void should_throw_if_script_is_not_set()
         {
-            const string scriptPath = "/tmp/lidarr/update.sh";
+            const string scriptPath = "/tmp/readarr/update.sh";
 
             GivenInstallScript("");
 
@@ -208,7 +208,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform(Exclude = "Win")]
         public void should_throw_if_script_is_null()
         {
-            const string scriptPath = "/tmp/lidarr/update.sh";
+            const string scriptPath = "/tmp/readarr/update.sh";
 
             GivenInstallScript(null);
 
@@ -222,7 +222,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform(Exclude = "Win")]
         public void should_throw_if_script_path_does_not_exist()
         {
-            const string scriptPath = "/tmp/lidarr/update.sh";
+            const string scriptPath = "/tmp/readarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -253,7 +253,7 @@ namespace NzbDrone.Core.Test.UpdateTests
             updateSubFolder.Refresh();
 
             updateSubFolder.Exists.Should().BeTrue();
-            updateSubFolder.GetDirectories("Lidarr").Should().HaveCount(1);
+            updateSubFolder.GetDirectories("Readarr").Should().HaveCount(1);
             updateSubFolder.GetDirectories().Should().HaveCount(1);
             updateSubFolder.GetFiles().Should().NotBeEmpty();
         }
@@ -261,8 +261,8 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Test]
         public void should_log_error_when_app_data_is_child_of_startup_folder()
         {
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\Lidarr\AppData".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Readarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\Readarr\AppData".AsOsAgnostic);
 
             Assert.Throws<CommandFailedException>(() => Subject.Execute(new ApplicationUpdateCommand()));
             ExceptionVerification.ExpectedErrors(1);

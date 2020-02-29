@@ -97,7 +97,7 @@ class DeleteAlbumModalContent extends Component {
               type={inputTypes.CHECK}
               name="addImportListExclusion"
               value={addImportListExclusion}
-              helpText="Prevent album from being added to Lidarr by Import Lists or Artist Refresh"
+              helpText="Prevent album from being added to Readarr by Import Lists or Artist Refresh"
               kind={kinds.DANGER}
               onChange={this.onAddImportListExclusionChange}
             />

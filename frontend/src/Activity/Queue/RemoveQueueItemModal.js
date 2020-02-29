@@ -114,7 +114,7 @@ class RemoveQueueItemModal extends Component {
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Prevents Lidarr from automatically grabbing this release again"
+                helpText="Prevents Readarr from automatically grabbing this release again"
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>
@@ -127,7 +127,7 @@ class RemoveQueueItemModal extends Component {
                     type={inputTypes.CHECK}
                     name="skipredownload"
                     value={skipredownload}
-                    helpText="Prevents Lidarr from trying download an alternative release for this item"
+                    helpText="Prevents Readarr from trying download an alternative release for this item"
                     onChange={this.onSkipReDownloadChange}
                   />
                 </FormGroup>

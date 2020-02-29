@@ -122,11 +122,11 @@ namespace NzbDrone.Core.Datastore
                     throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Sonarr/Sonarr/wiki/FAQ#i-use-sonarr-on-a-mac-and-it-suddenly-stopped-working-what-happened", e, fileName);
                 }
 
-                throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Lidarr/Lidarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);
+                throw new CorruptDatabaseException("Database file: {0} is corrupt, restore from backup if available. See: https://github.com/Readarr/Readarr/wiki/FAQ#i-am-getting-an-error-database-disk-image-is-malformed", e, fileName);
             }
             catch (Exception e)
             {
-                throw new LidarrStartupException(e, "Error creating main database");
+                throw new ReadarrStartupException(e, "Error creating main database");
             }
         }
 
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Datastore
             }
             catch (Exception e)
             {
-                throw new LidarrStartupException(e, "Error creating log database");
+                throw new ReadarrStartupException(e, "Error creating log database");
             }
         }
     }

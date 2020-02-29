@@ -240,7 +240,7 @@ class CutoffUnmet extends Component {
                         Are you sure you want to search for all {totalRecords} Cutoff Unmet albums?
                       </div>
                       <div>
-                        This cannot be cancelled once started without restarting Lidarr.
+                        This cannot be cancelled once started without restarting Readarr.
                       </div>
                     </div>
                   }

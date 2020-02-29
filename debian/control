@@ -2,11 +2,11 @@ Section: web
 Priority: optional
 Maintainer: Sonarr <contact@nzbdrone.com>
 Source: nzbdrone
-Homepage: https://lidarr.audio
-Vcs-Git: git@github.com:lidarr/Lidarr.git
-Vcs-Browser: https://github.com/lidarr/Lidarr
+Homepage: https://readarr.audio
+Vcs-Git: git@github.com:readarr/Readarr.git
+Vcs-Browser: https://github.com/readarr/Readarr
 
 Package: nzbdrone
 Architecture: all
 Depends: libmono-cil-dev (>= 3.2), sqlite3 (>= 3.7), mediainfo (>= 0.7.52)
-Description: Lidarr is a music collection manager
+Description: Readarr is a music collection manager

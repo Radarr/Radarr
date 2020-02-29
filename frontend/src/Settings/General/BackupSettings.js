@@ -34,7 +34,7 @@ function BackupSettings(props) {
         <FormInputGroup
           type={inputTypes.PATH}
           name="backupFolder"
-          helpText="Relative paths will be under Lidarr's AppData directory"
+          helpText="Relative paths will be under Readarr's AppData directory"
           onChange={onInputChange}
           {...backupFolder}
         />
@@ -50,7 +50,7 @@ function BackupSettings(props) {
           type={inputTypes.NUMBER}
           name="backupInterval"
           unit="days"
-          helpText="Interval to backup the Lidarr DB and settings"
+          helpText="Interval to backup the Readarr DB and settings"
           onChange={onInputChange}
           {...backupInterval}
         />

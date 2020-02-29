@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Indexers.Headphones
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine headphones api capabilities for {0}, using the defaults instead till Lidarr restarts", indexerSettings.BaseUrl);
+                _logger.Error(ex, "Failed to determine headphones api capabilities for {0}, using the defaults instead till Readarr restarts", indexerSettings.BaseUrl);
             }
 
             return capabilities;

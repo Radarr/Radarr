@@ -38,7 +38,7 @@ namespace NzbDrone.SysTray
             _trayMenu.Items.Add(new ToolStripMenuItem("-"));
             _trayMenu.Items.Add(new ToolStripMenuItem("Exit", null, OnExit));
 
-            _trayIcon.Text = string.Format("Lidarr - {0}", BuildInfo.Version);
+            _trayIcon.Text = string.Format("Readarr - {0}", BuildInfo.Version);
             _trayIcon.Icon = Properties.Resources.NzbDroneIcon;
 
             _trayIcon.ContextMenuStrip = _trayMenu;

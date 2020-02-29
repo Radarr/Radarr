@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         public override string Name => "rTorrent";
 
-        public override ProviderMessage Message => new ProviderMessage("Lidarr is unable to remove torrents that have finished seeding when using rTorrent", ProviderMessageType.Warning);
+        public override ProviderMessage Message => new ProviderMessage("Readarr is unable to remove torrents that have finished seeding when using rTorrent", ProviderMessageType.Warning);
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {

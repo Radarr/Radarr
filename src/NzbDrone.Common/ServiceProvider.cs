@@ -26,7 +26,7 @@ namespace NzbDrone.Common
 
     public class ServiceProvider : IServiceProvider
     {
-        public const string SERVICE_NAME = "Lidarr";
+        public const string SERVICE_NAME = "Readarr";
 
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;
@@ -82,7 +82,7 @@ namespace NzbDrone.Common
 
             _logger.Info(installOutput.Lines.Select(x => x.Content).ConcatToString("\n"));
 
-            var descOutput = _processProvider.StartAndCapture("sc.exe", $"description {serviceName} \"Lidarr Application Server\"");
+            var descOutput = _processProvider.StartAndCapture("sc.exe", $"description {serviceName} \"Readarr Application Server\"");
             if (descOutput.ExitCode != 0)
             {
                 _logger.Error($"Failed to install service: {descOutput.Lines.Select(x => x.Content).ConcatToString("\n")}");

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+
+    <ApplicationIcon>..\NzbDrone.Host\NzbDrone.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$(RuntimeIdentifier.StartsWith('win'))">
+    <AssemblyName>Readarr</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Host\Readarr.Host.csproj" />
+  </ItemGroup>
+</Project>

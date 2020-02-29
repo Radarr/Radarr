@@ -86,14 +86,14 @@ namespace NzbDrone.Update.UpdateEngine
         public void Start(string installationFolder, int processId)
         {
             _logger.Info("Installation Folder: {0}", installationFolder);
-            _logger.Info("Updating Lidarr from version {0} to version {1}", _detectExistingVersion.GetExistingVersion(installationFolder), BuildInfo.Version);
+            _logger.Info("Updating Readarr from version {0} to version {1}", _detectExistingVersion.GetExistingVersion(installationFolder), BuildInfo.Version);
 
             Verify(installationFolder, processId);
 
             var appType = _detectApplicationType.GetAppType();
 
-            _processProvider.FindProcessByName(ProcessProvider.LIDARR_CONSOLE_PROCESS_NAME);
-            _processProvider.FindProcessByName(ProcessProvider.LIDARR_PROCESS_NAME);
+            _processProvider.FindProcessByName(ProcessProvider.READARR_CONSOLE_PROCESS_NAME);
+            _processProvider.FindProcessByName(ProcessProvider.READARR_PROCESS_NAME);
 
             if (OsInfo.IsWindows)
             {
@@ -107,9 +107,9 @@ namespace NzbDrone.Update.UpdateEngine
 
                 if (OsInfo.IsWindows)
                 {
-                    if (_processProvider.Exists(ProcessProvider.LIDARR_CONSOLE_PROCESS_NAME) || _processProvider.Exists(ProcessProvider.LIDARR_PROCESS_NAME))
+                    if (_processProvider.Exists(ProcessProvider.READARR_CONSOLE_PROCESS_NAME) || _processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
                     {
-                        _logger.Error("Lidarr was restarted prematurely by external process.");
+                        _logger.Error("Readarr was restarted prematurely by external process.");
                         return;
                     }
                 }
@@ -119,10 +119,10 @@ namespace NzbDrone.Update.UpdateEngine
                     _logger.Info("Copying new files to target folder");
                     _diskTransferService.MirrorFolder(_appFolderInfo.GetUpdatePackageFolder(), installationFolder);
 
-                    // Set executable flag on Lidarr app
+                    // Set executable flag on Readarr app
                     if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
-                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Lidarr"), "0755", null, null);
+                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Readarr"), "0755", null, null);
                     }
                 }
                 catch (Exception e)
@@ -147,14 +147,14 @@ namespace NzbDrone.Update.UpdateEngine
                     {
                         System.Threading.Thread.Sleep(1000);
 
-                        if (_processProvider.Exists(ProcessProvider.LIDARR_PROCESS_NAME))
+                        if (_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
                         {
-                            _logger.Info("Lidarr was restarted by external process.");
+                            _logger.Info("Readarr was restarted by external process.");
                             break;
                         }
                     }
 
-                    if (!_processProvider.Exists(ProcessProvider.LIDARR_PROCESS_NAME))
+                    if (!_processProvider.Exists(ProcessProvider.READARR_PROCESS_NAME))
                     {
                         _startNzbDrone.Start(appType, installationFolder);
                     }

@@ -24,7 +24,7 @@ function AnalyticSettings(props) {
         <FormInputGroup
           type={inputTypes.CHECK}
           name="analyticsEnabled"
-          helpText="Send anonymous usage and error information to Lidarr's servers. This includes information on your browser, which Lidarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes."
+          helpText="Send anonymous usage and error information to Readarr's servers. This includes information on your browser, which Readarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes."
           helpTextWarning="Requires restart to take effect"
           onChange={onInputChange}
           {...analyticsEnabled}

@@ -240,7 +240,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
             }
             catch (HttpException e)
             {
-                _logger.Warn(e, "Unable to communicate with LidarrAPI");
+                _logger.Warn(e, "Unable to communicate with ReadarrAPI");
             }
             catch (Exception e)
             {
@@ -283,7 +283,7 @@ namespace NzbDrone.Core.ImportLists.Spotify
             }
             catch (HttpException e)
             {
-                _logger.Warn(e, "Unable to communicate with LidarrAPI");
+                _logger.Warn(e, "Unable to communicate with ReadarrAPI");
             }
             catch (Exception e)
             {

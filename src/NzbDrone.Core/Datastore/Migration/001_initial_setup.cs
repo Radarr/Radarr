@@ -1,3 +1,4 @@
+using System;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -9,93 +10,104 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("Config")
-                  .WithColumn("Key").AsString().Unique()
-                  .WithColumn("Value").AsString();
+                .WithColumn("Key").AsString().Unique()
+                .WithColumn("Value").AsString();
 
             Create.TableForModel("RootFolders")
-                  .WithColumn("Path").AsString().Unique();
+                .WithColumn("Path").AsString().Unique()
+                .WithColumn("Name").AsString().Nullable()
+                .WithColumn("DefaultMetadataProfileId").AsInt32().WithDefaultValue(0)
+                .WithColumn("DefaultQualityProfileId").AsInt32().WithDefaultValue(0)
+                .WithColumn("DefaultMonitorOption").AsInt32().WithDefaultValue(0)
+                .WithColumn("DefaultTags").AsString().Nullable();
 
             Create.TableForModel("Artists")
-                .WithColumn("ForeignArtistId").AsString().Unique()
-                .WithColumn("MBId").AsString().Nullable()
-                .WithColumn("AMId").AsString().Nullable()
-                .WithColumn("TADBId").AsInt32().Nullable()
-                .WithColumn("DiscogsId").AsInt32().Nullable()
-                .WithColumn("Name").AsString()
-                .WithColumn("NameSlug").AsString().Nullable().Unique()
                 .WithColumn("CleanName").AsString().Indexed()
-                .WithColumn("Status").AsInt32()
-                .WithColumn("Overview").AsString().Nullable()
-                .WithColumn("Images").AsString()
                 .WithColumn("Path").AsString().Indexed()
                 .WithColumn("Monitored").AsBoolean()
                 .WithColumn("AlbumFolder").AsBoolean()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
-                .WithColumn("LastDiskSync").AsDateTime().Nullable()
-                .WithColumn("DateFormed").AsDateTime().Nullable()
-                .WithColumn("Members").AsString().Nullable()
-                .WithColumn("Ratings").AsString().Nullable()
-                .WithColumn("Genres").AsString().Nullable()
                 .WithColumn("SortName").AsString().Nullable()
-                .WithColumn("ProfileId").AsInt32().Nullable()
+                .WithColumn("QualityProfileId").AsInt32().Nullable()
                 .WithColumn("Tags").AsString().Nullable()
                 .WithColumn("Added").AsDateTime().Nullable()
                 .WithColumn("AddOptions").AsString().Nullable()
-                .WithColumn("LanguageProfileId").AsInt32().WithDefaultValue(1)
-                .WithColumn("Links").AsString().Nullable()
-                .WithColumn("ArtistType").AsString().Nullable()
+                .WithColumn("MetadataProfileId").AsInt32().WithDefaultValue(1)
+                .WithColumn("ArtistMetadataId").AsInt32().Unique();
+
+            Create.TableForModel("ArtistMetadata")
+                .WithColumn("ForeignArtistId").AsString().Unique()
+                .WithColumn("Name").AsString()
+                .WithColumn("Overview").AsString().Nullable()
                 .WithColumn("Disambiguation").AsString().Nullable()
-                .WithColumn("PrimaryAlbumTypes").AsString().Nullable()
-                .WithColumn("SecondaryAlbumTypes").AsString().Nullable();
+                .WithColumn("Type").AsString().Nullable()
+                .WithColumn("Status").AsInt32()
+                .WithColumn("Images").AsString()
+                .WithColumn("Links").AsString().Nullable()
+                .WithColumn("Genres").AsString().Nullable()
+                .WithColumn("Ratings").AsString().Nullable()
+                .WithColumn("Members").AsString().Nullable()
+                .WithColumn("Aliases").AsString().WithDefaultValue("[]")
+                .WithColumn("OldForeignArtistIds").AsString().WithDefaultValue("[]");
 
             Create.TableForModel("Albums")
                 .WithColumn("ForeignAlbumId").AsString().Unique()
-                .WithColumn("ArtistId").AsInt32()
-                .WithColumn("MBId").AsString().Nullable().Indexed()
-                .WithColumn("AMId").AsString().Nullable()
-                .WithColumn("TADBId").AsInt32().Nullable().Indexed()
-                .WithColumn("DiscogsId").AsInt32().Nullable()
                 .WithColumn("Title").AsString()
-                .WithColumn("TitleSlug").AsString().Nullable().Unique()
                 .WithColumn("CleanTitle").AsString().Indexed()
                 .WithColumn("Overview").AsString().Nullable()
                 .WithColumn("Images").AsString()
-                .WithColumn("Path").AsString().Indexed()
                 .WithColumn("Monitored").AsBoolean()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
-                .WithColumn("LastDiskSync").AsDateTime().Nullable()
                 .WithColumn("ReleaseDate").AsDateTime().Nullable()
                 .WithColumn("Ratings").AsString().Nullable()
                 .WithColumn("Genres").AsString().Nullable()
-                .WithColumn("Label").AsString().Nullable()
-                .WithColumn("SortTitle").AsString().Nullable()
                 .WithColumn("ProfileId").AsInt32().Nullable()
-                .WithColumn("Tags").AsString().Nullable()
                 .WithColumn("Added").AsDateTime().Nullable()
                 .WithColumn("AlbumType").AsString()
                 .WithColumn("AddOptions").AsString().Nullable()
-                .WithColumn("Duration").AsInt32().WithDefaultValue(0);
+                .WithColumn("SecondaryTypes").AsString().Nullable()
+                .WithColumn("Disambiguation").AsString().Nullable()
+                .WithColumn("ArtistMetadataId").AsInt32().WithDefaultValue(0)
+                .WithColumn("AnyReleaseOk").AsBoolean().WithDefaultValue(true)
+                .WithColumn("Links").AsString().Nullable()
+                .WithColumn("OldForeignAlbumIds").AsString().WithDefaultValue("[]");
+
+            Create.TableForModel("AlbumReleases")
+                .WithColumn("ForeignReleaseId").AsString().Unique()
+                .WithColumn("AlbumId").AsInt32().Indexed()
+                .WithColumn("Title").AsString()
+                .WithColumn("Status").AsString()
+                .WithColumn("Duration").AsInt32().WithDefaultValue(0)
+                .WithColumn("Label").AsString().Nullable()
+                .WithColumn("Disambiguation").AsString().Nullable()
+                .WithColumn("Country").AsString().Nullable()
+                .WithColumn("ReleaseDate").AsDateTime().Nullable()
+                .WithColumn("Media").AsString().Nullable()
+                .WithColumn("TrackCount").AsInt32().Nullable()
+                .WithColumn("Monitored").AsBoolean()
+                .WithColumn("OldForeignReleaseIds").AsString().WithDefaultValue("[]");
 
             Create.TableForModel("Tracks")
                 .WithColumn("ForeignTrackId").AsString().Unique()
-                .WithColumn("ArtistId").AsInt32().Indexed()
-                .WithColumn("AlbumId").AsInt32()
-                .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Explicit").AsBoolean()
-                .WithColumn("Compilation").AsBoolean()
-                .WithColumn("DiscNumber").AsInt32().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable().Indexed()
-                .WithColumn("Monitored").AsBoolean()
                 .WithColumn("Ratings").AsString().Nullable()
-                .WithColumn("Duration").AsInt32().WithDefaultValue(0);
+                .WithColumn("Duration").AsInt32().WithDefaultValue(0)
+                .WithColumn("MediumNumber").AsInt32().WithDefaultValue(0)
+                .WithColumn("AbsoluteTrackNumber").AsInt32().WithDefaultValue(0)
+                .WithColumn("TrackNumber").AsString().Nullable()
+                .WithColumn("ForeignRecordingId").AsString().WithDefaultValue("0")
+                .WithColumn("AlbumReleaseId").AsInt32().WithDefaultValue(0)
+                .WithColumn("ArtistMetadataId").AsInt32().WithDefaultValue(0)
+                .WithColumn("OldForeignRecordingIds").AsString().WithDefaultValue("[]")
+                .WithColumn("OldForeignTrackIds").AsString().WithDefaultValue("[]");
 
             Create.Index().OnTable("Tracks").OnColumn("ArtistId").Ascending()
                                             .OnColumn("AlbumId").Ascending()
                                             .OnColumn("TrackNumber").Ascending();
 
             Create.TableForModel("TrackFiles")
-                .WithColumn("ArtistId").AsInt32().Indexed()
                 .WithColumn("AlbumId").AsInt32().Indexed()
                 .WithColumn("Quality").AsString()
                 .WithColumn("Size").AsInt64()
@@ -103,8 +115,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("DateAdded").AsDateTime()
                 .WithColumn("ReleaseGroup").AsString().Nullable()
                 .WithColumn("MediaInfo").AsString().Nullable()
-                .WithColumn("RelativePath").AsString().Nullable()
-                .WithColumn("Language").AsInt32().WithDefaultValue(0);
+                .WithColumn("Modified").AsDateTime().WithDefaultValue(new DateTime(2000, 1, 1))
+                .WithColumn("Path").AsString().NotNullable().Unique();
 
             Create.TableForModel("History")
                 .WithColumn("SourceTitle").AsString()
@@ -113,7 +125,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Data").AsString()
                 .WithColumn("EventType").AsInt32().Nullable().Indexed()
                 .WithColumn("DownloadId").AsString().Nullable().Indexed()
-                .WithColumn("Language").AsInt32().NotNullable().WithDefaultValue(0)
                 .WithColumn("ArtistId").AsInt32().WithDefaultValue(0)
                 .WithColumn("AlbumId").AsInt32().Indexed().WithDefaultValue(0)
                 .WithColumn("TrackId").AsInt32().WithDefaultValue(0);
@@ -121,18 +132,24 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.TableForModel("Notifications")
                 .WithColumn("Name").AsString()
                 .WithColumn("OnGrab").AsBoolean()
-                .WithColumn("OnDownload").AsBoolean()
                 .WithColumn("Settings").AsString()
                 .WithColumn("Implementation").AsString()
                 .WithColumn("ConfigContract").AsString().Nullable()
                 .WithColumn("OnUpgrade").AsBoolean().Nullable()
                 .WithColumn("Tags").AsString().Nullable()
-                .WithColumn("OnRename").AsBoolean().NotNullable();
+                .WithColumn("OnRename").AsBoolean().NotNullable()
+                .WithColumn("OnReleaseImport").AsBoolean().WithDefaultValue(0)
+                .WithColumn("OnHealthIssue").AsBoolean().WithDefaultValue(0)
+                .WithColumn("IncludeHealthWarnings").AsBoolean().WithDefaultValue(0)
+                .WithColumn("OnDownloadFailure").AsBoolean().WithDefaultValue(0)
+                .WithColumn("OnImportFailure").AsBoolean().WithDefaultValue(0)
+                .WithColumn("OnTrackRetag").AsBoolean().WithDefaultValue(0);
 
             Create.TableForModel("ScheduledTasks")
                 .WithColumn("TypeName").AsString().Unique()
                 .WithColumn("Interval").AsInt32()
-                .WithColumn("LastExecution").AsDateTime();
+                .WithColumn("LastExecution").AsDateTime()
+                .WithColumn("LastStartTime").AsDateTime().Nullable();
 
             Create.TableForModel("Indexers")
                 .WithColumn("Name").AsString().Unique()
@@ -140,12 +157,20 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Settings").AsString().Nullable()
                 .WithColumn("ConfigContract").AsString().Nullable()
                 .WithColumn("EnableRss").AsBoolean().Nullable()
-                .WithColumn("EnableSearch").AsBoolean().Nullable();
+                .WithColumn("EnableAutomaticSearch").AsBoolean().Nullable()
+                .WithColumn("EnableInteractiveSearch").AsBoolean().NotNullable();
 
-            Create.TableForModel("Profiles")
+            Create.TableForModel("QualityProfiles")
                 .WithColumn("Name").AsString().Unique()
                 .WithColumn("Cutoff").AsInt32()
-                .WithColumn("Items").AsString().NotNullable();
+                .WithColumn("Items").AsString().NotNullable()
+                .WithColumn("UpgradeAllowed").AsInt32().Nullable();
+
+            Create.TableForModel("MetadataProfiles")
+                .WithColumn("Name").AsString().Unique()
+                .WithColumn("PrimaryAlbumTypes").AsString()
+                .WithColumn("SecondaryAlbumTypes").AsString()
+                .WithColumn("ReleaseStatuses").AsString().WithDefaultValue("");
 
             Create.TableForModel("QualityDefinitions")
                 .WithColumn("Quality").AsInt32().Unique()
@@ -158,7 +183,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("ArtistFolderFormat").AsString().Nullable()
                 .WithColumn("RenameTracks").AsBoolean().Nullable()
                 .WithColumn("StandardTrackFormat").AsString().Nullable()
-                .WithColumn("AlbumFolderFormat").AsString().Nullable();
+                .WithColumn("AlbumFolderFormat").AsString().Nullable()
+                .WithColumn("MultiDiscTrackFormat").AsString().Nullable();
 
             Create.TableForModel("Blacklist")
                 .WithColumn("SourceTitle").AsString()
@@ -170,7 +196,6 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Indexer").AsString().Nullable()
                 .WithColumn("Message").AsString().Nullable()
                 .WithColumn("TorrentInfoHash").AsString().Nullable()
-                .WithColumn("Language").AsInt32().NotNullable().WithDefaultValue(0)
                 .WithColumn("ArtistId").AsInt32().WithDefaultValue(0)
                 .WithColumn("AlbumIds").AsString().WithDefaultValue("");
 
@@ -198,14 +223,16 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Implementation").AsString().NotNullable()
                 .WithColumn("Settings").AsString().NotNullable()
-                .WithColumn("ConfigContract").AsString().NotNullable();
+                .WithColumn("ConfigContract").AsString().NotNullable()
+                .WithColumn("Priority").AsInt32().WithDefaultValue(1);
 
             Create.TableForModel("PendingReleases")
                 .WithColumn("Title").AsString()
                 .WithColumn("Added").AsDateTime()
                 .WithColumn("Release").AsString()
                 .WithColumn("ArtistId").AsInt32().WithDefaultValue(0)
-                .WithColumn("ParsedAlbumInfo").AsString().WithDefaultValue("");
+                .WithColumn("ParsedAlbumInfo").AsString().WithDefaultValue("")
+                .WithColumn("Reason").AsInt32().WithDefaultValue(0);
 
             Create.TableForModel("RemotePathMappings")
                 .WithColumn("Host").AsString()
@@ -215,11 +242,12 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.TableForModel("Tags")
                 .WithColumn("Label").AsString().Unique();
 
-            Create.TableForModel("Restrictions")
+            Create.TableForModel("ReleaseProfiles")
                 .WithColumn("Required").AsString().Nullable()
                 .WithColumn("Preferred").AsString().Nullable()
                 .WithColumn("Ignored").AsString().Nullable()
-                .WithColumn("Tags").AsString().NotNullable();
+                .WithColumn("Tags").AsString().NotNullable()
+                .WithColumn("IncludePreferredWhenRenaming").AsBoolean().WithDefaultValue(true);
 
             Create.TableForModel("DelayProfiles")
                 .WithColumn("EnableUsenet").AsBoolean().NotNullable()
@@ -271,20 +299,61 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("RelativePath").AsString().NotNullable()
                 .WithColumn("Extension").AsString().NotNullable()
                 .WithColumn("Added").AsDateTime().NotNullable()
-                .WithColumn("LastUpdated").AsDateTime().NotNullable()
-                .WithColumn("Language").AsInt32().NotNullable();
-
-            Create.TableForModel("LanguageProfiles")
-                .WithColumn("Name").AsString().Unique()
-                .WithColumn("Languages").AsString()
-                .WithColumn("Cutoff").AsInt32();
+                .WithColumn("LastUpdated").AsDateTime().NotNullable();
 
             Create.TableForModel("DownloadClientStatus")
-                  .WithColumn("ProviderId").AsInt32().NotNullable().Unique()
-                  .WithColumn("InitialFailure").AsDateTime().Nullable()
-                  .WithColumn("MostRecentFailure").AsDateTime().Nullable()
-                  .WithColumn("EscalationLevel").AsInt32().NotNullable()
-                  .WithColumn("DisabledTill").AsDateTime().Nullable();
+                .WithColumn("ProviderId").AsInt32().NotNullable().Unique()
+                .WithColumn("InitialFailure").AsDateTime().Nullable()
+                .WithColumn("MostRecentFailure").AsDateTime().Nullable()
+                .WithColumn("EscalationLevel").AsInt32().NotNullable()
+                .WithColumn("DisabledTill").AsDateTime().Nullable();
+
+            Create.TableForModel("ImportLists")
+                .WithColumn("Name").AsString().Unique()
+                .WithColumn("Implementation").AsString()
+                .WithColumn("Settings").AsString().Nullable()
+                .WithColumn("ConfigContract").AsString().Nullable()
+                .WithColumn("EnableAutomaticAdd").AsBoolean().Nullable()
+                .WithColumn("RootFolderPath").AsString()
+                .WithColumn("ShouldMonitor").AsInt32()
+                .WithColumn("ProfileId").AsInt32()
+                .WithColumn("MetadataProfileId").AsInt32()
+                .WithColumn("Tags").AsString().Nullable();
+
+            Create.TableForModel("ImportListStatus")
+                .WithColumn("ProviderId").AsInt32().NotNullable().Unique()
+                .WithColumn("InitialFailure").AsDateTime().Nullable()
+                .WithColumn("MostRecentFailure").AsDateTime().Nullable()
+                .WithColumn("EscalationLevel").AsInt32().NotNullable()
+                .WithColumn("DisabledTill").AsDateTime().Nullable()
+                .WithColumn("LastSyncListInfo").AsString().Nullable();
+
+            Create.TableForModel("ImportListExclusions")
+                .WithColumn("ForeignId").AsString().NotNullable().Unique()
+                .WithColumn("Name").AsString().NotNullable();
+
+            Create.TableForModel("CustomFilters")
+                .WithColumn("Type").AsString().NotNullable()
+                .WithColumn("Label").AsString().NotNullable()
+                .WithColumn("Filters").AsString().NotNullable();
+
+            Create.Index().OnTable("Albums").OnColumn("ArtistId");
+            Create.Index().OnTable("Albums").OnColumn("ArtistId").Ascending()
+                                            .OnColumn("ReleaseDate").Ascending();
+
+            Delete.Index().OnTable("History").OnColumn("AlbumId");
+            Create.Index().OnTable("History").OnColumn("AlbumId").Ascending()
+                                             .OnColumn("Date").Descending();
+
+            Delete.Index().OnTable("History").OnColumn("DownloadId");
+            Create.Index().OnTable("History").OnColumn("DownloadId").Ascending()
+                                             .OnColumn("Date").Descending();
+
+            Create.Index().OnTable("Artists").OnColumn("Monitored").Ascending();
+            Create.Index().OnTable("Albums").OnColumn("ArtistMetadataId").Ascending();
+            Create.Index().OnTable("Tracks").OnColumn("ArtistMetadataId").Ascending();
+            Create.Index().OnTable("Tracks").OnColumn("AlbumReleaseId").Ascending();
+            Create.Index().OnTable("Tracks").OnColumn("ForeignRecordingId").Ascending();
 
             Insert.IntoTable("DelayProfiles").Row(new
             {

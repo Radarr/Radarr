@@ -31,14 +31,14 @@ namespace NzbDrone.Update.Test
         [Test]
         public void should_call_update_with_correct_path()
         {
-            var processPath = @"C:\Lidarr\lidarr.exe".AsOsAgnostic();
+            var processPath = @"C:\Readarr\readarr.exe".AsOsAgnostic();
 
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetProcessById(12))
                 .Returns(new ProcessInfo() { StartPath = processPath });
 
             Subject.Start(new[] { "12", "", processPath });
 
-            Mocker.GetMock<IInstallUpdateService>().Verify(c => c.Start(@"C:\Lidarr".AsOsAgnostic(), 12), Times.Once());
+            Mocker.GetMock<IInstallUpdateService>().Verify(c => c.Start(@"C:\Readarr".AsOsAgnostic(), 12), Times.Once());
         }
     }
 }

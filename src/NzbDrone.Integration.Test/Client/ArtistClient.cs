@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
-using Lidarr.Api.V1.Artist;
+using Readarr.Api.V1.Artist;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

@@ -16,12 +16,12 @@ namespace NzbDrone.Core.Notifications
         protected const string IMPORT_FAILURE_TITLE = "Import Failed";
         protected const string TRACK_RETAGGED_TITLE = "Track File Tags Updated";
 
-        protected const string ALBUM_GRABBED_TITLE_BRANDED = "Lidarr - " + ALBUM_GRABBED_TITLE;
-        protected const string ALBUM_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + ALBUM_DOWNLOADED_TITLE;
-        protected const string HEALTH_ISSUE_TITLE_BRANDED = "Lidarr - " + HEALTH_ISSUE_TITLE;
-        protected const string DOWNLOAD_FAILURE_TITLE_BRANDED = "Lidarr - " + DOWNLOAD_FAILURE_TITLE;
-        protected const string IMPORT_FAILURE_TITLE_BRANDED = "Lidarr - " + IMPORT_FAILURE_TITLE;
-        protected const string TRACK_RETAGGED_TITLE_BRANDED = "Lidarr - " + TRACK_RETAGGED_TITLE;
+        protected const string ALBUM_GRABBED_TITLE_BRANDED = "Readarr - " + ALBUM_GRABBED_TITLE;
+        protected const string ALBUM_DOWNLOADED_TITLE_BRANDED = "Readarr - " + ALBUM_DOWNLOADED_TITLE;
+        protected const string HEALTH_ISSUE_TITLE_BRANDED = "Readarr - " + HEALTH_ISSUE_TITLE;
+        protected const string DOWNLOAD_FAILURE_TITLE_BRANDED = "Readarr - " + DOWNLOAD_FAILURE_TITLE;
+        protected const string IMPORT_FAILURE_TITLE_BRANDED = "Readarr - " + IMPORT_FAILURE_TITLE;
+        protected const string TRACK_RETAGGED_TITLE_BRANDED = "Readarr - " + TRACK_RETAGGED_TITLE;
 
         public abstract string Name { get; }
 

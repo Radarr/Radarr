@@ -1,6 +1,6 @@
-# Lidarr Individual Contributor License Agreement #
+# Readarr Individual Contributor License Agreement #
 
-Thank you for your interest in contributing to Lidarr ("We" or "Us").
+Thank you for your interest in contributing to Readarr ("We" or "Us").
 This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please complete the form below. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
 
 ## 1. Definitions ##

@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Update
         private readonly IPlatformInfo _platformInfo;
         private readonly IAnalyticsService _analyticsService;
 
-        public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IAnalyticsService analyticsService, IPlatformInfo platformInfo)
+        public UpdatePackageProvider(IHttpClient httpClient, IReadarrCloudRequestBuilder requestBuilder, IAnalyticsService analyticsService, IPlatformInfo platformInfo)
         {
             _platformInfo = platformInfo;
             _analyticsService = analyticsService;

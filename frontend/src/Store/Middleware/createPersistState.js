@@ -88,7 +88,7 @@ const config = {
   slicer,
   serialize,
   merge,
-  key: 'lidarr'
+  key: 'readarr'
 };
 
 export default function createPersistState() {

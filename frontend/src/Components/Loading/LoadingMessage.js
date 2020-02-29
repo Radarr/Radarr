@@ -4,7 +4,7 @@ import styles from './LoadingMessage.css';
 const messages = [
   'Downloading more RAM',
   'Now in Technicolor',
-  'Previously on Lidarr...',
+  'Previously on Readarr...',
   'Bleep Bloop.',
   'Locating the required gigapixels to render...',
   'Spinning up the hamster wheel...',

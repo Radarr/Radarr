@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 Link to debug logs.
 
 **System info (please complete the following information):**
- - Lidarr Version: [e.g. 0.3.0.430]
+ - Readarr Version: [e.g. 0.3.0.430]
  - Operating System [e.g. iOS]
  - .net Framework (Windows) or mono (macOS/Linux) Version: [e.g. 4.5 or 5.12]
 

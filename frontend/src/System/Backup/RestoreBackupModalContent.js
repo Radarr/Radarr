@@ -196,7 +196,7 @@ class RestoreBackupModalContent extends Component {
 
         <ModalFooter>
           <div className={styles.additionalInfo}>
-            Note: Lidarr will automatically restart and reload the UI during the restore process.
+            Note: Readarr will automatically restart and reload the UI during the restore process.
           </div>
 
           <Button onPress={onModalClose}>

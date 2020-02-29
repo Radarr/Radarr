@@ -1,6 +1,6 @@
 # How to Contribute #
 
-We're always looking for people to help make Lidarr even better, there are a number of ways to contribute.
+We're always looking for people to help make Readarr even better, there are a number of ways to contribute.
 
 ## Documentation ##
 Setup guides, FAQ, the more information we have on the wiki the better.
@@ -17,18 +17,18 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 
 ### Getting started ###
 
-1. Fork Lidarr
+1. Fork Readarr
 2. Clone the repository into your development machine. [*info*](https://help.github.com/articles/working-with-repositories)
 3. Grab the submodules `git submodule init && git submodule update`
 4. Install the required Node Packages `yarn install`
 5. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
 6. Build the project in Visual Studio, Setting startup project to `NZBDrone.Console`
 7. Debug the project in Visual Studio
-8. Open http://localhost:8686
+8. Open http://localhost:8787
 
 ### Contributing Code ###
-- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/lidarr/Lidarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
-- Rebase from Lidarr's develop branch, don't merge
+- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/readarr/Readarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
+- Rebase from Readarr's develop branch, don't merge
 - Make meaningful commits, or squash them
 - Feel free to make a pull request before work is complete, this will let us see where its at and make comments/suggest improvements
 - Reach out to us on the discord if you have any questions

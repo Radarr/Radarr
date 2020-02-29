@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         [FieldDefinition(3, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
 
-        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", HelpText = "Time before release date Lidarr will download from this indexer, empty is no limit", Unit = "days", Advanced = true)]
+        [FieldDefinition(4, Type = FieldType.Number, Label = "Early Download Limit", HelpText = "Time before release date Readarr will download from this indexer, empty is no limit", Unit = "days", Advanced = true)]
         public int? EarlyReleaseLimit { get; set; }
 
         [FieldDefinition(5, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]
