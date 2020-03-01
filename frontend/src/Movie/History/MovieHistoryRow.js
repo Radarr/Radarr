@@ -1,32 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
-import Icon from 'Components/Icon';
+import { icons, kinds } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import Popover from 'Components/Tooltip/Popover';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
-import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
+import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
 import styles from './MovieHistoryRow.css';
-
-function getTitle(eventType) {
-  switch (eventType) {
-    case 'grabbed': return 'Grabbed';
-    case 'seriesFolderImported': return 'Series Folder Imported';
-    case 'downloadFolderImported': return 'Download Folder Imported';
-    case 'downloadFailed': return 'Download Failed';
-    case 'episodeFileDeleted': return 'Episode File Deleted';
-    case 'movieFileDeleted': return 'Movie File Deleted';
-    case 'movieFolderImported': return 'Movie Folder Imported';
-    default: return 'Unknown';
-  }
-}
 
 class MovieHistoryRow extends Component {
 
@@ -37,7 +22,8 @@ class MovieHistoryRow extends Component {
     super(props, context);
 
     this.state = {
-      isMarkAsFailedModalOpen: false
+      isMarkAsFailedModalOpen: false,
+      isDetailsModalOpen: false
     };
   }
 
@@ -57,6 +43,14 @@ class MovieHistoryRow extends Component {
     this.setState({ isMarkAsFailedModalOpen: false });
   }
 
+  onDetailsPress = () => {
+    this.setState({ isDetailsModalOpen: true });
+  }
+
+  onDetailsModalClose = () => {
+    this.setState({ isDetailsModalOpen: false });
+  }
+
   //
   // Render
 
@@ -69,7 +63,11 @@ class MovieHistoryRow extends Component {
       languages,
       qualityCutoffNotMet,
       date,
-      data
+      data,
+      isMarkingAsFailed,
+      shortDateFormat,
+      timeFormat,
+      onMarkAsFailedPress
     } = this.props;
 
     const {
@@ -110,26 +108,12 @@ class MovieHistoryRow extends Component {
           date={date}
         />
 
-        <TableRowCell className={styles.details}>
-          <Popover
-            anchor={
-              <Icon
-                name={icons.INFO}
-              />
-            }
-            title={getTitle(eventType)}
-            body={
-              <HistoryDetailsConnector
-                eventType={eventType}
-                sourceTitle={sourceTitle}
-                data={data}
-              />
-            }
-            position={tooltipPositions.LEFT}
-          />
-        </TableRowCell>
-
         <TableRowCell className={styles.actions}>
+          <IconButton
+            name={icons.INFO}
+            onPress={this.onDetailsPress}
+          />
+
           {
             eventType === 'grabbed' &&
               <IconButton
@@ -149,6 +133,18 @@ class MovieHistoryRow extends Component {
           onConfirm={this.onConfirmMarkAsFailed}
           onCancel={this.onMarkAsFailedModalClose}
         />
+
+        <HistoryDetailsModal
+          isOpen={this.state.isDetailsModalOpen}
+          eventType={eventType}
+          sourceTitle={sourceTitle}
+          data={data}
+          isMarkingAsFailed={isMarkingAsFailed}
+          shortDateFormat={shortDateFormat}
+          timeFormat={timeFormat}
+          onMarkAsFailedPress={onMarkAsFailedPress}
+          onModalClose={this.onDetailsModalClose}
+        />
       </TableRow>
     );
   }
@@ -164,7 +160,10 @@ MovieHistoryRow.propTypes = {
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
+  isMarkingAsFailed: PropTypes.bool,
   movie: PropTypes.object.isRequired,
+  shortDateFormat: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string.isRequired,
   onMarkAsFailedPress: PropTypes.func.isRequired
 };
 

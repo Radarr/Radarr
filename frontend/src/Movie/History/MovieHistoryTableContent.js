@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { icons } from 'Helpers/Props';
+import IconButton from 'Components/Link/IconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
@@ -38,13 +40,8 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'details',
-    label: 'Details',
-    isVisible: true
-  },
-  {
     name: 'actions',
-    label: 'Actions',
+    label: React.createElement(IconButton, { name: icons.ADVANCED_SETTINGS }),
     isVisible: true
   }
 ];

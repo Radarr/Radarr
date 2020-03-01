@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
+import IconButton from 'Components/Link/IconButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import MovieFileEditorRow from './MovieFileEditorRow';
@@ -45,7 +45,7 @@ const columns = [
   },
   {
     name: 'action',
-    label: React.createElement(Icon, { name: icons.ADVANCED_SETTINGS }),
+    label: React.createElement(IconButton, { name: icons.ADVANCED_SETTINGS }),
     isVisible: true
   }
 ];
