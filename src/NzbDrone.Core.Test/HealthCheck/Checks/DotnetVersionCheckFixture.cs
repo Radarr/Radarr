@@ -32,16 +32,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [TestCase("4.7.1")]
         public void should_return_notice(string version)
         {
-            GivenOutput(version);
+            if (PlatformInfo.IsDotNet)
+            {
+                GivenOutput(version);
 
-            Subject.Check().ShouldBeNotice();
-        }
-
-        public void should_return_warning(string version)
-        {
-            GivenOutput(version);
-
-            Subject.Check().ShouldBeWarning();
+                Subject.Check().ShouldBeNotice();
+            }
         }
 
         [TestCase("4.5")]
@@ -49,9 +45,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [TestCase("4.6.1")]
         public void should_return_error(string version)
         {
-            GivenOutput(version);
+            if (PlatformInfo.IsDotNet)
+            {
+                GivenOutput(version);
 
-            Subject.Check().ShouldBeError();
+                Subject.Check().ShouldBeError();
+            }
         }
 
         [Test]
