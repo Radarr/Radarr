@@ -20,7 +20,7 @@ function getStatusStyle(hasFile, downloading, startTime, isMonitored) {
     return 'missing';
   }
 
-  return 'unaired';
+  return 'unreleased';
 }
 
 export default getStatusStyle;

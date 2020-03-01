@@ -7,34 +7,11 @@ import styles from './Legend.css';
 
 function Legend(props) {
   const {
-    showFinaleIcon,
-    showSpecialIcon,
     showCutoffUnmetIcon,
     colorImpairedMode
   } = props;
 
   const iconsToShow = [];
-  if (showFinaleIcon) {
-    iconsToShow.push(
-      <LegendIconItem
-        name="Finale"
-        icon={icons.INFO}
-        kind={kinds.WARNING}
-        tooltip="Series or season finale"
-      />
-    );
-  }
-
-  if (showSpecialIcon) {
-    iconsToShow.push(
-      <LegendIconItem
-        name="Special"
-        icon={icons.INFO}
-        kind={kinds.PINK}
-        tooltip="Special episode"
-      />
-    );
-  }
 
   if (showCutoffUnmetIcon) {
     iconsToShow.push(
@@ -51,8 +28,8 @@ function Legend(props) {
     <div className={styles.legend}>
       <div>
         <LegendItem
-          status="unaired"
-          tooltip="Movie hasn't aired yet"
+          status="unreleased"
+          tooltip="Movie hasn't released yet"
           colorImpairedMode={colorImpairedMode}
         />
 
@@ -77,22 +54,10 @@ function Legend(props) {
         />
       </div>
 
-      <div>
-        <LegendIconItem
-          name="Premiere"
-          icon={icons.INFO}
-          kind={kinds.INFO}
-          tooltip="Series or season premiere"
-        />
-
-        {iconsToShow[0]}
-      </div>
-
       {
-        iconsToShow.length > 1 &&
+        iconsToShow.length > 0 &&
           <div>
-            {iconsToShow[1]}
-            {iconsToShow[2]}
+            {iconsToShow[0]}
           </div>
       }
     </div>
@@ -100,8 +65,6 @@ function Legend(props) {
 }
 
 Legend.propTypes = {
-  showFinaleIcon: PropTypes.bool.isRequired,
-  showSpecialIcon: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };

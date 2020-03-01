@@ -44,16 +44,8 @@
   font-size: $defaultFontSize;
 }
 
-.absoluteEpisodeNumber {
-  margin-left: 3px;
-}
-
 .statusIcon {
   margin-left: 3px;
-}
-
-.airTime {
-  color: $calendarTextDim;
 }
 
 /*
@@ -97,7 +89,7 @@
   }
 }
 
-.unaired {
+.unreleased {
   border-left-color: $primaryColor !important;
 
   &:global(.colorImpaired) {

@@ -37,22 +37,6 @@
   margin-right: 10px;
 }
 
-.episodeTitle {
-  flex: 1 1 1px;
-}
-
-.seasonEpisodeNumber {
-  flex: 0 0 100px;
-}
-
-.episodeSeparator {
-  display: none;
-}
-
-.absoluteEpisodeNumber {
-  margin-left: 3px;
-}
-
 .statusIcon {
   margin-left: 3px;
 }
@@ -73,16 +57,8 @@
   composes: unmonitored from '~Calendar/Events/CalendarEvent.css';
 }
 
-.onAir {
-  composes: onAir from '~Calendar/Events/CalendarEvent.css';
-}
-
 .missing {
   composes: missing from '~Calendar/Events/CalendarEvent.css';
-}
-
-.premiere {
-  composes: premiere from '~Calendar/Events/CalendarEvent.css';
 }
 
 @media only screen and (max-width: $breakpointSmall) {
@@ -101,16 +77,7 @@
 
   .date,
   .time,
-  .seriesTitle {
+  .movieTitle {
     flex: 0 0 100%;
-  }
-
-  .seasonEpisodeNumber {
-    flex: 0 0 auto;
-  }
-
-  .episodeSeparator {
-    display: inline-block;
-    margin: 0 5px;
   }
 }
