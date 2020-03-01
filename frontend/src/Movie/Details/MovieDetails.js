@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
@@ -39,7 +40,6 @@ import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 // import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
@@ -327,9 +327,12 @@ class MovieDetails extends Component {
 
                 <div className={styles.details}>
                   <div>
-                    <span className={styles.year}>
-                      {year}
-                    </span>
+                    {
+                      year > 0 &&
+                        <span className={styles.year}>
+                          {year}
+                        </span>
+                    }
 
                     {
                       !!runtime &&
@@ -607,7 +610,7 @@ MovieDetails.propTypes = {
   studio: PropTypes.string,
   collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
-  inCinemas: PropTypes.string.isRequired,
+  inCinemas: PropTypes.string,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,

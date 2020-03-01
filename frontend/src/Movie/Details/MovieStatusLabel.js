@@ -42,7 +42,7 @@ function MovieStatusLabel(props) {
 MovieStatusLabel.propTypes = {
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
-  inCinemas: PropTypes.string.isRequired
+  inCinemas: PropTypes.string
 };
 
 MovieStatusLabel.defaultProps = {
