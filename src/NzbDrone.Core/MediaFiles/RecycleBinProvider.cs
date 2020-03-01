@@ -7,8 +7,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -20,7 +18,7 @@ namespace NzbDrone.Core.MediaFiles
         void Cleanup();
     }
 
-    public class RecycleBinProvider : IExecute<CleanUpRecycleBinCommand>, IRecycleBinProvider, IHandleAsync<MovieDeletedEvent>
+    public class RecycleBinProvider : IExecute<CleanUpRecycleBinCommand>, IRecycleBinProvider
     {
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
@@ -192,17 +190,6 @@ namespace NzbDrone.Core.MediaFiles
             }
             catch (UnauthorizedAccessException)
             {
-            }
-        }
-
-        public void HandleAsync(MovieDeletedEvent message)
-        {
-            if (message.DeleteFiles)
-            {
-                if (_diskProvider.FolderExists(message.Movie.Path))
-                {
-                    DeleteFolder(message.Movie.Path);
-                }
             }
         }
 

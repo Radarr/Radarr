@@ -1,37 +1,35 @@
-using System.IO;
 using NLog;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
 using Radarr.Http;
+using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace NzbDrone.Api.MovieFiles
 {
     public class MovieFileModule : RadarrRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IRecycleBinProvider _recycleBinProvider;
+        private readonly IDeleteMediaFiles _mediaFileDeletionService;
         private readonly IMovieService _movieService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
-        private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
-                             IRecycleBinProvider recycleBinProvider,
+                             IDeleteMediaFiles mediaFileDeletionService,
                              IMovieService movieService,
-                             IUpgradableSpecification qualityUpgradableSpecification,
-                             Logger logger)
+                             IUpgradableSpecification qualityUpgradableSpecification)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
-            _recycleBinProvider = recycleBinProvider;
+            _mediaFileDeletionService = mediaFileDeletionService;
             _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
-            _logger = logger;
             GetResourceById = GetMovieFile;
             UpdateResource = SetQuality;
             DeleteResource = DeleteMovieFile;
@@ -56,12 +54,15 @@ namespace NzbDrone.Api.MovieFiles
         private void DeleteMovieFile(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
-            var movie = _movieService.GetMovie(movieFile.MovieId);
-            var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
 
-            _logger.Info("Deleting movie file: {0}", fullPath);
-            _recycleBinProvider.DeleteFile(fullPath);
-            _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
+            if (movieFile == null)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.NotFound, "Movie file not found");
+            }
+
+            var movie = _movieService.GetMovie(movieFile.MovieId);
+
+            _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
         }
 
         public void Handle(MovieFileAddedEvent message)
