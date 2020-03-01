@@ -31,6 +31,11 @@ class Indexers extends Component {
     this.setState({ isAddIndexerModalOpen: true });
   }
 
+  onCloneIndexerPress = (id) => {
+    this.props.dispatchCloneIndexer({ id });
+    this.setState({ isEditIndexerModalOpen: true });
+  }
+
   onAddIndexerModalClose = ({ indexerSelected = false } = {}) => {
     this.setState({
       isAddIndexerModalOpen: false,
@@ -48,6 +53,7 @@ class Indexers extends Component {
   render() {
     const {
       items,
+      dispatchCloneIndexer,
       onConfirmDeleteIndexer,
       ...otherProps
     } = this.props;
@@ -73,6 +79,7 @@ class Indexers extends Component {
                     key={item.id}
                     {...item}
                     showPriority={showPriority}
+                    onCloneIndexerPress={this.onCloneIndexerPress}
                     onConfirmDeleteIndexer={onConfirmDeleteIndexer}
                   />
                 );
@@ -111,6 +118,7 @@ Indexers.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchCloneIndexer: PropTypes.func.isRequired,
   onConfirmDeleteIndexer: PropTypes.func.isRequired
 };
 

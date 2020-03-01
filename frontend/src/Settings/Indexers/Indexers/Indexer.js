@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import { kinds } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
 import styles from './Indexer.css';
 
@@ -47,6 +48,15 @@ class Indexer extends Component {
     this.props.onConfirmDeleteIndexer(this.props.id);
   }
 
+  onCloneIndexerPress = () => {
+    const {
+      id,
+      onCloneIndexerPress
+    } = this.props;
+
+    onCloneIndexerPress(id);
+  }
+
   //
   // Render
 
@@ -69,8 +79,17 @@ class Indexer extends Component {
         overlayContent={true}
         onPress={this.onEditIndexerPress}
       >
-        <div className={styles.name}>
-          {name}
+        <div className={styles.nameContainer}>
+          <div className={styles.name}>
+            {name}
+          </div>
+
+          <IconButton
+            className={styles.cloneButton}
+            title="Clone Profile"
+            name={icons.CLONE}
+            onPress={this.onCloneIndexerPress}
+          />
         </div>
 
         <div className={styles.enabled}>
@@ -144,6 +163,7 @@ Indexer.propTypes = {
   supportsRss: PropTypes.bool.isRequired,
   supportsSearch: PropTypes.bool.isRequired,
   showPriority: PropTypes.bool.isRequired,
+  onCloneIndexerPress: PropTypes.func.isRequired,
   onConfirmDeleteIndexer: PropTypes.func.isRequired
 };
 
