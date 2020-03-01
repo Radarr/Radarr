@@ -17,7 +17,6 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 function getUrls(state) {
   const {
     unmonitored,
-    premieresOnly,
     asAllDay,
     tags
   } = state;
@@ -26,10 +25,6 @@ function getUrls(state) {
 
   if (unmonitored) {
     icalUrl += 'unmonitored=true&';
-  }
-
-  if (premieresOnly) {
-    icalUrl += 'premieresOnly=true&';
   }
 
   if (asAllDay) {
@@ -61,7 +56,6 @@ class CalendarLinkModalContent extends Component {
 
     const defaultState = {
       unmonitored: false,
-      premieresOnly: false,
       asAllDay: false,
       tags: []
     };
@@ -105,7 +99,6 @@ class CalendarLinkModalContent extends Component {
 
     const {
       unmonitored,
-      premieresOnly,
       asAllDay,
       tags,
       iCalHttpUrl,
@@ -128,18 +121,6 @@ class CalendarLinkModalContent extends Component {
                 name="unmonitored"
                 value={unmonitored}
                 helpText="Include unmonitored movies in the iCal feed"
-                onChange={this.onInputChange}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <FormLabel>Season Premieres Only</FormLabel>
-
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="premieresOnly"
-                value={premieresOnly}
-                helpText="Only the first episode in a season will be in the feed"
                 onChange={this.onInputChange}
               />
             </FormGroup>

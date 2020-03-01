@@ -203,8 +203,6 @@ class CalendarOptionsModalContent extends Component {
 
 CalendarOptionsModalContent.propTypes = {
   showMovieInformation: PropTypes.bool.isRequired,
-  showFinaleIcon: PropTypes.bool.isRequired,
-  showSpecialIcon: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,
   calendarWeekColumnHeader: PropTypes.string.isRequired,

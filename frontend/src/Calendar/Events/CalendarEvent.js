@@ -12,17 +12,6 @@ import styles from './CalendarEvent.css';
 class CalendarEvent extends Component {
 
   //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      // isDetailsModalOpen: false
-    };
-  }
-
-  //
   // Render
 
   render() {
@@ -138,7 +127,6 @@ CalendarEvent.propTypes = {
   timeFormat: PropTypes.string.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired
-  // onEventModalOpenToggle: PropTypes.func.isRequired
 };
 
 CalendarEvent.defaultProps = {
