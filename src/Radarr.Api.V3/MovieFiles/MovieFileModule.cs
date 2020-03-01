@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Nancy;
-using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -24,27 +23,24 @@ namespace Radarr.Api.V3.MovieFiles
                                  IHandle<MovieFileDeletedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IRecycleBinProvider _recycleBinProvider;
+        private readonly IDeleteMediaFiles _mediaFileDeletionService;
         private readonly IMovieService _movieService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
-        private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                                IMediaFileService mediaFileService,
-                               IRecycleBinProvider recycleBinProvider,
+                               IDeleteMediaFiles mediaFileDeletionService,
                                IMovieService movieService,
                                ICustomFormatCalculationService formatCalculator,
-                               IUpgradableSpecification qualityUpgradableSpecification,
-                               Logger logger)
+                               IUpgradableSpecification qualityUpgradableSpecification)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
-            _recycleBinProvider = recycleBinProvider;
+            _mediaFileDeletionService = mediaFileDeletionService;
             _movieService = movieService;
             _formatCalculator = formatCalculator;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
-            _logger = logger;
 
             GetResourceById = GetMovieFile;
             GetResourceAll = GetMovieFiles;
@@ -148,15 +144,15 @@ namespace Radarr.Api.V3.MovieFiles
         private void DeleteMovieFile(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
+
+            if (movieFile == null)
+            {
+                throw new NzbDroneClientException(global::System.Net.HttpStatusCode.NotFound, "Movie file not found");
+            }
+
             var movie = _movieService.GetMovie(movieFile.MovieId);
-            var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
 
-            _logger.Info("Deleting movie file: {0}", fullPath);
-            _recycleBinProvider.DeleteFile(fullPath);
-            _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
-
-            // TODO: Pull MediaFileDeletionService from Sonarr
-            //_mediaFileDeletionService.Delete(series, episodeFile);
+            _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
         }
 
         private object DeleteMovieFiles()
@@ -167,13 +163,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             foreach (var movieFile in movieFiles)
             {
-                var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
-                _logger.Info("Deleting movie file: {0}", fullPath);
-                _recycleBinProvider.DeleteFile(fullPath);
-                _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
-
-                // TODO: Pull MediaFileDeletionService from Sonarr
-                //_mediaFileDeletionService.DeleteEpisodeFile(movie, movieFile);
+                _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
             }
 
             return new object();
