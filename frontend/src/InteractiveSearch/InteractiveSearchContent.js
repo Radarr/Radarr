@@ -168,7 +168,7 @@ function InteractiveSearchContent(props) {
       {
         totalReleasesCount !== items.length && !!items.length &&
           <div className={styles.filteredMessage}>
-                Some results are hidden by the applied filter
+            Some results are hidden by the applied filter
           </div>
       }
     </div>
