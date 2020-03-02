@@ -186,7 +186,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                              Upgrade Until Quality
+                                Upgrade Until Quality
                               </FormLabel>
 
                               <FormInputGroup
@@ -221,7 +221,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value && formatItems.value.length > 0 &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                              Upgrade Until Custom Format Score
+                                Upgrade Until Custom Format Score
                               </FormLabel>
 
                               <FormInputGroup
@@ -236,7 +236,7 @@ class EditQualityProfileModalContent extends Component {
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                          Language
+                            Language
                           </FormLabel>
 
                           <FormInputGroup
