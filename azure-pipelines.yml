@@ -255,6 +255,7 @@ stages:
           sentry-cli releases deploys "${RELEASENAME}" new -e production
           fi
         displayName: Publish Sentry Source Maps
+        enabled: false
         condition: |
           or
           (
