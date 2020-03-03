@@ -2,8 +2,8 @@
 .status {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
-  width: 20px;
   padding: 0;
+  width: 20px;
 }
 
 .sortName {

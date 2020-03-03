@@ -16,9 +16,9 @@
 .monitored {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
-  padding: 0;
   display: flex;
   align-items: center;
+  padding: 0;
   width: 20px;
 }
 
@@ -31,16 +31,15 @@
 
   display: flex;
   align-items: center;
-
-  min-width: 110px;
   flex-shrink: 0;
+  min-width: 110px;
 }
 
 .albums {
   composes: cell;
 
   display: flex;
-  flex-wrap: wrap;
   flex-grow: 4;
+  flex-wrap: wrap;
   min-width: 400px;
 }
