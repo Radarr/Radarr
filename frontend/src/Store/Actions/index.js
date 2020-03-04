@@ -6,6 +6,7 @@ import * as captcha from './captchaActions';
 import * as customFilters from './customFilterActions';
 import * as commands from './commandActions';
 import * as movieFiles from './movieFileActions';
+import * as extraFiles from './extraFileActions';
 import * as history from './historyActions';
 import * as importMovie from './importMovieActions';
 import * as interactiveImportActions from './interactiveImportActions';
@@ -33,6 +34,7 @@ export default [
   commands,
   customFilters,
   movieFiles,
+  extraFiles,
   history,
   importMovie,
   interactiveImportActions,

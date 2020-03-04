@@ -9,6 +9,7 @@ import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
+import { fetchExtraFiles, clearExtraFiles } from 'Store/Actions/extraFileActions';
 import { fetchMovieCredits, clearMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
@@ -59,15 +60,33 @@ const selectMovieCredits = createSelector(
   }
 );
 
+const selectExtraFiles = createSelector(
+  (state) => state.extraFiles,
+  (extraFiles) => {
+    const {
+      isFetching,
+      isPopulated,
+      error
+    } = extraFiles;
+
+    return {
+      isExtraFilesFetching: isFetching,
+      isExtraFilesPopulated: isPopulated,
+      extraFilesError: error
+    };
+  }
+);
+
 function createMapStateToProps() {
   return createSelector(
     (state, { titleSlug }) => titleSlug,
     selectMovieFiles,
     selectMovieCredits,
+    selectExtraFiles,
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (titleSlug, movieFiles, movieCredits, allMovies, commands, dimensions) => {
+    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions) => {
       const sortedMovies = _.orderBy(allMovies, 'sortTitle');
       const movieIndex = _.findIndex(sortedMovies, { titleSlug });
       const movie = sortedMovies[movieIndex];
@@ -90,6 +109,12 @@ function createMapStateToProps() {
         movieCreditsError
       } = movieCredits;
 
+      const {
+        isExtraFilesFetching,
+        isExtraFilesPopulated,
+        extraFilesError
+      } = extraFiles;
+
       const previousMovie = sortedMovies[movieIndex - 1] || _.last(sortedMovies);
       const nextMovie = sortedMovies[movieIndex + 1] || _.first(sortedMovies);
       const isMovieRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_MOVIE, movieId: movie.id }));
@@ -107,8 +132,8 @@ function createMapStateToProps() {
         isRenamingMovieCommand.body.movieIds.indexOf(movie.id) > -1
       );
 
-      const isFetching = isMovieFilesFetching && isMovieCreditsFetching;
-      const isPopulated = isMovieFilesPopulated && isMovieCreditsPopulated;
+      const isFetching = isMovieFilesFetching || isMovieCreditsFetching || isExtraFilesFetching;
+      const isPopulated = isMovieFilesPopulated && isMovieCreditsPopulated && isExtraFilesPopulated;
       const alternateTitles = _.reduce(movie.alternateTitles, (acc, alternateTitle) => {
         acc.push(alternateTitle.title);
         return acc;
@@ -127,6 +152,7 @@ function createMapStateToProps() {
         isPopulated,
         movieFilesError,
         movieCreditsError,
+        extraFilesError,
         hasMovieFiles,
         sizeOnDisk,
         previousMovie,
@@ -142,6 +168,8 @@ const mapDispatchToProps = {
   clearMovieFiles,
   fetchMovieCredits,
   clearMovieCredits,
+  fetchExtraFiles,
+  clearExtraFiles,
   clearReleases,
   cancelFetchReleases,
   fetchNetImportSchema,
@@ -200,6 +228,7 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.fetchMovieFiles({ movieId });
+    this.props.fetchExtraFiles({ movieId });
     this.props.fetchMovieCredits({ movieId });
     this.props.fetchQueueDetails({ movieId });
     this.props.fetchNetImportSchema();
@@ -208,6 +237,7 @@ class MovieDetailsConnector extends Component {
   unpopulate = () => {
     this.props.cancelFetchReleases();
     this.props.clearMovieFiles();
+    this.props.clearExtraFiles();
     this.props.clearMovieCredits();
     this.props.clearQueueDetails();
     this.props.clearReleases();
@@ -263,6 +293,8 @@ MovieDetailsConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   fetchMovieFiles: PropTypes.func.isRequired,
   clearMovieFiles: PropTypes.func.isRequired,
+  fetchExtraFiles: PropTypes.func.isRequired,
+  clearExtraFiles: PropTypes.func.isRequired,
   fetchMovieCredits: PropTypes.func.isRequired,
   clearMovieCredits: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
