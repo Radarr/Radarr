@@ -78,6 +78,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Author author = null, DownloadClientItem downloadClientItem = null)
         {
+            _logger.Debug("Processing path: {0}", path);
+
             if (_diskProvider.FolderExists(path))
             {
                 var directoryInfo = _diskProvider.GetDirectoryInfo(path);
@@ -334,6 +336,12 @@ namespace NzbDrone.Core.MediaFiles
             {
                 var mounts = _diskProvider.GetMounts();
                 var mount = mounts.FirstOrDefault(m => m.RootDirectory == Path.GetPathRoot(path));
+
+                if (mount == null)
+                {
+                    _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}. Unable to find a volume mounted for the path. If you're using a mapped network drive see the FAQ for more info", path);
+                    return;
+                }
 
                 if (mount.DriveType == DriveType.Network)
                 {
