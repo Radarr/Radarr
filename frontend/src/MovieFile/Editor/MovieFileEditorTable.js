@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import MovieFileEditorTableContentConnector from './MovieFileEditorTableContentConnector';
+import styles from './MovieFileEditorTable.css';
 
 function MovieFileEditorTable(props) {
   const {
@@ -8,9 +9,11 @@ function MovieFileEditorTable(props) {
   } = props;
 
   return (
-    <MovieFileEditorTableContentConnector
-      movieId={movieId}
-    />
+    <div className={styles.container}>
+      <MovieFileEditorTableContentConnector
+        movieId={movieId}
+      />
+    </div>
   );
 }
 

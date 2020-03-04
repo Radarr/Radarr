@@ -25,6 +25,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
+import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import MoviePoster from 'Movie/MoviePoster';
@@ -182,6 +183,7 @@ class MovieDetails extends Component {
       isSmallScreen,
       movieFilesError,
       movieCreditsError,
+      extraFilesError,
       hasMovieFiles,
       previousMovie,
       nextMovie,
@@ -457,13 +459,23 @@ class MovieDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !movieFilesError && !movieCreditsError &&
+              !isPopulated && !movieFilesError && !movieCreditsError && !extraFilesError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && movieFilesError && !movieCreditsError &&
+              !isFetching && movieFilesError &&
                 <div>Loading movie files failed</div>
+            }
+
+            {
+              !isFetching && movieCreditsError &&
+                <div>Loading movie credits failed</div>
+            }
+
+            {
+              !isFetching && extraFilesError &&
+                <div>Loading movie extra files failed</div>
             }
 
             <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
@@ -535,6 +547,9 @@ class MovieDetails extends Component {
 
               <TabPanel>
                 <MovieFileEditorTable
+                  movieId={id}
+                />
+                <ExtraFileTable
                   movieId={id}
                 />
               </TabPanel>
@@ -623,6 +638,7 @@ MovieDetails.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   movieFilesError: PropTypes.object,
   movieCreditsError: PropTypes.object,
+  extraFilesError: PropTypes.object,
   hasMovieFiles: PropTypes.bool.isRequired,
   previousMovie: PropTypes.object.isRequired,
   nextMovie: PropTypes.object.isRequired,
