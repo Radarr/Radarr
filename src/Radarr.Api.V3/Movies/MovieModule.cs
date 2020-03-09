@@ -40,9 +40,11 @@ namespace Radarr.Api.V3.Movies
                             IManageCommandQueue commandQueueManager,
                             IUpgradableSpecification qualityUpgradableSpecification,
                             RootFolderValidator rootFolderValidator,
+                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                             MoviePathValidator moviesPathValidator,
                             MovieExistsValidator moviesExistsValidator,
                             MovieAncestorValidator moviesAncestorValidator,
+                            SystemFolderValidator systemFolderValidator,
                             ProfileExistsValidator profileExistsValidator,
                             MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
@@ -64,8 +66,10 @@ namespace Radarr.Api.V3.Movies
                            .Cascade(CascadeMode.StopOnFirstFailure)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
+                           .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(moviesPathValidator)
                            .SetValidator(moviesAncestorValidator)
+                           .SetValidator(systemFolderValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
             SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);

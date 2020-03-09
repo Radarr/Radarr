@@ -35,6 +35,7 @@ namespace NzbDrone.Api.Movies
                            IMovieService moviesService,
                            IMapCoversToLocal coverMapper,
                            RootFolderValidator rootFolderValidator,
+                           MappedNetworkDriveValidator mappedNetworkDriveValidator,
                            MoviePathValidator moviesPathValidator,
                            MovieExistsValidator moviesExistsValidator,
                            MovieAncestorValidator moviesAncestorValidator,
@@ -59,6 +60,7 @@ namespace NzbDrone.Api.Movies
                            .Cascade(CascadeMode.StopOnFirstFailure)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
+                           .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(moviesPathValidator)
                            .SetValidator(moviesAncestorValidator)
                            .SetValidator(systemFolderValidator)
@@ -67,7 +69,9 @@ namespace NzbDrone.Api.Movies
             SharedValidator.RuleFor(s => s.ProfileId).SetValidator(profileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
+            PostValidator.RuleFor(s => s.RootFolderPath)
+                         .IsValidPath()
+                         .When(s => s.Path.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.TmdbId).NotNull().NotEmpty().SetValidator(moviesExistsValidator);
 
