@@ -191,10 +191,8 @@ namespace NzbDrone.Core.MediaCover
         public void HandleAsync(MovieUpdatedEvent message)
         {
             var updated = EnsureCovers(message.Movie);
-            if (updated)
-            {
-                _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
-            }
+
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie, updated));
         }
 
         public void HandleAsync(MovieDeletedEvent message)

@@ -219,7 +219,10 @@ namespace Radarr.Api.V3.Movies
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
+            if (message.Updated)
+            {
+                BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
+            }
         }
     }
 }
