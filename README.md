@@ -1,5 +1,7 @@
 # Readarr
 
+### Readarr is in early stages of development, alpha/beta binary builds are not yet available. Use of any test builds isn't recommend, and may have detrimental effects on your library.
+
 Readarr is a ebook/magazine/audiobook collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new books from your favorite authors and will grab, sort and rename them.
 
 ## Major Features Include:
@@ -23,7 +25,6 @@ Readarr is a ebook/magazine/audiobook collection manager for Usenet and BitTorre
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/readarr/Readarr/graphs/contributors"><img src="https://opencollective.com/readarr/contributors.svg?width=890&button=false" /></a>
 
 ### License
 
