@@ -100,7 +100,7 @@ namespace NzbDrone.Common.Test.Http
 
             // Used for manual testing of socks proxies.
             //Mocker.GetMock<IHttpProxySettingsProvider>()
-            //      .Setup(v => v.GetProxySettings(It.IsAny<HttpRequest>()))
+            //      .Setup(v => v.GetProxySettings(It.IsAny<HttpUri>()))
             //      .Returns(new HttpProxySettings(ProxyType.Socks5, "127.0.0.1", 5476, "", false));
 
             // Roundrobin over the two servers, to reduce the chance of hitting the ratelimiter.
