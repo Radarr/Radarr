@@ -100,6 +100,9 @@ namespace NzbDrone.Common.Test.Http
             Mocker.SetConstant<IHttpDispatcher>(Mocker.Resolve<TDispatcher>());
 
             // Used for manual testing of socks proxies.
+            // All test should fail if the following lines are uncommented and while the local proxy server is not running.
+            // As soon as having the local SOCKS5 proxy server running, all tests should pass again.
+            // Please test for both conditions manually.
             //Mocker.GetMock<IHttpProxySettingsProvider>()
             //      .Setup(v => v.GetProxySettings(It.IsAny<HttpUri>()))
             //      .Returns(new HttpProxySettings(ProxyType.Socks5, "127.0.0.1", 5476, "", false));
