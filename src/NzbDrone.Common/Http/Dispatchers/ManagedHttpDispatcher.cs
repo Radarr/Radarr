@@ -156,7 +156,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                 proxy = _createManagedWebProxy.GetWebProxy(proxySettings);
             }
 
-            return proxy;
+            return proxy ?? WebRequest.GetSystemWebProxy();
         }
 
         protected virtual void AddRequestHeaders(HttpWebRequest webRequest, HttpHeader headers)
