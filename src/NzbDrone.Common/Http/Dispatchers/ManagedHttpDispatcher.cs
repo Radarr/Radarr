@@ -57,7 +57,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                 webRequest.Timeout = (int)Math.Ceiling(request.RequestTimeout.TotalMilliseconds);
             }
 
-            AddProxy(webRequest, request);
+            webRequest.Proxy = GetProxy(request.Url);
 
             if (request.Headers != null)
             {
@@ -145,13 +145,18 @@ namespace NzbDrone.Common.Http.Dispatchers
             return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data, httpWebResponse.StatusCode);
         }
 
-        protected virtual void AddProxy(HttpWebRequest webRequest, HttpRequest request)
+        public virtual IWebProxy GetProxy(HttpUri uri)
         {
-            var proxySettings = _proxySettingsProvider.GetProxySettings(request);
+            IWebProxy proxy = null;
+
+            var proxySettings = _proxySettingsProvider.GetProxySettings(uri);
+
             if (proxySettings != null)
             {
-                webRequest.Proxy = _createManagedWebProxy.GetWebProxy(proxySettings);
+                proxy = _createManagedWebProxy.GetWebProxy(proxySettings);
             }
+
+            return proxy;
         }
 
         protected virtual void AddRequestHeaders(HttpWebRequest webRequest, HttpHeader headers)

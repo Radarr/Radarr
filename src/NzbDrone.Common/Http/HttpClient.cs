@@ -244,10 +244,12 @@ namespace NzbDrone.Common.Http
                 _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
 
                 var stopWatch = Stopwatch.StartNew();
+                var uri = new HttpUri(url);
                 using (var webClient = new GZipWebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.UserAgent, _userAgentBuilder.GetUserAgent());
-                    webClient.DownloadFile(url, fileName);
+                    webClient.Proxy = _httpDispatcher.GetProxy(uri);
+                    webClient.DownloadFile(uri.FullUri, fileName);
                     stopWatch.Stop();
                     _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
                 }
