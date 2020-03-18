@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using FluentAssertions;
+using FluentAssertions.Common;
 using Moq;
 using NLog;
 using NUnit.Framework;
@@ -249,7 +250,9 @@ namespace NzbDrone.Common.Test.Http
             var request = new HttpRequest($"http://{_httpBinHost}/redirect/6");
             request.AllowAutoRedirect = true;
 
-            Assert.Throws<WebException>(() => Subject.Get(request));
+            var exception = Assert.Throws<WebException>(() => Subject.Get(request));
+
+            Assert.IsTrue(exception.Status == WebExceptionStatus.ProtocolError);
 
             ExceptionVerification.ExpectedErrors(0);
         }
@@ -284,7 +287,9 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+            var exception = Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+
+            Assert.IsTrue((exception.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound);
 
             File.Exists(file).Should().BeFalse();
 
