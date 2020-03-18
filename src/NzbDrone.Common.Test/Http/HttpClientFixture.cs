@@ -297,6 +297,18 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        public void should_download_file()
+        {
+            var file = GetTempFilePath();
+
+            Subject.DownloadFile("http://speedtest.tele2.net/1MB.zip", file);
+
+            var fileInfo = new FileInfo(file);
+            fileInfo.Exists.Should().BeTrue();
+            fileInfo.Length.Should().IsSameOrEqualTo(1024 * 1024);
+        }
+
+        [Test]
         public void should_send_cookie()
         {
             var request = new HttpRequest($"http://{_httpBinHost}/get");
