@@ -73,10 +73,6 @@ export default function createHandleActions(handlers, defaultState, section) {
         const newState = getSectionState(state, payloadSection);
         const items = newState.items;
 
-        if (!newState.itemMap) {
-          newState.itemMap = createItemMap(payload.data);
-        }
-
         const index = payload.id in newState.itemMap ? newState.itemMap[payload.id] : -1;
 
         newState.items = [...items];
@@ -94,8 +90,10 @@ export default function createHandleActions(handlers, defaultState, section) {
 
           newState.items.splice(index, 1, newItem);
         } else if (!updateOnly) {
-          newState.items.push({ ...otherProps });
-          newState.itemMap = createItemMap(newState.items);
+          const newIndex = newState.items.push({ ...otherProps }) - 1;
+
+          newState.itemMap = { ...newState.itemMap };
+          newState.itemMap[payload.id] = newIndex;
         }
 
         return updateSectionState(state, payloadSection, newState);
@@ -151,7 +149,8 @@ export default function createHandleActions(handlers, defaultState, section) {
         const serverState = _.omit(data, ['records']);
         const calculatedState = {
           totalPages: Math.max(Math.ceil(data.totalRecords / data.pageSize), 1),
-          items: data.records
+          items: data.records,
+          itemMap: createItemMap(data.records)
         };
 
         return updateSectionState(state, payloadSection, Object.assign(newState, serverState, calculatedState));
