@@ -102,6 +102,10 @@ namespace NzbDrone.Core.Parser
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly RegexReplace WebsitePostfixRegex = new RegexReplace(@"\[\s*[-a-z]+(\.[a-z0-9]+)+\s*\]$",
+                                                        string.Empty,
+                                                        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly RegexReplace CleanReleaseGroupRegex = new RegexReplace(@"(-(RP|1|NZBGeek|Obfuscated|Obfuscation|Scrambled|sample|Pre|postbot|xpost|Rakuv[a-z0-9]*|WhiteRev|BUYMORE|AsRequested|AlternativeToRequested|GEROV|Z0iDS3N|Chamele0n|4P|4Planet))+$",
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -193,6 +197,7 @@ namespace NzbDrone.Core.Parser
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle);
+                simpleTitle = WebsitePostfixRegex.Replace(simpleTitle);
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
