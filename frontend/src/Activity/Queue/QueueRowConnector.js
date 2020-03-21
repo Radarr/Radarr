@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -13,11 +12,11 @@ function createMapStateToProps() {
     createMovieSelector(),
     createUISettingsSelector(),
     (movie, uiSettings) => {
-      const result = _.pick(uiSettings, [
-        'showRelativeDates',
-        'shortDateFormat',
-        'timeFormat'
-      ]);
+      const result = {
+        showRelativeDates: uiSettings.showRelativeDates,
+        shortDateFormat: uiSettings.shortDateFormat,
+        timeFormat: uiSettings.timeFormat
+      };
 
       result.movie = movie;
 
