@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
@@ -11,6 +11,8 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string FilePath { get; set; }
         public string ReleaseDate { get; set; }
         public string FolderPath { get; set; }
+        public int TmdbId { get; set; }
+        public string ImdbId { get; set; }
 
         public WebhookMovie()
         {
@@ -22,6 +24,8 @@ namespace NzbDrone.Core.Notifications.Webhook
             Title = movie.Title;
             ReleaseDate = movie.PhysicalReleaseDate().ToString("yyyy-MM-dd");
             FolderPath = movie.Path;
+            TmdbId = movie.TmdbId;
+            ImdbId = movie.ImdbId;
         }
 
         public WebhookMovie(Movie movie, MovieFile movieFile)
