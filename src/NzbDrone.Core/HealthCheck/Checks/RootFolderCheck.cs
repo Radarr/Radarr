@@ -3,6 +3,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -14,20 +15,23 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IMovieService _movieService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IRootFolderService _rootFolderService;
 
-        public RootFolderCheck(IMovieService movieService, IDiskProvider diskProvider)
+        public RootFolderCheck(IMovieService movieService, IDiskProvider diskProvider, IRootFolderService rootFolderService)
         {
             _movieService = movieService;
             _diskProvider = diskProvider;
+            _rootFolderService = rootFolderService;
         }
 
         public override HealthCheck Check()
         {
-            var missingRootFolders = _movieService.AllMoviePaths()
-                                                  .Select(s => _diskProvider.GetParentFolder(s))
-                                                  .Distinct()
-                                                  .Where(s => !_diskProvider.FolderExists(s))
-                                                  .ToList();
+            var rootFolders = _movieService.GetAllMovies()
+                                                           .Select(s => _rootFolderService.GetBestRootFolderPath(s.Path))
+                                                           .Distinct();
+
+            var missingRootFolders = rootFolders.Where(s => !_diskProvider.FolderExists(s))
+                                                          .ToList();
 
             if (missingRootFolders.Any())
             {
