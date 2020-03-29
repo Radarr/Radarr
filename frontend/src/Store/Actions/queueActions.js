@@ -351,13 +351,14 @@ export const actionHandlers = handleThunks({
   [REMOVE_QUEUE_ITEM]: function(getState, payload, dispatch) {
     const {
       id,
+      remove,
       blacklist
     } = payload;
 
     dispatch(updateItem({ section: paged, id, isRemoving: true }));
 
     const promise = createAjaxRequest({
-      url: `/queue/${id}?blacklist=${blacklist}`,
+      url: `/queue/${id}?removeFromClient=${remove}&blacklist=${blacklist}`,
       method: 'DELETE'
     }).request;
 
@@ -373,6 +374,7 @@ export const actionHandlers = handleThunks({
   [REMOVE_QUEUE_ITEMS]: function(getState, payload, dispatch) {
     const {
       ids,
+      remove,
       blacklist
     } = payload;
 
@@ -389,7 +391,7 @@ export const actionHandlers = handleThunks({
     ]));
 
     const promise = createAjaxRequest({
-      url: `/queue/bulk?blacklist=${blacklist}`,
+      url: `/queue/bulk?removeFromClient=${remove}&blacklist=${blacklist}`,
       method: 'DELETE',
       dataType: 'json',
       data: JSON.stringify({ ids })

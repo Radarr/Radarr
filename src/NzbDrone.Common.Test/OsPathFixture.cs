@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Test.Common;
@@ -180,6 +180,15 @@ namespace NzbDrone.Common.Test
         public void should_fix_slashes_unix()
         {
             var osPath = new OsPath(@"/just/a/test\to\verify the/slashes\");
+
+            osPath.Kind.Should().Be(OsPathKind.Unix);
+            osPath.FullPath.Should().Be(@"/just/a/test/to/verify the/slashes/");
+        }
+
+        [Test]
+        public void should_fix_double_slashes_unix()
+        {
+            var osPath = new OsPath(@"/just/a//test////to/verify the/slashes/");
 
             osPath.Kind.Should().Be(OsPathKind.Unix);
             osPath.FullPath.Should().Be(@"/just/a/test/to/verify the/slashes/");

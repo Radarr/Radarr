@@ -51,7 +51,7 @@ class Queue extends Component {
 
     const selectedIds = this.getSelectedIds();
     const isPendingSelected = _.some(this.props.items, (item) => {
-      return selectedIds.indexOf(item.id) > -1 && item.status === 'Delay';
+      return selectedIds.indexOf(item.id) > -1 && item.status === 'delay';
     });
 
     if (isPendingSelected !== this.state.isPendingSelected) {
@@ -87,8 +87,8 @@ class Queue extends Component {
     this.setState({ isConfirmRemoveModalOpen: true });
   }
 
-  onRemoveSelectedConfirmed = (blacklist) => {
-    this.props.onRemoveSelectedPress(this.getSelectedIds(), blacklist);
+  onRemoveSelectedConfirmed = (payload) => {
+    this.props.onRemoveSelectedPress({ ids: this.getSelectedIds(), ...payload });
     this.setState({ isConfirmRemoveModalOpen: false });
   }
 
@@ -112,7 +112,7 @@ class Queue extends Component {
       totalRecords,
       isGrabbing,
       isRemoving,
-      isCheckForFinishedDownloadExecuting,
+      isRefreshMonitoredDownloadsExecuting,
       onRefreshPress,
       ...otherProps
     } = this.props;
@@ -125,10 +125,11 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isMoviesFetching || isCheckForFinishedDownloadExecuting;
+    const isRefreshing = isFetching || isMoviesFetching || isRefreshMonitoredDownloadsExecuting;
     const isAllPopulated = isPopulated && (isMoviesPopulated || !items.length || items.every((e) => !e.movieId));
     const hasError = error || moviesError;
-    const selectedCount = this.getSelectedIds().length;
+    const selectedIds = this.getSelectedIds();
+    const selectedCount = selectedIds.length;
     const disableSelectedActions = selectedCount === 0;
 
     return (
@@ -239,6 +240,13 @@ class Queue extends Component {
         <RemoveQueueItemsModal
           isOpen={isConfirmRemoveModalOpen}
           selectedCount={selectedCount}
+          canIgnore={isConfirmRemoveModalOpen && (
+            selectedIds.every((id) => {
+              const item = items.find((i) => i.id === id);
+
+              return !!(item && item.movieId);
+            })
+          )}
           onRemovePress={this.onRemoveSelectedConfirmed}
           onModalClose={this.onConfirmRemoveModalClose}
         />
@@ -259,7 +267,7 @@ Queue.propTypes = {
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,
   isRemoving: PropTypes.bool.isRequired,
-  isCheckForFinishedDownloadExecuting: PropTypes.bool.isRequired,
+  isRefreshMonitoredDownloadsExecuting: PropTypes.bool.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onGrabSelectedPress: PropTypes.func.isRequired,
   onRemoveSelectedPress: PropTypes.func.isRequired

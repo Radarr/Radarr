@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             {
                 DownloadItem = downloadItem,
                 RemoteMovie = remoteMovie,
-                State = TrackedDownloadStage.Downloading
+                State = TrackedDownloadState.Downloading
             };
         }
 

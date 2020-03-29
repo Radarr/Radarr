@@ -6,6 +6,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
@@ -23,6 +24,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private RemoteMovie _remoteMovie;
 
         private Movie _otherMovie;
+
+        private ReleaseInfo _releaseInfo;
 
         [SetUp]
         public void Setup()
@@ -45,6 +48,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                           .With(s => s.Id = 2)
                                           .Build();
 
+            _releaseInfo = Builder<ReleaseInfo>.CreateNew()
+                                   .Build();
+
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
                 .With(r => r.Movie = _movie)
                 .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD) })
@@ -63,11 +69,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Returns(new List<Queue.Queue>());
         }
 
-        private void GivenQueue(IEnumerable<RemoteMovie> remoteMovies)
+        private void GivenQueue(IEnumerable<RemoteMovie> remoteMovies, TrackedDownloadState trackedDownloadState = TrackedDownloadState.Downloading)
         {
             var queue = remoteMovies.Select(remoteMovie => new Queue.Queue
             {
-                RemoteMovie = remoteMovie
+                RemoteMovie = remoteMovie,
+                TrackedDownloadState = trackedDownloadState
             });
 
             Mocker.GetMock<IQueueService>()
@@ -177,6 +184,25 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_if_everything_is_the_same_for_failed_pending()
+        {
+            _movie.Profile.Cutoff = Quality.Bluray1080p.Id;
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                .With(r => r.Movie = _movie)
+                .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    Quality = new QualityModel(Quality.DVD)
+                })
+                .With(r => r.Release = _releaseInfo)
+                .Build();
+
+            GivenQueue(new List<RemoteMovie> { remoteMovie }, TrackedDownloadState.FailedPending);
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
     }
 }

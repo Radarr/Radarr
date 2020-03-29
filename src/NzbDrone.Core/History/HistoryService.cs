@@ -36,7 +36,8 @@ namespace NzbDrone.Core.History
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<MovieFileDeletedEvent>,
                                   IHandle<MovieFileRenamedEvent>,
-                                  IHandle<MovieDeletedEvent>
+                                  IHandle<MovieDeletedEvent>,
+                                  IHandle<DownloadIgnoredEvent>
     {
         private readonly IHistoryRepository _historyRepository;
         private readonly Logger _logger;
@@ -219,6 +220,25 @@ namespace NzbDrone.Core.History
             history.Data.Add("SourceRelativePath", sourceRelativePath);
             history.Data.Add("Path", path);
             history.Data.Add("RelativePath", relativePath);
+
+            _historyRepository.Insert(history);
+        }
+
+        public void Handle(DownloadIgnoredEvent message)
+        {
+            var history = new History
+            {
+                EventType = HistoryEventType.DownloadIgnored,
+                Date = DateTime.UtcNow,
+                Quality = message.Quality,
+                SourceTitle = message.SourceTitle,
+                MovieId = message.MovieId,
+                DownloadId = message.DownloadId,
+                Languages = message.Languages
+            };
+
+            history.Data.Add("DownloadClient", message.DownloadClient);
+            history.Data.Add("Message", message.Message);
 
             _historyRepository.Insert(history);
         }
