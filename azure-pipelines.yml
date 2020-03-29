@@ -12,7 +12,7 @@ variables:
   radarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'radarr'
-  dotnetVersion: '3.1.102'
+  dotnetVersion: '3.1.201'
 
 trigger:
   branches:
