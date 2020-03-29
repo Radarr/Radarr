@@ -180,7 +180,7 @@ class Health extends Component {
 
                         <TableRowCell>{item.message}</TableRowCell>
 
-                        <TableRowCell>
+                        <TableRowCell className={styles.actions}>
                           <IconButton
                             name={icons.WIKI}
                             to={item.wikiUrl}
