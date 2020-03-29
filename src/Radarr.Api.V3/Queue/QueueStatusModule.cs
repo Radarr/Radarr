@@ -3,6 +3,7 @@ using System.Linq;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
@@ -45,10 +46,10 @@ namespace Radarr.Api.V3.Queue
                 TotalCount = queue.Count + pending.Count,
                 Count = queue.Count(q => q.Movie != null) + pending.Count,
                 UnknownCount = queue.Count(q => q.Movie == null),
-                Errors = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
-                Warnings = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase)),
-                UnknownErrors = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
-                UnknownWarnings = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
+                Errors = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                Warnings = queue.Any(q => q.Movie != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning),
+                UnknownErrors = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                UnknownWarnings = queue.Any(q => q.Movie == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning)
             };
 
             _broadcastDebounce.Resume();

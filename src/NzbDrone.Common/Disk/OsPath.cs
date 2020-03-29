@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
@@ -85,7 +85,13 @@ namespace NzbDrone.Common.Disk
                 case OsPathKind.Windows:
                     return path.Replace('/', '\\');
                 case OsPathKind.Unix:
-                    return path.Replace('\\', '/');
+                    path = path.Replace('\\', '/');
+                    while (path.Contains("//"))
+                    {
+                        path = path.Replace("//", "/");
+                    }
+
+                    return path;
             }
 
             return path;
