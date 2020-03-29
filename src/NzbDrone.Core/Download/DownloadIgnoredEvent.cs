@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Download
         public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public string SourceTitle { get; set; }
-        public string DownloadClient { get; set; }
+        public DownloadClientItemClientInfo DownloadClientInfo { get; set; }
         public string DownloadId { get; set; }
         public string Message { get; set; }
     }

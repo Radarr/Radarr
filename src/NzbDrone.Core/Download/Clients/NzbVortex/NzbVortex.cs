@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             {
                 var queueItem = new DownloadClientItem();
 
-                queueItem.DownloadClient = Definition.Name;
+                queueItem.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this);
                 queueItem.DownloadId = vortexQueueItem.AddUUID ?? vortexQueueItem.Id.ToString();
                 queueItem.Category = vortexQueueItem.GroupName;
                 queueItem.Title = vortexQueueItem.UiTitle;

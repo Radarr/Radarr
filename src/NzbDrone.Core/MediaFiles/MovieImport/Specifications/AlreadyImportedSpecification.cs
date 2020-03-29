@@ -39,8 +39,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             }
 
             var movieImportedHistory = _historyService.GetByMovieId(movie.Id, null);
-            var lastImported = movieImportedHistory.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadFolderImported);
-            var lastGrabbed = movieImportedHistory.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+            var lastImported = movieImportedHistory.FirstOrDefault(h => h.EventType == MovieHistoryEventType.DownloadFolderImported);
+            var lastGrabbed = movieImportedHistory.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
 
             if (lastImported == null)
             {

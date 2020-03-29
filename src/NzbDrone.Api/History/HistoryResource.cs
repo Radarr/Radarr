@@ -16,7 +16,7 @@ namespace NzbDrone.Api.History
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
 
-        public HistoryEventType EventType { get; set; }
+        public MovieHistoryEventType EventType { get; set; }
 
         public Dictionary<string, string> Data { get; set; }
         public MovieResource Movie { get; set; }
@@ -24,7 +24,7 @@ namespace NzbDrone.Api.History
 
     public static class HistoryResourceMapper
     {
-        public static HistoryResource ToResource(this Core.History.History model)
+        public static HistoryResource ToResource(this MovieHistory model)
         {
             if (model == null)
             {

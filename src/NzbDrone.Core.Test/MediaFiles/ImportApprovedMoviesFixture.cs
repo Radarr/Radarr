@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IHistoryService>()
                 .Setup(x => x.FindByDownloadId(It.IsAny<string>()))
-                .Returns(new List<History.History>());
+                .Returns(new List<MovieHistory>());
 
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew()
                                                              .With(d => d.OutputPath = new OsPath(outputPath))

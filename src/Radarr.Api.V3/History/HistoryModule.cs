@@ -41,7 +41,7 @@ namespace Radarr.Api.V3.History
             Post("/failed", x => MarkAsFailed());
         }
 
-        protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeMovie)
+        protected HistoryResource MapToResource(MovieHistory model, bool includeMovie)
         {
             if (model.Movie == null)
             {
@@ -65,7 +65,7 @@ namespace Radarr.Api.V3.History
 
         private PagingResource<HistoryResource> GetHistory(PagingResource<HistoryResource> pagingResource)
         {
-            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, NzbDrone.Core.History.History>("date", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>("date", SortDirection.Descending);
             var includeMovie = Request.GetBooleanQueryParameter("includeMovie");
 
             var eventTypeFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "eventType");
@@ -73,7 +73,7 @@ namespace Radarr.Api.V3.History
 
             if (eventTypeFilter != null)
             {
-                var filterValue = (HistoryEventType)Convert.ToInt32(eventTypeFilter.Value);
+                var filterValue = (MovieHistoryEventType)Convert.ToInt32(eventTypeFilter.Value);
                 pagingSpec.FilterExpressions.Add(v => v.EventType == filterValue);
             }
 
@@ -97,12 +97,12 @@ namespace Radarr.Api.V3.History
             }
 
             DateTime date = DateTime.Parse(queryDate.Value);
-            HistoryEventType? eventType = null;
+            MovieHistoryEventType? eventType = null;
             var includeMovie = Request.GetBooleanQueryParameter("includeMovie");
 
             if (queryEventType.HasValue)
             {
-                eventType = (HistoryEventType)Convert.ToInt32(queryEventType.Value);
+                eventType = (MovieHistoryEventType)Convert.ToInt32(queryEventType.Value);
             }
 
             return _historyService.Since(date, eventType).Select(h => MapToResource(h, includeMovie)).ToList();
@@ -119,12 +119,12 @@ namespace Radarr.Api.V3.History
             }
 
             int movieId = Convert.ToInt32(queryMovieId.Value);
-            HistoryEventType? eventType = null;
+            MovieHistoryEventType? eventType = null;
             var includeMovie = Request.GetBooleanQueryParameter("includeMovie");
 
             if (queryEventType.HasValue)
             {
-                eventType = (HistoryEventType)Convert.ToInt32(queryEventType.Value);
+                eventType = (MovieHistoryEventType)Convert.ToInt32(queryEventType.Value);
             }
 
             return _historyService.GetByMovieId(movieId, eventType).Select(h => MapToResource(h, includeMovie)).ToList();

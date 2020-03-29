@@ -28,7 +28,7 @@ namespace NzbDrone.Api.History
             Post("/failed", x => MarkAsFailed());
         }
 
-        protected HistoryResource MapToResource(Core.History.History model)
+        protected HistoryResource MapToResource(MovieHistory model)
         {
             var resource = model.ToResource();
             resource.Movie = model.Movie.ToResource();
@@ -44,12 +44,12 @@ namespace NzbDrone.Api.History
         private PagingResource<HistoryResource> GetHistory(PagingResource<HistoryResource> pagingResource)
         {
             var movieId = Request.Query.MovieId;
-            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, Core.History.History>("date", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>("date", SortDirection.Descending);
             var filter = pagingResource.Filters.FirstOrDefault();
 
             if (filter != null && filter.Key == "eventType")
             {
-                var filterValue = (HistoryEventType)Convert.ToInt32(filter.Value);
+                var filterValue = (MovieHistoryEventType)Convert.ToInt32(filter.Value);
                 pagingSpec.FilterExpressions.Add(v => v.EventType == filterValue);
             }
 

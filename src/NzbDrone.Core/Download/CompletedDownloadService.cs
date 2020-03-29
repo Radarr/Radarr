@@ -1,9 +1,7 @@
 using System.IO;
 using System.Linq;
-using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
@@ -108,7 +106,7 @@ namespace NzbDrone.Core.Download
 
             var allMoviesImported = importResults.Where(c => c.Result == ImportResultType.Imported)
                                        .Select(c => c.ImportDecision.LocalMovie.Movie)
-                                       .Count() >= 1;
+                                       .Any();
 
             if (allMoviesImported)
             {
@@ -117,7 +115,7 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            // Double check if all episodes were imported by checking the history if at least one
+            // Double check if all movies were imported by checking the history if at least one
             // file was imported. This will allow the decision engine to reject already imported
             // episode files and still mark the download complete when all files are imported.
             if (importResults.Any(c => c.Result == ImportResultType.Imported))
@@ -126,9 +124,9 @@ namespace NzbDrone.Core.Download
                                                   .OrderByDescending(h => h.Date)
                                                   .ToList();
 
-                var allEpisodesImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
+                var allMoviesImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
 
-                if (allEpisodesImportedInHistory)
+                if (allMoviesImportedInHistory)
                 {
                     trackedDownload.State = TrackedDownloadState.Imported;
                     _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));

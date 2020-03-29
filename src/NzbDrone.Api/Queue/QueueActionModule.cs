@@ -14,7 +14,6 @@ namespace NzbDrone.Api.Queue
     {
         private readonly IQueueService _queueService;
         private readonly ITrackedDownloadService _trackedDownloadService;
-        private readonly ICompletedDownloadService _completedDownloadService;
         private readonly IFailedDownloadService _failedDownloadService;
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly IPendingReleaseService _pendingReleaseService;
@@ -22,7 +21,6 @@ namespace NzbDrone.Api.Queue
 
         public QueueActionModule(IQueueService queueService,
                                  ITrackedDownloadService trackedDownloadService,
-                                 ICompletedDownloadService completedDownloadService,
                                  IFailedDownloadService failedDownloadService,
                                  IProvideDownloadClient downloadClientProvider,
                                  IPendingReleaseService pendingReleaseService,
@@ -30,7 +28,6 @@ namespace NzbDrone.Api.Queue
         {
             _queueService = queueService;
             _trackedDownloadService = trackedDownloadService;
-            _completedDownloadService = completedDownloadService;
             _failedDownloadService = failedDownloadService;
             _downloadClientProvider = downloadClientProvider;
             _pendingReleaseService = pendingReleaseService;

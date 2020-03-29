@@ -93,7 +93,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         var grabHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
                             .OrderByDescending(h => h.Date)
-                            .FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                            .FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
 
                         if (Enum.TryParse(grabHistory?.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
                         {
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (downloadClientItem != null)
                     {
-                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId));
+                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload, downloadClientItem, downloadClientItem.DownloadId));
                     }
                     else
                     {

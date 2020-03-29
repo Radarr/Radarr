@@ -34,7 +34,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             }
 
             var grabbedHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
-                .Where(h => h.EventType == HistoryEventType.Grabbed)
+                .Where(h => h.EventType == MovieHistoryEventType.Grabbed)
                 .ToList();
 
             if (grabbedHistory.Empty())

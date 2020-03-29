@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
     {
         private Movie _movie;
         private TrackedDownload _trackedDownload;
-        private List<History.History> _historyItems;
+        private List<MovieHistory> _historyItems;
 
         [SetUp]
         public void Setup()
@@ -30,15 +30,15 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                                                        .With(t => t.RemoteMovie = remoteMovie)
                                                        .Build();
 
-            _historyItems = new List<History.History>();
+            _historyItems = new List<MovieHistory>();
         }
 
-        public void GivenHistoryForMovie(Movie movie, params HistoryEventType[] eventTypes)
+        public void GivenHistoryForMovie(Movie movie, params MovieHistoryEventType[] eventTypes)
         {
             foreach (var eventType in eventTypes)
             {
                 _historyItems.Add(
-                    Builder<History.History>.CreateNew()
+                    Builder<MovieHistory>.CreateNew()
                                             .With(h => h.MovieId = movie.Id)
                                             .With(h => h.EventType = eventType)
                                             .Build());
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         [Test]
         public void should_return_false_if_single_movie_download_is_not_imported()
         {
-            GivenHistoryForMovie(_movie, HistoryEventType.Grabbed);
+            GivenHistoryForMovie(_movie, MovieHistoryEventType.Grabbed);
 
             Subject.IsImported(_trackedDownload, _historyItems)
                    .Should()
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         [Test]
         public void should_return_true_if_single_movie_download_is_imported()
         {
-            GivenHistoryForMovie(_movie, HistoryEventType.DownloadFolderImported, HistoryEventType.Grabbed);
+            GivenHistoryForMovie(_movie, MovieHistoryEventType.DownloadFolderImported, MovieHistoryEventType.Grabbed);
 
             Subject.IsImported(_trackedDownload, _historyItems)
                    .Should()

@@ -63,14 +63,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_if_episode_has_no_existing_file()
+        public void should_return_true_if_movie_has_no_existing_file()
         {
             _parseResultSingle.Movie.MovieFile = null;
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_upgradable_if_only_episode_is_upgradable()
+        public void should_be_upgradable_if_only_movie_is_upgradable()
         {
             WithFirstFileUpgradable();
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
