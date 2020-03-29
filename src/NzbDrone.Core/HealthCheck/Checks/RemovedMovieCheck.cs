@@ -29,10 +29,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (deletedMovie.Count == 1)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, $"Movie {movieText} was removed from TMDb");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Movie {0} was removed from TMDb", movieText), "#movie-was-removed-from-tmdb");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Error, $"Movie {movieText} were removed from TMDb");
+            return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Movie {0} was removed from TMDb", movieText), "#movie-was-removed-from-tmdb");
         }
 
         public bool ShouldCheckOnEvent(MovieDeletedEvent message)
