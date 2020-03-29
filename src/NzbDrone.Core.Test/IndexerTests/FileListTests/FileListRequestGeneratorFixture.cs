@@ -1,8 +1,6 @@
 using System.Linq;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.FileList;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Test.Framework;

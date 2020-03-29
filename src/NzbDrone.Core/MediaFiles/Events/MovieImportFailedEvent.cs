@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
@@ -10,7 +10,7 @@ namespace NzbDrone.Core.MediaFiles.Events
         public Exception Exception { get; set; }
         public LocalMovie MovieInfo { get; }
         public bool NewDownload { get; }
-        public string DownloadClient { get; }
+        public DownloadClientItemClientInfo DownloadClientInfo { get; }
         public string DownloadId { get; }
 
         public MovieImportFailedEvent(Exception exception, LocalMovie movieInfo, bool newDownload, DownloadClientItem downloadClientItem)
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.Events
 
             if (downloadClientItem != null)
             {
-                DownloadClient = downloadClientItem.DownloadClient;
+                DownloadClientInfo = downloadClientItem.DownloadClientInfo;
                 DownloadId = downloadClientItem.DownloadId;
             }
         }

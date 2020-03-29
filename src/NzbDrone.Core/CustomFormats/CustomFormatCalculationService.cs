@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
@@ -15,7 +16,7 @@ namespace NzbDrone.Core.CustomFormats
         List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
         List<CustomFormat> ParseCustomFormat(MovieFile movieFile);
         List<CustomFormat> ParseCustomFormat(Blacklist blacklist);
-        List<CustomFormat> ParseCustomFormat(History.History history);
+        List<CustomFormat> ParseCustomFormat(MovieHistory history);
     }
 
     public class CustomFormatCalculationService : ICustomFormatCalculationService
@@ -113,7 +114,7 @@ namespace NzbDrone.Core.CustomFormats
             return ParseCustomFormat(info);
         }
 
-        public List<CustomFormat> ParseCustomFormat(History.History history)
+        public List<CustomFormat> ParseCustomFormat(MovieHistory history)
         {
             var movie = _movieService.GetMovie(history.MovieId);
             var parsed = _parsingService.ParseMovieInfo(history.SourceTitle, null);

@@ -3,7 +3,6 @@ using System.Linq;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
-using Radarr.Api.V3.CustomFormats;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Profiles.Quality

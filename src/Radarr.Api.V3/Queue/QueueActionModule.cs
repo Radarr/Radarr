@@ -149,12 +149,9 @@ namespace Radarr.Api.V3.Queue
                 _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId);
             }
 
-            if (!removeFromClient && !blacklist)
+            if (!removeFromClient && !blacklist && !_ignoredDownloadService.IgnoreDownload(trackedDownload))
             {
-                if (!_ignoredDownloadService.IgnoreDownload(trackedDownload))
-                {
-                    return null;
-                }
+                return null;
             }
 
             return trackedDownload;

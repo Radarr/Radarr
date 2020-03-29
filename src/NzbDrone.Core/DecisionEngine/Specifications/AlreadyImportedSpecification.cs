@@ -49,7 +49,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 }
 
                 var historyForEpisode = _historyService.GetByMovieId(movie.Id, null);
-                var lastGrabbed = historyForEpisode.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                var lastGrabbed = historyForEpisode.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
 
                 if (lastGrabbed == null)
                 {
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 }
 
                 var imported = historyForEpisode.FirstOrDefault(h =>
-                    h.EventType == HistoryEventType.DownloadFolderImported &&
+                    h.EventType == MovieHistoryEventType.DownloadFolderImported &&
                     h.DownloadId == lastGrabbed.DownloadId);
 
                 if (imported == null)

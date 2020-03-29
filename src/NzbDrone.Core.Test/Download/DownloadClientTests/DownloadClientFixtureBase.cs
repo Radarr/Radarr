@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -58,7 +58,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
         protected void VerifyIdentifiable(DownloadClientItem downloadClientItem)
         {
-            downloadClientItem.DownloadClient.Should().Be(Subject.Definition.Name);
+            downloadClientItem.DownloadClientInfo.Protocol.Should().Be(Subject.Protocol);
+            downloadClientItem.DownloadClientInfo.Id.Should().Be(Subject.Definition.Id);
+            downloadClientItem.DownloadClientInfo.Name.Should().Be(Subject.Definition.Name);
             downloadClientItem.DownloadId.Should().NotBeNullOrEmpty();
             downloadClientItem.Title.Should().NotBeNullOrEmpty();
         }

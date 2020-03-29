@@ -7,12 +7,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public interface ITrackedDownloadAlreadyImported
     {
-        bool IsImported(TrackedDownload trackedDownload, List<History.History> historyItems);
+        bool IsImported(TrackedDownload trackedDownload, List<MovieHistory> historyItems);
     }
 
     public class TrackedDownloadAlreadyImported : ITrackedDownloadAlreadyImported
     {
-        public bool IsImported(TrackedDownload trackedDownload, List<History.History> historyItems)
+        public bool IsImported(TrackedDownload trackedDownload, List<MovieHistory> historyItems)
         {
             if (historyItems.Empty())
             {
@@ -28,9 +28,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 return false;
             }
 
-            var allEpisodesImportedInHistory = lastHistoryItem.EventType == HistoryEventType.DownloadFolderImported;
+            var allMoviesImportedInHistory = lastHistoryItem.EventType == MovieHistoryEventType.DownloadFolderImported;
 
-            return allEpisodesImportedInHistory;
+            return allMoviesImportedInHistory;
         }
     }
 }

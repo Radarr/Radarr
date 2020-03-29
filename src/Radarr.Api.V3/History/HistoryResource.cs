@@ -21,7 +21,7 @@ namespace Radarr.Api.V3.History
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
 
-        public HistoryEventType EventType { get; set; }
+        public MovieHistoryEventType EventType { get; set; }
 
         public Dictionary<string, string> Data { get; set; }
 
@@ -30,7 +30,7 @@ namespace Radarr.Api.V3.History
 
     public static class HistoryResourceMapper
     {
-        public static HistoryResource ToResource(this NzbDrone.Core.History.History model, ICustomFormatCalculationService formatCalculator)
+        public static HistoryResource ToResource(this MovieHistory model, ICustomFormatCalculationService formatCalculator)
         {
             if (model == null)
             {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                                                              .Build();
         }
 
-        private void GivenHistory(List<History.History> history)
+        private void GivenHistory(List<MovieHistory> history)
         {
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_accepted_if_no_history_for_downloadId()
         {
-            GivenHistory(new List<History.History>());
+            GivenHistory(new List<MovieHistory>());
 
             Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
         }
@@ -53,9 +53,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_accepted_if_no_grabbed_history_for_downloadId()
         {
-            var history = Builder<History.History>.CreateListOfSize(1)
+            var history = Builder<MovieHistory>.CreateListOfSize(1)
                                                   .All()
-                                                  .With(h => h.EventType = HistoryEventType.Unknown)
+                                                  .With(h => h.EventType = MovieHistoryEventType.Unknown)
                                                   .BuildList();
 
             GivenHistory(history);
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_accepted_if_grabbed_history_quality_is_unknown()
         {
-            var history = Builder<History.History>.CreateListOfSize(1)
+            var history = Builder<MovieHistory>.CreateListOfSize(1)
                                                   .All()
-                                                  .With(h => h.EventType = HistoryEventType.Grabbed)
+                                                  .With(h => h.EventType = MovieHistoryEventType.Grabbed)
                                                   .With(h => h.Quality = new QualityModel(Quality.Unknown))
                                                   .BuildList();
 
@@ -80,9 +80,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_accepted_if_grabbed_history_quality_matches()
         {
-            var history = Builder<History.History>.CreateListOfSize(1)
+            var history = Builder<MovieHistory>.CreateListOfSize(1)
                                                   .All()
-                                                  .With(h => h.EventType = HistoryEventType.Grabbed)
+                                                  .With(h => h.EventType = MovieHistoryEventType.Grabbed)
                                                   .With(h => h.Quality = _localMovie.Quality)
                                                   .BuildList();
 
@@ -94,9 +94,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_rejected_if_grabbed_history_quality_does_not_match()
         {
-            var history = Builder<History.History>.CreateListOfSize(1)
+            var history = Builder<MovieHistory>.CreateListOfSize(1)
                                                   .All()
-                                                  .With(h => h.EventType = HistoryEventType.Grabbed)
+                                                  .With(h => h.EventType = MovieHistoryEventType.Grabbed)
                                                   .With(h => h.Quality = new QualityModel(Quality.HDTV720p))
                                                   .BuildList();
 

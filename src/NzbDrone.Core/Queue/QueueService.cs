@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Queue
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
                 Movie = movie,
-                DownloadClient = trackedDownload.DownloadItem.DownloadClient,
+                DownloadClient = trackedDownload.DownloadItem.DownloadClientInfo.Name,
                 Indexer = trackedDownload.Indexer,
                 OutputPath = trackedDownload.DownloadItem.OutputPath.ToString()
             };

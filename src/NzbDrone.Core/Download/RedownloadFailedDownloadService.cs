@@ -5,7 +5,6 @@ using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Download
 {

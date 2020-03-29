@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
@@ -11,7 +12,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
     [TestFixture]
-    public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, History.History>
+    public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, MovieHistory>
     {
         private Movie _movie;
 
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_delete_orphaned_items()
         {
-            var history = Builder<History.History>.CreateNew()
+            var history = Builder<MovieHistory>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
                                                   .With(h => h.Languages = new List<Language>())
                                                   .BuildNew();
@@ -45,7 +46,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             GivenSeries();
 
-            var history = Builder<History.History>.CreateNew()
+            var history = Builder<MovieHistory>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
                                                   .With(h => h.Languages = new List<Language>())
                                                   .With(h => h.MovieId = _movie.Id)
