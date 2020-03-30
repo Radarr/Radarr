@@ -11,6 +11,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         fr,
         de,
         el,
+        hi,
         hu,
         it,
         ja,
