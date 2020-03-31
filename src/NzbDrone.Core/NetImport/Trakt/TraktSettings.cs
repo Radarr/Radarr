@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -20,10 +20,10 @@ namespace NzbDrone.Core.NetImport.Trakt
                 .When(c => c.ListType == (int)TraktListType.UserCustomList)
                 .WithMessage("List name is required when using Custom Trakt Lists");
 
-            // Username required for UserWatchedList/UserWatchList
+            // Username required for UserWatchedList/UserWatchList/UserCustomList
             RuleFor(c => c.Username)
                 .Matches(@"^[A-Za-z0-9\-_ ]+$", RegexOptions.IgnoreCase)
-                .When(c => c.ListType == (int)TraktListType.UserWatchedList || c.ListType == (int)TraktListType.UserWatchList)
+                .When(c => c.ListType == (int)TraktListType.UserWatchedList || c.ListType == (int)TraktListType.UserWatchList || c.ListType == (int)TraktListType.UserCustomList)
                 .WithMessage("Username is required when using User Trakt Lists");
 
             // Loose validation @TODO
