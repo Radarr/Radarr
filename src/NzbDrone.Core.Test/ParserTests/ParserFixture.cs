@@ -1,8 +1,10 @@
 using System.Linq;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -56,10 +58,56 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
         [TestCase("Climax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Climax")]
         [TestCase("Movie.Title.Imax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Movie Title")]
+        [TestCase("World.War.Z.EXTENDED.2013.German.DL.1080p.BluRay.AVC-XANOR", "World War Z")]
+        [TestCase("World.War.Z.2.EXTENDED.2013.German.DL.1080p.BluRay.AVC-XANOR", "World War Z 2")]
+        [TestCase("G.I.Joe.Retaliation.2013.THEATRiCAL.COMPLETE.BLURAY-GLiMMER", "G.I. Joe Retaliation")]
         [TestCase("www.Torrenting.org - Revenge.2008.720p.X264-DIMENSION", "Revenge")]
         public void should_parse_movie_title(string postTitle, string title)
         {
             Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
+        }
+
+        [TestCase("Avatar.Aufbruch.nach.Pandora.Extended.2009.German.DTS.720p.BluRay.x264-SoW", "Avatar Aufbruch nach Pandora", "Extended", 2009)]
+        [TestCase("Drop.Zone.1994.German.AC3D.DL.720p.BluRay.x264-KLASSiGERHD", "Drop Zone", "", 1994)]
+        [TestCase("Kick.Ass.2.2013.German.DTS.DL.720p.BluRay.x264-Pate", "Kick Ass 2", "", 2013)]
+        [TestCase("Paradise.Hills.2019.German.DL.AC3.Dubbed.1080p.BluRay.x264-muhHD", "Paradise Hills", "", 2019)]
+        [TestCase("96.Hours.Taken.3.EXTENDED.2014.German.DL.1080p.BluRay.x264-ENCOUNTERS", "96 Hours Taken 3", "EXTENDED", 2014)]
+        [TestCase("World.War.Z.EXTENDED.CUT.2013.German.DL.1080p.BluRay.x264-HQX", "World War Z", "EXTENDED CUT", 2013)]
+        [TestCase("Sin.City.2005.RECUT.EXTENDED.German.DL.1080p.BluRay.x264-DETAiLS", "Sin City", "RECUT EXTENDED", 2005)]
+        [TestCase("Die.Klasse.von.1999.1990.German.720p.HDTV.x264-NORETAiL", "Die Klasse von 1999", "", 1990)] //year in the title
+        [TestCase("2.Tage.in.L.A.1996.GERMAN.DL.720p.WEB.H264-SOV", "2 Tage in L.A.", "", 1996)]
+        [TestCase("8.2019.GERMAN.720p.BluRay.x264-UNiVERSUM", "8", "", 2019)]
+        [TestCase("Life.Partners.2014.German.DL.PAL.DVDR-ETM", "Life Partners", "", 2014)]
+        [TestCase("Joe.Dreck.2.EXTENDED.EDITION.2015.German.DL.PAL.DVDR-ETM", "Joe Dreck 2", "EXTENDED EDITION", 2015)]
+        [TestCase("Rango.EXTENDED.2011.HDRip.AC3.German.XviD-POE", "Rango", "EXTENDED", 2011)]
+        [TestCase("Suicide.Squad.2016.EXTENDED.German.DL.AC3.BDRip.x264-hqc", "Suicide Squad", "EXTENDED", 2016)] //edition after year
+        public void should_parse_german_movie(string postTitle, string title, string edition, int year)
+        {
+            ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle, false);
+            using (new AssertionScope())
+            {
+                movie.MovieTitle.Should().Be(title);
+                movie.Edition.Should().Be(edition);
+                movie.Year.Should().Be(year);
+            }
+        }
+
+        [TestCase("Der.Hobbit.Eine.Unerwartete.Reise.Extended.German.720p.BluRay.x264-EXQUiSiTE", "Der Hobbit Eine Unerwartete Reise", "Extended", 0)] //no year
+        [TestCase("Die.Unfassbaren.Now.You.See.Me.EXTENDED.German.DTS.720p.BluRay.x264-RHD", "Die Unfassbaren Now You See Me", "EXTENDED", 0)] //no year
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James", "", 1998)]
+        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers", "", 0)] //no year
+        [TestCase("Das.A.Team.Der.Film.Extended.Cut.German.720p.BluRay.x264-ANCIENT", "Das A Team Der Film", "Extended Cut", 0)] //no year
+        [TestCase("Cars.2.German.DL.720p.BluRay.x264-EmpireHD", "Cars 2", "", 0)] //no year
+        [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011)] //year at wrong position
+        public void should_parse_german_movie_lenient(string postTitle, string title, string edition, int year)
+        {
+            ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle, true);
+            using (new AssertionScope())
+            {
+                movie.MovieTitle.Should().Be(title);
+                movie.Edition.Should().Be(edition);
+                movie.Year.Should().Be(year);
+            }
         }
 
         [TestCase("(1995) Ghost in the Shell", "Ghost in the Shell")]
