@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleLenientRegexBefore = new[]
         {
             //Some german or french tracker formats
-            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + ReportEditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + ReportEditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] ReportMovieTitleLenientRegexAfter = new Regex[]
