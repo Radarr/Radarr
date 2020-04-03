@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import titleCase from 'Utilities/String/titleCase';
 import { inputTypes, sizes } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-
-const branchValues = [
-  'develop',
-  'nightly'
-];
 
 function UpdateSettings(props) {
   const {
@@ -17,6 +13,7 @@ function UpdateSettings(props) {
     settings,
     isWindows,
     isDocker,
+    packageUpdateMechanism,
     onInputChange
   } = props;
 
@@ -31,10 +28,20 @@ function UpdateSettings(props) {
     return null;
   }
 
-  const updateOptions = [
-    { key: 'builtIn', value: 'Built-In' },
-    { key: 'script', value: 'Script' }
-  ];
+  const usingExternalUpdateMechanism = packageUpdateMechanism !== 'builtIn';
+
+  const updateOptions = [];
+
+  if (usingExternalUpdateMechanism) {
+    updateOptions.push({
+      key: packageUpdateMechanism,
+      value: titleCase(packageUpdateMechanism)
+    });
+  } else {
+    updateOptions.push({ key: 'builtIn', value: 'Built-In' });
+  }
+
+  updateOptions.push({ key: 'script', value: 'Script' });
 
   if (isDocker) {
     return (
@@ -53,13 +60,13 @@ function UpdateSettings(props) {
         <FormLabel>Branch</FormLabel>
 
         <FormInputGroup
-          type={inputTypes.AUTO_COMPLETE}
+          type={inputTypes.TEXT}
           name="branch"
-          helpText="Branch to use to update Readarr"
+          helpText={usingExternalUpdateMechanism ? 'Branch used by external update mechanism' : 'Branch to use to update Readarr'}
           helpLink="https://github.com/Readarr/Readarr/wiki/Release-Branches"
           {...branch}
-          values={branchValues}
           onChange={onInputChange}
+          readOnly={usingExternalUpdateMechanism}
         />
       </FormGroup>
 
@@ -127,6 +134,7 @@ UpdateSettings.propTypes = {
   settings: PropTypes.object.isRequired,
   isWindows: PropTypes.bool.isRequired,
   isDocker: PropTypes.bool.isRequired,
+  packageUpdateMechanism: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 

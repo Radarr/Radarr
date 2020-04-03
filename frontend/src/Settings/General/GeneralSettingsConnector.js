@@ -28,6 +28,7 @@ function createMapStateToProps() {
         isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service',
         isDocker: systemStatus.isDocker,
         mode: systemStatus.mode,
+        packageUpdateMechanism: systemStatus.packageUpdateMechanism,
         ...sectionSettings
       };
     }

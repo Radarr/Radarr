@@ -29,6 +29,7 @@ namespace NzbDrone.Core.Update
         private readonly IProcessProvider _processProvider;
         private readonly IVerifyUpdates _updateVerifier;
         private readonly IStartupContext _startupContext;
+        private readonly IDeploymentInfoProvider _deploymentInfoProvider;
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IBackupService _backupService;
@@ -43,6 +44,7 @@ namespace NzbDrone.Core.Update
                                     IProcessProvider processProvider,
                                     IVerifyUpdates updateVerifier,
                                     IStartupContext startupContext,
+                                    IDeploymentInfoProvider deploymentInfoProvider,
                                     IConfigFileProvider configFileProvider,
                                     IRuntimeInfo runtimeInfo,
                                     IBackupService backupService,
@@ -63,6 +65,7 @@ namespace NzbDrone.Core.Update
             _processProvider = processProvider;
             _updateVerifier = updateVerifier;
             _startupContext = startupContext;
+            _deploymentInfoProvider = deploymentInfoProvider;
             _configFileProvider = configFileProvider;
             _runtimeInfo = runtimeInfo;
             _backupService = backupService;
@@ -222,6 +225,18 @@ namespace NzbDrone.Core.Update
             if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && message.Trigger != CommandTrigger.Manual)
             {
                 _logger.ProgressDebug("Auto-update not enabled, not installing available update");
+                return;
+            }
+
+            // Safety net, ConfigureUpdateMechanism should take care of invalid settings
+            if (_configFileProvider.UpdateMechanism == UpdateMechanism.BuiltIn && _deploymentInfoProvider.IsExternalUpdateMechanism)
+            {
+                _logger.ProgressDebug("Built-In updater disabled, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
+                return;
+            }
+            else if (_configFileProvider.UpdateMechanism != UpdateMechanism.Script && _deploymentInfoProvider.IsExternalUpdateMechanism)
+            {
+                _logger.ProgressDebug("Update available, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
                 return;
             }
 

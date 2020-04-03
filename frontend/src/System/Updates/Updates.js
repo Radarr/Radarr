@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { icons, kinds } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -25,6 +25,7 @@ class Updates extends Component {
       error,
       items,
       isInstallingUpdate,
+      updateMechanism,
       isDocker,
       shortDateFormat,
       onInstallLatestPress
@@ -34,6 +35,12 @@ class Updates extends Component {
     const noUpdates = isPopulated && !error && !items.length;
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
+
+    const externalUpdaterMessages = {
+      external: 'Unable to update Readarr directly, Readarr is configured to use an external update mechanism',
+      apt: 'Unable to update Readarr directly, use apt to install the update',
+      docker: 'Unable to update Readarr directly, update the docker container to receive the update'
+    };
 
     return (
       <PageContent title="Updates">
@@ -50,24 +57,29 @@ class Updates extends Component {
 
           {
             hasUpdateToInstall &&
-              <div className={styles.updateAvailable}>
+              <div className={styles.messageContainer}>
                 {
-                  !isDocker &&
-                  <SpinnerButton
-                    className={styles.updateAvailable}
-                    kind={kinds.PRIMARY}
-                    isSpinning={isInstallingUpdate}
-                    onPress={onInstallLatestPress}
-                  >
-                    Install Latest
-                  </SpinnerButton>
-                }
+                  (updateMechanism === 'builtIn' || updateMechanism === 'script') && !isDocker ?
+                    <SpinnerButton
+                      className={styles.updateAvailable}
+                      kind={kinds.PRIMARY}
+                      isSpinning={isInstallingUpdate}
+                      onPress={onInstallLatestPress}
+                    >
+                      Install Latest
+                    </SpinnerButton> :
 
-                {
-                  isDocker &&
-                    <div className={styles.upToDateMessage}>
-                      An update is available.  Please update your Docker image and re-create the container.
-                    </div>
+                    <Fragment>
+                      <Icon
+                        name={icons.WARNING}
+                        kind={kinds.WARNING}
+                        size={30}
+                      />
+
+                      <div className={styles.message}>
+                        {externalUpdaterMessages[updateMechanism] || externalUpdaterMessages.external}
+                      </div>
+                    </Fragment>
                 }
 
                 {
@@ -188,6 +200,7 @@ Updates.propTypes = {
   items: PropTypes.array.isRequired,
   isInstallingUpdate: PropTypes.bool.isRequired,
   isDocker: PropTypes.bool.isRequired,
+  updateMechanism: PropTypes.string,
   shortDateFormat: PropTypes.string.isRequired,
   onInstallLatestPress: PropTypes.func.isRequired
 };
