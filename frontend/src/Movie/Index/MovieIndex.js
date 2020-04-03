@@ -449,10 +449,7 @@ class MovieIndex extends Component {
                 null
             }
 
-            {
-              (view === 'posters' || view === 'overview') &&
-                <PageToolbarSeparator />
-            }
+            <PageToolbarSeparator />
 
             <MovieIndexViewMenu
               view={view}
