@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Qualities

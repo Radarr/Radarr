@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -149,6 +149,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     var uniqueId = new XElement("uniqueid", movie.TmdbId);
                     uniqueId.SetAttributeValue("type", "tmdb");
                     details.Add(uniqueId);
+
+                    if (movie.Certification.IsNotNullOrWhiteSpace())
+                    {
+                        details.Add(new XElement("mpaa", movie.Certification));
+                    }
 
                     details.Add(new XElement("year", movie.Year));
 

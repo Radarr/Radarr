@@ -15,6 +15,7 @@ import netImportOptions from './Settings/netImportOptions';
 import netImports from './Settings/netImports';
 import mediaManagement from './Settings/mediaManagement';
 import metadata from './Settings/metadata';
+import metadataOptions from './Settings/metadataOptions';
 import naming from './Settings/naming';
 import namingExamples from './Settings/namingExamples';
 import notifications from './Settings/notifications';
@@ -38,6 +39,7 @@ export * from './Settings/netImportOptions';
 export * from './Settings/netImports';
 export * from './Settings/mediaManagement';
 export * from './Settings/metadata';
+export * from './Settings/metadataOptions';
 export * from './Settings/naming';
 export * from './Settings/namingExamples';
 export * from './Settings/notifications';
@@ -72,6 +74,7 @@ export const defaultState = {
   netImports: netImports.defaultState,
   mediaManagement: mediaManagement.defaultState,
   metadata: metadata.defaultState,
+  metadataOptions: metadataOptions.defaultState,
   naming: naming.defaultState,
   namingExamples: namingExamples.defaultState,
   notifications: notifications.defaultState,
@@ -114,6 +117,7 @@ export const actionHandlers = handleThunks({
   ...netImports.actionHandlers,
   ...mediaManagement.actionHandlers,
   ...metadata.actionHandlers,
+  ...metadataOptions.actionHandlers,
   ...naming.actionHandlers,
   ...namingExamples.actionHandlers,
   ...notifications.actionHandlers,
@@ -147,6 +151,7 @@ export const reducers = createHandleActions({
   ...netImports.reducers,
   ...mediaManagement.reducers,
   ...metadata.reducers,
+  ...metadataOptions.reducers,
   ...naming.reducers,
   ...namingExamples.reducers,
   ...notifications.reducers,

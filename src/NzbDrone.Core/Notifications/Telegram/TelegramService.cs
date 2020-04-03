@@ -4,7 +4,6 @@ using System.Web;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Rest;
 using RestSharp;

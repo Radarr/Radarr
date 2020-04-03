@@ -121,6 +121,13 @@
   margin-right: 15px;
 }
 
+.certification {
+  margin-right: 15px;
+  padding: 0 5px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
 .detailsLabel {
   composes: label from '~Components/Label.css';
 
