@@ -216,6 +216,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Title}"] = m => movie.Title;
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
+            tokenHandlers["{Movie Certification}"] = mbox => movie.Certification;
         }
 
         private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)

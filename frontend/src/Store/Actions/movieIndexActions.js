@@ -158,7 +158,7 @@ export const defaultState = {
     {
       name: 'certification',
       label: 'Certification',
-      isSortable: false,
+      isSortable: true,
       isVisible: false
     },
     {
@@ -320,7 +320,21 @@ export const defaultState = {
     {
       name: 'certification',
       label: 'Certification',
-      type: filterBuilderTypes.EXACT
+      type: filterBuilderTypes.EXACT,
+      optionsSelector: function(items) {
+        const certificationList = items.reduce((acc, movie) => {
+          if (movie.certification) {
+            acc.push({
+              id: movie.certification,
+              name: movie.certification
+            });
+          }
+
+          return acc;
+        }, []);
+
+        return certificationList.sort(sortByName);
+      }
     },
     {
       name: 'tags',
