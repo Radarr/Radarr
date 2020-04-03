@@ -351,10 +351,13 @@ class MovieDetails extends Component {
                         </span>
                     }
 
-                    <HeartRating
-                      rating={ratings.value}
-                      iconSize={20}
-                    />
+                    {
+                      !!ratings &&
+                        <HeartRating
+                          rating={ratings.value}
+                          iconSize={20}
+                        />
+                    }
                   </div>
                 </div>
 
