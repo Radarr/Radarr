@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { icons, kinds } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -26,6 +26,7 @@ class Updates extends Component {
       generalSettingsError,
       items,
       isInstallingUpdate,
+      updateMechanism,
       isDocker,
       shortDateFormat,
       onInstallLatestPress
@@ -36,6 +37,12 @@ class Updates extends Component {
     const noUpdates = isPopulated && !hasError && !items.length;
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
+
+    const externalUpdaterMessages = {
+      external: 'Unable to update Radarr directly, Radarr is configured to use an external update mechanism',
+      apt: 'Unable to update Radarr directly, use apt to install the update',
+      docker: 'Unable to update Radarr directly, update the docker container to receive the update'
+    };
 
     return (
       <PageContent title="Updates">
@@ -52,9 +59,9 @@ class Updates extends Component {
 
           {
             hasUpdateToInstall &&
-              <div className={styles.updateAvailable}>
+              <div className={styles.messageContainer}>
                 {
-                  !isDocker &&
+                  (updateMechanism === 'builtIn' || updateMechanism === 'script') && !isDocker ?
                     <SpinnerButton
                       className={styles.updateAvailable}
                       kind={kinds.PRIMARY}
@@ -62,14 +69,19 @@ class Updates extends Component {
                       onPress={onInstallLatestPress}
                     >
                       Install Latest
-                    </SpinnerButton>
-                }
+                    </SpinnerButton> :
 
-                {
-                  isDocker &&
-                    <div className={styles.upToDateMessage}>
-                      An update is available.  Please update your Docker image and re-create the container.
-                    </div>
+                    <Fragment>
+                      <Icon
+                        name={icons.WARNING}
+                        kind={kinds.WARNING}
+                        size={30}
+                      />
+
+                      <div className={styles.message}>
+                        {externalUpdaterMessages[updateMechanism] || externalUpdaterMessages.external}
+                      </div>
+                    </Fragment>
                 }
 
                 {
