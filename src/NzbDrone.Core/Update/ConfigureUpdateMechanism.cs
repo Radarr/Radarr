@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -17,9 +15,9 @@ namespace NzbDrone.Core.Update
 
     public class UpdaterConfigProvider : IUpdaterConfigProvider, IHandle<ApplicationStartedEvent>
     {
-        private Logger _logger;
-        private IConfigFileProvider _configFileProvider;
-        private IDeploymentInfoProvider _deploymentInfoProvider;
+        private readonly Logger _logger;
+        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IDeploymentInfoProvider _deploymentInfoProvider;
 
         public UpdaterConfigProvider(IDeploymentInfoProvider deploymentInfoProvider, IConfigFileProvider configFileProvider, Logger logger)
         {
@@ -53,7 +51,7 @@ namespace NzbDrone.Core.Update
             {
                 var currentBranch = _configFileProvider.Branch;
                 var packageBranch = _deploymentInfoProvider.PackageBranch;
-                if (packageBranch.IsNotNullOrWhiteSpace() & packageBranch != currentBranch)
+                if (packageBranch.IsNotNullOrWhiteSpace() && packageBranch != currentBranch)
                 {
                     _logger.Info("External updater uses branch {0} instead of the currently selected {1}, changing to {0}.", packageBranch, currentBranch);
                     ChangeBranch(packageBranch);
