@@ -14,3 +14,4 @@ markComment: >
   This issue has been automatically marked as stale because it has not had recent activity. Please verify that this is still an issue with the latest version of Radarr and report back. Otherwise this issue will be closed.
 # Comment to post when closing a stale issue. Set to `false` to disable
 closeComment: false
+only: issues
