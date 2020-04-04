@@ -9,6 +9,7 @@ using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
@@ -82,6 +83,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId, Profile profile, bool hasPreDBEntry)
         {
             var langCode = profile != null ? IsoLanguages.Get(profile.Language)?.TwoLetterCode ?? "en" : "en";
+            var wantedTitleLanguages = GetWantedTitleLanguages(langCode, profile);
 
             var request = _movieBuilder.Create()
                .SetSegment("api", "3")
@@ -154,7 +156,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)
             {
-                if (alternativeTitle.iso_3166_1.ToLower() == langCode)
+                if (wantedTitleLanguages.Contains(alternativeTitle.iso_3166_1.ToLower()))
                 {
                     altTitles.Add(new AlternativeTitle(alternativeTitle.title, SourceType.TMDB, tmdbId, IsoLanguages.Find(alternativeTitle.iso_3166_1.ToLower())?.Language ?? Language.English));
                 }
@@ -319,6 +321,34 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             return new Tuple<Movie, List<Credit>>(movie, people);
+        }
+
+        private List<String> GetWantedTitleLanguages(string langCode, Profile profile = null)
+        {
+            if (profile == null)
+            {
+                _logger.Trace("Profile is null! Defaulting to language code {}", langCode);
+                return new List<string>{langCode};
+            }
+
+            _logger.Trace("Profile formatItems: {}", profile.FormatItems.ToArray());
+
+            var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
+                .SelectMany(format => format.FormatTags)
+                .Where(tag => TagType.Language.Equals(tag.TagType))
+                .Select(tag => (Language) tag.Value)
+                .Select(language => IsoLanguages.Get(language)?.TwoLetterCode ?? "en")
+                .Distinct()
+                .ToList();
+
+            if (!wantedTitleLanguages.Contains(langCode))
+            {
+                wantedTitleLanguages.Add(langCode);
+            }
+
+            _logger.Debug("WantedTitleLanguages {}", wantedTitleLanguages.ToArray());
+
+            return wantedTitleLanguages;
         }
 
         public Movie GetMovieInfo(string imdbId)
