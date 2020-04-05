@@ -323,21 +323,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new Tuple<Movie, List<Credit>>(movie, people);
         }
 
-        private List<String> GetWantedTitleLanguages(string langCode, Profile profile = null)
+        private List<string> GetWantedTitleLanguages(string langCode, Profile profile = null)
         {
             if (profile == null)
             {
                 _logger.Trace("Profile is null! Defaulting to language code {}", langCode);
-                return new List<string>{langCode};
+                return new List<string> { langCode };
             }
 
             _logger.Trace("Profile formatItems: {}", profile.FormatItems.ToArray());
 
             var wantedTitleLanguages = profile.FormatItems.Select(item => item.Format)
-                .SelectMany(format => format.FormatTags)
-                .Where(tag => TagType.Language.Equals(tag.TagType))
-                .Select(tag => (Language) tag.Value)
-                .Select(language => IsoLanguages.Get(language)?.TwoLetterCode ?? "en")
+                .SelectMany(format => format.Specifications)
+                .Where(specification => specification is LanguageSpecification && !specification.Negate)
+                .Cast<LanguageSpecification>()
+                .Where(specification => specification.Value != -1)
+                .Select(specification => (Language)specification.Value)
+                .Select(language => IsoLanguages.Get(language).TwoLetterCode)
                 .Distinct()
                 .ToList();
 
