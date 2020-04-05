@@ -45,7 +45,8 @@ namespace NzbDrone.Common.Disk
                                                             ".@__thumb",
 
                                                             // Synology
-                                                            "@eadir"
+                                                            "@eadir",
+                                                            "#recycle"
                                                         };
 
         public FileSystemLookupService(IDiskProvider diskProvider, Logger logger)
