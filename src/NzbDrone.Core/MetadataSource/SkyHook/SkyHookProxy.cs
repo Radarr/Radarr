@@ -206,13 +206,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                             movie.PhysicalReleaseNote = releaseDate.note;
                         }
                     }
-
-                    // Set Certification from Theatrical Release
-                    if (releaseDate.type == 3 && releaseDates.iso_3166_1 == _configService.CertificationCountry.ToString())
-                    {
-                        movie.Certification = releaseDate.certification;
-                    }
                 }
+            }
+
+            var countryReleases = resource.release_dates.results.FirstOrDefault(m => m.iso_3166_1 == _configService.CertificationCountry.ToString());
+
+            // Set Certification from Theatrical Release(Type 3), if not fall back to Limited Threatrical(Type 2) and then Premiere(Type 1)
+            if (countryReleases != null && countryReleases.release_dates.Any())
+            {
+                var certRelease = countryReleases.release_dates.OrderByDescending(c => c.type).Where(d => d.type <= 3).FirstOrDefault(c => c.certification.IsNotNullOrWhiteSpace());
+
+                movie.Certification = certRelease?.certification;
             }
 
             movie.Ratings = new Ratings();
