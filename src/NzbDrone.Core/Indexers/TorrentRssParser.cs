@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Indexers
             {
                 try
                 {
-                    return InfoHash.FromMagnetLink(magnetUrl).ToHex();
+                    return MagnetLink.Parse(magnetUrl).InfoHash.ToHex();
                 }
                 catch
                 {
