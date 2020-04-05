@@ -64,7 +64,7 @@ class RootFolderSelectInputConnector extends Component {
   //
   // Lifecycle
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {
       value,
       values,
