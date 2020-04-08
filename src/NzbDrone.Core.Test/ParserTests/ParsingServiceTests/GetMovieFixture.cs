@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.GetMovie(title);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(s => s.FindByTitle(Parser.Parser.ParseMovieTitle(title, false, false).MovieTitle), Times.Once());
+                  .Verify(s => s.FindByTitle(Parser.Parser.ParseMovieTitle(title, false).MovieTitle), Times.Once());
         }
 
         /*[Test]

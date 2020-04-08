@@ -123,7 +123,7 @@ namespace NzbDrone.Core.MediaFiles
                 foreach (var videoFile in videoFiles)
                 {
                     var movieParseResult =
-                        Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), _config.ParsingLeniency > 0);
+                        Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile));
 
                     if (movieParseResult == null)
                     {

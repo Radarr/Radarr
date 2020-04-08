@@ -16,7 +16,7 @@
                 return false;
             }
 
-            var parsedTitle = Parser.ParseMovieTitle(title, false); //We are not lenient when it comes to scene checking!
+            var parsedTitle = Parser.ParseMovieTitle(title);
 
             if (parsedTitle == null ||
                 parsedTitle.ReleaseGroup == null ||

@@ -89,12 +89,7 @@ namespace NzbDrone.Core.DecisionEngine
                             Quality = new QualityModel(),
                         };
 
-                        if (_configService.ParsingLeniency == ParsingLeniencyType.MappingLenient)
-                        {
-                            result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-                        }
-
-                        if (result == null || result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                        if (result == null)
                         {
                             result = new MappingResult { MappingResultType = MappingResultType.NotParsable };
                             result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
@@ -113,7 +108,7 @@ namespace NzbDrone.Core.DecisionEngine
                     remoteMovie.Release = report;
                     remoteMovie.MappingResult = result.MappingResultType;
 
-                    if (result.MappingResultType != MappingResultType.Success && result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                    if (result.MappingResultType != MappingResultType.Success)
                     {
                         var rejection = result.ToRejection();
                         decision = new DownloadDecision(remoteMovie, rejection);

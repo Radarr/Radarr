@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Configuration
 
         bool AllowHardcodedSubs { get; set; }
         string WhitelistedHardcodedSubs { get; set; }
-        ParsingLeniencyType ParsingLeniency { get; set; }
 
         int NetImportSyncInterval { get; set; }
         string ListSyncLevel { get; set; }

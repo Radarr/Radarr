@@ -27,13 +27,13 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> PrioritizeDecisionsForMovies(List<DownloadDecision> decisions)
         {
-            return decisions.Where(c => c.RemoteMovie.MappingResult == MappingResultType.Success || c.RemoteMovie.MappingResult == MappingResultType.SuccessLenientMapping)
+            return decisions.Where(c => c.RemoteMovie.MappingResult == MappingResultType.Success)
                             .GroupBy(c => c.RemoteMovie.Movie.Id, (movieId, downloadDecisions) =>
                             {
                                 return downloadDecisions.OrderByDescending(decision => decision, new DownloadDecisionComparer(_configService, _delayProfileService, _qualityDefinitionService));
                             })
                             .SelectMany(c => c)
-                            .Union(decisions.Where(c => c.RemoteMovie.MappingResult != MappingResultType.Success || c.RemoteMovie.MappingResult != MappingResultType.SuccessLenientMapping))
+                            .Union(decisions.Where(c => c.RemoteMovie.MappingResult != MappingResultType.Success))
                             .ToList();
         }
     }
