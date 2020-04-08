@@ -190,12 +190,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("WhitelistedHardcodedSubs", value); }
         }
 
-        public ParsingLeniencyType ParsingLeniency
-        {
-            get { return GetValueEnum<ParsingLeniencyType>("ParsingLeniency", ParsingLeniencyType.Strict); }
-            set { SetValue("ParsingLeniency", value); }
-        }
-
         public bool RemoveCompletedDownloads
         {
             get { return GetValueBoolean("RemoveCompletedDownloads", false); }

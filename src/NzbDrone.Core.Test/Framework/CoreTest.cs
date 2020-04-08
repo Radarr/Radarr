@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.GetMock<IParsingService>().Setup(c => c.ParseMovieInfo(It.IsAny<string>(), It.IsAny<System.Collections.Generic.List<object>>()))
                 .Returns<string, System.Collections.Generic.List<object>>((title, helpers) =>
                 {
-                    var result = Parser.Parser.ParseMovieTitle(title, false);
+                    var result = Parser.Parser.ParseMovieTitle(title);
                     if (result != null)
                     {
                         result.Quality = QualityParser.ParseQuality(title);

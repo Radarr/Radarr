@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
+            var parseResult = Parser.Parser.ParseMovieTitle(filename);
 
             if (parseResult != null &&
                 Path.GetExtension(filename).Equals(".nfo", StringComparison.OrdinalIgnoreCase) &&

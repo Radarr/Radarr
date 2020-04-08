@@ -214,7 +214,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             {
                 var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
 
-                var parsedTitle = Parser.Parser.ParseMovieTitle(title, false);
+                var parsedTitle = Parser.Parser.ParseMovieTitle(title);
 
                 if (parsedTitle != null)
                 {

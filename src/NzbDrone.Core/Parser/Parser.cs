@@ -22,6 +22,9 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
+            //Some german or french tracker formats (missing year, ...) (Only applies to german and French/TrueFrench releases) - see ParserFixture for examples and tests
+            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + ReportEditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + ReportEditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -47,16 +50,6 @@ namespace NzbDrone.Core.Parser
         {
             //When year comes first.
             new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
-        };
-
-        private static readonly Regex[] ReportMovieTitleLenientRegexBefore = new[]
-        {
-            //Some german or french tracker formats
-            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + ReportEditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-        };
-
-        private static readonly Regex[] ReportMovieTitleLenientRegexAfter = new Regex[]
-        {
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -147,28 +140,28 @@ namespace NzbDrone.Core.Parser
             { "ü", "ue" },
         };
 
-        public static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
+        public static ParsedMovieInfo ParseMoviePath(string path)
         {
             var fileInfo = new FileInfo(path);
 
-            var result = ParseMovieTitle(fileInfo.Name, isLenient, true);
+            var result = ParseMovieTitle(fileInfo.Name, true);
 
             if (result == null)
             {
                 Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name, isLenient);
+                result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
             }
 
             if (result == null)
             {
                 Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension, isLenient);
+                result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
             return result;
         }
 
-        public static ParsedMovieInfo ParseMovieTitle(string title, bool isLenient, bool isDir = false)
+        public static ParsedMovieInfo ParseMovieTitle(string title, bool isDir = false)
         {
             try
             {
@@ -216,13 +209,6 @@ namespace NzbDrone.Core.Parser
                 if (isDir)
                 {
                     allRegexes.AddRange(ReportMovieTitleFolderRegex);
-                }
-
-                if (isLenient)
-                {
-                    allRegexes.InsertRange(0, ReportMovieTitleLenientRegexBefore);
-
-                    allRegexes.AddRange(ReportMovieTitleLenientRegexAfter);
                 }
 
                 foreach (var regex in allRegexes)

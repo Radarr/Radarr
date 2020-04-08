@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 RelativePath = movie.Path.GetRelativePath(path)
             };
 
-            var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
+            var parseResult = Parser.Parser.ParseMovieTitle(filename);
 
             if (parseResult != null)
             {

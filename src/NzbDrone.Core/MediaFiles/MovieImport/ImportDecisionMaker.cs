@@ -67,7 +67,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (downloadClientItem != null)
             {
-                downloadClientItemInfo = Parser.Parser.ParseMovieTitle(downloadClientItem.Title, false);
+                downloadClientItemInfo = Parser.Parser.ParseMovieTitle(downloadClientItem.Title);
                 downloadClientItemInfo = _parsingService.EnhanceMovieInfo(downloadClientItemInfo);
             }
 
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             ImportDecision decision = null;
 
-            var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path, false);
+            var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path);
 
             if (fileMovieInfo != null)
             {

@@ -129,7 +129,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return processedFiles.Concat(processedFolders).Where(i => i != null).ToList();
             }
 
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, false);
+            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
             var movieFiles = _diskScanService.GetVideoFiles(baseFolder).ToList();
             var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, baseFolder), filterExistingFiles);
 
@@ -164,7 +164,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (movie == null)
             {
-                var relativeParseInfo = Parser.Parser.ParseMoviePath(relativeFile, false);
+                var relativeParseInfo = Parser.Parser.ParseMoviePath(relativeFile);
 
                 if (relativeParseInfo != null)
                 {
@@ -241,7 +241,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 var file = message.Files[i];
                 var movie = _movieService.GetMovie(file.MovieId);
-                var fileMovieInfo = Parser.Parser.ParseMoviePath(file.Path, false) ?? new ParsedMovieInfo();
+                var fileMovieInfo = Parser.Parser.ParseMoviePath(file.Path) ?? new ParsedMovieInfo();
                 var existingFile = movie.Path.IsParentPath(file.Path);
                 TrackedDownload trackedDownload = null;
 
@@ -264,7 +264,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 if (file.FolderName.IsNotNullOrWhiteSpace())
                 {
-                    localMovie.FolderMovieInfo = Parser.Parser.ParseMovieTitle(file.FolderName, false);
+                    localMovie.FolderMovieInfo = Parser.Parser.ParseMovieTitle(file.FolderName);
                 }
 
                 localMovie = _aggregationService.Augment(localMovie, false);

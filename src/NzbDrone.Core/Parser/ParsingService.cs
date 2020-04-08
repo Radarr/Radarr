@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Parser
 
         public ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers)
         {
-            var result = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
+            var result = Parser.ParseMovieTitle(title);
 
             if (result == null)
             {
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Parser
 
         public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)
         {
-            return Parser.ParseMovieTitle(file, _config.ParsingLeniency > 0, isDir);
+            return Parser.ParseMovieTitle(file, isDir);
         }
 
         public ParsedMovieInfo ParseMinimalPathMovieInfo(string path)
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Parser
 
         public Movie GetMovie(string title)
         {
-            var parsedMovieInfo = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
+            var parsedMovieInfo = Parser.ParseMovieTitle(title);
 
             if (parsedMovieInfo == null)
             {
@@ -220,16 +220,6 @@ namespace NzbDrone.Core.Parser
                     return false;
                 }
 
-                if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
-                {
-                    movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-                    if (isNotNull(movieByTitleAndOrYear))
-                    {
-                        result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
-                        return true;
-                    }
-                }
-
                 result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound };
                 return false;
             }
@@ -239,16 +229,6 @@ namespace NzbDrone.Core.Parser
             {
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
-            }
-
-            if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
-            {
-                movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
-                if (isNotNull(movieByTitleAndOrYear))
-                {
-                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
-                    return true;
-                }
             }
 
             result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound };
@@ -307,29 +287,6 @@ namespace NzbDrone.Core.Parser
                 return false;
             }
 
-            if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
-            {
-                if (searchCriteria.Movie.CleanTitle.Contains(cleanTitle) ||
-                    cleanTitle.Contains(searchCriteria.Movie.CleanTitle))
-                {
-                    possibleMovie = searchCriteria.Movie;
-                    if ((parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year) || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
-                    {
-                        result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
-                        return true;
-                    }
-
-                    if (parsedMovieInfo.Year < 1800)
-                    {
-                        result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
-                        return true;
-                    }
-
-                    result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
-                    return false;
-                }
-            }
-
             result = new MappingResult { Movie = searchCriteria.Movie, MappingResultType = MappingResultType.WrongTitle };
 
             return false;
@@ -346,8 +303,6 @@ namespace NzbDrone.Core.Parser
                 {
                     case MappingResultType.Success:
                         return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
-                    case MappingResultType.SuccessLenientMapping:
-                        return $"Successfully mapped parts of the release name {ReleaseName} to movie {Movie}";
                     case MappingResultType.NotParsable:
                         return $"Failed to find movie title in release name {ReleaseName}";
                     case MappingResultType.TitleNotFound:
@@ -400,7 +355,6 @@ namespace NzbDrone.Core.Parser
             switch (MappingResultType)
             {
                 case MappingResultType.Success:
-                case MappingResultType.SuccessLenientMapping:
                     return null;
                 default:
                     return new Rejection(Message);
@@ -412,7 +366,6 @@ namespace NzbDrone.Core.Parser
     {
         Unknown = -1,
         Success = 0,
-        SuccessLenientMapping = 1,
         WrongYear = 2,
         WrongTitle = 3,
         TitleNotFound = 4,

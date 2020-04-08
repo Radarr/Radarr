@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         var id = seriesReader.GetInt32(0);
                         var relativePath = seriesReader.GetString(1);
 
-                        var result = Parser.Parser.ParseMovieTitle(relativePath, false);
+                        var result = Parser.Parser.ParseMovieTitle(relativePath);
 
                         var edition = "";
 

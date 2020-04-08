@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                 return metadata;
             }
 
-            var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
+            var parseResult = Parser.Parser.ParseMovieTitle(filename);
 
             if (parseResult != null)
             {
