@@ -18,10 +18,11 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         protected TraktImportBase(INetImportRepository netImportRepository,
                            IHttpClient httpClient,
+                           INetImportStatusService netImportStatusService,
                            IConfigService configService,
                            IParsingService parsingService,
                            Logger logger)
-            : base(httpClient, configService, parsingService, logger)
+            : base(httpClient, netImportStatusService, configService, parsingService, logger)
         {
             _netImportRepository = netImportRepository;
         }

@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -17,11 +17,12 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         protected TMDbNetImportBase(IRadarrCloudRequestBuilder requestBuilder,
                                     IHttpClient httpClient,
+                                    INetImportStatusService netImportStatusService,
                                     IConfigService configService,
                                     IParsingService parsingService,
                                     ISearchForNewMovie skyhookProxy,
                                     Logger logger)
-            : base(httpClient, configService, parsingService, logger)
+            : base(httpClient, netImportStatusService, configService, parsingService, logger)
         {
             _skyhookProxy = skyhookProxy;
             _requestBuilder = requestBuilder.TMDB;

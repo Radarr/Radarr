@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +7,8 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Http.CloudFlare;
+using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
@@ -28,8 +30,8 @@ namespace NzbDrone.Core.NetImport
         public abstract INetImportRequestGenerator GetRequestGenerator();
         public abstract IParseNetImportResponse GetParser();
 
-        public HttpNetImportBase(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(configService, parsingService, logger)
+        public HttpNetImportBase(IHttpClient httpClient, INetImportStatusService netImportStatusService,  IConfigService configService, IParsingService parsingService, Logger logger)
+            : base(netImportStatusService, configService, parsingService, logger)
         {
             _httpClient = httpClient;
         }
@@ -72,10 +74,21 @@ namespace NzbDrone.Core.NetImport
                         break;
                     }
                 }
+
+                _netImportStatusService.RecordSuccess(Definition.Id);
             }
             catch (WebException webException)
             {
-                anyFailure = true;
+                if (webException.Status == WebExceptionStatus.NameResolutionFailure ||
+                    webException.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    _netImportStatusService.RecordConnectionFailure(Definition.Id);
+                }
+                else
+                {
+                    _netImportStatusService.RecordFailure(Definition.Id);
+                }
+
                 if (webException.Message.Contains("502") || webException.Message.Contains("503") ||
                     webException.Message.Contains("timed out"))
                 {
@@ -86,23 +99,52 @@ namespace NzbDrone.Core.NetImport
                     _logger.Warn("{0} {1} {2}", this, url, webException.Message);
                 }
             }
-            catch (HttpException httpException)
+            catch (TooManyRequestsException ex)
             {
-                anyFailure = true;
-                if ((int)httpException.Response.StatusCode == 429)
+                if (ex.RetryAfter != TimeSpan.Zero)
                 {
-                    _logger.Warn("API Request Limit reached for {0}", this);
+                    _netImportStatusService.RecordFailure(Definition.Id, ex.RetryAfter);
                 }
                 else
                 {
-                    _logger.Warn("{0} {1}", this, httpException.Message);
+                    _netImportStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
+                }
+
+                _logger.Warn("API Request Limit reached for {0}", this);
+            }
+            catch (HttpException ex)
+            {
+                _netImportStatusService.RecordFailure(Definition.Id);
+                _logger.Warn("{0} {1}", this, ex.Message);
+            }
+            catch (RequestLimitReachedException)
+            {
+                _netImportStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
+                _logger.Warn("API Request Limit reached for {0}", this);
+            }
+            catch (CloudFlareCaptchaException ex)
+            {
+                _netImportStatusService.RecordFailure(Definition.Id);
+                ex.WithData("FeedUrl", url);
+                if (ex.IsExpired)
+                {
+                    _logger.Error(ex, "Expired CAPTCHA token for {0}, please refresh in import list settings.", this);
+                }
+                else
+                {
+                    _logger.Error(ex, "CAPTCHA token required for {0}, check import list settings.", this);
                 }
             }
-            catch (Exception feedEx)
+            catch (NetImportException ex)
             {
-                anyFailure = true;
-                feedEx.Data.Add("FeedUrl", url);
-                _logger.Error(feedEx, "An error occurred while processing list feed {0}", url);
+                _netImportStatusService.RecordFailure(Definition.Id);
+                _logger.Warn(ex, "{0}", url);
+            }
+            catch (Exception ex)
+            {
+                _netImportStatusService.RecordFailure(Definition.Id);
+                ex.WithData("FeedUrl", url);
+                _logger.Error(ex, "An error occurred while processing feed. {0}", url);
             }
 
             return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
@@ -154,6 +196,16 @@ namespace NzbDrone.Core.NetImport
                 {
                     return new ValidationFailure(string.Empty, "No results were returned from your list, please check your settings.");
                 }
+            }
+            catch (RequestLimitReachedException)
+            {
+                _logger.Warn("Request limit reached");
+            }
+            catch (UnsupportedFeedException ex)
+            {
+                _logger.Warn(ex, "Net Import feed is not supported");
+
+                return new ValidationFailure(string.Empty, "Net Import feed is not supported: " + ex.Message);
             }
             catch (NetImportException ex)
             {
