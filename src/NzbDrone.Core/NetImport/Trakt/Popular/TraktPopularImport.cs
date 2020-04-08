@@ -9,10 +9,11 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
     {
         public TraktPopularImport(INetImportRepository netImportRepository,
                    IHttpClient httpClient,
+                   INetImportStatusService netImportStatusService,
                    IConfigService configService,
                    IParsingService parsingService,
                    Logger logger)
-        : base(netImportRepository, httpClient, configService, parsingService, logger)
+        : base(netImportRepository, httpClient, netImportStatusService, configService, parsingService, logger)
         {
         }
 

@@ -13,11 +13,12 @@ namespace NzbDrone.Core.NetImport.TMDb.User
     {
         public TMDbUserImport(IRadarrCloudRequestBuilder requestBuilder,
                                  IHttpClient httpClient,
+                                 INetImportStatusService netImportStatusService,
                                  IConfigService configService,
                                  IParsingService parsingService,
                                  ISearchForNewMovie searchForNewMovie,
                                  Logger logger)
-        : base(requestBuilder, httpClient, configService, parsingService, searchForNewMovie, logger)
+        : base(requestBuilder, httpClient, netImportStatusService, configService, parsingService, searchForNewMovie, logger)
         {
         }
 

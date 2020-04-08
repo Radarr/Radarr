@@ -21,10 +21,11 @@ namespace NzbDrone.Core.NetImport.Radarr
         public override NetImportType ListType => NetImportType.Program;
 
         public RadarrImport(IRadarrV3Proxy radarrV3Proxy,
+                            INetImportStatusService netImportStatusService,
                             IConfigService configService,
                             IParsingService parsingService,
                             Logger logger)
-            : base(configService, parsingService, logger)
+            : base(netImportStatusService, configService, parsingService, logger)
         {
             _radarrV3Proxy = radarrV3Proxy;
         }

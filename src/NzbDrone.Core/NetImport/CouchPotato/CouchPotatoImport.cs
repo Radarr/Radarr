@@ -13,8 +13,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        public CouchPotatoImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(httpClient, configService, parsingService, logger)
+        public CouchPotatoImport(IHttpClient httpClient, INetImportStatusService netImportStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
+            : base(httpClient, netImportStatusService, configService, parsingService, logger)
         {
         }
 

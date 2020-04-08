@@ -18,6 +18,7 @@ namespace NzbDrone.Core.NetImport
     public abstract class NetImportBase<TSettings> : INetImport
         where TSettings : IProviderConfig, new()
     {
+        protected readonly INetImportStatusService _netImportStatusService;
         protected readonly IConfigService _configService;
         protected readonly IParsingService _parsingService;
         protected readonly Logger _logger;
@@ -30,8 +31,9 @@ namespace NzbDrone.Core.NetImport
 
         public abstract NetImportFetchResult Fetch();
 
-        public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
+        public NetImportBase(INetImportStatusService netImportStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
         {
+            _netImportStatusService = netImportStatusService;
             _configService = configService;
             _parsingService = parsingService;
             _logger = logger;
