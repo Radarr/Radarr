@@ -83,6 +83,7 @@ namespace NzbDrone.Core.DecisionEngine
                         parsedMovieInfo = new ParsedMovieInfo
                         {
                             MovieTitle = report.Title,
+                            SimpleReleaseTitle = report.Title.SimplifyReleaseTitle(),
                             Year = 1290,
                             Languages = new List<Language> { Language.Unknown },
                             Quality = new QualityModel(),
