@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers", "", 0)] //no year
         [TestCase("Das.A.Team.Der.Film.Extended.Cut.German.720p.BluRay.x264-ANCIENT", "Das A Team Der Film", "Extended Cut", 0)] //no year
         [TestCase("Cars.2.German.DL.720p.BluRay.x264-EmpireHD", "Cars 2", "", 0)] //no year
+        [TestCase("Die.fantastische.Reise.des.Dr.Dolittle.2020.German.DL.LD.1080p.WEBRip.x264-PRD", "Die fantastische Reise des Dr. Dolittle", "", 2020)] //year at wrong position
         [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011)] //year at wrong position
         public void should_parse_german_movie(string postTitle, string title, string edition, int year)
         {
@@ -157,6 +158,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
         [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE", "")]
+        [TestCase("Uncut.Gems.2019.720p.BluRay.x264-YOL0W", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
