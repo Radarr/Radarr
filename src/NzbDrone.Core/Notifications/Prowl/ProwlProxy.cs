@@ -3,8 +3,7 @@ using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.Rest;
-using RestSharp;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Notifications.Prowl
 {
@@ -17,12 +16,12 @@ namespace NzbDrone.Core.Notifications.Prowl
     public class ProwlProxy : IProwlProxy
     {
         private const string PUSH_URL = "https://api.prowlapp.com/publicapi/add";
-        private readonly IRestClientFactory _restClientFactory;
+        private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public ProwlProxy(IRestClientFactory restClientFactory, Logger logger)
+        public ProwlProxy(IHttpClient httpClient, Logger logger)
         {
-            _restClientFactory = restClientFactory;
+            _httpClient = httpClient;
             _logger = logger;
         }
 
@@ -30,19 +29,20 @@ namespace NzbDrone.Core.Notifications.Prowl
         {
             try
             {
-                var client = _restClientFactory.BuildClient(PUSH_URL);
-                var request = new RestRequest(Method.POST);
+                var requestBuilder = new HttpRequestBuilder(PUSH_URL);
 
-                request.AddParameter("apikey", apiKey);
-                request.AddParameter("application", BuildInfo.AppName);
-                request.AddParameter("event", title);
-                request.AddParameter("description", message);
-                request.AddParameter("priority", priority);
-                request.AddParameter("url", url);
+                var request = requestBuilder.Post()
+                    .AddFormParameter("apikey", apiKey)
+                    .AddFormParameter("application", BuildInfo.AppName)
+                    .AddFormParameter("event", title)
+                    .AddFormParameter("description", message)
+                    .AddFormParameter("priority", priority)
+                    .AddFormParameter("url", url)
+                    .Build();
 
-                client.ExecuteAndValidate(request);
+                _httpClient.Post(request);
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
@@ -51,6 +51,10 @@ namespace NzbDrone.Core.Notifications.Prowl
                 }
 
                 throw new ProwlException("Unable to send text message: " + ex.Message, ex);
+            }
+            catch (WebException ex)
+            {
+                throw new ProwlException("Failed to connect to prowl, please check your settings.", ex);
             }
         }
 

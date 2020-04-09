@@ -2,8 +2,8 @@ using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Rest;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Emby
 
                 Notify(settings, "Test from Radarr", "Success! MediaBrowser has been successfully configured!");
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {

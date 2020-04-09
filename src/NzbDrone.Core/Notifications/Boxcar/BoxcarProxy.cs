@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.Rest;
-using RestSharp;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Notifications.Boxcar
 {
@@ -17,22 +16,20 @@ namespace NzbDrone.Core.Notifications.Boxcar
     public class BoxcarProxy : IBoxcarProxy
     {
         private const string URL = "https://new.boxcar.io/api/notifications";
-        private readonly IRestClientFactory _restClientFactory;
+        private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public BoxcarProxy(IRestClientFactory restClientFactory, Logger logger)
+        public BoxcarProxy(IHttpClient httpClient, Logger logger)
         {
-            _restClientFactory = restClientFactory;
+            _httpClient = httpClient;
             _logger = logger;
         }
 
         public void SendNotification(string title, string message, BoxcarSettings settings)
         {
-            var request = new RestRequest(Method.POST);
-
             try
             {
-                SendNotification(title, message, request, settings);
+                ProcessNotification(title, message, settings);
             }
             catch (BoxcarException ex)
             {
@@ -51,7 +48,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
                 SendNotification(title, body, settings);
                 return null;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
@@ -69,21 +66,22 @@ namespace NzbDrone.Core.Notifications.Boxcar
             }
         }
 
-        private void SendNotification(string title, string message, RestRequest request, BoxcarSettings settings)
+        private void ProcessNotification(string title, string message, BoxcarSettings settings)
         {
             try
             {
-                var client = _restClientFactory.BuildClient(URL);
+                var requestBuilder = new HttpRequestBuilder(URL).Post();
 
-                request.AddParameter("user_credentials", settings.Token);
-                request.AddParameter("notification[title]", title);
-                request.AddParameter("notification[long_message]", message);
-                request.AddParameter("notification[source_name]", BuildInfo.AppName);
-                request.AddParameter("notification[icon_url]", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/64.png");
+                var request = requestBuilder.AddFormParameter("user_credentials", settings.Token)
+                    .AddFormParameter("notification[title]", title)
+                    .AddFormParameter("notification[long_message]", message)
+                    .AddFormParameter("notification[source_name]", BuildInfo.AppName)
+                    .AddFormParameter("notification[icon_url]", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/64.png")
+                    .Build();
 
-                client.ExecuteAndValidate(request);
+                _httpClient.Post(request);
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
