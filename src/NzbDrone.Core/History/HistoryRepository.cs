@@ -66,9 +66,7 @@ namespace NzbDrone.Core.History
                 query = query.Where(h => h.EventType == eventType).ToList();
             }
 
-            query.OrderByDescending(h => h.Date);
-
-            return query;
+            return query.OrderByDescending(h => h.Date).ToList();
         }
 
         public void DeleteForMovie(int movieId)

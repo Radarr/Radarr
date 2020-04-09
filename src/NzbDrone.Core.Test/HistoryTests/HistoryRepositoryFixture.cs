@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -56,6 +58,59 @@ namespace NzbDrone.Core.Test.HistoryTests
             var downloadHistory = Subject.FindDownloadHistory(12, new QualityModel(Quality.Bluray1080p));
 
             downloadHistory.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void should_get_movie_history()
+        {
+            var historyMovie1 = Builder<History.History>.CreateNew()
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
+                .With(c => c.MovieId = 12)
+                .With(c => c.EventType = HistoryEventType.Grabbed)
+                .BuildNew();
+
+            var historyMovie2 = Builder<History.History>.CreateNew()
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
+                .With(c => c.MovieId = 13)
+                .With(c => c.EventType = HistoryEventType.Grabbed)
+             .BuildNew();
+
+            Subject.Insert(historyMovie1);
+            Subject.Insert(historyMovie2);
+
+            var movieHistory = Subject.GetByMovieId(12, null);
+
+            movieHistory.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void should_sort_movie_history_by_date()
+        {
+            var historyFirst = Builder<History.History>.CreateNew()
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
+                .With(c => c.MovieId = 12)
+                .With(c => c.EventType = HistoryEventType.MovieFileRenamed)
+                .With(c => c.Date = DateTime.UtcNow)
+                .BuildNew();
+
+            var historySecond = Builder<History.History>.CreateNew()
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
+                .With(c => c.MovieId = 12)
+                .With(c => c.EventType = HistoryEventType.Grabbed)
+                .With(c => c.Date = DateTime.UtcNow.AddMinutes(10))
+             .BuildNew();
+
+            Subject.Insert(historyFirst);
+            Subject.Insert(historySecond);
+
+            var movieHistory = Subject.GetByMovieId(12, null);
+
+            movieHistory.Should().HaveCount(2);
+            movieHistory.First().EventType.Should().Be(HistoryEventType.Grabbed);
         }
     }
 }
