@@ -1,7 +1,6 @@
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
-using NzbDrone.Core.Rest;
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
@@ -38,7 +37,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
                 _httpClient.Execute(request);
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new WebhookException("Unable to post to webhook: {0}", ex, ex.Message);
             }
