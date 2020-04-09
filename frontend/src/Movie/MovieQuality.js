@@ -45,6 +45,10 @@ function MovieQuality(props) {
     kind = kinds.INVERSE;
   }
 
+  if (!quality) {
+    return null;
+  }
+
   return (
     <Label
       className={className}
