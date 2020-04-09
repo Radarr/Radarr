@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getRemovedItems from 'Utilities/Object/getRemovedItems';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
@@ -36,14 +37,22 @@ class Queue extends Component {
       lastToggled: null,
       selectedState: {},
       isPendingSelected: false,
-      isConfirmRemoveModalOpen: false
+      isConfirmRemoveModalOpen: false,
+      items: props.items
     };
   }
 
   componentDidUpdate(prevProps) {
-    if (hasDifferentItems(prevProps.items, this.props.items)) {
+    const {
+      items
+    } = this.props;
+
+    if (hasDifferentItems(prevProps.items, items) && !items.some((e) => e.movieId)) {
       this.setState((state) => {
-        return removeOldSelectedState(state, prevProps.items);
+        return {
+          ...removeOldSelectedState(state, getRemovedItems(prevProps.items, items)),
+          items
+        };
       });
 
       return;
@@ -107,7 +116,6 @@ class Queue extends Component {
       isMoviesFetching,
       isMoviesPopulated,
       moviesError,
-      items,
       columns,
       totalRecords,
       isGrabbing,
@@ -122,7 +130,8 @@ class Queue extends Component {
       allUnselected,
       selectedState,
       isConfirmRemoveModalOpen,
-      isPendingSelected
+      isPendingSelected,
+      items
     } = this.state;
 
     const isRefreshing = isFetching || isMoviesFetching || isRefreshMonitoredDownloadsExecuting;
