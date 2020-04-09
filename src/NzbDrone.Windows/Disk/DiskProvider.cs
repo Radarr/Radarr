@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using NLog;
@@ -48,6 +48,10 @@ namespace NzbDrone.Windows.Disk
         }
 
         public override void SetPermissions(string path, string mask, string user, string group)
+        {
+        }
+
+        public override void CopyPermissions(string sourcePath, string targetPath, bool includeOwner)
         {
         }
 
