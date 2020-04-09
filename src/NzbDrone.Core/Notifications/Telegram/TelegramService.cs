@@ -4,9 +4,8 @@ using System.Web;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
-using NzbDrone.Core.Rest;
-using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Telegram
 {
@@ -19,12 +18,12 @@ namespace NzbDrone.Core.Notifications.Telegram
     public class TelegramProxy : ITelegramProxy
     {
         private const string URL = "https://api.telegram.org";
-        private readonly IRestClientFactory _restClientFactory;
+        private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public TelegramProxy(IRestClientFactory restClientFactory, Logger logger)
+        public TelegramProxy(IHttpClient httpClient, Logger logger)
         {
-            _restClientFactory = restClientFactory;
+            _httpClient = httpClient;
             _logger = logger;
         }
 
@@ -32,17 +31,17 @@ namespace NzbDrone.Core.Notifications.Telegram
         {
             //Format text to add the title before and bold using markdown
             var text = $"<b>{HttpUtility.HtmlEncode(title)}</b>\n{HttpUtility.HtmlEncode(message)}";
-            var client = _restClientFactory.BuildClient(URL);
 
-            var request = new RestRequest("bot{token}/sendmessage", Method.POST);
+            var requestBuilder = new HttpRequestBuilder(URL).Resource("bot{token}/sendmessage").Post();
 
-            request.AddUrlSegment("token", settings.BotToken);
-            request.AddParameter("chat_id", settings.ChatId);
-            request.AddParameter("parse_mode", "HTML");
-            request.AddParameter("text", text);
-            request.AddParameter("disable_notification", settings.SendSilently);
+            var request = requestBuilder.SetSegment("token", settings.BotToken)
+                                        .AddFormParameter("chat_id", settings.ChatId)
+                                        .AddFormParameter("parse_mode", "HTML")
+                                        .AddFormParameter("text", text)
+                                        .AddFormParameter("disable_notification", settings.SendSilently)
+                                        .Build();
 
-            client.ExecuteAndValidate(request);
+            _httpClient.Post(request);
         }
 
         public ValidationFailure Test(TelegramSettings settings)
@@ -62,7 +61,7 @@ namespace NzbDrone.Core.Notifications.Telegram
                 {
                     return new ValidationFailure("Connection", $"{webException.Status.ToString()}: {webException.Message}");
                 }
-                else if (ex is RestException restException && restException.Response.StatusCode == HttpStatusCode.BadRequest)
+                else if (ex is Common.Http.HttpException restException && restException.Response.StatusCode == HttpStatusCode.BadRequest)
                 {
                     var error = Json.Deserialize<TelegramError>(restException.Response.Content);
                     var property = error.Description.ContainsIgnoreCase("chat not found") ? "ChatId" : "BotToken";

@@ -3,8 +3,6 @@ using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Rest;
-using RestSharp;
 
 namespace NzbDrone.Core.Notifications.Subsonic
 {
@@ -18,12 +16,12 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
     public class SubsonicServerProxy : ISubsonicServerProxy
     {
-        private readonly IRestClientFactory _restClientFactory;
+        private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public SubsonicServerProxy(IRestClientFactory restClientFactory, Logger logger)
+        public SubsonicServerProxy(IHttpClient httpClient, Logger logger)
         {
-            _restClientFactory = restClientFactory;
+            _httpClient = httpClient;
             _logger = logger;
         }
 
@@ -38,10 +36,10 @@ namespace NzbDrone.Core.Notifications.Subsonic
         public void Notify(SubsonicSettings settings, string message)
         {
             var resource = "addChatMessage";
-            var request = GetSubsonicServerRequest(resource, Method.GET, settings);
-            request.AddParameter("message", message);
-            var client = GetSubsonicServerClient(settings);
-            var response = client.Execute(request);
+            var request = GetSubsonicServerRequest(resource, HttpMethod.GET, settings);
+            request.AddQueryParam("message", message);
+
+            var response = _httpClient.Execute(request.Build());
 
             _logger.Trace("Update response: {0}", response.Content);
             CheckForError(response, settings);
@@ -50,9 +48,8 @@ namespace NzbDrone.Core.Notifications.Subsonic
         public void Update(SubsonicSettings settings)
         {
             var resource = "startScan";
-            var request = GetSubsonicServerRequest(resource, Method.GET, settings);
-            var client = GetSubsonicServerClient(settings);
-            var response = client.Execute(request);
+            var request = GetSubsonicServerRequest(resource, HttpMethod.GET, settings);
+            var response = _httpClient.Execute(request.Build());
 
             _logger.Trace("Update response: {0}", response.Content);
             CheckForError(response, settings);
@@ -60,9 +57,8 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
         public string Version(SubsonicSettings settings)
         {
-            var request = GetSubsonicServerRequest("ping", Method.GET, settings);
-            var client = GetSubsonicServerClient(settings);
-            var response = client.Execute(request);
+            var request = GetSubsonicServerRequest("ping", HttpMethod.GET, settings);
+            var response = _httpClient.Execute(request.Build());
 
             _logger.Trace("Version response: {0}", response.Content);
             CheckForError(response, settings);
@@ -78,27 +74,26 @@ namespace NzbDrone.Core.Notifications.Subsonic
             return version;
         }
 
-        private RestClient GetSubsonicServerClient(SubsonicSettings settings)
+        private HttpRequestBuilder GetSubsonicServerRequest(string resource, HttpMethod method, SubsonicSettings settings)
         {
-            return _restClientFactory.BuildClient(GetBaseUrl(settings, "rest"));
-        }
+            var client = new HttpRequestBuilder(GetBaseUrl(settings, "rest"));
 
-        private RestRequest GetSubsonicServerRequest(string resource, Method method, SubsonicSettings settings)
-        {
-            var request = new RestRequest(resource, method);
+            client.Resource(resource);
 
             if (settings.Username.IsNotNullOrWhiteSpace())
             {
-                request.AddParameter("u", settings.Username);
-                request.AddParameter("p", settings.Password);
-                request.AddParameter("c", "Readarr");
-                request.AddParameter("v", "1.15.0");
+                client.AddQueryParam("u", settings.Username)
+                      .AddQueryParam("p", settings.Password)
+                      .AddQueryParam("c", "Readarr")
+                      .AddQueryParam("v", "1.15.0");
             }
 
-            return request;
+            client.Method = method;
+
+            return client;
         }
 
-        private void CheckForError(IRestResponse response, SubsonicSettings settings)
+        private void CheckForError(HttpResponse response, SubsonicSettings settings)
         {
             _logger.Trace("Checking for error");
 
