@@ -120,7 +120,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
                         movieFile.SceneName = GetSceneName(downloadClientItem, localMovie);
-
                         var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); //TODO: Check if this works
                         oldFiles = moveResult.OldFiles;
                     }
@@ -212,21 +211,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             if (downloadClientItem != null)
             {
-                var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
-
-                var parsedTitle = Parser.Parser.ParseMovieTitle(title);
-
-                if (parsedTitle != null)
+                var sceneNameTitle = SceneChecker.GetSceneTitle(downloadClientItem.Title);
+                if (sceneNameTitle != null)
                 {
-                    return title;
+                    return sceneNameTitle;
                 }
             }
 
             var fileName = Path.GetFileNameWithoutExtension(localMovie.Path.CleanFilePath());
-
-            if (SceneChecker.IsSceneTitle(fileName))
+            var sceneNameFile = SceneChecker.GetSceneTitle(fileName);
+            if (sceneNameFile != null)
             {
-                return fileName;
+                return sceneNameFile;
             }
 
             return null;
