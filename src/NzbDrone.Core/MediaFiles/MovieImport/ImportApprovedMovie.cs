@@ -189,7 +189,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (folderMovieInfo != null)
             {
-                var folderPath = path.GetAncestorPath(folderMovieInfo.SimpleReleaseTitle);
+                var folderPath = path.GetAncestorPath(folderMovieInfo.OriginalTitle);
 
                 if (folderPath != null)
                 {

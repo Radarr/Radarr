@@ -159,6 +159,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
         [TestCase("Loving.Pablo.2018.TS.FRENCH.MD.x264-DROGUERiE", "")]
         [TestCase("Uncut.Gems.2019.720p.BluRay.x264-YOL0W", "")]
+        [TestCase("Directors.Cut.German.2006.COMPLETE.PAL.DVDR-LoD", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
