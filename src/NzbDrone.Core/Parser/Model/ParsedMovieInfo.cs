@@ -8,6 +8,8 @@ namespace NzbDrone.Core.Parser.Model
     public class ParsedMovieInfo
     {
         public string MovieTitle { get; set; }
+        public string OriginalTitle { get; set; }
+        public string ReleaseTitle { get; set; }
         public string SimpleReleaseTitle { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; } = new List<Language>();

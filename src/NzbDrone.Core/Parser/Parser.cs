@@ -165,6 +165,7 @@ namespace NzbDrone.Core.Parser
 
         public static ParsedMovieInfo ParseMovieTitle(string title, bool isDir = false)
         {
+            var originalTitle = title;
             try
             {
                 if (!ValidateBeforeParsing(title))
@@ -227,7 +228,7 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
                                 //TODO: Add tests for this!
-                                var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(title, string.Empty);
+                                var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(releaseTitle, string.Empty);
 
                                 var simpleTitleReplaceString = match[0].Groups["title"].Success ? match[0].Groups["title"].Value : result.MovieTitle;
 
@@ -247,7 +248,7 @@ namespace NzbDrone.Core.Parser
                                     result.Edition = ParseEdition(simpleReleaseTitle);
                                 }
 
-                                result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+                                result.ReleaseGroup = ParseReleaseGroup(simpleReleaseTitle);
 
                                 var subGroup = GetSubGroup(match);
                                 if (!subGroup.IsNullOrWhiteSpace())
@@ -263,6 +264,8 @@ namespace NzbDrone.Core.Parser
                                     Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
                                 }
 
+                                result.OriginalTitle = originalTitle;
+                                result.ReleaseTitle = releaseTitle;
                                 result.SimpleReleaseTitle = simpleReleaseTitle;
 
                                 result.ImdbId = ParseImdbId(simpleReleaseTitle);
