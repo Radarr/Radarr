@@ -301,13 +301,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_use_folder_info_release_title_to_find_relative_path()
+        public void should_use_folder_info_original_title_to_find_relative_path()
         {
-            var name = "Series.Title.S01E01.720p.HDTV.x264-Sonarr";
-            var outputPath = Path.Combine(@"C:\Test\Unsorted\TV\".AsOsAgnostic(), name);
+            var name = "Transformers.2007.720p.BluRay.x264-Radarr";
+            var outputPath = Path.Combine(@"C:\Test\Unsorted\movies\".AsOsAgnostic(), name);
             var localEpisode = _approvedDecisions.First().LocalMovie;
 
-            localEpisode.FolderMovieInfo = new ParsedMovieInfo { SimpleReleaseTitle = name };
+            localEpisode.FolderMovieInfo = new ParsedMovieInfo { OriginalTitle = name };
             localEpisode.Path = Path.Combine(outputPath, "subfolder", name + ".mkv");
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, null);

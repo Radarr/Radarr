@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Test.ParserTests
             title.CleanSeriesTitle().Should().Be("carnivale");
         }
 
-        //Note: This assumes extended language parser is activated
         [TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
         [TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
         [TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
@@ -74,26 +73,27 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("96.Hours.Taken.3.EXTENDED.2014.German.DL.1080p.BluRay.x264-ENCOUNTERS", "96 Hours Taken 3", "EXTENDED", 2014)]
         [TestCase("World.War.Z.EXTENDED.CUT.2013.German.DL.1080p.BluRay.x264-HQX", "World War Z", "EXTENDED CUT", 2013)]
         [TestCase("Sin.City.2005.RECUT.EXTENDED.German.DL.1080p.BluRay.x264-DETAiLS", "Sin City", "RECUT EXTENDED", 2005)]
-        [TestCase("Die.Klasse.von.1999.1990.German.720p.HDTV.x264-NORETAiL", "Die Klasse von 1999", "", 1990)] //year in the title
         [TestCase("2.Tage.in.L.A.1996.GERMAN.DL.720p.WEB.H264-SOV", "2 Tage in L.A.", "", 1996)]
         [TestCase("8.2019.GERMAN.720p.BluRay.x264-UNiVERSUM", "8", "", 2019)]
         [TestCase("Life.Partners.2014.German.DL.PAL.DVDR-ETM", "Life Partners", "", 2014)]
         [TestCase("Joe.Dreck.2.EXTENDED.EDITION.2015.German.DL.PAL.DVDR-ETM", "Joe Dreck 2", "EXTENDED EDITION", 2015)]
         [TestCase("Rango.EXTENDED.2011.HDRip.AC3.German.XviD-POE", "Rango", "EXTENDED", 2011)]
 
-        //Special cases (see comment to the right)
-        [TestCase("Suicide.Squad.2016.EXTENDED.German.DL.AC3.BDRip.x264-hqc", "Suicide Squad", "EXTENDED", 2016)] //edition after year
-        [TestCase("Knight.and.Day.2010.Extended.Cut.German.DTS.DL.720p.BluRay.x264-HDS", "Knight and Day", "Extended Cut", 2010)] //edition after year
-        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James", "", 1998)] //year at the end
-        [TestCase("Der.Hobbit.Eine.Unerwartete.Reise.Extended.German.720p.BluRay.x264-EXQUiSiTE", "Der Hobbit Eine Unerwartete Reise", "Extended", 0)] //no year
-        [TestCase("Wolverine.Weg.des.Kriegers.EXTENDED.German.720p.BluRay.x264-EXQUiSiTE", "Wolverine Weg des Kriegers", "EXTENDED", 0)] //no year
-        [TestCase("Die.Unfassbaren.Now.You.See.Me.EXTENDED.German.DTS.720p.BluRay.x264-RHD", "Die Unfassbaren Now You See Me", "EXTENDED", 0)] //no year
-        [TestCase("Die Unfassbaren Now You See Me EXTENDED German DTS 720p BluRay x264-RHD", "Die Unfassbaren Now You See Me", "EXTENDED", 0)] //no year & without dots
-        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers", "", 0)] //no year
-        [TestCase("Das.A.Team.Der.Film.Extended.Cut.German.720p.BluRay.x264-ANCIENT", "Das A Team Der Film", "Extended Cut", 0)] //no year
-        [TestCase("Cars.2.German.DL.720p.BluRay.x264-EmpireHD", "Cars 2", "", 0)] //no year
-        [TestCase("Die.fantastische.Reise.des.Dr.Dolittle.2020.German.DL.LD.1080p.WEBRip.x264-PRD", "Die fantastische Reise des Dr. Dolittle", "", 2020)] //year at wrong position
-        [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011)] //year at wrong position
+        //Special cases (see description)
+        [TestCase("Die.Klasse.von.1999.1990.German.720p.HDTV.x264-NORETAiL", "Die Klasse von 1999", "", 1990, Description = "year in the title")]
+        [TestCase("Suicide.Squad.2016.EXTENDED.German.DL.AC3.BDRip.x264-hqc", "Suicide Squad", "EXTENDED", 2016, Description = "edition after year")]
+        [TestCase("Knight.and.Day.2010.Extended.Cut.German.DTS.DL.720p.BluRay.x264-HDS", "Knight and Day", "Extended Cut", 2010, Description = "edition after year")]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James", "", 1998, Description = "year at the end")]
+        [TestCase("Der.Hobbit.Eine.Unerwartete.Reise.Extended.German.720p.BluRay.x264-EXQUiSiTE", "Der Hobbit Eine Unerwartete Reise", "Extended", 0, Description = "no year & edition")]
+        [TestCase("Wolverine.Weg.des.Kriegers.EXTENDED.German.720p.BluRay.x264-EXQUiSiTE", "Wolverine Weg des Kriegers", "EXTENDED", 0, Description = "no year & edition")]
+        [TestCase("Die.Unfassbaren.Now.You.See.Me.EXTENDED.German.DTS.720p.BluRay.x264-RHD", "Die Unfassbaren Now You See Me", "EXTENDED", 0, Description = "no year & edition")]
+        [TestCase("Die Unfassbaren Now You See Me EXTENDED German DTS 720p BluRay x264-RHD", "Die Unfassbaren Now You See Me", "EXTENDED", 0, Description = "no year & edition & without dots")]
+        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers", "", 0, Description = "no year")]
+        [TestCase("Das.A.Team.Der.Film.Extended.Cut.German.720p.BluRay.x264-ANCIENT", "Das A Team Der Film", "Extended Cut", 0, Description = "no year")]
+        [TestCase("Cars.2.German.DL.720p.BluRay.x264-EmpireHD", "Cars 2", "", 0, Description = "no year")]
+        [TestCase("Die.fantastische.Reise.des.Dr.Dolittle.2020.German.DL.LD.1080p.WEBRip.x264-PRD", "Die fantastische Reise des Dr. Dolittle", "", 2020, Description = "dot after dr")]
+        [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011, Description = "year at wrong position")]
+        [TestCase("Kick.Ass.2.2013.German.DTS.DL.720p.BluRay.x264-Pate_", "Kick Ass 2", "", 2013, Description = "underscore at the end")]
         public void should_parse_german_movie(string postTitle, string title, string edition, int year)
         {
             ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);

@@ -187,6 +187,9 @@ namespace NzbDrone.Core.Parser
 
                 var releaseTitle = RemoveFileExtension(title);
 
+                //Trim dashes from end
+                releaseTitle = releaseTitle.Trim('-', '_');
+
                 releaseTitle = releaseTitle.Replace("【", "[").Replace("】", "]");
 
                 var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
