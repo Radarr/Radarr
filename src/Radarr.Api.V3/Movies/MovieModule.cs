@@ -87,7 +87,17 @@ namespace Radarr.Api.V3.Movies
 
         private List<MovieResource> AllMovie()
         {
-            var moviesResources = _moviesService.GetAllMovies().ToResource(_qualityUpgradableSpecification);
+            var tmdbId = Request.GetIntegerQueryParameter("tmdbId");
+            var moviesResources = new List<MovieResource>();
+
+            if (tmdbId > 0)
+            {
+                moviesResources.AddIfNotNull(_moviesService.FindByTmdbId(tmdbId).ToResource(_qualityUpgradableSpecification));
+            }
+            else
+            {
+                moviesResources.AddRange(_moviesService.GetAllMovies().ToResource(_qualityUpgradableSpecification));
+            }
 
             MapCoversToLocal(moviesResources.ToArray());
             PopulateAlternateTitles(moviesResources);
