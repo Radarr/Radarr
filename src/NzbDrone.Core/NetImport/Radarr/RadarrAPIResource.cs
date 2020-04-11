@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.NetImport.Radarr
@@ -15,5 +15,12 @@ namespace NzbDrone.Core.NetImport.Radarr
         public DateTime PhysicalRelease { get; set; }
         public int Year { get; set; }
         public string TitleSlug { get; set; }
+        public int QualityProfileId { get; set; }
+    }
+
+    public class RadarrProfile
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }
