@@ -50,10 +50,14 @@ namespace NzbDrone.Core.NetImport.Radarr
                             TitleSlug = remoteMovie.TitleSlug,
                             Overview = remoteMovie.Overview,
                             Images = remoteMovie.Images.Select(x => MapImage(x, Settings.BaseUrl)).ToList(),
-                            Monitored = remoteMovie.Monitored,
                             PhysicalRelease = remoteMovie.PhysicalRelease,
                             InCinemas = remoteMovie.InCinemas,
-                            Year = remoteMovie.Year
+                            Year = remoteMovie.Year,
+                            RootFolderPath = ((NetImportDefinition)Definition).RootFolderPath,
+                            ProfileId = ((NetImportDefinition)Definition).ProfileId,
+                            Monitored = ((NetImportDefinition)Definition).ShouldMonitor,
+                            MinimumAvailability = ((NetImportDefinition)Definition).MinimumAvailability,
+                            Tags = ((NetImportDefinition)Definition).Tags
                         });
                     }
                 }
