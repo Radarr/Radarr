@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
                     throw new SendGridException("Unauthorized - AuthToken is invalid");
                 }
 
-                throw new SendGridException("Unable to connect to Gotify. Status Code: {0}", ex);
+                throw new SendGridException("Unable to connect to SendGrid. Status Code: {0}", ex);
             }
         }
 
