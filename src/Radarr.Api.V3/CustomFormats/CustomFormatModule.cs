@@ -106,7 +106,7 @@ namespace Radarr.Api.V3.CustomFormats
             yield return new ReleaseTitleSpecification
             {
                 Name = "Surround Sound",
-                Value = @"DTS.?(HD|ES|X(?!\D))|TRUEHD|ATMOS|DD(\+|P|).?([5-9])|(EA|A)C3.?([5-9])"
+                Value = @"TRUEHD|ATMOS|((DD(+|P|))|((EA|A)C3)|DTS|FLAC|OPUS|AAC).?([5-9]|HD|ES|X(?!\D))"
             };
 
             yield return new ReleaseTitleSpecification
