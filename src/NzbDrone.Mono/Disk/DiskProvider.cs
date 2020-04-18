@@ -231,6 +231,19 @@ namespace NzbDrone.Mono.Disk
             // - In 6.0 it'll leave a full length file
             // - In 6.6 it'll leave a zero length file
             // Catch the exception and attempt to handle these edgecases
+
+            // Mono 6.x till 6.10 doesn't properly try use rename first.
+            if (move && PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() < new Version(6, 10))
+            {
+                if (Syscall.lstat(source, out var sourcestat) == 0 &&
+                    Syscall.lstat(destination, out var deststat) != 0 &&
+                    Syscall.rename(source, destination) == 0)
+                {
+                    _logger.Trace("Moved '{0}' -> '{1}' using Syscall.rename", source, destination);
+                    return;
+                }
+            }
+
             try
             {
                 if (move)
