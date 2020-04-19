@@ -212,6 +212,7 @@ GeneralSettings.propTypes = {
   isWindows: PropTypes.bool.isRequired,
   isWindowsService: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
+  packageUpdateMechanism: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onConfirmResetApiKey: PropTypes.func.isRequired,
   onConfirmRestart: PropTypes.func.isRequired
