@@ -105,6 +105,7 @@ class GeneralSettings extends Component {
       isWindows,
       isWindowsService,
       mode,
+      packageUpdateMechanism,
       onInputChange,
       onConfirmResetApiKey,
       ...otherProps
@@ -167,6 +168,7 @@ class GeneralSettings extends Component {
                   advancedSettings={advancedSettings}
                   settings={settings}
                   isWindows={isWindows}
+                  packageUpdateMechanism={packageUpdateMechanism}
                   onInputChange={onInputChange}
                 />
 
