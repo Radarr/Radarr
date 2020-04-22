@@ -269,8 +269,11 @@ stages:
           sentry-cli releases -p radarr3-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
+          if [ "$EXIT_CODE" -gt 0 ]; then
+            echo "##vso[task.logissue type=warning]Error uploading source maps."
+          fi
+          exit 0
         displayName: Publish Sentry Source Maps
-        failOnStderr: false
         continueOnError: true
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
