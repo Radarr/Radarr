@@ -44,10 +44,14 @@ class Queue extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      items
+      items,
+      isMoviesFetching
     } = this.props;
 
-    if (hasDifferentItems(prevProps.items, items) && !items.some((e) => e.movieId)) {
+    if (
+      (!isMoviesFetching && prevProps.isMoviesFetching) ||
+      (hasDifferentItems(prevProps.items, items) && !items.some((e) => e.movieId))
+    ) {
       this.setState((state) => {
         return {
           ...removeOldSelectedState(state, getRemovedItems(prevProps.items, items)),

@@ -17,7 +17,7 @@ const blacklistedProperties = [
 ];
 
 function createItemMap(data) {
-  return data.reduce((acc, d, index, array) => {
+  return data.reduce((acc, d, index) => {
     acc[d.id] = index;
     return acc;
   }, {});
@@ -49,7 +49,7 @@ export default function createHandleActions(handlers, defaultState, section) {
 
         if (_.isArray(payload.data)) {
           newState.items = payload.data;
-          newState.itemMap = createItemMap(newState.items);
+          newState.itemMap = createItemMap(payload.data);
         } else {
           newState.item = payload.data;
         }
