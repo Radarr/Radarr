@@ -45,11 +45,13 @@ class Queue extends Component {
   componentDidUpdate(prevProps) {
     const {
       items,
+      isFetching,
       isMoviesFetching
     } = this.props;
 
     if (
       (!isMoviesFetching && prevProps.isMoviesFetching) ||
+      (!isFetching && prevProps.isFetching) ||
       (hasDifferentItems(prevProps.items, items) && !items.some((e) => e.movieId))
     ) {
       this.setState((state) => {
