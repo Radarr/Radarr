@@ -16,12 +16,12 @@ using NzbDrone.Core.Update.Commands;
 
 namespace NzbDrone.Core.Update
 {
-    public class InstallUpdateService : IExecute<ApplicationUpdateCommand>
+    public class InstallUpdateService : IExecute<ApplicationCheckUpdateCommand>, IExecute<ApplicationUpdateCommand>
     {
         private readonly ICheckUpdateService _checkUpdateService;
         private readonly Logger _logger;
         private readonly IAppFolderInfo _appFolderInfo;
-
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IHttpClient _httpClient;
@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Update
 
         public InstallUpdateService(ICheckUpdateService checkUpdateService,
                                     IAppFolderInfo appFolderInfo,
+                                    IManageCommandQueue commandQueueManager,
                                     IDiskProvider diskProvider,
                                     IDiskTransferService diskTransferService,
                                     IHttpClient httpClient,
@@ -58,6 +59,7 @@ namespace NzbDrone.Core.Update
 
             _checkUpdateService = checkUpdateService;
             _appFolderInfo = appFolderInfo;
+            _commandQueueManager = commandQueueManager;
             _diskProvider = diskProvider;
             _diskTransferService = diskTransferService;
             _httpClient = httpClient;
@@ -209,7 +211,7 @@ namespace NzbDrone.Core.Update
             }
         }
 
-        public void Execute(ApplicationUpdateCommand message)
+        private UpdatePackage GetUpdatePackage(CommandTrigger updateTrigger)
         {
             _logger.ProgressDebug("Checking for updates");
 
@@ -218,52 +220,70 @@ namespace NzbDrone.Core.Update
             if (latestAvailable == null)
             {
                 _logger.ProgressDebug("No update available");
-                return;
+                return null;
             }
 
             if (_osInfo.IsDocker)
             {
                 _logger.ProgressDebug("Updating is disabled inside a docker container.  Please update the container image.");
-                return;
+                return null;
             }
 
-            if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && message.Trigger != CommandTrigger.Manual)
+            if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && updateTrigger != CommandTrigger.Manual)
             {
                 _logger.ProgressDebug("Auto-update not enabled, not installing available update.");
-                return;
+                return null;
             }
 
             // Safety net, ConfigureUpdateMechanism should take care of invalid settings
             if (_configFileProvider.UpdateMechanism == UpdateMechanism.BuiltIn && _deploymentInfoProvider.IsExternalUpdateMechanism)
             {
                 _logger.ProgressDebug("Built-In updater disabled, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
-                return;
+                return null;
             }
             else if (_configFileProvider.UpdateMechanism != UpdateMechanism.Script && _deploymentInfoProvider.IsExternalUpdateMechanism)
             {
                 _logger.ProgressDebug("Update available, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
-                return;
+                return null;
             }
 
-            try
+            return latestAvailable;
+        }
+
+        public void Execute(ApplicationCheckUpdateCommand message)
+        {
+            if (GetUpdatePackage(message.Trigger) != null)
             {
-                InstallUpdate(latestAvailable);
-                _logger.ProgressDebug("Restarting Radarr to apply updates");
+                _commandQueueManager.Push(new ApplicationUpdateCommand(), trigger: message.Trigger);
             }
-            catch (UpdateFolderNotWritableException ex)
+        }
+
+        public void Execute(ApplicationUpdateCommand message)
+        {
+            var latestAvailable = GetUpdatePackage(message.Trigger);
+
+            if (latestAvailable != null)
             {
-                _logger.Error(ex, "Update process failed");
-                throw new CommandFailedException("Startup folder not writable by user '{0}'", ex, Environment.UserName);
-            }
-            catch (UpdateVerificationFailedException ex)
-            {
-                _logger.Error(ex, "Update process failed");
-                throw new CommandFailedException("Downloaded update package is corrupt", ex);
-            }
-            catch (UpdateFailedException ex)
-            {
-                _logger.Error(ex, "Update process failed");
-                throw new CommandFailedException(ex);
+                try
+                {
+                    InstallUpdate(latestAvailable);
+                    _logger.ProgressDebug("Restarting Radarr to apply updates");
+                }
+                catch (UpdateFolderNotWritableException ex)
+                {
+                    _logger.Error(ex, "Update process failed");
+                    throw new CommandFailedException("Startup folder not writable by user '{0}'", ex, Environment.UserName);
+                }
+                catch (UpdateVerificationFailedException ex)
+                {
+                    _logger.Error(ex, "Update process failed");
+                    throw new CommandFailedException("Downloaded update package is corrupt", ex);
+                }
+                catch (UpdateFailedException ex)
+                {
+                    _logger.Error(ex, "Update process failed");
+                    throw new CommandFailedException(ex);
+                }
             }
         }
     }
