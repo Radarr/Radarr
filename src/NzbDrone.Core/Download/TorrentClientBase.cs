@@ -238,8 +238,8 @@ namespace NzbDrone.Core.Download
 
         private string ExperimentalUrlDecode(string potentiallyMalformedUrl)
         {
-            // Hack: Decode HTML encoded urls
-            return WebUtility.HtmlDecode(potentiallyMalformedUrl);
+            // Hack: Decode HTML encoded urls, replace ampersand to prevent splitting error
+            return WebUtility.HtmlDecode(potentiallyMalformedUrl).Replace("&", "And");
         }
     }
 }
