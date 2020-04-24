@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
 using MonoTorrent;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -211,7 +212,7 @@ namespace NzbDrone.Core.Download
 
                 try
                 {
-                    htmlDecodedMagnetUrl = ExperimentalUrlDecode(magnetUrl);
+                    htmlDecodedMagnetUrl = HtmlDecodeMagnetLinkDisplayName(magnetUrl);
                     hash = new MagnetLink(htmlDecodedMagnetUrl).InfoHash.ToHex();
                 }
                 catch (FormatException fex)
@@ -236,10 +237,17 @@ namespace NzbDrone.Core.Download
             return actualHash;
         }
 
-        private string ExperimentalUrlDecode(string potentiallyMalformedUrl)
+        private string HtmlDecodeMagnetLinkDisplayName(string magnetUrl)
         {
-            // Hack: Decode HTML encoded urls, replace ampersand to prevent splitting error
-            return WebUtility.HtmlDecode(potentiallyMalformedUrl).Replace("&", "And");
+            // Hack: Decode HTML encoded urls display names
+            string displayNameRegex = @"(?<=&dn=|magnet:\?dn=).*?(?=&(?:tr|xt|xl|as|xs|kt|mt)=?|$)";
+            Match match = Regex.Match(magnetUrl, displayNameRegex);
+            if (!match.Success) {
+                return WebUtility.HtmlDecode(magnetUrl);
+            }
+
+            string displayNameDecoded = WebUtility.HtmlDecode(match.Value).Replace("&", "And");
+            return magnetUrl.Replace(match.Value, displayNameDecoded);
         }
     }
 }
