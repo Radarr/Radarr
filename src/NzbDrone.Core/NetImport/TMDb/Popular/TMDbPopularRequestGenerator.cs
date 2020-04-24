@@ -51,7 +51,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
             switch (Settings.TMDbListType)
             {
                 case (int)TMDbPopularListType.Theaters:
-                    requestBuilder.AddQueryParam("primary_release.gte", threeMonthsAgo)
+                    requestBuilder.AddQueryParam("primary_release_date.gte", threeMonthsAgo)
                                   .AddQueryParam("primary_release_date.lte", todaysDate);
                     break;
                 case (int)TMDbPopularListType.Popular:
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Popular
                     requestBuilder.AddQueryParam("sort_by", "vote_average.desc");
                     break;
                 case (int)TMDbPopularListType.Upcoming:
-                    requestBuilder.AddQueryParam("primary_release.gte", todaysDate)
+                    requestBuilder.AddQueryParam("primary_release_date.gte", todaysDate)
                                   .AddQueryParam("primary_release_date.lte", threeMonthsFromNow);
                     break;
             }
