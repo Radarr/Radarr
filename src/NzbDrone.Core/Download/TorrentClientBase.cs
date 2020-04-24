@@ -197,6 +197,7 @@ namespace NzbDrone.Core.Download
         {
             string hash = null;
             string actualHash = null;
+            string htmlDecodedMagnetUrl = null;
 
             try
             {
@@ -206,12 +207,23 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Error(ex, "Failed to parse magnetlink for movie '{0}': '{1}'", remoteMovie.Release.Title, magnetUrl);
 
-                return null;
+                _logger.Error("Trying experimental parser for magnet url '{0}'", magnetUrl);
+
+                try
+                {
+                    htmlDecodedMagnetUrl = ExperimentalUrlDecode(magnetUrl);
+                    hash = new MagnetLink(htmlDecodedMagnetUrl).InfoHash.ToHex();
+                }
+                catch (FormatException fex)
+                {
+                    _logger.Error(fex, "Experimental parser yielded unparseable string for '{0}': '{1}'", magnetUrl, htmlDecodedMagnetUrl);
+                    return null;
+                }
             }
 
             if (hash != null)
             {
-                actualHash = AddFromMagnetLink(remoteMovie, hash, magnetUrl);
+                actualHash = AddFromMagnetLink(remoteMovie, hash, htmlDecodedMagnetUrl ?? magnetUrl);
             }
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
@@ -222,6 +234,12 @@ namespace NzbDrone.Core.Download
             }
 
             return actualHash;
+        }
+
+        private string ExperimentalUrlDecode(string potentiallyMalformedUrl)
+        {
+            // Hack: Decode HTML encoded urls
+            return WebUtility.HtmlDecode(potentiallyMalformedUrl);
         }
     }
 }
