@@ -807,4 +807,7 @@ stages:
         - powershell: |
             iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
           env:
-            SYSTEM_ACCESSTOKEN: $(System.AccessToken)  
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            DISCORDCHANNELID: $(discordChannelId)
+            DISCORDWEBHOOKKEY: $(discordWebhookKey)
+
