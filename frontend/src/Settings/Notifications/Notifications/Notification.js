@@ -112,7 +112,7 @@ class Notification extends Component {
         }
 
         {
-          !onGrab && !onDownload && !onRename && !onHealthIssue
+          !onGrab && !onDownload && !onRename && !onHealthIssue &&
             <Label
               kind={kinds.DISABLED}
               outline={true}
