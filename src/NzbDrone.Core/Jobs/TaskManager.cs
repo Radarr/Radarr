@@ -194,10 +194,10 @@ namespace NzbDrone.Core.Jobs
             var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
             netImport.Interval = _configService.NetImportSyncInterval;
 
-            var checkForFinishedDownloads = _scheduledTaskRepository.GetDefinition(typeof(CheckForFinishedDownloadCommand));
-            checkForFinishedDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
+            var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
+            refreshMonitoredDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, netImport, checkForFinishedDownloads });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, netImport, refreshMonitoredDownloads });
         }
     }
 }
