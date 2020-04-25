@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
@@ -32,9 +33,18 @@ namespace NzbDrone.Core.Download
             _logger = logger;
         }
 
+        private void RemoveCompletedDownloads(List<TrackedDownload> trackedDownloads)
+        {
+            foreach (var trackedDownload in trackedDownloads.Where(c => c.DownloadItem.CanBeRemoved && c.State == TrackedDownloadState.Imported))
+            {
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+            }
+        }
+
         public void Execute(ProcessMonitoredDownloadsCommand message)
         {
             var enableCompletedDownloadHandling = _configService.EnableCompletedDownloadHandling;
+            var removeCompletedDownloads = _configService.RemoveCompletedDownloads;
             var trackedDownloads = _trackedDownloadService.GetTrackedDownloads()
                                               .Where(t => t.IsTrackable)
                                               .ToList();
@@ -46,11 +56,21 @@ namespace NzbDrone.Core.Download
                     if (trackedDownload.State == TrackedDownloadState.FailedPending)
                     {
                         _failedDownloadService.ProcessFailed(trackedDownload);
+                        continue;
                     }
 
                     if (enableCompletedDownloadHandling && trackedDownload.State == TrackedDownloadState.ImportPending)
                     {
                         _completedDownloadService.Import(trackedDownload);
+                        continue;
+                    }
+
+                    if (removeCompletedDownloads &&
+                        trackedDownload.DownloadItem.Removed &&
+                        trackedDownload.DownloadItem.CanBeRemoved &&
+                        trackedDownload.State == TrackedDownloadState.Imported)
+                    {
+                        _eventAggregator.PublishEvent(new DownloadCanBeRemovedEvent(trackedDownload));
                     }
                 }
                 catch (Exception e)
