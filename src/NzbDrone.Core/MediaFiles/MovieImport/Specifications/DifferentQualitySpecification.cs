@@ -43,7 +43,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (qualityCompare != 0)
             {
                 _logger.Debug("Quality of file ({0}) does not match quality of grabbed history ({1})", localMovie.Quality, grabbedMovieHistory.Quality);
-                return Decision.Reject("Not an upgrade for existing movie file(s)");
+                return Decision.Reject("Quality of file ({0}) does not match quality of grabbed release ({1})", localMovie.Quality, grabbedMovieHistory.Quality);
             }
 
             return Decision.Accept();
