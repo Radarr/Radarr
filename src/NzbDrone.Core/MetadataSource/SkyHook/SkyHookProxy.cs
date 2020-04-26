@@ -376,11 +376,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public List<Movie> DiscoverNewMovies(string action)
         {
             var allMovies = _movieService.GetAllMovies();
-            var allExclusions = _exclusionService.GetAllExclusions();
-            string allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
-            string ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
 
-            List<MovieResult> results = new List<MovieResult>();
+            if (!allMovies.Any())
+            {
+                _logger.Debug("Skipping discover, no movies in library");
+                return new List<Movie>();
+            }
+
+            var allExclusions = _exclusionService.GetAllExclusions();
+            var allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
+            var ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
+
+            var results = new List<MovieResult>();
 
             try
             {
