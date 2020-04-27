@@ -159,7 +159,7 @@ namespace NzbDrone.Core.NetImport
             {
                 _logger.Warn(ex, "Unable to connect to list");
 
-                return new ValidationFailure(string.Empty, "Unable to connect to indexer. " + ex.Message);
+                return new ValidationFailure(string.Empty, "Unable to connect to list. " + ex.Message);
             }
             catch (Exception ex)
             {
