@@ -266,8 +266,8 @@ stages:
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
           RELEASENAME="${RADARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
-          sentry-cli releases new --finalize -p radarr3 -p radarr3-ui -p radarr-update "${RELEASENAME}"
-          sentry-cli releases -p radarr3-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
+          sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
           if [ $? -gt 0 ]; then
