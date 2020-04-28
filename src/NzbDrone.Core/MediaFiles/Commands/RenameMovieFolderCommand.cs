@@ -9,6 +9,10 @@ namespace NzbDrone.Core.MediaFiles.Commands
 
         public override bool SendUpdatesToClient => false;
 
+        public RenameMovieFolderCommand()
+        {
+        }
+
         public RenameMovieFolderCommand(List<int> ids)
         {
             MovieIds = ids;
