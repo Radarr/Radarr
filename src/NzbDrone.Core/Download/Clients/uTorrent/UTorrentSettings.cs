@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MovieCategory { get; set; }
 
-        [FieldDefinition(6, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Radarr to set after it has imported the download. Leave blank to disable this feature.")]
+        [FieldDefinition(6, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Radarr to set after it has imported the download. Radarr will not remove the torrent if seeding has finished. Leave blank to keep same category.")]
         public string MovieImportedCategory { get; set; }
 
         [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(UTorrentPriority), HelpText = "Priority to use when grabbing movies that released within the last 14 days")]
