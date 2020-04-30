@@ -45,15 +45,6 @@ namespace NzbDrone.Core.MediaFiles
                         _mediaFileService.Delete(movieFile, DeleteMediaFileReason.MissingFromDisk);
                         continue;
                     }
-
-                    //var localMovie = _parsingService.GetLocalMovie(movieFile.Path, movie);
-
-                    //if (localMovie == null)
-                    //{
-                    //    _logger.Debug("File [{0}] parsed episodes has changed, removing from db", localMovie.Path);
-                    //    _mediaFileService.Delete(localMovie);
-                    //    continue;
-                    //}
                 }
                 catch (Exception ex)
                 {
