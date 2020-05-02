@@ -181,11 +181,6 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Czech);
             }
 
-            return languages.DistinctBy(l => (int)l).ToList();
-        }
-
-        public static List<Language> EnhanceLanguages(string title, List<Language> languages)
-        {
             if (title.ToLower().Contains("multi"))
             {
                 //Let's add english language to multi release as a safe guard.
@@ -200,7 +195,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.English);
             }
 
-            return languages;
+            return languages.DistinctBy(l => (int)l).ToList();
         }
 
         public static Language ParseSubtitleLanguage(string fileName)

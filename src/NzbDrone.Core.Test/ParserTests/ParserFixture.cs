@@ -1,5 +1,7 @@
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
@@ -117,6 +119,14 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
             parsed.Edition.Should().Be(edition);
+        }
+
+        [TestCase("The.Italian.Job.2008.720p.BluRay.X264-AMIABLE")]
+        public void should_not_parse_wrong_language_in_title(string postTitle)
+        {
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            parsed.Languages.Count().Should().Be(1);
+            parsed.Languages.First().Should().Be(Language.English);
         }
 
         [TestCase("123", "tt0000123")]

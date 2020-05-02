@@ -241,12 +241,14 @@ namespace NzbDrone.Core.Parser
                                 //TODO: Add tests for this!
                                 var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(title, string.Empty);
 
-                                if (result.MovieTitle.IsNotNullOrWhiteSpace())
+                                var simpleTitleReplaceString = match[0].Groups["title"].Success ? match[0].Groups["title"].Value : result.MovieTitle;
+
+                                if (simpleTitleReplaceString.IsNotNullOrWhiteSpace())
                                 {
-                                    simpleReleaseTitle = simpleReleaseTitle.Replace(result.MovieTitle, result.MovieTitle.Contains(".") ? "A.Movie" : "A Movie");
+                                    simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
                                 }
 
-                                result.Languages = LanguageParser.EnhanceLanguages(simpleReleaseTitle, LanguageParser.ParseLanguages(releaseTitle));
+                                result.Languages = LanguageParser.ParseLanguages(simpleReleaseTitle);
                                 Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
 
                                 result.Quality = QualityParser.ParseQuality(title);
@@ -472,7 +474,7 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            var movieName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
+            var movieName = matchCollection[0].Groups["title"].Value.Replace('_', ' ');
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
             var parts = movieName.Split('.');
