@@ -13,13 +13,17 @@ import Updates from './Updates';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.app.version,
+    createSystemStatusSelector(),
     (state) => state.system.updates,
+    (state) => state.settings.general,
     createUISettingsSelector(),
     createCommandExecutingSelector(commandNames.APPLICATION_UPDATE),
     createSystemStatusSelector(),
     (
       currentVersion,
+      status,
       updates,
+      generalSettings,
       uiSettings,
       isInstallingUpdate,
       systemStatus
@@ -39,6 +43,8 @@ function createMapStateToProps() {
         items,
         isInstallingUpdate,
         isDocker: systemStatus.isDocker,
+        updateMechanism: generalSettings.item.updateMechanism,
+        updateMechanismMessage: status.packageUpdateMechanismMessage,
         shortDateFormat: uiSettings.shortDateFormat
       };
     }
