@@ -18,7 +18,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                                              IHandle<DownloadsProcessedEvent>,
                                              IHandle<TrackedDownloadsRemovedEvent>
     {
-        private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IDownloadClientStatusService _downloadClientStatusService;
+        private readonly IDownloadClientFactory _downloadClientFactory;
         private readonly IEventAggregator _eventAggregator;
         private readonly IManageCommandQueue _manageCommandQueue;
         private readonly IConfigService _configService;
@@ -28,16 +29,18 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private readonly Logger _logger;
         private readonly Debouncer _refreshDebounce;
 
-        public DownloadMonitoringService(IProvideDownloadClient downloadClientProvider,
-                                     IEventAggregator eventAggregator,
-                                     IManageCommandQueue manageCommandQueue,
-                                     IConfigService configService,
-                                     IFailedDownloadService failedDownloadService,
-                                     ICompletedDownloadService completedDownloadService,
-                                     ITrackedDownloadService trackedDownloadService,
-                                     Logger logger)
+        public DownloadMonitoringService(IDownloadClientStatusService downloadClientStatusService,
+                                         IDownloadClientFactory downloadClientFactory,
+                                         IEventAggregator eventAggregator,
+                                         IManageCommandQueue manageCommandQueue,
+                                         IConfigService configService,
+                                         IFailedDownloadService failedDownloadService,
+                                         ICompletedDownloadService completedDownloadService,
+                                         ITrackedDownloadService trackedDownloadService,
+                                         Logger logger)
         {
-            _downloadClientProvider = downloadClientProvider;
+            _downloadClientStatusService = downloadClientStatusService;
+            _downloadClientFactory = downloadClientFactory;
             _eventAggregator = eventAggregator;
             _manageCommandQueue = manageCommandQueue;
             _configService = configService;
@@ -59,7 +62,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             _refreshDebounce.Pause();
             try
             {
-                var downloadClients = _downloadClientProvider.GetDownloadClients();
+                var downloadClients = _downloadClientFactory.DownloadHandlingEnabled();
 
                 var trackedDownloads = new List<TrackedDownload>();
 
@@ -88,9 +91,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             try
             {
                 downloadClientItems = downloadClient.GetItems().ToList();
+
+                _downloadClientStatusService.RecordSuccess(downloadClient.Definition.Id);
             }
             catch (Exception ex)
             {
+                // TODO: Stop tracking items for the offline client
+                _downloadClientStatusService.RecordFailure(downloadClient.Definition.Id);
                 _logger.Warn(ex, "Unable to retrieve queue and history items from " + downloadClient.Definition.Name);
             }
 
