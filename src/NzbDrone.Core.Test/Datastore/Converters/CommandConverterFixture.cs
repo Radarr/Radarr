@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Books.Commands;
 using NzbDrone.Core.Datastore.Converters;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore.Converters
@@ -40,6 +41,14 @@ namespace NzbDrone.Core.Test.Datastore.Converters
             var data = "{\"name\": \"RefreshAuthor\"}";
 
             Subject.Parse(data).Should().BeOfType<RefreshAuthorCommand>();
+        }
+
+        [Test]
+        public void should_return_unknown_command_when_getting_json_from_db()
+        {
+            var data = "{\"name\": \"EnsureMediaCovers\"}";
+
+            Subject.Parse(data).Should().BeOfType<UnknownCommand>();
         }
 
         [Test]
