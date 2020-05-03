@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Notifications.Gotify
                     throw new GotifyException("Unauthorized - AuthToken is invalid");
                 }
 
-                throw new GotifyException("Unable to connect to Gotify. Status Code: {0}", ex);
+                throw new GotifyException("Unable to connect to Gotify. Status Code: {0}", ex.Response.StatusCode);
             }
         }
     }
