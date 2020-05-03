@@ -28,7 +28,9 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = "Grab",
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(remoteMovie),
-                Release = new WebhookRelease(quality, remoteMovie)
+                Release = new WebhookRelease(quality, remoteMovie),
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -44,7 +46,9 @@ namespace NzbDrone.Core.Notifications.Webhook
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(message.Movie),
                 MovieFile = new WebhookMovieFile(movieFile),
-                IsUpgrade = message.OldMovieFiles.Any()
+                IsUpgrade = message.OldMovieFiles.Any(),
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             _proxy.SendWebhook(payload, Settings);
