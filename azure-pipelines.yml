@@ -612,7 +612,7 @@ stages:
             osName: 'Windows'
             imageName: 'windows-2019'
             pattern: 'Radarr.**.windows-core-x64.zip'
-            failBuild: true
+            failBuild: $(failOnAutomationFailure)
 
       pool:
         vmImage: $(imageName)
