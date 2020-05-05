@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Nancy;
 using Nancy.Bootstrapper;
@@ -42,8 +42,7 @@ namespace NzbDrone.Api.Extensions.Pipelines
 
             var reqPath = GetRequestPathAndQuery(context.Request);
 
-            _loggerHttp.Trace("Req: {0} [{1}] {2}", id, context.Request.Method, reqPath);
-
+            _loggerHttp.Trace("Req: {0} [{1}] {2} (from {3})", id, context.Request.Method, reqPath, GetOrigin(context));
             return null;
         }
 
@@ -87,6 +86,18 @@ namespace NzbDrone.Api.Extensions.Pipelines
             else
             {
                 return request.Url.Path;
+            }
+        }
+
+        private static string GetOrigin(NancyContext context)
+        {
+            if (context.Request.Headers.UserAgent.IsNullOrWhiteSpace())
+            {
+                return context.GetRemoteIP();
+            }
+            else
+            {
+                return $"{context.GetRemoteIP()} {context.Request.Headers.UserAgent}";
             }
         }
     }
